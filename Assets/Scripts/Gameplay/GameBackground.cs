@@ -40,6 +40,7 @@ public class GameBackground : MonoBehaviour {
 	}
 
 	private void PositionTileSprites() {
+		if (tileSprites == null) { return; } // Safety check (for runtime compile).
 		// Snap MY position to the camera's grid pos!
 		Rect viewRect = cameraControllerRef.ViewRect;
 		Vector2 viewCenter = viewRect.center;
