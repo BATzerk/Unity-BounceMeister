@@ -27,13 +27,24 @@ public class PlayerWhiskers : MonoBehaviour {
 		else {
 			pos += new Vector2(playerSize.x*sideOffsetLoc, whiskerDirs[side].y*playerSize.y*0.5f);
 		}
-//		new Vector2(whiskerDirs[side].x*myPlayer.Size.x*0.5f, whiskerDirs[side].y*myPlayer.Size.y*0.5f); // *0.5f because Size is diameter and we want radius.
 		return pos;
+	}
+	/** It's most efficient only to search as far as the Player is going to move this frame. */
+	private float GetRaycastSearchDist(int side) {
+		const float bloat = 0.2f; // how much farther than the player's exact velocity to look. For safety.
+		switch (side) {
+		case Sides.L: return Mathf.Max(0, -myPlayer.Vel.x) + bloat;
+		case Sides.R: return Mathf.Max(0,  myPlayer.Vel.x) + bloat;
+		case Sides.B: return Mathf.Max(0, -myPlayer.Vel.y) + bloat;
+		case Sides.T: return Mathf.Max(0,  myPlayer.Vel.y) + bloat;
+		default: Debug.LogError("Side undefined in GetRaycastSearchDist!: " + side); return 0;
+		}
 	}
 	private float GetWhiskerRaycastDistToGround(int side, int index) {
 		Vector2 dir = whiskerDirs[side];
 		Vector2 pos = WhiskerPos(side, index);
-		hit = Physics2D.Raycast(pos, dir, Mathf.Infinity, myLayerMask);
+		float raycastSearchDist = GetRaycastSearchDist(side);
+		hit = Physics2D.Raycast(pos, dir, raycastSearchDist, myLayerMask);
 		if (hit.collider != null) {
 			if (LayerMask.LayerToName(hit.collider.gameObject.layer) == LayerNames.Ground) {
 				return Vector2.Distance(hit.point, pos);
@@ -56,12 +67,12 @@ public class PlayerWhiskers : MonoBehaviour {
 	void OnDrawGizmos() {
 		if (whiskerDirs==null) { return; } // Safety check.
 
-		float length = 1f;
 		for (int side=0; side<whiskerDirs.Length; side++) {
+			float length = GetRaycastSearchDist(side);
 			Vector2 dir = whiskerDirs[side];
 			for (int index=0; index<NumWhiskersPerSide; index++) {
 				Vector2 startPos = WhiskerPos(side, index);
-				bool isTouchingGround = groundDists[side,index] < 0.1f;//IsTouchingGroundAtSide(i);
+				bool isTouchingGround = groundDists[side,index] < 0.1f;
 				Gizmos.color = isTouchingGround ? Color.green : Color.red;
 				Gizmos.DrawLine(startPos, startPos + dir * length);
 			}

@@ -28,6 +28,7 @@ public class Player : MonoBehaviour {
 
 	// Getters/Setters
 	public Vector2 Pos { get { return pos; } }
+	public Vector2 Vel { get { return vel; } }
 	public Vector2 Size { get { return size; } }
 	public bool OnGround { get { return onGround; } }
 
