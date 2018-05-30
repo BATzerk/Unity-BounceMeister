@@ -14,7 +14,7 @@ public class PlayerBody : MonoBehaviour {
 //	private readonly Color bodyColor_outOfDashes = new Color(128/255f, 128/255f, 128/255f);
 //	private float aimDirRadius;
 	// References
-	[SerializeField] private Player myPlayer=null;
+//	[SerializeField] private Player myPlayer=null;
 
 	// Getters
 //	private Vector2 AimDir { get { return myPlayer.AimDir; } }

@@ -161,7 +161,7 @@ public class Player : MonoBehaviour {
 	}
 
 	private void UpdateOnGround() {
-		bool _onGround = myWhiskers.GetOnGround();
+		bool _onGround = myWhiskers.GetBottomTouchingGround() && vel.y<=0;
 		if (onGround && !_onGround) {
 			OnLeaveGround();
 		}
@@ -180,6 +180,7 @@ public class Player : MonoBehaviour {
 		timeWhenCanJump = Time.time + JumpTimeoutWindow;
 		numJumpsSinceGround ++;
 		GameManagers.Instance.EventManager.OnPlayerJump(this);
+		OnLeaveGround(); // Call this manually now!
 	}
 	private void StartBouncing() {
 		isBouncing = true;
@@ -196,6 +197,7 @@ public class Player : MonoBehaviour {
 		float yVel = Mathf.Sqrt(2*-gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
 		yVel += 0.025f; // Hack!! We're not getting all our height back exactly. Fudge it for now.
 		vel = new Vector2(vel.x, yVel);
+		OnLeaveGround(); // Call this manually now!
 	}
 
 

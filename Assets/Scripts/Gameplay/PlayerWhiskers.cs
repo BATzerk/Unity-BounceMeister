@@ -10,7 +10,8 @@ public class PlayerWhiskers : MonoBehaviour {
 	// References
 	[SerializeField] private Player myPlayer=null;
 	// Properties
-	[SerializeField] LayerMask myLayerMask; // set to "Ground". We only want to detect ground and ignore everything else.
+	[SerializeField] LayerMask lm_ground; // All sides always care about Ground.
+	[SerializeField] LayerMask lm_platform; // Only the bottom side cares about Platforms.
 	private float[,] groundDists; // by side,index. This is *all* whisker data.
 	private float[] groundDistsMin; // by side. We'll use this value more often; we just wanna know how close we're considered to the ground.
 	private RaycastHit2D hit;
@@ -40,22 +41,27 @@ public class PlayerWhiskers : MonoBehaviour {
 		default: Debug.LogError("Side undefined in GetRaycastSearchDist!: " + side); return 0;
 		}
 	}
+	private LayerMask GetLayerMask(int side) {
+		if (side == Sides.B) { return lm_ground | lm_platform; } // Bottom side? Return ground AND platforms!
+		return lm_ground; // All other sides only care about ground.
+	}
 	private float GetWhiskerRaycastDistToGround(int side, int index) {
 		Vector2 dir = whiskerDirs[side];
 		Vector2 pos = WhiskerPos(side, index);
 		float raycastSearchDist = GetRaycastSearchDist(side);
-		hit = Physics2D.Raycast(pos, dir, raycastSearchDist, myLayerMask);
+		LayerMask mask = GetLayerMask(side);
+		hit = Physics2D.Raycast(pos, dir, raycastSearchDist, mask);
 		if (hit.collider != null) {
-			if (LayerMask.LayerToName(hit.collider.gameObject.layer) == LayerNames.Ground) {
+//			if (LayerMask.LayerToName(hit.collider.gameObject.layer) == LayerNames.Ground) {
 				return Vector2.Distance(hit.point, pos);
-			}
+//			}
 		}
 		// Didn't hit any ground? Ok, return infinity.
 		return Mathf.Infinity;
 	}
 
 	public float GroundDistMin(int side) { return groundDistsMin[side]; }
-	public bool GetOnGround() {
+	public bool GetBottomTouchingGround() {
 		UpdateGroundDist(Sides.B); // Just update the bottom.
 		return GroundDistMin(Sides.B) <= 0;
 	}
