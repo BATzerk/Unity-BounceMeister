@@ -52,6 +52,13 @@ public class PlayerBody : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
+	public void OnStartBouncing() {
+		sr_body.color = Color.green;
+	}
+	public void OnStopBouncing() {
+		sr_body.color = bodyColor_neutral;
+	}
+
 	public void OnDash() {
 //		Color color;
 //		switch (myPlayer.NumDashesSinceGround) {
@@ -84,7 +91,7 @@ public class PlayerBody : MonoBehaviour {
 	private void Update() {
 		if (Time.timeScale == 0) { return; } // No time? No dice.
 
-		sr_body.color = myPlayer.OnGround ? bodyColor_neutral : Color.yellow;
+//		sr_body.color = myPlayer.OnGround ? bodyColor_neutral : Color.yellow;
 //		UpdateAimDirLine();
 	}
 //	private void UpdateAimDirLine() {

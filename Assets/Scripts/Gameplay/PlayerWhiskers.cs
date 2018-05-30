@@ -111,6 +111,7 @@ public class PlayerWhiskers : MonoBehaviour {
 		}
 	}
 	public void UpdateGroundDist(int side) {
+		if (groundDists==null) { return; } // Safety check (for runtime compile).
 		groundDistsMin[side] = Mathf.Infinity; // Gotta default the min dist to infinity (last frame doesn't matter anymore).
 		for (int index=0; index<NumWhiskersPerSide; index++) {
 			float dist = GetWhiskerRaycastDistToGround(side, index);
