@@ -38,10 +38,10 @@ public class Player : MonoBehaviour {
 	}
 	private Vector2 GetAppliedVel() {
 		Vector2 av = vel;
-		float distL = myWhiskers.GroundDist(Sides.L);
-		float distR = myWhiskers.GroundDist(Sides.R);
-		float distB = myWhiskers.GroundDist(Sides.B);
-		float distT = myWhiskers.GroundDist(Sides.T);
+		float distL = myWhiskers.GroundDistMin(Sides.L);
+		float distR = myWhiskers.GroundDistMin(Sides.R);
+		float distB = myWhiskers.GroundDistMin(Sides.B);
+		float distT = myWhiskers.GroundDistMin(Sides.T);
 		// Clamp our vel so we don't intersect anything.
 		if (vel.x<0 && vel.x<-distL) {
 			av = new Vector2(-distL, av.y);

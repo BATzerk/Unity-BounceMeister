@@ -4,25 +4,117 @@ using UnityEngine;
 
 public class PlayerWhiskers : MonoBehaviour {
 	// Constants
-	private int NumSides = 4; // it's hip to be square.
+	private const int NumSides = 4; // it's hip to be square.
+	private const int NumWhiskersPerSide = 3; // this MUST match SideOffsetLocs! Just made its own variable for easy/readable access.
+	private float[] SideOffsetLocs = new float[]{-0.45f, 0f, 0.45f}; // 3 whiskers per side: left, center, right.
 	// References
 	[SerializeField] private Player myPlayer=null;
 	// Properties
-	[SerializeField] LayerMask myLayerMask; // we only want to detect ground and ignore everything else.
-	private float[] groundDists; // by side.
+	[SerializeField] LayerMask myLayerMask; // set to "Ground". We only want to detect ground and ignore everything else.
+	private float[,] groundDists; // by side,index. This is *all* whisker data.
+	private float[] groundDistsMin; // by side. We'll use this value more often; we just wanna know how close we're considered to the ground.
 	private RaycastHit2D hit;
 	private Vector2[] whiskerDirs;
 
 	// Getters
-	private Vector2 WhiskerPos(int index) {
-		return myPlayer.Pos + new Vector2(whiskerDirs[index].x*myPlayer.Size.x*0.5f, whiskerDirs[index].y*myPlayer.Size.y*0.5f); // *0.5f because Size is diameter and we want radius.
+	private Vector2 playerSize { get { return myPlayer.Size; } }
+	private Vector2 WhiskerPos(int side, int index) {
+		Vector2 pos = myPlayer.Pos;
+		float sideOffsetLoc = SideOffsetLocs[index];
+		if (side==Sides.L || side==Sides.R) {
+			pos += new Vector2(whiskerDirs[side].x*playerSize.x*0.5f, playerSize.y*sideOffsetLoc);
+		}
+		else {
+			pos += new Vector2(playerSize.x*sideOffsetLoc, whiskerDirs[side].y*playerSize.y*0.5f);
+		}
+//		new Vector2(whiskerDirs[side].x*myPlayer.Size.x*0.5f, whiskerDirs[side].y*myPlayer.Size.y*0.5f); // *0.5f because Size is diameter and we want radius.
+		return pos;
+	}
+	private float GetWhiskerRaycastDistToGround(int side, int index) {
+		Vector2 dir = whiskerDirs[side];
+		Vector2 pos = WhiskerPos(side, index);
+		hit = Physics2D.Raycast(pos, dir, Mathf.Infinity, myLayerMask);
+		if (hit.collider != null) {
+			if (LayerMask.LayerToName(hit.collider.gameObject.layer) == LayerNames.Ground) {
+				return Vector2.Distance(hit.point, pos);
+			}
+		}
+		// Didn't hit any ground? Ok, return infinity.
+		return Mathf.Infinity;
 	}
 
-	public float GroundDist(int side) { return groundDists[side]; }
+	public float GroundDistMin(int side) { return groundDistsMin[side]; }
 	public bool GetOnGround() {
 		UpdateGroundDist(Sides.B); // Just update the bottom.
-		return GroundDist(Sides.B) <= 0;
+		return GroundDistMin(Sides.B) <= 0;
 	}
+
+
+	// ----------------------------------------------------------------
+	//  Gizmos!
+	// ----------------------------------------------------------------
+	void OnDrawGizmos() {
+		if (whiskerDirs==null) { return; } // Safety check.
+
+		float length = 1f;
+		for (int side=0; side<whiskerDirs.Length; side++) {
+			Vector2 dir = whiskerDirs[side];
+			for (int index=0; index<NumWhiskersPerSide; index++) {
+				Vector2 startPos = WhiskerPos(side, index);
+				bool isTouchingGround = groundDists[side,index] < 0.1f;//IsTouchingGroundAtSide(i);
+				Gizmos.color = isTouchingGround ? Color.green : Color.red;
+				Gizmos.DrawLine(startPos, startPos + dir * length);
+			}
+		}
+	}
+
+
+
+	// ----------------------------------------------------------------
+	//  Start
+	// ----------------------------------------------------------------
+	private void Awake() {
+		groundDists = new float[NumSides,NumWhiskersPerSide];
+		groundDistsMin = new float[NumSides];
+		whiskerDirs = new Vector2[NumSides];
+		whiskerDirs[Sides.L] = Vector2Int.L.ToVector2();
+		whiskerDirs[Sides.R] = Vector2Int.R.ToVector2();
+		whiskerDirs[Sides.T] = Vector2Int.T.ToVector2();
+		whiskerDirs[Sides.B] = Vector2Int.B.ToVector2();
+	}
+	private void Start() {
+		UpdateGroundDists(); // Just for consistency.
+	}
+
+
+
+	// ----------------------------------------------------------------
+	//  Update
+	// ----------------------------------------------------------------
+//	private void FixedUpdate() {
+//		UpdateGroundDists();
+//	}
+	public void UpdateGroundDists() {
+		for (int i=0; i<whiskerDirs.Length; i ++) {
+			UpdateGroundDist(i);
+		}
+	}
+	public void UpdateGroundDist(int side) {
+		groundDistsMin[side] = Mathf.Infinity; // Gotta default the min dist to infinity (last frame doesn't matter anymore).
+		for (int index=0; index<NumWhiskersPerSide; index++) {
+			float dist = GetWhiskerRaycastDistToGround(side, index);
+			groundDists[side,index] = dist;
+			if (groundDistsMin[side] > dist) { // Update the min distance, too.
+				groundDistsMin[side] = dist;
+			}
+		}
+	}
+
+
+
+}
+
+
 
 //	public bool IsTouchingGround() {
 ////		UpdateGroundDists();
@@ -52,68 +144,3 @@ public class PlayerWhiskers : MonoBehaviour {
 //		}
 //		return Mathf.Infinity;
 //	}
-
-
-	// ----------------------------------------------------------------
-	//  Gizmos!
-	// ----------------------------------------------------------------
-	void OnDrawGizmos() {
-		if (whiskerDirs==null) { return; } // Safety check.
-
-		float length = 1f;
-		for (int i=0; i<whiskerDirs.Length; i ++) {
-			Vector2 dir = whiskerDirs[i];
-			Vector2 startPos = WhiskerPos(i);
-			bool isTouchingGround = groundDists[i] < 0.1f;//IsTouchingGroundAtSide(i);
-			Gizmos.color = isTouchingGround ? Color.green : Color.red;
-			Gizmos.DrawLine(startPos, startPos + dir * length);
-		}
-	}
-
-
-
-	// ----------------------------------------------------------------
-	//  Start
-	// ----------------------------------------------------------------
-	private void Awake() {
-		groundDists = new float[NumSides];
-		whiskerDirs = new Vector2[NumSides];
-		whiskerDirs[Sides.L] = Vector2Int.L.ToVector2();
-		whiskerDirs[Sides.R] = Vector2Int.R.ToVector2();
-		whiskerDirs[Sides.T] = Vector2Int.T.ToVector2();
-		whiskerDirs[Sides.B] = Vector2Int.B.ToVector2();
-	}
-	private void Start() {
-		UpdateGroundDists(); // Just for consistency.
-	}
-
-
-
-	// ----------------------------------------------------------------
-	//  Update
-	// ----------------------------------------------------------------
-//	private void FixedUpdate() {
-//		UpdateGroundDists();
-//	}
-	public void UpdateGroundDists() {
-		for (int i=0; i<whiskerDirs.Length; i ++) {
-			UpdateGroundDist(i);
-		}
-	}
-	public void UpdateGroundDist(int side) {
-		Vector2 dir = whiskerDirs[side];
-		Vector2 pos = WhiskerPos(side);
-		hit = Physics2D.Raycast(pos, dir, Mathf.Infinity, myLayerMask);
-		groundDists[side] = Mathf.Infinity; // Default to forever away.
-		if (hit.collider != null) {
-			float dist = Vector2.Distance(hit.point, pos);
-			if (LayerMask.LayerToName(hit.collider.gameObject.layer) == LayerNames.Ground) {
-				groundDists[side] = dist;
-			}
-		}
-	}
-
-
-
-}
-
