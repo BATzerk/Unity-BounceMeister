@@ -16,13 +16,14 @@ public class GameBackground : MonoBehaviour {
 
 
 	private void Start () {
+		/*
 		numCols = 20; // TODO: set these dynamically
 		numRows = 20;
 		gridSize = new Vector2(numCols*unitSize, numRows*unitSize);
 		tileSprites = new SpriteRenderer[numCols,numRows];
 		for (int col=0; col<numCols; col++) {
 			for (int row=0; row<numRows; row++) {
-				SpriteRenderer newSprite = Instantiate(ResourcesHandler.Instance.prefabGO_backgroundTileSprite).GetComponent<SpriteRenderer>();
+				SpriteRenderer newSprite = Instantiate(ResourcesHandler.Instance.backgroundTileSprite).GetComponent<SpriteRenderer>();
 				newSprite.transform.SetParent(this.transform);
 				newSprite.name = "BGTile_" + col + "," + row;
 				GameUtils.SizeSpriteRenderer (newSprite, unitSize,unitSize);
@@ -33,6 +34,7 @@ public class GameBackground : MonoBehaviour {
 			}
 		}
 		PositionTileSprites();
+		*/
 	}
 
 	private void FixedUpdate() {

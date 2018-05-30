@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour {
 	[SerializeField] private GameObject go_structure; // the physical level layout
 
 	// Getters / Setters
+	private DataManager dataManager { get { return GameManagers.Instance.DataManager; } }
+	private EventManager eventManager { get { return GameManagers.Instance.EventManager; } }
 	private InputController inputController { get { return InputController.Instance; } }
 
 
@@ -18,12 +20,15 @@ public class GameController : MonoBehaviour {
 	//  Start / Destroy
 	// ----------------------------------------------------------------
 	private void Start () {
+		dataManager.SetCoinsCollected (0); // Reset this.
 //		ResetLevel ();
 
 		// Add event listeners!
+//		eventManager.CoinCollectedEvent += OnCoinCollected;
 	}
 	private void OnDestroy() {
-		// Add event listeners!
+		// Remove event listeners!
+//		eventManager.CoinCollectedEvent -= OnCoinCollected;
 	}
 
 

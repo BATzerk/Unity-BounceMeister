@@ -4,11 +4,21 @@ using UnityEngine;
 
 public class DataManager {
 	// Properties
+	private int coinsCollected; // the total value of all the coins we've collected!
 
 
 	// ----------------------------------------------------------------
-	//  Getters
+	//  Getters / Setters
 	// ----------------------------------------------------------------
+	public int CoinsCollected { get { return coinsCollected; } }
+	public void ChangeCoinsCollected(int value) {
+		SetCoinsCollected (coinsCollected + value);
+	}
+	public void SetCoinsCollected(int value) {
+		coinsCollected = value;
+		// Dispatch event!
+		GameManagers.Instance.EventManager.OnCoinsCollectedChanged();
+	}
 
 
 
@@ -19,6 +29,7 @@ public class DataManager {
 		Reset ();
 	}
 	private void Reset () {
+		coinsCollected = 0;
 	}
 
 

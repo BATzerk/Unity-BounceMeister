@@ -92,7 +92,7 @@ public class Player : MonoBehaviour {
 		AcceptJumpInput();
 	}
 	private void AcceptJumpInput() {
-		if (Input.GetKeyDown(KeyCode.Space)) { // TEMP hardcoded
+		if (Input.GetKeyDown(KeyCode.UpArrow)) { // TEMP hardcoded
 			OnJumpPressed();
 		}
 		// TEMP! todo: Use pinputAxis within InputController in a *FixedUpdate* loop to determine if we've just pushed up/down.
@@ -185,10 +185,15 @@ public class Player : MonoBehaviour {
 //		OnLeaveGround(); // Call this manually now!
 	}
 	private void StartBouncing() {
+		if (isBouncing) { return; } // Already bouncing? Do nothing.
 		isBouncing = true;
 		myBody.OnStartBouncing();
+		if (onGround) { // slipped this in as a test: if we're on the ground when we say we wanna bounce, jump us up so we start actually bouncing!
+			Jump();
+		}
 	}
 	private void StopBouncing() {
+		if (!isBouncing) { return; } // Already not bouncing? Do nothing.
 		isBouncing = false;
 		myBody.OnStopBouncing();
 	}
@@ -244,15 +249,31 @@ public class Player : MonoBehaviour {
 		}
 
 		// Should I bounce or jump?
-		if (isBouncing) {
+		bool doBounce = IsBouncyCollider(groundCol);
+		if (doBounce) {
 			BounceOffGround();
 		}
-		else if (Time.time <= timeWhenDelayedJump) {
-			Jump();
+		else {
+			// DON'T bounce? Then stop bouncing right away.
+			StopBouncing();
+			// Do that delayed jump we planned?
+			if (Time.time <= timeWhenDelayedJump) {
+				Jump();
+			}
 		}
+
 
 		// Finally reset maxYSinceGround.
 		maxYSinceGround = pos.y;
+	}
+
+	private bool IsBouncyCollider(Collider2D collider) {
+		if (!isBouncing) { return false; } // If I'm not bouncing at ALL, return false. :)
+		Ground ground = collider.GetComponent<Ground>();
+		if (ground != null) {
+			return ground.IsBouncy;
+		}
+		return false; // Nah, it's not a Ground at all. Don't bounce by default.
 	}
 
 

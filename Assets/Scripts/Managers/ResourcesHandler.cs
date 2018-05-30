@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class ResourcesHandler : MonoBehaviour {
 	// References!
-	[SerializeField] public GameObject prefabGO_imageLine;
+	[SerializeField] public GameObject imageLine;
 
-	[SerializeField] public GameObject prefabGO_backgroundTileSprite;
+	[SerializeField] public GameObject backgroundTileSprite;
+
+	[SerializeField] public GameObject coin;
 
 
 	// Instance

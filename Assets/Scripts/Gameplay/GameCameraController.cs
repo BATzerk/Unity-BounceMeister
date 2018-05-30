@@ -6,7 +6,7 @@ public class GameCameraController : MonoBehaviour {
 	// Camera
 	[SerializeField] private Camera primaryCamera=null;
 	// Constants
-	private const float ConstOrthoScale = 0.1f;//HACKy non-pixel-perfect estimation.
+	private const float ConstOrthoScale = 0.07f;//HACKy non-pixel-perfect estimation.
 	private const float ZPos = -10; // lock z pos.
 	// Properties
 	private float orthoSizeNeutral;
