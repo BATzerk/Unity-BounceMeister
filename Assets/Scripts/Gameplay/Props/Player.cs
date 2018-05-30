@@ -35,6 +35,7 @@ public class Player : MonoBehaviour {
 	public Vector2 Vel { get { return vel; } }
 	public Vector2 Size { get { return size; } }
 	public bool OnGround { get { return onGround; } }
+	public bool IsBouncing { get { return isBouncing; } }
 
 	private Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
 	private Vector2 pos {
@@ -161,12 +162,13 @@ public class Player : MonoBehaviour {
 	}
 
 	private void UpdateOnGround() {
-		bool _onGround = myWhiskers.GetBottomTouchingGround() && vel.y<=0;
+		Collider2D groundTouching = myWhiskers.GetGroundBottomTouching();
+		bool _onGround = groundTouching!=null && vel.y<=0; // I'm on the ground if my feet are touching a GameObject AND my vel is not positive!
 		if (onGround && !_onGround) {
 			OnLeaveGround();
 		}
 		else if (!onGround && _onGround) {
-			OnTouchGround();
+			OnTouchGround(groundTouching);
 		}
 	}
 
@@ -180,7 +182,7 @@ public class Player : MonoBehaviour {
 		timeWhenCanJump = Time.time + JumpTimeoutWindow;
 		numJumpsSinceGround ++;
 		GameManagers.Instance.EventManager.OnPlayerJump(this);
-		OnLeaveGround(); // Call this manually now!
+//		OnLeaveGround(); // Call this manually now!
 	}
 	private void StartBouncing() {
 		isBouncing = true;
@@ -197,7 +199,7 @@ public class Player : MonoBehaviour {
 		float yVel = Mathf.Sqrt(2*-gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
 		yVel += 0.025f; // Hack!! We're not getting all our height back exactly. Fudge it for now.
 		vel = new Vector2(vel.x, yVel);
-		OnLeaveGround(); // Call this manually now!
+//		OnLeaveGround(); // Call this manually now!
 	}
 
 
@@ -231,27 +233,26 @@ public class Player : MonoBehaviour {
 	private void OnLeaveGround() {
 		onGround = false;
 	}
-	private void OnTouchGround() {
+	private void OnTouchGround(Collider2D groundCol) {
 		onGround = true;
 		numJumpsSinceGround = 0;
+
+		// Inform the ground!
+		Collidable collidable = groundCol.GetComponent<Collidable>();
+		if (collidable != null) {
+			collidable.OnCollideWithPlayer(this);
+		}
+
+		// Should I bounce or jump?
 		if (isBouncing) {
 			BounceOffGround();
 		}
 		else if (Time.time <= timeWhenDelayedJump) {
 			Jump();
 		}
-		maxYSinceGround = pos.y; // Reset this now!
 
-
-//		// Are we doing a legit bounce?
-//		BoxCollider2D groundCollider = groundGO.GetComponent<BoxCollider2D>();
-//		float myYBottom = pos.y + bodyCollider.offset.y - bodyCollider.size.y*0.5f;
-//		float groundYTop = groundGO.transform.localPosition.y + groundCollider.offset.y + groundCollider.size.y*0.5f;
-//		if (myYBottom+0.2f >= groundYTop) { // am I almost ABOVE the ground??
-//			// Give me a MINIMUM bounce vel!
-//			float frictionX = 0.5f;
-//			vel = new Vector2(vel.x*frictionX, Mathf.Max(Mathf.Abs(vel.y), MIN_Y_BOUNCE));
-//		}
+		// Finally reset maxYSinceGround.
+		maxYSinceGround = pos.y;
 	}
 
 
