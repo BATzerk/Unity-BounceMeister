@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameBackground : MonoBehaviour {
+	/*
 	// Components
 	private SpriteRenderer[,] tileSprites; // col,row.
 	// Properties
@@ -16,7 +17,6 @@ public class GameBackground : MonoBehaviour {
 
 
 	private void Start () {
-		/*
 		numCols = 20; // TODO: set these dynamically
 		numRows = 20;
 		gridSize = new Vector2(numCols*unitSize, numRows*unitSize);
@@ -34,7 +34,6 @@ public class GameBackground : MonoBehaviour {
 			}
 		}
 		PositionTileSprites();
-		*/
 	}
 
 	private void FixedUpdate() {
@@ -84,5 +83,6 @@ public class GameBackground : MonoBehaviour {
 //			}
 //		}
 	}
+		*/
 
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWhiskers : MonoBehaviour {
+public class PlayerWhiskers : PlatformCharacterWhiskers {
+	/*
 	// Constants
-	private const int NumSides = 4; // it's hip to be square.
 	private const int NumWhiskersPerSide = 3; // this MUST match SideOffsetLocs! Just made its own variable for easy/readable access.
 	private float[] SideOffsetLocs = new float[]{-0.45f, 0f, 0.45f}; // 3 whiskers per side: left, center, right.
 	// References
@@ -32,7 +32,7 @@ public class PlayerWhiskers : MonoBehaviour {
 		}
 		return pos;
 	}
-	/** It's most efficient only to search as far as the Player is going to move this frame. */
+	/** It's most efficient only to search as far as the Player is going to move this frame. * /
 	private float GetRaycastSearchDist(int side) {
 		const float bloat = 0.2f; // how much farther than the player's exact velocity to look. For safety.
 		switch (side) {
@@ -91,26 +91,6 @@ public class PlayerWhiskers : MonoBehaviour {
 
 
 	// ----------------------------------------------------------------
-	//  Start
-	// ----------------------------------------------------------------
-	private void Awake() {
-		groundDists = new float[NumSides,NumWhiskersPerSide];
-		collidersAroundMe = new Collider2D[NumSides,NumWhiskersPerSide];
-//		groundDistsMin = new float[NumSides];
-		minDistsIndexes = new int[NumSides];
-		whiskerDirs = new Vector2[NumSides];
-		whiskerDirs[Sides.L] = Vector2Int.L.ToVector2();
-		whiskerDirs[Sides.R] = Vector2Int.R.ToVector2();
-		whiskerDirs[Sides.T] = Vector2Int.T.ToVector2();
-		whiskerDirs[Sides.B] = Vector2Int.B.ToVector2();
-	}
-	private void Start() {
-		UpdateGroundDists(); // Just for consistency.
-	}
-
-
-
-	// ----------------------------------------------------------------
 	//  Update
 	// ----------------------------------------------------------------
 //	private void FixedUpdate() {
@@ -147,40 +127,7 @@ public class PlayerWhiskers : MonoBehaviour {
 		groundDists[side,index] = dist;
 		collidersAroundMe[side,index] = hit.collider;
 	}
-
+	*/
 
 
 }
-
-
-//			if (LayerMask.LayerToName(hit.collider.gameObject.layer) == LayerNames.Ground) {
-//			}
-
-//	public bool IsTouchingGround() {
-////		UpdateGroundDists();
-//		for (int i=0; i<NumSides; i ++) {
-//			if (IsTouchingGroundAtSide(i)) { return true; }
-//		}
-//		return false;
-//	}
-//	public bool IsTouchingGroundAtSide(Vector2 dir) {
-//		return IsTouchingGroundAtSide(dir.ToVector2Int());
-//	}
-//	public bool IsTouchingGroundAtSide(Vector2Int dir) {
-//		return IsTouchingGroundAtSide(MathUtils.GetSide(dir));
-//	}
-//	public bool IsTouchingGroundAtSide(int side) {
-//		return DistToGroundAtSide(side) < 0.3f;
-//	}
-//	public float DistToGroundAtSide(int side) {
-//		Vector2 dir = whiskerDirs[side];
-//		Vector2 pos = WhiskerPos(side);
-//		hit = Physics2D.Raycast(pos, dir, Mathf.Infinity, myLayerMask);
-//		if (hit.collider != null && !hit.collider.isTrigger) {
-//			float dist = Vector2.Distance(hit.point, pos);
-//			if (LayerMask.LayerToName(hit.collider.gameObject.layer) == LayerNames.Ground) {
-//				return dist;
-//			}
-//		}
-//		return Mathf.Infinity;
-//	}

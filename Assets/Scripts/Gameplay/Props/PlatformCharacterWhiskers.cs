@@ -2,20 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyWhiskers : PlatformCharacterWhiskers {
-	/*
+public class PlatformCharacterWhiskers : MonoBehaviour {
+	// Constants
+	private const int NumSides = PlatformCharacter.NumSides;
+	private const int NumWhiskersPerSide = 3; // this MUST match SideOffsetLocs! Just made its own variable for easy/readable access.
+	private float[] SideOffsetLocs = new float[]{-0.45f, 0f, 0.45f}; // 3 whiskers per side: left, center, right.
 	// References
-	[SerializeField] private Enemy myEnemy=null;
+	[SerializeField] private PlatformCharacter myCharacter=null;
+	// Properties
+	[SerializeField] LayerMask lm_ground=0x0; // All sides always care about Ground.
+	[SerializeField] LayerMask lm_platform=0x0; // Only the bottom side cares about Platforms.
+	private Collider2D[,] collidersAroundMe; // by side,index.
+	private float[,] groundDists; // by side,index. This is *all* whisker data.
+	private int[] minDistsIndexes; // by side. WHICH whisker at this side is the closest!
+	private RaycastHit2D hit; // only out here so we don't have to make a ton every frame.
+	private Vector2[] whiskerDirs;
 
 	// Getters
-	/** It's most efficient only to search as far as the Player is going to move this frame. * /
+	private Vector2 charSize { get { return myCharacter.Size; } }
+	private Vector2 WhiskerPos(int side, int index) {
+		Vector2 pos = myCharacter.Pos;
+		float sideOffsetLoc = SideOffsetLocs[index];
+		if (side==Sides.L || side==Sides.R) {
+			pos += new Vector2(whiskerDirs[side].x*charSize.x*0.5f, charSize.y*sideOffsetLoc);
+		}
+		else {
+			pos += new Vector2(charSize.x*sideOffsetLoc, whiskerDirs[side].y*charSize.y*0.5f);
+		}
+		return pos;
+	}
+	/** It's most efficient only to search as far as the Player is going to move this frame. */
 	private float GetRaycastSearchDist(int side) {
 		const float bloat = 0.2f; // how much farther than the player's exact velocity to look. For safety.
 		switch (side) {
-		case Sides.L: return Mathf.Max(0, -myEnemy.Vel.x) + bloat;
-		case Sides.R: return Mathf.Max(0,  myEnemy.Vel.x) + bloat;
-		case Sides.B: return Mathf.Max(0, -myEnemy.Vel.y) + bloat;
-		case Sides.T: return Mathf.Max(0,  myEnemy.Vel.y) + bloat;
+		case Sides.L: return Mathf.Max(0, -myCharacter.Vel.x) + bloat;
+		case Sides.R: return Mathf.Max(0,  myCharacter.Vel.x) + bloat;
+		case Sides.B: return Mathf.Max(0, -myCharacter.Vel.y) + bloat;
+		case Sides.T: return Mathf.Max(0,  myCharacter.Vel.y) + bloat;
 		default: Debug.LogError("Side undefined in GetRaycastSearchDist!: " + side); return 0;
 		}
 	}
@@ -23,6 +46,15 @@ public class EnemyWhiskers : PlatformCharacterWhiskers {
 		if (side == Sides.B) { return lm_ground | lm_platform; } // Bottom side? Return ground AND platforms!
 		return lm_ground; // All other sides only care about ground.
 	}
+	//	/// Redundant with my other raycast function. These could be combined.
+	//	private Collider2D GroundColAtSide(int side, int index) {
+	//		Vector2 dir = whiskerDirs[side];
+	//		Vector2 pos = WhiskerPos(side, index);
+	//		float raycastSearchDist = GetRaycastSearchDist(side);
+	//		LayerMask mask = GetLayerMask(side);
+	//		hit = Physics2D.Raycast(pos, dir, raycastSearchDist, mask);
+	//		return hit.collider;
+	//	}
 
 	public float GroundDistMin(int side) {
 		if (minDistsIndexes[side] == -1) { return Mathf.Infinity; } // No closest whisker (none collide)? They're all infinity, then.
@@ -32,7 +64,7 @@ public class EnemyWhiskers : PlatformCharacterWhiskers {
 		if (collidersAroundMe==null) { return null; } // Safety check for runtime compile.
 		UpdateGroundDist(side); // Just update the bottom.
 		if (minDistsIndexes[side] == -1) { return null; } // No closest whisker (none collide)? Return null.
-		return collidersAroundMe[side, minDistsIndexes[Sides.B]];
+		return collidersAroundMe[side, minDistsIndexes[side]];
 	}
 
 
@@ -88,11 +120,13 @@ public class EnemyWhiskers : PlatformCharacterWhiskers {
 	}
 	public void UpdateGroundDist(int side) {
 		if (groundDists==null) { return; } // Safety check (for runtime compile).
+		//		groundDistsMin[side] = Mathf.Infinity; // Gotta default the min dist to infinity (last frame doesn't matter anymore).
 		minDistsIndexes[side] = -1; // Default this to -1: There is no closest, because they're all infinity.
 		for (int index=0; index<NumWhiskersPerSide; index++) {
 			UpdateWhiskerRaycast(side, index); // update the distances and colliders.
 			float dist = groundDists[side,index]; // use the dist we just updated.
 			if (GroundDistMin(side) > dist) { // Update the min distance, too.
+				//				groundDistsMin[side] = dist;
 				minDistsIndexes[side] = index;
 			}
 		}
@@ -110,9 +144,40 @@ public class EnemyWhiskers : PlatformCharacterWhiskers {
 		groundDists[side,index] = dist;
 		collidersAroundMe[side,index] = hit.collider;
 	}
-	*/
+
 
 
 }
 
 
+//			if (LayerMask.LayerToName(hit.collider.gameObject.layer) == LayerNames.Ground) {
+//			}
+
+//	public bool IsTouchingGround() {
+////		UpdateGroundDists();
+//		for (int i=0; i<NumSides; i ++) {
+//			if (IsTouchingGroundAtSide(i)) { return true; }
+//		}
+//		return false;
+//	}
+//	public bool IsTouchingGroundAtSide(Vector2 dir) {
+//		return IsTouchingGroundAtSide(dir.ToVector2Int());
+//	}
+//	public bool IsTouchingGroundAtSide(Vector2Int dir) {
+//		return IsTouchingGroundAtSide(MathUtils.GetSide(dir));
+//	}
+//	public bool IsTouchingGroundAtSide(int side) {
+//		return DistToGroundAtSide(side) < 0.3f;
+//	}
+//	public float DistToGroundAtSide(int side) {
+//		Vector2 dir = whiskerDirs[side];
+//		Vector2 pos = WhiskerPos(side);
+//		hit = Physics2D.Raycast(pos, dir, Mathf.Infinity, myLayerMask);
+//		if (hit.collider != null && !hit.collider.isTrigger) {
+//			float dist = Vector2.Distance(hit.point, pos);
+//			if (LayerMask.LayerToName(hit.collider.gameObject.layer) == LayerNames.Ground) {
+//				return dist;
+//			}
+//		}
+//		return Mathf.Infinity;
+//	}

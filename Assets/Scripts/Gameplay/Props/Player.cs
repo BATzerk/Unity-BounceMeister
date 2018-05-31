@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
+public class Player : PlatformCharacter {
 	// Constants
-	private const float FrictionAir = 0.6f;
-	private const float FrictionGround = 0.6f;
+	override protected float FrictionAir { get { return 0.6f; } }
+	override protected float FrictionGround { get { return 0.6f; } }
+	override protected Vector2 Gravity { get { return new Vector2(0, -0.05f); } }
 	private const float InputScaleX = 0.5f;
 	private const float MaxVelX = 0.4f;
 	private const float MaxVelYUp = 4;
@@ -13,55 +14,36 @@ public class Player : MonoBehaviour {
 	private const float JumpForce = 0.8f;
 	private const float DelayedJumpWindow = 0.15f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float JumpTimeoutWindow = 0.0f; // Note: disabled. in SECONDS. Don't allow jumping twice this quickly.
-//	private const int MaxJumps = 1; // change to 2 for a double-jump.
-	private Vector2 gravity = new Vector2(0, -0.05f);
 	// Properties
 	private bool isBouncing=false;
-	private bool onGround=false;
-	private Color bodyColorNeutral;
 	private float maxYSinceGround; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeWhenDelayedJump; // set when we're in the air and press Jump. If we touch ground before this time, we'll do a delayed jump!
 	private float timeWhenCanJump; // set to Time.time + JumpTimeoutWindow when we jump.
 	private int numJumpsSinceGround;
-	private Vector2 vel;
-	private Vector2 size;
 	// Components
 	[SerializeField] private PlayerBody myBody=null;
-	[SerializeField] private PlayerWhiskers myWhiskers=null;
-	[SerializeField] private BoxCollider2D bodyCollider=null;
+	private PlayerWhiskers myPlayerWhiskers; // defined in Start, from my inhereted serialized whiskers.
 
-	// Getters/Setters
-	public Vector2 Pos { get { return pos; } }
-	public Vector2 Vel { get { return vel; } }
-	public Vector2 Size { get { return size; } }
-	public bool OnGround { get { return onGround; } }
+	// Getters (Public)
 	public bool IsBouncing { get { return isBouncing; } }
+	// Getters (Overrides)
+	override protected float HorzMoveInputVelXDelta() {
+		if (InputController.Instance==null) { return 0; } // for building at runtime.
+		if (inputAxis.x == 0) { return 0; }
+		float dirX = MathUtils.Sign(inputAxis.x);
+		float mult = feetOnGround ? 1 : 0.65f;
 
-	private Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
-	private Vector2 pos {
-		get { return this.transform.localPosition; }
-		set { this.transform.localPosition = value; }
+		return dirX*InputScaleX * mult;
 	}
-	private Vector2 GetAppliedVel() {
-		Vector2 av = vel;
-		float distL = myWhiskers.GroundDistMin(Sides.L);
-		float distR = myWhiskers.GroundDistMin(Sides.R);
-		float distB = myWhiskers.GroundDistMin(Sides.B);
-		float distT = myWhiskers.GroundDistMin(Sides.T);
-		// Clamp our vel so we don't intersect anything.
-		if (vel.x<0 && vel.x<-distL) {
-			av = new Vector2(-distL, av.y);
+	// Getters (Private)
+	private Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
+	private bool IsBouncyCollider(Collider2D collider) {
+		if (!isBouncing) { return false; } // If I'm not bouncing at ALL, return false. :)
+		Ground ground = collider.GetComponent<Ground>();
+		if (ground != null) {
+			return ground.IsBouncy;
 		}
-		else if (vel.x>0 && vel.x>distR) {
-			av = new Vector2(distR, av.y);
-		}
-		if (vel.y<0 && vel.y<-distB) {
-			av = new Vector2(av.x, -distB);
-		}
-		else if (vel.y>0 && vel.y>distT) {
-			av = new Vector2(av.x, distT);
-		}
-		return av;
+		return false; // Nah, it's not a Ground at all. Don't bounce by default.
 	}
 
 
@@ -69,16 +51,16 @@ public class Player : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	private void Start () {
+	override protected void Start () {
+		base.Start();
+		myPlayerWhiskers = MyBaseWhiskers as PlayerWhiskers;
+
 		// Size me, queen!
 		SetSize (new Vector2(2.5f, 2.5f)); // NOTE: I don't understand why we gotta cut it by 100x. :P
-
-		vel = Vector2.zero;
 	}
-	private void SetSize(Vector2 _size) {
-		this.size = _size;
-		myBody.SetSize(this.size);
-		bodyCollider.size = _size;
+	override protected void SetSize(Vector2 _size) {
+		base.SetSize(_size);
+		myBody.SetSize(_size);
 	}
 
 
@@ -112,12 +94,12 @@ public class Player : MonoBehaviour {
 		if (Time.timeScale == 0) { return; } // No time? No dice.
 		Vector2 ppos = pos;
 
-		UpdateOnGround();
+		UpdateOnGrounds();
 		ApplyFriction();
 		ApplyGravity();
-		AcceptDirectionalInput();
+		AcceptHorzMoveInput();
 		ApplyTerminalVel();
-		myWhiskers.UpdateGroundDists(); // update these dependently now, so we guarantee most up-to-date info.
+		myPlayerWhiskers.UpdateGroundDists(); // update these dependently now, so we guarantee most up-to-date info.
 		ApplyVel();
 		UpdateMaxYSinceGround();
 
@@ -125,52 +107,13 @@ public class Player : MonoBehaviour {
 		vel = pos - ppos;
 	}
 
-	private void ApplyGravity() {
-		vel += gravity;
-	}
-	private void AcceptDirectionalInput() {
-		if (InputController.Instance==null) { return; } // for building at runtime.
-
-		// Moving horizontally!
-		if (inputAxis.x != 0) {
-			float moveX = MathUtils.Sign(inputAxis.x);
-			float mult = onGround ? 1 : 0.65f;
-
-			float velXDelta = moveX*InputScaleX * mult;
-			vel += new Vector2(velXDelta, 0);
-		}
-	}
-	private void ApplyFriction() {
-		if (onGround) {
-			vel = new Vector2(vel.x*FrictionGround, vel.y);
-		}
-		else {
-			vel = new Vector2(vel.x*FrictionAir, vel.y);
-		}
-	}
 	private void ApplyTerminalVel() {
 		vel = new Vector2(Mathf.Clamp(vel.x, -MaxVelX,MaxVelX), Mathf.Clamp(vel.y, MaxVelYDown,MaxVelYUp));
-	}
-	private void ApplyVel() {
-		if (vel != Vector2.zero) {
-			Vector2 appliedVel = GetAppliedVel();
-			pos += appliedVel;
-		}
 	}
 	private void UpdateMaxYSinceGround() {
 		maxYSinceGround = Mathf.Max(maxYSinceGround, pos.y);
 	}
 
-	private void UpdateOnGround() {
-		Collider2D groundTouching = myWhiskers.GetGroundBottomTouching();
-		bool _onGround = groundTouching!=null && vel.y<=0; // I'm on the ground if my feet are touching a GameObject AND my vel is not positive!
-		if (onGround && !_onGround) {
-			OnLeaveGround();
-		}
-		else if (!onGround && _onGround) {
-			OnTouchGround(groundTouching);
-		}
-	}
 
 
 	// ----------------------------------------------------------------
@@ -188,7 +131,7 @@ public class Player : MonoBehaviour {
 		if (isBouncing) { return; } // Already bouncing? Do nothing.
 		isBouncing = true;
 		myBody.OnStartBouncing();
-		if (onGround) { // slipped this in as a test: if we're on the ground when we say we wanna bounce, jump us up so we start actually bouncing!
+		if (feetOnGround) { // slipped this in as a test: if we're on the ground when we say we wanna bounce, jump us up so we start actually bouncing!
 			Jump();
 		}
 	}
@@ -201,7 +144,7 @@ public class Player : MonoBehaviour {
 	private void BounceOffGround() {
 		// Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
 		float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
-		float yVel = Mathf.Sqrt(2*-gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
+		float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
 		yVel += 0.025f; // Hack!! We're not getting all our height back exactly. Fudge it for now.
 		vel = new Vector2(vel.x, yVel);
 //		OnLeaveGround(); // Call this manually now!
@@ -213,7 +156,7 @@ public class Player : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void OnJumpPressed() {
 		// We're on the ground and NOT timed out of jumping! Go!
-		if (onGround && Time.time>=timeWhenCanJump) {//numJumpsSinceGround<MaxJumps
+		if (feetOnGround && Time.time>=timeWhenCanJump) {//numJumpsSinceGround<MaxJumps
 			Jump();
 		}
 		else {
@@ -235,11 +178,11 @@ public class Player : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-	private void OnLeaveGround() {
-		onGround = false;
+	override protected void OnLeaveGround(int side) {
+		base.OnLeaveGround(side);
 	}
-	private void OnTouchGround(Collider2D groundCol) {
-		onGround = true;
+	override protected void OnTouchGround(int side, Collider2D groundCol) {
+		base.OnTouchGround(side, groundCol);
 		numJumpsSinceGround = 0;
 
 		// Inform the ground!
@@ -265,15 +208,6 @@ public class Player : MonoBehaviour {
 
 		// Finally reset maxYSinceGround.
 		maxYSinceGround = pos.y;
-	}
-
-	private bool IsBouncyCollider(Collider2D collider) {
-		if (!isBouncing) { return false; } // If I'm not bouncing at ALL, return false. :)
-		Ground ground = collider.GetComponent<Ground>();
-		if (ground != null) {
-			return ground.IsBouncy;
-		}
-		return false; // Nah, it's not a Ground at all. Don't bounce by default.
 	}
 
 
