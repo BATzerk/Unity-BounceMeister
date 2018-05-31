@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Player : PlatformCharacter {
 	// Constants
-	override protected float FrictionAir { get { return 0.6f; } }
-	override protected float FrictionGround { get { return 0.6f; } }
-	override protected Vector2 Gravity { get { return new Vector2(0, -0.05f); } }
-	private const float InputScaleX = 0.5f;
-	private const float MaxVelX = 0.35f;
-	private const float MaxVelYUp = 4;
-	private const float MaxVelYDown = -4;
-	private const float JumpForce = 0.8f;
+	override protected float FrictionAir { get { return 1f; } }
+	override protected float FrictionGround { get { return 0.7f; } }
+	override protected Vector2 Gravity { get { return new Vector2(0, -0.042f); } }
+	private const float InputScaleX = 0.07f;
+	private const float MaxVelX = 0.3f;
+	private const float MaxVelYUp = 3;
+	private const float MaxVelYDown = -3;
+	private const float JumpForce = 0.62f;
 	private const float DelayedJumpWindow = 0.15f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
 	private readonly Vector2 HitByEnemyVel = new Vector2(4f, 0.5f);
@@ -19,8 +19,9 @@ public class Player : PlatformCharacter {
 	private bool isBouncing=false;
 	private bool isPostDamageImmunity;
 	private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
-	private float timeWhenDelayedJump; // set when we're in the air and press Jump. If we touch ground before this time, we'll do a delayed jump!
+	private float timeLastBouncedOffWall;
 	private float timeSinceDamage; // invincible until this time! Set to Time.time + PostDamageInvincibleDuration when we're hit.
+	private float timeWhenDelayedJump; // set when we're in the air and press Jump. If we touch ground before this time, we'll do a delayed jump!
 	private int health = 2; // we die when we hit 0.
 	private int numJumpsSinceGround;
 //	private int maxHealth = 2;
@@ -36,6 +37,9 @@ public class Player : PlatformCharacter {
 		if (inputAxis.x == 0) { return 0; }
 		float dirX = MathUtils.Sign(inputAxis.x);
 		float mult = feetOnGround ? 1 : 0.65f;
+		if (Time.time < timeLastBouncedOffWall+0.3f) { // TEST
+			mult = 0;
+		}
 
 		return dirX*InputScaleX * mult;
 	}
@@ -70,7 +74,7 @@ public class Player : PlatformCharacter {
 		isPostDamageImmunity = false;
 
 		// Size me, queen!
-		SetSize (new Vector2(2.5f, 2.5f)); // NOTE: I don't understand why we gotta cut it by 100x. :P
+		SetSize (new Vector2(2f, 2f)); // NOTE: I don't understand why we gotta cut it by 100x. :P
 	}
 	override protected void SetSize(Vector2 _size) {
 		base.SetSize(_size);
@@ -128,6 +132,10 @@ public class Player : PlatformCharacter {
 		myWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
 		ApplyVel();
 		UpdateMaxYSinceGround();
+		// HACK temp
+		if (!feetOnGround && !isBouncing && vel.y<-0.5f) {
+			StartBouncing();
+		}
 
 		// Update vel to be the distance we ended up moving this frame.
 		vel = pos - ppos;
@@ -167,17 +175,25 @@ public class Player : PlatformCharacter {
 		myBody.OnStopBouncing();
 	}
 
-	private void BounceOffCollidable(Collidable collidable) {
-		// If we're NOT bouncing yet, start that!
-		if (!isBouncing) {
-			StartBouncing();
-		}
+	private void BounceOffCollidable_Up(Collidable collidable) {
+		StartBouncing(); // Make sure we're bouncing!
 		// Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
 		float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
 		float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
 		yVel += 0.025f; // Hack!! We're not getting all our height back exactly. Fudge it for now.
 		vel = new Vector2(vel.x, yVel);
-//		OnLeaveGround(); // Call this manually now!
+		//		OnLeaveGround(); // Call this manually now!
+		// Inform the collidable if it exists!!
+		if (collidable != null) {
+			collidable.OnPlayerBounceOnMe(this);
+		}
+	}
+	// TEST! This whole function is a controls experiment.
+	private void BounceOffCollidable_Side(Collidable collidable) { // NOTE: We're probably gonna wanna denote WHICH sides of collidables are bouncy...
+		StartBouncing(); // Make sure we're bouncing!
+		timeLastBouncedOffWall = Time.time;
+		vel = new Vector2(-vel.x, Mathf.Max(vel.y, Mathf.Abs(vel.x)*2f+0.1f));
+//		vel = new Vector2(-vel.x, JumpForce*0.7f);//vel.y+
 		// Inform the collidable if it exists!!
 		if (collidable != null) {
 			collidable.OnPlayerBounceOnMe(this);
@@ -252,9 +268,11 @@ public class Player : PlatformCharacter {
 		numJumpsSinceGround = 0;
 
 		// Should I bounce or jump?
-		bool doBounce = IsBouncyCollidable(collidable) && !IsDontBounceButtonHeld();
+		bool doBounce = IsBouncyCollidable(collidable)
+						&& !IsDontBounceButtonHeld()
+						&& isBouncing;
 		if (doBounce) {
-			BounceOffCollidable(collidable);
+			BounceOffCollidable_Up(collidable);
 		}
 		else {
 			// DON'T bounce? Then stop bouncing right away.
@@ -281,6 +299,13 @@ public class Player : PlatformCharacter {
 		if (enemy != null && CanTakeDamage()) {
 			OnCollideWithEnemy(enemy);
 		}
+//		else {
+//			// Should I bounce or jump?
+//			bool doBounce = IsBouncyCollidable(collidable);// && !IsDontBounceButtonHeld()
+//			if (doBounce) {
+//				BounceOffCollidable_Side(collidable);
+//			}
+//		}
 	}
 
 	private void OnCollideWithEnemy(Enemy enemy) {

@@ -69,7 +69,11 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 		if (collidersAroundMe==null) { return null; } // Safety check for runtime compile.
 		UpdateSurfaceDist(side); // Just update the bottom.
 		if (minDistsIndexes[side] == -1) { return null; } // No closest whisker (none collide)? Return null.
+		float distMin = SurfaceDistMin(side);
+		if (distMin < 0.1f) { // TEST: Only count if we're light riiight up against it!
 		return collidersAroundMe[side, minDistsIndexes[side]];
+		}
+		return null;
 	}
 
 

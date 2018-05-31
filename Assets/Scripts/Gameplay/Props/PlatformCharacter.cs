@@ -22,7 +22,7 @@ public class PlatformCharacter : Collidable {
 	public Vector2 Vel { get { return vel; } }
 	public Vector2 Size { get { return size; } }
 
-	protected bool feetOnGround { get { return onSurfaces[Sides.B]; } }
+	public bool feetOnGround { get { return onSurfaces[Sides.B] && vel.y<=0; } } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
 	protected Vector2 pos {
 		get { return this.transform.localPosition; }
 		set { this.transform.localPosition = value; }
@@ -118,6 +118,9 @@ public class PlatformCharacter : Collidable {
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
+	public void ChangeVel(Vector2 delta) {
+		vel += delta;
+	}
 	protected void Die() {
 		this.gameObject.SetActive(false); // TEMP super simple for now.
 	}

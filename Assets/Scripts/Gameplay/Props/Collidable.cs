@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 abstract public class Collidable : MonoBehaviour {
-	[SerializeField] private bool isBouncy = true;
+	[SerializeField] protected bool isBouncy = true;
 
 	public bool IsBouncy { get { return isBouncy; } }
 
