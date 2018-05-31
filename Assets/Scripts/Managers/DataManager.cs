@@ -5,6 +5,7 @@ using UnityEngine;
 public class DataManager {
 	// Properties
 	private int coinsCollected; // the total value of all the coins we've collected!
+	public string levelToDoorID = "0"; // default this to something. When we enter a level, this is the door we'll start at!
 
 
 	// ----------------------------------------------------------------

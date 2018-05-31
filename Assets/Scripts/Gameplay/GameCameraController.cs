@@ -17,10 +17,11 @@ public class GameCameraController : MonoBehaviour {
 	private Rect viewRect;
 	// References
 	[SerializeField] private FullScrim fullScrim=null;
-	private Transform tf_player;
+	[SerializeField] private GameController gameController=null;
 
 	// Getters / Setters
 	public Rect ViewRect { get { return viewRect; } }
+	private Transform tf_player { get { return gameController.Player.transform; } }
 
 	private float rotation {
 		get { return this.transform.localEulerAngles.z; }
@@ -67,9 +68,6 @@ public class GameCameraController : MonoBehaviour {
 		Reset ();
 	}
 	public void Reset () {
-		// TEMP!
-		tf_player = GameObject.FindObjectOfType<Player>().transform;
-
 		UpdateOrthoSizeNeutral ();
 
 		// Reset values

@@ -7,34 +7,21 @@ public class PlayerBody : MonoBehaviour {
 	[SerializeField] private SpriteRenderer sr_body=null;
 	[SerializeField] private SpriteLine sl_aimDir=null;
 	// Properties
-//	private readonly Color bodyColor_dashInitial = new Color(255/255f, 255/255f, 255/255f);
-//	private readonly Color bodyColor_dashing1 = new ColorHSB(183/360f, 66/100f, 90/100f).ToColor();
-//	private readonly Color bodyColor_dashing2 = new ColorHSB(272/360f, 66/100f, 90/100f).ToColor();
 	private readonly Color bodyColor_neutral = new Color(25/255f, 175/255f, 181/255f);
-//	private readonly Color bodyColor_outOfDashes = new Color(128/255f, 128/255f, 128/255f);
-//	private float aimDirRadius;
+	private Color bodyColor;
+	private float alpha; // we modify this independently of bodyColor.
 	// References
-//	[SerializeField] private Player myPlayer=null;
-
-	// Getters
-//	private Vector2 AimDir { get { return myPlayer.AimDir; } }
-
+	[SerializeField] private Player myPlayer=null;
 
 
 	// ----------------------------------------------------------------
-	//  Start / Destroy
+	//  Start
 	// ----------------------------------------------------------------
 	private void Start() {
-		sr_body.color = bodyColor_neutral;
-
-		// Add event listeners!
-//		GameManagers.Instance.EventManager.PlayerDashEvent += OnPlayerDash;
+		alpha = 1;
+		bodyColor = bodyColor_neutral;
+		ApplyBodyColor();
 	}
-	private void OnDestroy() {
-		// Remove event listeners!
-//		GameManagers.Instance.EventManager.PlayerDashEvent -= OnPlayerDash;
-	}
-
 
 
 	// ----------------------------------------------------------------
@@ -47,18 +34,47 @@ public class PlayerBody : MonoBehaviour {
 		sl_aimDir.StartPos = Vector2.zero;
 //		aimDirRadius = Mathf.Min(_size.x,_size.y) * 0.8f;
 	}
+	private void ApplyBodyColor() {
+		sr_body.color = new Color(bodyColor.r,bodyColor.g,bodyColor.b, bodyColor.a*alpha);
+	}
 
 
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
 	public void OnStartBouncing() {
-		sr_body.color = Color.green;
+		bodyColor = Color.green;
+		ApplyBodyColor();
 	}
 	public void OnStopBouncing() {
-		sr_body.color = bodyColor_neutral;
+		bodyColor = bodyColor_neutral;
+		ApplyBodyColor();
 	}
 
+	public void OnEndPostDamageImmunity() {
+		alpha = 1f;
+		ApplyBodyColor();
+	}
+
+
+	// ----------------------------------------------------------------
+	//  Update
+	// ----------------------------------------------------------------
+	private void Update() {
+		if (Time.timeScale == 0) { return; } // No time? No dice.
+
+		if (myPlayer.IsPostDamageImmunity) {
+			alpha = Random.Range(0.2f, 0.6f);
+			ApplyBodyColor();
+		}
+	}
+
+
+
+
+}
+
+/*
 	public void OnDash() {
 //		Color color;
 //		switch (myPlayer.NumDashesSinceGround) {
@@ -81,18 +97,8 @@ public class PlayerBody : MonoBehaviour {
 //		sr_body.color = color;
 	}
 	public void OnRechargeDash() {
-		sr_body.color = bodyColor_neutral;
-	}
-
-
-	// ----------------------------------------------------------------
-	//  Update
-	// ----------------------------------------------------------------
-	private void Update() {
-		if (Time.timeScale == 0) { return; } // No time? No dice.
-
-//		sr_body.color = myPlayer.OnGround ? bodyColor_neutral : Color.yellow;
-//		UpdateAimDirLine();
+		bodyColor = bodyColor_neutral;
+		ApplyBodyColor();
 	}
 //	private void UpdateAimDirLine() {
 //		sl_aimDir.StartPos = Vector2.zero;
@@ -108,11 +114,7 @@ public class PlayerBody : MonoBehaviour {
 //			sr_body.color = Color.Lerp(sr_body.color, bodyColor_dashing, 0.3f); // Ease FAST into our dashing color.
 //		}
 //	}
-
-
-
-
-}
+	*/
 
 
 

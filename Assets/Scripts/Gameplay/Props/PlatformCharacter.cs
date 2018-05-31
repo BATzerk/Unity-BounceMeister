@@ -104,7 +104,7 @@ public class PlatformCharacter : Collidable {
 		for (int side=0; side<NumSides; side++) {
 			Collider2D surfaceCollider = myWhiskers.GetSurfaceTouching(side);
 			float sideSpeed = GetSideSpeed(side);
-			bool isTouching = surfaceCollider!=null; // NOTE: Disabled checking for sideSpeed. Seems like we don't need to! && sideSpeed>=0; // I'm "touching" this ground if it exists and I'm not moving *away* from it!
+			bool isTouching = surfaceCollider!=null && sideSpeed>=0; // I'm "touching" this surface if it exists and I'm NOT moving *away* from it!
 			if (onSurfaces[side] && !isTouching) {
 				OnLeaveSurface(side);
 			}

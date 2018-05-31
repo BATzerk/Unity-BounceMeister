@@ -13,16 +13,23 @@ public class Player : PlatformCharacter {
 	private const float MaxVelYDown = -4;
 	private const float JumpForce = 0.8f;
 	private const float DelayedJumpWindow = 0.15f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
+	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
+	private readonly Vector2 HitByEnemyVel = new Vector2(4f, 0.5f);
 	// Properties
 	private bool isBouncing=false;
-	private float maxYSinceGround; // the highest we got since we last made ground contact. Used to determine bounce vel!
+	private bool isPostDamageImmunity;
+	private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeWhenDelayedJump; // set when we're in the air and press Jump. If we touch ground before this time, we'll do a delayed jump!
+	private float timeSinceDamage; // invincible until this time! Set to Time.time + PostDamageInvincibleDuration when we're hit.
+	private int health = 2; // we die when we hit 0.
 	private int numJumpsSinceGround;
+//	private int maxHealth = 2;
 	// Components
 	[SerializeField] private PlayerBody myBody=null;
 
 	// Getters (Public)
 	public bool IsBouncing { get { return isBouncing; } }
+	public bool IsPostDamageImmunity { get { return isPostDamageImmunity; } }
 	// Getters (Overrides)
 	override protected float HorzMoveInputVelXDelta() {
 		if (InputController.Instance==null) { return 0; } // for building at runtime.
@@ -33,7 +40,10 @@ public class Player : PlatformCharacter {
 		return dirX*InputScaleX * mult;
 	}
 	// Getters (Private)
-	private bool IsNoBounceButtonHeld() { return Input.GetKey(KeyCode.DownArrow); }
+	private bool CanTakeDamage() {
+		return !isPostDamageImmunity;
+	}
+	private bool IsDontBounceButtonHeld() { return Input.GetKey(KeyCode.DownArrow); }
 	private Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
 	private bool IsBouncyCollidable(Collidable collidable) {
 		if (collidable == null) { return false; } // The collidable is undefined? Default to NOT bouncy.
@@ -54,12 +64,21 @@ public class Player : PlatformCharacter {
 	override protected void Start () {
 		base.Start();
 
+		// Reset some things.
+		SetPos(pos);
+		timeSinceDamage = -1;
+		isPostDamageImmunity = false;
+
 		// Size me, queen!
 		SetSize (new Vector2(2.5f, 2.5f)); // NOTE: I don't understand why we gotta cut it by 100x. :P
 	}
 	override protected void SetSize(Vector2 _size) {
 		base.SetSize(_size);
 		myBody.SetSize(_size);
+	}
+	public void SetPos(Vector2 _pos) {
+		pos = _pos;
+		vel = Vector2.zero;
 	}
 
 
@@ -71,6 +90,7 @@ public class Player : PlatformCharacter {
 		if (Time.timeScale == 0) { return; } // No time? No dice.
 
 		AcceptJumpInput();
+		UpdatePostDamageImmunity();
 	}
 	private void AcceptJumpInput() {
 //		if (Input.GetKeyDown(KeyCode.UpArrow)) {
@@ -83,6 +103,13 @@ public class Player : PlatformCharacter {
 //		else if (Input.GetKeyDown(KeyCode.DownArrow)) {
 //			OnDownPressed();
 //		}
+	}
+	private void UpdatePostDamageImmunity() {
+		if (isPostDamageImmunity) {
+			if (Time.time >= timeSinceDamage+PostDamageImmunityDuration) {
+				EndPostDamageImmunity();
+			}
+		}
 	}
 
 
@@ -158,6 +185,16 @@ public class Player : PlatformCharacter {
 	}
 
 
+	private void StartPostDamageImmunity() {
+		isPostDamageImmunity = true;
+//		myBody.OnStartPostDamageImmunity();
+	}
+	private void EndPostDamageImmunity() {
+		isPostDamageImmunity = false;
+		myBody.OnEndPostDamageImmunity();
+	}
+
+
 	// ----------------------------------------------------------------
 	//  Events (Input)
 	// ----------------------------------------------------------------
@@ -202,6 +239,9 @@ public class Player : PlatformCharacter {
 		if (side == Sides.B) {
 			OnFeetTouchSurface(collidable);
 		}
+		else {
+			OnNonFeetTouchSurface(collidable);
+		}
 
 //		// Inform the collidable!
 //		if (collidable != null) {
@@ -212,7 +252,7 @@ public class Player : PlatformCharacter {
 		numJumpsSinceGround = 0;
 
 		// Should I bounce or jump?
-		bool doBounce = IsBouncyCollidable(collidable) && !IsNoBounceButtonHeld();
+		bool doBounce = IsBouncyCollidable(collidable) && !IsDontBounceButtonHeld();
 		if (doBounce) {
 			BounceOffCollidable(collidable);
 		}
@@ -223,11 +263,35 @@ public class Player : PlatformCharacter {
 			if (Time.time <= timeWhenDelayedJump) {
 				Jump();
 			}
+//			else { // TEMP TEST!
+//				vel = new Vector2(vel.x, -vel.y * 0.2f);
+//				if (Mathf.Abs(vel.y) < 0.05f) {
+//					vel = new Vector2(vel.x, 0);
+//				}
+//			}
 		}
 
 
 		// Finally reset maxYSinceGround.
 		maxYSinceGround = pos.y;
+	}
+	private void OnNonFeetTouchSurface(Collidable collidable) {
+		// Enemy??
+		Enemy enemy = collidable as Enemy;
+		if (enemy != null && CanTakeDamage()) {
+			OnCollideWithEnemy(enemy);
+		}
+	}
+
+	private void OnCollideWithEnemy(Enemy enemy) {
+		int dirToEnemy = MathUtils.Sign(enemy.Pos.x-pos.x, false);
+		vel = new Vector2(-dirToEnemy*HitByEnemyVel.x, HitByEnemyVel.y);
+		TakeDamage(1);
+	}
+	private void TakeDamage(int damageAmount) {
+		health -= damageAmount;
+		timeSinceDamage = Time.time;
+		StartPostDamageImmunity();
 	}
 
 

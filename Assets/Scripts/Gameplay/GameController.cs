@@ -6,10 +6,12 @@ public class GameController : MonoBehaviour {
 	// Properties
 	private bool isPaused = false;
 	private bool debug_isSlowMo = false;
-	// Components
-	[SerializeField] private GameObject go_structure; // the physical level layout
+	// References
+	[SerializeField] private Player player;
 
-	// Getters / Setters
+	// Getters
+	public Player Player { get { return player; } }
+
 	private DataManager dataManager { get { return GameManagers.Instance.DataManager; } }
 	private EventManager eventManager { get { return GameManagers.Instance.EventManager; } }
 	private InputController inputController { get { return InputController.Instance; } }
@@ -23,6 +25,7 @@ public class GameController : MonoBehaviour {
 		// Reset things!
 		dataManager.SetCoinsCollected (0);
 		UpdateTimeScale();
+		ResetPlayerAtLevelDoor(dataManager.levelToDoorID);
 //		ResetLevel ();
 
 		// Add event listeners!
@@ -47,6 +50,23 @@ public class GameController : MonoBehaviour {
 		// Second frame: Load up that business.
 		UnityEngine.SceneManagement.SceneManager.LoadScene (sceneName);
 		yield return null;
+	}
+	private void ResetPlayerAtLevelDoor(string levelDoorID) {
+		LevelDoor[] allDoors = GameObject.FindObjectsOfType<LevelDoor>();
+		LevelDoor correctDoor = null; // I'll specify next.
+		foreach (LevelDoor door in allDoors) {
+			if (door.MyID == levelDoorID) {
+				correctDoor = door;
+				break;
+			}
+		}
+		if (correctDoor != null) {
+			player.SetPos(correctDoor.Pos);
+//			cameraController
+		}
+		else {
+			Debug.LogWarning("Oops! Couldn't find a door with this ID: " + levelDoorID);
+		}
 	}
 
 
