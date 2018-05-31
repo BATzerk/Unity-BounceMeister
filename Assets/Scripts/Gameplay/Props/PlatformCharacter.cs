@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformCharacter : MonoBehaviour {
+public class PlatformCharacter : Collidable {
 	// Constants
 	public const int NumSides = 4; // it's hip to be square.
 	// Overrideables
@@ -15,14 +15,14 @@ public class PlatformCharacter : MonoBehaviour {
 	// Properties
 	protected Vector2 vel;
 	private Vector2 size;
-	protected bool[] onGrounds; // index is side.
+	protected bool[] onSurfaces; // index is side.
 
 	// Getters
 	public Vector2 Pos { get { return pos; } }
 	public Vector2 Vel { get { return vel; } }
 	public Vector2 Size { get { return size; } }
 
-	protected bool feetOnGround { get { return onGrounds[Sides.B]; } }
+	protected bool feetOnGround { get { return onSurfaces[Sides.B]; } }
 	protected PlatformCharacterWhiskers MyBaseWhiskers { get { return myWhiskers; } } // So my extensions can associate their own specific whiskers from this reference.
 	protected Vector2 pos {
 		get { return this.transform.localPosition; }
@@ -33,10 +33,10 @@ public class PlatformCharacter : MonoBehaviour {
 	}
 	protected Vector2 GetAppliedVel() {
 		Vector2 av = vel;
-		float distL = myWhiskers.GroundDistMin(Sides.L);
-		float distR = myWhiskers.GroundDistMin(Sides.R);
-		float distB = myWhiskers.GroundDistMin(Sides.B);
-		float distT = myWhiskers.GroundDistMin(Sides.T);
+		float distL = myWhiskers.SurfaceDistMin(Sides.L);
+		float distR = myWhiskers.SurfaceDistMin(Sides.R);
+		float distB = myWhiskers.SurfaceDistMin(Sides.B);
+		float distT = myWhiskers.SurfaceDistMin(Sides.T);
 		// Clamp our vel so we don't intersect anything.
 		if (vel.x<0 && vel.x<-distL) {
 			av = new Vector2(-distL, av.y);
@@ -68,7 +68,7 @@ public class PlatformCharacter : MonoBehaviour {
 	//  Start
 	// ----------------------------------------------------------------
 	virtual protected void Start () {
-		onGrounds = new bool[NumSides];
+		onSurfaces = new bool[NumSides];
 		vel = Vector2.zero;
 	}
 	virtual protected void SetSize(Vector2 _size) {
@@ -101,30 +101,36 @@ public class PlatformCharacter : MonoBehaviour {
 		vel += new Vector2(HorzMoveInputVelXDelta(), 0);
 	}
 
-	protected void UpdateOnGrounds() {
+	protected void UpdateOnSurfaces() {
 		for (int side=0; side<NumSides; side++) {
-			Collider2D ground = myWhiskers.GetGroundTouching(side);
+			Collider2D surfaceCollider = myWhiskers.GetSurfaceTouching(side);
 			float sideSpeed = GetSideSpeed(side);
-			bool touchingGround = ground!=null;//QQQ test && sideSpeed>=0; // I'm "touching" this ground if it exists and I'm not moving *away* from it!
-			if (onGrounds[side] && !touchingGround) {
-				OnLeaveGround(side);
+			bool isTouching = surfaceCollider!=null;//TEMP test && sideSpeed>=0; // I'm "touching" this ground if it exists and I'm not moving *away* from it!
+			if (onSurfaces[side] && !isTouching) {
+				OnLeaveSurface(side);
 			}
-			else if (!onGrounds[side] && touchingGround) {
-				OnTouchGround(side, ground);
+			else if (!onSurfaces[side] && isTouching) {
+				OnTouchSurface(side, surfaceCollider);
 			}
 		}
 	}
 
 
+	// ----------------------------------------------------------------
+	//  Doers
+	// ----------------------------------------------------------------
+	protected void Die() {
+		this.gameObject.SetActive(false); // TEMP super simple for now.
+	}
 
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-	virtual protected void OnLeaveGround(int side) {
-		onGrounds[side] = false;
+	virtual protected void OnLeaveSurface(int side) {
+		onSurfaces[side] = false;
 	}
-	virtual protected void OnTouchGround(int side, Collider2D groundCol) {
-		onGrounds[side] = true;
+	virtual protected void OnTouchSurface(int side, Collider2D groundCol) {
+		onSurfaces[side] = true;
 
 		// Inform the ground!
 		//		Collidable collidable = groundCol.GetComponent<Collidable>();

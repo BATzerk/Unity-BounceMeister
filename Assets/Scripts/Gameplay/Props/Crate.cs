@@ -15,14 +15,26 @@ public class Crate : Collidable {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
-	override public void OnCollideWithPlayer(Player player) {
+//	override public void OnCollideWithCollidable(Collidable collidable, int otherColSide) {
+//		if (hitsUntilBreak < 0) { return; } // Unbreakable? Do nothin'.
+//		// Other collidable's bottom hit me?
+//		if (otherColSide == Sides.B) {
+//			// Player?!
+//			Player player = collidable as Player;
+//			if (player != null) {
+//				if (player.IsBouncing) {
+//					if (player.Vel.y < -0.6f) {
+//						GetHit();
+//					}
+//				}
+//			}
+//		}
+//	}
+	override public void OnPlayerBounceOnMe(Player player) {
 		if (hitsUntilBreak < 0) { return; } // Unbreakable? Do nothin'.
-		if (player.IsBouncing) {
-			if (player.Vel.y < -0.6f) {
-				GetHit();
-			}
-		}
+		GetHit();
 	}
+
 
 
 	// ----------------------------------------------------------------

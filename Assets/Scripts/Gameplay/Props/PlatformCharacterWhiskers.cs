@@ -10,10 +10,12 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 	// References
 	[SerializeField] private PlatformCharacter myCharacter=null;
 	// Properties
-	[SerializeField] LayerMask lm_ground=0x0; // All sides always care about Ground.
-	[SerializeField] LayerMask lm_platform=0x0; // Only the bottom side cares about Platforms.
+	[SerializeField] LayerMask[] lms_LRTB=null; // The LMs that care about every side (L, R, T, B). E.g. Ground.
+	[SerializeField] LayerMask[] lms_B=null; // The LMs that care about the bottom side. E.g. Platforms.
+	LayerMask lm_LRTB; // Made from lms_LRTB in Start.
+	LayerMask lm_B;    // Made from lms_B in Start.
 	private Collider2D[,] collidersAroundMe; // by side,index.
-	private float[,] groundDists; // by side,index. This is *all* whisker data.
+	private float[,] surfaceDists; // by side,index. This is *all* whisker data.
 	private int[] minDistsIndexes; // by side. WHICH whisker at this side is the closest!
 	private RaycastHit2D hit; // only out here so we don't have to make a ton every frame.
 	private Vector2[] whiskerDirs;
@@ -43,8 +45,10 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 		}
 	}
 	private LayerMask GetLayerMask(int side) {
-		if (side == Sides.B) { return lm_ground | lm_platform; } // Bottom side? Return ground AND platforms!
-		return lm_ground; // All other sides only care about ground.
+		if (side == Sides.B) { return lm_B; } // Bottom side? Return that respective bitmask!
+		return lm_LRTB; // All sides? Return THAT respective bitmask!
+//		if (side == Sides.B) { return lm_ground | lm_platform; } // Bottom side? Return ground AND platforms!
+//		return lm_ground; // All other sides only care about ground.
 	}
 	//	/// Redundant with my other raycast function. These could be combined.
 	//	private Collider2D GroundColAtSide(int side, int index) {
@@ -56,13 +60,14 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 	//		return hit.collider;
 	//	}
 
-	public float GroundDistMin(int side) {
+	public float SurfaceDistMin(int side) {
+		if (surfaceDists==null) { return 0; } // Safety check for runtime compile.
 		if (minDistsIndexes[side] == -1) { return Mathf.Infinity; } // No closest whisker (none collide)? They're all infinity, then.
-		return groundDists[side, minDistsIndexes[side]];
+		return surfaceDists[side, minDistsIndexes[side]];
 	}
-	public Collider2D GetGroundTouching(int side) {
+	public Collider2D GetSurfaceTouching(int side) {
 		if (collidersAroundMe==null) { return null; } // Safety check for runtime compile.
-		UpdateGroundDist(side); // Just update the bottom.
+		UpdateSurfaceDist(side); // Just update the bottom.
 		if (minDistsIndexes[side] == -1) { return null; } // No closest whisker (none collide)? Return null.
 		return collidersAroundMe[side, minDistsIndexes[side]];
 	}
@@ -72,15 +77,15 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 	//  Gizmos!
 	// ----------------------------------------------------------------
 	void OnDrawGizmos() {
-		if (whiskerDirs==null || groundDists==null) { return; } // Safety check.
+		if (whiskerDirs==null || surfaceDists==null) { return; } // Safety check.
 
 		for (int side=0; side<whiskerDirs.Length; side++) {
 			float length = GetRaycastSearchDist(side);
 			Vector2 dir = whiskerDirs[side];
 			for (int index=0; index<NumWhiskersPerSide; index++) {
 				Vector2 startPos = WhiskerPos(side, index);
-				bool isTouchingGround = groundDists[side,index] < 0.1f;
-				Gizmos.color = isTouchingGround ? Color.green : Color.red;
+				bool isTouching = surfaceDists[side,index] < 0.1f;
+				Gizmos.color = isTouching ? Color.green : Color.red;
 				Gizmos.DrawLine(startPos, startPos + dir * length);
 			}
 		}
@@ -92,7 +97,18 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 	//  Start
 	// ----------------------------------------------------------------
 	private void Awake() {
-		groundDists = new float[NumSides,NumWhiskersPerSide];
+		// Combine our bitmask arrays into single ones for easy access.
+		lm_B = 0;
+		lm_LRTB = 0;
+		foreach (LayerMask mask in lms_B) {
+			lm_B = lm_B | mask; // Add each one from the bottom-masks array to the single bottom-bitmask.
+		}
+		foreach (LayerMask mask in lms_LRTB) {
+			lm_LRTB = lm_LRTB | mask; // Add each one from the all-sides-masks array to the single all-sides-bitmask.
+			lm_B = lm_B | mask; // ALSO add this all-sides-mask to the bottom-masks array, too! (In case we make a mistake and forget to specify this mask in both arrays in the editor.)
+		}
+
+		surfaceDists = new float[NumSides,NumWhiskersPerSide];
 		collidersAroundMe = new Collider2D[NumSides,NumWhiskersPerSide];
 		minDistsIndexes = new int[NumSides];
 		whiskerDirs = new Vector2[NumSides];
@@ -102,7 +118,7 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 		whiskerDirs[Sides.B] = Vector2Int.B.ToVector2();
 	}
 	private void Start() {
-		UpdateGroundDists(); // Just for consistency.
+		UpdateSurfaceDists(); // Just for consistency.
 	}
 
 
@@ -113,19 +129,19 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 	//	private void FixedUpdate() {
 	//		UpdateGroundDists();
 	//	}
-	public void UpdateGroundDists() {
+	public void UpdateSurfaceDists() {
 		for (int i=0; i<whiskerDirs.Length; i ++) {
-			UpdateGroundDist(i);
+			UpdateSurfaceDist(i);
 		}
 	}
-	public void UpdateGroundDist(int side) {
-		if (groundDists==null) { return; } // Safety check (for runtime compile).
+	public void UpdateSurfaceDist(int side) {
+		if (surfaceDists==null) { return; } // Safety check (for runtime compile).
 		//		groundDistsMin[side] = Mathf.Infinity; // Gotta default the min dist to infinity (last frame doesn't matter anymore).
 		minDistsIndexes[side] = -1; // Default this to -1: There is no closest, because they're all infinity.
 		for (int index=0; index<NumWhiskersPerSide; index++) {
 			UpdateWhiskerRaycast(side, index); // update the distances and colliders.
-			float dist = groundDists[side,index]; // use the dist we just updated.
-			if (GroundDistMin(side) > dist) { // Update the min distance, too.
+			float dist = surfaceDists[side,index]; // use the dist we just updated.
+			if (SurfaceDistMin(side) > dist) { // Update the min distance, too.
 				//				groundDistsMin[side] = dist;
 				minDistsIndexes[side] = index;
 			}
@@ -141,7 +157,7 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 		if (hit.collider != null) {
 			dist = Vector2.Distance(hit.point, pos);
 		}
-		groundDists[side,index] = dist;
+		surfaceDists[side,index] = dist;
 		collidersAroundMe[side,index] = hit.collider;
 	}
 

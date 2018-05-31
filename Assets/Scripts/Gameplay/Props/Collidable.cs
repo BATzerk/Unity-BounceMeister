@@ -3,5 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 abstract public class Collidable : MonoBehaviour {
-	abstract public void OnCollideWithPlayer(Player player);
+	[SerializeField] private bool isBouncy = true;
+
+	public bool IsBouncy { get { return isBouncy; } }
+
+//	virtual public void OnCollideWithCollidable(Collidable collidable, int otherSideCol) {} //abstract 
+	virtual public void OnPlayerBounceOnMe(Player player) {}
 }

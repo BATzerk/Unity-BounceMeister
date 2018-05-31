@@ -37,13 +37,15 @@ public class Player : PlatformCharacter {
 	}
 	// Getters (Private)
 	private Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
-	private bool IsBouncyCollider(Collider2D collider) {
-		if (!isBouncing) { return false; } // If I'm not bouncing at ALL, return false. :)
-		Ground ground = collider.GetComponent<Ground>();
-		if (ground != null) {
-			return ground.IsBouncy;
-		}
-		return false; // Nah, it's not a Ground at all. Don't bounce by default.
+	private bool IsBouncyCollidable(Collidable collidable) {
+		if (collidable == null) { return false; } // The collidable is undefined? Default to NOT bouncy.
+		return collidable.IsBouncy;
+//		if (!isBouncing) { return false; } // If I'm not bouncing at ALL, return false. :)
+//		Ground ground = collider.GetComponent<Ground>();
+//		if (ground != null) {
+//			return ground.IsBouncy;
+//		}
+//		return false; // Nah, it's not a Ground at all. Don't bounce by default.
 	}
 
 
@@ -74,16 +76,16 @@ public class Player : PlatformCharacter {
 		AcceptJumpInput();
 	}
 	private void AcceptJumpInput() {
-		if (Input.GetKeyDown(KeyCode.UpArrow)) { // TEMP hardcoded
-			OnJumpPressed();
-		}
+//		if (Input.GetKeyDown(KeyCode.UpArrow)) { // TEMP hardcoded
+//			OnJumpPressed();
+//		}
 		// TEMP! todo: Use pinputAxis within InputController in a *FixedUpdate* loop to determine if we've just pushed up/down.
 		if (Input.GetKeyDown(KeyCode.UpArrow)) {
 			OnUpPressed();
 		}
-		else if (Input.GetKeyDown(KeyCode.DownArrow)) {
-			OnDownPressed();
-		}
+//		else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+//			OnDownPressed();
+//		}
 	}
 
 
@@ -94,12 +96,12 @@ public class Player : PlatformCharacter {
 		if (Time.timeScale == 0) { return; } // No time? No dice.
 		Vector2 ppos = pos;
 
-		UpdateOnGrounds();
+		UpdateOnSurfaces();
 		ApplyFriction();
 		ApplyGravity();
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
-		myPlayerWhiskers.UpdateGroundDists(); // update these dependently now, so we guarantee most up-to-date info.
+		myPlayerWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
 		ApplyVel();
 		UpdateMaxYSinceGround();
 
@@ -131,9 +133,10 @@ public class Player : PlatformCharacter {
 		if (isBouncing) { return; } // Already bouncing? Do nothing.
 		isBouncing = true;
 		myBody.OnStartBouncing();
-		if (feetOnGround) { // slipped this in as a test: if we're on the ground when we say we wanna bounce, jump us up so we start actually bouncing!
-			Jump();
-		}
+//		// If we're on the ground when we say we wanna bounce, jump us up so we start actually bouncing!
+//		if (feetOnGround) {
+//			vel = new Vector2(vel.x, Mathf.Max(vel.y, JumpForce));
+//		}
 	}
 	private void StopBouncing() {
 		if (!isBouncing) { return; } // Already not bouncing? Do nothing.
@@ -141,60 +144,81 @@ public class Player : PlatformCharacter {
 		myBody.OnStopBouncing();
 	}
 
-	private void BounceOffGround() {
+	private void BounceOffCollidable(Collidable collidable) {
+		// If we're NOT bouncing yet, start that!
+		if (!isBouncing) {
+			StartBouncing();
+		}
 		// Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
 		float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
 		float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
 		yVel += 0.025f; // Hack!! We're not getting all our height back exactly. Fudge it for now.
 		vel = new Vector2(vel.x, yVel);
 //		OnLeaveGround(); // Call this manually now!
+		// Inform the collidable if it exists!!
+		if (collidable != null) {
+			collidable.OnPlayerBounceOnMe(this);
+		}
 	}
 
 
 	// ----------------------------------------------------------------
 	//  Events (Input)
 	// ----------------------------------------------------------------
-	private void OnJumpPressed() {
+//	private void OnJumpPressed() {
+//		// We're on the ground and NOT timed out of jumping! Go!
+//		if (feetOnGround && Time.time>=timeWhenCanJump) {//numJumpsSinceGround<MaxJumps
+//			Jump();
+//		}
+//		else {
+//			timeWhenDelayedJump = Time.time + DelayedJumpWindow;
+//		}
+//	}
+	private void OnUpPressed() {
 		// We're on the ground and NOT timed out of jumping! Go!
 		if (feetOnGround && Time.time>=timeWhenCanJump) {//numJumpsSinceGround<MaxJumps
 			Jump();
 		}
 		else {
+//			if (isBouncing) {
+//				StopBouncing();
+//			}
 			timeWhenDelayedJump = Time.time + DelayedJumpWindow;
 		}
 	}
-	private void OnUpPressed() {
-		if (isBouncing) {
-			StopBouncing();
-		}
-	}
-	private void OnDownPressed() {
-		if (!isBouncing) {
-			StartBouncing();
-		}
-	}
+//	private void OnDownPressed() {
+//		if (!isBouncing) {
+//			StartBouncing();
+//		}
+//	}
 
 
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-	override protected void OnLeaveGround(int side) {
-		base.OnLeaveGround(side);
+	override protected void OnLeaveSurface(int side) {
+		base.OnLeaveSurface(side);
 	}
-	override protected void OnTouchGround(int side, Collider2D groundCol) {
-		base.OnTouchGround(side, groundCol);
-		numJumpsSinceGround = 0;
+	override protected void OnTouchSurface(int side, Collider2D surfaceCol) {
+		base.OnTouchSurface(side, surfaceCol);
 
-		// Inform the ground!
-		Collidable collidable = groundCol.GetComponent<Collidable>();
-		if (collidable != null) {
-			collidable.OnCollideWithPlayer(this);
+		Collidable collidable = surfaceCol.GetComponent<Collidable>();
+		if (side == Sides.B) {
+			OnFeetTouchSurface(collidable);
 		}
 
+//		// Inform the collidable!
+//		if (collidable != null) {
+//			collidable.OnCollideWithCollidable(this, side);
+//		}
+	}
+	private void OnFeetTouchSurface(Collidable collidable) {
+		numJumpsSinceGround = 0;
+
 		// Should I bounce or jump?
-		bool doBounce = IsBouncyCollider(groundCol);
+		bool doBounce = IsBouncyCollidable(collidable) && !Input.GetKey(KeyCode.DownArrow); // TEMP HARDCODED
 		if (doBounce) {
-			BounceOffGround();
+			BounceOffCollidable(collidable);
 		}
 		else {
 			// DON'T bounce? Then stop bouncing right away.

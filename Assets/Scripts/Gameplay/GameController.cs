@@ -20,7 +20,9 @@ public class GameController : MonoBehaviour {
 	//  Start / Destroy
 	// ----------------------------------------------------------------
 	private void Start () {
-		dataManager.SetCoinsCollected (0); // Reset this.
+		// Reset things!
+		dataManager.SetCoinsCollected (0);
+		UpdateTimeScale();
 //		ResetLevel ();
 
 		// Add event listeners!

@@ -7,9 +7,10 @@ public class Enemy : PlatformCharacter {
 	override protected float FrictionAir { get { return 0.6f; } }
 	override protected float FrictionGround { get { return 0.6f; } }
 	override protected Vector2 Gravity { get { return new Vector2(0, -0.05f); } }
-	private const float MovementSpeedX = 0.08f;
+	private const float MovementSpeedX = 0;//QQQ 0.08f;
 	// Properties
-	private float dirMoving; // -1 or 1. I like to pace.
+	[SerializeField] private int health = 1;
+	[SerializeField] private float dirMoving = 1; // -1 or 1. I like to pace.
 	// Components
 	private EnemyWhiskers myEnemyWhiskers; // defined in Start, from my inhereted serialized whiskers.
 
@@ -17,6 +18,8 @@ public class Enemy : PlatformCharacter {
 	override protected float HorzMoveInputVelXDelta() {
 		return dirMoving*MovementSpeedX;
 	}
+	// Getters (Private)
+	private bool IsInvincible { get { return health < 0; } }
 
 
 	// ----------------------------------------------------------------
@@ -25,8 +28,6 @@ public class Enemy : PlatformCharacter {
 	override protected void Start () {
 		base.Start();
 		myEnemyWhiskers = MyBaseWhiskers as EnemyWhiskers;
-
-		dirMoving = 1;
 
 		// Size me, queen!
 		SetSize (new Vector2(2.5f, 2.5f));
@@ -41,11 +42,11 @@ public class Enemy : PlatformCharacter {
 		if (Time.timeScale == 0) { return; } // No time? No dice.
 		Vector2 ppos = pos;
 
-		UpdateOnGrounds();
+		UpdateOnSurfaces();
 		ApplyFriction();
 		ApplyGravity();
 		AcceptHorzMoveInput();
-		myEnemyWhiskers.UpdateGroundDists(); // update these dependently now, so we guarantee most up-to-date info.
+		myEnemyWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
 		ApplyVel();
 
 		// Update vel to be the distance we ended up moving this frame.
@@ -54,18 +55,52 @@ public class Enemy : PlatformCharacter {
 
 
 	// ----------------------------------------------------------------
+	//  Doers
+	// ----------------------------------------------------------------
+	private void GetHit() {
+		health --;
+		if (health <= 0) {
+			Die();
+		}
+	}
+
+
+	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-	override protected void OnLeaveGround(int side) {
-		base.OnLeaveGround(side);
+	override protected void OnLeaveSurface(int side) {
+		base.OnLeaveSurface(side);
 	}
-	override protected void OnTouchGround(int side, Collider2D groundCol) {
-		base.OnTouchGround(side, groundCol);
+	override protected void OnTouchSurface(int side, Collider2D collider) {
+		base.OnTouchSurface(side, collider);
 
 		// A wall?? Reverse my horz direction!
 		if (side==Sides.L || side==Sides.R) {
 			dirMoving *= -1;
 		}
+	}
+
+	// ----------------------------------------------------------------
+	//  Events
+	// ----------------------------------------------------------------
+//	override public void OnCollideWithCollidable(Collidable collidable, int otherColSide) {
+//		if (IsInvincible) { return; } // Invincible? Do nothin'.
+//		// Other collidable's bottom hit me?
+//		if (otherColSide == Sides.B) {
+//			// Player?!
+//			Player player = collidable as Player;
+//			if (player != null) {
+//				if (player.IsBouncing) {
+//					if (player.Vel.y < -0.6f) {
+//						GetHit();
+//					}
+//				}
+//			}
+//		}
+//	}
+	override public void OnPlayerBounceOnMe(Player player) {
+		if (IsInvincible) { return; } // Invincible? Do nothin'.
+		GetHit();
 	}
 
 
