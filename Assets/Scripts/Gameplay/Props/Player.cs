@@ -8,21 +8,18 @@ public class Player : PlatformCharacter {
 	override protected float FrictionGround { get { return 0.6f; } }
 	override protected Vector2 Gravity { get { return new Vector2(0, -0.05f); } }
 	private const float InputScaleX = 0.5f;
-	private const float MaxVelX = 0.4f;
+	private const float MaxVelX = 0.35f;
 	private const float MaxVelYUp = 4;
 	private const float MaxVelYDown = -4;
 	private const float JumpForce = 0.8f;
 	private const float DelayedJumpWindow = 0.15f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
-	private const float JumpTimeoutWindow = 0.0f; // Note: disabled. in SECONDS. Don't allow jumping twice this quickly.
 	// Properties
 	private bool isBouncing=false;
 	private float maxYSinceGround; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeWhenDelayedJump; // set when we're in the air and press Jump. If we touch ground before this time, we'll do a delayed jump!
-	private float timeWhenCanJump; // set to Time.time + JumpTimeoutWindow when we jump.
 	private int numJumpsSinceGround;
 	// Components
 	[SerializeField] private PlayerBody myBody=null;
-	private PlayerWhiskers myPlayerWhiskers; // defined in Start, from my inhereted serialized whiskers.
 
 	// Getters (Public)
 	public bool IsBouncing { get { return isBouncing; } }
@@ -36,6 +33,7 @@ public class Player : PlatformCharacter {
 		return dirX*InputScaleX * mult;
 	}
 	// Getters (Private)
+	private bool IsNoBounceButtonHeld() { return Input.GetKey(KeyCode.DownArrow); }
 	private Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
 	private bool IsBouncyCollidable(Collidable collidable) {
 		if (collidable == null) { return false; } // The collidable is undefined? Default to NOT bouncy.
@@ -55,7 +53,6 @@ public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	override protected void Start () {
 		base.Start();
-		myPlayerWhiskers = MyBaseWhiskers as PlayerWhiskers;
 
 		// Size me, queen!
 		SetSize (new Vector2(2.5f, 2.5f)); // NOTE: I don't understand why we gotta cut it by 100x. :P
@@ -76,7 +73,7 @@ public class Player : PlatformCharacter {
 		AcceptJumpInput();
 	}
 	private void AcceptJumpInput() {
-//		if (Input.GetKeyDown(KeyCode.UpArrow)) { // TEMP hardcoded
+//		if (Input.GetKeyDown(KeyCode.UpArrow)) {
 //			OnJumpPressed();
 //		}
 		// TEMP! todo: Use pinputAxis within InputController in a *FixedUpdate* loop to determine if we've just pushed up/down.
@@ -101,7 +98,7 @@ public class Player : PlatformCharacter {
 		ApplyGravity();
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
-		myPlayerWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
+		myWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
 		ApplyVel();
 		UpdateMaxYSinceGround();
 
@@ -124,7 +121,6 @@ public class Player : PlatformCharacter {
 	private void Jump() {
 		vel = new Vector2(vel.x, JumpForce);
 		timeWhenDelayedJump = -1; // reset this just in case.
-		timeWhenCanJump = Time.time + JumpTimeoutWindow;
 		numJumpsSinceGround ++;
 		GameManagers.Instance.EventManager.OnPlayerJump(this);
 //		OnLeaveGround(); // Call this manually now!
@@ -176,7 +172,7 @@ public class Player : PlatformCharacter {
 //	}
 	private void OnUpPressed() {
 		// We're on the ground and NOT timed out of jumping! Go!
-		if (feetOnGround && Time.time>=timeWhenCanJump) {//numJumpsSinceGround<MaxJumps
+		if (feetOnGround) {//numJumpsSinceGround<MaxJumps && Time.time>=timeWhenCanJump
 			Jump();
 		}
 		else {
@@ -216,7 +212,7 @@ public class Player : PlatformCharacter {
 		numJumpsSinceGround = 0;
 
 		// Should I bounce or jump?
-		bool doBounce = IsBouncyCollidable(collidable) && !Input.GetKey(KeyCode.DownArrow); // TEMP HARDCODED
+		bool doBounce = IsBouncyCollidable(collidable) && !IsNoBounceButtonHeld();
 		if (doBounce) {
 			BounceOffCollidable(collidable);
 		}

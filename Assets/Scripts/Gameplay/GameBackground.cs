@@ -17,7 +17,7 @@ public class GameBackground : MonoBehaviour {
 
 
 	private void Start () {
-		numCols = 20; // TODO: set these dynamically
+		numCols = 20; // TO DO: set these dynamically
 		numRows = 20;
 		gridSize = new Vector2(numCols*unitSize, numRows*unitSize);
 		tileSprites = new SpriteRenderer[numCols,numRows];
@@ -37,7 +37,7 @@ public class GameBackground : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
-		PositionTileSprites(); // TODO: NOT this every frame! Only when the camera enters a new zone. Doy.
+		PositionTileSprites(); // TO DO: NOT this every frame! Only when the camera enters a new zone. Doy.
 	}
 
 	private void PositionTileSprites() {
@@ -66,7 +66,7 @@ public class GameBackground : MonoBehaviour {
 //				x = (col+0.5f)*unitSize;
 //				y = (row+0.5f)*unitSize;
 ////				x += 
-//				// Kinda hacked in for now. While loops not the right way to do this.
+//				// Kinda ha cked in for now. While loops not the right way to do this.
 //				if (x<viewRect.xMin) {
 //					while (x<viewRect.xMin && safetyCount++<99) { x += gridSize.x; }
 //				}

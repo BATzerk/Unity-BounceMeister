@@ -62,10 +62,7 @@ public class InputController : MonoBehaviour {
 	//  Update
 	// ----------------------------------------------------------------
 	private void Update () {
-		// Hack, only here to prevent errors after compiling during runtime. NOTE: DOESN'T ACTUALLY WORK.
-		if (instance == null) {
-			instance = this;
-		}
+		if (instance == null) { instance = this; } // Safety check (for runtime compile).
 		RegisterButtonInputs ();
 		RegisterMouseInputs ();
 	}

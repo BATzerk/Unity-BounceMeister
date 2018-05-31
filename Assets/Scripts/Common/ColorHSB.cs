@@ -21,11 +21,11 @@ public struct ColorHSB {
 		this.a = 1f;
 	}
 	public ColorHSB(Color col) {
-		ColorHSB temp = FromColor(col);
-		h = temp.h;
-		s = temp.s;
-		b = temp.b;
-		a = temp.a;
+		ColorHSB colHSB = FromColor(col);
+		h = colHSB.h;
+		s = colHSB.s;
+		b = colHSB.b;
+		a = colHSB.a;
 	}
 
 	public static ColorHSB FromColor(Color color)

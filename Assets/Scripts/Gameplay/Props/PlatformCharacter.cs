@@ -11,7 +11,7 @@ public class PlatformCharacter : Collidable {
 	virtual protected Vector2 Gravity { get { return new Vector2(0, -0.05f); } }
 	// Components
 	[SerializeField] private BoxCollider2D bodyCollider=null;
-	[SerializeField] private PlatformCharacterWhiskers myWhiskers=null;
+	[SerializeField] protected PlatformCharacterWhiskers myWhiskers=null;
 	// Properties
 	protected Vector2 vel;
 	private Vector2 size;
@@ -23,7 +23,6 @@ public class PlatformCharacter : Collidable {
 	public Vector2 Size { get { return size; } }
 
 	protected bool feetOnGround { get { return onSurfaces[Sides.B]; } }
-	protected PlatformCharacterWhiskers MyBaseWhiskers { get { return myWhiskers; } } // So my extensions can associate their own specific whiskers from this reference.
 	protected Vector2 pos {
 		get { return this.transform.localPosition; }
 		set { this.transform.localPosition = value; }
@@ -105,7 +104,7 @@ public class PlatformCharacter : Collidable {
 		for (int side=0; side<NumSides; side++) {
 			Collider2D surfaceCollider = myWhiskers.GetSurfaceTouching(side);
 			float sideSpeed = GetSideSpeed(side);
-			bool isTouching = surfaceCollider!=null;//TEMP test && sideSpeed>=0; // I'm "touching" this ground if it exists and I'm not moving *away* from it!
+			bool isTouching = surfaceCollider!=null; // NOTE: Disabled checking for sideSpeed. Seems like we don't need to! && sideSpeed>=0; // I'm "touching" this ground if it exists and I'm not moving *away* from it!
 			if (onSurfaces[side] && !isTouching) {
 				OnLeaveSurface(side);
 			}

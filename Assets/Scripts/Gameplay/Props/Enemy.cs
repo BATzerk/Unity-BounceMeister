@@ -11,8 +11,6 @@ public class Enemy : PlatformCharacter {
 	// Properties
 	[SerializeField] private int health = 1;
 	[SerializeField] private float dirMoving = 1; // -1 or 1. I like to pace.
-	// Components
-	private EnemyWhiskers myEnemyWhiskers; // defined in Start, from my inhereted serialized whiskers.
 
 	// Getters (Overrides)
 	override protected float HorzMoveInputVelXDelta() {
@@ -27,7 +25,6 @@ public class Enemy : PlatformCharacter {
 	// ----------------------------------------------------------------
 	override protected void Start () {
 		base.Start();
-		myEnemyWhiskers = MyBaseWhiskers as EnemyWhiskers;
 
 		// Size me, queen!
 		SetSize (new Vector2(2.5f, 2.5f));
@@ -46,7 +43,7 @@ public class Enemy : PlatformCharacter {
 		ApplyFriction();
 		ApplyGravity();
 		AcceptHorzMoveInput();
-		myEnemyWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
+		myWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
 		ApplyVel();
 
 		// Update vel to be the distance we ended up moving this frame.
