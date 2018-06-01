@@ -7,19 +7,26 @@ public class Player : PlatformCharacter {
 	override protected float FrictionAir { get { return 1f; } }
 	override protected float FrictionGround { get { return 0.7f; } }
 	override protected Vector2 Gravity { get { return new Vector2(0, -0.042f); } }
+
 	private const float InputScaleX = 0.07f;
+	private const float JumpForce = 0.62f;
+	private readonly Vector2 WallJumpVel = new Vector2(3f, 0.52f);
+	private readonly Vector2 HitByEnemyVel = new Vector2(4f, 0.5f);
+
 	private const float MaxVelX = 0.3f;
 	private const float MaxVelYUp = 3;
 	private const float MaxVelYDown = -3;
-	private const float JumpForce = 0.62f;
+
 	private const float DelayedJumpWindow = 0.15f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
-	private readonly Vector2 HitByEnemyVel = new Vector2(4f, 0.5f);
+	private const float PostWallJumpHorzInputLockDur = 0.14f; // how long until we can provide horizontal input after jumping off a wall.
+
 	// Properties
-	private bool isBouncing=false;
-	private bool isPostDamageImmunity;
+	private bool isBouncing = false;
+//	private bool isWallSliding = false;
+	private bool isPostDamageImmunity = false;
 	private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
-	private float timeLastBouncedOffWall;
+	private float timeLastWallJumped;
 	private float timeSinceDamage; // invincible until this time! Set to Time.time + PostDamageInvincibleDuration when we're hit.
 	private float timeWhenDelayedJump; // set when we're in the air and press Jump. If we touch ground before this time, we'll do a delayed jump!
 	private int health = 1; // we die when we hit 0.
@@ -36,8 +43,8 @@ public class Player : PlatformCharacter {
 		if (InputController.Instance==null) { return 0; } // for building at runtime.
 		if (inputAxis.x == 0) { return 0; }
 		float dirX = MathUtils.Sign(inputAxis.x);
-		float mult = feetOnGround ? 1 : 0.65f;
-		if (Time.time < timeLastBouncedOffWall+0.3f) { // TEST
+		float mult = feetOnGround() ? 1 : 0.65f;
+		if (Time.time < timeLastWallJumped+PostWallJumpHorzInputLockDur) {
 			mult = 0;
 		}
 
@@ -58,6 +65,17 @@ public class Player : PlatformCharacter {
 //			return ground.IsBouncy;
 //		}
 //		return false; // Nah, it's not a Ground at all. Don't bounce by default.
+	}
+
+	private bool isWallSliding() { return wallSlideSide!=0; }
+	private int wallSlideSide {
+		get {
+			if (!feetOnGround()) { // If my feet AREN'T on the ground...!
+				if (onSurfaces[Sides.L]) { return -1; }
+				if (onSurfaces[Sides.R]) { return  1; }
+			}
+			return 0; // Nah, not wall-sliding.
+		}
 	}
 
 
@@ -100,7 +118,7 @@ public class Player : PlatformCharacter {
 //			OnJumpPressed();
 //		}
 		// TEMP! todo: Use pinputAxis within InputController in a *FixedUpdate* loop to determine if we've just pushed up/down.
-		if (Input.GetKeyDown(KeyCode.UpArrow)) {
+		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) {
 			OnUpPressed();
 		}
 //		else if (Input.GetKeyDown(KeyCode.DownArrow)) {
@@ -129,10 +147,11 @@ public class Player : PlatformCharacter {
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
 		myWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
+		UpdateWallSlide();
 		ApplyVel();
 		UpdateMaxYSinceGround();
 		// HACK temp
-		if (!feetOnGround && !isBouncing && vel.y<-0.5f) {
+		if (!feetOnGround() && !isBouncing && vel.y<-0.5f) {
 			StartBouncing();
 		}
 
@@ -146,18 +165,28 @@ public class Player : PlatformCharacter {
 	private void UpdateMaxYSinceGround() {
 		maxYSinceGround = Mathf.Max(maxYSinceGround, pos.y);
 	}
+	private void UpdateWallSlide() {
+		if (isWallSliding()) {
+			vel = new Vector2(vel.x, Mathf.Max(vel.y, -0.2f)); // TEST hardcoded
+		}
+	}
 
 
 
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
-	private void Jump() {
+	private void GroundJump() {
 		vel = new Vector2(vel.x, JumpForce);
 		timeWhenDelayedJump = -1; // reset this just in case.
 		numJumpsSinceGround ++;
 		GameManagers.Instance.EventManager.OnPlayerJump(this);
-//		OnLeaveGround(); // Call this manually now!
+	}
+	private void WallJump() {
+		vel = new Vector2(-wallSlideSide*WallJumpVel.x, WallJumpVel.y);
+		timeLastWallJumped = Time.time;
+		numJumpsSinceGround ++;
+		GameManagers.Instance.EventManager.OnPlayerJump(this);
 	}
 	private void StartBouncing() {
 		if (isBouncing) { return; } // Already bouncing? Do nothing.
@@ -181,7 +210,6 @@ public class Player : PlatformCharacter {
 		float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
 		yVel += 0.025f; // Hack!! We're not getting all our height back exactly. Fudge it for now.
 		vel = new Vector2(vel.x, yVel);
-		//		OnLeaveGround(); // Call this manually now!
 		// Inform the collidable if it exists!!
 		if (collidable != null) {
 			collidable.OnPlayerBounceOnMe(this);
@@ -190,7 +218,7 @@ public class Player : PlatformCharacter {
 	// TEST! This whole function is a controls experiment.
 	private void BounceOffCollidable_Side(Collidable collidable) { // NOTE: We're probably gonna wanna denote WHICH sides of collidables are bouncy...
 		StartBouncing(); // Make sure we're bouncing!
-		timeLastBouncedOffWall = Time.time;
+		timeLastWallJumped = Time.time;
 		vel = new Vector2(-vel.x, Mathf.Max(vel.y, Mathf.Abs(vel.x)*2f+0.1f));
 //		vel = new Vector2(-vel.x, JumpForce*0.7f);//vel.y+
 		// Inform the collidable if it exists!!
@@ -202,7 +230,6 @@ public class Player : PlatformCharacter {
 
 	private void StartPostDamageImmunity() {
 		isPostDamageImmunity = true;
-//		myBody.OnStartPostDamageImmunity();
 	}
 	private void EndPostDamageImmunity() {
 		isPostDamageImmunity = false;
@@ -224,8 +251,11 @@ public class Player : PlatformCharacter {
 //	}
 	private void OnUpPressed() {
 		// We're on the ground and NOT timed out of jumping! Go!
-		if (feetOnGround) {//numJumpsSinceGround<MaxJumps && Time.time>=timeWhenCanJump
-			Jump();
+		if (feetOnGround()) {//numJumpsSinceGround<MaxJumps && Time.time>=timeWhenCanJump
+			GroundJump();
+		}
+		else if (isWallSliding()) {
+			WallJump();
 		}
 		else {
 //			if (isBouncing) {
@@ -278,7 +308,7 @@ public class Player : PlatformCharacter {
 			StopBouncing();
 			// Do that delayed jump we planned?
 			if (Time.time <= timeWhenDelayedJump) {
-				Jump();
+				GroundJump();
 			}
 //			else { // TEMP TEST!
 //				vel = new Vector2(vel.x, -vel.y * 0.2f);
@@ -287,7 +317,6 @@ public class Player : PlatformCharacter {
 //				}
 //			}
 		}
-
 
 		// Finally reset maxYSinceGround.
 		maxYSinceGround = pos.y;

@@ -8,7 +8,7 @@ public class Lift : MonoBehaviour {
 
 	private void OnTriggerStay2D(Collider2D col) {
 		PlatformCharacter character = col.gameObject.GetComponent<PlatformCharacter>();
-		if (character != null && !character.feetOnGround) { // TEST with feetOnGround
+		if (character != null && !character.feetOnGround()) { // TEST with feetOnGround
 			character.ChangeVel(new Vector2(0, yForce));
 		}
 	}

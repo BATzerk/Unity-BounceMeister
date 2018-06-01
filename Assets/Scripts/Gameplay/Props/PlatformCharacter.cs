@@ -24,7 +24,7 @@ public class PlatformCharacter : Collidable {
 	public Vector2 Size { get { return size; } }
 
 	public bool IsDead { get { return isDead; } }
-	public bool feetOnGround { get { return onSurfaces[Sides.B] && vel.y<=0; } } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
+	public bool feetOnGround() { return onSurfaces[Sides.B] && vel.y<=0; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
 	protected Vector2 pos {
 		get { return this.transform.localPosition; }
 		set { this.transform.localPosition = value; }
@@ -91,7 +91,7 @@ public class PlatformCharacter : Collidable {
 		vel += Gravity;
 	}
 	protected void ApplyFriction() {
-		if (feetOnGround) {
+		if (feetOnGround()) {
 			vel = new Vector2(vel.x*FrictionGround, vel.y);
 		}
 		else {
