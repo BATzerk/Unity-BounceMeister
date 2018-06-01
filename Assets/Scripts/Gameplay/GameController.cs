@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour {
 	private bool isPaused = false;
 	private bool debug_isSlowMo = false;
 	// References
+	[SerializeField] private GameCameraController cameraController;
 	[SerializeField] private Player player;
 
 	// Getters
@@ -26,14 +27,13 @@ public class GameController : MonoBehaviour {
 		dataManager.SetCoinsCollected (0);
 		UpdateTimeScale();
 		ResetPlayerAtLevelDoor(dataManager.levelToDoorID);
-//		ResetLevel ();
 
 		// Add event listeners!
-//		eventManager.CoinCollectedEvent += OnCoinCollected;
+		eventManager.PlayerDieEvent += OnPlayerDie;
 	}
 	private void OnDestroy() {
 		// Remove event listeners!
-//		eventManager.CoinCollectedEvent -= OnCoinCollected;
+		eventManager.PlayerDieEvent -= OnPlayerDie;
 	}
 
 
@@ -131,6 +131,15 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+
+
+	// ----------------------------------------------------------------
+	//  Events
+	// ----------------------------------------------------------------
+	private void OnPlayerDie(Player player) {
+		cameraController.OnPlayerDie();
+		Invoke("ReloadScene", 1f);
+	}
 
 
 

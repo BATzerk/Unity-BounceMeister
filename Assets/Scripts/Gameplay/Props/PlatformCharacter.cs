@@ -13,6 +13,7 @@ public class PlatformCharacter : Collidable {
 	[SerializeField] private BoxCollider2D bodyCollider=null;
 	[SerializeField] protected PlatformCharacterWhiskers myWhiskers=null;
 	// Properties
+	private bool isDead = false;
 	protected Vector2 vel;
 	private Vector2 size;
 	protected bool[] onSurfaces; // index is side.
@@ -22,6 +23,7 @@ public class PlatformCharacter : Collidable {
 	public Vector2 Vel { get { return vel; } }
 	public Vector2 Size { get { return size; } }
 
+	public bool IsDead { get { return isDead; } }
 	public bool feetOnGround { get { return onSurfaces[Sides.B] && vel.y<=0; } } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
 	protected Vector2 pos {
 		get { return this.transform.localPosition; }
@@ -121,7 +123,8 @@ public class PlatformCharacter : Collidable {
 	public void ChangeVel(Vector2 delta) {
 		vel += delta;
 	}
-	protected void Die() {
+	virtual protected void Die() {
+		isDead = true;
 		this.gameObject.SetActive(false); // TEMP super simple for now.
 	}
 

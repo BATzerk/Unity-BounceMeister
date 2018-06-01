@@ -18,6 +18,7 @@ public class EventManager {
 	public event CoinAction CoinCollectedEvent;
 	public event PlayerAction PlayerDashEvent;
 	public event PlayerAction PlayerDashEndEvent;
+	public event PlayerAction PlayerDieEvent;
 	public event PlayerAction PlayerJumpEvent;
 
 	// Program Events
@@ -26,6 +27,7 @@ public class EventManager {
 	public void OnCoinCollected(Coin coin) { if (CoinCollectedEvent!=null) { CoinCollectedEvent(coin); } }
 	public void OnPlayerDash(Player player) { if (PlayerDashEvent!=null) { PlayerDashEvent(player); } }
 	public void OnPlayerDashEnd(Player player) { if (PlayerDashEndEvent!=null) { PlayerDashEndEvent(player); } }
+	public void OnPlayerDie(Player player) { if (PlayerDieEvent!=null) { PlayerDieEvent(player); } }
 	public void OnPlayerJump(Player player) { if (PlayerJumpEvent!=null) { PlayerJumpEvent(player); } }
 	public void OnCoinsCollectedChanged() { if (CoinsCollectedChangedEvent!=null) { CoinsCollectedChangedEvent(); } }
 

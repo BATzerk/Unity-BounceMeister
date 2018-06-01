@@ -22,7 +22,7 @@ public class Player : PlatformCharacter {
 	private float timeLastBouncedOffWall;
 	private float timeSinceDamage; // invincible until this time! Set to Time.time + PostDamageInvincibleDuration when we're hit.
 	private float timeWhenDelayedJump; // set when we're in the air and press Jump. If we touch ground before this time, we'll do a delayed jump!
-	private int health = 2; // we die when we hit 0.
+	private int health = 1; // we die when we hit 0.
 	private int numJumpsSinceGround;
 //	private int maxHealth = 2;
 	// Components
@@ -59,7 +59,6 @@ public class Player : PlatformCharacter {
 //		}
 //		return false; // Nah, it's not a Ground at all. Don't bounce by default.
 	}
-
 
 
 	// ----------------------------------------------------------------
@@ -316,7 +315,23 @@ public class Player : PlatformCharacter {
 	private void TakeDamage(int damageAmount) {
 		health -= damageAmount;
 		timeSinceDamage = Time.time;
-		StartPostDamageImmunity();
+		// Am I kaput??
+		if (health <= 0) {
+			Die();
+		}
+		// I've still got juice in me!
+		else {
+			StartPostDamageImmunity();
+		}
+	}
+
+	public void OnTouchSpikes(Spikes spikes) {
+		TakeDamage(1);
+	}
+
+	override protected void Die() {
+		base.Die();
+		GameManagers.Instance.EventManager.OnPlayerDie(this);
 	}
 
 

@@ -4,5 +4,4 @@ using UnityEngine;
 
 // NOTE: Currently no need for these class extensions!!
 public class PlayerWhiskers : PlatformCharacterWhiskers {
-
 }

@@ -98,7 +98,7 @@ public class GameCameraController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void FixedUpdate() {
 		UpdateApplyVel();
-//		UpdateScreenShake ();
+		UpdateScreenShake ();
 
 		ApplyViewRect();
 	}
@@ -115,8 +115,8 @@ public class GameCameraController : MonoBehaviour {
 			return;
 		}
 		screenShakeVolume += screenShakeVolumeVel;
-		screenShakeVolumeVel += (0-screenShakeVolume) / 6f;
-		screenShakeVolumeVel *= 0.94f;
+		screenShakeVolumeVel += (0-screenShakeVolume) / 5f;
+		screenShakeVolumeVel *= 0.9f;
 		if (screenShakeVolume != 0) {
 			if (Mathf.Abs (screenShakeVolume) < 0.001f && Mathf.Abs (screenShakeVolumeVel) < 0.001f) {
 				screenShakeVolume = 0;
@@ -156,6 +156,14 @@ public class GameCameraController : MonoBehaviour {
 		fullScrim.Show (0.5f);
 	}
 
+
+	// ----------------------------------------------------------------
+	//  Events
+	// ----------------------------------------------------------------
+	public void OnPlayerDie() {
+		screenShakeVolumeVel = 1f;
+		fullScrim.FadeFromAtoB(Color.clear, new Color(0,0,0, 0.3f), 0.9f, true);
+	}
 
 
 }
