@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour {
 	private bool isPaused = false;
 	private bool debug_isSlowMo = false;
 	// References
-	[SerializeField] private GameCameraController cameraController;
+//	[SerializeField] private GameCameraController cameraController;
 	[SerializeField] private Player player;
 
 	// Getters
@@ -98,10 +98,8 @@ public class GameController : MonoBehaviour {
 		bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
 		// Game Flow
-		if (Input.anyKeyDown) {
-//			if (gameState==GameStates.PostGame && Time.unscaledTime>unscaledTimeSinceGameEnded+2f) { // 2 second delay to start again.
-//				ReloadScene();
-//			}
+		if (Input.GetKeyDown(KeyCode.L)) {
+			OpenScene(SceneNames.LevelSelect);
 		}
 
 		if (Input.GetKeyDown(KeyCode.Escape)) {
@@ -137,7 +135,6 @@ public class GameController : MonoBehaviour {
 	//  Events
 	// ----------------------------------------------------------------
 	private void OnPlayerDie(Player player) {
-		cameraController.OnPlayerDie();
 		Invoke("ReloadScene", 1f);
 	}
 

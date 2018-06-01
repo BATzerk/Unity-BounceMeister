@@ -34,7 +34,7 @@ public class LevelDoor : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void Update() {
 		if (isTouchingPlayer) {
-			if (Input.GetKeyDown(KeyCode.UpArrow)) {
+			if (Input.GetKeyDown(KeyCode.DownArrow)) {
 				GoToMyLevel();
 			}
 		}

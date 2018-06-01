@@ -23,7 +23,6 @@ public class Player : PlatformCharacter {
 
 	// Properties
 	private bool isBouncing = false;
-//	private bool isWallSliding = false;
 	private bool isPostDamageImmunity = false;
 	private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeLastWallJumped;

@@ -7,7 +7,7 @@ public class Enemy : PlatformCharacter {
 	override protected float FrictionAir { get { return 0.6f; } }
 	override protected float FrictionGround { get { return 0.6f; } }
 	override protected Vector2 Gravity { get { return new Vector2(0, -0.05f); } }
-	private const float MovementSpeedX = 0;//QQQ 0.08f;
+	private const float MovementSpeedX = 0.08f;
 	// Properties
 	[SerializeField] private int health = 1;
 	[SerializeField] private float dirMoving = 1; // -1 or 1. I like to pace.

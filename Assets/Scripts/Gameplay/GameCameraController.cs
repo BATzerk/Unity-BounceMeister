@@ -58,10 +58,12 @@ public class GameCameraController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void Awake () {
 		// Add event listeners!
+		GameManagers.Instance.EventManager.PlayerDieEvent += OnPlayerDie;
 		GameManagers.Instance.EventManager.ScreenSizeChangedEvent += OnScreenSizeChanged;
 	}
 	private void OnDestroy () {
 		// Remove event listeners!
+		GameManagers.Instance.EventManager.PlayerDieEvent -= OnPlayerDie;
 		GameManagers.Instance.EventManager.ScreenSizeChangedEvent -= OnScreenSizeChanged;
 	}
 	private void Start () {
@@ -160,7 +162,7 @@ public class GameCameraController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
-	public void OnPlayerDie() {
+	private void OnPlayerDie(Player player) {
 		screenShakeVolumeVel = 1f;
 		fullScrim.FadeFromAtoB(Color.clear, new Color(0,0,0, 0.3f), 0.9f, true);
 	}
