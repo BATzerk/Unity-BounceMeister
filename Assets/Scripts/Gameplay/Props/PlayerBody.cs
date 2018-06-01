@@ -6,6 +6,7 @@ public class PlayerBody : MonoBehaviour {
 	// Components
 	[SerializeField] private SpriteRenderer sr_body=null;
 	[SerializeField] private SpriteLine sl_aimDir=null;
+	[SerializeField] private ParticleSystem ps_dieBurst;
 	// Properties
 	private readonly Color bodyColor_neutral = new Color(25/255f, 175/255f, 181/255f);
 	private Color bodyColor;
@@ -51,9 +52,37 @@ public class PlayerBody : MonoBehaviour {
 		ApplyBodyColor();
 	}
 
+	public void OnSpendBounce() {
+		bodyColor = Color.gray;
+		ApplyBodyColor();
+	}
+	public void OnRechargeBounce() {
+		bodyColor = bodyColor_neutral;
+		ApplyBodyColor();
+	}
+
 	public void OnEndPostDamageImmunity() {
 		alpha = 1f;
 		ApplyBodyColor();
+	}
+
+	public void OnDie() {
+		// Cheap way to get a particle burst: Just chuck my ParticleSystem onto my Player's parent transform the moment before we're destroyed!
+		ps_dieBurst.gameObject.SetActive(true);
+		ps_dieBurst.transform.SetParent(myPlayer.transform.parent);
+		ps_dieBurst.Emit(40);
+//		print("Enabled? " + ps_dieBurst.inheritVelocity.enabled);
+		// Give all the particles the velocity of my Player!
+		ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ps_dieBurst.particleCount];
+		ps_dieBurst.GetParticles(particles);
+		for (int i=0; i<particles.Length; i++) {
+			ParticleSystem.Particle particle = particles[i];
+			float velScale = Random.Range(30f, 60f);
+			particle.velocity += new Vector3(myPlayer.Vel.x, myPlayer.Vel.y, 0) * velScale;
+			particles[i] = particle;
+		}
+		// Set the array back to the particleSystem
+		ps_dieBurst.SetParticles(particles, particles.Length);
 	}
 
 

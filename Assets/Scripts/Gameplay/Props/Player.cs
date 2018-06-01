@@ -10,6 +10,7 @@ public class Player : PlatformCharacter {
 
 	private const float InputScaleX = 0.07f;
 	private const float JumpForce = 0.62f;
+	private const float WallSlideMinYVel = -0.14f;
 	private readonly Vector2 WallJumpVel = new Vector2(3f, 0.52f);
 	private readonly Vector2 HitByEnemyVel = new Vector2(4f, 0.5f);
 
@@ -23,6 +24,7 @@ public class Player : PlatformCharacter {
 
 	// Properties
 	private bool isBouncing = false;
+	private bool isBounceRecharged = true;
 	private bool isPostDamageImmunity = false;
 	private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeLastWallJumped;
@@ -53,6 +55,9 @@ public class Player : PlatformCharacter {
 	private bool CanTakeDamage() {
 		return !isPostDamageImmunity;
 	}
+	private bool CanStartBounce() {
+		return isBounceRecharged;
+	}
 	private bool IsDontBounceButtonHeld() { return Input.GetKey(KeyCode.DownArrow); }
 	private Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
 	private bool IsBouncyCollidable(Collidable collidable) {
@@ -69,6 +74,7 @@ public class Player : PlatformCharacter {
 	private bool isWallSliding() { return wallSlideSide!=0; }
 	private int wallSlideSide {
 		get {
+			if (isBouncing) { return 0; } // No wall-sliding if I'm bouncing, ok?
 			if (!feetOnGround()) { // If my feet AREN'T on the ground...!
 				if (onSurfaces[Sides.L]) { return -1; }
 				if (onSurfaces[Sides.R]) { return  1; }
@@ -143,6 +149,8 @@ public class Player : PlatformCharacter {
 		UpdateOnSurfaces();
 		ApplyFriction();
 		ApplyGravity();
+		// HACK temp
+		if (isBouncing) { vel += Gravity*0.8f; } // If we're going down, make us go down faster!
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
 		myWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
@@ -150,9 +158,9 @@ public class Player : PlatformCharacter {
 		ApplyVel();
 		UpdateMaxYSinceGround();
 		// HACK temp
-		if (!feetOnGround() && !isBouncing && vel.y<-0.5f) {
-			StartBouncing();
-		}
+//		if (!feetOnGround() && !isBouncing && vel.y<-0.5f) {
+//			StartBouncing();
+//		}
 
 		// Update vel to be the distance we ended up moving this frame.
 		vel = pos - ppos;
@@ -166,7 +174,7 @@ public class Player : PlatformCharacter {
 	}
 	private void UpdateWallSlide() {
 		if (isWallSliding()) {
-			vel = new Vector2(vel.x, Mathf.Max(vel.y, -0.2f)); // TEST hardcoded
+			vel = new Vector2(vel.x, Mathf.Max(vel.y, WallSlideMinYVel)); // Give us a minimum yVel!
 		}
 	}
 
@@ -203,12 +211,15 @@ public class Player : PlatformCharacter {
 	}
 
 	private void BounceOffCollidable_Up(Collidable collidable) {
-		StartBouncing(); // Make sure we're bouncing!
+//		StartBouncing(); // Make sure we're bouncing!
 		// Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
 		float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
+		distToRestore += 3.2f; // TEST! Give us MORE than we started with!
 		float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
 		yVel += 0.025f; // Hack!! We're not getting all our height back exactly. Fudge it for now.
 		vel = new Vector2(vel.x, yVel);
+		// Consider us done bouncing! TEST.
+		SpendBounce();
 		// Inform the collidable if it exists!!
 		if (collidable != null) {
 			collidable.OnPlayerBounceOnMe(this);
@@ -224,6 +235,16 @@ public class Player : PlatformCharacter {
 		if (collidable != null) {
 			collidable.OnPlayerBounceOnMe(this);
 		}
+	}
+
+	private void SpendBounce() {
+		StopBouncing();
+		isBounceRecharged = false; // we need to wait until we're recharged to bounce again.
+		myBody.OnSpendBounce();
+	}
+	private void RechargeBounce() {
+		isBounceRecharged = true;
+		myBody.OnRechargeBounce();
 	}
 
 
@@ -255,6 +276,9 @@ public class Player : PlatformCharacter {
 		}
 		else if (isWallSliding()) {
 			WallJump();
+		}
+		else if (CanStartBounce()) {
+			StartBouncing();
 		}
 		else {
 //			if (isBouncing) {
@@ -296,15 +320,18 @@ public class Player : PlatformCharacter {
 		numJumpsSinceGround = 0;
 
 		// Should I bounce or jump?
-		bool doBounce = IsBouncyCollidable(collidable)
-						&& !IsDontBounceButtonHeld()
-						&& isBouncing;
+//		bool doBounce = IsBouncyCollidable(collidable)
+//						&& !IsDontBounceButtonHeld()
+//						&& isBouncing;
+		bool doBounce = isBouncing;
 		if (doBounce) {
 			BounceOffCollidable_Up(collidable);
 		}
 		else {
 			// DON'T bounce? Then stop bouncing right away.
 			StopBouncing();
+			// TEST. Consider us recharged now!
+			RechargeBounce();
 			// Do that delayed jump we planned?
 			if (Time.time <= timeWhenDelayedJump) {
 				GroundJump();
@@ -340,6 +367,11 @@ public class Player : PlatformCharacter {
 		vel = new Vector2(-dirToEnemy*HitByEnemyVel.x, HitByEnemyVel.y);
 		TakeDamage(1);
 	}
+
+
+	// ----------------------------------------------------------------
+	//  Events (Health)
+	// ----------------------------------------------------------------
 	private void TakeDamage(int damageAmount) {
 		health -= damageAmount;
 		timeSinceDamage = Time.time;
@@ -358,8 +390,9 @@ public class Player : PlatformCharacter {
 	}
 
 	override protected void Die() {
-		base.Die();
+		myBody.OnDie();
 		GameManagers.Instance.EventManager.OnPlayerDie(this);
+		base.Die();
 	}
 
 

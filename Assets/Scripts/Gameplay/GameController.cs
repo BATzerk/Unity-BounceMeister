@@ -17,6 +17,9 @@ public class GameController : MonoBehaviour {
 	private EventManager eventManager { get { return GameManagers.Instance.EventManager; } }
 	private InputController inputController { get { return InputController.Instance; } }
 
+	private Vector2 mousePosWorld() {
+		return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+	}
 
 
 	// ----------------------------------------------------------------
@@ -89,9 +92,16 @@ public class GameController : MonoBehaviour {
 	//  Update
 	// ----------------------------------------------------------------
 	private void Update () {
+		RegisterMouseInput();
 		RegisterButtonInput ();
 	}
 
+	private void RegisterMouseInput() {
+		// ~~~~ DEBUG ~~~~
+		if (Input.GetMouseButton(2) && player!=null) {
+			player.SetPos(mousePosWorld());
+		}
+	}
 	private void RegisterButtonInput () {
 		bool isKey_alt = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
 		bool isKey_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);

@@ -163,8 +163,8 @@ public class GameCameraController : MonoBehaviour {
 	//  Events
 	// ----------------------------------------------------------------
 	private void OnPlayerDie(Player player) {
-		screenShakeVolumeVel = 1f;
-		fullScrim.FadeFromAtoB(Color.clear, new Color(0,0,0, 0.3f), 0.9f, true);
+		screenShakeVolumeVel = 0.7f;
+		fullScrim.FadeFromAtoB(Color.clear, new Color(1,1,1, 0.2f), 1f, true);
 	}
 
 
