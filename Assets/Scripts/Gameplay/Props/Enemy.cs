@@ -65,9 +65,6 @@ public class Enemy : PlatformCharacter {
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-	override protected void OnLeaveSurface(int side) {
-		base.OnLeaveSurface(side);
-	}
 	override protected void OnTouchSurface(int side, Collider2D collider) {
 		base.OnTouchSurface(side, collider);
 
@@ -76,6 +73,7 @@ public class Enemy : PlatformCharacter {
 			dirMoving *= -1;
 		}
 	}
+
 
 	// ----------------------------------------------------------------
 	//  Events

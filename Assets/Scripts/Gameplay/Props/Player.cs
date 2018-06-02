@@ -297,9 +297,6 @@ public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-	override protected void OnLeaveSurface(int side) {
-		base.OnLeaveSurface(side);
-	}
 	override protected void OnTouchSurface(int side, Collider2D surfaceCol) {
 		base.OnTouchSurface(side, surfaceCol);
 

@@ -108,7 +108,7 @@ public class PlatformCharacter : Collidable {
 			float sideSpeed = GetSideSpeed(side);
 			bool isTouching = surfaceCollider!=null && sideSpeed>=0; // I'm "touching" this surface if it exists and I'm NOT moving *away* from it!
 			if (onSurfaces[side] && !isTouching) {
-				OnLeaveSurface(side);
+				OnLeaveSurface(side, surfaceCollider);
 			}
 			else if (!onSurfaces[side] && isTouching) {
 				OnTouchSurface(side, surfaceCollider);
@@ -131,12 +131,23 @@ public class PlatformCharacter : Collidable {
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-	virtual protected void OnLeaveSurface(int side) {
+	// TODO: Remove surfaceCol variable! Use the one(s!) we know we were touching. OR, remove surfaceCol variable and put what we need in OnTriggerExit2D events in Collidable.
+	virtual protected void OnLeaveSurface(int side, Collider2D surfaceCol) {
 		onSurfaces[side] = false;
+		if (surfaceCol != null) {
+		Collidable collidable = surfaceCol.GetComponent<Collidable>();
+			if (collidable != null) {
+				collidable.OnCharacterLeaveMe(this);
+			}
+		}
 	}
-	virtual protected void OnTouchSurface(int side, Collider2D groundCol) {
+	virtual protected void OnTouchSurface(int side, Collider2D surfaceCol) {
 		onSurfaces[side] = true;
 
+		Collidable collidable = surfaceCol.GetComponent<Collidable>();
+		if (collidable != null) {
+			collidable.OnCharacterTouchMe(this);
+		}
 		// Inform the ground!
 		//		Collidable collidable = groundCol.GetComponent<Collidable>();
 		//		if (collidable != null) {
