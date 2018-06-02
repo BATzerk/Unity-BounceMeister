@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 abstract public class Collidable : MonoBehaviour {
+	[SerializeField] private bool doRechargeBounce = true; // if true, we recharge the Player's bounce when their feet touch me!
 	[SerializeField] protected bool isBouncy = true;
 	[SerializeField] protected bool doDisappearOnCharacterLeave = false;
 	const float RegenTime = 2f; // how long it takes for me to reappear after I've disappeared.
 
+	// Getters (Public)
+	public bool DoRechargeBounce { get { return doRechargeBounce; } }
 	public bool IsBouncy { get { return isBouncy; } }
 
 //	virtual public void OnCollideWithCollidable(Collidable collidable, int otherSideCol) {} //abstract 

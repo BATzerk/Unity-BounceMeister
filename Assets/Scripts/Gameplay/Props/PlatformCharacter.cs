@@ -131,7 +131,8 @@ public class PlatformCharacter : Collidable {
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-	// TODO: Remove surfaceCol variable! Use the one(s!) we know we were touching. OR, remove surfaceCol variable and put what we need in OnTriggerExit2D events in Collidable.
+	// TODO: Remove surfaceCol variable! Use the one(s!) we know we were touching.
+	// OR, remove surfaceCol variable and put what we need in OnTriggerExit2D events in Collidable.
 	virtual protected void OnLeaveSurface(int side, Collider2D surfaceCol) {
 		onSurfaces[side] = false;
 		if (surfaceCol != null) {

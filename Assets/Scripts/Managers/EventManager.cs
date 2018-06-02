@@ -20,16 +20,26 @@ public class EventManager {
 	public event PlayerAction PlayerDashEndEvent;
 	public event PlayerAction PlayerDieEvent;
 	public event PlayerAction PlayerJumpEvent;
+	public event PlayerAction PlayerSpendBounceEvent;
+	public event PlayerAction PlayerStartBounceEvent;
+	public event PlayerAction PlayerRechargeBounceEvent;
+	public event PlayerAction PlayerWallKickEvent;
 
 	// Program Events
 	public void OnScreenSizeChanged () { if (ScreenSizeChangedEvent!=null) { ScreenSizeChangedEvent (); } }
 	// Game Events
 	public void OnCoinCollected(Coin coin) { if (CoinCollectedEvent!=null) { CoinCollectedEvent(coin); } }
+	public void OnCoinsCollectedChanged() { if (CoinsCollectedChangedEvent!=null) { CoinsCollectedChangedEvent(); } }
+
 	public void OnPlayerDash(Player player) { if (PlayerDashEvent!=null) { PlayerDashEvent(player); } }
 	public void OnPlayerDashEnd(Player player) { if (PlayerDashEndEvent!=null) { PlayerDashEndEvent(player); } }
 	public void OnPlayerDie(Player player) { if (PlayerDieEvent!=null) { PlayerDieEvent(player); } }
 	public void OnPlayerJump(Player player) { if (PlayerJumpEvent!=null) { PlayerJumpEvent(player); } }
-	public void OnCoinsCollectedChanged() { if (CoinsCollectedChangedEvent!=null) { CoinsCollectedChangedEvent(); } }
+	public void OnPlayerSpendBounce(Player player) { if (PlayerSpendBounceEvent!=null) { PlayerSpendBounceEvent(player); } }
+	public void OnPlayerStartBounce(Player player) { if (PlayerStartBounceEvent!=null) { PlayerStartBounceEvent(player); } }
+	public void OnPlayerRechargeBounce(Player player) { if (PlayerRechargeBounceEvent!=null) { PlayerRechargeBounceEvent(player); } }
+	public void OnPlayerWallKick(Player player) { if (PlayerWallKickEvent!=null) { PlayerWallKickEvent(player); } }
+
 
 }
 

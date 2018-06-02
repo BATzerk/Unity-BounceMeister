@@ -27,7 +27,7 @@ public class Ground : Collidable {
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	void Start() {
+	virtual protected void Start() {
 		UpdateBodySpriteColor();
 	}
 

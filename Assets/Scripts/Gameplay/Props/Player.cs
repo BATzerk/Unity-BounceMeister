@@ -4,32 +4,34 @@ using UnityEngine;
 
 public class Player : PlatformCharacter {
 	// Constants
-	override protected float FrictionAir { get { return 1f; } }
+	override protected float FrictionAir { get { return 0.7f; } }
 	override protected float FrictionGround { get { return 0.7f; } }
 	override protected Vector2 Gravity { get { return new Vector2(0, -0.042f); } }
 
-	private const float InputScaleX = 0.07f;
-	private const float JumpForce = 0.62f;
+	private const float InputScaleX = 0.1f;
+	private const float JumpForce = 0.58f;
 	private const float WallSlideMinYVel = -0.14f;
-	private readonly Vector2 WallJumpVel = new Vector2(3f, 0.52f);
+	private readonly Vector2 WallKickVel = new Vector2(1f, 0.42f);
 	private readonly Vector2 HitByEnemyVel = new Vector2(4f, 0.5f);
 
-	private const float MaxVelX = 0.3f;
+	private const float MaxVelXAir = 0.35f;
+	private const float MaxVelXGround = 0.25f;
 	private const float MaxVelYUp = 3;
 	private const float MaxVelYDown = -3;
 
-	private const float DelayedJumpWindow = 0.15f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
+	private const float DelayedJumpWindow = 0.1f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
-	private const float PostWallJumpHorzInputLockDur = 0.14f; // how long until we can provide horizontal input after jumping off a wall.
+	private const float PostWallKickHorzInputLockDur = 0.15f; // how long until we can provide horizontal input after jumping off a wall.
 
 	// Properties
 	private bool isBouncing = false;
 	private bool isBounceRecharged = true;
 	private bool isPostDamageImmunity = false;
+	private bool groundedSinceBounce; // TEST for interactions with Batteries.
 	private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
-	private float timeLastWallJumped;
-	private float timeSinceDamage; // invincible until this time! Set to Time.time + PostDamageInvincibleDuration when we're hit.
-	private float timeWhenDelayedJump; // set when we're in the air and press Jump. If we touch ground before this time, we'll do a delayed jump!
+	private float timeLastWallKicked=Mathf.NegativeInfinity;
+	private float timeSinceDamage=Mathf.NegativeInfinity; // invincible until this time! Set to Time.time + PostDamageInvincibleDuration when we're hit.
+	private float timeWhenDelayedJump=Mathf.NegativeInfinity; // set when we're in the air and press Jump. If we touch ground before this time, we'll do a delayed jump!
 	private int health = 1; // we die when we hit 0.
 	private int numJumpsSinceGround;
 //	private int maxHealth = 2;
@@ -38,15 +40,21 @@ public class Player : PlatformCharacter {
 
 	// Getters (Public)
 	public bool IsBouncing { get { return isBouncing; } }
+	public bool IsBounceRecharged { get { return isBounceRecharged; } }
 	public bool IsPostDamageImmunity { get { return isPostDamageImmunity; } }
 	// Getters (Overrides)
 	override protected float HorzMoveInputVelXDelta() {
 		if (InputController.Instance==null) { return 0; } // for building at runtime.
 		if (inputAxis.x == 0) { return 0; }
 		float dirX = MathUtils.Sign(inputAxis.x);
-		float mult = feetOnGround() ? 1 : 0.65f;
-		if (Time.time < timeLastWallJumped+PostWallJumpHorzInputLockDur) {
-			mult = 0;
+		// TESTing out controls!
+		float mult = feetOnGround() ? 1 : 1;//0.65f;
+		if (!MathUtils.IsSameSign(dirX, vel.x)) { // Pushing the other way? Make us go WAY the other way, ok?
+			mult = 3;
+			// If we're pushing AGAINST our velocity AND we just kicked off a wall, don't allow the input, ok?
+			if (Time.time < timeLastWallKicked+PostWallKickHorzInputLockDur) {
+				mult = 0;
+			}
 		}
 
 		return dirX*InputScaleX * mult;
@@ -96,7 +104,7 @@ public class Player : PlatformCharacter {
 		isPostDamageImmunity = false;
 
 		// Size me, queen!
-		SetSize (new Vector2(2f, 2f)); // NOTE: I don't understand why we gotta cut it by 100x. :P
+		SetSize (new Vector2(1.5f, 1.8f)); // NOTE: I don't understand why we gotta cut it by 100x. :P
 	}
 	override protected void SetSize(Vector2 _size) {
 		base.SetSize(_size);
@@ -147,17 +155,24 @@ public class Player : PlatformCharacter {
 		Vector2 ppos = pos;
 
 		UpdateOnSurfaces();
+		if (Time.time-0.5f > timeLastWallKicked) { // HACK TEST
 		ApplyFriction();
+		}
+//		if (isBouncing && Input.GetKey(KeyCode.Space)) {// TEST
+//			vel = new Vector2(vel.x, 0);
+//		}
+//		else {
 		ApplyGravity();
 		// HACK temp
-		if (isBouncing) { vel += Gravity*0.8f; } // If we're going down, make us go down faster!
+		if (isBouncing) { vel += Gravity*1f; } // If we're going down, make us go down faster!
+//		}
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
 		myWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
 		UpdateWallSlide();
 		ApplyVel();
 		UpdateMaxYSinceGround();
-		// HACK temp
+		// TEST auto-bounce
 //		if (!feetOnGround() && !isBouncing && vel.y<-0.5f) {
 //			StartBouncing();
 //		}
@@ -167,9 +182,14 @@ public class Player : PlatformCharacter {
 	}
 
 	private void ApplyTerminalVel() {
-		vel = new Vector2(Mathf.Clamp(vel.x, -MaxVelX,MaxVelX), Mathf.Clamp(vel.y, MaxVelYDown,MaxVelYUp));
+		float maxXVel = feetOnGround() ? MaxVelXGround : MaxVelXAir;
+		float xVel = Mathf.Clamp(vel.x, -maxXVel,maxXVel);
+		float yVel = Mathf.Clamp(vel.y, MaxVelYDown,MaxVelYUp);
+		vel = new Vector2(xVel, yVel);
 	}
 	private void UpdateMaxYSinceGround() {
+		// TEST!!
+		if (!groundedSinceBounce) { return; }
 		maxYSinceGround = Mathf.Max(maxYSinceGround, pos.y);
 	}
 	private void UpdateWallSlide() {
@@ -189,16 +209,20 @@ public class Player : PlatformCharacter {
 		numJumpsSinceGround ++;
 		GameManagers.Instance.EventManager.OnPlayerJump(this);
 	}
-	private void WallJump() {
-		vel = new Vector2(-wallSlideSide*WallJumpVel.x, WallJumpVel.y);
-		timeLastWallJumped = Time.time;
+	private void WallKick() {
+		vel = new Vector2(-wallSlideSide*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y));
+		timeLastWallKicked = Time.time;
 		numJumpsSinceGround ++;
-		GameManagers.Instance.EventManager.OnPlayerJump(this);
+		maxYSinceGround = pos.y; // TEST!!
+		GameManagers.Instance.EventManager.OnPlayerWallKick(this);
 	}
 	private void StartBouncing() {
 		if (isBouncing) { return; } // Already bouncing? Do nothing.
 		isBouncing = true;
+		groundedSinceBounce = false;
 		myBody.OnStartBouncing();
+		vel = new Vector2(vel.x, Mathf.Min(vel.y, 0)); // lose all upward momentum!
+		GameManagers.Instance.EventManager.OnPlayerStartBounce(this);
 //		// If we're on the ground when we say we wanna bounce, jump us up so we start actually bouncing!
 //		if (feetOnGround) {
 //			vel = new Vector2(vel.x, Mathf.Max(vel.y, JumpForce));
@@ -228,7 +252,7 @@ public class Player : PlatformCharacter {
 	// TEST! This whole function is a controls experiment.
 	private void BounceOffCollidable_Side(Collidable collidable) { // NOTE: We're probably gonna wanna denote WHICH sides of collidables are bouncy...
 		StartBouncing(); // Make sure we're bouncing!
-		timeLastWallJumped = Time.time;
+		timeLastWallKicked = Time.time;
 		vel = new Vector2(-vel.x, Mathf.Max(vel.y, Mathf.Abs(vel.x)*2f+0.1f));
 //		vel = new Vector2(-vel.x, JumpForce*0.7f);//vel.y+
 		// Inform the collidable if it exists!!
@@ -241,10 +265,12 @@ public class Player : PlatformCharacter {
 		StopBouncing();
 		isBounceRecharged = false; // we need to wait until we're recharged to bounce again.
 		myBody.OnSpendBounce();
+		GameManagers.Instance.EventManager.OnPlayerSpendBounce(this);
 	}
 	private void RechargeBounce() {
 		isBounceRecharged = true;
 		myBody.OnRechargeBounce();
+		GameManagers.Instance.EventManager.OnPlayerRechargeBounce(this);
 	}
 
 
@@ -275,7 +301,7 @@ public class Player : PlatformCharacter {
 			GroundJump();
 		}
 		else if (isWallSliding()) {
-			WallJump();
+			WallKick();
 		}
 		else if (CanStartBounce()) {
 			StartBouncing();
@@ -325,10 +351,13 @@ public class Player : PlatformCharacter {
 			BounceOffCollidable_Up(collidable);
 		}
 		else {
+			groundedSinceBounce = true;
 			// DON'T bounce? Then stop bouncing right away.
 			StopBouncing();
-			// TEST. Consider us recharged now!
-			RechargeBounce();
+			// Is this collidable refreshing? Recharge my bounces!
+			if (collidable!=null && collidable.DoRechargeBounce) {
+				RechargeBounce();
+			}
 			// Do that delayed jump we planned?
 			if (Time.time <= timeWhenDelayedJump) {
 				GroundJump();
@@ -342,7 +371,9 @@ public class Player : PlatformCharacter {
 		}
 
 		// Finally reset maxYSinceGround.
+		if (groundedSinceBounce) {
 		maxYSinceGround = pos.y;
+		}
 	}
 	private void OnNonFeetTouchSurface(Collidable collidable) {
 		// Enemy??
@@ -364,6 +395,14 @@ public class Player : PlatformCharacter {
 		vel = new Vector2(-dirToEnemy*HitByEnemyVel.x, HitByEnemyVel.y);
 		TakeDamage(1);
 	}
+
+//	private void OnTriggerExit2D(Collider2D col) {
+//		Collidable collidable = col.GetComponent<Collidable>();
+//		if (collidable != null) {
+//
+//		}
+//	}
+
 
 
 	// ----------------------------------------------------------------
@@ -390,6 +429,10 @@ public class Player : PlatformCharacter {
 		myBody.OnDie();
 		GameManagers.Instance.EventManager.OnPlayerDie(this);
 		base.Die();
+	}
+
+	public void OnUseBattery() {
+		RechargeBounce();
 	}
 
 

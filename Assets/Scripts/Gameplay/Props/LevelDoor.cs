@@ -22,9 +22,11 @@ public class LevelDoor : MonoBehaviour {
 	//  Doers
 	// ----------------------------------------------------------------
 	private void GoToMyLevel() {
-		// TEMP! Todo: Dispatch an event for GameController, which will handle the scene transition.
+		// Set the door we're gonna start at!
 		GameManagers.Instance.DataManager.levelToDoorID = levelToDoorID;
-		UnityEngine.SceneManagement.SceneManager.LoadScene ("Level_" + levelToName);
+		// Load the level!
+		string sceneName = "Level_" + levelToName;
+		UnityEngine.SceneManagement.SceneManager.LoadScene (sceneName);
 	}
 
 

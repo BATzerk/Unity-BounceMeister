@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class ToggleGround : MonoBehaviour {
+public class ToggleGround : Collidable {
 	// Components
 	[SerializeField] private SpriteRenderer sr_fill=null;
 	[SerializeField] private BoxCollider2D myCollider=null;
@@ -27,13 +27,17 @@ public class ToggleGround : MonoBehaviour {
 		SetIsOn(startsOn);
 
 		// Add event listeners!
-//		GameManagers.Instance.EventManager.PlayerDashEvent += OnPlayerDash;
-		GameManagers.Instance.EventManager.PlayerDashEndEvent += OnPlayerDashEnd;
+		//		GameManagers.Instance.EventManager.PlayerDashEvent += OnPlayerDash;
+		GameManagers.Instance.EventManager.PlayerStartBounceEvent += OnPlayerDidSomething;
+//		GameManagers.Instance.EventManager.PlayerSpendBounceEvent += OnPlayerDidSomething;
+//		GameManagers.Instance.EventManager.PlayerJumpEvent += OnPlayerDidSomething;
 	}
 	private void OnDestroy() {
 		// Remove event listeners!
-//		GameManagers.Instance.EventManager.PlayerDashEvent -= OnPlayerDash;
-		GameManagers.Instance.EventManager.PlayerDashEndEvent -= OnPlayerDashEnd;
+		//		GameManagers.Instance.EventManager.PlayerDashEvent -= OnPlayerDash;
+		GameManagers.Instance.EventManager.PlayerStartBounceEvent -= OnPlayerDidSomething;
+//		GameManagers.Instance.EventManager.PlayerSpendBounceEvent -= OnPlayerDidSomething;
+//		GameManagers.Instance.EventManager.PlayerJumpEvent -= OnPlayerDidSomething;
 	}
 
 
@@ -43,7 +47,7 @@ public class ToggleGround : MonoBehaviour {
 //	private void OnPlayerDash(Player player) {
 //		ToggleIsOn();
 //	}
-	private void OnPlayerDashEnd(Player player) {
+	private void OnPlayerDidSomething(Player player) {
 		ToggleIsOn();
 	}
 //	private void OnTriggerExit2D(Collider2D otherCol) {
@@ -62,7 +66,8 @@ public class ToggleGround : MonoBehaviour {
 	}
 	private void SetIsOn(bool _isOn) {
 		isOn = _isOn;
-		myCollider.isTrigger = !isOn;
+//		myCollider.isTrigger = !isOn;
+		myCollider.enabled = isOn;
 		sr_fill.color = isOn ? bodyColorOn : bodyColorOff;
 	}
 
