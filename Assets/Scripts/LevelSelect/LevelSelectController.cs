@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class LevelSelectController : MonoBehaviour {
 	// Components
-	[SerializeField] private Transform tf_levelButtons;
-	[SerializeField] private Text t_version;
+	[SerializeField] private Transform tf_levelButtons=null;
+	[SerializeField] private Text t_version=null;
 
 
 	// ----------------------------------------------------------------
@@ -28,17 +28,28 @@ public class LevelSelectController : MonoBehaviour {
 //			levelNames.Add(name);
 //		}
 		string[] levelNames = new string[]{
-			"Level_0_0",
-			"Level_0_1",
-			"Level_0_2",
-			"Level_LightDraft",
-			"Level_Rebounce1",
-			"Level_Rebounce2",
-			"Level_Rebounce3",
-			"Level_Test1",
-			"Level_TestCrates",
-			"Level_TestEnemies",
-			"Level_TestSpikes",
+//			"Level_0_0",
+//			"Level_0_1",
+//			"Level_0_2",
+//			"Level_LightDraft",
+//			"Level_Rebounce1",
+//			"Level_Rebounce2",
+//			"Level_Rebounce3",
+//			"Level_Test1",
+//			"Level_TestCrates",
+//			"Level_TestEnemies",
+//			"Level_TestSpikes",
+			"ToggleGrounds1",
+			"ToggleGrounds2",
+			"ToggleGrounds3",
+			"ToggleGrounds4",
+			"ToggleGrounds5",
+			"DGThereAndBackPit",
+			"Level_0_6",
+			"Level_0_7",
+			"TGHallwayDangerHard",
+			"TGJumpParadox1",
+			"TGJumpParadox2",
 		};
 		GameObject buttonPrefab = ResourcesHandler.Instance.levelSelectLevelButton;
 

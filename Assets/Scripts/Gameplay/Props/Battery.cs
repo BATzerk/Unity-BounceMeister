@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Battery : MonoBehaviour {
 	// Constants
-	private float RegenDuration = .2f;//QQQ // how many SECONDS until I regenerate.
+	private float RegenDuration = 2f; // how many SECONDS until I regenerate.
 	// Components
 	[SerializeField] private SpriteRenderer sr_body;
 	// References
