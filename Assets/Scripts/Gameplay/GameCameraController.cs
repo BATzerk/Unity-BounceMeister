@@ -60,16 +60,15 @@ public class GameCameraController : MonoBehaviour {
 		// Add event listeners!
 		GameManagers.Instance.EventManager.PlayerDieEvent += OnPlayerDie;
 		GameManagers.Instance.EventManager.ScreenSizeChangedEvent += OnScreenSizeChanged;
+		GameManagers.Instance.EventManager.StartLevelEvent += OnStartLevel;
 	}
 	private void OnDestroy () {
 		// Remove event listeners!
 		GameManagers.Instance.EventManager.PlayerDieEvent -= OnPlayerDie;
 		GameManagers.Instance.EventManager.ScreenSizeChangedEvent -= OnScreenSizeChanged;
+		GameManagers.Instance.EventManager.StartLevelEvent -= OnStartLevel;
 	}
-	private void Start () {
-		Reset ();
-	}
-	public void Reset () {
+	private void Reset () {
 		UpdateOrthoSizeNeutral ();
 
 		// Reset values
@@ -88,6 +87,10 @@ public class GameCameraController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
+	private void OnStartLevel() {
+		// Reset us now! Now that the player and everything is in place. :)
+		Reset();
+	}
 	private void OnScreenSizeChanged () {
 //		// Go ahead and totally reset me completely when the screen size changes, just to be safe.
 //		Reset ();

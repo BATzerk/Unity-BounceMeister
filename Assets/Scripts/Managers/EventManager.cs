@@ -14,6 +14,7 @@ public class EventManager {
 	public delegate void PlayerAction (Player player);
 
 	public event NoParamAction ScreenSizeChangedEvent;
+	public event NoParamAction StartLevelEvent;
 	public event NoParamAction CoinsCollectedChangedEvent;
 	public event CoinAction CoinCollectedEvent;
 	public event PlayerAction PlayerDashEvent;
@@ -28,6 +29,8 @@ public class EventManager {
 	// Program Events
 	public void OnScreenSizeChanged () { if (ScreenSizeChangedEvent!=null) { ScreenSizeChangedEvent (); } }
 	// Game Events
+	public void OnStartLevel() { if (StartLevelEvent!=null) { StartLevelEvent(); } }
+
 	public void OnCoinCollected(Coin coin) { if (CoinCollectedEvent!=null) { CoinCollectedEvent(coin); } }
 	public void OnCoinsCollectedChanged() { if (CoinsCollectedChangedEvent!=null) { CoinsCollectedChangedEvent(); } }
 

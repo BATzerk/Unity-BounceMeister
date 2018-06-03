@@ -10,6 +10,7 @@ abstract public class Collidable : MonoBehaviour {
 	public bool DoRechargePlayer { get { return doRechargePlayer; } }
 	public bool IsBouncy { get { return isBouncy; } }
 
+	virtual public void OnPlayerTouchMe(Player player, int playerSide) { }
 //	virtual public void OnCollideWithCollidable(Collidable collidable, int otherSideCol) {} //abstract 
 	virtual public void OnPlayerBounceOnMe(Player player) {}
 

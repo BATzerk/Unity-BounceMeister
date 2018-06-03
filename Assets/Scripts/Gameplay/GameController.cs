@@ -7,8 +7,7 @@ public class GameController : MonoBehaviour {
 	private bool isPaused = false;
 	private bool debug_isSlowMo = false;
 	// References
-//	[SerializeField] private GameCameraController cameraController;
-	[SerializeField] private Player player;
+	[SerializeField] private Player player=null;
 
 	// Getters
 	public Player Player { get { return player; } }
@@ -30,6 +29,7 @@ public class GameController : MonoBehaviour {
 		dataManager.SetCoinsCollected (0);
 		UpdateTimeScale();
 		ResetPlayerAtLevelDoor(dataManager.levelToDoorID);
+		eventManager.OnStartLevel();
 
 		// Add event listeners!
 		eventManager.PlayerDieEvent += OnPlayerDie;
@@ -65,7 +65,6 @@ public class GameController : MonoBehaviour {
 		}
 		if (correctDoor != null) {
 			player.SetPos(correctDoor.Pos);
-//			cameraController
 		}
 		else {
 			Debug.LogWarning("Oops! Couldn't find a door with this ID: " + levelDoorID);

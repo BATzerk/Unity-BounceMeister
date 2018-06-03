@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : PlatformCharacter {
 	// Constants
-	override protected float FrictionAir { get { return 0.7f; } }
+	override protected float FrictionAir { get { return isPreservingWallKickVel ? 1f : 0.7f; } } // No air friction while we're preserving our precious wall-kick vel.
 	override protected float FrictionGround { get { return 0.7f; } }
 	private Vector2 GravityNeutral = new Vector2(0, -0.042f);
 	private Vector2 GravityPlunging = new Vector2(0, -0.084f); // gravity is much stronger when we're plunging!
@@ -12,8 +12,8 @@ public class Player : PlatformCharacter {
 
 	private const float InputScaleX = 0.1f;
 	private const float JumpForce = 0.58f;
-	private const float WallSlideMinYVel = -0.14f;
-	private readonly Vector2 WallKickVel = new Vector2(1f, 0.42f);
+	private const float WallSlideMinYVel = -0.1f;
+	private readonly Vector2 WallKickVel = new Vector2(1f, 0.52f);
 	private readonly Vector2 HitByEnemyVel = new Vector2(4f, 0.5f);
 
 	private const float MaxVelXAir = 0.35f;
@@ -29,6 +29,7 @@ public class Player : PlatformCharacter {
 	private bool isPlunging = false;
 	private bool isPlungeRecharged = true;
 	private bool isPostDamageImmunity = false;
+	private bool isPreservingWallKickVel = false; // if TRUE, we don't apply air friction. Set to false if we provide opposite-dir input, and when we land.
 	private bool groundedSincePlunge; // TEST for interactions with Batteries.
 	private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeLastWallKicked=Mathf.NegativeInfinity;
@@ -36,7 +37,7 @@ public class Player : PlatformCharacter {
 	private float timeWhenDelayedJump=Mathf.NegativeInfinity; // set when we're in the air and press Jump. If we touch ground before this time, we'll do a delayed jump!
 	private int health = 1; // we die when we hit 0.
 	private int numJumpsSinceGround;
-//	private int maxHealth = 2;
+	private int wallSlideSide = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
 	// Components
 	[SerializeField] private PlayerBody myBody=null;
 
@@ -62,6 +63,7 @@ public class Player : PlatformCharacter {
 	}
 	// Getters (Private)
 	private Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
+	private bool isWallSliding() { return wallSlideSide!=0; }
 	private bool CanTakeDamage() {
 		return !isPostDamageImmunity;
 	}
@@ -74,17 +76,6 @@ public class Player : PlatformCharacter {
 		return collidable.IsBouncy;
 	}
 
-	private bool isWallSliding() { return wallSlideSide!=0; }
-	private int wallSlideSide {
-		get {
-			if (isPlunging) { return 0; } // No wall-sliding if I'm plunging, ok?
-			if (!feetOnGround()) { // If my feet AREN'T on the ground...!
-				if (onSurfaces[Sides.L]) { return -1; }
-				if (onSurfaces[Sides.R]) { return  1; }
-			}
-			return 0; // Nah, not wall-sliding.
-		}
-	}
 
 
 	// ----------------------------------------------------------------
@@ -150,9 +141,7 @@ public class Player : PlatformCharacter {
 		Vector2 ppos = pos;
 
 		UpdateOnSurfaces();
-		if (Time.time-0.5f > timeLastWallKicked) { // HACK TEST
 		ApplyFriction();
-		}
 		ApplyGravity();
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
@@ -160,6 +149,8 @@ public class Player : PlatformCharacter {
 		UpdateWallSlide();
 		ApplyVel();
 		UpdateMaxYSinceGround();
+
+		UpdateIsPreservingWallKickVel();
 		// TEST auto-plunge
 //		if (!feetOnGround() && !isPlunging && vel.y<-0.5f) {
 //			StartBouncing();
@@ -181,11 +172,51 @@ public class Player : PlatformCharacter {
 		maxYSinceGround = Mathf.Max(maxYSinceGround, pos.y);
 	}
 	private void UpdateWallSlide() {
+		// We ARE wall-sliding!
 		if (isWallSliding()) {
 			vel = new Vector2(vel.x, Mathf.Max(vel.y, WallSlideMinYVel)); // Give us a minimum yVel!
+			// Should we stop wall-sliding??
+			if (wallSlideSide==-1 && !onSurfaces[Sides.L]) {
+				StopWallSlide();
+			}
+			else if (wallSlideSide==1 && !onSurfaces[Sides.R]) {
+				StopWallSlide();
+			}
+		}
+		// We're NOT wall-sliding...
+		else {
+			// Should we START wall-sliding??
+			if (!feetOnGround() && !isPlunging) {
+				if (onSurfaces[Sides.L] && vel.x<-0.001f) {
+					StartWallSlide(-1);
+				}
+				else if (onSurfaces[Sides.R] && vel.x>0.001f) {
+					StartWallSlide(1);
+				}
+			}
 		}
 	}
-
+//	private int wallSlideSide {
+//		get {
+//			if (isPlunging) { return 0; } // No wall-sliding if I'm plunging, ok?
+//			if (!feetOnGround()) { // If my feet AREN'T on the ground...!
+//				if (onSurfaces[Sides.L]) { return -1; }
+//				if (onSurfaces[Sides.R]) { return  1; }
+//			}
+//			return 0; // Nah, not wall-sliding.
+//		}
+//	}
+	private void UpdateIsPreservingWallKickVel() {
+		if (isPreservingWallKickVel) {
+			if (isPlunging) { // Just started plunging? Forget about retaining my wall-kick vel!
+				isPreservingWallKickVel = false;
+			}
+			else if (Time.time-0.1f > timeLastWallKicked // If it's been at least a few grace frames since we wall-kicked...
+				&& !MathUtils.IsSameSign(vel.x, inputAxis.x)) { // Pushing against my vel? Stop preserving the vel!
+				isPreservingWallKickVel = false;
+			}
+		}
+	}
 
 
 	// ----------------------------------------------------------------
@@ -200,6 +231,7 @@ public class Player : PlatformCharacter {
 	private void WallKick() {
 		vel = new Vector2(-wallSlideSide*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y));
 		timeLastWallKicked = Time.time;
+		isPreservingWallKickVel = true;
 		numJumpsSinceGround ++;
 		maxYSinceGround = pos.y; // TEST!!
 		GameManagers.Instance.EventManager.OnPlayerWallKick(this);
@@ -207,6 +239,7 @@ public class Player : PlatformCharacter {
 
 	private void StartPlunge() {
 		if (isPlunging) { return; } // Already plunging? Do nothing.
+		StopWallSlide(); // can't both plunge AND wall-slide.
 		isPlunging = true;
 		isPlungeRecharged = false; // spent!
 		groundedSincePlunge = false;
@@ -223,6 +256,13 @@ public class Player : PlatformCharacter {
 		isPlungeRecharged = true;
 		myBody.OnRechargePlunge();
 		GameManagers.Instance.EventManager.OnPlayerRechargePlunge(this);
+	}
+
+	private void StartWallSlide(int side) {
+		wallSlideSide = side;
+	}
+	private void StopWallSlide() {
+		wallSlideSide = 0;
 	}
 
 	private void StartPostDamageImmunity() {
@@ -277,19 +317,19 @@ public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	override protected void OnTouchSurface(int side, Collider2D surfaceCol) {
 		base.OnTouchSurface(side, surfaceCol);
+		isPreservingWallKickVel = false; // touching any surface immediately stops our wall-kick-vel preservation.
 
 		Collidable collidable = surfaceCol.GetComponent<Collidable>();
+		// Tell the collidable!
+		collidable.OnPlayerTouchMe(this, side);
+
+		// Do my own stuff!
 		if (side == Sides.B) {
 			OnFeetTouchSurface(collidable);
 		}
 		else {
 			OnNonFeetTouchSurface(collidable);
 		}
-
-//		// Inform the collidable!
-//		if (collidable != null) {
-//			collidable.OnCollideWithCollidable(this, side);
-//		}
 	}
 	private void OnFeetTouchSurface(Collidable collidable) {
 		numJumpsSinceGround = 0;
