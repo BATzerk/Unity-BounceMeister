@@ -20,9 +20,9 @@ public class EventManager {
 	public event PlayerAction PlayerDashEndEvent;
 	public event PlayerAction PlayerDieEvent;
 	public event PlayerAction PlayerJumpEvent;
-	public event PlayerAction PlayerSpendBounceEvent;
-	public event PlayerAction PlayerStartBounceEvent;
-	public event PlayerAction PlayerRechargeBounceEvent;
+//	public event PlayerAction PlayerSpendPlungeEvent;
+	public event PlayerAction PlayerStartPlungeEvent;
+	public event PlayerAction PlayerRechargePlungeEvent;
 	public event PlayerAction PlayerWallKickEvent;
 
 	// Program Events
@@ -35,9 +35,9 @@ public class EventManager {
 	public void OnPlayerDashEnd(Player player) { if (PlayerDashEndEvent!=null) { PlayerDashEndEvent(player); } }
 	public void OnPlayerDie(Player player) { if (PlayerDieEvent!=null) { PlayerDieEvent(player); } }
 	public void OnPlayerJump(Player player) { if (PlayerJumpEvent!=null) { PlayerJumpEvent(player); } }
-	public void OnPlayerSpendBounce(Player player) { if (PlayerSpendBounceEvent!=null) { PlayerSpendBounceEvent(player); } }
-	public void OnPlayerStartBounce(Player player) { if (PlayerStartBounceEvent!=null) { PlayerStartBounceEvent(player); } }
-	public void OnPlayerRechargeBounce(Player player) { if (PlayerRechargeBounceEvent!=null) { PlayerRechargeBounceEvent(player); } }
+//	public void OnPlayerSpendBounce(Player player) { if (PlayerSpendPlungeEvent!=null) { PlayerSpendPlungeEvent(player); } }
+	public void OnPlayerStartPlunge(Player player) { if (PlayerStartPlungeEvent!=null) { PlayerStartPlungeEvent(player); } }
+	public void OnPlayerRechargePlunge(Player player) { if (PlayerRechargePlungeEvent!=null) { PlayerRechargePlungeEvent(player); } }
 	public void OnPlayerWallKick(Player player) { if (PlayerWallKickEvent!=null) { PlayerWallKickEvent(player); } }
 
 

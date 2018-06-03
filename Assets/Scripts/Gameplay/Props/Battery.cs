@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Battery : MonoBehaviour {
 	// Constants
-	private float RegenDuration = 2f; // how many SECONDS until I regenerate.
+	private float RegenDuration = 0.5f; // how many SECONDS until I regenerate.
 	// Components
 	[SerializeField] private SpriteRenderer sr_body;
 	// References
@@ -74,7 +74,7 @@ public class Battery : MonoBehaviour {
 		}
 		Player player = col.GetComponent<Player>();
 		// The player is thirsty!!
-		if (!player.IsBounceRecharged) {
+		if (!player.IsPlungeRecharged) {
 			PlayerUseMe(player);
 		}
 	}

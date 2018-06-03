@@ -135,25 +135,20 @@ public class PlatformCharacter : Collidable {
 	// OR, remove surfaceCol variable and put what we need in OnTriggerExit2D events in Collidable.
 	virtual protected void OnLeaveSurface(int side, Collider2D surfaceCol) {
 		onSurfaces[side] = false;
-		if (surfaceCol != null) {
-		Collidable collidable = surfaceCol.GetComponent<Collidable>();
-			if (collidable != null) {
-				collidable.OnCharacterLeaveMe(this);
-			}
-		}
+//		if (surfaceCol != null) {
+//		Collidable collidable = surfaceCol.GetComponent<Collidable>();
+//			if (collidable != null) {
+//				collidable.OnCharacterLeaveMe(this);
+//			}
+//		}
 	}
 	virtual protected void OnTouchSurface(int side, Collider2D surfaceCol) {
 		onSurfaces[side] = true;
 
-		Collidable collidable = surfaceCol.GetComponent<Collidable>();
-		if (collidable != null) {
-			collidable.OnCharacterTouchMe(this);
-		}
-		// Inform the ground!
-		//		Collidable collidable = groundCol.GetComponent<Collidable>();
-		//		if (collidable != null) {
-		//			collidable.OnCollideWithPlayer(this);
-		//		}
+//		Collidable collidable = surfaceCol.GetComponent<Collidable>();
+//		if (collidable != null) {
+//			collidable.OnCharacterTouchMe(this);
+//		}
 	}
 
 

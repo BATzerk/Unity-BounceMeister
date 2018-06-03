@@ -28,14 +28,14 @@ public class ToggleGround : Collidable {
 
 		// Add event listeners!
 		//		GameManagers.Instance.EventManager.PlayerDashEvent += OnPlayerDash;
-		GameManagers.Instance.EventManager.PlayerStartBounceEvent += OnPlayerDidSomething;
+		GameManagers.Instance.EventManager.PlayerStartPlungeEvent += OnPlayerDidSomething;
 //		GameManagers.Instance.EventManager.PlayerSpendBounceEvent += OnPlayerDidSomething;
 //		GameManagers.Instance.EventManager.PlayerJumpEvent += OnPlayerDidSomething;
 	}
 	private void OnDestroy() {
 		// Remove event listeners!
 		//		GameManagers.Instance.EventManager.PlayerDashEvent -= OnPlayerDash;
-		GameManagers.Instance.EventManager.PlayerStartBounceEvent -= OnPlayerDidSomething;
+		GameManagers.Instance.EventManager.PlayerStartPlungeEvent -= OnPlayerDidSomething;
 //		GameManagers.Instance.EventManager.PlayerSpendBounceEvent -= OnPlayerDidSomething;
 //		GameManagers.Instance.EventManager.PlayerJumpEvent -= OnPlayerDidSomething;
 	}

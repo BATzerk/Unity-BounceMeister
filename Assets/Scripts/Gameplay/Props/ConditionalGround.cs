@@ -7,7 +7,7 @@ public class ConditionalGround : Ground {
 	[SerializeField] private BoxCollider2D myCollider;
 	[SerializeField] private SpriteRenderer sr_body;
 	// Properties
-	[SerializeField] private bool isOffWhenBounceSpent = false; // we disappear when the Player spends their bounce, and re-appear when the Player recharges!
+	[SerializeField] private bool isOffWhenPlungeSpent = false; // we disappear when the Player spends their bounce, and re-appear when the Player recharges!
 	[SerializeField] private bool isOffWhenBounceRecharged = false; // the exact INVERSE of the above. (Obviously, these both can't be set to true.)
 	// References
 	[SerializeField] private Sprite s_bodyFull;
@@ -25,13 +25,13 @@ public class ConditionalGround : Ground {
 		}
 
 		// Add event listeners!
-		GameManagers.Instance.EventManager.PlayerSpendBounceEvent += OnPlayerSpendBounce;
-		GameManagers.Instance.EventManager.PlayerRechargeBounceEvent += OnPlayerRechargeBounce;
+		GameManagers.Instance.EventManager.PlayerStartPlungeEvent += OnPlayerStartPlunge;
+		GameManagers.Instance.EventManager.PlayerRechargePlungeEvent += OnPlayerRechargeBounce;
 	}
 	private void OnDestroy() {
 		// Remove event listeners!
-		GameManagers.Instance.EventManager.PlayerSpendBounceEvent -= OnPlayerSpendBounce;
-		GameManagers.Instance.EventManager.PlayerRechargeBounceEvent -= OnPlayerRechargeBounce;
+		GameManagers.Instance.EventManager.PlayerStartPlungeEvent -= OnPlayerStartPlunge;
+		GameManagers.Instance.EventManager.PlayerRechargePlungeEvent -= OnPlayerRechargeBounce;
 	}
 
 
@@ -51,8 +51,8 @@ public class ConditionalGround : Ground {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
-	private void OnPlayerSpendBounce(Player player) {
-		if (isOffWhenBounceSpent) {
+	private void OnPlayerStartPlunge(Player player) {
+		if (isOffWhenPlungeSpent) {
 			TurnOff();
 		}
 		else if (isOffWhenBounceRecharged) {
@@ -60,7 +60,7 @@ public class ConditionalGround : Ground {
 		}
 	}
 	private void OnPlayerRechargeBounce(Player player) {
-		if (isOffWhenBounceSpent) {
+		if (isOffWhenPlungeSpent) {
 			TurnOn();
 		}
 		else if (isOffWhenBounceRecharged) {

@@ -9,6 +9,8 @@ public class PlayerBody : MonoBehaviour {
 	[SerializeField] private ParticleSystem ps_dieBurst;
 	// Properties
 	private readonly Color bodyColor_neutral = new Color(25/255f, 175/255f, 181/255f);
+	private readonly Color bodyColor_plunging = Color.green;
+	private readonly Color bodyColor_plungeExhausted = Color.gray;
 	private Color bodyColor;
 	private float alpha; // we modify this independently of bodyColor.
 	// References
@@ -20,8 +22,7 @@ public class PlayerBody : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void Start() {
 		alpha = 1;
-		bodyColor = bodyColor_neutral;
-		ApplyBodyColor();
+		SetBodyColor(bodyColor_neutral);
 	}
 
 
@@ -35,6 +36,10 @@ public class PlayerBody : MonoBehaviour {
 		sl_aimDir.StartPos = Vector2.zero;
 //		aimDirRadius = Mathf.Min(_size.x,_size.y) * 0.8f;
 	}
+	private void SetBodyColor(Color color) {
+		bodyColor = color;
+		ApplyBodyColor();
+	}
 	private void ApplyBodyColor() {
 		sr_body.color = new Color(bodyColor.r,bodyColor.g,bodyColor.b, bodyColor.a*alpha);
 	}
@@ -43,22 +48,20 @@ public class PlayerBody : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
-	public void OnStartBouncing() {
-		bodyColor = Color.green;
-		ApplyBodyColor();
+	public void OnStartPlunge() {
+		SetBodyColor(bodyColor_plunging);
 	}
-	public void OnStopBouncing() {
-		bodyColor = bodyColor_neutral;
-		ApplyBodyColor();
+	public void OnStopPlunge() {
+		if (myPlayer.IsPlungeRecharged) {
+			SetBodyColor(bodyColor_neutral);
+		}
+		else {
+			SetBodyColor(bodyColor_plungeExhausted);
+		}
 	}
 
-	public void OnSpendBounce() {
-		bodyColor = Color.gray;
-		ApplyBodyColor();
-	}
-	public void OnRechargeBounce() {
-		bodyColor = bodyColor_neutral;
-		ApplyBodyColor();
+	public void OnRechargePlunge() {
+		SetBodyColor(bodyColor_neutral);
 	}
 
 	public void OnEndPostDamageImmunity() {

@@ -6,13 +6,13 @@ using UnityEngine;
 [RequireComponent (typeof(SpriteRenderer))]
 public class Ground : Collidable {
 	// Properties
-	[SerializeField] private bool doDisappearAfterBounces = false;
-	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
+//	[SerializeField] private bool doDisappearAfterBounces = false;
+//	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
 	[SerializeField] private int colorType = 0; // green, blue, purple
 	private bool pisBouncy; // previous isBouncy. Only update my sprite if there's been a change.
 
 	// Getters (Private)
-	private bool IsInvincible { get { return numBouncesLeft < 0; } }
+//	private bool IsInvincible { get { return numBouncesLeft < 0; } }
 
 
 	private Color GetBodySpriteColor() {
@@ -45,21 +45,6 @@ public class Ground : Collidable {
 	private void UpdateBodySpriteColor() {
 		Color color = GetBodySpriteColor();
 		this.GetComponent<SpriteRenderer>().color = color;
-	}
-
-
-	// ----------------------------------------------------------------
-	//  Events
-	// ----------------------------------------------------------------
-	override public void OnPlayerBounceOnMe(Player player) {
-		if (IsInvincible) { return; } // Invincible? Do nothin'.
-		numBouncesLeft --;
-		if (numBouncesLeft <= 0) {
-			isBouncy = false;
-			if (doDisappearAfterBounces) {
-				GameObject.Destroy(this.gameObject); // Cheap for now.
-			}
-		}
 	}
 
 
