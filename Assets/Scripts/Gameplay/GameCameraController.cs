@@ -5,8 +5,9 @@ using UnityEngine;
 public class GameCameraController : MonoBehaviour {
 	// Camera
 	[SerializeField] private Camera primaryCamera=null;
+	[SerializeField] private SpriteRenderer sr_bounds=null; // we use a sprite to represent the visual bounds of each level!
 	// Constants
-	private const float ConstOrthoScale = 0.07f;//HACKy non-pixel-perfect estimation.
+	private const float ConstOrthoScale = 0.06f;//HACKy non-pixel-perfect estimation.
 	private const float ZPos = -10; // lock z pos.
 	// Properties
 	private float orthoSizeNeutral;
@@ -15,6 +16,8 @@ public class GameCameraController : MonoBehaviour {
 	private float screenShakeVolumeVel;
 	private Vector2 vel;
 	private Rect viewRect;
+	private Rect viewRectBounds; // set from sr_bounds. Our viewRect may not exit this rect!
+	private Rect posBounds; // this is viewRectBounds, collapsed to just what viewRect's center can be set to.
 	// References
 	[SerializeField] private FullScrim fullScrim=null;
 	[SerializeField] private GameController gameController=null;
@@ -35,7 +38,7 @@ public class GameCameraController : MonoBehaviour {
 		Vector2 rectSize = GetViewRectSizeFromZoomAmount (_zoomAmount);
 		return new Rect (_rectCenter-rectSize*0.5f, rectSize); // Note: Convert from center to bottom-left pos.
 	}
-	private Vector2 GetViewRectSizeFromZoomAmount (float zoomAmount) {
+	private Vector2 GetViewRectSizeFromZoomAmount (float zoomAmountConstOrthoScale) {
 		return ScreenHandler.RelativeScreenSize / zoomAmount * ConstOrthoScale;
 	}
 	private float GetZoomAmountForViewRect (Rect rect) {
@@ -47,6 +50,12 @@ public class GameCameraController : MonoBehaviour {
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.blue;
 		Gizmos.DrawWireCube (viewRect.center, new Vector3(viewRect.size.x,viewRect.size.y, 10));
+
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireCube (viewRectBounds.center, new Vector3(viewRectBounds.size.x,viewRectBounds.size.y, 10));
+
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireCube (posBounds.center, new Vector3(posBounds.size.x,posBounds.size.y, 10));
 //		Gizmos.color = Color.yellow;
 //		Gizmos.DrawWireCube (viewRect.center*GameVisualProperties.WORLD_SCALE, new Vector3(ScreenHandler.RelativeScreenSize.x+11,ScreenHandler.RelativeScreenSize.y+11, 10)*GameVisualProperties.WORLD_SCALE);//+11 for bloat so we can still see it if there's overlap.
 	}
@@ -71,6 +80,8 @@ public class GameCameraController : MonoBehaviour {
 	private void Reset () {
 		UpdateOrthoSizeNeutral ();
 
+		SetBoundsFromSprite();
+
 		// Reset values
 		vel = Vector2.zero;
 		screenShakeVolume = 0;
@@ -81,6 +92,15 @@ public class GameCameraController : MonoBehaviour {
 		pos = new Vector2(tf_player.localPosition.x, this.transform.localPosition.y); // Start us with the Player in view.
 
 		ApplyViewRect ();
+	}
+	private void SetBoundsFromSprite() {
+		if (sr_bounds != null) {
+			viewRectBounds = new Rect();
+			viewRectBounds.size = sr_bounds.size;
+			viewRectBounds.center = sr_bounds.transform.localPosition;
+			// Of course, hide the sprite! It's just for the editor.
+			sr_bounds.enabled = false;
+		}
 	}
 
 
@@ -109,8 +129,21 @@ public class GameCameraController : MonoBehaviour {
 	}
 
 	private void UpdateApplyVel() {
-		float velX = (tf_player.localPosition.x - pos.x) * 0.1f;
-		vel = new Vector2(velX, 0);
+		// test doing this every frame. Only do it when our zoom changes, ok?
+		posBounds = new Rect();
+		posBounds.size = viewRectBounds.size;
+		posBounds.size -= viewRect.size; // collapse our possible pos space! (So viewRect's edge goes up against viewRectBounds's edge, instead of viewRect's pos going up against the edge.)
+		posBounds.size = new Vector2(Mathf.Max(0, posBounds.size.x), Mathf.Max(0, posBounds.size.y)); // Don't let the rect invert.
+		posBounds.center = viewRectBounds.center;
+
+		float targetX = tf_player.localPosition.x;
+		float targetY = tf_player.localPosition.y;
+		targetX = Mathf.Clamp(targetX, posBounds.xMin, posBounds.xMax);
+		targetY = Mathf.Clamp(targetY, posBounds.yMin, posBounds.yMax);
+
+		float velX = (targetX - pos.x) * 0.1f;
+		float velY = (targetY - pos.y) * 0.1f;
+		vel = new Vector2(velX, velY);
 		pos += vel;
 	}
 

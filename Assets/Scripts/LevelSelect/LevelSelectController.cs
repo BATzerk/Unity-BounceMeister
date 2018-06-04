@@ -45,6 +45,8 @@ public class LevelSelectController : MonoBehaviour {
 			"ToggleGrounds4",
 			"ToggleGrounds5",
 			"DGThereAndBackPit",
+			"Level_0_3",
+			"Level_0_5",
 			"Level_0_6",
 			"Level_0_7",
 			"TGHallwayDangerHard",

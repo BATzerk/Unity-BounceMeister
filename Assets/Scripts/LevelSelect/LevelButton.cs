@@ -21,7 +21,7 @@ public class LevelButton : MonoBehaviour {
 		this.transform.localScale = Vector3.one;
 		this.transform.localEulerAngles = Vector3.zero;
 		RectTransform myRectTransform = GetComponent<RectTransform>();
-		myRectTransform.anchoredPosition = new Vector2(-20, -20 - index*50);
+		myRectTransform.anchoredPosition = new Vector2(-20, -20 - index*40);
 
 	}
 

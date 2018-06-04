@@ -41,13 +41,15 @@ public class LevelDoor : MonoBehaviour {
 			}
 		}
 
-		sr_body.color = isTouchingPlayer ? Color.green : Color.magenta;
 	}
 
 	// ----------------------------------------------------------------
 	//  FixedUpdate
 	// ----------------------------------------------------------------
 	private void FixedUpdate() {
+		float alpha = isTouchingPlayer ? 1f : 0.4f;
+		sr_body.color = new Color(sr_body.color.r,sr_body.color.g,sr_body.color.b, alpha);
+
 		isTouchingPlayer = false; // Reset this here, yo.
 	}
 	private void OnTriggerStay2D(Collider2D col) {

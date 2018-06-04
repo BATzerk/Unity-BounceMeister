@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Gem : MonoBehaviour {
 	// Components
-	[SerializeField] private CircleCollider2D myCollider;
+	[SerializeField] private BoxCollider2D myCollider;
 	[SerializeField] private ParticleSystem ps_collectedBurst;
 	[SerializeField] private SpriteRenderer sr_body;
 
@@ -13,10 +13,10 @@ public class Gem : MonoBehaviour {
 	//  Start
 	// ----------------------------------------------------------------
 	private void Start () {
-		// Size me right!
-		float diameter = 2f;
-		GameUtils.SizeSpriteRenderer(sr_body, diameter,diameter);
-		myCollider.radius = diameter*0.5f;
+//		// Size me right!
+//		float diameter = 2f;
+//		GameUtils.SizeSpriteRenderer(sr_body, diameter,diameter);
+//		myCollider.size = diameter*0.5f;
 	}
 
 
@@ -32,7 +32,7 @@ public class Gem : MonoBehaviour {
 	private void GetCollected() {
 		myCollider.enabled = false;
 		sr_body.enabled = false;
-		ps_collectedBurst.Emit(20);
+		ps_collectedBurst.Emit(15);
 	}
 
 
