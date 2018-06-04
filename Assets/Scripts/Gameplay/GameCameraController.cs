@@ -7,17 +7,17 @@ public class GameCameraController : MonoBehaviour {
 	[SerializeField] private Camera primaryCamera=null;
 	[SerializeField] private SpriteRenderer sr_bounds=null; // we use a sprite to represent the visual bounds of each level!
 	// Constants
-	private const float ConstOrthoScale = 0.06f;//HACKy non-pixel-perfect estimation.
+	private const float ConstOrthoScale = 0.065f;//HACKy non-pixel-perfect estimation.
 	private const float ZPos = -10; // lock z pos.
 	// Properties
 	private float orthoSizeNeutral;
 	private float zoomAmount = 1; // UNUSED currently. Stays at 1. It's here for if/when we need it.
 	private float screenShakeVolume;
 	private float screenShakeVolumeVel;
-	private Vector2 vel;
 	private Rect viewRect;
 	private Rect viewRectBounds; // set from sr_bounds. Our viewRect may not exit this rect!
 	private Rect posBounds; // this is viewRectBounds, collapsed to just what viewRect's center can be set to.
+	private Vector2 targetPos;
 	// References
 	[SerializeField] private FullScrim fullScrim=null;
 	[SerializeField] private GameController gameController=null;
@@ -34,6 +34,7 @@ public class GameCameraController : MonoBehaviour {
 		get { return viewRect.center; }
 		set { viewRect.center = value; }
 	}
+
 	private Rect GetViewRect (Vector2 _rectCenter, float _zoomAmount) {
 		Vector2 rectSize = GetViewRectSizeFromZoomAmount (_zoomAmount);
 		return new Rect (_rectCenter-rectSize*0.5f, rectSize); // Note: Convert from center to bottom-left pos.
@@ -66,6 +67,9 @@ public class GameCameraController : MonoBehaviour {
 	//  Start / Destroy
 	// ----------------------------------------------------------------
 	private void Awake () {
+		// Hack. nbd for now.
+		gameController = GameObject.FindObjectOfType<GameController>();
+
 		// Add event listeners!
 		GameManagers.Instance.EventManager.PlayerDieEvent += OnPlayerDie;
 		GameManagers.Instance.EventManager.ScreenSizeChangedEvent += OnScreenSizeChanged;
@@ -83,13 +87,13 @@ public class GameCameraController : MonoBehaviour {
 		SetBoundsFromSprite();
 
 		// Reset values
-		vel = Vector2.zero;
 		screenShakeVolume = 0;
 		screenShakeVolumeVel = 0;
 
 		viewRect = new Rect ();
 		viewRect.size = GetViewRectSizeFromZoomAmount (1);
-		pos = new Vector2(tf_player.localPosition.x, this.transform.localPosition.y); // Start us with the Player in view.
+		UpdateTargetPos();
+		pos = new Vector2(targetPos.x, targetPos.y); // Start us with the Player in view.
 
 		ApplyViewRect ();
 	}
@@ -97,7 +101,7 @@ public class GameCameraController : MonoBehaviour {
 		if (sr_bounds != null) {
 			viewRectBounds = new Rect();
 			viewRectBounds.size = sr_bounds.size;
-			viewRectBounds.center = sr_bounds.transform.localPosition;
+			viewRectBounds.center = sr_bounds.transform.localPosition + sr_bounds.transform.parent.localPosition; // note: use its parent, too (which should be me).
 			// Of course, hide the sprite! It's just for the editor.
 			sr_bounds.enabled = false;
 		}
@@ -122,13 +126,19 @@ public class GameCameraController : MonoBehaviour {
 	//  Update
 	// ----------------------------------------------------------------
 	private void FixedUpdate() {
-		UpdateApplyVel();
-		UpdateScreenShake ();
+		UpdateTargetPos();
+		StepTowardTargetPos();
+		UpdateScreenShake();
 
 		ApplyViewRect();
 	}
 
-	private void UpdateApplyVel() {
+	private void StepTowardTargetPos() {
+		float velX = (targetPos.x - pos.x) * 0.1f;
+		float velY = (targetPos.y - pos.y) * 0.1f;
+		pos += new Vector2(velX, velY);
+	}
+	private void UpdateTargetPos() {
 		// test doing this every frame. Only do it when our zoom changes, ok?
 		posBounds = new Rect();
 		posBounds.size = viewRectBounds.size;
@@ -140,11 +150,7 @@ public class GameCameraController : MonoBehaviour {
 		float targetY = tf_player.localPosition.y;
 		targetX = Mathf.Clamp(targetX, posBounds.xMin, posBounds.xMax);
 		targetY = Mathf.Clamp(targetY, posBounds.yMin, posBounds.yMax);
-
-		float velX = (targetX - pos.x) * 0.1f;
-		float velY = (targetY - pos.y) * 0.1f;
-		vel = new Vector2(velX, velY);
-		pos += vel;
+		targetPos = new Vector2(targetX, targetY);
 	}
 
 

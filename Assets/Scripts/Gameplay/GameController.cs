@@ -25,6 +25,9 @@ public class GameController : MonoBehaviour {
 	//  Start / Destroy
 	// ----------------------------------------------------------------
 	private void Start () {
+		// Nbd for now.
+		player = GameObject.FindObjectOfType<Player>();
+
 		// Reset things!
 		dataManager.SetCoinsCollected (0);
 		UpdateTimeScale();
@@ -97,7 +100,7 @@ public class GameController : MonoBehaviour {
 
 	private void RegisterMouseInput() {
 		// ~~~~ DEBUG ~~~~
-		if (Input.GetMouseButton(2) && player!=null) {
+		if (Input.GetMouseButton(1) && player!=null) {
 			player.SetPos(mousePosWorld());
 		}
 	}

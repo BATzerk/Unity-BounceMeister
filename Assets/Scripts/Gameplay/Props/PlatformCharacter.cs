@@ -23,8 +23,16 @@ public class PlatformCharacter : Collidable {
 	public Vector2 Vel { get { return vel; } }
 	public Vector2 Size { get { return size; } }
 
+	public bool IsInLift { get; set; }
+//	virtual public bool IsAffectedByLift() { return true; }
 	public bool IsDead { get { return isDead; } }
 	public bool feetOnGround() { return onSurfaces[Sides.B] && vel.y<=0; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
+	protected int sideTouchingWall() {
+		if (onSurfaces[Sides.L]) { return -1; }
+		if (onSurfaces[Sides.R]) { return  1; }
+		return 0;
+	}
+	protected bool isTouchingWall() { return sideTouchingWall() != 0; }
 	protected Vector2 pos {
 		get { return this.transform.localPosition; }
 		set { this.transform.localPosition = value; }
@@ -149,6 +157,14 @@ public class PlatformCharacter : Collidable {
 //		if (collidable != null) {
 //			collidable.OnCharacterTouchMe(this);
 //		}
+	}
+
+
+	virtual public void OnEnterLift() {
+		IsInLift = true;
+	}
+	virtual public void OnExitLift() {
+		IsInLift = false;
 	}
 
 

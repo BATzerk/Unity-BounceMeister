@@ -9,6 +9,10 @@ abstract public class Collidable : MonoBehaviour {
 	// Getters (Public)
 	public bool DoRechargePlayer { get { return doRechargePlayer; } }
 	public bool IsBouncy { get { return isBouncy; } }
+	// Getters (Protected)
+	protected bool IsPlayer(Collision2D col) {
+		return col.gameObject.GetComponent<Player>() != null;
+	}
 
 	virtual public void OnPlayerTouchMe(Player player, int playerSide) { }
 //	virtual public void OnCollideWithCollidable(Collidable collidable, int otherSideCol) {} //abstract 

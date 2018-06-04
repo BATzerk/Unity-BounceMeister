@@ -25,7 +25,7 @@ public class LevelDoor : MonoBehaviour {
 		// Set the door we're gonna start at!
 		GameManagers.Instance.DataManager.levelToDoorID = levelToDoorID;
 		// Load the level!
-		string sceneName = "Level_" + levelToName;
+		string sceneName = levelToName;
 		UnityEngine.SceneManagement.SceneManager.LoadScene (sceneName);
 	}
 

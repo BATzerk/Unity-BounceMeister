@@ -5,7 +5,12 @@ using UnityEngine;
 public class Player : PlatformCharacter {
 	// Constants
 	override protected float FrictionAir { get { return isPreservingWallKickVel ? 1f : 0.7f; } } // No air friction while we're preserving our precious wall-kick vel.
-	override protected float FrictionGround { get { return 0.7f; } }
+	override protected float FrictionGround {
+		get {
+			if (Mathf.Abs(inputAxis.x) > 0.1f) { return 0.7f; } // Providing input? Less friction!
+			return 0.5f; // No input? Basically halt.
+		}
+	}
 	private Vector2 GravityNeutral = new Vector2(0, -0.042f);
 	private Vector2 GravityPlunging = new Vector2(0, -0.084f); // gravity is much stronger when we're plunging!
 	override protected Vector2 Gravity { get { return isPlunging ? GravityPlunging : GravityNeutral; } }
@@ -23,7 +28,7 @@ public class Player : PlatformCharacter {
 
 	private const float DelayedJumpWindow = 0.1f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
-	private const float PostWallKickHorzInputLockDur = 0.15f; // how long until we can provide horizontal input after jumping off a wall.
+	private const float PostWallKickHorzInputLockDur = 0.3f; // how long until we can provide horizontal input after jumping off a wall.
 
 	// Properties
 	private bool isPlunging = false;
@@ -45,6 +50,7 @@ public class Player : PlatformCharacter {
 	public bool IsPlungeRecharged { get { return isPlungeRecharged; } }
 	public bool IsPostDamageImmunity { get { return isPostDamageImmunity; } }
 	// Getters (Overrides)
+//	override public bool IsAffectedByLift() { return !isPlunging; } // We're immune to Lifts while plunging!
 	override protected float HorzMoveInputVelXDelta() {
 		if (InputController.Instance==null) { return 0; } // for building at runtime.
 		if (inputAxis.x == 0) { return 0; }
@@ -69,6 +75,7 @@ public class Player : PlatformCharacter {
 	}
 	private bool CanStartPlunge() {
 		if (feetOnGround()) { return false; } // I can't plunge if I'm on the ground.
+		if (IsInLift) { return false; }
 		return isPlungeRecharged;
 	}
 	private bool IsBouncyCollidable(Collidable collidable) {
@@ -211,6 +218,9 @@ public class Player : PlatformCharacter {
 			if (isPlunging) { // Just started plunging? Forget about retaining my wall-kick vel!
 				isPreservingWallKickVel = false;
 			}
+			else if (vel.y < 0) {
+				isPreservingWallKickVel = false; // TEST
+			}
 			else if (Time.time-0.1f > timeLastWallKicked // If it's been at least a few grace frames since we wall-kicked...
 				&& !MathUtils.IsSameSign(vel.x, inputAxis.x)) { // Pushing against my vel? Stop preserving the vel!
 				isPreservingWallKickVel = false;
@@ -229,7 +239,7 @@ public class Player : PlatformCharacter {
 		GameManagers.Instance.EventManager.OnPlayerJump(this);
 	}
 	private void WallKick() {
-		vel = new Vector2(-wallSlideSide*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y));
+		vel = new Vector2(-sideTouchingWall()*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y));
 		timeLastWallKicked = Time.time;
 		isPreservingWallKickVel = true;
 		numJumpsSinceGround ++;
@@ -292,7 +302,7 @@ public class Player : PlatformCharacter {
 		if (feetOnGround()) {//numJumpsSinceGround<MaxJumps && Time.time>=timeWhenCanJump
 			GroundJump();
 		}
-		else if (isWallSliding()) {
+		else if (isTouchingWall()) {// isWallSliding()
 			WallKick();
 		}
 		else if (CanStartPlunge()) {
@@ -418,6 +428,14 @@ public class Player : PlatformCharacter {
 //
 //		}
 //	}
+
+	override public void OnEnterLift() {
+		base.OnEnterLift();
+		if (isPlunging) {
+			StopPlunge();
+		}
+	}
+
 
 
 

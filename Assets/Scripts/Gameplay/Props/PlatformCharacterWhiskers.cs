@@ -70,7 +70,7 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 		UpdateSurfaceDist(side); // Just update the bottom.
 		if (minDistsIndexes[side] == -1) { return null; } // No closest whisker (none collide)? Return null.
 		float distMin = SurfaceDistMin(side);
-		if (distMin < 0.1f) { // TEST: Only count if we're light riiight up against it!
+		if (distMin < 0.1f) { // TEST: Only count if we're like riiight up against it!
 		return collidersAroundMe[side, minDistsIndexes[side]];
 		}
 		return null;
@@ -140,13 +140,13 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 	}
 	public void UpdateSurfaceDist(int side) {
 		if (surfaceDists==null) { return; } // Safety check (for runtime compile).
-		//		groundDistsMin[side] = Mathf.Infinity; // Gotta default the min dist to infinity (last frame doesn't matter anymore).
+//		groundDistsMin[side] = Mathf.Infinity; // Gotta default the min dist to infinity (last frame doesn't matter anymore).
 		minDistsIndexes[side] = -1; // Default this to -1: There is no closest, because they're all infinity.
 		for (int index=0; index<NumWhiskersPerSide; index++) {
 			UpdateWhiskerRaycast(side, index); // update the distances and colliders.
 			float dist = surfaceDists[side,index]; // use the dist we just updated.
 			if (SurfaceDistMin(side) > dist) { // Update the min distance, too.
-				//				groundDistsMin[side] = dist;
+//				groundDistsMin[side] = dist;
 				minDistsIndexes[side] = index;
 			}
 		}
