@@ -6,11 +6,12 @@ public class Lift : MonoBehaviour {
 	// Components
 	private SpriteRenderer sr_body;
 	// Properties
-	[SerializeField] private float yForce = 0.08f;
+	[SerializeField] private float strength = 0.08f;
 	private bool isCharacterInMe = false;
 	private bool pisCharacterInMe = false; // so we can detect a change.
 
 	// Getters
+	private float angle { get { return transform.localEulerAngles.z * Mathf.Deg2Rad; } }
 //	protected bool IsCharacter(Collision2D col) {
 //		return col.gameObject.GetComponent<PlatformCharacter>() != null;
 //	}
@@ -73,7 +74,8 @@ public class Lift : MonoBehaviour {
 		if (character != null) {
 			isCharacterInMe = true;
 			ApplyBodyAlpha();
-			character.ChangeVel(new Vector2(0, yForce));
+			Vector2 force = new Vector2(-Mathf.Sin(angle), Mathf.Cos(angle)) * strength;
+			character.ChangeVel(force);
 		}
 	}
 	private void OnTriggerExit2D(Collider2D col) {
