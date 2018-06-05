@@ -4,7 +4,9 @@ using UnityEngine;
 
 [ExecuteInEditMode]
 [RequireComponent (typeof(SpriteRenderer))]
-public class Ground : Collidable {
+public class Ground : Collidable, ISerializableData<GroundData> {
+	// Components
+	[SerializeField] private SpriteRenderer bodySprite=null;
 	// Properties
 //	[SerializeField] private bool doDisappearAfterBounces = false;
 //	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
@@ -12,6 +14,13 @@ public class Ground : Collidable {
 	private bool pisBouncy; // previous isBouncy. Only update my sprite if there's been a change.
 
 	// Getters (Private)
+	private Rect MyRect {
+		get {
+			Vector2 center = bodySprite.transform.localPosition;
+			Vector2 size = bodySprite.transform.localScale;
+			return new Rect(center, size);
+		}
+	}
 //	private bool IsInvincible { get { return numBouncesLeft < 0; } }
 
 
@@ -33,7 +42,17 @@ public class Ground : Collidable {
 	//  Start
 	// ----------------------------------------------------------------
 	virtual protected void Start() {
+		// HACK TEMP! For old level system that didn't use Ground prefab.
+		if (bodySprite==null) {
+			bodySprite = GetComponent<SpriteRenderer>();
+		}
 		UpdateBodySpriteColor();
+	}
+	public void Initialize(Level _myLevel, GroundData data) {
+		base.BaseInitialize(_myLevel);
+
+		bodySprite.transform.localScale = data.myRect.size;
+		bodySprite.transform.localPosition = data.myRect.position;
 	}
 
 
@@ -49,7 +68,18 @@ public class Ground : Collidable {
 
 	private void UpdateBodySpriteColor() {
 		Color color = GetBodySpriteColor();
-		this.GetComponent<SpriteRenderer>().color = color;
+		bodySprite.color = color;
+	}
+
+
+
+	// ----------------------------------------------------------------
+	//  Serializing
+	// ----------------------------------------------------------------
+	public GroundData SerializeAsData() {
+		GroundData data = new GroundData();
+		data.myRect = MyRect;
+		return data;
 	}
 
 

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelDoor : MonoBehaviour {
+public class LevelDoor : Prop, ISerializableData<LevelDoorData> {
 	// Components
 	[SerializeField] private SpriteRenderer sr_body;
 	// Properties
 	[SerializeField] private string myID;
-	[SerializeField] private string levelToName;
+	[SerializeField] private string levelToKey;
 	[SerializeField] private string levelToDoorID;
 	private bool isTouchingPlayer;
 //	// References
@@ -19,13 +19,28 @@ public class LevelDoor : MonoBehaviour {
 
 
 	// ----------------------------------------------------------------
+	//  Start
+	// ----------------------------------------------------------------
+	public void Initialize(Level _myLevel, LevelDoorData data) {
+		base.BaseInitialize(_myLevel);
+
+		this.transform.localPosition = data.pos;
+
+		myID = data.myID;
+		levelToKey = data.levelToKey;
+		levelToDoorID = data.levelToDoorID;
+	}
+
+
+
+	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
 	private void GoToMyLevel() {
 		// Set the door we're gonna start at!
 		GameManagers.Instance.DataManager.levelToDoorID = levelToDoorID;
 		// Load the level!
-		string sceneName = levelToName;
+		string sceneName = levelToKey;
 		UnityEngine.SceneManagement.SceneManager.LoadScene (sceneName);
 	}
 
@@ -59,6 +74,19 @@ public class LevelDoor : MonoBehaviour {
 		}
 	}
 
+
+
+	// ----------------------------------------------------------------
+	//  Serializing
+	// ----------------------------------------------------------------
+	public LevelDoorData SerializeAsData() {
+		LevelDoorData data = new LevelDoorData();
+		data.pos = Pos;
+		data.myID = myID;
+		data.levelToKey = levelToKey;
+		data.levelToDoorID = levelToDoorID;
+		return data;
+	}
 
 }
 

@@ -5,7 +5,7 @@ using System.Globalization;
 
 public class TextUtils {
 	// Properties
-	private static string[] LINE_BREAKS_STRINGS = new string[] { "\r\n", "\n" }; // Mac and PC read line breaks differently. :p
+	private static string[] LINE_BREAKS_STRINGS = new string[] { System.Environment.NewLine };
 	private static CultureInfo parserCulture = CultureInfo.CreateSpecificCulture ("en"); // We ONLY want to parse (number) strings with English culture!
 
 	/** Use THIS function instead of float.Parse!! Because... on PlayStation 4, if the system's language is French, it treats periods as commas. We want ONLY to use English-style punctuation throughout all our backend. */
@@ -86,6 +86,23 @@ public class TextUtils {
 //		return lines;
 		return wholeString.Split (LINE_BREAKS_STRINGS, stringSplitOptions);
 	}
+
+	static public void RemoveExcessLineBreaksFromStringArray(ref string[] stringArray) {
+		int numExcessLineBreaks = 0;
+		for (int i=stringArray.Length-1; i>=0; --i) {
+			if (stringArray[i].Length == 0) numExcessLineBreaks ++;
+			else break;
+		}
+		string[] returnStringArray = new string[stringArray.Length - numExcessLineBreaks];
+		for (int i=0; i<returnStringArray.Length; i++) {
+			returnStringArray[i] = stringArray[i];
+		}
+		stringArray = returnStringArray;
+	}
+
+
+
+
 	static public Rect GetRectFromString (string str) {
 		// This function parses a string AS FORMATTED by Rect's ToString() function. Example: (x:0.68, y:76.18, width:400.00, height:400.00)
 		int colonIndex, commaIndex;
@@ -110,9 +127,10 @@ public class TextUtils {
 	/** Pass in like this: "-100,320". */
 	static public Vector2 GetVector2FromString (string str) {
 		if (str==null) { return Vector2.zero; }
+		str = str.Substring(1, str.Length-2); // cut the parenthesis.
 		int indexOfComma = str.IndexOf (',');
 		string xString = str.Substring (0, indexOfComma);
-		string yString = str.Substring (indexOfComma+1);
+		string yString = str.Substring (indexOfComma+2); // starting after ", ".
 		//		try { // test
 		float x = ParseFloat (xString);
 		float y = ParseFloat (yString);

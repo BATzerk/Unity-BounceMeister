@@ -10,13 +10,15 @@ public class EventManager {
 	public delegate void FloatAction (float a);
 	public delegate void FloatFloatAction (float a, float b);
 	public delegate void IntAction (int a);
-	public delegate void StringAction (string a);
+	public delegate void LevelAction(Level level);
 	public delegate void PlayerAction (Player player);
+	public delegate void StringAction (string a);
 
+	public event NoParamAction EditorSaveLevelEvent;
 	public event NoParamAction ScreenSizeChangedEvent;
-	public event NoParamAction StartLevelEvent;
 	public event NoParamAction CoinsCollectedChangedEvent;
 	public event CoinAction CoinCollectedEvent;
+	public event LevelAction StartLevelEvent;
 	public event PlayerAction PlayerDashEvent;
 	public event PlayerAction PlayerDashEndEvent;
 	public event PlayerAction PlayerDieEvent;
@@ -29,7 +31,8 @@ public class EventManager {
 	// Program Events
 	public void OnScreenSizeChanged () { if (ScreenSizeChangedEvent!=null) { ScreenSizeChangedEvent (); } }
 	// Game Events
-	public void OnStartLevel() { if (StartLevelEvent!=null) { StartLevelEvent(); } }
+	public void OnEditorSaveLevel() { if (EditorSaveLevelEvent!=null) { EditorSaveLevelEvent(); } }
+	public void OnStartLevel(Level level) { if (StartLevelEvent!=null) { StartLevelEvent(level); } }
 
 	public void OnCoinCollected(Coin coin) { if (CoinCollectedEvent!=null) { CoinCollectedEvent(coin); } }
 	public void OnCoinsCollectedChanged() { if (CoinsCollectedChangedEvent!=null) { CoinsCollectedChangedEvent(); } }

@@ -67,6 +67,25 @@ public class MathUtils {
 			&& Mathf.Abs (rectA.size.x-rectB.size.x)<threshold
 			&& Mathf.Abs (rectA.size.y-rectB.size.y)<threshold;
 	}
+	/** 0 top, 1 right, 2 bottom, 3 left. E.g. If the second point is mostly to the RIGHT of the first, this'll return 1. */
+	public static int GetSideRectIsOn (Rect rectA, Rect rectB) {
+		// Because levels aren't always perfectly in line, determine WHICH direction they're more different by. Use that.
+		// Whichever value of these is the GREATEST, that's the side rectB is on.
+		float diffL = rectA.xMin - rectB.xMax;
+		float diffR = rectB.xMin - rectA.xMax;
+		float diffB = rectA.yMin - rectB.yMax;
+		float diffT = rectB.yMin - rectA.yMax;
+		// Sort 'em!
+		float[] diffs = { diffL, diffR, diffB, diffT };
+		System.Array.Sort (diffs);
+		// WHICH is the LARGEST value??
+		float largestValue = diffs [diffs.Length - 1];
+		if (largestValue == diffL) { return Sides.L; }
+		if (largestValue == diffR) { return Sides.R; }
+		if (largestValue == diffB) { return Sides.B; }
+		if (largestValue == diffT) { return Sides.T; }
+		return -1; // impossibru!!
+	}
 
 	public static Vector2 AbsVector2 (Vector2 v) {
 		return new Vector2 (Mathf.Abs (v.x), Mathf.Abs (v.y));
@@ -138,7 +157,8 @@ public class MathUtils {
 			Mathf.Round (_vector.y/_gridSize) * _gridSize,
 			_vector.z);
 	}
-	
+	*/
+
 	public static void UpdateRectFromPoint(ref Rect rect, Vector2 point) {
 		if (rect.xMin > point.x) { // LEFT
 			rect.xMin = point.x;
@@ -153,17 +173,16 @@ public class MathUtils {
 			rect.yMax = point.y;
 		}
 	}
-	*/
 
 //	public static Rect GetMinScreenRectangle (Rect sourceRect) {
 //		return GetMinScreenRectangle (sourceRect, Vector2.zero);
 ////		return GetCompoundRectangle (sourceRect, new Rect (-GameProperties.ORIGINAL_SIZE*0.5f, GameProperties.ORIGINAL_SIZE));
 //	}
 	/** Returns a rectangle at LEAST as big as our standard dimensions (1024x768).
-	 sourceCenterPos: The center of the 1024x768 rectangle. So we can use this function for both locally and globally positioned rectangles. * /
-	public static Rect GetMinScreenRectangle (Rect sourceRect, Vector2 sourceCenterPos) {
-		return GetCompoundRectangle (sourceRect, new Rect (sourceCenterPos-GameProperties.ORIGINAL_SIZE*0.5f, GameProperties.ORIGINAL_SIZE));
-	}
+	 sourceCenterPos: The center of the 1024x768 rectangle. So we can use this function for both locally and globally positioned rectangles. */
+//	public static Rect GetMinScreenRectangle (Rect sourceRect, Vector2 sourceCenterPos) {
+//		return GetCompoundRectangle (sourceRect, new Rect (sourceCenterPos-GameProperties.ORIGINAL_SIZE*0.5f, GameProperties.ORIGINAL_SIZE));
+//	}
 
 	public static Rect GetCompoundRectangle (Rect rectA, Rect rectB) {
 		// FIRST, check if either of these rectangles are total 0's. If one IS, we want to NOT include it in the return value, so simply return the OTHER rectangle. So we don't include the origin (0,0) accidentally.

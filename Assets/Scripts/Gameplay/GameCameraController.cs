@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameCameraController : MonoBehaviour {
 	// Camera
 	[SerializeField] private Camera primaryCamera=null;
-	[SerializeField] private SpriteRenderer sr_bounds=null; // we use a sprite to represent the visual bounds of each level!
+//	[SerializeField] private SpriteRenderer sr_bounds=null; // we use a sprite to represent the visual bounds of each level!
 	// Constants
 	private const float ConstOrthoScale = 0.065f;//HACKy non-pixel-perfect estimation.
 	private const float ZPos = -10; // lock z pos.
@@ -15,7 +15,7 @@ public class GameCameraController : MonoBehaviour {
 	private float screenShakeVolume;
 	private float screenShakeVolumeVel;
 	private Rect viewRect;
-	private Rect viewRectBounds; // set from sr_bounds. Our viewRect may not exit this rect!
+	private Rect viewRectBounds; // set from each Level's CameraBounds sprite. Our viewRect is confined to this rect!
 	private Rect posBounds; // this is viewRectBounds, collapsed to just what viewRect's center can be set to.
 	private Vector2 targetPos;
 	// References
@@ -71,20 +71,20 @@ public class GameCameraController : MonoBehaviour {
 		gameController = GameObject.FindObjectOfType<GameController>();
 
 		// Add event listeners!
+		GameManagers.Instance.EventManager.EditorSaveLevelEvent += OnEditorSaveLevel;
 		GameManagers.Instance.EventManager.PlayerDieEvent += OnPlayerDie;
 		GameManagers.Instance.EventManager.ScreenSizeChangedEvent += OnScreenSizeChanged;
 		GameManagers.Instance.EventManager.StartLevelEvent += OnStartLevel;
 	}
 	private void OnDestroy () {
 		// Remove event listeners!
+		GameManagers.Instance.EventManager.EditorSaveLevelEvent -= OnEditorSaveLevel;
 		GameManagers.Instance.EventManager.PlayerDieEvent -= OnPlayerDie;
 		GameManagers.Instance.EventManager.ScreenSizeChangedEvent -= OnScreenSizeChanged;
 		GameManagers.Instance.EventManager.StartLevelEvent -= OnStartLevel;
 	}
 	private void Reset () {
 		UpdateOrthoSizeNeutral ();
-
-		SetBoundsFromSprite();
 
 		// Reset values
 		screenShakeVolume = 0;
@@ -97,27 +97,26 @@ public class GameCameraController : MonoBehaviour {
 
 		ApplyViewRect ();
 	}
-	private void SetBoundsFromSprite() {
-		if (sr_bounds != null) {
-			viewRectBounds = new Rect();
-			viewRectBounds.size = sr_bounds.size;
-			viewRectBounds.center = sr_bounds.transform.localPosition + sr_bounds.transform.parent.localPosition; // note: use its parent, too (which should be me).
-			// Of course, hide the sprite! It's just for the editor.
-			sr_bounds.enabled = false;
-		}
-	}
 
 
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
-	private void OnStartLevel() {
+	private void OnStartLevel(Level level) {
+		viewRectBounds = level.GetCameraBoundsRect();
+//		if (viewRectBounds.size.x==0 || viewRectBounds.size.y==0) { // Safety check.
+//			viewRectBounds.size = new Vector2(10,10);
+//		}
+
 		// Reset us now! Now that the player and everything is in place. :)
 		Reset();
 	}
 	private void OnScreenSizeChanged () {
 //		// Go ahead and totally reset me completely when the screen size changes, just to be safe.
 //		Reset ();
+	}
+	private void OnEditorSaveLevel() {
+		fullScrim.FadeFromAtoB(new Color(1,1,1, 0.5f), Color.clear, 0.2f, true);
 	}
 
 
@@ -189,6 +188,9 @@ public class GameCameraController : MonoBehaviour {
 	private void ApplyZoomAmountToCameraOrthographicSize () {
 		float zoomAmount = GetZoomAmountForViewRect (viewRect);
 		float targetOrthoSize = orthoSizeNeutral / zoomAmount;
+		// For runtime compile. In case the zoom's gone nuts, keep it clamped.
+		if (float.IsNaN(targetOrthoSize)) { targetOrthoSize = 20f; }
+		targetOrthoSize = Mathf.Max(1f, targetOrthoSize);
 		primaryCamera.orthographicSize = targetOrthoSize;
 	}
 

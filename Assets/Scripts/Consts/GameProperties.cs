@@ -9,6 +9,18 @@ public class GameProperties : MonoBehaviour {
 	// Constants
 	public const float UnitSize = 1f; // in Unity units
 
+	public const int NUM_WORLDS = 2;
+
+	public static string GetFirstLevelName(int worldIndex) {
+		switch(worldIndex) {
+		default: return "Level0";
+		}
+	}
+	public static string GetLastLevelName(int worldIndex) {
+		switch(worldIndex) {
+		default: return "WorldEnd";
+		}
+	}
 
 
 

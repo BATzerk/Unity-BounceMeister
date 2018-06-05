@@ -1,0 +1,13 @@
+levelProperties
+posGlobal:(0.0, 0.0);designerFlag:0
+
+grounds
+myRect:(x:0.00, y:-36.00, width:400.00, height:40.00)
+myRect:(x:0.00, y:42.50, width:400.00, height:51.00)
+myRect:(x:-55.50, y:0.00, width:65.00, height:36.00)
+myRect:(x:42.00, y:-1.50, width:38.00, height:41.00)
+myRect:(x:0.00, y:0.00, width:6.00, height:6.00)
+
+levelDoors
+pos:(-11.5, -6.0);myID:0;levelToKey:;levelToDoorID:
+

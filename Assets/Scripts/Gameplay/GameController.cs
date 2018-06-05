@@ -7,7 +7,9 @@ public class GameController : MonoBehaviour {
 	private bool isPaused = false;
 	private bool debug_isSlowMo = false;
 	// References
+	[SerializeField] private Transform tf_world;
 	[SerializeField] private Player player=null;
+	[SerializeField] private Level level=null; // TODO: load this dynamically instead! Do our editing in the editor.
 
 	// Getters
 	public Player Player { get { return player; } }
@@ -25,14 +27,15 @@ public class GameController : MonoBehaviour {
 	//  Start / Destroy
 	// ----------------------------------------------------------------
 	private void Start () {
-		// Nbd for now.
+		// TODO: Not like this.
 		player = GameObject.FindObjectOfType<Player>();
 
-		// Reset things!
+		// FORNOW, for editing, Initialize the existing level as a premade level! So we can start editing/playing/saving it right outta the scene.
+		level.InitializeAsPremadeLevel(this);
 		dataManager.SetCoinsCollected (0);
 		UpdateTimeScale();
 		ResetPlayerAtLevelDoor(dataManager.levelToDoorID);
-		eventManager.OnStartLevel();
+		eventManager.OnStartLevel(level);
 
 		// Add event listeners!
 		eventManager.PlayerDieEvent += OnPlayerDie;
@@ -57,6 +60,132 @@ public class GameController : MonoBehaviour {
 		UnityEngine.SceneManagement.SceneManager.LoadScene (sceneName);
 		yield return null;
 	}
+
+	/** This actually shows "Loading" overlay FIRST, THEN next frame loads the world. */
+	public void StartGameAtLevel (int worldIndex, string levelKey) {
+		StartCoroutine (StartGameAtLevelCoroutine(worldIndex, levelKey));
+	}
+	private IEnumerator StartGameAtLevelCoroutine (int worldIndex, string levelKey) {
+//		// It's all a blur to me!
+//		cameraController.BlurScreenForLoading ();
+		yield return null;
+
+		// Reset the current world with a CLEAN wipe.
+		DestroyLevel();
+//		DestroyPlayer ();
+
+		LevelData levelData = dataManager.GetLevelData(worldIndex, levelKey);
+		level = new GameObject().AddComponent<Level>();
+		level.Initialize(this, tf_world, levelData);
+
+		// Reset things!
+		dataManager.SetCoinsCollected (0);
+		UpdateTimeScale();
+		ResetPlayerAtLevelDoor(dataManager.levelToDoorID);
+
+		// Use this opportunity to call SAVE with SaveStorage, yo! (This causes a brief stutter, so I'm opting to call it when the game is already loading.)
+		SaveStorage.Save ();
+		// Dispatch the post-function event!
+		eventManager.OnStartLevel(level);
+		yield return null;
+	}
+
+	private void DestroyLevel() {
+		if (level != null) {
+			Destroy(level.gameObject);
+			level = null;
+		}
+	}
+
+
+
+
+	/*
+	public void SetCurrentWorld (int worldIndex, string levelKey) {
+		// Is this ALREADY the CurrentWorld?? Don't do anything. :)
+		if (currentLevel!=null && currentLevel.WorldIndex==worldIndex) { return; }
+
+		// First, ALWAYS restore any modified levels (so we can't teleport out of a level and leave it in a potentially unsolvable state).
+		RestoreChangedLevelsToLastSnapshot (true);
+		currentWorldIndex = worldIndex;
+
+		// Load the most recent snapshot of the player!
+		PlayerData playerData = snapshotController.GetSnapshotPlayerData (worldIndex, levelKey);
+
+		// SET the playerData snapshot!
+		snapshotController.GetSnapshotData (worldIndex).playerData = playerData;//LoadAndSetSnapshotPlayerData(worldIndex, levelKey);
+		// Initialize this world's content manually!
+		CurrentWorld.OnSetAsCurrentWorld (playerData.currentLevelKey);
+		// Reset player from snapshot, which will ALSO set the currentLevel!
+		ResetPlayer (playerData);
+		// Tell the camera to update its world values!
+		cameraController.OnSetCurrentWorld (worldIndex);
+	}
+
+
+	// ================================================================
+	//  Transitioning Between Levels
+	// ================================================================
+	private void SetCurrentLevel (Level _currentLevel) {
+		Level levelExited = currentLevel;
+
+		// Notify both the old and the new!
+		if (currentLevel != null) { currentLevel.IsCurrentLevel = false; }
+		if (_currentLevel != null) { _currentLevel.IsCurrentLevel = true; }
+
+		// Did we ALREADY have a currentLevel??
+		if (currentLevel != null) {
+			// Analytics!
+			OnPlayerLeaveCurrentLevel ();
+		}
+
+		currentLevel = _currentLevel;
+
+		// Have we provided a NULL level?? Stop doing things here. We're probably doing something special.
+		if (currentLevel == null) {
+			return;
+		}
+
+		// If the player exists, then tell this level to light the heck up!
+		if (player != null) {
+			currentLevel.LightUpLevel (player.Head.Street, player.Head.LocCenter);
+		}
+		// Tell the World we've totally been in this level, man!
+		currentLevel.WorldRef.OnPlayerEnterLevel (currentLevel, levelExited);
+
+		// Update this for good measure.
+		UpdateResetButtonActionAvailable ();
+
+		if (GameProperties.DoSaveSnapshotWhenSetCurrentWorld (currentLevel.LevelKey)) { // HACKY, man. I really don't like these separated values: it de-unifies things. (Though I can't think of an easy solution ATM.)
+			// We're ALSO not in ChallengeMode...!
+			if (!ChallengeModeController.IsChallengeMode) {
+				// Save that we've most recently loaded up this world!
+				GameManagers.Instance.DataManager.SetWorldIndexOnLoadGameScene (currentWorldIndex);
+			}
+		}
+
+		// Update CanSaveToSaveStorage!
+		UpdateCanSaveToSaveStorage ();
+
+		// Dispatch event!
+		GameManagers.Instance.EventManager.OnGameControllerSetCurrentLevel (currentLevel);
+	}
+	*/
+
+
+
+	// ----------------------------------------------------------------
+	//  Doers - Gameplay
+	// ----------------------------------------------------------------
+	private void TogglePause () {
+		isPaused = !isPaused;
+		UpdateTimeScale ();
+	}
+	private void UpdateTimeScale () {
+		if (isPaused) { Time.timeScale = 0; }
+		else if (debug_isSlowMo) { Time.timeScale = 0.2f; }
+		else { Time.timeScale = 1; }
+	}
 	private void ResetPlayerAtLevelDoor(string levelDoorID) {
 		LevelDoor[] allDoors = GameObject.FindObjectsOfType<LevelDoor>();
 		LevelDoor correctDoor = null; // I'll specify next.
@@ -72,21 +201,6 @@ public class GameController : MonoBehaviour {
 		else {
 			Debug.LogWarning("Oops! Couldn't find a door with this ID: " + levelDoorID);
 		}
-	}
-
-
-
-	// ----------------------------------------------------------------
-	//  Doers - Gameplay
-	// ----------------------------------------------------------------
-	private void TogglePause () {
-		isPaused = !isPaused;
-		UpdateTimeScale ();
-	}
-	private void UpdateTimeScale () {
-		if (isPaused) { Time.timeScale = 0; }
-		else if (debug_isSlowMo) { Time.timeScale = 0.2f; }
-		else { Time.timeScale = 1; }
 	}
 
 
@@ -110,11 +224,11 @@ public class GameController : MonoBehaviour {
 		bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
 		// Game Flow
-		if (Input.GetKeyDown(KeyCode.L)) {
+		if (Input.GetKeyDown(KeyCode.Q)) {
 			OpenScene(SceneNames.LevelSelect);
 		}
 
-		if (Input.GetKeyDown(KeyCode.Escape)) {
+		else if (Input.GetKeyDown(KeyCode.Escape)) {
 			TogglePause();
 		}
 
@@ -126,6 +240,13 @@ public class GameController : MonoBehaviour {
 		else if (Input.GetKeyDown(KeyCode.T)) {
 			debug_isSlowMo = !debug_isSlowMo;
 			UpdateTimeScale();
+		}
+
+		else if (Input.GetKeyDown(KeyCode.S)) { // S = Save level as text file!
+			LevelSaverLoader.SaveLevelFile(level);
+		}
+		else if (Input.GetKeyDown(KeyCode.R)) { // R = Reload current Level.
+			StartGameAtLevel(level.WorldIndex, level.LevelKey);
 		}
 
 			
@@ -140,6 +261,13 @@ public class GameController : MonoBehaviour {
 		if (isKey_shift) {
 		}
 	}
+
+
+
+	// ----------------------------------------------------------------
+	//  Editor
+	// ----------------------------------------------------------------
+//	private void Save
 
 
 

@@ -56,7 +56,7 @@ public class Crate : Collidable {
 	}
 
 	private void SpawnCoinInMe() {
-		Coin newCoin = Instantiate(ResourcesHandler.Instance.coin).GetComponent<Coin>();
+		Coin newCoin = Instantiate(ResourcesHandler.Instance.Coin).GetComponent<Coin>();
 		newCoin.transform.SetParent(this.transform.parent); // make its parent whatever mine is, too.
 		newCoin.transform.localScale = Vector3.one * 0.25f; // HACK hardcoded
 		newCoin.transform.localPosition = this.transform.localPosition;
