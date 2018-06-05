@@ -190,7 +190,7 @@ public class GameCameraController : MonoBehaviour {
 		float targetOrthoSize = orthoSizeNeutral / zoomAmount;
 		// For runtime compile. In case the zoom's gone nuts, keep it clamped.
 		if (float.IsNaN(targetOrthoSize)) { targetOrthoSize = 20f; }
-		targetOrthoSize = Mathf.Max(1f, targetOrthoSize);
+		targetOrthoSize = Mathf.Clamp(1f, 9999f, targetOrthoSize);
 		primaryCamera.orthographicSize = targetOrthoSize;
 	}
 

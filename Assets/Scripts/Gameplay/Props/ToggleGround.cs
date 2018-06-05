@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class ToggleGround : Collidable {
-	// Components
-	[SerializeField] private SpriteRenderer sr_fill=null;
-	[SerializeField] private BoxCollider2D myCollider=null;
+public sealed class ToggleGround : BaseGround, ISerializableData<ToggleGroundData> {
 	// Properties
 	[SerializeField] private bool startsOn=false;
 	private bool pstartsOn;
 	private bool isOn;
-	private bool isPlayerInMe;
+	private bool isPlayerInMe=false;
 	private bool isWaitingToTurnOn; // set to TRUE if we wanna turn on, but a Player's in me! In this case, we'll turn on, but not apply it until the Player's left me.
 	private Color bodyColorOn, bodyColorOff;
 
@@ -19,28 +16,29 @@ public class ToggleGround : Collidable {
 	// ----------------------------------------------------------------
 	//  Start / Destroy
 	// ----------------------------------------------------------------
-	private void Start () {
+	override protected void Start () {
+		base.Start();
+
 		bodyColorOn = startsOn ? new Color(3/255f, 170/255f, 204/255f) : new Color(217/255f, 74/255f, 136/255f);
 		bodyColorOff = new Color(bodyColorOn.r,bodyColorOn.g,bodyColorOn.b, bodyColorOn.a*0.14f);
-
-		// Size our sliced sprite properly!
-//		sr_stroke.transform.localScale = new Vector3(1/this.transform.localScale.x, 1/this.transform.localScale.y, 1);
-//		sr_stroke.sprite.
 
 		SetIsOn(startsOn);
 
 		// Add event listeners!
-		//		GameManagers.Instance.EventManager.PlayerDashEvent += OnPlayerDash;
 		GameManagers.Instance.EventManager.PlayerStartPlungeEvent += OnPlayerDidSomething;
 //		GameManagers.Instance.EventManager.PlayerSpendBounceEvent += OnPlayerDidSomething;
 //		GameManagers.Instance.EventManager.PlayerJumpEvent += OnPlayerDidSomething;
 	}
 	private void OnDestroy() {
 		// Remove event listeners!
-		//		GameManagers.Instance.EventManager.PlayerDashEvent -= OnPlayerDash;
 		GameManagers.Instance.EventManager.PlayerStartPlungeEvent -= OnPlayerDidSomething;
 //		GameManagers.Instance.EventManager.PlayerSpendBounceEvent -= OnPlayerDidSomething;
 //		GameManagers.Instance.EventManager.PlayerJumpEvent -= OnPlayerDidSomething;
+	}
+	public void Initialize(Level _myLevel, ToggleGroundData data) {
+		base.BaseGroundInitialize(_myLevel, data);
+
+		startsOn = data.startsOn;
 	}
 
 
@@ -79,7 +77,7 @@ public class ToggleGround : Collidable {
 	private void ApplyIsOn() {
 //		myCollider.isTrigger = !isOn;
 		myCollider.enabled = isOn;
-		sr_fill.color = isOn ? bodyColorOn : bodyColorOff;
+		bodySprite.color = isOn ? bodyColorOn : bodyColorOff;
 
 		// TEMP fragile solution: If I have any children, totally also enable/disable their colliders and sprites!
 		if (this.transform.childCount > 0) {
@@ -128,6 +126,16 @@ public class ToggleGround : Collidable {
 	}
 
 
+
+	// ----------------------------------------------------------------
+	//  Serializing
+	// ----------------------------------------------------------------
+	public ToggleGroundData SerializeAsData() {
+		ToggleGroundData data = new ToggleGroundData();
+		data.myRect = MyRect;
+		data.startsOn = startsOn;
+		return data;
+	}
 
 
 }

@@ -21,6 +21,7 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject Ground;
 	[SerializeField] public GameObject LevelDoor;
 	[SerializeField] public GameObject Lift;
+	[SerializeField] public GameObject Platform;
 	[SerializeField] public GameObject Player;
 	[SerializeField] public GameObject Spikes;
 	[SerializeField] public GameObject ToggleGround;

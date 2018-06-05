@@ -41,20 +41,64 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		ld.isConnectedToStart = levelDataRef.isConnectedToStart;
 
 		// -- Props --
-		// CameraBounds
+		Battery[] batteries = GetComponentsInChildren<Battery>();
+		foreach (Battery obj in batteries) {
+			ld.batteryDatas.Add(obj.SerializeAsData());
+			ld.allPropDatas.Add(obj.SerializeAsData());
+		}
 		CameraBounds cameraBounds = GetComponentInChildren<CameraBounds>();
 		if (cameraBounds != null) {
 			ld.cameraBoundsData = cameraBounds.SerializeAsData();
 		}
-		// Grounds
+//		ConditionalGround[] conditionalGrounds = GetComponentsInChildren<ConditionalGround>();
+//		foreach (ConditionalGround obj in conditionalGrounds) {
+//			ld.conditionalGroundDatas.Add(obj.SerializeAsData());
+//		ld.allPropDatas.Add(obj.SerializeAsData());
+//		}
+		Crate[] crates = GetComponentsInChildren<Crate>();
+		foreach (Crate obj in crates) {
+			ld.crateDatas.Add(obj.SerializeAsData());
+			ld.allPropDatas.Add(obj.SerializeAsData());
+		}
+		DamageableGround[] damageableGrounds = GetComponentsInChildren<DamageableGround>();
+		foreach (DamageableGround obj in damageableGrounds) {
+			ld.damageableGroundDatas.Add(obj.SerializeAsData());
+			ld.allPropDatas.Add(obj.SerializeAsData());
+		}
+		Gem[] gems = GetComponentsInChildren<Gem>();
+		foreach (Gem obj in gems) {
+			ld.gemDatas.Add(obj.SerializeAsData());
+			ld.allPropDatas.Add(obj.SerializeAsData());
+		}
 		Ground[] grounds = GetComponentsInChildren<Ground>();
 		foreach (Ground obj in grounds) {
 			ld.groundDatas.Add(obj.SerializeAsData());
+			ld.allPropDatas.Add(obj.SerializeAsData());
 		}
-		// LevelDoors
 		LevelDoor[] levelDoors = GetComponentsInChildren<LevelDoor>();
 		foreach (LevelDoor obj in levelDoors) {
 			ld.levelDoorDatas.Add(obj.SerializeAsData());
+			ld.allPropDatas.Add(obj.SerializeAsData());
+		}
+		Lift[] lifts = GetComponentsInChildren<Lift>();
+		foreach (Lift obj in lifts) {
+			ld.liftDatas.Add(obj.SerializeAsData());
+			ld.allPropDatas.Add(obj.SerializeAsData());
+		}
+		Platform[] platforms = GetComponentsInChildren<Platform>();
+		foreach (Platform obj in platforms) {
+			ld.platformDatas.Add(obj.SerializeAsData());
+			ld.allPropDatas.Add(obj.SerializeAsData());
+		}
+		Spikes[] spikes = GetComponentsInChildren<Spikes>();
+		foreach (Spikes obj in spikes) {
+			ld.spikesDatas.Add(obj.SerializeAsData());
+			ld.allPropDatas.Add(obj.SerializeAsData());
+		}
+		ToggleGround[] toggleGrounds = GetComponentsInChildren<ToggleGround>();
+		foreach (ToggleGround obj in toggleGrounds) {
+			ld.toggleGroundDatas.Add(obj.SerializeAsData());
+			ld.allPropDatas.Add(obj.SerializeAsData());
 		}
 
 //		// Streets
@@ -107,16 +151,64 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		CameraBounds cameraBounds = Instantiate(ResourcesHandler.Instance.CameraBounds).GetComponent<CameraBounds>();
 		cameraBounds.Initialize(this, ld.cameraBoundsData);
 
-		// Ground
-		foreach (GroundData data in ld.groundDatas) {
-			Ground newProp = Instantiate(rh.Ground).GetComponent<Ground>();
-			newProp.Initialize (this, data);
+
+		foreach (PropData propData in ld.allPropDatas) {
+			// Grounds
+			if (propData is CrateData) {
+				Crate newProp = Instantiate(rh.Crate).GetComponent<Crate>();
+				newProp.Initialize (this, propData as CrateData);
+			}
+//			else if (propData is ConditionalGround) {
+//				ConditionalGround newProp = Instantiate(rh.ConditionalGround).GetComponent<ConditionalGround>();
+//				newProp.Initialize (this, propData as ConditionalGroundData);
+//			}
+			else if (propData is DamageableGroundData) {
+				DamageableGround newProp = Instantiate(rh.DamageableGround).GetComponent<DamageableGround>();
+				newProp.Initialize (this, propData as DamageableGroundData);
+			}
+			else if (propData is ToggleGroundData) {
+				ToggleGround newProp = Instantiate(rh.ToggleGround).GetComponent<ToggleGround>();
+				newProp.Initialize (this, propData as ToggleGroundData);
+			}
+			else if (propData is PlatformData) {
+				Platform newProp = Instantiate(rh.Platform).GetComponent<Platform>();
+				newProp.Initialize (this, propData as PlatformData);
+			}
+			else if (propData is GroundData) {
+				Ground newProp = Instantiate(rh.Ground).GetComponent<Ground>();
+				newProp.Initialize (this, propData as GroundData);
+			}
+			// Everything else!
+			else if (propData is BatteryData) {
+				Battery newProp = Instantiate(rh.Battery).GetComponent<Battery>();
+				newProp.Initialize (this, propData as BatteryData);
+			}
+			else if (propData is GemData) {
+				Gem newProp = Instantiate(rh.Gem).GetComponent<Gem>();
+				newProp.Initialize (this, propData as GemData);
+			}
+			else if (propData is LevelDoorData) {
+				LevelDoor newProp = Instantiate(rh.LevelDoor).GetComponent<LevelDoor>();
+				newProp.Initialize (this, propData as LevelDoorData);
+			}
+			else if (propData is LiftData) {
+				Lift newProp = Instantiate(rh.Lift).GetComponent<Lift>();
+				newProp.Initialize (this, propData as LiftData);
+			}
+			else if (propData is SpikesData) {
+				Spikes newProp = Instantiate(rh.Spikes).GetComponent<Spikes>();
+				newProp.Initialize (this, propData as SpikesData);
+			}
+			else {
+				Debug.LogWarning("PropData not recognized: " + propData);
+			}
 		}
-		// LevelDoor
-		foreach (LevelDoorData data in ld.levelDoorDatas) {
-			LevelDoor newProp = Instantiate(rh.LevelDoor).GetComponent<LevelDoor>();
-			newProp.Initialize (this, data);
-		}
+
+//		// LevelDoor
+//		foreach (LevelDoorData data in ld.levelDoorDatas) {
+//			LevelDoor newProp = Instantiate(rh.LevelDoor).GetComponent<LevelDoor>();
+//			newProp.Initialize (this, data);
+//		}
 	}
 
 	/** Slightly sloppy, whatever-it-takes housekeeping to allow us to start up the game with a novel level and edit/play/save it right off the bat. */

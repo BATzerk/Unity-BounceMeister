@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageableGround : Ground {
+public class DamageableGround : BaseGround, ISerializableData<DamageableGroundData> {
 	// Properties
 	[SerializeField] private bool disappearFromBounce = true;
 	[SerializeField] private bool disappearFromVel = false;
@@ -10,7 +10,16 @@ public class DamageableGround : Ground {
 	const float BreakVel = 0.4f; // the Player has to be moving at least this fast for me to get busted!
 	const float RegenTime = 3f; // how long it takes for me to reappear after I've disappeared.
 
+	// ----------------------------------------------------------------
+	//  Initialize
+	// ----------------------------------------------------------------
+	public void Initialize(Level _myLevel, DamageableGroundData data) {
+		base.BaseGroundInitialize(_myLevel, data);
 
+		disappearFromBounce = data.disappearFromBounce;
+		disappearFromVel = data.disappearFromVel;
+		doRegen = data.doRegen;
+	}
 
 	// ----------------------------------------------------------------
 	//  Events
@@ -49,17 +58,28 @@ public class DamageableGround : Ground {
 		SetSpriteColliderEnabled(true);
 	}
 	private void SetSpriteColliderEnabled(bool _enabled) {
-		SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-		Collider2D collider = GetComponent<Collider2D>();
-		if (collider!=null) { collider.enabled = _enabled; }
-		if (spriteRenderer!=null) {
+		if (myCollider!=null) { myCollider.enabled = _enabled; }
+		if (bodySprite!=null) {
 			if (doRegen) {
-				GameUtils.SetSpriteAlpha (spriteRenderer, _enabled ? 1f : 0.15f);
+				GameUtils.SetSpriteAlpha (bodySprite, _enabled ? 1f : 0.15f);
 			}
 			else {
-				spriteRenderer.enabled = _enabled;
+				bodySprite.enabled = _enabled;
 			}
 		}
+	}
+
+
+	// ----------------------------------------------------------------
+	//  Serializing
+	// ----------------------------------------------------------------
+	public DamageableGroundData SerializeAsData() {
+		DamageableGroundData data = new DamageableGroundData();
+		data.myRect = MyRect;
+		data.disappearFromBounce = disappearFromBounce;
+		data.disappearFromVel = disappearFromVel;
+		data.doRegen = doRegen;
+		return data;
 	}
 
 

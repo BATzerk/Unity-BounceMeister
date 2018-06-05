@@ -2,15 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Crate : Collidable {
-	// Components
-	[SerializeField] private BoxCollider2D myCollider=null;
-	[SerializeField] private SpriteRenderer sr_body=null;
+public class Crate : BaseGround, ISerializableData<CrateData> {
 	// Properties
 	[SerializeField] private int hitsUntilBreak = -1;
 	[SerializeField] private int numCoinsInMe = 0;
 	private int numTimesHit = 0;
 
+
+	// ----------------------------------------------------------------
+	//  Initialize
+	// ----------------------------------------------------------------
+	public void Initialize(Level _myLevel, CrateData data) {
+		base.BaseGroundInitialize(_myLevel, data);
+
+		hitsUntilBreak = data.hitsUntilBreak;
+		numCoinsInMe = data.numCoinsInMe;
+	}
 
 	// ----------------------------------------------------------------
 	//  Events
@@ -48,7 +55,7 @@ public class Crate : Collidable {
 	}
 	private void BreakMe() {
 		myCollider.enabled = false;
-		sr_body.enabled = false;
+		bodySprite.enabled = false;
 		// Am I a pinata?!
 		for (int i=0; i<numCoinsInMe; i++) {
 			SpawnCoinInMe();
@@ -64,5 +71,18 @@ public class Crate : Collidable {
 			Random.Range(-myCollider.size.x*0.3f, myCollider.size.x*0.3f) * this.transform.localScale.x,
 			Random.Range(-myCollider.size.y*0.3f, myCollider.size.y*0.3f) * this.transform.localScale.y);
 	}
+
+
+	// ----------------------------------------------------------------
+	//  Serializing
+	// ----------------------------------------------------------------
+	public CrateData SerializeAsData() {
+		CrateData data = new CrateData();
+		data.myRect = MyRect;
+		data.hitsUntilBreak = hitsUntilBreak;
+		data.numCoinsInMe = numCoinsInMe;
+		return data;
+	}
+
 
 }

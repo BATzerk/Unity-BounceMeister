@@ -11,9 +11,17 @@ static public class LevelSaverLoader {
 	// Constants (Properties)
 	const string LEVEL_PROPERTIES = "levelProperties";
 	// Constants (Objects)
-	const string CAMERA_BOUNDS = "cameraBounds";
-	const string GROUNDS = "grounds";
-	const string LEVEL_DOORS = "levelDoors";
+	const string BATTERY = "Battery";
+	const string CAMERA_BOUNDS = "CameraBounds";
+	const string CRATE = "Crate";
+	const string DAMAGEABLE_GROUND = "DamageableGround";
+	const string GEM = "Gem";
+	const string GROUND = "Ground";
+	const string LEVEL_DOOR = "LevelDoor";
+	const string LIFT = "Lift";
+	const string PLATFORM = "Platform";
+	const string SPIKES = "Spikes";
+	const string TOGGLE_GROUND = "ToggleGround";
 	// Properties
 	private static string debug_levelDataLoadingLevelKey; // purely for printing to the console without having to pass this parameter through a chain of functions
 
@@ -79,26 +87,85 @@ static public class LevelSaverLoader {
 		AddFSLineHeader (LEVEL_PROPERTIES);
 		AddFSLine (GetLevelPropertiesString(ld));
 
-//		// CameraBounds
-//		CameraBounds
-//		AddFSLineHeader(CAMERA_BOUNDS);
-//		AddPropFieldsToFS(l.cameraBounds.MyRect, "myRect");
-//		AddFSLine ();
 
-		// Grounds
+		AddFSLineHeader(CAMERA_BOUNDS);
+		AddPropFieldsToFS(ld.cameraBoundsData, "myRect");
+		AddFSLine ();
+
+		if (ld.batteryDatas.Count > 0) {
+			AddFSLineHeader(BATTERY);
+			foreach (BatteryData obj in ld.batteryDatas) {
+				AddPropFieldsToFS(obj, "pos");
+				AddFSLine();
+			}
+		}
+//		if (ld.conditionalGroundDatas.Count > 0) {
+//			AddFSLineHeader(CONDITIONAL_GROUND);
+//			foreach (BatteryData obj in ld.conditionalGroundDatas) {
+//				AddPropFieldsToFS(obj, "myRect", "?");
+//				AddFSLine();
+//			}
+//		}
+		if (ld.crateDatas.Count > 0) {
+			AddFSLineHeader(CRATE);
+			foreach (CrateData obj in ld.crateDatas) {
+				AddPropFieldsToFS(obj, "myRect", "hitsUntilBreak", "numCoinsInMe");
+				AddFSLine();
+			}
+		}
+		if (ld.damageableGroundDatas.Count > 0) {
+			AddFSLineHeader(DAMAGEABLE_GROUND);
+			foreach (DamageableGroundData obj in ld.damageableGroundDatas) {
+				AddPropFieldsToFS(obj, "myRect", "disappearFromBounce", "disappearFromVel", "doRegen");
+				AddFSLine();
+			}
+		}
+		if (ld.gemDatas.Count > 0) {
+			AddFSLineHeader(GEM);
+			foreach (GemData obj in ld.gemDatas) {
+				AddPropFieldsToFS(obj, "pos");
+				AddFSLine();
+			}
+		}
 		if (ld.groundDatas.Count > 0) {
-			AddFSLineHeader(GROUNDS);
+			AddFSLineHeader(GROUND);
 			foreach (GroundData obj in ld.groundDatas) {
+				AddPropFieldsToFS(obj, "myRect", "colorType");
+				AddFSLine();
+			}
+		}
+		if (ld.levelDoorDatas.Count > 0) {
+			AddFSLineHeader(LEVEL_DOOR);
+			foreach (LevelDoorData obj in ld.levelDoorDatas) {
+				AddPropFieldsToFS(obj, "pos", "myID", "levelToKey", "levelToDoorID");
+				AddFSLine();
+			}
+		}
+		if (ld.liftDatas.Count > 0) {
+			AddFSLineHeader(LIFT);
+			foreach (LiftData obj in ld.liftDatas) {
+				AddPropFieldsToFS(obj, "myRect", "strength");
+				AddFSLine();
+			}
+		}
+		if (ld.platformDatas.Count > 0) {
+			AddFSLineHeader(PLATFORM);
+			foreach (PlatformData obj in ld.platformDatas) {
 				AddPropFieldsToFS(obj, "myRect");
 				AddFSLine();
 			}
 		}
-
-		// LevelDoors
-		if (ld.levelDoorDatas.Count > 0) {
-			AddFSLineHeader(LEVEL_DOORS);
-			foreach (LevelDoorData obj in ld.levelDoorDatas) {
-				AddPropFieldsToFS(obj, "pos", "myID", "levelToKey", "levelToDoorID");
+		if (ld.spikesDatas.Count > 0) {
+			AddFSLineHeader(SPIKES);
+			foreach (SpikesData obj in ld.spikesDatas) {
+				AddPropFieldsToFS(obj, "myRect");
+				AddFSLine();
+			}
+		}
+		if (ld.toggleGroundDatas.Count > 0) {
+			AddFSLineHeader(TOGGLE_GROUND);
+			foreach (ToggleGroundData obj in ld.toggleGroundDatas) {
+				AddPropFieldsToFS(obj, "myRect", "startsOn");
 				AddFSLine();
 			}
 		}
@@ -109,12 +176,8 @@ static public class LevelSaverLoader {
 //			for (int i=0; i<l.movingStreets.Count; i++) {
 //				MovingStreet obj = (MovingStreet) l.movingStreets[i];
 //				AddPropFieldsToFS(obj, "startPosA", "endPosA", "startPosB", "endPosB", "channel");
-//				// Hackish optional params
-//				if (!obj.DoAllowEnemy) { fs += ";doAllowEnemy:False"; }
-//				if (!obj.DoAllowPlayer) { fs += ";doAllowPlayer:False"; }
-//				if (obj.IsFlourishStreet) { fs += ";isFlourishStreet:True"; }
+//				// Optional params
 //				if (obj.IsSecretStreet) { fs += ";isSecretStreet:True"; }
-//				if (obj.CartSpeedScale!=1) { fs += ";cartSpeedScale:"+obj.CartSpeedScale; }
 //				AddFSLine();
 //			}
 //		}
@@ -308,23 +371,73 @@ static public class LevelSaverLoader {
 						SetLevelPropertyFieldValuesFromFieldsString (ld, lineString);
 					}
 					// Props!
-					else if (affectName == GROUNDS) {
-						GroundData propData = new GroundData();
+					else if (affectName == BATTERY) {
+						BatteryData propData = new BatteryData();
 						SetPropDataFieldValuesFromFieldsString (propData, lineString);
-						ld.groundDatas.Add(propData);
+						ld.batteryDatas.Add(propData);
+						ld.allPropDatas.Add(propData);
 					}
 					else if (affectName == CAMERA_BOUNDS) {
 						CameraBoundsData propData = new CameraBoundsData();
 						SetPropDataFieldValuesFromFieldsString (propData, lineString);
 						ld.cameraBoundsData = propData;
 					}
-					else if (affectName == LEVEL_DOORS) {
+					else if (affectName == CRATE) {
+						CrateData propData = new CrateData();
+						SetPropDataFieldValuesFromFieldsString (propData, lineString);
+						ld.crateDatas.Add(propData);
+						ld.allPropDatas.Add(propData);
+					}
+					else if (affectName == DAMAGEABLE_GROUND) {
+						DamageableGroundData propData = new DamageableGroundData();
+						SetPropDataFieldValuesFromFieldsString (propData, lineString);
+						ld.damageableGroundDatas.Add(propData);
+						ld.allPropDatas.Add(propData);
+					}
+					else if (affectName == GEM) {
+						GemData propData = new GemData();
+						SetPropDataFieldValuesFromFieldsString (propData, lineString);
+						ld.gemDatas.Add(propData);
+						ld.allPropDatas.Add(propData);
+					}
+					else if (affectName == GROUND) {
+						GroundData propData = new GroundData();
+						SetPropDataFieldValuesFromFieldsString (propData, lineString);
+						ld.groundDatas.Add(propData);
+						ld.allPropDatas.Add(propData);
+					}
+					else if (affectName == LEVEL_DOOR) {
 						LevelDoorData propData = new LevelDoorData();
 						SetPropDataFieldValuesFromFieldsString (propData, lineString);
 						ld.levelDoorDatas.Add(propData);
+						ld.allPropDatas.Add(propData);
+					}
+					else if (affectName == LIFT) {
+						LiftData propData = new LiftData();
+						SetPropDataFieldValuesFromFieldsString (propData, lineString);
+						ld.liftDatas.Add(propData);
+						ld.allPropDatas.Add(propData);
+					}
+					else if (affectName == PLATFORM) {
+						PlatformData propData = new PlatformData();
+						SetPropDataFieldValuesFromFieldsString (propData, lineString);
+						ld.platformDatas.Add(propData);
+						ld.allPropDatas.Add(propData);
+					}
+					else if (affectName == SPIKES) {
+						SpikesData propData = new SpikesData();
+						SetPropDataFieldValuesFromFieldsString (propData, lineString);
+						ld.spikesDatas.Add(propData);
+						ld.allPropDatas.Add(propData);
+					}
+					else if (affectName == TOGGLE_GROUND) {
+						ToggleGroundData propData = new ToggleGroundData();
+						SetPropDataFieldValuesFromFieldsString (propData, lineString);
+						ld.toggleGroundDatas.Add(propData);
+						ld.allPropDatas.Add(propData);
 					}
 					else {
-						Debug.LogError ("Oops! Unidentifiable text in lvl file: " + ld.LevelKey + ". Text: " + lineString);
+						Debug.LogError ("Oops! Unidentifiable text in lvl file: " + ld.LevelKey + ". Text: \"" + lineString + "\"");
 					}
 				}
 			}

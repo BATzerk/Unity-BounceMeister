@@ -24,16 +24,12 @@ public class CameraBounds : Prop, ISerializableData<CameraBoundsData> {
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	virtual protected void Start() {
+	private void Start() {
 		// Of course, hide the sprite! It's just for the editor.
 		bodySprite.enabled = false;
-//		// HACK TEMP! For old level system that didn't use Ground prefab.
-//		if (bodySprite==null) {
-//			bodySprite = GetComponent<SpriteRenderer>();
-//		}
 	}
 	public void Initialize(Level _myLevel, CameraBoundsData data) {
-		base.BaseInitialize(_myLevel);
+		base.BaseInitialize(_myLevel, data);
 
 		bodySprite.transform.localScale = data.myRect.size;
 		bodySprite.transform.localPosition = data.myRect.position;

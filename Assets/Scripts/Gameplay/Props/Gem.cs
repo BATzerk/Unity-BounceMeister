@@ -2,21 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gem : MonoBehaviour {
+public class Gem : Prop, ISerializableData<GemData> {
 	// Components
-	[SerializeField] private BoxCollider2D myCollider;
-	[SerializeField] private ParticleSystem ps_collectedBurst;
-	[SerializeField] private SpriteRenderer sr_body;
+	[SerializeField] private BoxCollider2D myCollider=null;
+	[SerializeField] private ParticleSystem ps_collectedBurst=null;
+	[SerializeField] private SpriteRenderer sr_body=null;
 
 
 	// ----------------------------------------------------------------
-	//  Start
+	//  Initialize
 	// ----------------------------------------------------------------
-	private void Start () {
-//		// Size me right!
-//		float diameter = 2f;
-//		GameUtils.SizeSpriteRenderer(sr_body, diameter,diameter);
-//		myCollider.size = diameter*0.5f;
+	public void Initialize(Level _myLevel, GemData data) {
+		base.BaseInitialize(_myLevel, data);
 	}
 
 
@@ -36,5 +33,14 @@ public class Gem : MonoBehaviour {
 	}
 
 
+
+	// ----------------------------------------------------------------
+	//  Serializing
+	// ----------------------------------------------------------------
+	public GemData SerializeAsData() {
+		GemData data = new GemData();
+		data.pos = pos;
+		return data;
+	}
 
 }

@@ -2,25 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
-[RequireComponent (typeof(SpriteRenderer))]
-public class Ground : Collidable, ISerializableData<GroundData> {
-	// Components
-	[SerializeField] private SpriteRenderer bodySprite=null;
+
+public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 	// Properties
 //	[SerializeField] private bool doDisappearAfterBounces = false;
 //	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
 	[SerializeField] private int colorType = 0; // green, blue, purple
-	private bool pisBouncy; // previous isBouncy. Only update my sprite if there's been a change.
 
 	// Getters (Private)
-	private Rect MyRect {
-		get {
-			Vector2 center = bodySprite.transform.localPosition;
-			Vector2 size = bodySprite.transform.localScale;
-			return new Rect(center, size);
-		}
-	}
 //	private bool IsInvincible { get { return numBouncesLeft < 0; } }
 
 
@@ -41,36 +30,12 @@ public class Ground : Collidable, ISerializableData<GroundData> {
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	virtual protected void Start() {
-		// HACK TEMP! For old level system that didn't use Ground prefab.
-		if (bodySprite==null) {
-			bodySprite = GetComponent<SpriteRenderer>();
-		}
-		UpdateBodySpriteColor();
+	override protected void Start() {
+		bodySprite.color = GetBodySpriteColor();
 	}
 	public void Initialize(Level _myLevel, GroundData data) {
-		base.BaseInitialize(_myLevel);
-
-		bodySprite.transform.localScale = data.myRect.size;
-		bodySprite.transform.localPosition = data.myRect.position;
+		base.BaseGroundInitialize(_myLevel, data);
 	}
-
-
-	// ----------------------------------------------------------------
-	//  Update
-	// ----------------------------------------------------------------
-	void Update () {
-		if (pisBouncy != IsBouncy) {
-			UpdateBodySpriteColor();
-		}
-		pisBouncy = IsBouncy;
-	}
-
-	private void UpdateBodySpriteColor() {
-		Color color = GetBodySpriteColor();
-		bodySprite.color = color;
-	}
-
 
 
 	// ----------------------------------------------------------------

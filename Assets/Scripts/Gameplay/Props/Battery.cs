@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Battery : MonoBehaviour {
+public class Battery : Prop, ISerializableData<BatteryData> {
 	// Constants
 	private float RegenDuration = 0.5f; // how many SECONDS until I regenerate.
 	// Components
-	[SerializeField] private SpriteRenderer sr_body;
-	// References
-//	[SerializeField] private Sprite s_bodyFull;
-//	[SerializeField] private Sprite s_bodyEmpty;
+	[SerializeField] private SpriteRenderer sr_body=null;
 	// Properties
 	private bool isUsed;
 	private float timeWhenRegen;
@@ -21,6 +18,9 @@ public class Battery : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void Start() {
 		SetIsUsed(false);
+	}
+	public void Initialize(Level _myLevel, BatteryData data) {
+		base.BaseInitialize(_myLevel, data);
 	}
 
 
@@ -79,6 +79,15 @@ public class Battery : MonoBehaviour {
 		}
 	}
 
+
+	// ----------------------------------------------------------------
+	//  Serializing
+	// ----------------------------------------------------------------
+	public BatteryData SerializeAsData() {
+		BatteryData data = new BatteryData();
+		data.pos = pos;
+		return data;
+	}
 
 
 }

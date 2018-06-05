@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConditionalGround : Ground {
-	// Components
-	[SerializeField] private BoxCollider2D myCollider;
-	[SerializeField] private SpriteRenderer sr_body;
+public sealed class ConditionalGround : BaseGround {
 	// Properties
 	[SerializeField] private bool isOffWhenPlungeSpent = false; // we disappear when the Player spends their bounce, and re-appear when the Player recharges!
 	[SerializeField] private bool isOffWhenBounceRecharged = false; // the exact INVERSE of the above. (Obviously, these both can't be set to true.)
 	// References
-	[SerializeField] private Sprite s_bodyFull;
-	[SerializeField] private Sprite s_bodyEmpty;
+	[SerializeField] private Sprite s_bodyFull=null;
+	[SerializeField] private Sprite s_bodyEmpty=null;
 
 
 	// ----------------------------------------------------------------
@@ -40,11 +37,11 @@ public class ConditionalGround : Ground {
 	// ----------------------------------------------------------------
 	private void TurnOn() {
 		myCollider.enabled = true;
-		sr_body.sprite = s_bodyFull;
+		bodySprite.sprite = s_bodyFull;
 	}
 	private void TurnOff() {
 		myCollider.enabled = false;
-		sr_body.sprite = s_bodyEmpty;
+		bodySprite.sprite = s_bodyEmpty;
 	}
 
 

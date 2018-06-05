@@ -19,7 +19,6 @@ public class PlatformCharacter : Collidable {
 	protected bool[] onSurfaces; // index is side.
 
 	// Getters
-	public Vector2 Pos { get { return pos; } }
 	public Vector2 Vel { get { return vel; } }
 	public Vector2 Size { get { return size; } }
 
@@ -33,10 +32,6 @@ public class PlatformCharacter : Collidable {
 		return 0;
 	}
 	protected bool isTouchingWall() { return sideTouchingWall() != 0; }
-	protected Vector2 pos {
-		get { return this.transform.localPosition; }
-		set { this.transform.localPosition = value; }
-	}
 	virtual protected float HorzMoveInputVelXDelta() {
 		return 0;
 	}

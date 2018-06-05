@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelDoor : Prop, ISerializableData<LevelDoorData> {
 	// Components
-	[SerializeField] private SpriteRenderer sr_body;
+	[SerializeField] private SpriteRenderer sr_body=null;
 	// Properties
 	[SerializeField] private string myID;
 	[SerializeField] private string levelToKey;
@@ -15,14 +15,13 @@ public class LevelDoor : Prop, ISerializableData<LevelDoorData> {
 
 	// Getters
 	public string MyID { get { return myID; } }
-	public Vector2 Pos { get { return this.transform.localPosition; } }
 
 
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
 	public void Initialize(Level _myLevel, LevelDoorData data) {
-		base.BaseInitialize(_myLevel);
+		base.BaseInitialize(_myLevel, data);
 
 		this.transform.localPosition = data.pos;
 

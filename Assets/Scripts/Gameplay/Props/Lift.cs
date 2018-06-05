@@ -2,16 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lift : MonoBehaviour {
+public class Lift : Prop, ISerializableData<LiftData> {
 	// Components
-	private SpriteRenderer sr_body;
+	[SerializeField] private SpriteRenderer sr_body;
 	// Properties
 	[SerializeField] private float strength = 0.08f;
 	private bool isCharacterInMe = false;
-	private bool pisCharacterInMe = false; // so we can detect a change.
+//	private bool pisCharacterInMe = false; // so we can detect a change.
 
 	// Getters
 	private float angle { get { return transform.localEulerAngles.z * Mathf.Deg2Rad; } }
+	private Rect MyRect {
+		get {
+			Vector2 center = sr_body.transform.localPosition;
+			Vector2 size = sr_body.size;
+			return new Rect(center, size);
+		}
+	}
 //	protected bool IsCharacter(Collision2D col) {
 //		return col.gameObject.GetComponent<PlatformCharacter>() != null;
 //	}
@@ -24,13 +31,14 @@ public class Lift : MonoBehaviour {
 //		return character;
 //	}
 
-
-
 	// ----------------------------------------------------------------
-	//  Start
+	//  Initialize
 	// ----------------------------------------------------------------
-	private void Start() {
-		sr_body = GetComponent<SpriteRenderer>();
+	public void Initialize(Level _myLevel, LiftData data) {
+		base.BaseInitialize(_myLevel, data);
+
+		sr_body.size = data.myRect.size;
+		sr_body.transform.localPosition = data.myRect.position;
 	}
 
 
@@ -94,6 +102,17 @@ public class Lift : MonoBehaviour {
 //			isCharacterInMe = false;
 //			ApplyBodyAlpha();
 //		}
+	}
+
+
+	// ----------------------------------------------------------------
+	//  Serializing
+	// ----------------------------------------------------------------
+	public LiftData SerializeAsData() {
+		LiftData data = new LiftData();
+		data.myRect = MyRect;
+		data.strength = strength;
+		return data;
 	}
 
 

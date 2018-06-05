@@ -4,24 +4,47 @@ using UnityEngine;
 
 
 public class PropData {
+	public Vector2 pos;
 }
 
 
 
+public class BatteryData : PropData {
+}
 public class CameraBoundsData : PropData {
 	public Rect myRect=new Rect();
-//	public CameraBoundsData (Rect myRect) {
-//		this.myRect = myRect;
-//	}
 }
-public class GroundData : PropData {
+//public class EnemyData : PropData {
+//}
+public class GemData : PropData {
+}
+
+public class BaseGroundData : PropData {
 	public Rect myRect;
-//	public GroundData (Rect myRect) {
-//		this.myRect = myRect;
-//	}
 }
+public class CrateData : BaseGroundData {
+	public int hitsUntilBreak;
+	public int numCoinsInMe;
+}
+public class GroundData : BaseGroundData {
+	public int colorType;
+}
+public class PlatformData : BaseGroundData {
+}
+public class ToggleGroundData : BaseGroundData {
+	public bool startsOn;
+}
+public class DamageableGroundData : BaseGroundData {
+	public bool disappearFromBounce;
+	public bool disappearFromVel;
+	public bool doRegen;
+}
+//public class ConditionalGroundData : BaseGroundData {
+//	public bool isOffWhenPlungeSpent;
+//	public bool isOffWhenBounceRecharged;
+//}
+
 public class LevelDoorData : PropData {
-	public Vector2 pos;
 	public string myID;
 	public string levelToKey;
 	public string levelToDoorID;
@@ -31,6 +54,14 @@ public class LevelDoorData : PropData {
 //		this.levelToKey = levelToKey;
 //		this.levelToDoorID = levelToDoorID;
 //	}
+}
+
+public class LiftData : PropData {
+	public float strength;
+	public Rect myRect=new Rect();
+}
+public class SpikesData : PropData {
+	public Rect myRect=new Rect();
 }
 
 
