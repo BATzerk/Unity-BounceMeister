@@ -93,19 +93,16 @@ public class Player : PlatformCharacter {
 
 		SetSize (new Vector2(1.5f, 1.8f));
 	}
-	public void Initialize(Level _myLevel) {
-		this.transform.SetParent(_myLevel.transform);
-		this.transform.localScale = Vector3.one;
-		this.transform.localPosition = Vector3.zero;
-		this.transform.localEulerAngles = Vector3.zero;
+	public void Initialize(Level _myLevel, PlayerData data) {
+		base.BaseInitialize(_myLevel, data);
 	}
 
 	override protected void SetSize(Vector2 _size) {
 		base.SetSize(_size);
 		myBody.SetSize(_size);
 	}
-	public void SetPos(Vector2 _pos) {
-		pos = _pos;
+	public void SetPosGlobal(Vector2 _posGlobal) {
+		pos = _posGlobal - myLevel.PosGlobal;
 		vel = Vector2.zero;
 	}
 
@@ -418,7 +415,7 @@ public class Player : PlatformCharacter {
 	}
 
 	private void OnCollideWithEnemy(Enemy enemy) {
-		int dirToEnemy = MathUtils.Sign(enemy.Pos.x-pos.x, false);
+		int dirToEnemy = MathUtils.Sign(enemy.PosGlobal.x-PosGlobal.x, false);
 		vel = new Vector2(-dirToEnemy*HitByEnemyVel.x, HitByEnemyVel.y);
 		TakeDamage(1);
 	}

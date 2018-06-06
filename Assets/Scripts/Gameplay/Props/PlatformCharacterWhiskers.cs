@@ -23,7 +23,7 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 	// Getters
 	private Vector2 charSize { get { return myCharacter.Size; } }
 	private Vector2 WhiskerPos(int side, int index) {
-		Vector2 pos = myCharacter.Pos;
+		Vector2 pos = myCharacter.PosGlobal;
 		float sideOffsetLoc = SideOffsetLocs[index];
 		if (side==Sides.L || side==Sides.R) {
 			pos += new Vector2(whiskerDirs[side].x*charSize.x*0.5f, charSize.y*sideOffsetLoc);
@@ -121,9 +121,9 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 		whiskerDirs[Sides.T] = Vector2Int.T.ToVector2();
 		whiskerDirs[Sides.B] = Vector2Int.B.ToVector2();
 	}
-	private void Start() {
-		UpdateSurfaceDists(); // Just for consistency.
-	}
+//	private void Start() {
+//		UpdateSurfaceDists(); // Just for consistency.
+//	}
 
 
 

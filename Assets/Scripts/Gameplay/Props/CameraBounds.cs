@@ -8,14 +8,14 @@ public class CameraBounds : Prop, ISerializableData<CameraBoundsData> {
 	[SerializeField] private SpriteRenderer bodySprite=null;
 
 	// Getters (Private)
-	public Rect MyRect {
+	public Rect RectLocal { // Note that we save/load our Rect locally, not globally. (Otherwise we'd be wonked when levels are moved.)
 		get {
 			Rect newRect = new Rect();
 			newRect.size = bodySprite.size;
 			newRect.center = bodySprite.transform.localPosition;
-			if (myLevel != null) { // Only need this check for premade levels.
-				newRect.center += myLevel.PosGlobal; // Add my level's pos too!
-			}
+//			if (myLevel != null) { // Only need this check for premade levels.
+//				newRect.center += myLevel.PosGlobal; // Add my level's pos too!
+//			}
 			return newRect;
 		}
 	}
@@ -42,7 +42,7 @@ public class CameraBounds : Prop, ISerializableData<CameraBoundsData> {
 	// ----------------------------------------------------------------
 	public CameraBoundsData SerializeAsData() {
 		CameraBoundsData data = new CameraBoundsData();
-		data.myRect = MyRect;
+		data.myRect = RectLocal;
 		return data;
 	}
 

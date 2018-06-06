@@ -80,7 +80,7 @@ public class LevelDoor : Prop, ISerializableData<LevelDoorData> {
 	// ----------------------------------------------------------------
 	public LevelDoorData SerializeAsData() {
 		LevelDoorData data = new LevelDoorData();
-		data.pos = Pos;
+		data.pos = PosLocal;
 		data.myID = myID;
 		data.levelToKey = levelToKey;
 		data.levelToDoorID = levelToDoorID;

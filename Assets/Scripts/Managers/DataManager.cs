@@ -16,6 +16,7 @@ public class DataManager {
 	// ----------------------------------------------------------------
 	//  Getters
 	// ----------------------------------------------------------------
+	public int currentWorldIndex { get { return currentLevelData==null ? 0 : currentLevelData.worldIndex; } }
 	public int CoinsCollected { get { return coinsCollected; } }
 	public int NumWorldDatas { get { return worldDatas.Count; } }
 //	public int WorldIndexOnLoadGameScene { get { return worldIndexOnLoadGameScene; } }
@@ -25,15 +26,6 @@ public class DataManager {
 	public WorldData GetWorldData (int worldIndex) {
 		return worldDatas [worldIndex];
 	}
-//	public bool Debug_doShowLevelTileDesignerFlags {
-//		get { return debug_doShowLevelTileDesignerFlags; }
-//		set {
-//			if (debug_doShowLevelTileDesignerFlags != value) {
-//				debug_doShowLevelTileDesignerFlags = value;
-//				SaveStorage.SetInt(SaveKeys.DEBUG_DO_SHOW_LEVEL_TILE_DESIGNER_FLAGS, debug_doShowLevelTileDesignerFlags ? 1 : 0);
-//			}
-//		}
-//	}
 
 
 	// ----------------------------------------------------------------

@@ -38,9 +38,9 @@ public class LevelData {
 	public WorldData WorldDataRef { get { return GameManagers.Instance.DataManager.GetWorldData(worldIndex); } }
 
 	// Setters
-	public void SetPosGlobal (Vector2 _absolutePos, bool doUpdateLevelFile) {
+	public void SetPosGlobal (Vector2 _posGlobal, bool doUpdateLevelFile) {
 		// Set it, AND update my globalBounds (which have changed, hmm!)!
-		posGlobal = new Vector2 (Mathf.Round(_absolutePos.x*0.5f)*2f, Mathf.Round (_absolutePos.y*0.5f)*2f); // Round my absolutePos values to EVEN NUMBERS. If we DON'T do this, then street intersection math stops working properly. It's goofy, but I don't need my levels in odd number locations, man.
+		posGlobal = new Vector2 (Mathf.Round(_posGlobal.x*0.5f)*2f, Mathf.Round (_posGlobal.y*0.5f)*2f); // Round my posGlobal values to even numbers... because that's what I did in Linelight. :p
 		if (doUpdateLevelFile) {
 			// Update the file!
 			LevelSaverLoader.UpdateLevelPropertiesInLevelFile(this);

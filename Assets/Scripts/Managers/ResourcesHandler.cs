@@ -7,6 +7,7 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject imageLine;
 
 	[SerializeField] public GameObject LevelJumpLevelButton;
+	[SerializeField] public GameObject MapEditor_LevelTile;
 
 	[SerializeField] public GameObject backgroundTileSprite;
 

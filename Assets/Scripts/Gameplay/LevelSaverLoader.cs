@@ -307,7 +307,7 @@ static public class LevelSaverLoader {
 			Debug.LogError ("Error saving a level to a text file: " + levelKey + ". Save location: " + filePath + ". Error string: " + e.ToString ());
 		}
 
-//		// Finally! Delete the saved snapshot of this level completely! If we don't, a number of odd behaviors can occur from the data conflict. One notable effect is when changing AbsolutePos: carts' joints will be all wonky (because they were saved in a different part of the world).
+//		// Finally! Delete the saved snapshot of this level completely! If we don't, a number of odd behaviors can occur from the data conflict. One notable effect is when changing posGlobal: carts' joints will be all wonky (because they were saved in a different part of the world).
 //		GameplaySnapshotController.DeleteLevelSnapshotFromSaveStorage (worldIndex, levelKey);
 //		// Also delete the saved snapshot of the player if it's in this exact level.
 //		GameplaySnapshotController.DeletePlayerDataSnapshotFromSaveStorageIfInLevelStatic (worldIndex, levelKey);

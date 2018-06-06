@@ -7,7 +7,13 @@ public class Prop : MonoBehaviour {
 	protected Level myLevel;
 
 	// Getters
-	public Vector2 Pos { get { return pos; } }
+	public Vector2 PosLocal { get { return pos; } }
+	public Vector2 PosGlobal {
+		get {
+//			if (myLevel==null) { return PosLocal; } // Safety check.
+			return PosLocal + myLevel.PosGlobal;
+		}
+	}
 	protected Vector2 pos {
 		get { return this.transform.localPosition; }
 		set { this.transform.localPosition = value; }

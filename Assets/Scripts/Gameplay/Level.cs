@@ -19,7 +19,9 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	public Rect GetCameraBoundsRect() {
 		CameraBounds cameraBounds = GetComponentInChildren<CameraBounds>();
 		if (cameraBounds != null) {
-			return cameraBounds.MyRect;
+			Rect returnRect = new Rect(cameraBounds.RectLocal);
+			returnRect.center += PosGlobal; // shift it to global coordinates!
+			return returnRect;
 		}
 		return new Rect(0,0, 20,20);
 	}
@@ -210,8 +212,9 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 
 		// Initialize things!
 		// Player
-		playerRef.Initialize(this);
-		playerRef.transform.SetParent(this.transform);
+		PlayerData playerData = new PlayerData();
+		playerData.pos = gameControllerRef.GetLevelDoorPos(dataManager.levelToDoorID);
+		playerRef.Initialize(this, playerData);
 		// CameraBounds
 		CameraBounds cameraBounds = Instantiate(ResourcesHandler.Instance.CameraBounds).GetComponent<CameraBounds>();
 		cameraBounds.Initialize(this, cameraBounds.SerializeAsData()); // Strange and hacky: It initializes itself as what it already is. Just to go through other paperwork.

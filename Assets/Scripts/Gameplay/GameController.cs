@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour {
 			level.InitializeAsPremadeLevel(this);
 			dataManager.SetCoinsCollected (0);
 			UpdateTimeScale();
-			ResetPlayerAtLevelDoor(dataManager.levelToDoorID);
+//			ResetPlayerAtLevelDoor(dataManager.levelToDoorID);
 			eventManager.OnStartLevel(level);
 		}
 
@@ -96,12 +96,14 @@ public class GameController : MonoBehaviour {
 		level.Initialize(this, tf_world, levelData);
 		// Make Player!
 		player = Instantiate(ResourcesHandler.Instance.Player).GetComponent<Player>();
-		player.Initialize(level);
+		PlayerData playerData = new PlayerData();
+		playerData.pos = GetLevelDoorPos(dataManager.levelToDoorID);
+		player.Initialize(level, playerData);
 
 		// Reset things!
 		dataManager.SetCoinsCollected (0);
 		UpdateTimeScale();
-		ResetPlayerAtLevelDoor(dataManager.levelToDoorID);
+//		ResetPlayerAtLevelDoor(dataManager.levelToDoorID);
 
 		// Use this opportunity to call SAVE with SaveStorage, yo! (This causes a brief stutter, so I'm opting to call it when the game is already loading.)
 		SaveStorage.Save ();
@@ -208,20 +210,21 @@ public class GameController : MonoBehaviour {
 		else if (debug_isSlowMo) { Time.timeScale = 0.2f; }
 		else { Time.timeScale = 1; }
 	}
-	private void ResetPlayerAtLevelDoor(string levelDoorID) {
+	public Vector3 GetLevelDoorPos(string levelDoorID) {
 		LevelDoor[] allDoors = GameObject.FindObjectsOfType<LevelDoor>();
 		LevelDoor correctDoor = null; // I'll specify next.
 		foreach (LevelDoor door in allDoors) {
-			if (door.MyID == levelDoorID) {
+			if (correctDoor==null || door.MyID == levelDoorID) { // note: if there's no correctDoor yet, just set it to this first guy. So we at least end up at SOME door.
 				correctDoor = door;
 				break;
 			}
 		}
 		if (correctDoor != null) {
-			player.SetPos(correctDoor.Pos);
+			return correctDoor.PosLocal;
 		}
 		else {
 			Debug.LogWarning("Oops! Couldn't find a door with this ID: " + levelDoorID);
+			return Vector3.zero;
 		}
 	}
 
@@ -237,7 +240,7 @@ public class GameController : MonoBehaviour {
 	private void RegisterMouseInput() {
 		// ~~~~ DEBUG ~~~~
 		if (Input.GetMouseButton(1) && player!=null) {
-			player.SetPos(mousePosWorld());
+			player.SetPosGlobal(mousePosWorld());
 		}
 	}
 	private void RegisterButtonInput () {
@@ -257,6 +260,9 @@ public class GameController : MonoBehaviour {
 		// ~~~~ DEBUG ~~~~
 		if (Input.GetKeyDown(KeyCode.J)) {
 			OpenScene(SceneNames.LevelJump);
+		}
+		else if (Input.GetKeyDown(KeyCode.M)) {
+			OpenScene(SceneNames.MapEditor);
 		}
 		if (Input.GetKeyDown(KeyCode.Return)) {
 			ReloadScene();

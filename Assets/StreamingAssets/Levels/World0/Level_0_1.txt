@@ -2,28 +2,25 @@ levelProperties
 posGlobal:(0.0, 0.0);designerFlag:0
 
 CameraBounds
-myRect:(x:-25.00, y:-19.00, width:50.00, height:38.00)
+myRect:(x:-27.00, y:-19.00, width:82.00, height:38.00)
 
 Gem
 pos:(25.0, 13.5)
 
 Ground
-myRect:(x:0.00, y:-36.00, width:400.00, height:40.00);colorType:0
-myRect:(x:0.00, y:40.00, width:400.00, height:44.00);colorType:0
-myRect:(x:-56.50, y:0.00, width:63.00, height:36.00);colorType:0
+myRect:(x:-26.00, y:0.00, width:2.00, height:36.00);colorType:0
 myRect:(x:-13.50, y:-17.00, width:29.00, height:6.00);colorType:0
 myRect:(x:24.50, y:-8.00, width:11.00, height:16.00);colorType:0
-myRect:(x:-12.50, y:19.00, width:27.00, height:14.00);colorType:0
+myRect:(x:-13.00, y:16.00, width:28.00, height:8.00);colorType:0
 myRect:(x:-5.00, y:-9.50, width:12.00, height:19.00);colorType:0
-myRect:(x:14.00, y:23.00, width:20.00, height:4.00);colorType:0
-myRect:(x:66.00, y:1.50, width:26.00, height:35.00);colorType:0
-myRect:(x:-30.00, y:9.50, width:9.00, height:21.00);colorType:0
+myRect:(x:29.00, y:19.00, width:58.00, height:2.00);colorType:0
+myRect:(x:55.50, y:1.50, width:5.00, height:35.00);colorType:0
 myRect:(x:-12.00, y:-8.50, width:2.00, height:1.00);colorType:0
 myRect:(x:-24.00, y:-8.50, width:2.00, height:1.00);colorType:0
 myRect:(x:-12.00, y:-2.50, width:2.00, height:1.00);colorType:0
 myRect:(x:-24.00, y:-2.50, width:2.00, height:1.00);colorType:0
 myRect:(x:52.50, y:-4.50, width:9.00, height:23.00);colorType:0
-myRect:(x:25.00, y:-14.00, width:48.00, height:6.00);colorType:0
+myRect:(x:29.50, y:-15.50, width:57.00, height:9.00);colorType:0
 myRect:(x:22.00, y:14.00, width:2.00, height:8.00);colorType:0
 
 LevelDoor
