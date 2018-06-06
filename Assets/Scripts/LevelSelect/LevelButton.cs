@@ -4,25 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class LevelButton : MonoBehaviour {
-	// Properties
-	private string levelName;
 	// Components
 	[SerializeField] private Text t_levelName;
+	// References
+	private LevelData myLevelData;
 
 
 	// ----------------------------------------------------------------
 	//  Initialize
 	// ----------------------------------------------------------------
-	public void Initialize(Transform parentTransform, int index, string levelName) {
-		this.levelName = levelName;
-		t_levelName.text = levelName;
+	public void Initialize(RectTransform rt_parent, LevelData _myLevelData, Vector2 _pos, Vector2 _size) {
+		this.myLevelData = _myLevelData;
+		t_levelName.text = myLevelData.LevelKey;
 
-		this.transform.SetParent(parentTransform);
+		this.transform.SetParent(rt_parent);
 		this.transform.localScale = Vector3.one;
 		this.transform.localEulerAngles = Vector3.zero;
 		RectTransform myRectTransform = GetComponent<RectTransform>();
-		myRectTransform.anchoredPosition = new Vector2(-20, -20 - index*40);
-
+		myRectTransform.anchoredPosition = _pos;
+		myRectTransform.sizeDelta = _size;
 	}
 
 
@@ -30,7 +30,9 @@ public class LevelButton : MonoBehaviour {
 	//  Events
 	// ----------------------------------------------------------------
 	public void OnClick() {
-		UnityEngine.SceneManagement.SceneManager.LoadScene(levelName);
+		GameManagers.Instance.DataManager.currentLevelData = myLevelData;
+
+		UnityEngine.SceneManagement.SceneManager.LoadScene(SceneNames.Gameplay);
 	}
 
 

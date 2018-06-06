@@ -62,6 +62,7 @@ public class Spikes : Collidable, ISerializableData<SpikesData> {
 	public SpikesData SerializeAsData() {
 		SpikesData data = new SpikesData();
 		data.myRect = MyRect;
+		data.rotation = rotation;
 		return data;
 	}
 }

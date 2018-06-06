@@ -10,12 +10,13 @@ public class CameraBounds : Prop, ISerializableData<CameraBoundsData> {
 	// Getters (Private)
 	public Rect MyRect {
 		get {
-			Vector2 center = bodySprite.transform.localPosition;
+			Rect newRect = new Rect();
+			newRect.size = bodySprite.size;
+			newRect.center = bodySprite.transform.localPosition;
 			if (myLevel != null) { // Only need this check for premade levels.
-				center += myLevel.PosWorld; // Add my level's pos too!
+				newRect.center += myLevel.PosGlobal; // Add my level's pos too!
 			}
-			Vector2 size = bodySprite.transform.localScale;
-			return new Rect(center, size);
+			return newRect;
 		}
 	}
 
@@ -31,8 +32,8 @@ public class CameraBounds : Prop, ISerializableData<CameraBoundsData> {
 	public void Initialize(Level _myLevel, CameraBoundsData data) {
 		base.BaseInitialize(_myLevel, data);
 
-		bodySprite.transform.localScale = data.myRect.size;
-		bodySprite.transform.localPosition = data.myRect.position;
+		bodySprite.size = data.myRect.size;
+		bodySprite.transform.localPosition = data.myRect.center;
 	}
 
 

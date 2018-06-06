@@ -4,6 +4,7 @@ using UnityEngine;
 
 
 public class PropData {
+	public float rotation;
 	public Vector2 pos;
 }
 

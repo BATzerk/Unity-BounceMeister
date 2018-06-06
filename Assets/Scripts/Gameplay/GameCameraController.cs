@@ -16,21 +16,21 @@ public class GameCameraController : MonoBehaviour {
 	private float screenShakeVolumeVel;
 	private Rect viewRect;
 	private Rect viewRectBounds; // set from each Level's CameraBounds sprite. Our viewRect is confined to this rect!
-	private Rect posBounds; // this is viewRectBounds, collapsed to just what viewRect's center can be set to.
-	private Vector2 targetPos;
+	private Rect centerBounds; // this is viewRectBounds, collapsed to just what viewRect's center can be set to.
+	private Vector2 targetCenter;
 	// References
 	[SerializeField] private FullScrim fullScrim=null;
 	[SerializeField] private GameController gameController=null;
+	private Transform tf_player=null;
 
 	// Getters / Setters
 	public Rect ViewRect { get { return viewRect; } }
-	private Transform tf_player { get { return gameController.Player.transform; } }
 
 	private float rotation {
 		get { return this.transform.localEulerAngles.z; }
 		set { this.transform.localEulerAngles = new Vector3 (0, 0, value); }
 	}
-	private Vector2 pos {
+	private Vector2 center { // Note: To avoid center/BL-corner confusion, we ONLY address our "position" as the center. Never "pos".
 		get { return viewRect.center; }
 		set { viewRect.center = value; }
 	}
@@ -56,7 +56,7 @@ public class GameCameraController : MonoBehaviour {
 		Gizmos.DrawWireCube (viewRectBounds.center, new Vector3(viewRectBounds.size.x,viewRectBounds.size.y, 10));
 
 		Gizmos.color = Color.yellow;
-		Gizmos.DrawWireCube (posBounds.center, new Vector3(posBounds.size.x,posBounds.size.y, 10));
+		Gizmos.DrawWireCube (centerBounds.center, new Vector3(centerBounds.size.x,centerBounds.size.y, 10));
 //		Gizmos.color = Color.yellow;
 //		Gizmos.DrawWireCube (viewRect.center*GameVisualProperties.WORLD_SCALE, new Vector3(ScreenHandler.RelativeScreenSize.x+11,ScreenHandler.RelativeScreenSize.y+11, 10)*GameVisualProperties.WORLD_SCALE);//+11 for bloat so we can still see it if there's overlap.
 	}
@@ -67,20 +67,19 @@ public class GameCameraController : MonoBehaviour {
 	//  Start / Destroy
 	// ----------------------------------------------------------------
 	private void Awake () {
-		// Hack. nbd for now.
+		// Hacks! nbd for now, but let's fix soon.
 		gameController = GameObject.FindObjectOfType<GameController>();
+		if (fullScrim==null) { fullScrim = GameObject.FindObjectOfType<FullScrim>(); }
 
 		// Add event listeners!
 		GameManagers.Instance.EventManager.EditorSaveLevelEvent += OnEditorSaveLevel;
 		GameManagers.Instance.EventManager.PlayerDieEvent += OnPlayerDie;
-		GameManagers.Instance.EventManager.ScreenSizeChangedEvent += OnScreenSizeChanged;
 		GameManagers.Instance.EventManager.StartLevelEvent += OnStartLevel;
 	}
 	private void OnDestroy () {
 		// Remove event listeners!
 		GameManagers.Instance.EventManager.EditorSaveLevelEvent -= OnEditorSaveLevel;
 		GameManagers.Instance.EventManager.PlayerDieEvent -= OnPlayerDie;
-		GameManagers.Instance.EventManager.ScreenSizeChangedEvent -= OnScreenSizeChanged;
 		GameManagers.Instance.EventManager.StartLevelEvent -= OnStartLevel;
 	}
 	private void Reset () {
@@ -92,8 +91,8 @@ public class GameCameraController : MonoBehaviour {
 
 		viewRect = new Rect ();
 		viewRect.size = GetViewRectSizeFromZoomAmount (1);
-		UpdateTargetPos();
-		pos = new Vector2(targetPos.x, targetPos.y); // Start us with the Player in view.
+		UpdateTargetCenter();
+		center = new Vector2(targetCenter.x, targetCenter.y); // Start us with the Player in view.
 
 		ApplyViewRect ();
 	}
@@ -104,19 +103,19 @@ public class GameCameraController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void OnStartLevel(Level level) {
 		viewRectBounds = level.GetCameraBoundsRect();
-//		if (viewRectBounds.size.x==0 || viewRectBounds.size.y==0) { // Safety check.
-//			viewRectBounds.size = new Vector2(10,10);
-//		}
+		tf_player = gameController.Player.transform;
 
 		// Reset us now! Now that the player and everything is in place. :)
 		Reset();
 	}
-	private void OnScreenSizeChanged () {
-//		// Go ahead and totally reset me completely when the screen size changes, just to be safe.
-//		Reset ();
-	}
 	private void OnEditorSaveLevel() {
-		fullScrim.FadeFromAtoB(new Color(1,1,1, 0.5f), Color.clear, 0.2f, true);
+		if (fullScrim!=null) {
+			fullScrim.FadeFromAtoB(new Color(1,1,1, 0.5f), Color.clear, 0.2f, true);
+		}
+	}
+	private void OnPlayerDie(Player player) {
+		screenShakeVolumeVel = 0.7f;
+//		fullScrim.FadeFromAtoB(Color.clear, new Color(1,1,1, 0.2f), 1f, true);
 	}
 
 
@@ -125,31 +124,33 @@ public class GameCameraController : MonoBehaviour {
 	//  Update
 	// ----------------------------------------------------------------
 	private void FixedUpdate() {
-		UpdateTargetPos();
-		StepTowardTargetPos();
+		if (tf_player == null) { return; } // Safety check.
+
+		UpdateTargetCenter();
+		StepTowardTargetCenter();
 		UpdateScreenShake();
 
 		ApplyViewRect();
 	}
 
-	private void StepTowardTargetPos() {
-		float velX = (targetPos.x - pos.x) * 0.1f;
-		float velY = (targetPos.y - pos.y) * 0.1f;
-		pos += new Vector2(velX, velY);
+	private void StepTowardTargetCenter() {
+		float velX = (targetCenter.x - center.x) * 0.1f;
+		float velY = (targetCenter.y - center.y) * 0.1f;
+		center += new Vector2(velX, velY);
 	}
-	private void UpdateTargetPos() {
+	private void UpdateTargetCenter() {
 		// test doing this every frame. Only do it when our zoom changes, ok?
-		posBounds = new Rect();
-		posBounds.size = viewRectBounds.size;
-		posBounds.size -= viewRect.size; // collapse our possible pos space! (So viewRect's edge goes up against viewRectBounds's edge, instead of viewRect's pos going up against the edge.)
-		posBounds.size = new Vector2(Mathf.Max(0, posBounds.size.x), Mathf.Max(0, posBounds.size.y)); // Don't let the rect invert.
-		posBounds.center = viewRectBounds.center;
+		centerBounds = new Rect();
+		centerBounds.size = viewRectBounds.size;
+		centerBounds.size -= viewRect.size; // collapse our possible pos space! (So viewRect's edge goes up against viewRectBounds's edge, instead of viewRect's pos going up against the edge.)
+		centerBounds.size = new Vector2(Mathf.Max(0, centerBounds.size.x), Mathf.Max(0, centerBounds.size.y)); // Don't let the rect invert.
+		centerBounds.center = viewRectBounds.center;
 
 		float targetX = tf_player.localPosition.x;
 		float targetY = tf_player.localPosition.y;
-		targetX = Mathf.Clamp(targetX, posBounds.xMin, posBounds.xMax);
-		targetY = Mathf.Clamp(targetY, posBounds.yMin, posBounds.yMax);
-		targetPos = new Vector2(targetX, targetY);
+		targetX = Mathf.Clamp(targetX, centerBounds.xMin, centerBounds.xMax);
+		targetY = Mathf.Clamp(targetY, centerBounds.yMin, centerBounds.yMax);
+		targetCenter = new Vector2(targetX, targetY);
 	}
 
 
@@ -190,7 +191,7 @@ public class GameCameraController : MonoBehaviour {
 		float targetOrthoSize = orthoSizeNeutral / zoomAmount;
 		// For runtime compile. In case the zoom's gone nuts, keep it clamped.
 		if (float.IsNaN(targetOrthoSize)) { targetOrthoSize = 20f; }
-		targetOrthoSize = Mathf.Clamp(1f, 9999f, targetOrthoSize);
+		targetOrthoSize = Mathf.Clamp(targetOrthoSize, 1f, 9999f);
 		primaryCamera.orthographicSize = targetOrthoSize;
 	}
 
@@ -206,10 +207,6 @@ public class GameCameraController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
-	private void OnPlayerDie(Player player) {
-		screenShakeVolumeVel = 0.7f;
-//		fullScrim.FadeFromAtoB(Color.clear, new Color(1,1,1, 0.2f), 1f, true);
-	}
 
 
 }

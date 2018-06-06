@@ -7,9 +7,10 @@ public class DataManager {
 	private int coinsCollected; // the total value of all the coins we've collected!
 	public string levelToDoorID = "0"; // default this to something. When we enter a level, this is the door we'll start at!
 	private List<WorldData> worldDatas;
-	public int mostRecentlySavedLevel_worldIndex; // an nbd shortcut to highlight the most recently created level in the MapEditor.
-	private int worldIndexOnLoadGameScene;
-	public string mostRecentlySavedLevel_levelKey; // an nbd shortcut to highlight the most recently created level in the MapEditor.
+//	private int worldIndexOnLoadGameScene;
+//	public int mostRecentlySavedLevel_worldIndex; // an nbd shortcut to highlight the most recently created level in the MapEditor.
+//	public string mostRecentlySavedLevel_levelKey; // an nbd shortcut to highlight the most recently created level in the MapEditor.
+	public LevelData currentLevelData = null; // if this is defined when GameController opens, we'll open THAT level!
 
 
 	// ----------------------------------------------------------------
@@ -17,9 +18,9 @@ public class DataManager {
 	// ----------------------------------------------------------------
 	public int CoinsCollected { get { return coinsCollected; } }
 	public int NumWorldDatas { get { return worldDatas.Count; } }
-	public int WorldIndexOnLoadGameScene { get { return worldIndexOnLoadGameScene; } }
-	public LevelData GetLevelData(int worldIndex, string levelKey) {
-		return GetWorldData(worldIndex).GetLevelData(levelKey);
+//	public int WorldIndexOnLoadGameScene { get { return worldIndexOnLoadGameScene; } }
+	public LevelData GetLevelData(int worldIndex, string levelKey, bool doMakeOneIfItDoesntExist) {
+		return GetWorldData(worldIndex).GetLevelData(levelKey, doMakeOneIfItDoesntExist);
 	}
 	public WorldData GetWorldData (int worldIndex) {
 		return worldDatas [worldIndex];
@@ -46,10 +47,10 @@ public class DataManager {
 		// Dispatch event!
 		GameManagers.Instance.EventManager.OnCoinsCollectedChanged();
 	}
-	public void SetWorldIndexOnLoadGameScene (int worldIndex) {
-		worldIndexOnLoadGameScene = worldIndex;
-		SaveStorage.SetInt (SaveKeys.LastWorldPlayedIndex, worldIndexOnLoadGameScene);
-	}
+//	public void SetWorldIndexOnLoadGameScene (int worldIndex) {
+//		worldIndexOnLoadGameScene = worldIndex;
+//		SaveStorage.SetInt (SaveKeys.LastWorldPlayedIndex, worldIndexOnLoadGameScene);
+//	}
 
 
 

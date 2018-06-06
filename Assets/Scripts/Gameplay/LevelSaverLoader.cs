@@ -54,7 +54,7 @@ static public class LevelSaverLoader {
 //		stream.Close();
 //		}
 		else {
-			Debug.LogError("Oh, dear. LevelFile not found: \"" + filePath + "\"");
+			Debug.LogError("Level file not found! World " + worldIndex + ", levelKey " + levelKey + "\nfilePath: \"" + filePath + "\"");
 			return new string[0];
 		}
 
@@ -144,7 +144,7 @@ static public class LevelSaverLoader {
 		if (ld.liftDatas.Count > 0) {
 			AddFSLineHeader(LIFT);
 			foreach (LiftData obj in ld.liftDatas) {
-				AddPropFieldsToFS(obj, "myRect", "strength");
+				AddPropFieldsToFS(obj, "myRect", "rotation", "strength");
 				AddFSLine();
 			}
 		}
@@ -158,7 +158,7 @@ static public class LevelSaverLoader {
 		if (ld.spikesDatas.Count > 0) {
 			AddFSLineHeader(SPIKES);
 			foreach (SpikesData obj in ld.spikesDatas) {
-				AddPropFieldsToFS(obj, "myRect");
+				AddPropFieldsToFS(obj, "myRect", "rotation");
 				AddFSLine();
 			}
 		}

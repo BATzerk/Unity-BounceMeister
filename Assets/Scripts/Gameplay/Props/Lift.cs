@@ -111,6 +111,7 @@ public class Lift : Prop, ISerializableData<LiftData> {
 	public LiftData SerializeAsData() {
 		LiftData data = new LiftData();
 		data.myRect = MyRect;
+		data.rotation = rotation;
 		data.strength = strength;
 		return data;
 	}

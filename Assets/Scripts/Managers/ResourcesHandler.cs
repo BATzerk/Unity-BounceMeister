@@ -6,11 +6,10 @@ public class ResourcesHandler : MonoBehaviour {
 	// References!
 	[SerializeField] public GameObject imageLine;
 
-	[SerializeField] public GameObject levelSelectLevelButton;
+	[SerializeField] public GameObject LevelJumpLevelButton;
 
 	[SerializeField] public GameObject backgroundTileSprite;
 
-//	[SerializeField] public GameObject Level;
 	[SerializeField] public GameObject CameraBounds;
 
 	[SerializeField] public GameObject Battery;

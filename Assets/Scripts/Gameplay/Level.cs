@@ -6,16 +6,16 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	// Components
 //	private CameraBounds cameraBounds;//[SerializeField] 
 	// References
-	public LevelData levelDataRef; //QQQ private
-	public WorldData worldDataRef; //QQQ private
+	private GameController gameControllerRef;
+	private LevelData levelDataRef;
 
 	// Getters (Public)
 	public LevelData LevelDataRef { get { return levelDataRef; } }
-	public WorldData WorldDataRef { get { return worldDataRef; } }
+	public WorldData WorldDataRef { get { return levelDataRef.WorldDataRef; } }
 	public int WorldIndex { get { return levelDataRef.WorldIndex; } }
 	public string LevelKey { get { return levelDataRef.LevelKey; } }
 	public Vector2 PosGlobal { get { return levelDataRef.PosGlobal; } }
-	public Vector2 PosWorld { get { return levelDataRef.PosWorld; } }
+//	public Vector2 PosWorld { get { return levelDataRef.PosWorld; } }
 	public Rect GetCameraBoundsRect() {
 		CameraBounds cameraBounds = GetComponentInChildren<CameraBounds>();
 		if (cameraBounds != null) {
@@ -25,6 +25,7 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	}
 	// Getters (Private)
 	private DataManager dataManager { get { return GameManagers.Instance.DataManager; } }
+	private Player playerRef { get { return gameControllerRef.Player; } }
 
 
 	// ----------------------------------------------------------------
@@ -35,7 +36,7 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 
 		// -- General Properties --
 		ld.SetPosGlobal (PosGlobal, false);
-		ld.SetPosWorld (PosGlobal-WorldDataRef.CenterPos); // NOTE: Is this technically redundant? Don't we want to not care about storing this value, and have it always made fresh by our WorldDataRef?
+//		ld.SetPosWorld (PosGlobal);//-WorldDataRef.CenterPos); // NOTE: Is this technically redundant? Don't we want to not care about storing this value, and have it always made fresh by our WorldDataRef?
 		ld.SetDesignerFlag (levelDataRef.designerFlag, false);
 //		ld.hasPlayerBeenHere = hasPlayerBeenHere;
 		ld.isConnectedToStart = levelDataRef.isConnectedToStart;
@@ -128,20 +129,13 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	//	Initialize
 	// ----------------------------------------------------------------
 	public void Initialize (GameController _gameControllerRef, Transform tf_world, LevelData _levelDataRef) {
-//		gameControllerRef = _gameControllerRef;
+		gameControllerRef = _gameControllerRef;
 		levelDataRef = _levelDataRef;
-		worldDataRef = dataManager.GetWorldData(levelDataRef.worldIndex);
 		this.gameObject.name = levelDataRef.LevelKey;
-
-//		// HACK: If we loaded up a level from save that NEVER had its PosWorld set, then set it here. Otherwise it'll be 0,0.
-//		if (levelDataRef.PosWorld == Vector2.zero) {
-//			levelDataRef.SetPosWorld (levelDataRef.posGlobal - worldDataRef.CenterPos);
-//		}
 
 		this.transform.SetParent (tf_world); // Parent me to my world!
 		this.transform.localScale = Vector3.one; // Make sure my scale is 1 from the very beginning.
-		this.transform.localPosition = Vector3.zero;//PosWorld; // Position me!
-
+		this.transform.localPosition = PosGlobal; // Position me!
 
 		// Instantiate my props!
 		LevelData ld = levelDataRef;
@@ -203,24 +197,24 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 				Debug.LogWarning("PropData not recognized: " + propData);
 			}
 		}
-
-//		// LevelDoor
-//		foreach (LevelDoorData data in ld.levelDoorDatas) {
-//			LevelDoor newProp = Instantiate(rh.LevelDoor).GetComponent<LevelDoor>();
-//			newProp.Initialize (this, data);
-//		}
 	}
 
 	/** Slightly sloppy, whatever-it-takes housekeeping to allow us to start up the game with a novel level and edit/play/save it right off the bat. */
 	public void InitializeAsPremadeLevel(GameController _gameControllerRef) {
+		gameControllerRef = _gameControllerRef;
+
 		// TEMP
-		levelDataRef = new LevelData(0, "Level0");
-		worldDataRef = dataManager.GetWorldData(0);
+		string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+//		if ( TODO: Maybe something about overwriting a level file with this name? Only if needed.
+		levelDataRef = new LevelData(0, sceneName);
 
 		// Initialize things!
+		// Player
+		playerRef.Initialize(this);
+		playerRef.transform.SetParent(this.transform);
 		// CameraBounds
 		CameraBounds cameraBounds = Instantiate(ResourcesHandler.Instance.CameraBounds).GetComponent<CameraBounds>();
-		cameraBounds.Initialize(this, cameraBounds.SerializeAsData());
+		cameraBounds.Initialize(this, cameraBounds.SerializeAsData()); // Strange and hacky: It initializes itself as what it already is. Just to go through other paperwork.
 
 	}
 

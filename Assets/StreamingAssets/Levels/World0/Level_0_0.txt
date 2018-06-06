@@ -1,0 +1,34 @@
+levelProperties
+posGlobal:(0.0, 0.0);designerFlag:0
+
+CameraBounds
+myRect:(x:-30.00, y:-19.00, width:97.00, height:38.00)
+
+Ground
+myRect:(x:0.00, y:-36.00, width:400.00, height:40.00);colorType:0
+myRect:(x:0.00, y:40.00, width:400.00, height:44.00);colorType:0
+myRect:(x:-58.00, y:0.00, width:60.00, height:36.00);colorType:0
+myRect:(x:-5.50, y:-12.50, width:3.00, height:3.00);colorType:0
+myRect:(x:-12.50, y:-15.00, width:31.00, height:2.00);colorType:0
+myRect:(x:5.50, y:-12.00, width:5.00, height:8.00);colorType:0
+myRect:(x:57.50, y:-14.00, width:15.00, height:4.00);colorType:0
+myRect:(x:17.50, y:-12.00, width:3.00, height:8.00);colorType:0
+myRect:(x:23.50, y:-10.50, width:3.00, height:11.00);colorType:0
+myRect:(x:36.50, y:-14.00, width:3.00, height:4.00);colorType:0
+myRect:(x:-17.00, y:-12.50, width:3.00, height:3.00);colorType:0
+myRect:(x:-21.50, y:14.00, width:13.00, height:8.00);colorType:0
+myRect:(x:14.00, y:16.00, width:20.00, height:4.00);colorType:0
+myRect:(x:32.50, y:17.00, width:18.00, height:2.00);colorType:0
+myRect:(x:49.00, y:16.50, width:15.00, height:3.00);colorType:0
+myRect:(x:78.50, y:1.50, width:27.00, height:35.00);colorType:0
+
+LevelDoor
+pos:(-26.0, -12.0);myID:0;levelToKey:;levelToDoorID:
+pos:(63.5, -10.0);myID:1;levelToKey:;levelToDoorID:0
+
+Platform
+myRect:(x:44.00, y:-12.50, width:6.00, height:1.00)
+
+Spikes
+myRect:(x:29.00, y:-15.50, width:46.00, height:1.00);rotation:0
+

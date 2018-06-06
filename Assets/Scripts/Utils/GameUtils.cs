@@ -167,7 +167,8 @@ public class GameUtils {
 
 	public static void DestroyAllChildren (Transform parentTF) {
 		for (int i=parentTF.childCount-1; i>=0; --i) {
-			GameObject.Destroy (parentTF.GetChild(i));
+			Transform child = parentTF.GetChild(i);
+			GameObject.Destroy (child.gameObject);
 		}
 	}
 

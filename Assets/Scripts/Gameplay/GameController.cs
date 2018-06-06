@@ -27,15 +27,31 @@ public class GameController : MonoBehaviour {
 	//  Start / Destroy
 	// ----------------------------------------------------------------
 	private void Start () {
-		// TODO: Not like this.
-		player = GameObject.FindObjectOfType<Player>();
-
-		// FORNOW, for editing, Initialize the existing level as a premade level! So we can start editing/playing/saving it right outta the scene.
-		level.InitializeAsPremadeLevel(this);
-		dataManager.SetCoinsCollected (0);
-		UpdateTimeScale();
-		ResetPlayerAtLevelDoor(dataManager.levelToDoorID);
-		eventManager.OnStartLevel(level);
+		// We've defined our currentLevelData before this scene! Load up THAT level!!
+		if (dataManager.currentLevelData != null) {
+			StartGameAtLevel(dataManager.currentLevelData.WorldIndex, dataManager.currentLevelData.LevelKey);
+		}
+		// We have NOT provided any currentLevelData!...
+		else {
+			// Initialize the existing level as a premade level! So we can start editing/playing/saving it right outta the scene.
+			// TEMP! TEMP! For converting scenes into level text files.
+			if (level==null) {
+				level = GameObject.FindObjectOfType<Level>();
+				if (level == null) {
+					GameObject levelGO = GameObject.Find("Structure");
+					level = levelGO.AddComponent<Level>();
+				}
+			}
+			if (tf_world == null) {
+				tf_world = GameObject.Find("GameWorld").transform;
+			}
+			player = GameObject.FindObjectOfType<Player>(); // Again, this is only for editing.
+			level.InitializeAsPremadeLevel(this);
+			dataManager.SetCoinsCollected (0);
+			UpdateTimeScale();
+			ResetPlayerAtLevelDoor(dataManager.levelToDoorID);
+			eventManager.OnStartLevel(level);
+		}
 
 		// Add event listeners!
 		eventManager.PlayerDieEvent += OnPlayerDie;
@@ -70,13 +86,17 @@ public class GameController : MonoBehaviour {
 //		cameraController.BlurScreenForLoading ();
 		yield return null;
 
-		// Reset the current world with a CLEAN wipe.
+		// Wipe everything totally clean.
+		DestroyPlayer();
 		DestroyLevel();
-//		DestroyPlayer ();
 
-		LevelData levelData = dataManager.GetLevelData(worldIndex, levelKey);
+		// Make Level!
+		LevelData levelData = dataManager.GetLevelData(worldIndex, levelKey, true);
 		level = new GameObject().AddComponent<Level>();
 		level.Initialize(this, tf_world, levelData);
+		// Make Player!
+		player = Instantiate(ResourcesHandler.Instance.Player).GetComponent<Player>();
+		player.Initialize(level);
 
 		// Reset things!
 		dataManager.SetCoinsCollected (0);
@@ -91,10 +111,12 @@ public class GameController : MonoBehaviour {
 	}
 
 	private void DestroyLevel() {
-		if (level != null) {
-			Destroy(level.gameObject);
-			level = null;
-		}
+		if (level != null) { Destroy(level.gameObject); }
+		level = null;
+	}
+	private void DestroyPlayer() {
+		if (player != null) { Destroy(player.gameObject); }
+		player = null;
 	}
 
 
@@ -223,16 +245,19 @@ public class GameController : MonoBehaviour {
 		bool isKey_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 		bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
-		// Game Flow
-		if (Input.GetKeyDown(KeyCode.Q)) {
-			OpenScene(SceneNames.LevelSelect);
-		}
+//		// Game Flow
+//		if (Input.GetKeyDown(KeyCode.Q)) {
+//			OpenScene(SceneNames.LevelSelect);
+//		}
 
-		else if (Input.GetKeyDown(KeyCode.Escape)) {
+		if (Input.GetKeyDown(KeyCode.Escape)) {
 			TogglePause();
 		}
 
 		// ~~~~ DEBUG ~~~~
+		if (Input.GetKeyDown(KeyCode.J)) {
+			OpenScene(SceneNames.LevelJump);
+		}
 		if (Input.GetKeyDown(KeyCode.Return)) {
 			ReloadScene();
 			return;

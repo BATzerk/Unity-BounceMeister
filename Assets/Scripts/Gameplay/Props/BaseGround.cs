@@ -31,6 +31,10 @@ abstract public class BaseGround : Collidable {
 	//  Start
 	// ----------------------------------------------------------------
 	virtual protected void Start() {
+		// QQQ TEMP! For level transitioning.
+		if (bodySprite==null) {
+			bodySprite = GetComponent<SpriteRenderer>();
+		}
 	}
 	protected void BaseGroundInitialize(Level _myLevel, BaseGroundData data) {
 		base.BaseInitialize(_myLevel, data);

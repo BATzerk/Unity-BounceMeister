@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class LevelData {
+//	// Constants
+//	public static readonly LevelData undefined = new LevelData(0, "undefined");
 	// Components!
 	public CameraBoundsData cameraBoundsData;
 	public List<PropData> allPropDatas;
@@ -25,7 +27,6 @@ public class LevelData {
 	public int worldIndex; // which world. w1 is index 1.
 	public bool WasUsedInSearchAlgorithm { get; set; }
 	public Vector2 posGlobal; // my position, global to ALL worlds! These values get big (up to around 70,000)!
-	private Vector2 posWorld; // my position relative to my WORLD. Set when WorldData's initialized. ONLY used to connect streets together! Needed because mobile has rough float-point issues, and we need to keep the poses we pass in to functions smaller than ~40,000. (There are big problems at 70,000.)
 
 	// Getters
 	public string LevelKey { get { return levelKey; } }
@@ -33,7 +34,6 @@ public class LevelData {
 	public int WorldIndex { get { return worldIndex; } }
 	public Rect BoundsGlobal { get { return cameraBoundsData.myRect; } } // Currently, the camera bounds and level bounds are one in the same.
 	public Vector2 PosGlobal { get { return posGlobal; } }
-	public Vector2 PosWorld { get { return posWorld; } }
 //	public Rect BoundsLocal { get { return boundsLocal; } }
 	public WorldData WorldDataRef { get { return GameManagers.Instance.DataManager.GetWorldData(worldIndex); } }
 
@@ -54,9 +54,9 @@ public class LevelData {
 			}
 		}
 	}
-	public void SetPosWorld (Vector2 _posWorld) {
-		posWorld = _posWorld;
-	}
+//	public void SetPosWorld (Vector2 _posWorld) {
+//		posWorld = _posWorld;
+//	}
 
 
 	// ================================================================

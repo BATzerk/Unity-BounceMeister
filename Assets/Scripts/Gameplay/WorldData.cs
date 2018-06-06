@@ -16,7 +16,7 @@ public class WorldData {
 
 	// Getters
 	/** Though we don't position anything special with this value, this IS used under the hood to keep street poses within a reasonable range to avoid float-point issues. */
-	public Vector2 CenterPos { get { return boundsRectPlayableLevels.center; } }
+	public Vector2 CenterPos { get { return boundsRectPlayableLevels.center; } } // TODO: Decide if we're using this or not. (I'd say cut it for now unless we know we want it.)
 
 
 	// ================================================================
@@ -53,7 +53,7 @@ public class WorldData {
 	public void SetAllLevelDatasFundamentalProperties () {
 		SetLevelsIsConnectedToStart ();
 		UpdateWorldBoundsRects ();
-		SetAllLevelDatasPosWorld (); // now that I know MY center position, let's tell all my LevelDatas their posWorld (based on their global position)!
+//		SetAllLevelDatasPosWorld (); // now that I know MY center position, let's tell all my LevelDatas their posWorld (based on their global position)!
 	}
 	private void UpdateWorldBoundsRects () {
 		// Calculate my boundsRectAllLevels so I can know when the camera is lookin' at me!
@@ -79,12 +79,12 @@ public class WorldData {
 			boundsRectPlayableLevels = MathUtils.GetCompoundRectangle (boundsRectPlayableLevels, ldBounds);
 		}
 	}
-	/** Once we know where the center of the playable world is, set the posWorld value for all my levels! */
-	private void SetAllLevelDatasPosWorld () {
-		foreach (LevelData ld in levelDatas.Values) {
-			ld.SetPosWorld (new Vector2 (ld.posGlobal.x-CenterPos.x, ld.posGlobal.y-CenterPos.y));
-		}
-	}
+//	/** Once we know where the center of the playable world is, set the posWorld value for all my levels! */
+//	private void SetAllLevelDatasPosWorld () {
+//		foreach (LevelData ld in levelDatas.Values) {
+//			ld.SetPosWorld (new Vector2 (ld.posGlobal.x-CenterPos.x, ld.posGlobal.y-CenterPos.y));
+//		}
+//	}
 
 	// ================================================================
 	//  Getters
@@ -159,8 +159,8 @@ public class WorldData {
 
 	/** 0 top, 1 right, 2 bottom, 3 left. E.g. If the second level is to the RIGHT of the first, this'll return 1. */
 	private int GetSideLevelIsOn (string levelKeyA, string levelKeyB) {
-		Rect levelABounds = GetLevelData (levelKeyA, false).BoundsGlobal;
-		Rect levelBBounds = GetLevelData (levelKeyB, false).BoundsGlobal;
+		Rect levelABounds = GetLevelData (levelKeyA).BoundsGlobal;
+		Rect levelBBounds = GetLevelData (levelKeyB).BoundsGlobal;
 		return MathUtils.GetSideRectIsOn (levelABounds, levelBBounds);
 	}
 
@@ -222,13 +222,18 @@ public class WorldData {
 
 		string worldPath = FilePaths.WorldFileAddress (worldIndex);
 		DirectoryInfo info = new DirectoryInfo(worldPath);
-		FileInfo[] fileInfos = info.GetFiles();
-		foreach (FileInfo file in fileInfos) {
-			if (file.Name.EndsWith(".meta")) { continue; } // Ignore .meta files (duh).
-			string fileName = file.Name.Substring(0, file.Name.Length-4); // Remove the ".txt".
-			if (fileName == "_LevelLinks") { continue; } // Ignore the _LevelLinks.txt file.
-			string levelKey = fileName;
-			AddLevelData (levelKey);
+		if (info.Exists) {
+			FileInfo[] fileInfos = info.GetFiles();
+			foreach (FileInfo file in fileInfos) {
+				if (file.Name.EndsWith(".meta")) { continue; } // Ignore .meta files (duh).
+				string fileName = file.Name.Substring(0, file.Name.Length-4); // Remove the ".txt".
+				if (fileName == "_LevelLinks") { continue; } // Ignore the _LevelLinks.txt file.
+				string levelKey = fileName;
+				AddLevelData (levelKey);
+			}
+		}
+		else {
+			Debug.LogError("World folder not found! " + worldIndex);
 		}
 
 //		if (File.Exists(filePath)) {

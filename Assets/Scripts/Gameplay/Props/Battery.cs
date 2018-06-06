@@ -21,6 +21,8 @@ public class Battery : Prop, ISerializableData<BatteryData> {
 	}
 	public void Initialize(Level _myLevel, BatteryData data) {
 		base.BaseInitialize(_myLevel, data);
+
+		this.transform.localScale = Vector3.one * 1.2f; // Hackyish.
 	}
 
 

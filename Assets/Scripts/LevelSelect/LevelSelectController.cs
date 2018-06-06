@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
 public class LevelSelectController : MonoBehaviour {
 	// Components
 	[SerializeField] private Transform tf_levelButtons=null;
@@ -64,3 +65,4 @@ public class LevelSelectController : MonoBehaviour {
 
 
 }
+*/

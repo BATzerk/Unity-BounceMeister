@@ -31,10 +31,18 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 	//  Start
 	// ----------------------------------------------------------------
 	override protected void Start() {
-		bodySprite.color = GetBodySpriteColor();
+		base.Start();
+
+		ApplyBodySpriteColor();
 	}
 	public void Initialize(Level _myLevel, GroundData data) {
 		base.BaseGroundInitialize(_myLevel, data);
+
+		colorType = data.colorType;
+		ApplyBodySpriteColor();
+	}
+	private void ApplyBodySpriteColor() {
+		bodySprite.color = GetBodySpriteColor();
 	}
 
 
@@ -44,6 +52,7 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 	public GroundData SerializeAsData() {
 		GroundData data = new GroundData();
 		data.myRect = MyRect;
+		data.colorType = colorType;
 		return data;
 	}
 

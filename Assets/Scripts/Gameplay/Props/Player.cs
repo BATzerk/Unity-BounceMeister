@@ -91,14 +91,15 @@ public class Player : PlatformCharacter {
 	override protected void Start () {
 		base.Start();
 
-		// Reset some things.
-		SetPos(pos);
-		timeSinceDamage = -1;
-		isPostDamageImmunity = false;
-
-		// Size me, queen!
-		SetSize (new Vector2(1.5f, 1.8f)); // NOTE: I don't understand why we gotta cut it by 100x. :P
+		SetSize (new Vector2(1.5f, 1.8f));
 	}
+	public void Initialize(Level _myLevel) {
+		this.transform.SetParent(_myLevel.transform);
+		this.transform.localScale = Vector3.one;
+		this.transform.localPosition = Vector3.zero;
+		this.transform.localEulerAngles = Vector3.zero;
+	}
+
 	override protected void SetSize(Vector2 _size) {
 		base.SetSize(_size);
 		myBody.SetSize(_size);
