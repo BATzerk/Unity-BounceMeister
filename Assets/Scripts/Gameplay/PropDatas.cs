@@ -61,9 +61,13 @@ public class LiftData : PropData {
 	public float strength;
 	public Rect myRect=new Rect();
 }
-public class PlayerData : PropData {
 
+public class PlayerData : PropData {
 }
+
+public class PlayerStartData : PropData {
+}
+
 public class SpikesData : PropData {
 	public Rect myRect=new Rect();
 }

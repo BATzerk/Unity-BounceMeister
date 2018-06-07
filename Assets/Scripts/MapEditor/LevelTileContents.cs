@@ -41,27 +41,31 @@ public class LevelTileContents : MonoBehaviour {
 		displayBounds.center += displayBounds.size*0.5f; // test
 //		displayBounds.center -= ld.PosGlobal;
 
-
 //		AddSpriteRenderer ("test", s_ground, go_propsLayer, displayBounds.center, displayBounds.size, 99, new Color(0,1,1, 0.5f));
 
-		// -- Grounds --
-		foreach (GroundData groundData in ld.groundDatas) {
-			Sprite sprite = s_ground;
-			Color color = new Color(0.6f,0.6f,0.6f, 0.5f);
-			Rect displayRect = new Rect(groundData.myRect);
-//			displayRect.size = new Vector2(Mathf.Min(displayRect.size.x,displayBounds.size.x), Mathf.Min(displayRect.size.y,displayBounds.size.y));
-//			displayRect.center = groundData.myRect.center;
 
-//			float xMin = Mathf.Max(displayBounds.xMin, displayRect.xMin);
-//			float yMin = Mathf.Max(displayBounds.yMin, displayRect.yMin);
-//			float xMax = Mathf.Min(displayBounds.xMax, displayRect.xMax);
-//			float yMax = Mathf.Min(displayBounds.yMax, displayRect.yMax);
-//			displayRect = new Rect();
-//			displayRect.size = new Vector2(xMax-xMin, yMax-yMin);
-//			displayRect.center = new Vector2((xMax+xMin)*0.5f, (yMax+yMin)*0.5f);
-//
-//			if (displayRect.size.x<=0 || displayRect.size.y<=0) { continue; } // Oh, wow, if this TOTALLY isn't visible, don't add anything.
-			AddSpriteRenderer ("Ground", s_ground, go_propsLayer, displayRect.position, displayRect.size, 2, color);//WHY POSITION? why not center?
+		// -- Grounds --
+//		foreach (GroundData groundData in ld.groundDatas) {
+		foreach (PropData propData in ld.allPropDatas) {
+			if (propData.GetType() == typeof(GroundData)) {
+				GroundData groundData = propData as GroundData;
+				Sprite sprite = s_ground;
+				Color color = new Color(0.6f,0.6f,0.6f, 0.5f);
+				Rect displayRect = new Rect(groundData.myRect);
+	//			displayRect.size = new Vector2(Mathf.Min(displayRect.size.x,displayBounds.size.x), Mathf.Min(displayRect.size.y,displayBounds.size.y));
+	//			displayRect.center = groundData.myRect.center;
+
+	//			float xMin = Mathf.Max(displayBounds.xMin, displayRect.xMin);
+	//			float yMin = Mathf.Max(displayBounds.yMin, displayRect.yMin);
+	//			float xMax = Mathf.Min(displayBounds.xMax, displayRect.xMax);
+	//			float yMax = Mathf.Min(displayBounds.yMax, displayRect.yMax);
+	//			displayRect = new Rect();
+	//			displayRect.size = new Vector2(xMax-xMin, yMax-yMin);
+	//			displayRect.center = new Vector2((xMax+xMin)*0.5f, (yMax+yMin)*0.5f);
+	//
+	//			if (displayRect.size.x<=0 || displayRect.size.y<=0) { continue; } // Oh, wow, if this TOTALLY isn't visible, don't add anything.
+				AddSpriteRenderer ("Ground", s_ground, go_propsLayer, displayRect.position, displayRect.size, 2, color);//WHY POSITION? why not center?
+			}
 		}
 
 		UpdateComponentVisibilities ();

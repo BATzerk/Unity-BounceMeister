@@ -9,16 +9,6 @@ public class LevelData {
 	// Components!
 	public CameraBoundsData cameraBoundsData;
 	public List<PropData> allPropDatas;
-	public List<BatteryData> batteryDatas;
-	public List<CrateData> crateDatas;
-	public List<DamageableGroundData> damageableGroundDatas;
-	public List<GemData> gemDatas;
-	public List<GroundData> groundDatas;
-	public List<LevelDoorData> levelDoorDatas;
-	public List<LiftData> liftDatas;
-	public List<PlatformData> platformDatas;
-	public List<SpikesData> spikesDatas;
-	public List<ToggleGroundData> toggleGroundDatas;
 	// Properties
 	public bool hasPlayerBeenHere; // false until the player enters me!
 	public bool isConnectedToStart; // true if I'm connected to the starting level of this world. Used to determine to render me on zooming the camera out.
@@ -73,17 +63,7 @@ public class LevelData {
 
 	public void ClearAllPropDataLists () {
 		allPropDatas = new List<PropData>();
-		batteryDatas = new List<BatteryData>();
 		cameraBoundsData = new CameraBoundsData();
-		crateDatas = new List<CrateData>();
-		damageableGroundDatas = new List<DamageableGroundData>();
-		gemDatas = new List<GemData>();
-		groundDatas = new List<GroundData>();
-		levelDoorDatas = new List<LevelDoorData>();
-		liftDatas = new List<LiftData>();
-		platformDatas = new List<PlatformData>();
-		spikesDatas = new List<SpikesData>();
-		toggleGroundDatas = new List<ToggleGroundData>();
 	}
 
 

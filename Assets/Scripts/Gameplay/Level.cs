@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Level : MonoBehaviour, ISerializableData<LevelData> {
-	// Components
-//	private CameraBounds cameraBounds;//[SerializeField] 
 	// References
 	private GameController gameControllerRef;
 	private LevelData levelDataRef;
@@ -47,65 +45,41 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		ld.isConnectedToStart = levelDataRef.isConnectedToStart;
 
 		// -- Props --
-		Battery[] batteries = GetComponentsInChildren<Battery>();
-		foreach (Battery obj in batteries) {
-			ld.batteryDatas.Add(obj.SerializeAsData());
-			ld.allPropDatas.Add(obj.SerializeAsData());
-		}
-		CameraBounds cameraBounds = GetComponentInChildren<CameraBounds>();
-		if (cameraBounds != null) {
-			ld.cameraBoundsData = cameraBounds.SerializeAsData();
-		}
-//		ConditionalGround[] conditionalGrounds = GetComponentsInChildren<ConditionalGround>();
-//		foreach (ConditionalGround obj in conditionalGrounds) {
-//			ld.conditionalGroundDatas.Add(obj.SerializeAsData());
-//		ld.allPropDatas.Add(obj.SerializeAsData());
-//		}
-		Crate[] crates = GetComponentsInChildren<Crate>();
-		foreach (Crate obj in crates) {
-			ld.crateDatas.Add(obj.SerializeAsData());
-			ld.allPropDatas.Add(obj.SerializeAsData());
-		}
-		DamageableGround[] damageableGrounds = GetComponentsInChildren<DamageableGround>();
-		foreach (DamageableGround obj in damageableGrounds) {
-			ld.damageableGroundDatas.Add(obj.SerializeAsData());
-			ld.allPropDatas.Add(obj.SerializeAsData());
-		}
-		Gem[] gems = GetComponentsInChildren<Gem>();
-		foreach (Gem obj in gems) {
-			ld.gemDatas.Add(obj.SerializeAsData());
-			ld.allPropDatas.Add(obj.SerializeAsData());
-		}
-		Ground[] grounds = GetComponentsInChildren<Ground>();
-		foreach (Ground obj in grounds) {
-			ld.groundDatas.Add(obj.SerializeAsData());
-			ld.allPropDatas.Add(obj.SerializeAsData());
-		}
-		LevelDoor[] levelDoors = GetComponentsInChildren<LevelDoor>();
-		foreach (LevelDoor obj in levelDoors) {
-			ld.levelDoorDatas.Add(obj.SerializeAsData());
-			ld.allPropDatas.Add(obj.SerializeAsData());
-		}
-		Lift[] lifts = GetComponentsInChildren<Lift>();
-		foreach (Lift obj in lifts) {
-			ld.liftDatas.Add(obj.SerializeAsData());
-			ld.allPropDatas.Add(obj.SerializeAsData());
-		}
-		Platform[] platforms = GetComponentsInChildren<Platform>();
-		foreach (Platform obj in platforms) {
-			ld.platformDatas.Add(obj.SerializeAsData());
-			ld.allPropDatas.Add(obj.SerializeAsData());
-		}
-		Spikes[] spikes = GetComponentsInChildren<Spikes>();
-		foreach (Spikes obj in spikes) {
-			ld.spikesDatas.Add(obj.SerializeAsData());
-			ld.allPropDatas.Add(obj.SerializeAsData());
-		}
-		ToggleGround[] toggleGrounds = GetComponentsInChildren<ToggleGround>();
-		foreach (ToggleGround obj in toggleGrounds) {
-			ld.toggleGroundDatas.Add(obj.SerializeAsData());
-			ld.allPropDatas.Add(obj.SerializeAsData());
-		}
+		Battery[] batteries = GameObject.FindObjectsOfType<Battery>();
+		foreach (Battery obj in batteries) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+		CameraBounds cameraBounds = GameObject.FindObjectOfType<CameraBounds>();
+		if (cameraBounds != null) { ld.cameraBoundsData = cameraBounds.SerializeAsData(); }
+
+		Crate[] crates = GameObject.FindObjectsOfType<Crate>();
+		foreach (Crate obj in crates) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+		DamageableGround[] damageableGrounds = GameObject.FindObjectsOfType<DamageableGround>();
+		foreach (DamageableGround obj in damageableGrounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+		Gem[] gems = GameObject.FindObjectsOfType<Gem>();
+		foreach (Gem obj in gems) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+		Ground[] grounds = GameObject.FindObjectsOfType<Ground>();
+		foreach (Ground obj in grounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+		LevelDoor[] levelDoors = GameObject.FindObjectsOfType<LevelDoor>();
+		foreach (LevelDoor obj in levelDoors) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+		Lift[] lifts = GameObject.FindObjectsOfType<Lift>();
+		foreach (Lift obj in lifts) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+		Platform[] platforms = GameObject.FindObjectsOfType<Platform>();
+		foreach (Platform obj in platforms) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+		PlayerStart[] playerStarts = GameObject.FindObjectsOfType<PlayerStart>();
+		foreach (PlayerStart obj in playerStarts) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+		Spikes[] spikes = GameObject.FindObjectsOfType<Spikes>();
+		foreach (Spikes obj in spikes) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+		ToggleGround[] toggleGrounds = GameObject.FindObjectsOfType<ToggleGround>();
+		foreach (ToggleGround obj in toggleGrounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
 //		// Streets
 //		for (int i=0; i<streets.Count; i++) {
@@ -193,6 +167,10 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 			else if (propData is LiftData) {
 				Lift newProp = Instantiate(rh.Lift).GetComponent<Lift>();
 				newProp.Initialize (this, propData as LiftData);
+			}
+			else if (propData is PlayerStartData) {
+				PlayerStart newProp = Instantiate(rh.PlayerStart).GetComponent<PlayerStart>();
+				newProp.Initialize (this, propData as PlayerStartData);
 			}
 			else if (propData is SpikesData) {
 				Spikes newProp = Instantiate(rh.Spikes).GetComponent<Spikes>();

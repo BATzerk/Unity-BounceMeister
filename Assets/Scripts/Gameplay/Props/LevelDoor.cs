@@ -23,8 +23,6 @@ public class LevelDoor : Prop, ISerializableData<LevelDoorData> {
 	public void Initialize(Level _myLevel, LevelDoorData data) {
 		base.BaseInitialize(_myLevel, data);
 
-		this.transform.localPosition = data.pos;
-
 		myID = data.myID;
 		levelToKey = data.levelToKey;
 		levelToDoorID = data.levelToDoorID;

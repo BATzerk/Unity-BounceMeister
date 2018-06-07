@@ -10,7 +10,7 @@ public class Prop : MonoBehaviour {
 	public Vector2 PosLocal { get { return pos; } }
 	public Vector2 PosGlobal {
 		get {
-//			if (myLevel==null) { return PosLocal; } // Safety check.
+			if (myLevel==null) { return PosLocal; } // Safety check.
 			return PosLocal + myLevel.PosGlobal;
 		}
 	}
