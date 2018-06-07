@@ -16,14 +16,17 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	public string LevelKey { get { return levelDataRef.LevelKey; } }
 	public Vector2 PosGlobal { get { return levelDataRef.PosGlobal; } }
 //	public Vector2 PosWorld { get { return levelDataRef.PosWorld; } }
-	public Rect GetCameraBoundsRect() {
+	public Rect GetCameraBoundsLocal() {
 		CameraBounds cameraBounds = GetComponentInChildren<CameraBounds>();
 		if (cameraBounds != null) {
-			Rect returnRect = new Rect(cameraBounds.RectLocal);
-			returnRect.center += PosGlobal; // shift it to global coordinates!
-			return returnRect;
+			return new Rect(cameraBounds.RectLocal);
 		}
 		return new Rect(0,0, 20,20);
+	}
+	public Rect GetCameraBoundsGlobal() {
+		Rect rLocal = GetCameraBoundsLocal();
+		rLocal.center += PosGlobal; // shift it to global coordinates!
+		return rLocal;
 	}
 	// Getters (Private)
 	private DataManager dataManager { get { return GameManagers.Instance.DataManager; } }
@@ -205,15 +208,15 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	public void InitializeAsPremadeLevel(GameController _gameControllerRef) {
 		gameControllerRef = _gameControllerRef;
 
-		// TEMP
+		// TEMP totes hacky, yo.
 		string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-//		if ( TODO: Maybe something about overwriting a level file with this name? Only if needed.
-		levelDataRef = new LevelData(0, sceneName);
+		levelDataRef = new LevelData(0, sceneName); // NOTE! Be careful; we can easily overwrite levels like this.
+		levelDataRef = SerializeAsData();
 
 		// Initialize things!
 		// Player
 		PlayerData playerData = new PlayerData();
-		playerData.pos = gameControllerRef.GetLevelDoorPos(dataManager.levelToDoorID);
+//		playerData.pos = gameControllerRef.GetLevelDoorPos(dataManager.levelToDoorID);
 		playerRef.Initialize(this, playerData);
 		// CameraBounds
 		CameraBounds cameraBounds = Instantiate(ResourcesHandler.Instance.CameraBounds).GetComponent<CameraBounds>();

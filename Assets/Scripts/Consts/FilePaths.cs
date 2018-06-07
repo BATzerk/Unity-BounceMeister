@@ -10,5 +10,8 @@ public class FilePaths {
 	public static string WorldTrashFileAddress(int worldIndex) {
 		return Application.streamingAssetsPath + "/Levels/WorldTrash" + worldIndex + "/";
 	}
+	public static string LevelLinksFileAddress(int worldIndex) {
+		return WorldFileAddress (worldIndex) + "_LevelLinks.txt";
+	}
 
 }

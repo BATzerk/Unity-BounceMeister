@@ -19,6 +19,7 @@ public class EventManager {
 	public event NoParamAction CoinsCollectedChangedEvent;
 	public event CoinAction CoinCollectedEvent;
 	public event LevelAction StartLevelEvent;
+	public event IntAction PlayerEscapeLevelBoundsEvent;
 	public event PlayerAction PlayerDashEvent;
 	public event PlayerAction PlayerDashEndEvent;
 	public event PlayerAction PlayerDieEvent;
@@ -37,6 +38,7 @@ public class EventManager {
 	public void OnCoinCollected(Coin coin) { if (CoinCollectedEvent!=null) { CoinCollectedEvent(coin); } }
 	public void OnCoinsCollectedChanged() { if (CoinsCollectedChangedEvent!=null) { CoinsCollectedChangedEvent(); } }
 
+	public void OnPlayerEscapeLevelBounds(int side) { if (PlayerEscapeLevelBoundsEvent!=null) { PlayerEscapeLevelBoundsEvent(side); } }
 	public void OnPlayerDash(Player player) { if (PlayerDashEvent!=null) { PlayerDashEvent(player); } }
 	public void OnPlayerDashEnd(Player player) { if (PlayerDashEndEvent!=null) { PlayerDashEndEvent(player); } }
 	public void OnPlayerDie(Player player) { if (PlayerDieEvent!=null) { PlayerDieEvent(player); } }

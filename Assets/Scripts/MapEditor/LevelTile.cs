@@ -15,10 +15,10 @@ public class LevelTile : MonoBehaviour {
 //	private float backingXMin, backingXMax, backingYMin, backingYMax;
 	private Vector3 mouseClickOffset;
 	// Components
-	[SerializeField] private LevelTileBodyCollider bodyCollider;
-	[SerializeField] private LevelTileContents contents;
-	[SerializeField] private SpriteRenderer sr_backing; // my whole placemat thing.
-	[SerializeField] private SpriteRenderer sr_border; // borders still look nice.
+	[SerializeField] private LevelTileBodyCollider bodyCollider=null;
+	[SerializeField] private LevelTileContents contents=null;
+	[SerializeField] private SpriteRenderer sr_backing=null; // my whole placemat thing.
+	[SerializeField] private SpriteRenderer sr_border=null; // borders still look nice.
 
 	
 	
@@ -31,8 +31,9 @@ public class LevelTile : MonoBehaviour {
 //	public float BackingYMax { get { return backingYMax; } }
 	public int WorldIndex { get { return levelDataRef.WorldIndex; } }
 	public string LevelKey { get { return levelDataRef.LevelKey; } }
-//	public Rect PlacematRect { get { return new Rect (x-w*0.5f,y-h*0.5f, w,h); } }
-	public Rect MyRect { get { return levelDataRef.BoundsGlobal; } }
+	//	public Rect PlacematRect { get { return new Rect (x-w*0.5f,y-h*0.5f, w,h); } }
+	public Rect BoundsGlobal { get { return levelDataRef.BoundsGlobal; } }
+	public Rect BoundsLocal { get { return levelDataRef.BoundsLocal; } }
 	public bool IsLevelLinkViewSelectedOverMePrimary {
 		get { return isLevelLinkViewSelectedOverMePrimary; }
 		set {
@@ -167,14 +168,14 @@ public class LevelTile : MonoBehaviour {
 	}
 	private void ApplySize() {
 		// backing and border
-		GameUtils.SizeSpriteRenderer (sr_backing, MyRect.size.x,MyRect.size.y);
-		sr_border.size = MyRect.size;
-		sr_backing.transform.localPosition = MyRect.center;
-		sr_border.transform.localPosition = MyRect.center;
+		GameUtils.SizeSpriteRenderer (sr_backing, BoundsLocal.size.x,BoundsLocal.size.y);
+		sr_border.size = BoundsLocal.size;
+		sr_backing.transform.localPosition = BoundsLocal.center;
+		sr_border.transform.localPosition = BoundsLocal.center;
 		// bodyCollider
-		bodyCollider.UpdatePosAndSize (MyRect);
+		bodyCollider.UpdatePosAndSize (BoundsLocal);
 		// Contents may be hot
-		contents.ApplyPosAndSize (MyRect);
+		contents.ApplyPosAndSize (BoundsLocal);
 		// levelNameText
 		contents.SetTextPosY (0);//MyRect.size.y*0.5f);
 	}

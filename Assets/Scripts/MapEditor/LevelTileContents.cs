@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 public class LevelTileContents : MonoBehaviour {
 	// Components
-	[SerializeField] private GameObject go_propsLayer;
-	[SerializeField] private LevelTileDesignerFlag designerFlag;
+	[SerializeField] private GameObject go_propsLayer=null;
+	[SerializeField] private LevelTileDesignerFlag designerFlag=null;
 	// Properties
 	private bool hasInitializedContent = false;
 	// References
 	private LevelTile levelTileRef;
 	private WorldData worldDataRef;
-	[SerializeField] private Sprite s_gem;
-	[SerializeField] private Sprite s_ground;
-	[SerializeField] private TextMesh levelNameText; // what's my name, again?
+	[SerializeField] private Sprite s_gem=null;
+	[SerializeField] private Sprite s_ground=null;
+	[SerializeField] private TextMesh levelNameText=null; // what's my name, again?
 
 
 	// ================================================================
@@ -37,12 +37,12 @@ public class LevelTileContents : MonoBehaviour {
 //		}
 
 		// Make a rect; only what's in this will be rendered!
-		Rect displayBounds = new Rect(ld.BoundsGlobal);
+		Rect displayBounds = new Rect(ld.BoundsLocal);
 		displayBounds.center += displayBounds.size*0.5f; // test
 //		displayBounds.center -= ld.PosGlobal;
 
 
-//		AddSpriteRenderer ("QQQ", s_ground, go_propsLayer, displayBounds.center, displayBounds.size, 99, new Color(0,1,1, 0.5f));
+//		AddSpriteRenderer ("test", s_ground, go_propsLayer, displayBounds.center, displayBounds.size, 99, new Color(0,1,1, 0.5f));
 
 		// -- Grounds --
 		foreach (GroundData groundData in ld.groundDatas) {
@@ -52,16 +52,15 @@ public class LevelTileContents : MonoBehaviour {
 //			displayRect.size = new Vector2(Mathf.Min(displayRect.size.x,displayBounds.size.x), Mathf.Min(displayRect.size.y,displayBounds.size.y));
 //			displayRect.center = groundData.myRect.center;
 
-			float xMin = Mathf.Max(displayBounds.xMin, displayRect.xMin);
-			float yMin = Mathf.Max(displayBounds.yMin, displayRect.yMin);
-			float xMax = Mathf.Min(displayBounds.xMax, displayRect.xMax);
-			float yMax = Mathf.Min(displayBounds.yMax, displayRect.yMax);
-
-			displayRect = new Rect();
-			displayRect.size = new Vector2(xMax-xMin, yMax-yMin);
-			displayRect.center = new Vector2((xMax+xMin)*0.5f, (yMax+yMin)*0.5f);
-
-			if (displayRect.size.x<=0 || displayRect.size.y<=0) { continue; } // Oh, wow, if this TOTALLY isn't visible, don't add anything.
+//			float xMin = Mathf.Max(displayBounds.xMin, displayRect.xMin);
+//			float yMin = Mathf.Max(displayBounds.yMin, displayRect.yMin);
+//			float xMax = Mathf.Min(displayBounds.xMax, displayRect.xMax);
+//			float yMax = Mathf.Min(displayBounds.yMax, displayRect.yMax);
+//			displayRect = new Rect();
+//			displayRect.size = new Vector2(xMax-xMin, yMax-yMin);
+//			displayRect.center = new Vector2((xMax+xMin)*0.5f, (yMax+yMin)*0.5f);
+//
+//			if (displayRect.size.x<=0 || displayRect.size.y<=0) { continue; } // Oh, wow, if this TOTALLY isn't visible, don't add anything.
 			AddSpriteRenderer ("Ground", s_ground, go_propsLayer, displayRect.position, displayRect.size, 2, color);//WHY POSITION? why not center?
 		}
 

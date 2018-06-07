@@ -30,6 +30,8 @@ public class Player : PlatformCharacter {
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
 	private const float PostWallKickHorzInputLockDur = 0.3f; // how long until we can provide horizontal input after jumping off a wall.
 
+	// Components
+	[SerializeField] private PlayerBody myBody=null;
 	// Properties
 	private bool isPlunging = false;
 	private bool isPlungeRecharged = true;
@@ -43,8 +45,8 @@ public class Player : PlatformCharacter {
 	private int health = 1; // we die when we hit 0.
 	private int numJumpsSinceGround;
 	private int wallSlideSide = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
-	// Components
-	[SerializeField] private PlayerBody myBody=null;
+	// References
+	private Rect camBoundsLocal; // for detecting when we exit the level!
 
 	// Getters (Public)
 	public bool IsPlungeRecharged { get { return isPlungeRecharged; } }
@@ -84,6 +86,13 @@ public class Player : PlatformCharacter {
 	}
 
 
+	// Debug
+	private void OnDrawGizmos() {
+		if (myLevel==null) { return; }
+		Gizmos.color = Color.cyan;
+		Gizmos.DrawWireCube (myLevel.PosGlobal+camBoundsLocal.center, new Vector3(camBoundsLocal.size.x,camBoundsLocal.size.y, 10));
+	}
+
 
 	// ----------------------------------------------------------------
 	//  Start
@@ -95,6 +104,12 @@ public class Player : PlatformCharacter {
 	}
 	public void Initialize(Level _myLevel, PlayerData data) {
 		base.BaseInitialize(_myLevel, data);
+
+		// Set camBoundsLocal!
+		const float boundsBloat = 2f; // I have to like *really* be off-screen for this to register.
+		camBoundsLocal = myLevel.GetCameraBoundsLocal();
+		camBoundsLocal.size += new Vector2(boundsBloat,boundsBloat)*2f;
+		camBoundsLocal.position -= new Vector2(boundsBloat,boundsBloat);
 	}
 
 	override protected void SetSize(Vector2 _size) {
@@ -156,6 +171,7 @@ public class Player : PlatformCharacter {
 		UpdateMaxYSinceGround();
 
 		UpdateIsPreservingWallKickVel();
+		UpdateExitedLevel();
 		// TEST auto-plunge
 //		if (!feetOnGround() && !isPlunging && vel.y<-0.5f) {
 //			StartBouncing();
@@ -223,6 +239,13 @@ public class Player : PlatformCharacter {
 				&& !MathUtils.IsSameSign(vel.x, inputAxis.x)) { // Pushing against my vel? Stop preserving the vel!
 				isPreservingWallKickVel = false;
 			}
+		}
+	}
+	private void UpdateExitedLevel() {
+		// I'm outside the level!
+		if (!camBoundsLocal.Contains(PosLocal)) {
+			int sideEscaped = MathUtils.GetSidePointIsOn(camBoundsLocal, PosLocal);
+			GameManagers.Instance.EventManager.OnPlayerEscapeLevelBounds(sideEscaped);
 		}
 	}
 

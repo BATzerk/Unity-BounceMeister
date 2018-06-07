@@ -32,7 +32,8 @@ public class LevelData {
 	public string LevelKey { get { return levelKey; } }
 	public int DesignerFlag { get { return designerFlag; } }
 	public int WorldIndex { get { return worldIndex; } }
-	public Rect BoundsGlobal { get { return cameraBoundsData.myRect; } } // Currently, the camera bounds and level bounds are one in the same.
+	public Rect BoundsLocal { get { return new Rect(cameraBoundsData.myRect); } } // Currently, the camera bounds and level bounds are one in the same.
+	public Rect BoundsGlobal { get { return new Rect(cameraBoundsData.myRect.center+posGlobal, cameraBoundsData.myRect.size); } }
 	public Vector2 PosGlobal { get { return posGlobal; } }
 //	public Rect BoundsLocal { get { return boundsLocal; } }
 	public WorldData WorldDataRef { get { return GameManagers.Instance.DataManager.GetWorldData(worldIndex); } }

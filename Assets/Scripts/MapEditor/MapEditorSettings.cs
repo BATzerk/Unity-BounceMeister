@@ -14,9 +14,9 @@ static public class MapEditorSettings {
 	static public void LoadAll () {
 		DoShowInstructions = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowInstructions, 0) == 1;
 		DoShowDesignerFlags = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowDesignerFlags, 0) == 1;
-		DoShowLevelNames = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelNames, 0) == 1;
-		DoShowLevelTileStars = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelTileStars, 0) == 1;
-		DoShowLevelProps = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelProps, 0) == 1;
+		DoShowLevelNames = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelNames, 1) == 1;
+		DoShowLevelTileStars = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelTileStars, 1) == 1;
+		DoShowLevelProps = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelProps, 1) == 1;
 	}
 	static public void SaveAll () {
 		SaveStorage.SetInt (SaveKeys.MapEditor_DoShowInstructions, DoShowInstructions?1:0);

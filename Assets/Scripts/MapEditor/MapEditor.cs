@@ -15,7 +15,7 @@ public class MapEditor : MonoBehaviour {
 	private const string instructionsTextString_enabled = "move/zoom:  [mouse or arrow keys]\nchange world:  [1-8]\nplay level:  [double-click one]\ntoggle names:  'n'\ntoggle streets:  's'\nsearch:  [hold 'SHIFT' and type lvl name; ESC to cancel]\nhide instructions:  'i'";
 	private const string instructionsTextString_disabled = "show instructions:  'i'";
 	// Components
-	[SerializeField] private LevelTileSelectionRect selectionRect;
+	[SerializeField] private LevelTileSelectionRect selectionRect=null;
 	private List<GameObject> worldLayerGOs; // purely for hierarchy cleanness, we wanna put all the tiles into their respective world's GameObject.
 	private List<List<LevelTile>> allLevelTiles; // LevelTiles for EVERY LEVEL IN THE GAME!
 //	private List<LevelLinkView> levelLinkViews;
@@ -32,9 +32,9 @@ public class MapEditor : MonoBehaviour {
 	private Vector2 mousePosScreenOnDown;
 	private Vector2 mousePosWorld;
 	// References
-	[SerializeField] private Text currentWorldText;
+	[SerializeField] private Text currentWorldText=null;
 	[SerializeField] private Text demoText;
-	[SerializeField] private Text instructionsText;
+	[SerializeField] private Text instructionsText=null;
 	private GameObject levelTilePrefab;
 //	private LevelTile connectionCircleLevelTileOverA; // when dragging a LevelLinkView, what LevelTile its connection circle is over.
 //	private LevelTile connectionCircleLevelTileOverB; // when dragging a LevelLinkView, what LevelTile its connection circle is over.
@@ -119,13 +119,11 @@ public class MapEditor : MonoBehaviour {
 		return mousePos;
 	}
 	private LevelTile GetLevelTileAtPoint(Vector2 point) {
-		for (int i=0; i<CurrentWorldLevelTiles.Count; i++) {
-//			Vector2 rectSize = levelTiles[i].LevelDataRef.BoundsGlobalMinSize;
-//			if (new Rect(levelTiles[i].LevelDataRef.PosGlobal-rectSize*0.5f, rectSize).Contains(point)) {
-			Rect levelRect = CurrentWorldLevelTiles[i].MyRect;
-			levelRect.position += CurrentWorldLevelTiles[i].LevelDataRef.PosGlobal;
-			if (levelRect.Contains(point)) {
-				return CurrentWorldLevelTiles[i];
+		if (CurrentWorldLevelTiles==null) { return null; } // Safety check for runtime compile.
+		foreach (LevelTile tile in CurrentWorldLevelTiles) {
+			Rect boundsGlobal = tile.BoundsGlobal;
+			if (boundsGlobal.Contains(point+boundsGlobal.size*0.5f)) { // Note: convert back to center-aligned. SIGH. I would love to just make level's rect corner-aligned. Avoid any ambiguity.
+				return tile;
 			}
 		}
 		return null;
@@ -637,6 +635,7 @@ public class MapEditor : MonoBehaviour {
 //	}
 
 	public void OnLevelTileSelectionRectDeactivated () {
+		if (CurrentWorldLevelTiles==null) { return; } // Safety check for runtime compile.
 		// Select all the extra ones selected by the selection rect!
 		for (int i=0; i<CurrentWorldLevelTiles.Count; i++) {
 			if (CurrentWorldLevelTiles[i].IsWithinLevelTileSelectionRect) {
@@ -703,12 +702,8 @@ public class MapEditor : MonoBehaviour {
 	private void UpdateUI () {
 		// We can afford to update these every frame.
 		// currentWorldText
-		currentWorldText.rectTransform.localPosition = new Vector3 (-Screen.width*0.5f + 10, Screen.height * 0.5f - 10, 0);
 		currentWorldText.text = currentWorldIndex.ToString ();
-		currentWorldText.fontSize = Mathf.RoundToInt (42 * ScreenHandler.ScreenScale);
 		// instructionsText
-		instructionsText.rectTransform.localPosition = new Vector3 (-Screen.width*0.5f+10, -Screen.height*0.5f+10+instructionsText.rectTransform.sizeDelta.y, 0); // bottom-left align
-		instructionsText.fontSize = Mathf.RoundToInt (16 * ScreenHandler.ScreenScale);
 		if (MapEditorSettings.DoShowInstructions) {
 			instructionsText.color = new Color (1,1,1, 0.36f);
 			instructionsText.text = instructionsTextString_enabled;
@@ -788,22 +783,23 @@ public class MapEditor : MonoBehaviour {
 			}
 		}
 
+		// CONTROL + A = Select ALL LevelTiles!
+		if (Input.GetKeyDown (KeyCode.A)) {
+			SelectAllLevelTiles ();
+		}
+		// CONTROL + J = Open LevelJump!
+		else if (Input.GetKeyDown (KeyCode.J)) {
+			OpenLevelJump ();
+		}
+		// CONTROL + R = Reset EVERYTHING!
+		else if (Input.GetKeyDown(KeyCode.R)) {
+			ReloadAllWorldDatasAndRemakeMap ();
+		}
+
 		// CONTROL/ALT + ____
 		else if (Input.GetKey (KeyCode.LeftAlt) || Input.GetKey (KeyCode.LeftControl) || Input.GetKey (KeyCode.RightAlt) || Input.GetKey (KeyCode.RightControl)) {
-			// CONTROL + A = Select ALL LevelTiles!
-			if (Input.GetKeyDown (KeyCode.A)) {
-				SelectAllLevelTiles ();
-			}
-			// CONTROL + J = Open LevelJump!
-			else if (Input.GetKeyDown (KeyCode.J)) {
-				OpenLevelJump ();
-			}
-			// CONTROL + R = Reset EVERYTHING!
-			else if (Input.GetKeyDown(KeyCode.R)) {
-				ReloadAllWorldDatasAndRemakeMap ();
-			}
 			// CONTROL + [number] = Move all LevelTiles/LevelLinks selected to that world!!
-			else if (Input.GetKeyDown (KeyCode.Alpha0)) { MoveLevelTilesSelectedAndLinksToWorld (0); }
+			if (Input.GetKeyDown (KeyCode.Alpha0)) { MoveLevelTilesSelectedAndLinksToWorld (0); }
 			else if (Input.GetKeyDown (KeyCode.Alpha1)) { MoveLevelTilesSelectedAndLinksToWorld (1); }
 			else if (Input.GetKeyDown (KeyCode.Alpha2)) { MoveLevelTilesSelectedAndLinksToWorld (2); }
 			else if (Input.GetKeyDown (KeyCode.Alpha3)) { MoveLevelTilesSelectedAndLinksToWorld (3); }

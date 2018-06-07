@@ -5,12 +5,13 @@ using UnityEngine;
 public class DataManager {
 	// Properties
 	private int coinsCollected; // the total value of all the coins we've collected!
-	public string levelToDoorID = "0"; // default this to something. When we enter a level, this is the door we'll start at!
+//	public string levelToDoorID = "0"; // default this to something. When we enter a level, this is the door we'll start at!
 	private List<WorldData> worldDatas;
 //	private int worldIndexOnLoadGameScene;
 //	public int mostRecentlySavedLevel_worldIndex; // an nbd shortcut to highlight the most recently created level in the MapEditor.
 //	public string mostRecentlySavedLevel_levelKey; // an nbd shortcut to highlight the most recently created level in the MapEditor.
 	public LevelData currentLevelData = null; // if this is defined when GameController opens, we'll open THAT level!
+	public Vector2 playerPosGlobalOnExitLevel=Vector2Extensions.NaN; // The suuuuper simple way we know how to set the Player's pos on entering the next level.
 
 
 	// ----------------------------------------------------------------

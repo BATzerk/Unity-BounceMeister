@@ -1,5 +1,5 @@
 levelProperties
-posGlobal:(0.0, 0.0);designerFlag:0
+posGlobal:(-4.0, 26.0);designerFlag:0
 
 CameraBounds
 myRect:(x:-25.00, y:-19.00, width:68.00, height:38.00)
@@ -35,4 +35,3 @@ myRect:(x:24.00, y:-15.50, width:20.00, height:1.00);rotation:0
 myRect:(x:21.50, y:-3.00, width:2.00, height:1.00);rotation:90
 myRect:(x:35.00, y:-11.50, width:4.00, height:1.00);rotation:0
 myRect:(x:9.00, y:-14.50, width:8.00, height:1.00);rotation:0
-

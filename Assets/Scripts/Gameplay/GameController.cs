@@ -29,7 +29,7 @@ public class GameController : MonoBehaviour {
 	private void Start () {
 		// We've defined our currentLevelData before this scene! Load up THAT level!!
 		if (dataManager.currentLevelData != null) {
-			StartGameAtLevel(dataManager.currentLevelData.WorldIndex, dataManager.currentLevelData.LevelKey);
+			StartGameAtLevel(dataManager.currentLevelData);
 		}
 		// We have NOT provided any currentLevelData!...
 		else {
@@ -55,10 +55,12 @@ public class GameController : MonoBehaviour {
 
 		// Add event listeners!
 		eventManager.PlayerDieEvent += OnPlayerDie;
+		eventManager.PlayerEscapeLevelBoundsEvent += OnPlayerEscapeLevelBounds;
 	}
 	private void OnDestroy() {
 		// Remove event listeners!
 		eventManager.PlayerDieEvent -= OnPlayerDie;
+		eventManager.PlayerEscapeLevelBoundsEvent -= OnPlayerEscapeLevelBounds;
 	}
 
 
@@ -78,13 +80,14 @@ public class GameController : MonoBehaviour {
 	}
 
 	/** This actually shows "Loading" overlay FIRST, THEN next frame loads the world. */
+	public void StartGameAtLevel(LevelData levelData) { StartGameAtLevel(levelData.worldIndex, levelData.levelKey); }
 	public void StartGameAtLevel (int worldIndex, string levelKey) {
-		StartCoroutine (StartGameAtLevelCoroutine(worldIndex, levelKey));
-	}
-	private IEnumerator StartGameAtLevelCoroutine (int worldIndex, string levelKey) {
-//		// It's all a blur to me!
-//		cameraController.BlurScreenForLoading ();
-		yield return null;
+//		StartCoroutine (StartGameAtLevelCoroutine(worldIndex, levelKey));
+//	}
+//	private IEnumerator StartGameAtLevelCoroutine (int worldIndex, string levelKey) {
+////		// It's all a blur to me!
+////		cameraController.BlurScreenForLoading ();
+//		yield return null;
 
 		// Wipe everything totally clean.
 		DestroyPlayer();
@@ -97,7 +100,9 @@ public class GameController : MonoBehaviour {
 		// Make Player!
 		player = Instantiate(ResourcesHandler.Instance.Player).GetComponent<Player>();
 		PlayerData playerData = new PlayerData();
-		playerData.pos = GetLevelDoorPos(dataManager.levelToDoorID);
+		playerData.pos = GetPlayerStartingPosInLevel(levelData);
+		Debug.Log(Time.frameCount + " GetPlayerStartingPosInLevel: " + levelData.levelKey + "  " + playerData.pos);
+//		playerData.pos = GetLevelDoorPos(dataManager.levelToDoorID);
 		player.Initialize(level, playerData);
 
 		// Reset things!
@@ -109,7 +114,7 @@ public class GameController : MonoBehaviour {
 		SaveStorage.Save ();
 		// Dispatch the post-function event!
 		eventManager.OnStartLevel(level);
-		yield return null;
+//		yield return null;
 	}
 
 	private void DestroyLevel() {
@@ -121,6 +126,19 @@ public class GameController : MonoBehaviour {
 		player = null;
 	}
 
+
+	private Vector2 GetPlayerStartingPosInLevel(LevelData ld) {
+		Vector2 posExited = dataManager.playerPosGlobalOnExitLevel;
+		// Undefined?? Return 0,0.
+		if (posExited.Equals(Vector2Extensions.NaN)) {
+			return Vector2.zero;
+		}
+		// Otherwise, use the knowledge we have!
+		dataManager.playerPosGlobalOnExitLevel = Vector2Extensions.NaN; // Make sure to "clear" this. It's been used!
+//		const float extraDistToEnter = 5f; // Well let me just take an extra step in, really wanna feel at "home".
+		// For now, it really couldn't be simpler. Convert the last known coordinates to this level's coordinates. No further correction.
+		return posExited - ld.posGlobal;
+	}
 
 
 
@@ -197,6 +215,20 @@ public class GameController : MonoBehaviour {
 	*/
 
 
+	/** Super simple for now. One level per side. */
+	private void OnPlayerEscapeLevelBounds(int sideEscaped) {
+		WorldData currentWorldData = level.WorldDataRef;
+		LevelData nextLevelData = currentWorldData.GetLevelAtSide(level.LevelDataRef, sideEscaped);
+		if (nextLevelData != null) {
+			dataManager.playerPosGlobalOnExitLevel = player.PosGlobal;
+			StartGameAtLevel(nextLevelData);
+		}
+		else {
+			Debug.LogWarning("Whoa! No level at this side: " + sideEscaped);
+		}
+	}
+
+
 
 	// ----------------------------------------------------------------
 	//  Doers - Gameplay
@@ -258,13 +290,17 @@ public class GameController : MonoBehaviour {
 		}
 
 		// ~~~~ DEBUG ~~~~
-		if (Input.GetKeyDown(KeyCode.J)) {
+		if (Input.GetKeyDown(KeyCode.Equals)) { Debug_JumpToLevelAtSide(Sides.T); return; }
+		else if (Input.GetKeyDown(KeyCode.RightBracket)) { Debug_JumpToLevelAtSide(Sides.R); return; }
+		else if (Input.GetKeyDown(KeyCode.Quote)) { Debug_JumpToLevelAtSide(Sides.B); return; }
+		else if (Input.GetKeyDown(KeyCode.LeftBracket)) { Debug_JumpToLevelAtSide(Sides.L); return; }
+		else if (Input.GetKeyDown(KeyCode.J)) {
 			OpenScene(SceneNames.LevelJump);
 		}
 		else if (Input.GetKeyDown(KeyCode.M)) {
 			OpenScene(SceneNames.MapEditor);
 		}
-		if (Input.GetKeyDown(KeyCode.Return)) {
+		else if (Input.GetKeyDown(KeyCode.Return)) {
 			ReloadScene();
 			return;
 		}
@@ -277,7 +313,7 @@ public class GameController : MonoBehaviour {
 			LevelSaverLoader.SaveLevelFile(level);
 		}
 		else if (Input.GetKeyDown(KeyCode.R)) { // R = Reload current Level.
-			StartGameAtLevel(level.WorldIndex, level.LevelKey);
+			StartGameAtLevel(level.LevelDataRef);
 		}
 
 			
@@ -296,9 +332,12 @@ public class GameController : MonoBehaviour {
 
 
 	// ----------------------------------------------------------------
-	//  Editor
+	//  Debug
 	// ----------------------------------------------------------------
-//	private void Save
+	private void Debug_JumpToLevelAtSide(int side) {
+		OnPlayerEscapeLevelBounds(side); // Pretend the player just exited in this direction.
+		player.SetPosGlobal(level.PosGlobal); // just put the player in the center of the level.
+	}
 
 
 

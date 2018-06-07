@@ -107,14 +107,14 @@ public class WorldData {
 			return null;
 		}
 	}
-	public LevelLinkData GetLevelLinkDataConnectingLevels(string levelKeyA,string levelKeyB, int levelLinkID) {
-		for (int i=0; i<levelLinkDatas.Count; i++) {
-			if (levelLinkDatas[i].DoesLinkLevels(levelKeyA,levelKeyB) && levelLinkDatas[i].LevelLinkID==levelLinkID) {
-				return levelLinkDatas[i];
-			}
-		}
-		return null; // Whoops! There aren't LevelLinkDatas that connect THESE two levels.
-	}
+//	public LevelLinkData GetLevelLinkDataConnectingLevels(string levelKeyA,string levelKeyB) {
+//		for (int i=0; i<levelLinkDatas.Count; i++) {
+//			if (levelLinkDatas[i].DoesLinkLevels(levelKeyA,levelKeyB)) {
+//				return levelLinkDatas[i];
+//			}
+//		}
+//		return null; // Whoops! There aren't LevelLinkDatas that connect THESE two levels.
+//	}
 	public List<LevelLinkData> GetLevelLinksConnectingLevel (string levelKey) {
 		List<LevelLinkData> returnList = new List<LevelLinkData> ();
 		for (int i=0; i<levelLinkDatas.Count; i++) {
@@ -123,13 +123,6 @@ public class WorldData {
 			}
 		}
 		return returnList;
-	}
-	//	public string GetWorldFileLocation(int worldIndex) { return GameProperties.GetWorldFileLocation(worldIndex) + "/"; } //Assets/Resources/
-//	private string GetLevelLinksFileName(bool useFullPath) {
-//		return FilePaths.WorldFileAddress (worldIndex, useFullPath) + "_LevelLinks" + (useFullPath ? ".txt":"");
-//	}
-	private string GetLevelLinksFileAddress() {
-		return FilePaths.WorldFileAddress (worldIndex) + "_LevelLinks.txt";
 	}
 	/** Look through every link and see if the provided key is used in ANY link. */
 	public bool DoesLevelLinkToAnotherLevel(string levelKey) {
@@ -189,15 +182,12 @@ public class WorldData {
 	private string MakeLevelLinkFileLine(LevelLinkData levelLinkData) {
 		string levelAKey = levelLinkData.Key (true);
 		string levelBKey = levelLinkData.Key (false);
-		Vector2 connectingPosA = levelLinkData.GetConnectingPosA (levelAKey);
-		Vector2 connectingPosB = levelLinkData.GetConnectingPosB (levelAKey);
-		string returnString = levelAKey+","+levelBKey  +  ","  +  connectingPosA.x+","+connectingPosA.y + "," + connectingPosB.x+","+connectingPosB.y;
+		string returnString = levelAKey+","+levelBKey;//  +  ","  +  connectingPosA.x+","+connectingPosA.y + "," + connectingPosB.x+","+connectingPosB.y;
 		return returnString;
 	}
 	public Vector2 GetBrandNewLevelPos () {
 		// Return where the MapEditor camera was last looking!!
-//		return new Vector2 (SaveStorage.GetFloat (SaveKeys.MAP_EDITOR_CAMERA_POS_X), SaveStorage.GetFloat (SaveKeys.MAP_EDITOR_CAMERA_POS_Y));TODO: This
-		return Vector2.zero;
+		return new Vector2 (SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosX), SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosY));
 	}
 
 	/** Creates and returns a rect that's JUST made up of these levels. */
@@ -210,6 +200,23 @@ public class WorldData {
 		}
 		return returnRect;
 	}
+
+	/** FOR NOW, our level-traversal system is dead simple. Nothing's precalculated. We search for the next level the moment we exit one. */
+	public LevelData GetLevelAtSide(LevelData originLD, int side) {
+		// Find where a point in this next level would be. Then return the LevelData with that point in it!
+		Vector2Int dir = MathUtils.GetDir(side);
+		Vector2 originSize = originLD.BoundsGlobal.size;
+		Vector2 nextLevelPoint = originLD.BoundsGlobal.center;
+		nextLevelPoint += new Vector2(dir.x*(originSize.x+1f), dir.y*(originSize.y+1f)); // +1 so the levels don't have to be directly touching; we'll allow even a small gap.
+		return GetLevelWithPoint(nextLevelPoint);
+	}
+	public LevelData GetLevelWithPoint(Vector2 point) {
+		foreach (LevelData ld in levelDatas.Values) {
+			if (ld.BoundsGlobal.Contains(point)) { return ld; }
+		}
+		return null; // Nah, nobody here.
+	}
+
 
 
 
@@ -323,7 +330,7 @@ public class WorldData {
 //		}
 //		string textFile = (Resources.Load(fileName) as TextAsset).ToString();
 
-		string filePath = GetLevelLinksFileAddress();
+		string filePath = FilePaths.LevelLinksFileAddress(worldIndex);
 		if (!File.Exists(filePath)) {
 			Debug.LogWarning("Hey! There's no LevelLinks file for this world: " + worldIndex);
 			return;
@@ -344,10 +351,10 @@ public class WorldData {
 			}
 			string levelKeyA = data[0];
 			string levelKeyB = data[1];
-			Vector2 connectingPosA = new Vector2(TextUtils.ParseFloat(data[2]),TextUtils.ParseFloat(data[3]));
-			Vector2 connectingPosB = new Vector2(TextUtils.ParseFloat(data[4]),TextUtils.ParseFloat(data[5]));
+//			Vector2 connectingPosA = new Vector2(TextUtils.ParseFloat(data[2]),TextUtils.ParseFloat(data[3]));
+//			Vector2 connectingPosB = new Vector2(TextUtils.ParseFloat(data[4]),TextUtils.ParseFloat(data[5]));
 //			bool isSecretLink = data.Length > 6 && bool.Parse(data[6]);
-			AddLevelLinkData(levelKeyA,levelKeyB, connectingPosA,connectingPosB, false);
+			AddLevelLinkData(levelKeyA,levelKeyB, false);//, connectingPosA,connectingPosB, false);
 		}
 	}
 	private int GetNumLevelLinkDatasConnectingLevels(string levelKeyA,string levelKeyB) {
@@ -377,11 +384,11 @@ public class WorldData {
 	}
 
 	public LevelLinkData AddLevelLinkData (LevelLinkData levelLinkData, bool doUpdateFile) {
-		return AddLevelLinkData (levelLinkData.LevelAKey,levelLinkData.LevelBKey, levelLinkData.ConnectingPosA,levelLinkData.ConnectingPosB, doUpdateFile);
+		return AddLevelLinkData (levelLinkData.LevelAKey,levelLinkData.LevelBKey, doUpdateFile);//, levelLinkData.ConnectingPosA,levelLinkData.ConnectingPosB, doUpdateFile);
 	}
-	public LevelLinkData AddLevelLinkData (string levelKeyA,string levelKeyB, Vector2 connectingPosA,Vector2 connectingPosB, bool doUpdateFile) {
-		int levelLinkID = GetNumLevelLinkDatasConnectingLevels(levelKeyA,levelKeyB); // To make the new LevelLinkData, we need to know how many others already exist that connect these two levels.
-		LevelLinkData newLevelLinkData = new LevelLinkData(levelKeyA,levelKeyB, connectingPosA,connectingPosB, levelLinkID);
+	public LevelLinkData AddLevelLinkData (string levelKeyA,string levelKeyB, bool doUpdateFile){//, Vector2 connectingPosA,Vector2 connectingPosB, bool doUpdateFile) {
+//		int levelLinkID = GetNumLevelLinkDatasConnectingLevels(levelKeyA,levelKeyB); // To make the new LevelLinkData, we need to know how many others already exist that connect these two levels.
+		LevelLinkData newLevelLinkData = new LevelLinkData(levelKeyA,levelKeyB);
 		levelLinkDatas.Add(newLevelLinkData);
 		// Resave file!
 		if (doUpdateFile) { ResaveLevelLinksFile(); }
@@ -400,7 +407,7 @@ public class WorldData {
 
 	public void ResaveLevelLinksFile() {
 		// Remake the whole file afresh!
-		string levelLinksSaveFileName = GetLevelLinksFileAddress ();
+		string levelLinksSaveFileName = FilePaths.LevelLinksFileAddress (worldIndex);
 		StreamWriter sr = File.CreateText(levelLinksSaveFileName);
 		for (int i=0; i<levelLinkDatas.Count; i++) {
 			sr.WriteLine(MakeLevelLinkFileLine(levelLinkDatas[i]));

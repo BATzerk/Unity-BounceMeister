@@ -102,7 +102,7 @@ public class GameCameraController : MonoBehaviour {
 	//  Events
 	// ----------------------------------------------------------------
 	private void OnStartLevel(Level level) {
-		viewRectBounds = level.GetCameraBoundsRect();
+		viewRectBounds = level.GetCameraBoundsGlobal();
 		tf_player = gameController.Player.transform;
 
 		// Reset us now! Now that the player and everything is in place. :)

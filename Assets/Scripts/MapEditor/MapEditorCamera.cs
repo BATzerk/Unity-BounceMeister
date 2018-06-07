@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MapEditorCamera : MonoBehaviour {
 	// Components
-	[SerializeField] private Camera camera;
+	[SerializeField] new private Camera camera;
 
 
 	private void Awake() {

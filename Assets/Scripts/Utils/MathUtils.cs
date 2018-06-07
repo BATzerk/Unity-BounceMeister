@@ -86,6 +86,24 @@ public class MathUtils {
 		if (largestValue == diffT) { return Sides.T; }
 		return -1; // impossibru!!
 	}
+	public static int GetSidePointIsOn (Rect rect, Vector2 point) {
+		// Because levels aren't always perfectly in line, determine WHICH direction they're more different by. Use that.
+		// Whichever value of these is the GREATEST, that's the side rectB is on.
+		float diffL = rect.xMin - point.x;
+		float diffR = point.x - rect.xMax;
+		float diffB = rect.yMin - point.y;
+		float diffT = point.y - rect.yMax;
+		// Sort 'em!
+		float[] diffs = { diffL, diffR, diffB, diffT };
+		System.Array.Sort (diffs);
+		// WHICH is the LARGEST value??
+		float largestValue = diffs [diffs.Length - 1];
+		if (largestValue == diffL) { return Sides.L; }
+		if (largestValue == diffR) { return Sides.R; }
+		if (largestValue == diffB) { return Sides.B; }
+		if (largestValue == diffT) { return Sides.T; }
+		return -1; // impossibru!!
+	}
 
 	public static Vector2 AbsVector2 (Vector2 v) {
 		return new Vector2 (Mathf.Abs (v.x), Mathf.Abs (v.y));

@@ -37,7 +37,7 @@ public class LevelDoor : Prop, ISerializableData<LevelDoorData> {
 	// ----------------------------------------------------------------
 	private void GoToMyLevel() {
 		// Set the door we're gonna start at!
-		GameManagers.Instance.DataManager.levelToDoorID = levelToDoorID;
+//		GameManagers.Instance.DataManager.levelToDoorID = levelToDoorID;
 		// Load the level!
 		string sceneName = levelToKey;
 		UnityEngine.SceneManagement.SceneManager.LoadScene (sceneName);
