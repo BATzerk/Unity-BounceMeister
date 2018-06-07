@@ -45,6 +45,7 @@ public class Player : PlatformCharacter {
 	private int health = 1; // we die when we hit 0.
 	private int numJumpsSinceGround;
 	private int wallSlideSide = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
+	private int hackTEMP_framesAlive=0;
 	// References
 	private Rect camBoundsLocal; // for detecting when we exit the level!
 
@@ -106,7 +107,7 @@ public class Player : PlatformCharacter {
 		base.BaseInitialize(_myLevel, data);
 
 		// Set camBoundsLocal!
-		const float boundsBloat = 2f; // I have to like *really* be off-screen for this to register.
+		const float boundsBloat = 0f; // I have to like *really* be off-screen for this to register.
 		camBoundsLocal = myLevel.GetCameraBoundsLocal();
 		camBoundsLocal.size += new Vector2(boundsBloat,boundsBloat)*2f;
 		camBoundsLocal.position -= new Vector2(boundsBloat,boundsBloat);
@@ -242,6 +243,7 @@ public class Player : PlatformCharacter {
 		}
 	}
 	private void UpdateExitedLevel() {
+		if (hackTEMP_framesAlive++ < 10) { return; } // This is a hack.
 		// I'm outside the level!
 		if (!camBoundsLocal.Contains(PosLocal)) {
 			int sideEscaped = MathUtils.GetSidePointIsOn(camBoundsLocal, PosLocal);

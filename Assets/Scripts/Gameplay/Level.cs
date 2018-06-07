@@ -120,10 +120,9 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		LevelData ld = levelDataRef;
 		ResourcesHandler rh = ResourcesHandler.Instance;
 
-		// CameraBounds
-		CameraBounds cameraBounds = Instantiate(ResourcesHandler.Instance.CameraBounds).GetComponent<CameraBounds>();
-		cameraBounds.Initialize(this, ld.cameraBoundsData);
-
+//		// CameraBounds
+//		CameraBounds cameraBounds = Instantiate(ResourcesHandler.Instance.CameraBounds).GetComponent<CameraBounds>();
+//		cameraBounds.Initialize(this, ld.cameraBoundsData);
 
 		foreach (PropData propData in ld.allPropDatas) {
 			// Grounds
@@ -131,10 +130,6 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 				Crate newProp = Instantiate(rh.Crate).GetComponent<Crate>();
 				newProp.Initialize (this, propData as CrateData);
 			}
-//			else if (propData is ConditionalGround) {
-//				ConditionalGround newProp = Instantiate(rh.ConditionalGround).GetComponent<ConditionalGround>();
-//				newProp.Initialize (this, propData as ConditionalGroundData);
-//			}
 			else if (propData is DamageableGroundData) {
 				DamageableGround newProp = Instantiate(rh.DamageableGround).GetComponent<DamageableGround>();
 				newProp.Initialize (this, propData as DamageableGroundData);
@@ -155,6 +150,10 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 			else if (propData is BatteryData) {
 				Battery newProp = Instantiate(rh.Battery).GetComponent<Battery>();
 				newProp.Initialize (this, propData as BatteryData);
+			}
+			else if (propData is CameraBoundsData) {
+				CameraBounds newProp = Instantiate(rh.CameraBounds).GetComponent<CameraBounds>();
+				newProp.Initialize (this, propData as CameraBoundsData);
 			}
 			else if (propData is GemData) {
 				Gem newProp = Instantiate(rh.Gem).GetComponent<Gem>();
@@ -197,8 +196,10 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 //		playerData.pos = gameControllerRef.GetLevelDoorPos(dataManager.levelToDoorID);
 		playerRef.Initialize(this, playerData);
 		// CameraBounds
-		CameraBounds cameraBounds = Instantiate(ResourcesHandler.Instance.CameraBounds).GetComponent<CameraBounds>();
-		cameraBounds.Initialize(this, cameraBounds.SerializeAsData()); // Strange and hacky: It initializes itself as what it already is. Just to go through other paperwork.
+		if (GameObject.FindObjectOfType<CameraBounds>() == null) {
+			CameraBounds cameraBounds = Instantiate(ResourcesHandler.Instance.CameraBounds).GetComponent<CameraBounds>();
+			cameraBounds.Initialize(this, cameraBounds.SerializeAsData()); // Strange and hacky: It initializes itself as what it already is. Just to go through other paperwork.
+		}
 
 	}
 

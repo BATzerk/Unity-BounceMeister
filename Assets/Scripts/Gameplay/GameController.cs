@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Fix next-level side being inaccurate
+// TODO: Fix next level not working...
+// TODO: When die, restart at last entered level/position
+//TODO: Wall-grind particles, and wall-grind sprite change (just a diagonal line from player-to-wall is enough)
+
 public class GameController : MonoBehaviour {
 	// Properties
 	private bool isPaused = false;
@@ -93,8 +98,11 @@ public class GameController : MonoBehaviour {
 		DestroyPlayer();
 		DestroyLevel();
 
-		// Make Level!
+
 		LevelData levelData = dataManager.GetLevelData(worldIndex, levelKey, true);
+		dataManager.currentLevelData = levelData;
+
+		// Make Level!
 		level = new GameObject().AddComponent<Level>();
 		level.Initialize(this, tf_world, levelData);
 		// Make Player!
@@ -129,15 +137,21 @@ public class GameController : MonoBehaviour {
 
 	private Vector2 GetPlayerStartingPosInLevel(LevelData ld) {
 		Vector2 posExited = dataManager.playerPosGlobalOnExitLevel;
-		// Undefined?? Return 0,0.
+		int sideEntering = dataManager.playerSideEnterNextLevel;
+		// Undefined?? Return the PlayerStart!
 		if (posExited.Equals(Vector2Extensions.NaN)) {
-			return Vector2.zero;
+			return ld.PlayerStartPos();
 		}
 		// Otherwise, use the knowledge we have!
 		dataManager.playerPosGlobalOnExitLevel = Vector2Extensions.NaN; // Make sure to "clear" this. It's been used!
-//		const float extraDistToEnter = 5f; // Well let me just take an extra step in, really wanna feel at "home".
-		// For now, it really couldn't be simpler. Convert the last known coordinates to this level's coordinates. No further correction.
-		return posExited - ld.posGlobal;
+		dataManager.playerSideEnterNextLevel = -1; // Make sure to "clear" this. It's been used!
+//		Vector2 originalPos = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
+//		int sideEntered = MathUtils.GetSidePointIsOn(ld.BoundsGlobal, posExited);
+		Vector2Int offsetDir = MathUtils.GetOppositeDir(sideEntering);
+		const float extraDistToEnter = 3f; // Well let me just take an extra step in, really wanna feel at "home".
+
+		Vector2 posRelative = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
+		return posRelative + new Vector2(offsetDir.x*extraDistToEnter, offsetDir.y*extraDistToEnter);
 	}
 
 
@@ -221,6 +235,7 @@ public class GameController : MonoBehaviour {
 		LevelData nextLevelData = currentWorldData.GetLevelAtSide(level.LevelDataRef, sideEscaped);
 		if (nextLevelData != null) {
 			dataManager.playerPosGlobalOnExitLevel = player.PosGlobal;
+			dataManager.playerSideEnterNextLevel = MathUtils.GetOppositeSide(sideEscaped);
 			StartGameAtLevel(nextLevelData);
 		}
 		else {

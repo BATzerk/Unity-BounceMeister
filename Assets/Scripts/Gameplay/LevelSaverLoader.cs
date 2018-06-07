@@ -61,8 +61,8 @@ static public class LevelSaverLoader {
 
 	}
 
-	private static string GetLevelPropertiesString (LevelData ld) { // This is only its own function because we use it more than once.
-		string returnString = "";
+	private static string GetLevelPropertiesLine (LevelData ld) {
+		string returnString = LEVEL_PROPERTIES + " ";
 		returnString += "posGlobal:" + ld.PosGlobal;
 		returnString += ";";
 		returnString += "designerFlag:" + ld.DesignerFlag;
@@ -85,7 +85,7 @@ static public class LevelSaverLoader {
 		fs = ""; // fileString. this guy will be packed with \n line-breaks, then at the very end split by \n. It's less code to look at.
 
 		// Level Properties
-		AddFSLine (LEVEL_PROPERTIES + " " + GetLevelPropertiesString(ld));
+		AddFSLine (GetLevelPropertiesLine(ld));
 		AddPropFieldsToFS(ld.cameraBoundsData, "myRect");
 
 		foreach (PropData propData in ld.allPropDatas) {
@@ -250,9 +250,9 @@ static public class LevelSaverLoader {
 		for (int i=0; i<levelFileArray.Length; i++) {
 			String lineString = levelFileArray[i];
 			// This is the line!!
-			if (lineString == LEVEL_PROPERTIES) {
+			if (lineString.StartsWith(LEVEL_PROPERTIES)) {
 				// Replace the properties line!
-				levelFileArray[i+1] = GetLevelPropertiesString(ld);
+				levelFileArray[i] = GetLevelPropertiesLine(ld);
 				break;
 			}
 		}

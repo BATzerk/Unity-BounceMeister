@@ -27,6 +27,14 @@ public class LevelData {
 	public Vector2 PosGlobal { get { return posGlobal; } }
 //	public Rect BoundsLocal { get { return boundsLocal; } }
 	public WorldData WorldDataRef { get { return GameManagers.Instance.DataManager.GetWorldData(worldIndex); } }
+	public Vector2 PlayerStartPos() {
+		foreach (PropData propData in allPropDatas) {
+			if (propData is PlayerStartData) {
+				return propData.pos;
+			}
+		}
+		return Vector2.zero; // Nah, didn't find a PlayerStart.
+	}
 
 	// Setters
 	public void SetPosGlobal (Vector2 _posGlobal, bool doUpdateLevelFile) {

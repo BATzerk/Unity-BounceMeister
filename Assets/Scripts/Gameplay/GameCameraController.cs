@@ -21,7 +21,7 @@ public class GameCameraController : MonoBehaviour {
 	// References
 	[SerializeField] private FullScrim fullScrim=null;
 	[SerializeField] private GameController gameController=null;
-	private Transform tf_player=null;
+	private Player player=null;
 
 	// Getters / Setters
 	public Rect ViewRect { get { return viewRect; } }
@@ -103,7 +103,7 @@ public class GameCameraController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void OnStartLevel(Level level) {
 		viewRectBounds = level.GetCameraBoundsGlobal();
-		tf_player = gameController.Player.transform;
+		player = gameController.Player;
 
 		// Reset us now! Now that the player and everything is in place. :)
 		Reset();
@@ -124,7 +124,7 @@ public class GameCameraController : MonoBehaviour {
 	//  Update
 	// ----------------------------------------------------------------
 	private void FixedUpdate() {
-		if (tf_player == null) { return; } // Safety check.
+		if (player == null) { return; } // Safety check.
 
 		UpdateTargetCenter();
 		StepTowardTargetCenter();
@@ -146,10 +146,9 @@ public class GameCameraController : MonoBehaviour {
 		centerBounds.size = new Vector2(Mathf.Max(0, centerBounds.size.x), Mathf.Max(0, centerBounds.size.y)); // Don't let the rect invert.
 		centerBounds.center = viewRectBounds.center;
 
-		float targetX = tf_player.localPosition.x;
-		float targetY = tf_player.localPosition.y;
-		targetX = Mathf.Clamp(targetX, centerBounds.xMin, centerBounds.xMax);
-		targetY = Mathf.Clamp(targetY, centerBounds.yMin, centerBounds.yMax);
+		Vector2 targetPos = player.PosGlobal;
+		float targetX = Mathf.Clamp(targetPos.x, centerBounds.xMin, centerBounds.xMax);
+		float targetY = Mathf.Clamp(targetPos.y, centerBounds.yMin, centerBounds.yMax);
 		targetCenter = new Vector2(targetX, targetY);
 	}
 

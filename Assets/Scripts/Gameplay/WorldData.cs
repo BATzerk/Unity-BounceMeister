@@ -206,7 +206,7 @@ public class WorldData {
 		// Find where a point in this next level would be. Then return the LevelData with that point in it!
 		Vector2Int dir = MathUtils.GetDir(side);
 		Vector2 originSize = originLD.BoundsGlobal.size;
-		Vector2 nextLevelPoint = originLD.BoundsGlobal.center;
+		Vector2 nextLevelPoint = originLD.BoundsGlobal.position;//.center;
 		nextLevelPoint += new Vector2(dir.x*(originSize.x+1f), dir.y*(originSize.y+1f)); // +1 so the levels don't have to be directly touching; we'll allow even a small gap.
 		return GetLevelWithPoint(nextLevelPoint);
 	}
