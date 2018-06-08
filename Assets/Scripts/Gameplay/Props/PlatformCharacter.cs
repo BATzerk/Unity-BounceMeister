@@ -16,7 +16,7 @@ public class PlatformCharacter : Collidable {
 	private bool isDead = false;
 	protected Vector2 vel;
 	private Vector2 size;
-	protected bool[] onSurfaces; // index is side.
+//	protected bool[] onSurfaces; // index is side.
 
 	// Getters
 	public Vector2 Vel { get { return vel; } }
@@ -25,10 +25,10 @@ public class PlatformCharacter : Collidable {
 	public bool IsInLift { get; set; }
 //	virtual public bool IsAffectedByLift() { return true; }
 	public bool IsDead { get { return isDead; } }
-	public bool feetOnGround() { return onSurfaces[Sides.B] && vel.y<=0; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
+	public bool feetOnGround() { return myWhiskers.OnSurface(Sides.B) && vel.y<=0; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
 	protected int sideTouchingWall() {
-		if (onSurfaces[Sides.L]) { return -1; }
-		if (onSurfaces[Sides.R]) { return  1; }
+		if (myWhiskers.OnSurface(Sides.L)) { return -1; }
+		if (myWhiskers.OnSurface(Sides.R)) { return  1; }
 		return 0;
 	}
 	protected bool isTouchingWall() { return sideTouchingWall() != 0; }
@@ -72,7 +72,6 @@ public class PlatformCharacter : Collidable {
 	//  Start
 	// ----------------------------------------------------------------
 	virtual protected void Start () {
-		onSurfaces = new bool[NumSides];
 		vel = Vector2.zero;
 	}
 	virtual protected void SetSize(Vector2 _size) {
@@ -105,20 +104,20 @@ public class PlatformCharacter : Collidable {
 		vel += new Vector2(HorzMoveInputVelXDelta(), 0);
 	}
 
-	protected void UpdateOnSurfaces() {
-		for (int side=0; side<NumSides; side++) {
-			Collider2D surfaceCollider = myWhiskers.GetSurfaceTouching(side);
-			float sideSpeed = GetSideSpeed(side);
-			bool isTouching = surfaceCollider!=null && sideSpeed>=0; // I'm "touching" this surface if it exists and I'm NOT moving *away* from it!
-			onSurfaces[side] = isTouching;
-//			if (onSurfaces[side] && !isTouching) {
-//				OnLeaveSurface(side, surfaceCollider);
-//			}
-//			else if (!onSurfaces[side] && isTouching) {
-//				OnTouchSurface(side, surfaceCollider);
-//			}
-		}
-	}
+//	protected void UpdateOnSurfaces() {
+//		for (int side=0; side<NumSides; side++) {
+//			Collider2D surfaceCollider = myWhiskers.GetSurfaceTouching(side);
+//			float sideSpeed = GetSideSpeed(side);
+//			bool isTouching = surfaceCollider!=null && sideSpeed>=0; // I'm "touching" this surface if it exists and I'm NOT moving *away* from it!
+//			onSurfaces[side] = isTouching;
+////			if (onSurfaces[side] && !isTouching) {
+////				OnLeaveSurface(side, surfaceCollider);
+////			}
+////			else if (!onSurfaces[side] && isTouching) {
+////				OnTouchSurface(side, surfaceCollider);
+////			}
+//		}
+//	}
 
 	virtual public void OnWhiskersTouchCollider(int side, Collider2D col) {
 		Collidable collidable = col.GetComponent<Collidable>();

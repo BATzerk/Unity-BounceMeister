@@ -39,11 +39,10 @@ public class Enemy : PlatformCharacter {
 		if (Time.timeScale == 0) { return; } // No time? No dice.
 		Vector2 ppos = pos;
 
-		UpdateOnSurfaces();
 		ApplyFriction();
 		ApplyGravity();
 		AcceptHorzMoveInput();
-		myWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
+		myWhiskers.UpdateSurfaces(); // update these dependently now, so we guarantee most up-to-date info.
 		ApplyVel();
 
 		// Update vel to be the distance we ended up moving this frame.

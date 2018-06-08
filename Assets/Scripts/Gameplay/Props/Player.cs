@@ -161,12 +161,11 @@ public class Player : PlatformCharacter {
 		if (Time.timeScale == 0) { return; } // No time? No dice.
 		Vector2 ppos = pos;
 
-		UpdateOnSurfaces();
 		ApplyFriction();
 		ApplyGravity();
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
-		myWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
+		myWhiskers.UpdateSurfaces(); // update these dependently now, so we guarantee most up-to-date info.
 		ApplyWallSlideVel();
 		ApplyVel();
 		UpdateMaxYSinceGround();
@@ -361,10 +360,10 @@ public class Player : PlatformCharacter {
 		// We ARE wall-sliding!
 		if (isWallSliding()) {
 			// Should we stop wall-sliding??
-			if (wallSlideSide==-1 && !onSurfaces[Sides.L]) {//side==Sides.L) {
+			if (wallSlideSide==-1 && !myWhiskers.OnSurface(Sides.L)) {//side==Sides.L) {
 				StopWallSlide();
 			}
-			else if (wallSlideSide==1 && !onSurfaces[Sides.R]) {//side==Sides.R) {
+			else if (wallSlideSide==1 && !myWhiskers.OnSurface(Sides.R)) {//side==Sides.R) {
 				StopWallSlide();
 			}
 		}

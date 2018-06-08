@@ -12,7 +12,7 @@ public class LevelTileContents : MonoBehaviour {
 	private bool hasInitializedContent = false;
 	// References
 	private LevelTile levelTileRef;
-	private WorldData worldDataRef;
+//	private WorldData worldDataRef;
 	[SerializeField] private Sprite s_gem=null;
 	[SerializeField] private Sprite s_ground=null;
 	[SerializeField] private TextMesh levelNameText=null; // what's my name, again?
@@ -23,7 +23,7 @@ public class LevelTileContents : MonoBehaviour {
 	// ================================================================
 	public void Initialize (WorldData _worldDataRef, LevelTile _levelTileRef) {
 		levelTileRef = _levelTileRef;
-		worldDataRef = _worldDataRef;
+//		worldDataRef = _worldDataRef;
 		this.transform.localPosition = Vector3.zero;
 		this.transform.localScale = Vector3.one;
 		

@@ -15,7 +15,9 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 	LayerMask lm_LRTB; // Made from lms_LRTB in Start.
 	LayerMask lm_B;    // Made from lms_B in Start.
 	private Collider2D[,] collidersAroundMe; // by side,index.
-	private List<Collider2D> collidersTouching; // side-agnostic. Used to detect when we stop touching a collider.
+	private HashSet<Collider2D>[] collidersTouching;
+	private HashSet<Collider2D>[] pcollidersTouching;
+	private bool[] onSurfaces; // index is side.
 	private float[,] surfaceDists; // by side,index. This is *all* whisker data.
 	private int[] minDistsIndexes; // by side. WHICH whisker at this side is the closest!
 	private RaycastHit2D hit; // only out here so we don't have to make a ton every frame.
@@ -61,6 +63,7 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 	//		return hit.collider;
 	//	}
 
+	public bool OnSurface(int side) { return onSurfaces[side]; }
 	public float SurfaceDistMin(int side) {
 		if (surfaceDists==null) { return 0; } // Safety check for runtime compile.
 		if (minDistsIndexes[side] == -1) { return Mathf.Infinity; } // No closest whisker (none collide)? They're all infinity, then.
@@ -115,7 +118,12 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 
 		surfaceDists = new float[NumSides,NumWhiskersPerSide];
 		collidersAroundMe = new Collider2D[NumSides,NumWhiskersPerSide];
-		collidersTouching = new List<Collider2D>();
+		collidersTouching = new HashSet<Collider2D>[4];
+		pcollidersTouching = new HashSet<Collider2D>[4];
+		for (int side=0; side<collidersTouching.Length; side++) {
+			collidersTouching[side] = new HashSet<Collider2D>();
+		}
+		onSurfaces = new bool[NumSides];
 		minDistsIndexes = new int[NumSides];
 		whiskerDirs = new Vector2[NumSides];
 		whiskerDirs[Sides.L] = Vector2Int.L.ToVector2();
@@ -125,16 +133,31 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 	}
 
 
-
 	// ----------------------------------------------------------------
 	//  DEPENDENT Update
 	// ----------------------------------------------------------------
-	public void UpdateSurfaceDists() {
-		for (int i=0; i<whiskerDirs.Length; i ++) {
-			UpdateSurfaceDist(i);
+	public void UpdateSurfaces() {
+		for (int side=0; side<whiskerDirs.Length; side ++) {
+			// Remember the previous colliders, and clear out the new list!
+			pcollidersTouching[side] = new HashSet<Collider2D>(collidersTouching[side]);
+			collidersTouching[side].Clear();
+
+			UpdateSurface(side);
+
+			// Have we STOPPED or STARTED touching an old/new collider?
+			foreach (Collider2D col in pcollidersTouching[side]) {
+				if (!collidersTouching[side].Contains(col)) {
+					myCharacter.OnWhiskersLeaveCollider(side, col);
+				}
+			}
+			foreach (Collider2D col in collidersTouching[side]) {
+				if (!pcollidersTouching[side].Contains(col)) {
+					myCharacter.OnWhiskersTouchCollider(side, col);
+				}
+			}
 		}
 	}
-	private void UpdateSurfaceDist(int side) {
+	private void UpdateSurface(int side) {
 		if (surfaceDists==null) { return; } // Safety check (for runtime compile).
 		minDistsIndexes[side] = -1; // Default this to -1: There is no closest, because they're all infinity.
 		for (int index=0; index<NumWhiskersPerSide; index++) {
@@ -144,6 +167,8 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 				minDistsIndexes[side] = index;
 			}
 		}
+		// Update onSurfaces!
+		onSurfaces[side] = collidersTouching[side].Count > 0;
 	}
 	private void UpdateWhiskerRaycast(int side, int index) {
 		Vector2 dir = whiskerDirs[side];
@@ -156,17 +181,19 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 			dist = Vector2.Distance(hit.point, pos);
 		}
 		surfaceDists[side,index] = dist;
-		Collider2D pCollider = collidersAroundMe[side,index];
 		collidersAroundMe[side,index] = hit.collider;
-		// Is the collider for this raycast DIFFERENT?? Tell my character we've touched/left surfaces!!
-		if (pCollider != hit.collider) {
-			if (pCollider != null) {
-				myCharacter.OnWhiskersLeaveCollider(side, pCollider);
-			}
-			if (hit.collider != null) {
-				myCharacter.OnWhiskersTouchCollider(side, hit.collider);
-			}
+		if (hit.collider != null && !collidersTouching[side].Contains(hit.collider)) {
+			collidersTouching[side].Add(hit.collider);
 		}
+//		// Is the collider for this raycast DIFFERENT?? Tell my character we've touched/left surfaces!!
+//		if (pCollider != hit.collider) {
+//			if (pCollider != null) {
+//				myCharacter.OnWhiskersLeaveCollider(side, pCollider);
+//			}
+//			if (hit.collider != null) {
+//				myCharacter.OnWhiskersTouchCollider(side, hit.collider);
+//			}
+//		}
 	}
 
 
