@@ -33,4 +33,9 @@ public class Prop : MonoBehaviour {
 		rotation = data.rotation;
 	}
 
+	virtual public void FlipHorz() {
+		pos = new Vector2(-pos.x, pos.y);
+		rotation = -rotation;
+	}
+
 }

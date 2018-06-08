@@ -205,6 +205,19 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 
 
 
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//	Editing
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	public void FlipHorz() {
+		Prop[] allProps = GameObject.FindObjectsOfType<Prop>();
+		foreach (Prop prop in allProps) {
+			prop.FlipHorz();
+		}
+	}
+
+
+
 }
 
 

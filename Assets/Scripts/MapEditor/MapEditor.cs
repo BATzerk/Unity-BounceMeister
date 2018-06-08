@@ -36,6 +36,7 @@ public class MapEditor : MonoBehaviour {
 	[SerializeField] private Text demoText;
 	[SerializeField] private Text instructionsText=null;
 	private GameObject levelTilePrefab;
+	private List<LevelTile> tilesSelected;
 //	private LevelTile connectionCircleLevelTileOverA; // when dragging a LevelLinkView, what LevelTile its connection circle is over.
 //	private LevelTile connectionCircleLevelTileOverB; // when dragging a LevelLinkView, what LevelTile its connection circle is over.
 	private MapEditorCamera editorCamera;
@@ -44,10 +45,6 @@ public class MapEditor : MonoBehaviour {
 		if (worldIndex<0 || dataManager.NumWorldDatas == 0) { return null; }
 		return dataManager.GetWorldData (worldIndex);
 	}
-	
-	// ~~ Edit Mode ~~
-	// References
-	private List<LevelTile> tilesSelected;
 //	private LevelLinkView levelLinkViewSelected;
 //	private LevelTile newLinkFirstLevelTile; // when I make a new link, this is the FIRST dude in the link!
 	// Properties
@@ -61,6 +58,8 @@ public class MapEditor : MonoBehaviour {
 	private InputController inputController { get { return InputController.Instance; } }
 	private float fTS { get { return TimeController.FrameTimeScaleUnscaled; } } // frame time scale
 	private List<LevelTile> CurrentWorldLevelTiles { get { return allLevelTiles==null?null : allLevelTiles [currentWorldIndex]; } }
+
+	public float MapScale { get { return mapScale; } }
 	public bool CanSelectALevelTile() {
 //		// levelLinkViewSelected ISN'T null?! Return false automatically.
 //		if (levelLinkViewSelected != null) { return false; }
@@ -870,9 +869,10 @@ public class MapEditor : MonoBehaviour {
 			foreach (LevelTile levelTile in tilesSelected) {
 				levelTile.SetMouseClickOffset (mousePosWorld);
 			}
-			// Are we NOT over anything (LevelTile or ConnectionCircle)??
+			// Are we NOT over anything? Activate the selectionRect AND release any selected tiles!
 			if (!IsMouseOverAnything ()) {
 				selectionRect.Activate ();
+				ReleaseLevelTilesSelected();
 			}
 		}
 		// RIGHT click?
@@ -891,15 +891,15 @@ public class MapEditor : MonoBehaviour {
 		int mouseButton = InputController.GetMouseButtonUp ();
 
 		// Dragging a LEVEL TILE(S), released the LEFT mouse button, AND not holding down the multi-selection key??
-		if (tilesSelected.Count > 0 && mouseButton==0 && !CanSelectMultipleTiles()) {
+		if (tilesSelected.Count>0 && mouseButton==0 && !CanSelectMultipleTiles()) {
 			// Save all dragging tiles' levelData to file (and clear out any snapshot datas)!
 			foreach (LevelTile tile in tilesSelected) {
 				LevelSaverLoader.UpdateLevelPropertiesInLevelFile(tile.LevelDataRef);
 			}
 			// Update the worlds' bounds!
 			CurrentWorldData.SetAllLevelDatasFundamentalProperties ();
-			// Mouse up = release all levelTilesSelected!
-			ReleaseLevelTilesSelected();
+//			// Mouse up = release all levelTilesSelected!
+//			ReleaseLevelTilesSelected();
 		}
 		/*
 		// Dragging a LEVEL LINK??

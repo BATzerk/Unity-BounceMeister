@@ -48,4 +48,5 @@ abstract public class BaseGround : Collidable {
 		bodySprite.transform.localPosition = data.myRect.position;
 	}
 
+
 }

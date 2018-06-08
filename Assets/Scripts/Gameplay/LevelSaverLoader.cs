@@ -92,7 +92,7 @@ static public class LevelSaverLoader {
 			Type type = propData.GetType();
 			if (type == typeof(BatteryData)) { AddPropFieldsToFS(propData, "pos"); }
 			else if (type == typeof(CrateData)) { AddPropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe"); }
-			else if (type == typeof(DamageableGroundData)) { AddPropFieldsToFS(propData, "myRect", "disappearFromBounce", "disappearFromVel", "doRegen"); }
+			else if (type == typeof(DamageableGroundData)) { AddPropFieldsToFS(propData, "myRect", "dieFromBounce", "dieFromVel", "doRegen"); }
 			else if (type == typeof(GemData)) { AddPropFieldsToFS(propData, "pos"); }
 			else if (type == typeof(GroundData)) { AddPropFieldsToFS(propData, "myRect", "colorType"); }
 			else if (type == typeof(LevelDoorData)) { AddPropFieldsToFS(propData, "pos", "myID", "levelToKey", "levelToDoorID"); }
@@ -459,7 +459,7 @@ static public class LevelSaverLoader {
 	if (ld.damageableGroundDatas.Count > 0) {
 		AddFSLineHeader(DAMAGEABLE_GROUND);
 		foreach (DamageableGroundData obj in ld.damageableGroundDatas) {
-			AddPropFieldsToFS(obj, "myRect", "disappearFromBounce", "disappearFromVel", "doRegen");
+			AddPropFieldsToFS(obj, "myRect", "dieFromBounce", "dieFromVel", "doRegen");
 			AddFSLine();
 		}
 	}

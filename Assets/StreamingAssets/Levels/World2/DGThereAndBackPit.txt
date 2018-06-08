@@ -9,10 +9,10 @@ pos:(-5.0, 7.5)
 pos:(5.0, 7.5)
 
 DamageableGround
-myRect:(x:-14.50, y:5.50, width:7.00, height:1.00);disappearFromBounce:True;disappearFromVel:False;doRegen:False
-myRect:(x:0.00, y:-12.50, width:2.00, height:1.00);disappearFromBounce:True;disappearFromVel:False;doRegen:True
-myRect:(x:-10.00, y:-12.50, width:2.00, height:1.00);disappearFromBounce:True;disappearFromVel:False;doRegen:True
-myRect:(x:10.00, y:-12.50, width:2.00, height:1.00);disappearFromBounce:True;disappearFromVel:False;doRegen:True
+myRect:(x:-14.50, y:5.50, width:7.00, height:1.00);dieFromBounce:True;dieFromVel:False;doRegen:False
+myRect:(x:0.00, y:-12.50, width:2.00, height:1.00);dieFromBounce:True;dieFromVel:False;doRegen:True
+myRect:(x:-10.00, y:-12.50, width:2.00, height:1.00);dieFromBounce:True;dieFromVel:False;doRegen:True
+myRect:(x:10.00, y:-12.50, width:2.00, height:1.00);dieFromBounce:True;dieFromVel:False;doRegen:True
 
 Gem
 pos:(21.5, 9.0)

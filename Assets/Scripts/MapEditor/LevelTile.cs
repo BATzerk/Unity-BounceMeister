@@ -138,6 +138,7 @@ public class LevelTile : MonoBehaviour {
 	public void ShowContents () {
 		this.gameObject.SetActive(true);// TEMP!! TOtally hiding.
 		contents.Show ();
+		contents.OnMapScaleChanged(mapEditorRef.MapScale);
 		
 		Color backingColor = new Color(0.3f,0.3f,0.3f);//Colors.GetBGColor_ViewGameplay (Colors.GetBGTheme (levelDataRef.WorldIndex));
 		backingColor = new Color (backingColor.r*1.4f, backingColor.g*1.4f, backingColor.b*1.4f, 0.2f);

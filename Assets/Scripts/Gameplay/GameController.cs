@@ -44,6 +44,11 @@ public class GameController : MonoBehaviour {
 				level = GameObject.FindObjectOfType<Level>();
 				if (level == null) {
 					GameObject levelGO = GameObject.Find("Structure");
+					if (levelGO==null) {
+						levelGO = new GameObject();
+						levelGO.transform.localPosition = Vector3.zero;
+						levelGO.transform.localScale = Vector3.one;
+					}
 					level = levelGO.AddComponent<Level>();
 				}
 			}
@@ -148,7 +153,7 @@ public class GameController : MonoBehaviour {
 //		Vector2 originalPos = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
 //		int sideEntered = MathUtils.GetSidePointIsOn(ld.BoundsGlobal, posExited);
 		Vector2Int offsetDir = MathUtils.GetOppositeDir(sideEntering);
-		const float extraDistToEnter = 3f; // Well let me just take an extra step in, really wanna feel at "home".
+		const float extraDistToEnter = 3f; // Well let me just take an extra step in; I really wanna feel at "home".
 
 		Vector2 posRelative = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
 		return posRelative + new Vector2(offsetDir.x*extraDistToEnter, offsetDir.y*extraDistToEnter);
@@ -338,6 +343,10 @@ public class GameController : MonoBehaviour {
 		}
 		// CONTROL + ___
 		if (isKey_control) {
+			// CONTROL + SHIFT + X = Flip Horizontal!
+			if (isKey_shift && Input.GetKeyDown(KeyCode.X)) {
+				if (level != null) { level.FlipHorz(); }
+			}
 		}
 		// SHIFT + ___
 		if (isKey_shift) {

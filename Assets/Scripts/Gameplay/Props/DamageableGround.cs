@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DamageableGround : BaseGround, ISerializableData<DamageableGroundData> {
 	// Properties
-	[SerializeField] private bool disappearFromBounce = true;
-	[SerializeField] private bool disappearFromVel = false;
+	[SerializeField] private bool dieFromBounce = true;
+	[SerializeField] private bool dieFromVel = false;
 	[SerializeField] private bool doRegen = false; // if TRUE, I'll come back after a moment!
 	const float BreakVel = 0.4f; // the Player has to be moving at least this fast for me to get busted!
 	const float RegenTime = 3f; // how long it takes for me to reappear after I've disappeared.
@@ -16,8 +16,8 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 	public void Initialize(Level _myLevel, DamageableGroundData data) {
 		base.BaseGroundInitialize(_myLevel, data);
 
-		disappearFromBounce = data.disappearFromBounce;
-		disappearFromVel = data.disappearFromVel;
+		dieFromBounce = data.dieFromBounce;
+		dieFromVel = data.dieFromVel;
 		doRegen = data.doRegen;
 	}
 
@@ -25,13 +25,13 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 	//  Events
 	// ----------------------------------------------------------------
 	override public void OnPlayerBounceOnMe(Player player) {
-		if (disappearFromBounce) {
+		if (dieFromBounce) {
 			Disappear();
 		}
 	}
 
 	override public void OnPlayerTouchMe(Player player, int playerSide) {
-		if (disappearFromVel) {
+		if (dieFromVel) {
 			// Left or Right sides
 			if (playerSide==Sides.L || playerSide==Sides.R) {
 				if (Mathf.Abs(player.Vel.x) > BreakVel) {
@@ -76,8 +76,8 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 	public DamageableGroundData SerializeAsData() {
 		DamageableGroundData data = new DamageableGroundData();
 		data.myRect = MyRect;
-		data.disappearFromBounce = disappearFromBounce;
-		data.disappearFromVel = disappearFromVel;
+		data.dieFromBounce = dieFromBounce;
+		data.dieFromVel = dieFromVel;
 		data.doRegen = doRegen;
 		return data;
 	}

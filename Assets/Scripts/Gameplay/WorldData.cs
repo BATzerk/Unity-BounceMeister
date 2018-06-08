@@ -212,7 +212,10 @@ public class WorldData {
 	}
 	public LevelData GetLevelWithPoint(Vector2 point) {
 		foreach (LevelData ld in levelDatas.Values) {
-			if (ld.BoundsGlobal.Contains(point)) { return ld; }
+			// HACK Temp conversion business
+			Rect bounds = new Rect(ld.BoundsGlobal);
+			bounds.position -= bounds.size*0.5f;
+			if (bounds.Contains(point)) { return ld; }
 		}
 		return null; // Nah, nobody here.
 	}
@@ -233,6 +236,9 @@ public class WorldData {
 			FileInfo[] fileInfos = info.GetFiles();
 			foreach (FileInfo file in fileInfos) {
 				if (file.Name.EndsWith(".meta")) { continue; } // Ignore .meta files (duh).
+				if (file.Name == ".DS_Store") { // Sigh, Macs.
+					continue;
+				}
 				string fileName = file.Name.Substring(0, file.Name.Length-4); // Remove the ".txt".
 				if (fileName == "_LevelLinks") { continue; } // Ignore the _LevelLinks.txt file.
 				string levelKey = fileName;
