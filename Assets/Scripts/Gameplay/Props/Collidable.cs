@@ -14,18 +14,12 @@ abstract public class Collidable : Prop {
 		return col.gameObject.GetComponent<Player>() != null;
 	}
 
-	virtual public void OnPlayerTouchMe(Player player, int playerSide) { }
+//	virtual public void OnPlayerTouchMe(Player player, int playerSide) { }
 //	virtual public void OnCollideWithCollidable(Collidable collidable, int otherSideCol) {} //abstract 
 	virtual public void OnPlayerBounceOnMe(Player player) {}
 
 
-//	public void OnCharacterTouchMe(PlatformCharacter character) {
-//
-//	}
-//	public void OnCharacterLeaveMe(PlatformCharacter character) {
-//		if (doDisappearOnCharacterLeave) {
-//			Disappear();
-//		}
-//	}
+	virtual public void OnCharacterTouchMe(int charSide, PlatformCharacter character) { }
+	virtual public void OnCharacterLeaveMe(int charSide, PlatformCharacter character) { }
 
 }

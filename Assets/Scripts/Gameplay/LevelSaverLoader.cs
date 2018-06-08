@@ -92,7 +92,7 @@ static public class LevelSaverLoader {
 			Type type = propData.GetType();
 			if (type == typeof(BatteryData)) { AddPropFieldsToFS(propData, "pos"); }
 			else if (type == typeof(CrateData)) { AddPropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe"); }
-			else if (type == typeof(DamageableGroundData)) { AddPropFieldsToFS(propData, "myRect", "dieFromBounce", "dieFromVel", "doRegen"); }
+			else if (type == typeof(DamageableGroundData)) { AddPropFieldsToFS(propData, "myRect", "dieFromBounce", "dieFromPlayerLeave", "dieFromVel", "doRegen"); }
 			else if (type == typeof(GemData)) { AddPropFieldsToFS(propData, "pos"); }
 			else if (type == typeof(GroundData)) { AddPropFieldsToFS(propData, "myRect", "colorType"); }
 			else if (type == typeof(LevelDoorData)) { AddPropFieldsToFS(propData, "pos", "myID", "levelToKey", "levelToDoorID"); }

@@ -193,6 +193,9 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		// Initialize things!
 		// Player
 		PlayerData playerData = new PlayerData();
+//		if (GameObject.FindObjectOfType<Player>() == null) {
+//			playerRef = Instantiate(ResourcesHandler.Instance.Player).GetComponent<Player>();
+//		}
 //		playerData.pos = gameControllerRef.GetLevelDoorPos(dataManager.levelToDoorID);
 		playerRef.Initialize(this, playerData);
 		// CameraBounds

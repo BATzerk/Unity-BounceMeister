@@ -167,7 +167,7 @@ public class Player : PlatformCharacter {
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
 		myWhiskers.UpdateSurfaceDists(); // update these dependently now, so we guarantee most up-to-date info.
-		UpdateWallSlide();
+		ApplyWallSlideVel();
 		ApplyVel();
 		UpdateMaxYSinceGround();
 
@@ -193,29 +193,9 @@ public class Player : PlatformCharacter {
 		if (!groundedSincePlunge) { return; }
 		maxYSinceGround = Mathf.Max(maxYSinceGround, pos.y);
 	}
-	private void UpdateWallSlide() {
-		// We ARE wall-sliding!
+	private void ApplyWallSlideVel() {
 		if (isWallSliding()) {
 			vel = new Vector2(vel.x, Mathf.Max(vel.y, WallSlideMinYVel)); // Give us a minimum yVel!
-			// Should we stop wall-sliding??
-			if (wallSlideSide==-1 && !onSurfaces[Sides.L]) {
-				StopWallSlide();
-			}
-			else if (wallSlideSide==1 && !onSurfaces[Sides.R]) {
-				StopWallSlide();
-			}
-		}
-		// We're NOT wall-sliding...
-		else {
-			// Should we START wall-sliding??
-			if (!feetOnGround() && !isPlunging) {
-				if (onSurfaces[Sides.L] && vel.x<-0.001f) {
-					StartWallSlide(-1);
-				}
-				else if (onSurfaces[Sides.R] && vel.x>0.001f) {
-					StartWallSlide(1);
-				}
-			}
 		}
 	}
 //	private int wallSlideSide {
@@ -348,23 +328,48 @@ public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-	override protected void OnTouchSurface(int side, Collider2D surfaceCol) {
-		base.OnTouchSurface(side, surfaceCol);
+	override public void OnWhiskersTouchCollider(int side, Collider2D col) {
+		base.OnWhiskersTouchCollider(side, col);
+
 		isPreservingWallKickVel = false; // touching any surface immediately stops our wall-kick-vel preservation.
 
-		Collidable collidable = surfaceCol.GetComponent<Collidable>();
-		// Tell the collidable!
-		collidable.OnPlayerTouchMe(this, side);
-
 		// Do my own stuff!
+		Collidable collidable = col.GetComponent<Collidable>();
 		if (side == Sides.B) {
-			OnFeetTouchSurface(collidable);
+			OnFeetTouchCollidable(collidable);
 		}
 		else {
-			OnNonFeetTouchSurface(collidable);
+			OnNonFeetTouchCollidable(collidable);
+		}
+
+		// We're NOT wall-sliding...
+		if (!isWallSliding()) {
+			// Should we START wall-sliding??
+			if (!feetOnGround() && !isPlunging) {
+				if (side==Sides.L && vel.x<-0.001f) {
+					StartWallSlide(-1);
+				}
+				else if (side==Sides.R && vel.x>0.001f) {
+					StartWallSlide(1);
+				}
+			}
 		}
 	}
-	private void OnFeetTouchSurface(Collidable collidable) {
+	override public void OnWhiskersLeaveCollider(int side, Collider2D col) {
+		base.OnWhiskersLeaveCollider(side, col);
+
+		// We ARE wall-sliding!
+		if (isWallSliding()) {
+			// Should we stop wall-sliding??
+			if (wallSlideSide==-1 && !onSurfaces[Sides.L]) {//side==Sides.L) {
+				StopWallSlide();
+			}
+			else if (wallSlideSide==1 && !onSurfaces[Sides.R]) {//side==Sides.R) {
+				StopWallSlide();
+			}
+		}
+	}
+	private void OnFeetTouchCollidable(Collidable collidable) {
 		numJumpsSinceGround = 0;
 
 		bool doBounce = isPlunging || IsBouncyCollidable(collidable);
@@ -378,12 +383,13 @@ public class Player : PlatformCharacter {
 			LandOnCollidable(collidable);
 		}
 	}
-	private void OnNonFeetTouchSurface(Collidable collidable) {
+	private void OnNonFeetTouchCollidable(Collidable collidable) {
 		// Enemy??
 		Enemy enemy = collidable as Enemy;
 		if (enemy != null && CanTakeDamage()) {
 			OnCollideWithEnemy(enemy);
 		}
+
 //		else {
 //			// Should I bounce or jump?
 //			bool doBounce = IsBouncyCollidable(collidable);// && !IsDontBounceButtonHeld()
@@ -393,6 +399,28 @@ public class Player : PlatformCharacter {
 //		}
 	}
 
+//	// We ARE wall-sliding!
+//	if (isWallSliding()) {
+//		// Should we stop wall-sliding??
+//		if (wallSlideSide==-1 && !onSurfaces[Sides.L]) {
+//			StopWallSlide();
+//		}
+//		else if (wallSlideSide==1 && !onSurfaces[Sides.R]) {
+//			StopWallSlide();
+//		}
+//	}
+//	// We're NOT wall-sliding...
+//	else {
+//		// Should we START wall-sliding??
+//		if (!feetOnGround() && !isPlunging) {
+//			if (onSurfaces[Sides.L] && vel.x<-0.001f) {
+//				StartWallSlide(-1);
+//			}
+//			else if (onSurfaces[Sides.R] && vel.x>0.001f) {
+//				StartWallSlide(1);
+//			}
+//		}
+//	}
 	private void BounceOffCollidable_Up(Collidable collidable) {
 		// Bouncing up off a surface stops the plunge.
 		StopPlunge();

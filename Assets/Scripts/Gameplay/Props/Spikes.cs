@@ -32,12 +32,6 @@ public class Spikes : Collidable, ISerializableData<SpikesData> {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
-//	private void OnCollisionEnter2D(Collision2D col) {
-//		Player player = col.gameObject.GetComponent<Player>();
-//		if (player != null) {
-//			player.OnTouchSpikes(this);
-//		}
-//	}
 	private void OnTriggerEnter2D(Collider2D col) {
 		Player player = col.gameObject.GetComponent<Player>();
 		if (player != null) {
@@ -46,8 +40,12 @@ public class Spikes : Collidable, ISerializableData<SpikesData> {
 	}
 
 
-	override public void OnPlayerTouchMe(Player player, int playerSide) {
-		player.OnTouchSpikes(this);
+//	override public void OnPlayerTouchMe(Player player, int playerSide) {
+	override public void OnCharacterTouchMe(int charSide, PlatformCharacter character) {
+		Player player = character as Player;
+		if (player != null) {
+			player.OnTouchSpikes(this);
+		}
 	}
 //		// Kinda hacked in for now. (Hacked 'cause we're using colliders and our custom system independently.)
 //		Spikes spikes = surfaceCol.GetComponent<Spikes>();

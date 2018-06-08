@@ -65,8 +65,16 @@ public class Enemy : PlatformCharacter {
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-	override protected void OnTouchSurface(int side, Collider2D collider) {
-		base.OnTouchSurface(side, collider);
+//	override protected void OnTouchSurface(int side, Collider2D collider) {
+//		base.OnTouchSurface(side, collider);
+//
+//		// A wall?? Reverse my horz direction!
+//		if (side==Sides.L || side==Sides.R) {
+//			dirMoving *= -1;
+//		}
+//	}
+	override public void OnWhiskersTouchCollider(int side, Collider2D col) {
+		base.OnWhiskersTouchCollider(side, col);
 
 		// A wall?? Reverse my horz direction!
 		if (side==Sides.L || side==Sides.R) {
