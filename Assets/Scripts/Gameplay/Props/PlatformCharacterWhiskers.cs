@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformCharacterWhiskers : MonoBehaviour {
+abstract public class PlatformCharacterWhiskers : MonoBehaviour {
+	// Overridables
+	abstract protected string[] GetLayerMaskNames_LRTB();
+	abstract protected string[] GetLayerMaskNames_B();
 	// Constants
 	private const int NumSides = PlatformCharacter.NumSides;
 	private const int NumWhiskersPerSide = 3; // this MUST match SideOffsetLocs! Just made its own variable for easy/readable access.
@@ -10,10 +13,8 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 	// References
 	[SerializeField] private PlatformCharacter myCharacter=null;
 	// Properties
-	[SerializeField] LayerMask[] lms_LRTB=null; // The LMs that care about every side (L, R, T, B). E.g. Ground.
-	[SerializeField] LayerMask[] lms_B=null; // The LMs that care about the bottom side. E.g. Platforms.
-	LayerMask lm_LRTB; // Made from lms_LRTB in Start.
-	LayerMask lm_B;    // Made from lms_B in Start.
+	LayerMask lm_LRTB; // The LMs that care about every side (L, R, T, B). E.g. Ground.
+	LayerMask lm_B;    // The LMs that care about the bottom side. E.g. Platforms.
 	private Collider2D[,] collidersAroundMe; // by side,index.
 	private HashSet<Collider2D>[] collidersTouching;
 	private HashSet<Collider2D>[] pcollidersTouching;
@@ -105,16 +106,22 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 	//  Start
 	// ----------------------------------------------------------------
 	private void Awake() {
-		// Combine our bitmask arrays into single ones for easy access.
-		lm_B = 0;
-		lm_LRTB = 0;
-		foreach (LayerMask mask in lms_B) {
-			lm_B = lm_B | mask; // Add each one from the bottom-masks array to the single bottom-bitmask.
-		}
-		foreach (LayerMask mask in lms_LRTB) {
-			lm_LRTB = lm_LRTB | mask; // Add each one from the all-sides-masks array to the single all-sides-bitmask.
-			lm_B = lm_B | mask; // ALSO add this all-sides-mask to the bottom-masks array, too! (In case we make a mistake and forget to specify this mask in both arrays in the editor.)
-		}
+		lm_B = LayerMask.GetMask(GetLayerMaskNames_B());
+		lm_LRTB = LayerMask.GetMask(GetLayerMaskNames_LRTB());
+//		// Combine our bitmask arrays into single ones for easy access.
+//		lm_B = 0;
+//		lm_LRTB = 0;
+//		string[] names_B = GetLayerMaskNames_B();
+//		string[] names_LRTB = GetLayerMaskNames_LRTB();
+//		foreach (string name in names_B) {
+//			LayerMask mask = LayerMask.NameToLayer(name);
+//			lm_B = lm_B | mask; // Add each one from the bottom-masks array to the single bottom-bitmask.
+//		}
+//		foreach (string name in names_LRTB) {
+//			LayerMask mask = LayerMask.NameToLayer(name);
+//			lm_LRTB = lm_LRTB | mask; // Add each one from the all-sides-masks array to the single all-sides-bitmask.
+//			lm_B = lm_B | mask; // ALSO add this all-sides-mask to the bottom-masks array, too! (In case we make a mistake and forget to specify this mask in both arrays in the editor.)
+//		}
 
 		surfaceDists = new float[NumSides,NumWhiskersPerSide];
 		collidersAroundMe = new Collider2D[NumSides,NumWhiskersPerSide];

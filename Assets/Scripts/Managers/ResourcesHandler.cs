@@ -11,9 +11,11 @@ public class ResourcesHandler : MonoBehaviour {
 
 	[SerializeField] public GameObject backgroundTileSprite;
 
-	[SerializeField] public GameObject CameraBounds;
+	[SerializeField] public GameObject Alph;
+	[SerializeField] public GameObject Britta;
 
 	[SerializeField] public GameObject Battery;
+	[SerializeField] public GameObject CameraBounds;
 	[SerializeField] public GameObject Coin;
 	[SerializeField] public GameObject Crate;
 	[SerializeField] public GameObject DamageableGround;
@@ -22,7 +24,6 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject LevelDoor;
 	[SerializeField] public GameObject Lift;
 	[SerializeField] public GameObject Platform;
-	[SerializeField] public GameObject Player;
 	[SerializeField] public GameObject PlayerStart;
 	[SerializeField] public GameObject Spikes;
 	[SerializeField] public GameObject ToggleGround;

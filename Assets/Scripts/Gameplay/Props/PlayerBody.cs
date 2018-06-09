@@ -2,25 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBody : MonoBehaviour {
+abstract public class PlayerBody : MonoBehaviour {
 	// Components
 	[SerializeField] private SpriteRenderer sr_body=null;
-	[SerializeField] private SpriteLine sl_aimDir=null;
-	[SerializeField] private ParticleSystem ps_dieBurst;
+	[SerializeField] private ParticleSystem ps_dieBurst=null;
 	// Properties
-	private readonly Color bodyColor_neutral = new Color(25/255f, 175/255f, 181/255f);
-	private readonly Color bodyColor_plunging = Color.green;
-	private readonly Color bodyColor_plungeExhausted = Color.gray;
+	protected Color bodyColor_neutral = Color.magenta;
 	private Color bodyColor;
 	private float alpha; // we modify this independently of bodyColor.
 	// References
-	[SerializeField] private Player myPlayer=null;
+	[SerializeField] protected Player myPlayer=null;
 
 
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	private void Start() {
+	virtual protected void Start() {
 		alpha = 1;
 		SetBodyColor(bodyColor_neutral);
 	}
@@ -31,12 +28,8 @@ public class PlayerBody : MonoBehaviour {
 	// ----------------------------------------------------------------
 	public void SetSize(Vector2 _size) {
 		GameUtils.SizeSpriteRenderer(sr_body, _size);
-		sl_aimDir.SetColor(Color.white);
-		sl_aimDir.SetThickness(_size.magnitude*0.12f);
-		sl_aimDir.StartPos = Vector2.zero;
-//		aimDirRadius = Mathf.Min(_size.x,_size.y) * 0.8f;
 	}
-	private void SetBodyColor(Color color) {
+	protected void SetBodyColor(Color color) {
 		bodyColor = color;
 		ApplyBodyColor();
 	}
@@ -48,22 +41,6 @@ public class PlayerBody : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
-	public void OnStartPlunge() {
-		SetBodyColor(bodyColor_plunging);
-	}
-	public void OnStopPlunge() {
-		if (myPlayer.IsPlungeRecharged) {
-			SetBodyColor(bodyColor_neutral);
-		}
-		else {
-			SetBodyColor(bodyColor_plungeExhausted);
-		}
-	}
-
-	public void OnRechargePlunge() {
-		SetBodyColor(bodyColor_neutral);
-	}
-
 	public void OnEndPostDamageImmunity() {
 		alpha = 1f;
 		ApplyBodyColor();

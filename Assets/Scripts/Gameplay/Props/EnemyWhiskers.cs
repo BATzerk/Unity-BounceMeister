@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// NOTE: Currently no need for these class extensions!!
 public class EnemyWhiskers : PlatformCharacterWhiskers {
-	
+	override protected string[] GetLayerMaskNames_LRTB() {
+		return new string[]{"Ground"};
+	}
+	override protected string[] GetLayerMaskNames_B() {
+		return new string[]{"Ground", "Platform"};
+	}
 }
 
 

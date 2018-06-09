@@ -2,48 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : PlatformCharacter {
+abstract public class Player : PlatformCharacter {
 	// Constants
-	override protected float FrictionAir { get { return isPreservingWallKickVel ? 1f : 0.7f; } } // No air friction while we're preserving our precious wall-kick vel.
+	override protected float FrictionAir { get { return isPreservingWallKickVel ? 1f : FrictionGround; } } // No air friction while we're preserving our precious wall-kick vel.
 	override protected float FrictionGround {
 		get {
 			if (Mathf.Abs(inputAxis.x) > 0.1f) { return 0.7f; } // Providing input? Less friction!
 			return 0.5f; // No input? Basically halt.
 		}
 	}
-	private Vector2 GravityNeutral = new Vector2(0, -0.042f);
-	private Vector2 GravityPlunging = new Vector2(0, -0.084f); // gravity is much stronger when we're plunging!
-	override protected Vector2 Gravity {
-		get {
-			if (isPlunging) { return GravityPlunging; }
-//			if (isTouchingWall()) { return GravityNeutral * 0.6f; } // HACK TEST
-			return GravityNeutral;
-		}
-	}
+	protected Vector2 GravityNeutral = new Vector2(0, -0.042f);
+	virtual protected float InputScaleX { get { return 0.1f; } }
 
-	private const float InputScaleX = 0.1f;
-	private const float JumpForce = 0.58f;
-	private const float WallSlideMinYVel = -0.1f;
-	private readonly Vector2 WallKickVel = new Vector2(1f, 0.52f);
-	private readonly Vector2 HitByEnemyVel = new Vector2(4f, 0.5f);
+	virtual protected float JumpForce { get { return 0.58f; } }
+	virtual protected float WallSlideMinYVel { get { return -0.1f; } }
+	private readonly Vector2 WallKickVel = new Vector2(0.5f, 0.52f);
+	private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);
 
-	private const float MaxVelXAir = 0.35f;
-	private const float MaxVelXGround = 0.25f;
-	private const float MaxVelYUp = 3;
-	private const float MaxVelYDown = -3;
+	virtual protected float MaxVelXAir { get { return 0.35f; } }
+	virtual protected float MaxVelXGround { get { return 0.25f; } }
+	virtual protected float MaxVelYUp { get { return 3; } }
+	virtual protected float MaxVelYDown { get { return -3; } }
 
 	private const float DelayedJumpWindow = 0.1f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
 	private const float PostWallKickHorzInputLockDur = 0.3f; // how long until we can provide horizontal input after jumping off a wall.
 
 	// Components
-	[SerializeField] private PlayerBody myBody=null;
+	[SerializeField] protected PlayerBody myBody=null;
 	// Properties
-	private bool isPlunging = false;
-	private bool isPlungeRecharged = true;
 	private bool isPostDamageImmunity = false;
-	private bool isPreservingWallKickVel = false; // if TRUE, we don't apply air friction. Set to false if we provide opposite-dir input, and when we land.
-	private bool groundedSincePlunge; // TEST for interactions with Batteries.
+	protected bool isPreservingWallKickVel = false; // if TRUE, we don't apply air friction. Set to false if we provide opposite-dir input, and when we land.
 	private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeLastWallKicked=Mathf.NegativeInfinity;
 	private float timeSinceDamage=Mathf.NegativeInfinity; // invincible until this time! Set to Time.time + PostDamageInvincibleDuration when we're hit.
@@ -56,10 +45,12 @@ public class Player : PlatformCharacter {
 	private Rect camBoundsLocal; // for detecting when we exit the level!
 
 	// Getters (Public)
-	public bool IsPlungeRecharged { get { return isPlungeRecharged; } }
+	virtual public bool CanUseBattery() { return false; }
 	public bool IsPostDamageImmunity { get { return isPostDamageImmunity; } }
-	// Getters (Overrides)
-//	override public bool IsAffectedByLift() { return !isPlunging; } // We're immune to Lifts while plunging!
+	// Getters (Protected)
+	virtual protected bool MayWallSlide() {
+		return !feetOnGround();
+	}
 	override protected float HorzMoveInputVelXDelta() {
 		if (InputController.Instance==null) { return 0; } // for building at runtime.
 		if (inputAxis.x == 0) { return 0; }
@@ -77,15 +68,13 @@ public class Player : PlatformCharacter {
 		return dirX*InputScaleX * mult;
 	}
 	// Getters (Private)
-	private Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
+	protected Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
 	private bool isWallSliding() { return wallSlideSide!=0; }
 	private bool CanTakeDamage() {
 		return !isPostDamageImmunity;
 	}
-	private bool CanStartPlunge() {
-		if (feetOnGround()) { return false; } // I can't plunge if I'm on the ground.
-		if (IsInLift) { return false; }
-		return isPlungeRecharged;
+	virtual protected bool DoBounceOffCollidable(Collidable collidable) {
+		return IsBouncyCollidable(collidable);
 	}
 	private bool IsBouncyCollidable(Collidable collidable) {
 		if (collidable == null) { return false; } // The collidable is undefined? Default to NOT bouncy.
@@ -163,7 +152,7 @@ public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	//  FixedUpdate
 	// ----------------------------------------------------------------
-	private void FixedUpdate () {
+	virtual protected void FixedUpdate () {
 		if (InputController.Instance == null) { return; } // Safety check for runtime compile.
 
 		if (Time.timeScale == 0) { return; } // No time? No dice.
@@ -195,11 +184,6 @@ public class Player : PlatformCharacter {
 		float yVel = Mathf.Clamp(vel.y, MaxVelYDown,MaxVelYUp);
 		vel = new Vector2(xVel, yVel);
 	}
-	private void UpdateMaxYSinceGround() {
-		// TEST!!
-		if (!groundedSincePlunge) { return; }
-		maxYSinceGround = Mathf.Max(maxYSinceGround, pos.y);
-	}
 	private void UpdateWallSlide() {
 		if (isWallSliding()) {
 			vel = new Vector2(vel.x, Mathf.Max(vel.y, WallSlideMinYVel)); // Give us a minimum yVel!
@@ -208,7 +192,7 @@ public class Player : PlatformCharacter {
 		// We're NOT wall-sliding...
 		if (!isWallSliding()) {
 			// Should we START wall-sliding??
-			if (!feetOnGround() && !isPlunging) {
+			if (MayWallSlide()) {
 				if (myWhiskers.OnSurface(Sides.L) && vel.x<-0.01f) {
 					StartWallSlide(-1);
 				}
@@ -218,6 +202,7 @@ public class Player : PlatformCharacter {
 			}
 		}
 	}
+
 //	private int wallSlideSide {
 //		get {
 //			if (isPlunging) { return 0; } // No wall-sliding if I'm plunging, ok?
@@ -230,10 +215,7 @@ public class Player : PlatformCharacter {
 //	}
 	private void UpdateIsPreservingWallKickVel() {
 		if (isPreservingWallKickVel) {
-			if (isPlunging) { // Just started plunging? Forget about retaining my wall-kick vel!
-				isPreservingWallKickVel = false;
-			}
-			else if (vel.y < 0) {
+			if (vel.y < 0) {
 				isPreservingWallKickVel = false; // TEST
 			}
 			else if (Time.time-0.1f > timeLastWallKicked // If it's been at least a few grace frames since we wall-kicked...
@@ -241,6 +223,9 @@ public class Player : PlatformCharacter {
 				isPreservingWallKickVel = false;
 			}
 		}
+	}
+	virtual protected void UpdateMaxYSinceGround() {
+		maxYSinceGround = Mathf.Max(maxYSinceGround, pos.y);
 	}
 	private void UpdateExitedLevel() {
 		if (hackTEMP_framesAlive++ < 10) { return; } // This is a hack.
@@ -255,13 +240,13 @@ public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
-	private void GroundJump() {
+	protected void GroundJump() {
 		vel = new Vector2(vel.x, JumpForce);
 		timeWhenDelayedJump = -1; // reset this just in case.
 		numJumpsSinceGround ++;
 		GameManagers.Instance.EventManager.OnPlayerJump(this);
 	}
-	private void WallKick() {
+	protected void WallKick() {
 		vel = new Vector2(-sideTouchingWall()*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y));
 		timeLastWallKicked = Time.time;
 		isPreservingWallKickVel = true;
@@ -270,31 +255,11 @@ public class Player : PlatformCharacter {
 		GameManagers.Instance.EventManager.OnPlayerWallKick(this);
 	}
 
-	private void StartPlunge() {
-		if (isPlunging) { return; } // Already plunging? Do nothing.
-		StopWallSlide(); // can't both plunge AND wall-slide.
-		isPlunging = true;
-		isPlungeRecharged = false; // spent!
-		groundedSincePlunge = false;
-		myBody.OnStartPlunge();
-		vel = new Vector2(vel.x, Mathf.Min(vel.y, 0)); // lose all upward momentum!
-		GameManagers.Instance.EventManager.OnPlayerStartPlunge(this);
-	}
-	private void StopPlunge() {
-		if (!isPlunging) { return; } // Not plunging? Do nothing.
-		isPlunging = false;
-		myBody.OnStopPlunge();
-	}
-	private void RechargePlunge() {
-		isPlungeRecharged = true;
-		myBody.OnRechargePlunge();
-		GameManagers.Instance.EventManager.OnPlayerRechargePlunge(this);
-	}
 
 	private void StartWallSlide(int side) {
 		wallSlideSide = side;
 	}
-	private void StopWallSlide() {
+	protected void StopWallSlide() {
 		wallSlideSide = 0;
 	}
 
@@ -320,28 +285,11 @@ public class Player : PlatformCharacter {
 //			timeWhenDelayedJump = Time.time + DelayedJumpWindow;
 //		}
 //	}
-	private void OnUpPressed() {
-		// We're on the ground and NOT timed out of jumping! Go!
-		if (feetOnGround()) {//numJumpsSinceGround<MaxJumps && Time.time>=timeWhenCanJump
-			GroundJump();
-		}
-		else if (isTouchingWall()) {// isWallSliding()
-			WallKick();
-		}
-		else if (CanStartPlunge()) {
-			StartPlunge();
-		}
-		else {
-//			if (isPlunging) {
-//				CancelPlunge();
-//			}
-			timeWhenDelayedJump = Time.time + DelayedJumpWindow;
-		}
-	}
-	private void OnDownPressed() {
-		if (CanStartPlunge()) {
-			StartPlunge();
-		}
+	abstract protected void OnUpPressed();
+	virtual protected void OnDownPressed() { }
+
+	protected void ScheduleDelayedJump() {
+		timeWhenDelayedJump = Time.time + DelayedJumpWindow;
 	}
 
 
@@ -392,7 +340,7 @@ public class Player : PlatformCharacter {
 	private void OnFeetTouchCollidable(Collidable collidable) {
 		numJumpsSinceGround = 0;
 
-		bool doBounce = isPlunging || IsBouncyCollidable(collidable);
+		bool doBounce = DoBounceOffCollidable(collidable);
 
 		// Bounce!
 		if (doBounce) {
@@ -441,9 +389,7 @@ public class Player : PlatformCharacter {
 //			}
 //		}
 //	}
-	private void BounceOffCollidable_Up(Collidable collidable) {
-		// Bouncing up off a surface stops the plunge.
-		StopPlunge();
+	virtual protected void BounceOffCollidable_Up(Collidable collidable) {
 		// Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
 		float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
 		distToRestore += 3.2f; // TEST! Give us MORE than we started with!
@@ -465,16 +411,9 @@ public class Player : PlatformCharacter {
 			collidable.OnPlayerBounceOnMe(this);
 		}
 	}
-	private void LandOnCollidable(Collidable collidable) {
-		// Landing on a surface stops the plunge.
-		StopPlunge();
-		groundedSincePlunge = true;
+	virtual protected void LandOnCollidable(Collidable collidable) {
 		// Finally reset maxYSinceGround.
 		maxYSinceGround = pos.y;
-		// Is this collidable refreshing? Recharge my plunge!
-		if (collidable==null || collidable.DoRechargePlayer) {
-			RechargePlunge();
-		}
 		// Do that delayed jump we planned?
 		if (Time.time <= timeWhenDelayedJump) {
 			GroundJump();
@@ -499,13 +438,6 @@ public class Player : PlatformCharacter {
 //
 //		}
 //	}
-
-	override public void OnEnterLift() {
-		base.OnEnterLift();
-		if (isPlunging) {
-			StopPlunge();
-		}
-	}
 
 
 
@@ -536,9 +468,7 @@ public class Player : PlatformCharacter {
 		base.Die();
 	}
 
-	public void OnUseBattery() {
-		RechargePlunge();
-	}
+	virtual public void OnUseBattery() { }
 
 
 }

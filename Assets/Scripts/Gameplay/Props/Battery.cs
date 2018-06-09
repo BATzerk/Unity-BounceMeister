@@ -76,7 +76,7 @@ public class Battery : Prop, ISerializableData<BatteryData> {
 		}
 		Player player = col.GetComponent<Player>();
 		// The player is thirsty!!
-		if (!player.IsPlungeRecharged) {
+		if (!player.CanUseBattery()) {
 			PlayerUseMe(player);
 		}
 	}
