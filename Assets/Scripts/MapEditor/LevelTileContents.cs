@@ -15,15 +15,15 @@ public class LevelTileContents : MonoBehaviour {
 //	private WorldData worldDataRef;
 	[SerializeField] private Sprite s_gem=null;
 	[SerializeField] private Sprite s_ground=null;
+	[SerializeField] private Sprite s_spikes=null;
 	[SerializeField] private TextMesh levelNameText=null; // what's my name, again?
 
 
 	// ================================================================
 	//  Initialize
 	// ================================================================
-	public void Initialize (WorldData _worldDataRef, LevelTile _levelTileRef) {
+	public void Initialize (LevelTile _levelTileRef) {
 		levelTileRef = _levelTileRef;
-//		worldDataRef = _worldDataRef;
 		this.transform.localPosition = Vector3.zero;
 		this.transform.localScale = Vector3.one;
 		
@@ -71,6 +71,14 @@ public class LevelTileContents : MonoBehaviour {
 				GemData gemData = propData as GemData;
 				AddSpriteRenderer ("Gem", s_gem, go_propsLayer, gemData.pos, GemIconSize, 0, Color.white);
 			}
+			// -- Spikes --
+			else if (propData.GetType() == typeof(SpikesData)) {
+				SpikesData spikesData = propData as SpikesData;
+				SpriteRenderer newSprite = AddSpriteRenderer ("Spikes", s_spikes, go_propsLayer, spikesData.myRect.position, Vector2.one, 0, new Color(0.7f,0.1f,0f, 0.6f));
+				newSprite.drawMode = SpriteDrawMode.Tiled;
+				newSprite.size = spikesData.myRect.size;
+				newSprite.transform.localEulerAngles = new Vector3(0, 0, spikesData.rotation);
+			}
 		}
 
 		UpdateComponentVisibilities ();
@@ -79,7 +87,7 @@ public class LevelTileContents : MonoBehaviour {
 		hasInitializedContent = true;
 	}
 
-	private void AddSpriteRenderer(string goName, Sprite sprite, GameObject parentGO, Vector2 pos, Vector2 size, int sortingOrder, Color color) {
+	private SpriteRenderer AddSpriteRenderer(string goName, Sprite sprite, GameObject parentGO, Vector2 pos, Vector2 size, int sortingOrder, Color color) {
 		GameObject iconGO = new GameObject ();
 		SpriteRenderer newIcon = iconGO.AddComponent<SpriteRenderer> ();
 		newIcon.name = goName;
@@ -89,6 +97,7 @@ public class LevelTileContents : MonoBehaviour {
 		GameUtils.SizeSpriteRenderer (newIcon, size);
 		newIcon.sortingOrder = sortingOrder;
 		newIcon.color = color;
+		return newIcon;
 	}
 
 	public void UpdateComponentVisibilities () {
@@ -116,7 +125,7 @@ public class LevelTileContents : MonoBehaviour {
 
 
 	public void OnMapScaleChanged (float mapScale) {
-		levelNameText.fontSize = 40 + (int)(50f/mapScale);
+		levelNameText.fontSize = 40 + (int)(34f/mapScale);
 		// If our text is too small to read, don't even show it! (NOTE: Our text will be hardest to read when it's HUGEST, because our LevelTile will be so small on the screen.)
 		if (mapScale < 0.8f) {//levelNameText.fontSize > 800) {
 			levelNameText.gameObject.SetActive (false);

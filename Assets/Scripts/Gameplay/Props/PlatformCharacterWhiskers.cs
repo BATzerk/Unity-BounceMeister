@@ -143,13 +143,17 @@ public class PlatformCharacterWhiskers : MonoBehaviour {
 			collidersTouching[side].Clear();
 
 			UpdateSurface(side);
+		}
 
-			// Have we STOPPED or STARTED touching an old/new collider?
+		// Now that EVERY side's been updated, check: Have we STOPPED or STARTED touching an old/new collider?
+		for (int side=0; side<whiskerDirs.Length; side ++) {
 			foreach (Collider2D col in pcollidersTouching[side]) {
 				if (!collidersTouching[side].Contains(col)) {
 					myCharacter.OnWhiskersLeaveCollider(side, col);
 				}
 			}
+		}
+		for (int side=0; side<whiskerDirs.Length; side ++) {
 			foreach (Collider2D col in collidersTouching[side]) {
 				if (!pcollidersTouching[side].Contains(col)) {
 					myCharacter.OnWhiskersTouchCollider(side, col);

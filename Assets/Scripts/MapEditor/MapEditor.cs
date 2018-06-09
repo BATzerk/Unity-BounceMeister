@@ -315,7 +315,7 @@ public class MapEditor : MonoBehaviour {
 			foreach (LevelData levelData in wd.LevelDatas.Values) {
 				LevelTile newLevelTile = ((GameObject)Instantiate (levelTilePrefab)).GetComponent<LevelTile> ();
 				newLevelTile.transform.SetParent (worldLayerGOs[worldIndex].transform);
-				newLevelTile.Initialize (this, wd, levelData);
+				newLevelTile.Initialize (this, levelData);
 				allLevelTiles[worldIndex].Add (newLevelTile);
 			}
 		}
@@ -792,7 +792,9 @@ public class MapEditor : MonoBehaviour {
 		}
 		// CONTROL + R = Reset EVERYTHING!
 		else if (Input.GetKeyDown(KeyCode.R)) {
-			ReloadAllWorldDatasAndRemakeMap ();
+//			ReloadAllWorldDatasAndRemakeMap ();
+			dataManager.ReloadWorldDatas ();
+			ReloadScene();
 		}
 
 		// CONTROL/ALT + ____
@@ -958,6 +960,9 @@ public class MapEditor : MonoBehaviour {
 	}
 
 
+	private void ReloadScene() {
+		OpenScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+	}
 	private void OpenGameplayScene(int worldIndex, string levelKey) {
 //		GameplaySnapshotController.SetWorldAndLevelToLoad (worldIndex, levelKey);
 		dataManager.currentLevelData = dataManager.GetLevelData(worldIndex, levelKey, true);

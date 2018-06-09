@@ -13,7 +13,13 @@ public class Player : PlatformCharacter {
 	}
 	private Vector2 GravityNeutral = new Vector2(0, -0.042f);
 	private Vector2 GravityPlunging = new Vector2(0, -0.084f); // gravity is much stronger when we're plunging!
-	override protected Vector2 Gravity { get { return isPlunging ? GravityPlunging : GravityNeutral; } }
+	override protected Vector2 Gravity {
+		get {
+			if (isPlunging) { return GravityPlunging; }
+//			if (isTouchingWall()) { return GravityNeutral * 0.6f; } // HACK TEST
+			return GravityNeutral;
+		}
+	}
 
 	private const float InputScaleX = 0.1f;
 	private const float JumpForce = 0.58f;
@@ -158,6 +164,8 @@ public class Player : PlatformCharacter {
 	//  FixedUpdate
 	// ----------------------------------------------------------------
 	private void FixedUpdate () {
+		if (InputController.Instance == null) { return; } // Safety check for runtime compile.
+
 		if (Time.timeScale == 0) { return; } // No time? No dice.
 		Vector2 ppos = pos;
 
@@ -166,7 +174,7 @@ public class Player : PlatformCharacter {
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
 		myWhiskers.UpdateSurfaces(); // update these dependently now, so we guarantee most up-to-date info.
-		ApplyWallSlideVel();
+		UpdateWallSlide();
 		ApplyVel();
 		UpdateMaxYSinceGround();
 
@@ -192,9 +200,22 @@ public class Player : PlatformCharacter {
 		if (!groundedSincePlunge) { return; }
 		maxYSinceGround = Mathf.Max(maxYSinceGround, pos.y);
 	}
-	private void ApplyWallSlideVel() {
+	private void UpdateWallSlide() {
 		if (isWallSliding()) {
 			vel = new Vector2(vel.x, Mathf.Max(vel.y, WallSlideMinYVel)); // Give us a minimum yVel!
+		}
+		// Note: We want to do this check constantly, as we may want to start wall sliding while we're already against a wall.
+		// We're NOT wall-sliding...
+		if (!isWallSliding()) {
+			// Should we START wall-sliding??
+			if (!feetOnGround() && !isPlunging) {
+				if (myWhiskers.OnSurface(Sides.L) && vel.x<-0.01f) {
+					StartWallSlide(-1);
+				}
+				else if (myWhiskers.OnSurface(Sides.R) && vel.x>0.01f) {
+					StartWallSlide(1);
+				}
+			}
 		}
 	}
 //	private int wallSlideSide {
@@ -342,17 +363,17 @@ public class Player : PlatformCharacter {
 		}
 
 		// We're NOT wall-sliding...
-		if (!isWallSliding()) {
-			// Should we START wall-sliding??
-			if (!feetOnGround() && !isPlunging) {
-				if (side==Sides.L && vel.x<-0.001f) {
-					StartWallSlide(-1);
-				}
-				else if (side==Sides.R && vel.x>0.001f) {
-					StartWallSlide(1);
-				}
-			}
-		}
+//		if (!isWallSliding()) {
+		// Should we START wall-sliding??
+//		if (!feetOnGround() && !isPlunging) {
+//			if (side==Sides.L && vel.x<-0.01f) {
+//				StartWallSlide(-1);
+//			}
+//			else if (side==Sides.R && vel.x>0.01f) {
+//				StartWallSlide(1);
+//			}
+//		}
+//		}
 	}
 	override public void OnWhiskersLeaveCollider(int side, Collider2D col) {
 		base.OnWhiskersLeaveCollider(side, col);

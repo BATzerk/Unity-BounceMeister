@@ -74,7 +74,7 @@ public class LevelTile : MonoBehaviour {
 	// ================================================================
 	//  Initialize
 	// ================================================================
-	public void Initialize (MapEditor _mapEditorRef, WorldData _worldDataRef, LevelData _levelDataRef) {
+	public void Initialize (MapEditor _mapEditorRef, LevelData _levelDataRef) {
 		mapEditorRef = _mapEditorRef;
 		levelDataRef = _levelDataRef;
 		this.gameObject.name = "LevelTile " + levelDataRef.levelKey;
@@ -82,7 +82,7 @@ public class LevelTile : MonoBehaviour {
 
 		this.transform.localScale = Vector3.one;
 
-		contents.Initialize (_worldDataRef, this);
+		contents.Initialize (this);
 		
 		UpdateComponentVisibilities ();
 
@@ -210,7 +210,7 @@ public class LevelTile : MonoBehaviour {
 		}
 		// Not being dragged nor over.
 		else {
-			sr_border.color = Color.clear;
+			sr_border.color = new Color(1,1,1, 0.1f);
 		}
 
 	}
