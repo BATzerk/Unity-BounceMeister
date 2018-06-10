@@ -27,6 +27,13 @@ public class GameController : MonoBehaviour {
 	//  Start / Destroy
 	// ----------------------------------------------------------------
 	private void Start () {
+		// We haven't provided a level to play and this is Gameplay scene? Ok, load up the last played level instead!
+		if (dataManager.currentLevelData==null && thisSceneName==SceneNames.Gameplay) {
+			int worldIndex = SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex);
+			string levelKey = SaveStorage.GetString(SaveKeys.LastPlayedLevelKey);
+			dataManager.currentLevelData = dataManager.GetLevelData(worldIndex, levelKey, false);
+		}
+
 		// We've defined our currentLevelData before this scene! Load up THAT level!!
 		if (dataManager.currentLevelData != null) {
 			StartGameAtLevel(dataManager.currentLevelData);
@@ -54,7 +61,6 @@ public class GameController : MonoBehaviour {
 			level.InitializeAsPremadeLevel(this);
 			dataManager.SetCoinsCollected (0);
 			UpdateTimeScale();
-//			ResetPlayerAtLevelDoor(dataManager.levelToDoorID);
 			eventManager.OnStartLevel(level);
 		}
 
@@ -72,7 +78,8 @@ public class GameController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Doers - Loading Level
 	// ----------------------------------------------------------------
-	private void ReloadScene () { OpenScene (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); }
+	private string thisSceneName { get { return UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; } }
+	private void ReloadScene () { OpenScene (thisSceneName); }
 	private void OpenScene (string sceneName) { StartCoroutine (OpenSceneCoroutine (sceneName)); }
 	private IEnumerator OpenSceneCoroutine (string sceneName) {
 //		// First frame: Blur it up.
@@ -103,6 +110,10 @@ public class GameController : MonoBehaviour {
 		// Reset things!
 		dataManager.SetCoinsCollected (0);
 		UpdateTimeScale();
+
+		// Save what's up!
+		SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, worldIndex);
+		SaveStorage.SetString(SaveKeys.LastPlayedLevelKey, levelKey);
 
 		// Use this opportunity to call SAVE with SaveStorage, yo! (This causes a brief stutter, so I'm opting to call it when the game is already loading.)
 		SaveStorage.Save ();

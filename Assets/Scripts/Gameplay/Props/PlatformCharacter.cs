@@ -6,26 +6,38 @@ public class PlatformCharacter : Collidable {
 	// Constants
 	public const int NumSides = 4; // it's hip to be square.
 	// Overrideables
+	virtual protected int StartingHealth { get { return 1; } }
+
 	virtual protected float FrictionAir { get { return 0.6f; } }
 	virtual protected float FrictionGround { get { return 0.6f; } }
 	virtual protected Vector2 Gravity { get { return new Vector2(0, -0.05f); } }
+
+	virtual protected float MaxVelXAir { get { return 0.35f; } }
+	virtual protected float MaxVelXGround { get { return 0.25f; } }
+	virtual protected float MaxVelYUp { get { return 3; } }
+	virtual protected float MaxVelYDown { get { return -3; } }
+
 	// Components
 	[SerializeField] private BoxCollider2D bodyCollider=null;
 	[SerializeField] protected PlatformCharacterWhiskers myWhiskers=null;
 	// Properties
 	private bool isDead = false;
+	protected int health; // we die when we hit 0. TODO: Make this private, and have Player and Enemy extend MY GetHit() function.
 	protected Vector2 vel;
 	private Vector2 size;
-//	protected bool[] onSurfaces; // index is side.
+	protected float timeLastTouchedWall=Mathf.NegativeInfinity;
+	protected int sideLastTouchedWall;
 
-	// Getters
+	// Getters (Public)
 	public Vector2 Vel { get { return vel; } }
 	public Vector2 Size { get { return size; } }
-
 	public bool IsInLift { get; set; }
+
 //	virtual public bool IsAffectedByLift() { return true; }
 	public bool IsDead { get { return isDead; } }
 	public bool feetOnGround() { return myWhiskers.OnSurface(Sides.B) && vel.y<=0; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
+	// Getters (Protected)
+	protected bool IsInvincible { get { return StartingHealth < 0; } }
 	protected int sideTouchingWall() {
 		if (myWhiskers.OnSurface(Sides.L)) { return -1; }
 		if (myWhiskers.OnSurface(Sides.R)) { return  1; }
@@ -73,6 +85,7 @@ public class PlatformCharacter : Collidable {
 	// ----------------------------------------------------------------
 	virtual protected void Start () {
 		vel = Vector2.zero;
+		health = StartingHealth;
 	}
 	virtual protected void SetSize(Vector2 _size) {
 		this.size = _size;
@@ -102,6 +115,20 @@ public class PlatformCharacter : Collidable {
 	}
 	protected void AcceptHorzMoveInput() {
 		vel += new Vector2(HorzMoveInputVelXDelta(), 0);
+	}
+	protected void ApplyTerminalVel() {
+		float maxXVel = feetOnGround() ? MaxVelXGround : MaxVelXAir;
+		float xVel = Mathf.Clamp(vel.x, -maxXVel,maxXVel);
+		float yVel = Mathf.Clamp(vel.y, MaxVelYDown,MaxVelYUp);
+		vel = new Vector2(xVel, yVel);
+	}
+	protected void UpdateTimeLastTouchedWall() {
+		if (isTouchingWall()) {
+			timeLastTouchedWall = Time.time;
+		}
+		if (sideTouchingWall() != 0) {
+			sideLastTouchedWall = sideTouchingWall();
+		}
 	}
 
 //	protected void UpdateOnSurfaces() {

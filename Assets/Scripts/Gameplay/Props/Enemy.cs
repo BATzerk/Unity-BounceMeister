@@ -4,20 +4,21 @@ using UnityEngine;
 
 public class Enemy : PlatformCharacter {
 	// Constants
+	override protected int StartingHealth { get { return 1; } }
+
 	override protected float FrictionAir { get { return 0.6f; } }
 	override protected float FrictionGround { get { return 0.6f; } }
 	override protected Vector2 Gravity { get { return new Vector2(0, -0.05f); } }
+
 	private const float MovementSpeedX = 0.08f;
 	// Properties
-	[SerializeField] private int health = 1;
 	[SerializeField] private float dirMoving = 1; // -1 or 1. I like to pace.
 
 	// Getters (Overrides)
 	override protected float HorzMoveInputVelXDelta() {
 		return dirMoving*MovementSpeedX;
 	}
-	// Getters (Private)
-	private bool IsInvincible { get { return health < 0; } }
+
 
 
 	// ----------------------------------------------------------------
@@ -31,7 +32,6 @@ public class Enemy : PlatformCharacter {
 	}
 
 
-
 	// ----------------------------------------------------------------
 	//  FixedUpdate
 	// ----------------------------------------------------------------
@@ -42,6 +42,7 @@ public class Enemy : PlatformCharacter {
 		ApplyFriction();
 		ApplyGravity();
 		AcceptHorzMoveInput();
+		ApplyTerminalVel();
 		myWhiskers.UpdateSurfaces(); // update these dependently now, so we guarantee most up-to-date info.
 		ApplyVel();
 

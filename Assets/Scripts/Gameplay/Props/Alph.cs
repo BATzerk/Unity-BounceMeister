@@ -59,17 +59,15 @@ public class Alph : Player {
 		base.UpdateMaxYSinceGround();
 	}
 
-
 	// ----------------------------------------------------------------
 	//  Input
 	// ----------------------------------------------------------------
-	override protected void OnUpPressed() {
-		// We're on the ground and NOT timed out of jumping! Go!
-		if (feetOnGround()) {//numJumpsSinceGround<MaxJumps && Time.time>=timeWhenCanJump
-			GroundJump();
-		}
-		else if (isTouchingWall()) {
+	override protected void OnUp_Down() {
+		if (MayWallKick()) {
 			WallKick();
+		}
+		else if (MayJump()) {
+			Jump();
 		}
 		else if (CanStartPlunge()) {
 			StartPlunge();
@@ -78,8 +76,8 @@ public class Alph : Player {
 			ScheduleDelayedJump();
 		}
 	}
-	override protected void OnDownPressed() {
-		base.OnDownPressed();
+	override protected void OnDown_Down() {
+		base.OnDown_Down();
 		if (CanStartPlunge()) {
 			StartPlunge();
 		}

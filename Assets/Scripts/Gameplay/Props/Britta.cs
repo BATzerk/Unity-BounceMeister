@@ -13,27 +13,69 @@ public class Britta : Player {
 	}
 	override protected Vector2 Gravity {
 		get {
-			if (isTouchingWall()) { return GravityNeutral * 0.4f; } // On a wall? Barely any gravity!
+			if (isReducedJumpGravity) { return GravityNeutral * 0.5f; } // We're still holding down the jump button? Reduce gravity!
+			if (isTouchingWall()) { return GravityNeutral * 0.7f; } // On a wall? Reduce gravity!
 			return GravityNeutral;
 		}
 	}
 	override protected float MaxVelXAir { get { return 0.5f; } }
 	override protected float MaxVelXGround { get { return 0.5f; } }
 
+	override protected float JumpForce { get { return 0.48f; } }
 	override protected float WallSlideMinYVel { get { return -0.3f; } }
 
+	// Properties
+	private bool isReducedJumpGravity; // true when we jump. False when A) We release the jump button, or B) We hit our jump apex.
+
+
+	// ----------------------------------------------------------------
+	//  Doers
+	// ----------------------------------------------------------------
+	override protected void Jump() {
+		base.Jump();
+		isReducedJumpGravity = true;
+	}
+	override protected void WallKick() {
+		base.WallKick();
+		isReducedJumpGravity = true;
+	}
+
+
+	// ----------------------------------------------------------------
+	//  Events
+	// ----------------------------------------------------------------
+	override protected void OnHitJumpApex() {
+		isReducedJumpGravity = false; // the moment we start descending, stop giving us reduced gravity.
+	}
+	override protected void StartWallSlide(int side) {
+		base.StartWallSlide(side);
+		// Convert all our horizontal speed to vertical speed!
+		float newYVel = Mathf.Abs(vel.x)*0.7f + Mathf.Max(0, vel.y);
+		vel = new Vector2(vel.x, newYVel);
+	}
+
+	// ----------------------------------------------------------------
+	//  Events (Physics)
+	// ----------------------------------------------------------------
+//	override public void OnWhiskersTouchCollider(int side, Collider2D col) {
+//		base.OnWhiskersTouchCollider(side, col);
+//
+//		// Touched a side?
+//		if (side==Sides.L || side==Sides.R) {
+//
+//		}
+//	}
 
 
 	// ----------------------------------------------------------------
 	//  Input
 	// ----------------------------------------------------------------
-	override protected void OnUpPressed() {
-		// We're on the ground and NOT timed out of jumping! Go!
-		if (feetOnGround()) {//numJumpsSinceGround<MaxJumps && Time.time>=timeWhenCanJump
-			GroundJump();
-		}
-		else if (isTouchingWall()) {
+	override protected void OnUp_Down() {
+		if (MayWallKick()) {
 			WallKick();
+		}
+		else if (MayJump()) {
+			Jump();
 		}
 //		else if (CanStartPlunge()) {
 //			StartPlunge();
@@ -42,4 +84,9 @@ public class Britta : Player {
 			ScheduleDelayedJump();
 		}
 	}
+	override protected void OnUp_Up() {
+		isReducedJumpGravity = false; // Not anymore, boss!
+	}
+
+
 }

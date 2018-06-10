@@ -4,6 +4,7 @@ using UnityEngine;
 
 abstract public class Player : PlatformCharacter {
 	// Constants
+	override protected int StartingHealth { get { return 1; } }
 	override protected float FrictionAir { get { return isPreservingWallKickVel ? 1f : FrictionGround; } } // No air friction while we're preserving our precious wall-kick vel.
 	override protected float FrictionGround {
 		get {
@@ -19,14 +20,15 @@ abstract public class Player : PlatformCharacter {
 	private readonly Vector2 WallKickVel = new Vector2(0.5f, 0.52f);
 	private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);
 
-	virtual protected float MaxVelXAir { get { return 0.35f; } }
-	virtual protected float MaxVelXGround { get { return 0.25f; } }
-	virtual protected float MaxVelYUp { get { return 3; } }
-	virtual protected float MaxVelYDown { get { return -3; } }
+	override protected float MaxVelXAir { get { return 0.35f; } }
+	override protected float MaxVelXGround { get { return 0.25f; } }
+	override protected float MaxVelYUp { get { return 3; } }
+	override protected float MaxVelYDown { get { return -3; } }
 
 	private const float DelayedJumpWindow = 0.1f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
 	private const float PostWallKickHorzInputLockDur = 0.3f; // how long until we can provide horizontal input after jumping off a wall.
+	private const float WallKickExtensionWindow = 0.05f; // how long after touching a wall when we'll still allow wall-kicking!
 
 	// Components
 	[SerializeField] protected PlayerBody myBody=null;
@@ -37,10 +39,10 @@ abstract public class Player : PlatformCharacter {
 	private float timeLastWallKicked=Mathf.NegativeInfinity;
 	private float timeSinceDamage=Mathf.NegativeInfinity; // invincible until this time! Set to Time.time + PostDamageInvincibleDuration when we're hit.
 	private float timeWhenDelayedJump=Mathf.NegativeInfinity; // set when we're in the air and press Jump. If we touch ground before this time, we'll do a delayed jump!
-	private int health = 1; // we die when we hit 0.
 	private int numJumpsSinceGround;
 	private int wallSlideSide = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
 	private int hackTEMP_framesAlive=0;
+	private Vector2 pvel; // previous velocity.
 	// References
 	private Rect camBoundsLocal; // for detecting when we exit the level!
 
@@ -48,6 +50,13 @@ abstract public class Player : PlatformCharacter {
 	virtual public bool CanUseBattery() { return false; }
 	public bool IsPostDamageImmunity { get { return isPostDamageImmunity; } }
 	// Getters (Protected)
+	protected bool MayJump() {
+		return feetOnGround();//numJumpsSinceGround<MaxJumps && Time.time>=timeWhenCanJump
+	}
+	protected bool MayWallKick() {
+		if (feetOnGround()) { return false; } // Obviously no.
+		return isTouchingWall() || Time.time < timeLastTouchedWall+WallKickExtensionWindow;
+	}
 	virtual protected bool MayWallSlide() {
 		return !feetOnGround();
 	}
@@ -134,10 +143,13 @@ abstract public class Player : PlatformCharacter {
 //		}
 		// TEMP! todo: Use pinputAxis within InputController in a *FixedUpdate* loop to determine if we've just pushed up/down.
 		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) {
-			OnUpPressed();
+			OnUp_Down();
+		}
+		else if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.Space)) {
+			OnUp_Up();
 		}
 		else if (Input.GetKeyDown(KeyCode.DownArrow)) {
-			OnDownPressed();
+			OnDown_Down();
 		}
 	}
 	private void UpdatePostDamageImmunity() {
@@ -157,16 +169,19 @@ abstract public class Player : PlatformCharacter {
 
 		if (Time.timeScale == 0) { return; } // No time? No dice.
 		Vector2 ppos = pos;
+		pvel = vel;
 
 		ApplyFriction();
 		ApplyGravity();
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
 		myWhiskers.UpdateSurfaces(); // update these dependently now, so we guarantee most up-to-date info.
-		UpdateWallSlide();
 		ApplyVel();
-		UpdateMaxYSinceGround();
 
+		UpdateWallSlide();
+		UpdateTimeLastTouchedWall();
+		DetectJumpApex();
+		UpdateMaxYSinceGround();
 		UpdateIsPreservingWallKickVel();
 		UpdateExitedLevel();
 		// TEST auto-plunge
@@ -178,12 +193,6 @@ abstract public class Player : PlatformCharacter {
 		vel = pos - ppos;
 	}
 
-	private void ApplyTerminalVel() {
-		float maxXVel = feetOnGround() ? MaxVelXGround : MaxVelXAir;
-		float xVel = Mathf.Clamp(vel.x, -maxXVel,maxXVel);
-		float yVel = Mathf.Clamp(vel.y, MaxVelYDown,MaxVelYUp);
-		vel = new Vector2(xVel, yVel);
-	}
 	private void UpdateWallSlide() {
 		if (isWallSliding()) {
 			vel = new Vector2(vel.x, Mathf.Max(vel.y, WallSlideMinYVel)); // Give us a minimum yVel!
@@ -216,7 +225,7 @@ abstract public class Player : PlatformCharacter {
 	private void UpdateIsPreservingWallKickVel() {
 		if (isPreservingWallKickVel) {
 			if (vel.y < 0) {
-				isPreservingWallKickVel = false; // TEST
+				isPreservingWallKickVel = false; // Once we reach the height of our wall-kick, halt our velocity! It's tighter to control.
 			}
 			else if (Time.time-0.1f > timeLastWallKicked // If it's been at least a few grace frames since we wall-kicked...
 				&& !MathUtils.IsSameSign(vel.x, inputAxis.x)) { // Pushing against my vel? Stop preserving the vel!
@@ -235,19 +244,25 @@ abstract public class Player : PlatformCharacter {
 			GameManagers.Instance.EventManager.OnPlayerEscapeLevelBounds(sideEscaped);
 		}
 	}
+	private void DetectJumpApex() {
+		if (pvel.y > 0 && vel.y<=0) {
+			OnHitJumpApex();
+		}
+	}
+	virtual protected void OnHitJumpApex() { }
 
 
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
-	protected void GroundJump() {
+	virtual protected void Jump() {
 		vel = new Vector2(vel.x, JumpForce);
 		timeWhenDelayedJump = -1; // reset this just in case.
 		numJumpsSinceGround ++;
 		GameManagers.Instance.EventManager.OnPlayerJump(this);
 	}
-	protected void WallKick() {
-		vel = new Vector2(-sideTouchingWall()*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y));
+	virtual protected void WallKick() {
+		vel = new Vector2(-sideLastTouchedWall*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y));
 		timeLastWallKicked = Time.time;
 		isPreservingWallKickVel = true;
 		numJumpsSinceGround ++;
@@ -256,7 +271,7 @@ abstract public class Player : PlatformCharacter {
 	}
 
 
-	private void StartWallSlide(int side) {
+	virtual protected void StartWallSlide(int side) {
 		wallSlideSide = side;
 	}
 	protected void StopWallSlide() {
@@ -285,8 +300,9 @@ abstract public class Player : PlatformCharacter {
 //			timeWhenDelayedJump = Time.time + DelayedJumpWindow;
 //		}
 //	}
-	abstract protected void OnUpPressed();
-	virtual protected void OnDownPressed() { }
+	abstract protected void OnUp_Down();
+	virtual protected void OnUp_Up() { }
+	virtual protected void OnDown_Down() { }
 
 	protected void ScheduleDelayedJump() {
 		timeWhenDelayedJump = Time.time + DelayedJumpWindow;
@@ -416,7 +432,7 @@ abstract public class Player : PlatformCharacter {
 		maxYSinceGround = pos.y;
 		// Do that delayed jump we planned?
 		if (Time.time <= timeWhenDelayedJump) {
-			GroundJump();
+			Jump();
 		}
 //			else { // TEMP TEST!
 //				vel = new Vector2(vel.x, -vel.y * 0.2f);
