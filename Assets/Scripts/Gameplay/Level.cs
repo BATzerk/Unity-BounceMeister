@@ -196,7 +196,10 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 //		if (GameObject.FindObjectOfType<Player>() == null) {
 //			playerRef = Instantiate(ResourcesHandler.Instance.Player).GetComponent<Player>();
 //		}
-//		playerData.pos = gameControllerRef.GetLevelDoorPos(dataManager.levelToDoorID);
+		PlayerStart playerStart = GameObject.FindObjectOfType<PlayerStart>();
+		if (playerStart != null) {
+			playerData.pos = playerStart.PosLocal;
+		}
 		playerRef.Initialize(this, playerData);
 		// CameraBounds
 		if (GameObject.FindObjectOfType<CameraBounds>() == null) {

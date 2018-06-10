@@ -1,0 +1,12 @@
+levelProperties posGlobal:(-102.0, 8.0);designerFlag:0
+CameraBounds myRect:(x:-25.00, y:-19.00, width:50.00, height:38.00)
+Ground myRect:(x:-22.50, y:4.50, width:13.00, height:33.00);colorType:0
+Ground myRect:(x:-26.50, y:0.00, width:5.00, height:36.00);colorType:0
+Ground myRect:(x:0.50, y:19.50, width:59.00, height:3.00);colorType:0
+Ground myRect:(x:26.50, y:0.00, width:5.00, height:36.00);colorType:0
+Ground myRect:(x:-1.00, y:-2.00, width:6.00, height:28.00);colorType:0
+Ground myRect:(x:0.50, y:-18.00, width:59.00, height:4.00);colorType:0
+Ground myRect:(x:-20.00, y:17.50, width:18.00, height:7.00);colorType:0
+Lift myRect:(x:-7.00, y:3.00, width:6.00, height:14.00);rotation:0;strength:0.08
+Spikes myRect:(x:-7.00, y:16.50, width:6.00, height:1.00);rotation:180
+ToggleGround myRect:(x:-11.50, y:2.00, width:1.00, height:24.00);startsOn:True

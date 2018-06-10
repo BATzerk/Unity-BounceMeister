@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class EventManager {
 	// Actions and Event Variables
 	public delegate void NoParamAction ();
+	public delegate void BoolAction(bool b);
 	public delegate void CoinAction(Coin coin);
 	public delegate void FloatAction (float a);
 	public delegate void FloatFloatAction (float a, float b);
@@ -17,6 +18,7 @@ public class EventManager {
 	public event NoParamAction EditorSaveLevelEvent;
 	public event NoParamAction ScreenSizeChangedEvent;
 	public event NoParamAction CoinsCollectedChangedEvent;
+	public event BoolAction SetPausedEvent;
 	public event CoinAction CoinCollectedEvent;
 	public event LevelAction StartLevelEvent;
 	public event IntAction PlayerEscapeLevelBoundsEvent;
@@ -33,6 +35,7 @@ public class EventManager {
 	public void OnScreenSizeChanged () { if (ScreenSizeChangedEvent!=null) { ScreenSizeChangedEvent (); } }
 	// Game Events
 	public void OnEditorSaveLevel() { if (EditorSaveLevelEvent!=null) { EditorSaveLevelEvent(); } }
+	public void OnSetPaused(bool isPaused) { if (SetPausedEvent!=null) { SetPausedEvent(isPaused); } }
 	public void OnStartLevel(Level level) { if (StartLevelEvent!=null) { StartLevelEvent(level); } }
 
 	public void OnCoinCollected(Coin coin) { if (CoinCollectedEvent!=null) { CoinCollectedEvent(coin); } }

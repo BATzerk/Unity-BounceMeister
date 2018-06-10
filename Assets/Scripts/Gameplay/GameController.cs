@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: Fix next-level side being inaccurate
-// TODO: Fix next level not working...
-// TODO: When die, restart at last entered level/position
-//TODO: Wall-grind particles, and wall-grind sprite change (just a diagonal line from player-to-wall is enough)
-
 public class GameController : MonoBehaviour {
 	// Properties
 	private bool isPaused = false;
@@ -187,6 +182,7 @@ public class GameController : MonoBehaviour {
 	private void TogglePause () {
 		isPaused = !isPaused;
 		UpdateTimeScale ();
+		eventManager.OnSetPaused(isPaused);
 	}
 	private void UpdateTimeScale () {
 		if (isPaused) { Time.timeScale = 0; }

@@ -95,7 +95,7 @@ static public class LevelSaverLoader {
 			else if (type == typeof(DamageableGroundData)) { AddPropFieldsToFS(propData, "myRect", "dieFromBounce", "dieFromPlayerLeave", "dieFromVel", "doRegen"); }
 			else if (type == typeof(GemData)) { AddPropFieldsToFS(propData, "pos"); }
 			else if (type == typeof(GroundData)) { AddPropFieldsToFS(propData, "myRect", "colorType"); }
-			else if (type == typeof(LevelDoorData)) { AddPropFieldsToFS(propData, "pos", "myID", "levelToKey", "levelToDoorID"); }
+//			else if (type == typeof(LevelDoorData)) { AddPropFieldsToFS(propData, "pos", "myID", "levelToKey", "levelToDoorID"); }
 			else if (type == typeof(LiftData)) { AddPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
 			else if (type == typeof(PlatformData)) { AddPropFieldsToFS(propData, "myRect"); }
 			else if (type == typeof(PlayerStartData)) { AddPropFieldsToFS(propData, "pos"); }

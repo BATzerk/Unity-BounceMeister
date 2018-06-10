@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour {
 	// Components
-	[SerializeField] private Text t_coinsCollected;
+	[SerializeField] private Image i_pausedBorder=null;
+	[SerializeField] private Text t_coinsCollected=null;
 	// References
 //	[SerializeField] private GameController gameControllerRef;
 
@@ -21,10 +22,12 @@ public class GameUI : MonoBehaviour {
 		UpdateCoinsCollectedText();
 
 		// Add event listeners!
+		eventManager.SetPausedEvent += OnSetPaused;
 		eventManager.CoinsCollectedChangedEvent += OnCoinsCollectedChanged;
 	}
 	private void OnDestroy() {
 		// Remove event listeners!
+		eventManager.SetPausedEvent -= OnSetPaused;
 		eventManager.CoinsCollectedChangedEvent -= OnCoinsCollectedChanged;
 	}
 
@@ -33,6 +36,10 @@ public class GameUI : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
+	private void OnSetPaused(bool isPaused) {
+		i_pausedBorder.enabled = isPaused;
+	}
+
 	private void OnCoinsCollectedChanged() {
 		UpdateCoinsCollectedText();
 	}

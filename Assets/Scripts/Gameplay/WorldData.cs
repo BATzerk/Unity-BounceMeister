@@ -206,9 +206,23 @@ public class WorldData {
 		// Find where a point in this next level would be. Then return the LevelData with that point in it!
 		Vector2Int dir = MathUtils.GetDir(side);
 		Vector2 originSize = originLD.BoundsGlobal.size;
-		Vector2 nextLevelPoint = originLD.BoundsGlobal.position;//.center;
-		nextLevelPoint += new Vector2(dir.x*(originSize.x+1f), dir.y*(originSize.y+1f)); // +1 so the levels don't have to be directly touching; we'll allow even a small gap.
-		return GetLevelWithPoint(nextLevelPoint);
+		Vector2 searchOrigin = originLD.BoundsGlobal.position;//.center;
+		searchOrigin += new Vector2(dir.x*(originSize.x+1f), dir.y*(originSize.y+1f)); // +1 so the levels don't have to be directly touching; we'll allow even a small gap.
+		// Instead of just looking at one point, put out TWO feelers, as levels can be irregularly aligned.
+		Vector2[] searchPoints = new Vector2[2];
+		if (side==Sides.L || side==Sides.R) {
+			searchPoints[0] = searchOrigin + new Vector2(0, originSize.y*0.4f);
+			searchPoints[1] = searchOrigin - new Vector2(0, originSize.y*0.4f);
+		}
+		else {
+			searchPoints[0] = searchOrigin + new Vector2(originSize.x*0.4f, 0);
+			searchPoints[1] = searchOrigin - new Vector2(originSize.x*0.4f, 0);
+		}
+		foreach (Vector2 point in searchPoints) {
+			LevelData ldHere = GetLevelWithPoint(point);
+			if (ldHere != null) { return ldHere; }
+		}
+		return null;
 	}
 	public LevelData GetLevelWithPoint(Vector2 point) {
 		foreach (LevelData ld in levelDatas.Values) {
