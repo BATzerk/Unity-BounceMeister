@@ -209,14 +209,16 @@ public class WorldData {
 		Vector2 searchOrigin = originLD.BoundsGlobal.position;//.center;
 		searchOrigin += new Vector2(dir.x*(originSize.x+1f), dir.y*(originSize.y+1f)); // +1 so the levels don't have to be directly touching; we'll allow even a small gap.
 		// Instead of just looking at one point, put out TWO feelers, as levels can be irregularly aligned.
-		Vector2[] searchPoints = new Vector2[2];
+		Vector2[] searchPoints = new Vector2[3];
 		if (side==Sides.L || side==Sides.R) {
 			searchPoints[0] = searchOrigin + new Vector2(0, originSize.y*0.4f);
-			searchPoints[1] = searchOrigin - new Vector2(0, originSize.y*0.4f);
+			searchPoints[1] = searchOrigin;
+			searchPoints[2] = searchOrigin - new Vector2(0, originSize.y*0.4f);
 		}
 		else {
 			searchPoints[0] = searchOrigin + new Vector2(originSize.x*0.4f, 0);
-			searchPoints[1] = searchOrigin - new Vector2(originSize.x*0.4f, 0);
+			searchPoints[1] = searchOrigin;
+			searchPoints[2] = searchOrigin - new Vector2(originSize.x*0.4f, 0);
 		}
 		foreach (Vector2 point in searchPoints) {
 			LevelData ldHere = GetLevelWithPoint(point);

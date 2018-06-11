@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 abstract public class Collidable : Prop {
-	[SerializeField] private bool doRechargePlayer = true; // if true, we recharge the Player's plunge when their feet touch me!
+	// Properties
+	[SerializeField] protected bool doRechargePlayer = true; // if true, we recharge the Player's plunge when their feet touch me!
 	[SerializeField] protected bool isBouncy = false;
 
 	// Getters (Public)

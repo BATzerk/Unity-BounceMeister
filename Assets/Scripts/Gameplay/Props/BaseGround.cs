@@ -8,8 +8,8 @@ abstract public class BaseGround : Collidable {
 	[SerializeField] protected SpriteRenderer bodySprite=null;
 	[SerializeField] protected BoxCollider2D myCollider=null;
 	// Properties
-	//	[SerializeField] private bool doDisappearAfterBounces = false;
-	//	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
+//	[SerializeField] private bool doDisappearAfterBounces = false;
+//	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
 
 	// Getters (Private)
 	protected Rect MyRect {
@@ -31,7 +31,7 @@ abstract public class BaseGround : Collidable {
 	//  Start
 	// ----------------------------------------------------------------
 	virtual protected void Start() {
-		// QQQ TEMP! For level transitioning.
+		// TEMP! For level transitioning.
 		if (bodySprite==null) {
 			bodySprite = GetComponent<SpriteRenderer>();
 		}

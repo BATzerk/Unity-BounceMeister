@@ -39,6 +39,7 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 		base.BaseGroundInitialize(_myLevel, data);
 
 		colorType = data.colorType;
+		doRechargePlayer = data.doRechargePlayer;
 		ApplyBodySpriteColor();
 	}
 	private void ApplyBodySpriteColor() {
@@ -54,6 +55,7 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 	public GroundData SerializeAsData() {
 		GroundData data = new GroundData();
 		data.myRect = MyRect;
+		data.doRechargePlayer = doRechargePlayer;
 		data.colorType = colorType;
 		return data;
 	}
