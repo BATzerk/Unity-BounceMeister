@@ -176,9 +176,9 @@ abstract public class Player : PlatformCharacter {
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
 		myWhiskers.UpdateSurfaces(); // update these dependently now, so we guarantee most up-to-date info.
+		UpdateWallSlide();
 		ApplyVel();
 
-		UpdateWallSlide();
 		UpdateTimeLastTouchedWall();
 		DetectJumpApex();
 		UpdateMaxYSinceGround();
