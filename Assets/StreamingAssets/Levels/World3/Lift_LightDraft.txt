@@ -1,4 +1,4 @@
-levelProperties posGlobal:(0.0, 0.0);designerFlag:0
+levelProperties posGlobal:(-158.0, 98.0);designerFlag:0
 CameraBounds myRect:(x:-28.00, y:-19.00, width:50.00, height:38.00)
 Ground myRect:(x:-3.00, y:-18.00, width:52.00, height:4.00);colorType:0
 Ground myRect:(x:15.00, y:-7.00, width:10.00, height:20.00);colorType:0
@@ -11,4 +11,3 @@ Lift myRect:(x:-22.00, y:-4.00, width:4.00, height:14.00);rotation:0;strength:0.
 Platform myRect:(x:7.00, y:2.50, width:6.00, height:1.00)
 Platform myRect:(x:-16.00, y:2.50, width:6.00, height:1.00)
 PlayerStart pos:(-9.1, -14.0)
-

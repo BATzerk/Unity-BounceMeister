@@ -8,9 +8,12 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 	[SerializeField] private bool dieFromVel = false;
 	[SerializeField] private bool dieFromPlayerLeave = false;
 	[SerializeField] private bool doRegen = false; // if TRUE, I'll come back after a moment!
+	private Color bodyColor; // depends on my properties, ya hear?
 	const float BreakVel = 0.4f; // the Player has to be moving at least this fast for me to get busted!
-	const float RegenTime = 3f; // how long it takes for me to reappear after I've disappeared.
+	const float RegenTime = 2.2f; // how long it takes for me to reappear after I've disappeared.
 	// References
+	[SerializeField] private Sprite s_bodyOn;
+	[SerializeField] private Sprite s_bodyOff;
 	private Player playerTouchingMe;
 
 
@@ -24,6 +27,13 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 		dieFromPlayerLeave = data.dieFromPlayerLeave;
 		dieFromVel = data.dieFromVel;
 		doRegen = data.doRegen;
+		// Color me impressed!
+		if (doRegen) {
+			bodyColor = new ColorHSB(280/360f, 0.4f, 0.6f).ToColor();
+		}
+		else {
+			bodyColor = new ColorHSB(280/360f, 0.1f, 0.56f).ToColor();
+		}
 	}
 
 	// ----------------------------------------------------------------
@@ -31,7 +41,7 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 	// ----------------------------------------------------------------
 	override public void OnPlayerBounceOnMe(Player player) {
 		if (dieFromBounce) {
-			Disappear();
+			TurnOff();
 		}
 	}
 
@@ -54,48 +64,53 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 //	}
 
 	override public void OnCharacterTouchMe(int charSide, PlatformCharacter character) {
+		if (charSide != Sides.B && MyRect.size.y==1) { return; } // Currently, we ONLY care about FEET if we're thin. Kinda a test.
 		if (character is Player) {
 			playerTouchingMe = character as Player;
 			if (dieFromVel) {
 				// Left or Right sides
 				if (charSide==Sides.L || charSide==Sides.R) {
 					if (Mathf.Abs(character.Vel.x) > BreakVel) {
-						Disappear();
+						TurnOff();
 					}
 				}
 				// Left or Right sides
 				else if (charSide==Sides.B || charSide==Sides.T) {
 					if (Mathf.Abs(character.Vel.y) > BreakVel) {
-						Disappear();
+						TurnOff();
 					}
 				}
 			}
 		}
 	}
 	override public void OnCharacterLeaveMe(int charSide, PlatformCharacter character) {
+		if (charSide != Sides.B && MyRect.size.y==1) { return; } // Currently, we ONLY care about FEET if we're thin. Kinda a test.
 		if (dieFromPlayerLeave && character is Player) {
-			Disappear();
+			TurnOff();
+			playerTouchingMe = null;
 		}
 	}
 
 	// Kinda hacked in for now.
-	private void Disappear() {
-		SetSpriteColliderEnabled(false);
+	private void TurnOff() {
+		SetIsOn(false);
 		if (doRegen) {
-			Invoke("EnableSpriteCollider", RegenTime);
+			Invoke("TurnOn", RegenTime);
 		}
 	}
-	private void EnableSpriteCollider() {
-		SetSpriteColliderEnabled(true);
+	private void TurnOn() {
+		SetIsOn(true);
 	}
-	private void SetSpriteColliderEnabled(bool _enabled) {
-		if (myCollider!=null) { myCollider.enabled = _enabled; }
+	private void SetIsOn(bool _isOn) {
+		GameUtils.SetSpriteAlpha (bodySprite, 1); // Always reset my alpha here.
+		if (myCollider!=null) { myCollider.enabled = _isOn; }
 		if (bodySprite!=null) {
+			bodySprite.sprite = _isOn ? s_bodyOn : s_bodyOff;
 			if (doRegen) {
-				GameUtils.SetSpriteAlpha (bodySprite, _enabled ? 1f : 0.15f);
+//				GameUtils.SetSpriteAlpha (bodySprite, _isOn ? 1f : 0.15f);
 			}
 			else {
-				bodySprite.enabled = _enabled;
+				bodySprite.enabled = _isOn;
 			}
 		}
 	}

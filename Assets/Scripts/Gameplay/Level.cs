@@ -179,6 +179,7 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 				Debug.LogWarning("PropData not recognized: " + propData);
 			}
 		}
+		// Parent things to each other!
 
 		AutoAddSilentBoundaries();
 	}

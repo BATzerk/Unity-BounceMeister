@@ -1,4 +1,4 @@
-levelProperties posGlobal:(-52.0, 92.0);designerFlag:0
+levelProperties posGlobal:(-130.0, 184.0);designerFlag:2
 CameraBounds myRect:(x:-25.00, y:-19.00, width:50.00, height:38.00)
 Ground myRect:(x:8.00, y:-15.00, width:16.00, height:4.00);colorType:0;doRechargePlayer:True
 Ground myRect:(x:8.00, y:-12.00, width:16.00, height:2.00);colorType:0;doRechargePlayer:True
@@ -13,4 +13,3 @@ Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00);colorType:0;doRecharge
 Ground myRect:(x:-15.00, y:1.00, width:4.00, height:2.00);colorType:0;doRechargePlayer:False
 Ground myRect:(x:-2.00, y:-1.50, width:4.00, height:3.00);colorType:0;doRechargePlayer:True
 PlayerStart pos:(-22.2, -12.7)
-
