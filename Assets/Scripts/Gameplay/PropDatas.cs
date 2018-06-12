@@ -28,6 +28,7 @@ public class CrateData : BaseGroundData {
 	public int numCoinsInMe;
 }
 public class GroundData : BaseGroundData {
+	public bool canBounce=true;
 	public bool doRechargePlayer=true;
 	public int colorType;
 }

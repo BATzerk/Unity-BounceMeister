@@ -8,8 +8,8 @@ public class GameController : MonoBehaviour {
 	private bool debug_isSlowMo = false;
 	// References
 	[SerializeField] private Transform tf_world;
-	[SerializeField] private Player player=null;
-	[SerializeField] private Level level=null; // TODO: load this dynamically instead! Do our editing in the editor.
+	private Player player=null;
+	private Level level=null;
 
 	// Getters
 	public Player Player { get { return player; } }
@@ -41,23 +41,22 @@ public class GameController : MonoBehaviour {
 		// We have NOT provided any currentLevelData!...
 		else {
 			// Initialize the existing level as a premade level! So we can start editing/playing/saving it right outta the scene.
-			// TEMP! TEMP! For converting scenes into level text files.
-			if (level==null) {
-				level = GameObject.FindObjectOfType<Level>();
-				if (level == null) {
-					GameObject levelGO = GameObject.Find("Structure");
-					if (levelGO==null) {
-						levelGO = new GameObject();
-						levelGO.transform.localPosition = Vector3.zero;
-						levelGO.transform.localScale = Vector3.one;
-					}
-					level = levelGO.AddComponent<Level>();
+			// TEMP! For converting scenes into level text files.
+			level = GameObject.FindObjectOfType<Level>();
+			if (level == null) {
+				GameObject levelGO = GameObject.Find("Structure");
+				if (levelGO==null) {
+					levelGO = new GameObject();
+					levelGO.transform.localPosition = Vector3.zero;
+					levelGO.transform.localScale = Vector3.one;
 				}
+				level = levelGO.AddComponent<Level>();
 			}
 			if (tf_world == null) {
 				tf_world = GameObject.Find("GameWorld").transform;
 			}
-			player = GameObject.FindObjectOfType<Player>(); // Again, this is only for editing.
+//			player = GameObject.FindObjectOfType<Player>(); // Again, this is only for editing.
+			MakePlayer(PlayerTypes.Alph, Vector2.zero);
 			level.InitializeAsPremadeLevel(this);
 			dataManager.SetCoinsCollected (0);
 			UpdateTimeScale();
@@ -110,6 +109,7 @@ public class GameController : MonoBehaviour {
 		// Reset things!
 		dataManager.SetCoinsCollected (0);
 		UpdateTimeScale();
+		GameUtils.SetEditorCameraPos(levelData.posGlobal); // conveniently move the editor camera, too!
 
 		// Save what's up!
 		SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, worldIndex);
@@ -122,6 +122,10 @@ public class GameController : MonoBehaviour {
 	}
 
 	private void MakePlayer(PlayerTypes type, LevelData levelData) {
+		Vector2 startingPos = GetPlayerStartingPosInLevel(levelData);
+		MakePlayer(type, startingPos);
+	}
+	private void MakePlayer(PlayerTypes type, Vector2 startingPos) {
 		if (player != null) { DestroyPlayer(); } // Just in case.
 
 		switch (type) {
@@ -136,7 +140,7 @@ public class GameController : MonoBehaviour {
 			break;
 		}
 		PlayerData playerData = new PlayerData();
-		playerData.pos = GetPlayerStartingPosInLevel(levelData);
+		playerData.pos = startingPos;
 		player.Initialize(level, playerData);
 	}
 
@@ -148,6 +152,14 @@ public class GameController : MonoBehaviour {
 	private void DestroyPlayer() {
 		if (player != null) { Destroy(player.gameObject); }
 		player = null;
+	}
+
+	private void StartNewBlankLevel() {
+		// Keep it in the current world, and give it a unique name.
+		WorldData worldData = dataManager.GetWorldData(level.WorldIndex);
+		string levelKey = worldData.GetUnusedLevelKey();
+		LevelData emptyLevelData = worldData.GetLevelData(levelKey, true);
+		StartGameAtLevel(emptyLevelData);
 	}
 
 
@@ -284,6 +296,11 @@ public class GameController : MonoBehaviour {
 		}
 		// CONTROL + ___
 		if (isKey_control) {
+			// CONTROL + N = Open new level!
+			if (Input.GetKeyDown(KeyCode.N)) {
+				StartNewBlankLevel();
+			}
+
 			// CONTROL + SHIFT + X = Flip Horizontal!
 			if (isKey_shift && Input.GetKeyDown(KeyCode.X)) {
 				if (level != null) { level.FlipHorz(); }

@@ -28,6 +28,7 @@ public class Alph : Player {
 		return base.MayWallSlide() && !isPlunging;
 	}
 	override protected bool DoBounceOffCollidable(Collidable collidable) {
+		if (collidable!=null && !collidable.CanBounce) { return false; }
 		if (isPlunging) { return true; }
 		return base.DoBounceOffCollidable(collidable);
 	}

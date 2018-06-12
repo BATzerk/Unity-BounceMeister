@@ -20,8 +20,11 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 			case 2: color = IsBouncy ? new ColorHSB(280/360f, 0.76f, 0.83f).ToColor() : new ColorHSB(280/360f, 0.35f, 0.45f).ToColor(); break; // purple
 			default: color = IsBouncy ? new ColorHSB(76/360f, 0.84f, 0.83f).ToColor() : new ColorHSB(85/360f, 0.37f, 0.42f).ToColor(); break; // green
 		}
-		if (!DoRechargePlayer) {
+		if (!CanBounce) {
 			color = Color.Lerp(color, Color.black, 0.7f);
+		}
+		if (!DoRechargePlayer) {
+			color = Color.Lerp(color, Color.black, 0.4f);
 		}
 		return color;
 	}
@@ -39,6 +42,7 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 		base.BaseGroundInitialize(_myLevel, data);
 
 		colorType = data.colorType;
+		canBounce = data.canBounce;
 		doRechargePlayer = data.doRechargePlayer;
 		ApplyBodySpriteColor();
 	}
@@ -55,6 +59,7 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 	public GroundData SerializeAsData() {
 		GroundData data = new GroundData();
 		data.myRect = MyRect;
+		data.canBounce = canBounce;
 		data.doRechargePlayer = doRechargePlayer;
 		data.colorType = colorType;
 		return data;

@@ -62,7 +62,7 @@ public class GateButton : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void OnTriggerEnter2D(Collider2D otherCol) {
 		// Ground??
-		if (LayerMask.LayerToName(otherCol.gameObject.layer) == LayerNames.Player) {
+		if (LayerMask.LayerToName(otherCol.gameObject.layer) == Layers.Player) {
 			OnPlayerTouchMe(otherCol.GetComponentInChildren<Player>());
 		}
 	}

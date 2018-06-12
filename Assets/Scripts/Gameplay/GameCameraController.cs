@@ -46,6 +46,7 @@ public class GameCameraController : MonoBehaviour {
 		return Mathf.Min (ScreenHandler.RelativeScreenSize.x/(float)rect.width, ScreenHandler.RelativeScreenSize.y/(float)rect.height) * ConstOrthoScale;
 	}
 	private float ZoomAmount { get { return orthoSizeNeutral / primaryCamera.orthographicSize; } }
+//	Debug.Log(GetExactWorldRect Camera.main.ViewportToWorldPoint(new Vector3(0,0,0));
 
 	// Debug
 	private void OnDrawGizmos() {

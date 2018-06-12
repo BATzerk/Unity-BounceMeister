@@ -56,7 +56,7 @@ static public class LevelSaverLoader {
 //		}
 		else {
 			Debug.LogError("Level file not found! World " + worldIndex + ", levelKey " + levelKey + "\nfilePath: \"" + filePath + "\"");
-			return new string[0];
+			return null;
 		}
 
 	}
@@ -94,8 +94,7 @@ static public class LevelSaverLoader {
 			else if (type == typeof(CrateData)) { AddPropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe"); }
 			else if (type == typeof(DamageableGroundData)) { AddPropFieldsToFS(propData, "myRect", "dieFromBounce", "dieFromPlayerLeave", "dieFromVel", "doRegen"); }
 			else if (type == typeof(GemData)) { AddPropFieldsToFS(propData, "pos"); }
-			else if (type == typeof(GroundData)) { AddPropFieldsToFS(propData, "myRect", "colorType", "doRechargePlayer"); }
-//			else if (type == typeof(LevelDoorData)) { AddPropFieldsToFS(propData, "pos", "myID", "levelToKey", "levelToDoorID"); }
+			else if (type == typeof(GroundData)) { AddPropFieldsToFS(propData, "myRect", "colorType", "canBounce", "doRechargePlayer"); }
 			else if (type == typeof(LiftData)) { AddPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
 			else if (type == typeof(PlatformData)) { AddPropFieldsToFS(propData, "myRect"); }
 			else if (type == typeof(PlayerStartData)) { AddPropFieldsToFS(propData, "pos"); }
@@ -274,10 +273,7 @@ static public class LevelSaverLoader {
 
 		// NULL level file...
 		if (levelFile == null) {
-			// Make an empty level!
-			GroundData newGroundData = new GroundData();
-			newGroundData.myRect = new Rect(-10,-10, 40,5);
-			ld.allPropDatas.Add (newGroundData);
+			AddEmptyLevelElements(ref ld);
 		}
 		// There IS a level file!...
 		else {
@@ -362,9 +358,31 @@ static public class LevelSaverLoader {
 		}
 	}*/
 	}
+	static private void AddEmptyLevelElements(ref LevelData ld) {
+		CameraBoundsData cameraBoundsData = new CameraBoundsData();
+		cameraBoundsData.myRect = new Rect(-25,-19, 50,38);
+		cameraBoundsData.pos = cameraBoundsData.myRect.center;
+		ld.allPropDatas.Add(cameraBoundsData);
+
+		PlayerStartData playerStartData = new PlayerStartData();
+		playerStartData.pos = new Vector2(-20, -14);
+		ld.allPropDatas.Add(playerStartData);
+
+		Rect[] groundRects = new Rect[]{
+			new Rect(0,-18, 52,4),
+			new Rect(-24,0, 4,32),
+			new Rect(24,0, 4,32),
+			new Rect(0,18, 52,4),
+		};
+		foreach (Rect rect in groundRects) {
+			GroundData newGroundData = new GroundData();
+			newGroundData.myRect = rect;
+			newGroundData.pos = rect.center;
+			ld.allPropDatas.Add (newGroundData);
+		}
+	}
 
 	static private void SetLevelPropertyFieldValuesFromFieldsString(LevelData ld, string fieldsString) {
-		// TODO: #cleancode Don't have this so hardcoded, man.
 		// Divide the long string of ALL fields into an array, each slot just ONE field.
 		string[] fieldStrings = fieldsString.Split (';');
 		for (int i=0; i<fieldStrings.Length; i++) {
@@ -410,7 +428,6 @@ static public class LevelSaverLoader {
 		// Get the FieldInfo of the requested name from this propData's class.
 		FieldInfo fieldInfo = propDataType.GetField (fieldName);
 		// Get the VALUE of this field from the string!
-		// todo: #cleancode We don't need all these individual checks... do we?
 		if (fieldInfo == null) {
 			Debug.LogError ("We've been provided an unidentified prop field type. " + debug_levelDataLoadingLevelKey + ". PropData: " + propData + ", fieldName: " + fieldName);
 		}

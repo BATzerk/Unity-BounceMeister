@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class MapEditor : MonoBehaviour {
 	// Constants
 	private const float ARROW_KEYS_PAN_SPEED = 20f; // for panning the map with the arrow keys. Scales based on mapScale.
-	private const float DRAG_PANNING_SPEED = 5f; // higher is faster.
+	private const float DRAG_PANNING_SPEED = 0.1f; // higher is faster.
 	private const float MOUSE_SCROLL_ZOOM_RATIO = 0.02f; // mouseScrollDelta * this = the % zoom change
 	private readonly float gridSizeX = 1;//GameVisualProperties.OriginalScreenSize.x * 0.25f;
 	private readonly float gridSizeY = 1;//GameVisualProperties.OriginalScreenSize.y * 0.25f;

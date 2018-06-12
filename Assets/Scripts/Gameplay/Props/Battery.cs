@@ -71,7 +71,7 @@ public class Battery : Prop, ISerializableData<BatteryData> {
 		OnTriggerEnterOrStay2D(col);
 	}
 	private void OnTriggerEnterOrStay2D(Collider2D col) {
-		if (LayerMask.LayerToName(col.gameObject.layer) != LayerNames.Player) { // Ignore anything that's NOT the Player.
+		if (LayerMask.LayerToName(col.gameObject.layer) != Layers.Player) { // Ignore anything that's NOT the Player.
 			return;
 		}
 		Player player = col.GetComponent<Player>();

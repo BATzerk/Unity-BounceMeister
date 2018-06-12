@@ -174,27 +174,6 @@ public class PlatformCharacter : Collidable {
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-	// TODO: Remove surfaceCol variable! Use the one(s!) we know we were touching.
-	// OR, remove surfaceCol variable and put what we need in OnTriggerExit2D events in Collidable.
-//	virtual protected void OnLeaveSurface(int side, Collider2D surfaceCol) {
-//		onSurfaces[side] = false;
-//		if (surfaceCol != null) {
-//		Collidable collidable = surfaceCol.GetComponent<Collidable>();
-//			if (collidable != null) {
-//				collidable.OnCharacterLeaveMe(this);
-//			}
-//		}
-//	}
-//	virtual protected void OnTouchSurface(int side, Collider2D surfaceCol) {
-//		onSurfaces[side] = true;
-//
-//		Collidable collidable = surfaceCol.GetComponent<Collidable>();
-//		if (collidable != null) {
-//			collidable.OnCharacterTouchMe(this);
-//		}
-//	}
-
-
 	virtual public void OnEnterLift() {
 		IsInLift = true;
 	}

@@ -144,6 +144,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	//  DEPENDENT Update
 	// ----------------------------------------------------------------
 	public void UpdateSurfaces() {
+		if (pcollidersTouching==null) { return; } // Safety check for runtime compile.
 		for (int side=0; side<whiskerDirs.Length; side ++) {
 			// Remember the previous colliders, and clear out the new list!
 			pcollidersTouching[side] = new HashSet<Collider2D>(collidersTouching[side]);

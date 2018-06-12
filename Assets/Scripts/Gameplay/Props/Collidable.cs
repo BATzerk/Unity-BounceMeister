@@ -4,10 +4,12 @@ using UnityEngine;
 
 abstract public class Collidable : Prop {
 	// Properties
-	[SerializeField] protected bool doRechargePlayer = true; // if true, we recharge the Player's plunge when their feet touch me!
+	[SerializeField] protected bool canBounce = true; // if false, Alph cannot bounce off of me! He'll just land.
+	[SerializeField] protected bool doRechargePlayer = true; // if true, we recharge Alph's plunge when their feet touch me!
 	[SerializeField] protected bool isBouncy = false;
 
 	// Getters (Public)
+	public bool CanBounce { get { return canBounce; } }
 	public bool DoRechargePlayer { get { return doRechargePlayer; } }
 	public bool IsBouncy { get { return isBouncy; } }
 	// Getters (Protected)

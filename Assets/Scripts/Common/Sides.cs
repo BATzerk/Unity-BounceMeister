@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class Sides {
+	public const int NumSides = 4; // it's hip to be square!
 	public const int Undefined = -1;
 	public const int T = 0;
 	public const int R = 1;

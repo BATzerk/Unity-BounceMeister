@@ -237,6 +237,19 @@ public class WorldData {
 	}
 
 
+	public string GetUnusedLevelKey() {
+		string prefix = "NewLevel";
+		int suffixIndex = 0;
+		int safetyCount = 0;
+		while (safetyCount++ < 99) { // 'Cause I'm feeling cautious. :)
+			string newKey = prefix + suffixIndex;
+			if (!levelDatas.ContainsKey(newKey)) { return newKey; }
+			suffixIndex ++;
+		}
+		Debug.LogError("Wowza. Somehow got caught in an infinite naming loop. Either you have 99 levels named NewLevel0-99, or bad code.");
+		return "NewLevel";
+	}
+
 
 
 	// ================================================================
@@ -339,18 +352,19 @@ public class WorldData {
 	//  LevelLinkDatas
 	// ================================================================
 	private void LoadLevelLinkDatas() {
+		/*
 		// Destroy all LevelLinkDatas if they already exist
 		RemoveAllLevelLinkDatas ();
 		// Make empty bucket for now
 		levelLinkDatas = new List<LevelLinkData>();
 
-//		// Load the file via our Resources.Load function! (So it can work as a build, not just in the editor.)
-//		string fileName = GetLevelLinksFileName ();// TODO: This too!
-//		if ((Resources.Load (fileName) as TextAsset) == null) {  // Just a lil' check.
-//			Debug.LogWarning("Hey! There's no LevelLinks file for this world: " + worldIndex);
-//			return;
-//		}
-//		string textFile = (Resources.Load(fileName) as TextAsset).ToString();
+		// Load the file via our Resources.Load function! (So it can work as a build, not just in the editor.)
+		string fileName = GetLevelLinksFileName ();
+		if ((Resources.Load (fileName) as TextAsset) == null) {  // Just a lil' check.
+			Debug.LogWarning("Hey! There's no LevelLinks file for this world: " + worldIndex);
+			return;
+		}
+		string textFile = (Resources.Load(fileName) as TextAsset).ToString();
 
 		string filePath = FilePaths.LevelLinksFileAddress(worldIndex);
 		if (!File.Exists(filePath)) {
@@ -378,6 +392,7 @@ public class WorldData {
 //			bool isSecretLink = data.Length > 6 && bool.Parse(data[6]);
 			AddLevelLinkData(levelKeyA,levelKeyB, false);//, connectingPosA,connectingPosB, false);
 		}
+		*/
 	}
 	private int GetNumLevelLinkDatasConnectingLevels(string levelKeyA,string levelKeyB) {
 		int total = 0;

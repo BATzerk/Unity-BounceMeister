@@ -54,7 +54,7 @@ public class MovingPlatform : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void OnCollisionEnter2D(Collision2D collision) {
 		GameObject collisionGO = collision.collider.gameObject;
-		if (LayerMask.LayerToName(collisionGO.layer) == LayerNames.Player) {
+		if (LayerMask.LayerToName(collisionGO.layer) == Layers.Player) {
 			if (collision.relativeVelocity.y<0) { // Player's moving downward? Then it's landed on me!
 				OnPlayerLandOnMe(collision);
 			}

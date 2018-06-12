@@ -65,7 +65,7 @@ public class LevelDoor : Prop, ISerializableData<LevelDoorData> {
 		isTouchingPlayer = false; // Reset this here, yo.
 	}
 	private void OnTriggerStay2D(Collider2D col) {
-		bool isPlayer = LayerMask.LayerToName(col.gameObject.layer) == LayerNames.Player;
+		bool isPlayer = LayerMask.LayerToName(col.gameObject.layer) == Layers.Player;
 		if (isPlayer) {
 			isTouchingPlayer = true;
 		}
