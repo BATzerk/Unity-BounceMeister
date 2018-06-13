@@ -78,7 +78,6 @@ public class Coco : Player {
 			// Apply jet force!
 //			vel += JetForce;
 			vel += new Vector2(0, (JetTargetYVel-vel.y)/8f);
-//			vel = new Vector2(vel.x, JetTargetYVel);
 			// Spend that fuel!
 			jetFuelLeft -= Time.deltaTime * JetSpendRate;
 			// Are we OUT of fuel?! Stop jetting!
@@ -128,7 +127,6 @@ public class Coco : Player {
 		groundedSinceJet = false;
 		isPreservingWallKickVel = false; // When we jet, forget about retaining my wall-kick vel!
 		myCocoBody.OnStartJet();
-//		vel = new Vector2(vel.x, Mathf.Min(vel.y, 0)); // lose all upward momentum!
 //		GameManagers.Instance.EventManager.OnPlayerStartJet(this);
 	}
 	private void StopJet() {

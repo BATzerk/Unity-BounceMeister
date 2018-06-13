@@ -47,7 +47,7 @@ public class Enemy : PlatformCharacter {
 		ApplyVel();
 
 		// Update vel to be the distance we ended up moving this frame.
-		vel = pos - ppos;
+		SetVel(pos - ppos);
 	}
 
 

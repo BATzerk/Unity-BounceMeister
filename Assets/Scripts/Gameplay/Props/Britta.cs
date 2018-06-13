@@ -51,7 +51,7 @@ public class Britta : Player {
 		base.StartWallSlide(side);
 		// Convert all our horizontal speed to vertical speed!
 		float newYVel = Mathf.Abs(vel.x)*0.7f + Mathf.Max(0, vel.y);
-		vel = new Vector2(vel.x, newYVel);
+		SetVel(new Vector2(vel.x, newYVel));
 	}
 
 	// ----------------------------------------------------------------

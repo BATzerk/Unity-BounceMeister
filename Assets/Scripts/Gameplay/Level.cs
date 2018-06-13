@@ -221,7 +221,7 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 				col.transform.SetParent(this.transform);
 				col.transform.localScale = Vector3.one;
 				col.transform.localEulerAngles = Vector3.zero;
-//				col.gameObject.layer = LayerMask.NameToLayer("Ground"); // so our feet stop on it, yanno.
+				col.gameObject.layer = LayerMask.NameToLayer("Ground"); // so our feet stop on it, yanno.
 				col.name = "InvisiBounds_Side" + side;
 				// Determine the collider's rect, ok?
 				Rect rect = new Rect();

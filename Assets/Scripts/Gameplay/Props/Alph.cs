@@ -96,7 +96,7 @@ public class Alph : Player {
 		groundedSincePlunge = false;
 		isPreservingWallKickVel = false; // When we plunge, forget about retaining my wall-kick vel!
 		myAlphBody.OnStartPlunge();
-		vel = new Vector2(vel.x, Mathf.Min(vel.y, 0)); // lose all upward momentum!
+		SetVel(new Vector2(vel.x, Mathf.Min(vel.y, 0))); // lose all upward momentum!
 		GameManagers.Instance.EventManager.OnPlayerStartPlunge(this);
 	}
 	private void StopPlunge() {

@@ -90,7 +90,6 @@ abstract public class Player : PlatformCharacter {
 		return collidable.IsBouncy;
 	}
 
-
 	// Debug
 	private void OnDrawGizmos() {
 		if (myLevel==null) { return; }
@@ -123,7 +122,7 @@ abstract public class Player : PlatformCharacter {
 	}
 	public void SetPosGlobal(Vector2 _posGlobal) {
 		pos = _posGlobal - myLevel.PosGlobal;
-		vel = Vector2.zero;
+		SetVel(Vector2.zero);
 	}
 
 
@@ -183,19 +182,20 @@ abstract public class Player : PlatformCharacter {
 		DetectJumpApex();
 		UpdateMaxYSinceGround();
 		UpdateIsPreservingWallKickVel();
-		UpdateExitedLevel();
 		// TEST auto-plunge
 //		if (!feetOnGround() && !isPlunging && vel.y<-0.5f) {
 //			StartBouncing();
 //		}
 
 		// Update vel to be the distance we ended up moving this frame.
-		vel = pos - ppos;
+		SetVel(pos - ppos);
+
+		UpdateExitedLevel();
 	}
 
 	private void UpdateWallSlide() {
 		if (isWallSliding()) {
-			vel = new Vector2(vel.x, Mathf.Max(vel.y, WallSlideMinYVel)); // Give us a minimum yVel!
+			SetVel(new Vector2(vel.x, Mathf.Max(vel.y, WallSlideMinYVel))); // Give us a minimum yVel!
 		}
 		// Note: We want to do this check constantly, as we may want to start wall sliding while we're already against a wall.
 		// We're NOT wall-sliding...
@@ -256,13 +256,13 @@ abstract public class Player : PlatformCharacter {
 	//  Doers
 	// ----------------------------------------------------------------
 	virtual protected void Jump() {
-		vel = new Vector2(vel.x, JumpForce);
+		SetVel(new Vector2(vel.x, JumpForce));
 		timeWhenDelayedJump = -1; // reset this just in case.
 		numJumpsSinceGround ++;
 		GameManagers.Instance.EventManager.OnPlayerJump(this);
 	}
 	virtual protected void WallKick() {
-		vel = new Vector2(-sideLastTouchedWall*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y));
+		SetVel(new Vector2(-sideLastTouchedWall*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y)));
 		timeLastWallKicked = Time.time;
 		isPreservingWallKickVel = true;
 		numJumpsSinceGround ++;
@@ -411,7 +411,7 @@ abstract public class Player : PlatformCharacter {
 		distToRestore += 3.2f; // TEST! Give us MORE than we started with!
 		float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
 		yVel += 0.025f; // Hack!! We're not getting all our height back exactly. Fudge it for now.
-		vel = new Vector2(vel.x, yVel);
+		SetVel(new Vector2(vel.x, yVel));
 		// Inform the collidable!!
 		if (collidable != null) {
 			collidable.OnPlayerBounceOnMe(this);
@@ -420,8 +420,8 @@ abstract public class Player : PlatformCharacter {
 	// TEST! This whole function is a controls experiment.
 	private void BounceOffCollidable_Side(Collidable collidable) { // NOTE: We're probably gonna wanna denote WHICH sides of collidables are bouncy...
 		timeLastWallKicked = Time.time;
-		vel = new Vector2(-vel.x, Mathf.Max(vel.y, Mathf.Abs(vel.x)*2f+0.1f));
-//		vel = new Vector2(-vel.x, JumpForce*0.7f);//vel.y+
+		SetVel(new Vector2(-vel.x, Mathf.Max(vel.y, Mathf.Abs(vel.x)*2f+0.1f)));
+//		SetVel(new Vector2(-vel.x, JumpForce*0.7f));//vel.y+
 		// Inform the collidable!!
 		if (collidable != null) {
 			collidable.OnPlayerBounceOnMe(this);
@@ -435,16 +435,16 @@ abstract public class Player : PlatformCharacter {
 			Jump();
 		}
 //			else { // TEMP TEST!
-//				vel = new Vector2(vel.x, -vel.y * 0.2f);
+//				SetVel(new Vector2(vel.x, -vel.y * 0.2f));
 //				if (Mathf.Abs(vel.y) < 0.05f) {
-//					vel = new Vector2(vel.x, 0);
+//					SetVel(new Vector2(vel.x, 0));
 //				}
 //			}
 	}
 
 	private void OnCollideWithEnemy(Enemy enemy) {
 		int dirToEnemy = MathUtils.Sign(enemy.PosGlobal.x-PosGlobal.x, false);
-		vel = new Vector2(-dirToEnemy*HitByEnemyVel.x, HitByEnemyVel.y);
+		SetVel(new Vector2(-dirToEnemy*HitByEnemyVel.x, HitByEnemyVel.y));
 		TakeDamage(1);
 	}
 

@@ -23,7 +23,7 @@ public class PlatformCharacter : Collidable {
 	// Properties
 	private bool isDead = false;
 	protected int health; // we die when we hit 0. TODO: Make this private, and have Player and Enemy extend MY GetHit() function.
-	protected Vector2 vel;
+	protected Vector2 vel=Vector2.zero;
 	private Vector2 size;
 	protected float timeLastTouchedWall=Mathf.NegativeInfinity;
 	protected int sideLastTouchedWall;
@@ -79,12 +79,16 @@ public class PlatformCharacter : Collidable {
 		}
 	}
 
+	// Setters
+	public void SetVel(Vector2 _vel) {
+		vel = _vel;
+	}
+
 
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
 	virtual protected void Start () {
-		vel = Vector2.zero;
 		health = StartingHealth;
 	}
 	virtual protected void SetSize(Vector2 _size) {
@@ -107,10 +111,10 @@ public class PlatformCharacter : Collidable {
 	}
 	protected void ApplyFriction() {
 		if (feetOnGround()) {
-			vel = new Vector2(vel.x*FrictionGround, vel.y);
+			SetVel(new Vector2(vel.x*FrictionGround, vel.y));
 		}
 		else {
-			vel = new Vector2(vel.x*FrictionAir, vel.y);
+			SetVel(new Vector2(vel.x*FrictionAir, vel.y));
 		}
 	}
 	protected void AcceptHorzMoveInput() {
@@ -120,7 +124,7 @@ public class PlatformCharacter : Collidable {
 		float maxXVel = feetOnGround() ? MaxVelXGround : MaxVelXAir;
 		float xVel = Mathf.Clamp(vel.x, -maxXVel,maxXVel);
 		float yVel = Mathf.Clamp(vel.y, MaxVelYDown,MaxVelYUp);
-		vel = new Vector2(xVel, yVel);
+		SetVel(new Vector2(xVel, yVel));
 	}
 	protected void UpdateTimeLastTouchedWall() {
 		if (isTouchingWall()) {

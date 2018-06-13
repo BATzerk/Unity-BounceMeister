@@ -191,9 +191,11 @@ public class GameController : MonoBehaviour {
 		WorldData currentWorldData = level.WorldDataRef;
 		LevelData nextLevelData = currentWorldData.GetLevelAtSide(level.LevelDataRef, sideEscaped);
 		if (nextLevelData != null) {
+			Vector2 playerVel = player.Vel; // remember this so we can preserves it, ya see!
 			dataManager.playerPosGlobalOnExitLevel = player.PosGlobal;
 			dataManager.playerSideEnterNextLevel = MathUtils.GetOppositeSide(sideEscaped);
 			StartGameAtLevel(nextLevelData);
+			player.SetVel(playerVel); // messily restore the vel we had in the previous level.
 		}
 		else {
 			Debug.LogWarning("Whoa! No level at this side: " + sideEscaped);
