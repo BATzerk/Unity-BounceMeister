@@ -8,6 +8,7 @@ public class LevelTileContents : MonoBehaviour {
 	// Components
 	[SerializeField] private GameObject go_propsLayer=null;
 	[SerializeField] private LevelTileDesignerFlag designerFlag=null;
+	[SerializeField] private SpriteMask propsMask=null;
 	// Properties
 	private bool hasInitializedContent = false;
 	// References
@@ -31,6 +32,10 @@ public class LevelTileContents : MonoBehaviour {
 	}
 	private void InitializeContent () {
 		LevelData ld = levelTileRef.LevelDataRef;
+
+		// Set the mask's pos/size!
+		propsMask.transform.localPosition = ld.BoundsLocal.center;
+		GameUtils.SizeSpriteMask (propsMask, ld.BoundsLocal.size);
 
 		// Set text string!
 		levelNameText.text = ld.LevelKey;
@@ -104,6 +109,7 @@ public class LevelTileContents : MonoBehaviour {
 		designerFlag.gameObject.SetActive (MapEditorSettings.DoShowDesignerFlags);
 		levelNameText.gameObject.SetActive (MapEditorSettings.DoShowLevelNames);
 		go_propsLayer.SetActive (MapEditorSettings.DoShowLevelProps);
+		SetMaskEnabled(MapEditorSettings.DoMaskLevelContents);
 	}
 
 	public void SetTextPosY (float yPos) {
@@ -121,6 +127,14 @@ public class LevelTileContents : MonoBehaviour {
 			InitializeContent ();
 		}
 	    this.gameObject.SetActive (true);
+	}
+
+	public void SetMaskEnabled(bool isEnabled) {
+		SpriteMaskInteraction maskInteraction = isEnabled ? SpriteMaskInteraction.VisibleInsideMask : SpriteMaskInteraction.None;
+		SpriteRenderer[] propSprites = go_propsLayer.GetComponentsInChildren<SpriteRenderer>();
+		foreach (SpriteRenderer sr in propSprites) {
+			sr.maskInteraction = maskInteraction;
+		}
 	}
 
 

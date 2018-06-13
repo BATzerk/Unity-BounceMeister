@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 static public class MapEditorSettings {
+	static public bool DoMaskLevelContents;
 	static public bool DoShowInstructions;
 	static public bool DoShowDesignerFlags;
 	static public bool DoShowLevelNames;
@@ -12,6 +13,7 @@ static public class MapEditorSettings {
 
 
 	static public void LoadAll () {
+		DoMaskLevelContents = SaveStorage.GetInt (SaveKeys.MapEditor_DoMaskLevelContents, 1) == 1;
 		DoShowInstructions = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowInstructions, 0) == 1;
 		DoShowDesignerFlags = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowDesignerFlags, 0) == 1;
 		DoShowLevelNames = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelNames, 1) == 1;
@@ -19,6 +21,7 @@ static public class MapEditorSettings {
 		DoShowLevelProps = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelProps, 1) == 1;
 	}
 	static public void SaveAll () {
+		SaveStorage.SetInt (SaveKeys.MapEditor_DoMaskLevelContents, DoMaskLevelContents?1:0);
 		SaveStorage.SetInt (SaveKeys.MapEditor_DoShowInstructions, DoShowInstructions?1:0);
 		SaveStorage.SetInt (SaveKeys.MapEditor_DoShowDesignerFlags, DoShowDesignerFlags?1:0);
 		SaveStorage.SetInt (SaveKeys.MapEditor_DoShowLevelNames, DoShowLevelNames?1:0);

@@ -18,4 +18,5 @@ public class SaveKeys {
 	public const string MapEditor_DoShowLevelNames = "MapEditor_DoShowLevelNames";
 	public const string MapEditor_DoShowLevelTileStars = "MapEditor_DoShowLevelTileStars";
 	public const string MapEditor_DoShowLevelProps = "MapEditor_DoShowLevelProps";
+	public const string MapEditor_DoMaskLevelContents = "MapEditor_DoMaskLevelContents";
 }

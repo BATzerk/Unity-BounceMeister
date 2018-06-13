@@ -6,4 +6,3 @@ Ground myRect:(x:-9.00, y:-14.00, width:34.00, height:4.00);colorType:0
 Ground myRect:(x:-23.50, y:0.00, width:5.00, height:38.00);colorType:0
 Ground myRect:(x:0.00, y:18.50, width:52.00, height:3.00);colorType:0
 Ground myRect:(x:0.00, y:-17.50, width:52.00, height:3.00);colorType:0
-

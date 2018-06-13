@@ -608,6 +608,10 @@ public class MapEditor : MonoBehaviour {
 		for (int i=0; i<CurrentWorldLevelTiles.Count; i++) { CurrentWorldLevelTiles[i].UpdateComponentVisibilities(); }
 //		for (int i=0; i<levelLinkViews.Count; i++) { levelLinkViews[i].UpdateComponentVisibilities(); }
 	}
+	private void ToggleLevelContentsMasked() {
+		MapEditorSettings.DoMaskLevelContents = !MapEditorSettings.DoMaskLevelContents;
+		UpdateComponentVisibilities ();
+	}
 	private void ToggleLevelTileDesignerFlagsVisibility() {
 		MapEditorSettings.DoShowDesignerFlags = !MapEditorSettings.DoShowDesignerFlags;
 		UpdateComponentVisibilities ();
@@ -818,6 +822,7 @@ public class MapEditor : MonoBehaviour {
 		else if (Input.GetKeyDown(KeyCode.F)) { ToggleLevelTileDesignerFlagsVisibility(); } // F = toggle flags
 		else if (Input.GetKeyDown(KeyCode.N)) { ToggleLevelTileNamesVisibility(); } // N = toggle names
 		else if (Input.GetKeyDown(KeyCode.P)) { ToggleLevelPropsVisibility(); } // P = toggle props
+		else if (Input.GetKeyDown(KeyCode.M)) { ToggleLevelContentsMasked(); } // M = toggle levelTile contents being masked
 		else if (Input.GetKeyDown(KeyCode.T)) { ToggleLevelTileStarsVisibility(); } // T = toggle stars
 		else if (Input.GetKeyDown(KeyCode.I)) { ToggleInstructionsVisibility(); } // I = toggle instructions
 		

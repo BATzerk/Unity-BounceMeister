@@ -47,6 +47,7 @@ public class GameUtils {
 		uiGraphic.color = new Color (uiGraphic.color.r, uiGraphic.color.g, uiGraphic.color.b, alpha);
 	}
 
+	static public void SizeSpriteMask (SpriteMask sr, Vector2 desiredSize) { SizeSpriteMask(sr, desiredSize.x,desiredSize.y); }
 	static public void SizeSpriteMask (SpriteMask sm, float desiredWidth,float desiredHeight, bool doPreserveRatio=false) {
 		if (sm == null) {
 			Debug.LogError("Oops! We've passed in a null SpriteMask into GameUtils.SizeSpriteMask."); return;
