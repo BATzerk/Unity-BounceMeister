@@ -21,11 +21,11 @@ public class GameCameraController : MonoBehaviour {
 	// References
 	[SerializeField] private FullScrim fullScrim=null;
 	[SerializeField] private GameController gameController=null;
-	private Player player=null;
 
 	// Getters / Setters
 	public Rect ViewRect { get { return viewRect; } }
 
+	private Player player { get { return gameController==null ? null : gameController.Player; } }
 	private float rotation {
 		get { return this.transform.localEulerAngles.z; }
 		set { this.transform.localEulerAngles = new Vector3 (0, 0, value); }
@@ -104,7 +104,6 @@ public class GameCameraController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void OnStartLevel(Level level) {
 		viewRectBounds = level.GetCameraBoundsGlobal();
-		player = gameController.Player;
 
 		// Reset us now! Now that the player and everything is in place. :)
 		Reset();

@@ -28,7 +28,7 @@ abstract public class Player : PlatformCharacter {
 	private const float DelayedJumpWindow = 0.1f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
 	private const float PostWallKickHorzInputLockDur = 0.3f; // how long until we can provide horizontal input after jumping off a wall.
-	private const float WallKickExtensionWindow = 0.05f; // how long after touching a wall when we'll still allow wall-kicking!
+	private const float WallKickExtensionWindow = 0.08f; // how long after touching a wall when we'll still allow wall-kicking!
 
 	// Components
 	[SerializeField] protected PlayerBody myBody=null;

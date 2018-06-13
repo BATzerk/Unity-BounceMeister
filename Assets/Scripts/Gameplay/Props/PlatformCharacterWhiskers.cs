@@ -7,6 +7,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	abstract protected string[] GetLayerMaskNames_LRTB();
 	abstract protected string[] GetLayerMaskNames_B();
 	// Constants
+	private const float TouchDistThreshold = 0.02f; // if we're this close to a surface, we count it as touching. This COULD be 0 and still work, but I like the grace for slightly-more-generous wall-detection.
 	private const int NumSides = PlatformCharacter.NumSides;
 	private const int NumWhiskersPerSide = 3; // this MUST match SideOffsetLocs! Just made its own variable for easy/readable access.
 	private float[] SideOffsetLocs = new float[]{-0.45f, 0f, 0.45f}; // 3 whiskers per side: left, center, right.
@@ -54,31 +55,12 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 //		if (side == Sides.B) { return lm_ground | lm_platform; } // Bottom side? Return ground AND platforms!
 //		return lm_ground; // All other sides only care about ground.
 	}
-	//	/// Redundant with my other raycast function. These could be combined.
-	//	private Collider2D GroundColAtSide(int side, int index) {
-	//		Vector2 dir = whiskerDirs[side];
-	//		Vector2 pos = WhiskerPos(side, index);
-	//		float raycastSearchDist = GetRaycastSearchDist(side);
-	//		LayerMask mask = GetLayerMask(side);
-	//		hit = Physics2D.Raycast(pos, dir, raycastSearchDist, mask);
-	//		return hit.collider;
-	//	}
 
 	public bool OnSurface(int side) { return onSurfaces[side]; }
 	public float SurfaceDistMin(int side) {
 		if (surfaceDists==null) { return 0; } // Safety check for runtime compile.
 		if (minDistsIndexes[side] == -1) { return Mathf.Infinity; } // No closest whisker (none collide)? They're all infinity, then.
 		return surfaceDists[side, minDistsIndexes[side]];
-	}
-	public Collider2D GetSurfaceTouching(int side) {
-		if (collidersAroundMe==null) { return null; } // Safety check for runtime compile.
-//		UpdateSurfaceDist(side); // TODO: Check if this has any effect!!
-		if (minDistsIndexes[side] == -1) { return null; } // No closest whisker (none collide)? Return null.
-		float distMin = SurfaceDistMin(side);
-		if (distMin < 0.1f) { // TEST: Only count if we're like riiight up against it!
-			return collidersAroundMe[side, minDistsIndexes[side]];
-		}
-		return null;
 	}
 
 
@@ -93,7 +75,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 			Vector2 dir = whiskerDirs[side];
 			for (int index=0; index<NumWhiskersPerSide; index++) {
 				Vector2 startPos = WhiskerPos(side, index);
-				bool isTouching = surfaceDists[side,index] < 0.1f;
+				bool isTouching = surfaceDists[side,index] < TouchDistThreshold;
 				Gizmos.color = isTouching ? Color.green : Color.red;
 				Gizmos.DrawLine(startPos, startPos + dir * length);
 			}
@@ -194,8 +176,11 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 		}
 		surfaceDists[side,index] = dist;
 		collidersAroundMe[side,index] = hit.collider;
-		if (hit.collider != null && !collidersTouching[side].Contains(hit.collider)) {
-			collidersTouching[side].Add(hit.collider);
+		// If we're (just about) touching this collider...!
+		if (dist < TouchDistThreshold) {
+			if (hit.collider != null && !collidersTouching[side].Contains(hit.collider)) {
+				collidersTouching[side].Add(hit.collider);
+			}
 		}
 //		// Is the collider for this raycast DIFFERENT?? Tell my character we've touched/left surfaces!!
 //		if (pCollider != hit.collider) {
@@ -212,6 +197,27 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 
 }
 
+//	/// Redundant with my other raycast function. These could be combined.
+//	private Collider2D GroundColAtSide(int side, int index) {
+//		Vector2 dir = whiskerDirs[side];
+//		Vector2 pos = WhiskerPos(side, index);
+//		float raycastSearchDist = GetRaycastSearchDist(side);
+//		LayerMask mask = GetLayerMask(side);
+//		hit = Physics2D.Raycast(pos, dir, raycastSearchDist, mask);
+//		return hit.collider;
+//	}
+/*
+	public Collider2D GetSurfaceTouching(int side) {
+		if (collidersAroundMe==null) { return null; } // Safety check for runtime compile.
+//		UpdateSurfaceDist(side); // TO DO: Check if this has any effect!!
+		if (minDistsIndexes[side] == -1) { return null; } // No closest whisker (none collide)? Return null.
+		float distMin = SurfaceDistMin(side);
+		if (distMin < 0.1f) { // Only count if we're like riiight up against it!
+			return collidersAroundMe[side, minDistsIndexes[side]];
+		}
+		return null;
+	}
+	*/
 
 //			if (LayerMask.LayerToName(hit.collider.gameObject.layer) == LayerNames.Ground) {
 //			}

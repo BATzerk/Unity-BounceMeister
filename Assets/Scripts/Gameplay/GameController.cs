@@ -131,9 +131,12 @@ public class GameController : MonoBehaviour {
 		switch (type) {
 		case PlayerTypes.Alph:
 			player = Instantiate(ResourcesHandler.Instance.Alph).GetComponent<Alph>();
-			break;
+				break;
 		case PlayerTypes.Britta:
 			player = Instantiate(ResourcesHandler.Instance.Britta).GetComponent<Britta>();
+			break;
+		case PlayerTypes.Coco:
+			player = Instantiate(ResourcesHandler.Instance.Coco).GetComponent<Coco>();
 			break;
 		default:
 			Debug.LogError("Whoa! Player type totally not recognized: " + type);
@@ -281,6 +284,7 @@ public class GameController : MonoBehaviour {
 
 		else if (Input.GetKeyDown(KeyCode.A)) { MakePlayer(PlayerTypes.Alph, level.LevelDataRef); }
 		else if (Input.GetKeyDown(KeyCode.B)) { MakePlayer(PlayerTypes.Britta, level.LevelDataRef); }
+		else if (Input.GetKeyDown(KeyCode.C)) { MakePlayer(PlayerTypes.Coco, level.LevelDataRef); }
 
 		else if (Input.GetKeyDown(KeyCode.S)) { // S = Save level as text file!
 			LevelSaverLoader.SaveLevelFile(level);

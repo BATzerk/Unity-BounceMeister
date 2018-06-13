@@ -22,7 +22,7 @@ public class Britta : Player {
 	override protected float MaxVelXGround { get { return 0.5f; } }
 
 	override protected float JumpForce { get { return 0.48f; } }
-	override protected float WallSlideMinYVel { get { return -0.3f; } }
+	override protected float WallSlideMinYVel { get { return -0.5f; } }
 
 	// Properties
 	private bool isReducedJumpGravity; // true when we jump. False when A) We release the jump button, or B) We hit our jump apex.

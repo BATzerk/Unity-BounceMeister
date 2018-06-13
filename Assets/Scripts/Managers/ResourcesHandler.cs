@@ -13,6 +13,7 @@ public class ResourcesHandler : MonoBehaviour {
 
 	[SerializeField] public GameObject Alph;
 	[SerializeField] public GameObject Britta;
+	[SerializeField] public GameObject Coco;
 
 	[SerializeField] public GameObject Battery;
 	[SerializeField] public GameObject CameraBounds;

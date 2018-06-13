@@ -86,7 +86,7 @@ public class Alph : Player {
 
 
 	// ----------------------------------------------------------------
-	//  Doers
+	//  Plunge!
 	// ----------------------------------------------------------------
 	private void StartPlunge() {
 		if (isPlunging) { return; } // Already plunging? Do nothing.
