@@ -45,6 +45,7 @@ abstract public class Player : PlatformCharacter {
 	private Vector2 pvel; // previous velocity.
 	// References
 	private Rect camBoundsLocal; // for detecting when we exit the level!
+	private List<Gem> gemsHolding = new List<Gem>(); // like in Celeste. I hold Gems until I'm standing somewhere safe to "eat" (aka collect) them.
 
 	// Getters (Public)
 	virtual public bool CanUseBattery() { return false; }
@@ -59,6 +60,9 @@ abstract public class Player : PlatformCharacter {
 	}
 	virtual protected bool MayWallSlide() {
 		return !feetOnGround();
+	}
+	private bool MayEatGems() {
+		return myWhiskers.MayEatGems();
 	}
 	override protected float HorzMoveInputVelXDelta() {
 		if (InputController.Instance==null) { return 0; } // for building at runtime.
@@ -96,7 +100,6 @@ abstract public class Player : PlatformCharacter {
 		Gizmos.color = Color.cyan;
 		Gizmos.DrawWireCube (myLevel.PosGlobal+camBoundsLocal.center, new Vector3(camBoundsLocal.size.x,camBoundsLocal.size.y, 10));
 	}
-
 
 	// ----------------------------------------------------------------
 	//  Start
@@ -358,9 +361,11 @@ abstract public class Player : PlatformCharacter {
 	}
 	private void OnFeetTouchCollidable(Collidable collidable) {
 		numJumpsSinceGround = 0;
+		if (MayEatGems()) {
+			EatGemsHolding();
+		}
 
 		bool doBounce = DoBounceOffCollidable(collidable);
-
 		// Bounce!
 		if (doBounce) {
 			BounceOffCollidable_Up(collidable);
@@ -457,6 +462,23 @@ abstract public class Player : PlatformCharacter {
 //
 //		}
 //	}
+
+	public void OnTouchGem(Gem gem) {
+		if (MayEatGems()) {
+			gem.GetEaten();
+		}
+		else {
+			gemsHolding.Add(gem);
+			gem.OnPlayerPickMeUp(this);
+		}
+	}
+	private void EatGemsHolding() {
+		foreach (Gem gem in gemsHolding) {
+			gem.transform.SetParent(this.transform.parent); // pop the Gem back onto the Level.
+			gem.GetEaten();
+		}
+		gemsHolding.Clear();
+	}
 
 
 

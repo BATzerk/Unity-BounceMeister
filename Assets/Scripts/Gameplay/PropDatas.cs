@@ -29,6 +29,7 @@ public class GemData : PropData {
 
 public class BaseGroundData : PropData {
 	public Rect myRect;
+	public bool canEatGems=true;
 }
 public class CrateData : BaseGroundData {
 	public int hitsUntilBreak;

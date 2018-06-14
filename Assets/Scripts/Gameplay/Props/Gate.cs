@@ -65,6 +65,7 @@ public class Gate : BaseGround, ISerializableData<GateData> {
 	public GateData SerializeAsData() {
 		GateData data = new GateData();
 		data.myRect = MyRect;
+		data.canEatGems = CanEatGems;
 		data.channelID = channelID;
 		return data;
 	}

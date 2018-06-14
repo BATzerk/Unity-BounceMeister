@@ -63,6 +63,16 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 		return surfaceDists[side, minDistsIndexes[side]];
 	}
 
+	public bool MayEatGems() {
+		foreach (Collider2D col in collidersTouching[Sides.B]) {
+			BaseGround baseGround = col.GetComponent<BaseGround>();
+			if (baseGround != null && baseGround.CanEatGems) {
+				return true; // This one's good!
+			}
+		}
+		return false; // Wow, nah, we're not touching any gem-friendly grounds.
+	}
+
 
 	// ----------------------------------------------------------------
 	//  Gizmos!

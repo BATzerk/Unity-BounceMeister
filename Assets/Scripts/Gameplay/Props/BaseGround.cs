@@ -8,9 +8,12 @@ abstract public class BaseGround : Collidable {
 	[SerializeField] protected SpriteRenderer bodySprite=null;
 	[SerializeField] protected BoxCollider2D myCollider=null;
 	// Properties
+	[SerializeField] private bool canEatGems = true; // technically "can Player eat Gems while on me." If this is false, a Player WON'T collect the Gem they're holding when they land on me!
 //	[SerializeField] private bool doDisappearAfterBounces = false;
 //	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
 
+	// Getters (Public)
+	public bool CanEatGems { get { return canEatGems; } }
 	// Getters (Private)
 	protected Rect MyRect {
 		get {
@@ -38,6 +41,8 @@ abstract public class BaseGround : Collidable {
 	}
 	protected void BaseGroundInitialize(Level _myLevel, BaseGroundData data) {
 		base.BaseInitialize(_myLevel, data);
+
+		canEatGems = data.canEatGems;
 
 		if (bodySprite.drawMode == SpriteDrawMode.Simple) { // Simple draw mode? Ok, use my SCALE.
 			bodySprite.transform.localScale = data.myRect.size;

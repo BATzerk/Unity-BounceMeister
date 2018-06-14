@@ -59,6 +59,7 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 	public GroundData SerializeAsData() {
 		GroundData data = new GroundData();
 		data.myRect = MyRect;
+		data.canEatGems = CanEatGems;
 		data.canBounce = canBounce;
 		data.doRechargePlayer = doRechargePlayer;
 		data.colorType = colorType;

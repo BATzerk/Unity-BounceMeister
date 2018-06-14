@@ -93,24 +93,48 @@ static public class LevelSaverLoader {
 		foreach (PropData propData in ld.allPropDatas) {
 			Type type = propData.GetType();
 			if (type == typeof(BatteryData)) { AddAllPropFieldsToFS(propData, "pos"); }
-			else if (type == typeof(CrateData)) { AddAllPropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe"); }
-			else if (type == typeof(DamageableGroundData)) { AddAllPropFieldsToFS(propData, "myRect", "dieFromBounce", "dieFromPlayerLeave", "dieFromVel", "doRegen"); }
-			else if (type == typeof(GateData)) { AddAllPropFieldsToFS(propData, "myRect", "channelID"); }
 			else if (type == typeof(GateButtonData)) { AddAllPropFieldsToFS(propData, "pos", "channelID"); }
 			else if (type == typeof(GemData)) { AddAllPropFieldsToFS(propData, "pos"); }
 			else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
-			else if (type == typeof(PlatformData)) { AddAllPropFieldsToFS(propData, "myRect"); }
 			else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
 			else if (type == typeof(SpikesData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation"); }
-			else if (type == typeof(ToggleGroundData)) { AddAllPropFieldsToFS(propData, "myRect", "startsOn"); }
 			// Props with optional params
+			else if (type == typeof(CrateData)) {
+				CrateData d = propData as CrateData;
+				AddSomePropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe");
+				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+				AddFSLine();
+			}
+			else if (type == typeof(DamageableGroundData)) {
+				DamageableGroundData d = propData as DamageableGroundData;
+				AddSomePropFieldsToFS(propData, "myRect", "dieFromBounce", "dieFromPlayerLeave", "dieFromVel", "doRegen");
+				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+				AddFSLine();
+			}
+			else if (type == typeof(GateData)) {
+				GateData d = propData as GateData;
+				AddSomePropFieldsToFS(propData, "myRect", "channelID");
+				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+				AddFSLine();
+			}
 			else if (type == typeof(GroundData)) {
-				GroundData gd = propData as GroundData;
+				GroundData d = propData as GroundData;
 				AddSomePropFieldsToFS(propData, "myRect", "colorType");
-				// Optional params.
-				if (!gd.canBounce) { fs += ";canBounce:" + gd.canBounce; }
-				if (!gd.doRechargePlayer) { fs += ";doRechargePlayer:" + gd.doRechargePlayer; }
-//				if (!gd.isSlidey) { fs += ";isSlidey:" + gd.isSlidey; }
+				if (!d.canBounce) { fs += ";canBounce:" + d.canBounce; }
+				if (!d.doRechargePlayer) { fs += ";doRechargePlayer:" + d.doRechargePlayer; }
+				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+				AddFSLine();
+			}
+			else if (type == typeof(PlatformData)) {
+				PlatformData d = propData as PlatformData;
+				AddSomePropFieldsToFS(propData, "myRect");
+				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+				AddFSLine();
+			}
+			else if (type == typeof(ToggleGroundData)) {
+				ToggleGroundData d = propData as ToggleGroundData;
+				AddSomePropFieldsToFS(propData, "myRect", "startsOn");
+				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
 				AddFSLine();
 			}
 		}

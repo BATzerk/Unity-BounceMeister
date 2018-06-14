@@ -13,7 +13,8 @@ Platform myRect:(x:-14.50, y:-8.50, width:3.00, height:1.00)
 Platform myRect:(x:-14.50, y:-17.50, width:3.00, height:1.00)
 PlayerStart pos:(-11.0, -4.2)
 Spikes myRect:(x:6.50, y:-15.50, width:29.00, height:1.00);rotation:0
-ToggleGround myRect:(x:5.00, y:-2.50, width:6.00, height:1.00);startsOn:True
-ToggleGround myRect:(x:-2.00, y:3.50, width:6.00, height:1.00);startsOn:False
-ToggleGround myRect:(x:5.00, y:-8.50, width:6.00, height:1.00);startsOn:False
-ToggleGround myRect:(x:-2.00, y:-8.50, width:6.00, height:1.00);startsOn:True
+ToggleGround myRect:(x:5.00, y:-2.50, width:6.00, height:1.00);startsOn:False;canEatGems:False
+ToggleGround myRect:(x:-2.00, y:3.50, width:6.00, height:1.00);startsOn:True;canEatGems:False
+ToggleGround myRect:(x:5.00, y:-8.50, width:6.00, height:1.00);startsOn:True;canEatGems:False
+ToggleGround myRect:(x:-2.00, y:-8.50, width:6.00, height:1.00);startsOn:False;canEatGems:False
+

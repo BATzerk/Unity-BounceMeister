@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class DamageableGround : BaseGround, ISerializableData<DamageableGroundData> {
 	// Properties
-	[SerializeField] private bool dieFromBounce = true;
+	[SerializeField] private bool dieFromBounce = false;
 	[SerializeField] private bool dieFromVel = false;
-	[SerializeField] private bool dieFromPlayerLeave = false;
-	[SerializeField] private bool doRegen = false; // if TRUE, I'll come back after a moment!
+	[SerializeField] private bool dieFromPlayerLeave = true;
+	[SerializeField] private bool doRegen = true; // if TRUE, I'll come back after a moment!
 	private Color bodyColor; // depends on my properties, ya hear?
 	const float BreakVel = 0.4f; // the Player has to be moving at least this fast for me to get busted!
 	const float RegenTime = 2.2f; // how long it takes for me to reappear after I've disappeared.
@@ -133,6 +133,7 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 	public DamageableGroundData SerializeAsData() {
 		DamageableGroundData data = new DamageableGroundData();
 		data.myRect = MyRect;
+		data.canEatGems = CanEatGems;
 		data.dieFromBounce = dieFromBounce;
 		data.dieFromPlayerLeave = dieFromPlayerLeave;
 		data.dieFromVel = dieFromVel;
