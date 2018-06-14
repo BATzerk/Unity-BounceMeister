@@ -356,7 +356,7 @@ public class MapEditor : MonoBehaviour {
 	// ================================================================
 	private void SetMapScale(float _mapScale) {
 		mapScale = _mapScale;
-		mapScale = Mathf.Max (0.8f, Mathf.Min (10, mapScale)); // Don't let scale get TOO crazy now.
+		mapScale = Mathf.Max (0.4f, Mathf.Min (10, mapScale)); // Don't let scale get TOO crazy now.
 		editorCamera.SetScale (mapScale);
 		// Update my level tiles' text scales!
 		if (allLevelTiles != null) {

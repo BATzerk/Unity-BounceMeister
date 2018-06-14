@@ -3,73 +3,70 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class Gate : MonoBehaviour {
-	// Components
-	[SerializeField] private BoxCollider2D myCollider;
-	[SerializeField] private SpriteRenderer sr_body;
-	// References
-	[SerializeField] private GateButton[] myButtons;
+public class Gate : BaseGround, ISerializableData<GateData> {
 	// Properties
-	private Color bodyColor; // set in Awake.
+	[SerializeField] private int channelID;
+	private Color bodyColor=Color.red;
 
-	// Getters
-	public Color BodyColor { get { return bodyColor; } }
-	private bool AreAllMyButtonsPressed() {
-		foreach (GateButton button in myButtons) {
-			if (button==null) { continue; }
-			if (!button.IsPressed) { return false; }
-		}
-		return true;
-	}
+	// Getters (Public)
+	public int ChannelID { get { return channelID; } }
+	// Getters (Private)
+	private GateChannel MyChannel { get { return myLevel.GateChannels[channelID]; } }
+
 
 
 	// ----------------------------------------------------------------
 	//  Gizmos
 	// ----------------------------------------------------------------
-	private void OnDrawGizmos() {
-		if (myButtons==null) { return; }
-		Gizmos.color = Color.Lerp(Color.white, BodyColor, 0.5f);
-		foreach (GateButton button in myButtons) {
-			if (button==null) { continue; }
-			Gizmos.DrawLine(this.transform.position, button.transform.position);
-		}
-	}
+//	private void OnDrawGizmos() {
+//		if (myButtons==null) { return; }
+//		Gizmos.color = Color.Lerp(Color.white, bodyColor, 0.5f);
+//		foreach (GateButton button in myButtons) {
+//			if (button==null) { continue; }
+//			Gizmos.DrawLine(this.transform.position, button.transform.position);
+//		}
+//	}
 
 
 	// ----------------------------------------------------------------
-	//  Awake
+	//  Initialize
 	// ----------------------------------------------------------------
-	private void Awake() {
-		bodyColor = sr_body.color;
+	public void Initialize(Level _myLevel, GateData data) {
+		base.BaseGroundInitialize(_myLevel, data);
 
-		// Tell all my buttons that I'M their guy!
-		foreach (GateButton button in myButtons) {
-			if (button==null) { continue; }
-			button.SetMyGate(this);
-		}
+		channelID = data.channelID;
+		bodyColor = MyChannel.Color;
+		SetIsOn(true);
 	}
 
 
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
-	private void UnlockMe() {
-		myCollider.enabled = false;
-		sr_body.color = new Color(bodyColor.r,bodyColor.g,bodyColor.b, 0.1f);
+	public void UnlockMe() {
+		SetIsOn(false);
+		//todo: some animation or something, I guess
 	}
-
-
-	// ----------------------------------------------------------------
-	//  Events
-	// ----------------------------------------------------------------
-	public void OnButtonPressed() {
-		// Check if all buttons have been pressed!
-		if (AreAllMyButtonsPressed()) {
-			UnlockMe();
+	public void SetIsOn(bool _isOn) {
+		myCollider.enabled = _isOn;
+		if (_isOn) {
+			bodySprite.color = bodyColor;
+		}
+		else {
+			bodySprite.color = new Color(bodyColor.r,bodyColor.g,bodyColor.b, 0.1f);
 		}
 	}
 
 
 
+	// ----------------------------------------------------------------
+	//  Serializing
+	// ----------------------------------------------------------------
+	public GateData SerializeAsData() {
+		GateData data = new GateData();
+		data.myRect = MyRect;
+		data.channelID = channelID;
+		return data;
+	}
 
 }

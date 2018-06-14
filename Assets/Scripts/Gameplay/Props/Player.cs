@@ -16,7 +16,7 @@ abstract public class Player : PlatformCharacter {
 	virtual protected float InputScaleX { get { return 0.1f; } }
 
 	virtual protected float JumpForce { get { return 0.58f; } }
-	virtual protected float WallSlideMinYVel { get { return -0.1f; } }
+	virtual protected float WallSlideMinYVel { get { return -0.16f; } }
 	private readonly Vector2 WallKickVel = new Vector2(0.5f, 0.52f);
 	private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);
 
@@ -120,9 +120,12 @@ abstract public class Player : PlatformCharacter {
 		base.SetSize(_size);
 		myBody.SetSize(_size);
 	}
-	public void SetPosGlobal(Vector2 _posGlobal) {
-		pos = _posGlobal - myLevel.PosGlobal;
+	public void SetPosLocal(Vector2 _posLocal) {
+		pos = _posLocal;
 		SetVel(Vector2.zero);
+	}
+	public void SetPosGlobal(Vector2 _posGlobal) {
+		SetPosLocal(_posGlobal - myLevel.PosGlobal);
 	}
 
 

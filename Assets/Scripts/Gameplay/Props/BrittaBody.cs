@@ -7,14 +7,14 @@ public class BrittaBody : PlayerBody {
 //	private readonly Color bodyColor_plunging = Color.green;
 //	private readonly Color bodyColor_plungeExhausted = Color.gray;
 	// References
-	private Britta myBritta;
+//	private Britta myBritta;
 
 
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
 	override protected void Start() {
-		myBritta = myPlayer as Britta;
+//		myBritta = myPlayer as Britta;
 		bodyColor_neutral = new Color(185/255f, 125/255f, 25/255f);
 
 		base.Start();

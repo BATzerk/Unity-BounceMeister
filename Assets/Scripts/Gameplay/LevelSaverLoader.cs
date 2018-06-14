@@ -15,6 +15,8 @@ static public class LevelSaverLoader {
 	const string CAMERA_BOUNDS = "CameraBounds";
 	const string CRATE = "Crate";
 	const string DAMAGEABLE_GROUND = "DamageableGround";
+	const string GATE = "Gate";
+	const string GATE_BUTTON = "GateButton";
 	const string GEM = "Gem";
 	const string GROUND = "Ground";
 	const string LEVEL_DOOR = "LevelDoor";
@@ -86,20 +88,31 @@ static public class LevelSaverLoader {
 
 		// Level Properties
 		AddFSLine (GetLevelPropertiesLine(ld));
-		AddPropFieldsToFS(ld.cameraBoundsData, "myRect");
+		AddAllPropFieldsToFS(ld.cameraBoundsData, "myRect");
 
 		foreach (PropData propData in ld.allPropDatas) {
 			Type type = propData.GetType();
-			if (type == typeof(BatteryData)) { AddPropFieldsToFS(propData, "pos"); }
-			else if (type == typeof(CrateData)) { AddPropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe"); }
-			else if (type == typeof(DamageableGroundData)) { AddPropFieldsToFS(propData, "myRect", "dieFromBounce", "dieFromPlayerLeave", "dieFromVel", "doRegen"); }
-			else if (type == typeof(GemData)) { AddPropFieldsToFS(propData, "pos"); }
-			else if (type == typeof(GroundData)) { AddPropFieldsToFS(propData, "myRect", "colorType", "canBounce", "doRechargePlayer"); }
-			else if (type == typeof(LiftData)) { AddPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
-			else if (type == typeof(PlatformData)) { AddPropFieldsToFS(propData, "myRect"); }
-			else if (type == typeof(PlayerStartData)) { AddPropFieldsToFS(propData, "pos"); }
-			else if (type == typeof(SpikesData)) { AddPropFieldsToFS(propData, "myRect", "rotation"); }
-			else if (type == typeof(ToggleGroundData)) { AddPropFieldsToFS(propData, "myRect", "startsOn"); }
+			if (type == typeof(BatteryData)) { AddAllPropFieldsToFS(propData, "pos"); }
+			else if (type == typeof(CrateData)) { AddAllPropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe"); }
+			else if (type == typeof(DamageableGroundData)) { AddAllPropFieldsToFS(propData, "myRect", "dieFromBounce", "dieFromPlayerLeave", "dieFromVel", "doRegen"); }
+			else if (type == typeof(GateData)) { AddAllPropFieldsToFS(propData, "myRect", "channelID"); }
+			else if (type == typeof(GateButtonData)) { AddAllPropFieldsToFS(propData, "pos", "channelID"); }
+			else if (type == typeof(GemData)) { AddAllPropFieldsToFS(propData, "pos"); }
+			else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
+			else if (type == typeof(PlatformData)) { AddAllPropFieldsToFS(propData, "myRect"); }
+			else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
+			else if (type == typeof(SpikesData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation"); }
+			else if (type == typeof(ToggleGroundData)) { AddAllPropFieldsToFS(propData, "myRect", "startsOn"); }
+			// Props with optional params
+			else if (type == typeof(GroundData)) {
+				GroundData gd = propData as GroundData;
+				AddSomePropFieldsToFS(propData, "myRect", "colorType");
+				// Optional params.
+				if (!gd.canBounce) { fs += ";canBounce:" + gd.canBounce; }
+				if (!gd.doRechargePlayer) { fs += ";doRechargePlayer:" + gd.doRechargePlayer; }
+//				if (!gd.isSlidey) { fs += ";isSlidey:" + gd.isSlidey; }
+				AddFSLine();
+			}
 		}
 
 
@@ -135,7 +148,14 @@ static public class LevelSaverLoader {
 		return dataName.Substring(0, dataName.Length-4); // cut out the "Data" part!
 	}
 
-	static private void AddPropFieldsToFS(PropData data, params string[] fieldNames) {
+	/** Use this when we want to tack on optional params after, within the same line. */
+	static private void AddSomePropFieldsToFS(PropData data, params string[] fieldNames) {
+		// Create and add the line to fileString!
+		string propName = GetPropName(data);
+		AddFS (propName + " " + GetPropFieldsAsString(data, fieldNames));
+	}
+	/** Use this when this prop has no optional params. */
+	static private void AddAllPropFieldsToFS(PropData data, params string[] fieldNames) {
 		// Create and add the line to fileString!
 		string propName = GetPropName(data);
 		AddFS (propName + " " + GetPropFieldsAsString(data, fieldNames));
@@ -295,6 +315,8 @@ static public class LevelSaverLoader {
 					else if (affectName == CAMERA_BOUNDS) { propData = new CameraBoundsData(); }
 					else if (affectName == CRATE) { propData = new CrateData(); }
 					else if (affectName == DAMAGEABLE_GROUND) { propData = new DamageableGroundData(); }
+					else if (affectName == GATE) { propData = new GateData(); }
+					else if (affectName == GATE_BUTTON) { propData = new GateButtonData(); }
 					else if (affectName == GEM) { propData = new GemData(); }
 					else if (affectName == GROUND) { propData = new GroundData(); }
 					else if (affectName == LEVEL_DOOR) { propData = new LevelDoorData(); }
@@ -316,47 +338,6 @@ static public class LevelSaverLoader {
 				}
 			}
 		}
-
-		/*
-		debug_levelDataLoadingLevelKey = ld.LevelKey; // for printing to console.
-		string affectName = "undefined"; // when we reach a name of a class, or something ELSE we can affect (e.g. posGlobal), we'll set this to that.
-		for (int i=0; i<levelFile.Length; i++) {
-			string lineString = levelFile[i];
-
-			// A header??
-			if (IsStringAnAffectName(lineString)) {
-				affectName = lineString;
-			}
-			// A string of fields??
-			else {
-				if (lineString == "") continue; // If this line is EMPTY, skip it!
-				// Level Properties
-				if (affectName == LEVEL_PROPERTIES) {
-					SetLevelPropertyFieldValuesFromFieldsString (ld, lineString);
-				}
-				// Props!
-				PropData propData;
-				if (affectName == BATTERY) { propData = new BatteryData(); }
-				else if (affectName == CAMERA_BOUNDS) { propData = new CameraBoundsData(); }
-				else if (affectName == CRATE) { propData = new CrateData(); }
-				else if (affectName == DAMAGEABLE_GROUND) { propData = new DamageableGroundData(); }
-				else if (affectName == GEM) { propData = new GemData(); }
-				else if (affectName == GROUND) { propData = new GroundData(); }
-				else if (affectName == LEVEL_DOOR) { propData = new LevelDoorData(); }
-				else if (affectName == LIFT) { propData = new LiftData(); }
-				else if (affectName == PLATFORM) { propData = new PlatformData(); }
-				else if (affectName == PLAYER_START) { propData = new PlayerStartData(); }
-				else if (affectName == SPIKES) { propData = new SpikesData(); }
-				else if (affectName == TOGGLE_GROUND) { propData = new ToggleGroundData(); }
-				else {
-					Debug.LogError ("Oops! Unidentifiable text in lvl file: " + ld.LevelKey + ". Text: \"" + lineString + "\"");
-					continue;
-				}
-				SetPropDataFieldValuesFromFieldsString (propData, lineString);
-				ld.allPropDatas.Add(propData);
-			}
-		}
-	}*/
 	}
 	static private void AddEmptyLevelElements(ref LevelData ld) {
 		CameraBoundsData cameraBoundsData = new CameraBoundsData();
@@ -450,6 +431,48 @@ static public class LevelSaverLoader {
 			fieldInfo.SetValue(propData, TextUtils.GetVector2FromString(fieldValueString));
 		}
 	}
+
+
+	/*
+		debug_levelDataLoadingLevelKey = ld.LevelKey; // for printing to console.
+		string affectName = "undefined"; // when we reach a name of a class, or something ELSE we can affect (e.g. posGlobal), we'll set this to that.
+		for (int i=0; i<levelFile.Length; i++) {
+			string lineString = levelFile[i];
+
+			// A header??
+			if (IsStringAnAffectName(lineString)) {
+				affectName = lineString;
+			}
+			// A string of fields??
+			else {
+				if (lineString == "") continue; // If this line is EMPTY, skip it!
+				// Level Properties
+				if (affectName == LEVEL_PROPERTIES) {
+					SetLevelPropertyFieldValuesFromFieldsString (ld, lineString);
+				}
+				// Props!
+				PropData propData;
+				if (affectName == BATTERY) { propData = new BatteryData(); }
+				else if (affectName == CAMERA_BOUNDS) { propData = new CameraBoundsData(); }
+				else if (affectName == CRATE) { propData = new CrateData(); }
+				else if (affectName == DAMAGEABLE_GROUND) { propData = new DamageableGroundData(); }
+				else if (affectName == GEM) { propData = new GemData(); }
+				else if (affectName == GROUND) { propData = new GroundData(); }
+				else if (affectName == LEVEL_DOOR) { propData = new LevelDoorData(); }
+				else if (affectName == LIFT) { propData = new LiftData(); }
+				else if (affectName == PLATFORM) { propData = new PlatformData(); }
+				else if (affectName == PLAYER_START) { propData = new PlayerStartData(); }
+				else if (affectName == SPIKES) { propData = new SpikesData(); }
+				else if (affectName == TOGGLE_GROUND) { propData = new ToggleGroundData(); }
+				else {
+					Debug.LogError ("Oops! Unidentifiable text in lvl file: " + ld.LevelKey + ". Text: \"" + lineString + "\"");
+					continue;
+				}
+				SetPropDataFieldValuesFromFieldsString (propData, lineString);
+				ld.allPropDatas.Add(propData);
+			}
+		}
+	}*/
 
 	/*
 	if (ld.batteryDatas.Count > 0) {

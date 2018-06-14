@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Level : MonoBehaviour, ISerializableData<LevelData> {
+	// Properties
+	private GateChannel[] gateChannels;
 	// References
 	private GameController gameControllerRef;
 	private LevelData levelDataRef;
@@ -14,6 +16,7 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	public string LevelKey { get { return levelDataRef.LevelKey; } }
 	public Vector2 PosGlobal { get { return levelDataRef.PosGlobal; } }
 //	public Vector2 PosWorld { get { return levelDataRef.PosWorld; } }
+	public GateChannel[] GateChannels { get { return gateChannels; } }
 	public Rect GetCameraBoundsLocal() {
 		CameraBounds cameraBounds = GetComponentInChildren<CameraBounds>();
 		if (cameraBounds != null) {
@@ -25,6 +28,11 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		Rect rLocal = GetCameraBoundsLocal();
 		rLocal.center += PosGlobal; // shift it to global coordinates!
 		return rLocal;
+	}
+	public Vector2 Debug_PlayerStartPosLocal() {
+		PlayerStart playerStart = GetComponentInChildren<PlayerStart>();
+		if (playerStart != null) { return playerStart.PosLocal; }
+		return Vector2.zero; // no PlayerStart? Ok, default to my center.
 	}
 	// Getters (Private)
 	private DataManager dataManager { get { return GameManagers.Instance.DataManager; } }
@@ -56,6 +64,12 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 
 		DamageableGround[] damageableGrounds = GameObject.FindObjectsOfType<DamageableGround>();
 		foreach (DamageableGround obj in damageableGrounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+		Gate[] gates = GameObject.FindObjectsOfType<Gate>();
+		foreach (Gate obj in gates) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+		GateButton[] gateButtons = GameObject.FindObjectsOfType<GateButton>();
+		foreach (GateButton obj in gateButtons) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
 		Gem[] gems = GameObject.FindObjectsOfType<Gem>();
 		foreach (Gem obj in gems) { ld.allPropDatas.Add(obj.SerializeAsData()); }
@@ -116,6 +130,10 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		this.transform.localScale = Vector3.one; // Make sure my scale is 1 from the very beginning.
 		this.transform.localPosition = PosGlobal; // Position me!
 
+		// Initialize channels!
+		gateChannels = new GateChannel[5];
+		for (int i=0; i<gateChannels.Length; i++) { gateChannels[i] = new GateChannel(this, i); }
+
 		// Instantiate my props!
 		LevelData ld = levelDataRef;
 		ResourcesHandler rh = ResourcesHandler.Instance;
@@ -133,6 +151,11 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 			else if (propData is DamageableGroundData) {
 				DamageableGround newProp = Instantiate(rh.DamageableGround).GetComponent<DamageableGround>();
 				newProp.Initialize (this, propData as DamageableGroundData);
+			}
+			else if (propData is GateData) {
+				Gate newProp = Instantiate(rh.Gate).GetComponent<Gate>();
+				newProp.Initialize (this, propData as GateData);
+				gateChannels[newProp.ChannelID].AddGate(newProp);
 			}
 			else if (propData is ToggleGroundData) {
 				ToggleGround newProp = Instantiate(rh.ToggleGround).GetComponent<ToggleGround>();
@@ -154,6 +177,11 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 			else if (propData is CameraBoundsData) {
 				CameraBounds newProp = Instantiate(rh.CameraBounds).GetComponent<CameraBounds>();
 				newProp.Initialize (this, propData as CameraBoundsData);
+			}
+			else if (propData is GateButtonData) {
+				GateButton newProp = Instantiate(rh.GateButton).GetComponent<GateButton>();
+				newProp.Initialize (this, propData as GateButtonData);
+				gateChannels[newProp.ChannelID].AddButton(newProp);
 			}
 			else if (propData is GemData) {
 				Gem newProp = Instantiate(rh.Gem).GetComponent<Gem>();
@@ -179,9 +207,12 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 				Debug.LogWarning("PropData not recognized: " + propData);
 			}
 		}
-		// Parent things to each other!
 
+		// For development, add bounds so we don't fall out of unconnected levels!
 		AutoAddSilentBoundaries();
+
+		// Reset channels!
+		foreach (GateChannel channel in gateChannels) { channel.Reset(); }
 	}
 
 	/** Slightly sloppy, whatever-it-takes housekeeping to allow us to start up the game with a novel level and edit/play/save it right off the bat. */

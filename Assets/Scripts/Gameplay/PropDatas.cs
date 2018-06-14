@@ -17,6 +17,13 @@ public class CameraBoundsData : PropData {
 }
 //public class EnemyData : PropData {
 //}
+public class GateData : BaseGroundData {
+	public int channelID;
+}
+public class GateButtonData : PropData {
+	public int channelID;
+}
+
 public class GemData : PropData {
 }
 

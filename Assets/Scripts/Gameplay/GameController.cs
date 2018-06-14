@@ -324,7 +324,7 @@ public class GameController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void Debug_JumpToLevelAtSide(int side) {
 		OnPlayerEscapeLevelBounds(side); // Pretend the player just exited in this direction.
-		player.SetPosGlobal(level.PosGlobal); // just put the player in the center of the level.
+		player.SetPosLocal(level.Debug_PlayerStartPosLocal()); // just put the player at the PlayerStart.
 	}
 
 
