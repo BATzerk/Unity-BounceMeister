@@ -749,7 +749,7 @@ public class MapEditor : MonoBehaviour {
             }
             // CONTROL + J = Open LevelJump!
             else if (Input.GetKeyDown (KeyCode.J)) {
-                OpenLevelJump ();
+                SceneHelper.OpenScene(SceneNames.LevelJump);
             }
 		}
 
@@ -872,25 +872,10 @@ public class MapEditor : MonoBehaviour {
 		}
 	}
 
-	private void OpenScene(string sceneName) { StartCoroutine (OpenSceneCoroutine(sceneName)); }
-	private IEnumerator OpenSceneCoroutine (string sceneName) {
-		// First frame, blur the screen up, Craig
-		editorCamera.BlurScreenForLoading ();
-		yield return null;
-
-		// Second frame, load up the gameplay scene!
-		SceneHelper.OpenScene(sceneName);
-		yield return null;
-	}
-
-
 	private void OpenGameplayScene(int worldIndex, string levelKey) {
 //		GameplaySnapshotController.SetWorldAndLevelToLoad (worldIndex, levelKey);
 		dataManager.currentLevelData = dataManager.GetLevelData(worldIndex, levelKey, true);
-		OpenScene(SceneNames.Gameplay);
-	}
-	private void OpenLevelJump() {
-		OpenScene(SceneNames.LevelJump);
+		SceneHelper.OpenScene(SceneNames.Gameplay);
 	}
 
 

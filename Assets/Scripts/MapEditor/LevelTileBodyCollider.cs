@@ -4,9 +4,9 @@ using System.Collections;
 /** This guy's just so we can have MULTIPLE colliders that serve multiple purposes in a LevelTile. */
 public class LevelTileBodyCollider : MonoBehaviour {
 	// Components
-	[SerializeField] private BoxCollider2D boxCollider;
+	[SerializeField] private BoxCollider2D boxCollider=null;
 	// References
-	[SerializeField] private LevelTile levelTileRef;
+	[SerializeField] private LevelTile levelTileRef=null;
 
 
 //	public void UpdatePosAndSize (float x,float y, float w,float h) {

@@ -193,6 +193,7 @@ public class GameController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Doers - Gameplay
 	// ----------------------------------------------------------------
+    private void ReloadScene() { SceneHelper.ReloadScene(); }
 	private void TogglePause () {
 		isPaused = !isPaused;
 		UpdateTimeScale ();
@@ -312,7 +313,7 @@ public class GameController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
-	private void OnPlayerDie(Player player) {
+	private void OnPlayerDie(Player _player) {
 		Invoke("ReloadScene", 1f);
 	}
 
