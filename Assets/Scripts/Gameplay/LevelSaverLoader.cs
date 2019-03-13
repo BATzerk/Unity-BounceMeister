@@ -76,7 +76,7 @@ static public class LevelSaverLoader {
 	//  Saving
 	// ================================================================
 	/** I couldn't decide where this function belonged. It's here in LevelData (instead of in Level, or in WorldData) so it can be right by the loading function. */
-	static private string fs; // Hacky! I don't like how this is out here. This could be avoided if we were able to use anonymous functions.
+	static private string fs; // Messy. I don't like how this is out here. This could be avoided if we were able to use anonymous functions.
 	static public void SaveLevelFile (Level l) { SaveLevelFileAs (l, l.WorldIndex, l.LevelKey); }
 	static public void SaveLevelFileAs (Level l, int worldIndex,string levelKey) {
 		LevelData ld = l.SerializeAsData();

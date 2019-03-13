@@ -13,4 +13,3 @@ PlayerStart pos:(-7.3, -14.9)
 Spikes myRect:(x:-8.50, y:-9.00, width:2.00, height:1.00);rotation:270
 Spikes myRect:(x:-8.50, y:-2.00, width:2.00, height:1.00);rotation:270
 Spikes myRect:(x:-8.50, y:5.00, width:2.00, height:1.00);rotation:270
-

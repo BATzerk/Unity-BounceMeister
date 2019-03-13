@@ -25,8 +25,8 @@ public class LevelTileContents : MonoBehaviour {
 	// ================================================================
 	public void Initialize (LevelTile _levelTileRef) {
 		levelTileRef = _levelTileRef;
-		this.transform.localPosition = Vector3.zero;
-		this.transform.localScale = Vector3.one;
+		//this.transform.localPosition = Vector3.zero;
+		//this.transform.localScale = Vector3.one;
 		
 		designerFlag.UpdateDesignerFlagButtonVisuals ();
 	}

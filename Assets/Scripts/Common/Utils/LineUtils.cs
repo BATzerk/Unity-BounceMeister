@@ -14,7 +14,7 @@ public class LineUtils {
 		return Vector2.Distance(lineStart, lineEnd);
 	}
 	public static Vector2 GetCenterPos (Vector2 lineStart,Vector2 lineEnd) {
-		return Vector2.Lerp (lineStart, lineEnd, 0.5f);
+		return Vector2.Lerp (lineStart,lineEnd, 0.5f);
 	}
 
 
@@ -61,7 +61,7 @@ public class LineUtils {
 		// Check signs of r3 and r4. If both point 3 and point 4 lie on
 		// same side of line 1, the line segments do not intersect.
 		if ((r3 != 0) && (r4 != 0) && MathUtils.IsSameSign(r3, r4)) {
-			intPos = Vector2.zero;
+            intPos = MathUtils.Vector2NaN;
 			return false;
 		}
 		
@@ -78,7 +78,7 @@ public class LineUtils {
 		// on same side of second line segment, the line segments do
 		// not intersect.
 		if ((r1 != 0) && (r2 != 0) && (MathUtils.IsSameSign(r1, r2))) {
-			intPos = Vector2.zero;
+            intPos = MathUtils.Vector2NaN;
 			return false;
 		}
 		
@@ -86,7 +86,7 @@ public class LineUtils {
 		denom = (a1 * b2) - (a2 * b1);
 		
 		if (denom == 0) {
-			intPos = Vector2.zero;
+            intPos = MathUtils.Vector2NaN;
 			return false; // colinear
 		}
 		
@@ -120,7 +120,33 @@ public class LineUtils {
 //		intPos = new Vector3(Mathf.Round((float)x), Mathf.Round((float)y)); // Round these values... NOTE: I've found that rounding them PREVENTS bugs. No known bugs caused from rounding.
 		intPos = new Vector2((float)x,(float)y);
 		return true;
-	}
+    }
+
+    static public bool GetNonEndIntersectionLineToLine (out Vector2 intPos, Line lineA, Line lineB) {
+        return GetNonEndIntersectionLineToLine (out intPos, lineA.start,lineA.end, lineB.start,lineB.end);
+    }
+    static public bool GetNonEndIntersectionLineToLine (out Vector2 intPos, Vector2 lineAStart,Vector2 lineAEnd, Vector2 lineBStart,Vector2 lineBEnd) {
+        return GetNonEndIntersectionLineToLine (out intPos, lineAStart.x,lineAStart.y, lineAEnd.x,lineAEnd.y, lineBStart.x,lineBStart.y, lineBEnd.x,lineBEnd.y);
+    }
+    /** IGNORES intersections at the very tippy ends of lines! Only counts the middle area. */
+    static public bool GetNonEndIntersectionLineToLine (out Vector2 intPos, float x1,float y1, float x2,float y2, float x3,float y3, float x4,float y4) {
+        // FIRST, check if these lines end/begin at each other. If so, say they DON'T intersect!
+        const float samePosThresh = 1f; // if any of the poses of these lines are closer than this to each other, SNAP the intersection to EXACTLY that point!
+        if ((Mathf.Abs(x1-x3)<samePosThresh && Mathf.Abs(y1-y3)<samePosThresh) // A's START is B's START...
+         || (Mathf.Abs(x1-x4)<samePosThresh && Mathf.Abs(y1-y4)<samePosThresh) // A's START is B's END...
+            ){
+            intPos = MathUtils.Vector2NaN;
+            return false;
+        }
+        if ((Mathf.Abs(x2-x3)<samePosThresh && Mathf.Abs(y2-y3)<samePosThresh) // A's END is B's START...
+         || (Mathf.Abs(x2-x4)<samePosThresh && Mathf.Abs(y2-y4)<samePosThresh) // A's END is B's END...
+           ){
+            intPos = MathUtils.Vector2NaN;
+            return false;
+        }
+        // Ok, we can just return whatever the usual line-intersection result is.
+        return GetIntersectionLineToLine(out intPos, x1,y1, x2,y2, x3,y3, x4,y4);
+    }
 
 
 

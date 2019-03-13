@@ -16,7 +16,7 @@ abstract public class Player : PlatformCharacter {
 	virtual protected float InputScaleX { get { return 0.1f; } }
 
 	virtual protected float JumpForce { get { return 0.58f; } }
-	virtual protected float WallSlideMinYVel { get { return -0.16f; } }
+	virtual protected float WallSlideMinYVel { get { return -0.12f; } }
 	private readonly Vector2 WallKickVel = new Vector2(0.5f, 0.52f);
 	private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);
 
@@ -69,7 +69,7 @@ abstract public class Player : PlatformCharacter {
 		if (inputAxis.x == 0) { return 0; }
 		float dirX = MathUtils.Sign(inputAxis.x);
 		// TESTing out controls!
-		float mult = feetOnGround() ? 1 : 1;//0.65f;
+		float mult = 1;//feetOnGround() ? 1 : 0.65f;
 		if (!MathUtils.IsSameSign(dirX, vel.x)) { // Pushing the other way? Make us go WAY the other way, ok?
 			mult = 3;
 			// If we're pushing AGAINST our velocity AND we just kicked off a wall, don't allow the input, ok?

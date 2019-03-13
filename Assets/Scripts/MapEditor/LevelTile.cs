@@ -74,13 +74,12 @@ public class LevelTile : MonoBehaviour {
 	// ================================================================
 	//  Initialize
 	// ================================================================
-	public void Initialize (MapEditor _mapEditorRef, LevelData _levelDataRef) {
+	public void Initialize (MapEditor _mapEditorRef, LevelData _levelDataRef, Transform tf_parent) {
 		mapEditorRef = _mapEditorRef;
 		levelDataRef = _levelDataRef;
+        GameUtils.ParentAndReset(this.gameObject, tf_parent);
 		this.gameObject.name = "LevelTile " + levelDataRef.levelKey;
 //		SetPosAndSizeValues ();
-
-		this.transform.localScale = Vector3.one;
 
 		contents.Initialize (this);
 		

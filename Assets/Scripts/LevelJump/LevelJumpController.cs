@@ -61,6 +61,9 @@ public class LevelJumpController : MonoBehaviour {
 	}
 
 
+    // ----------------------------------------------------------------
+    //  Update
+    // ----------------------------------------------------------------
 	private void Update() {
 		if (Input.GetKeyDown(KeyCode.LeftArrow)) {
 			SetSelectedWorld(selectedWorldIndex-1);
@@ -70,5 +73,18 @@ public class LevelJumpController : MonoBehaviour {
 		}
 	}
 
+
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Debug
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#if UNITY_EDITOR
+    [UnityEditor.Callbacks.DidReloadScripts]
+    private static void OnScriptsReloaded() {
+        if (UnityEditor.EditorApplication.isPlaying) {
+            SceneHelper.ReloadScene();
+        }
+    }
+#endif
 
 }

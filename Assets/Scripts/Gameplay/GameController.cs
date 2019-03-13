@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
 	// Properties
 	private bool isPaused = false;
-	private bool debug_isSlowMo = false;
+	private bool isSlowMo = false;
 	// References
 	[SerializeField] private Transform tf_world;
 	private Player player=null;
@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void Start () {
 		// We haven't provided a level to play and this is Gameplay scene? Ok, load up the last played level instead!
-		if (dataManager.currentLevelData==null && thisSceneName==SceneNames.Gameplay) {
+		if (dataManager.currentLevelData==null && SceneHelper.IsGameplayScene()) {
 			int worldIndex = SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex);
 			string levelKey = SaveStorage.GetString(SaveKeys.LastPlayedLevelKey);
 			dataManager.currentLevelData = dataManager.GetLevelData(worldIndex, levelKey, false);
@@ -76,21 +76,7 @@ public class GameController : MonoBehaviour {
 
 	// ----------------------------------------------------------------
 	//  Doers - Loading Level
-	// ----------------------------------------------------------------
-	private string thisSceneName { get { return UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; } }
-	private void ReloadScene () { OpenScene (thisSceneName); }
-	private void OpenScene (string sceneName) { StartCoroutine (OpenSceneCoroutine (sceneName)); }
-	private IEnumerator OpenSceneCoroutine (string sceneName) {
-//		// First frame: Blur it up.
-//		cameraController.DarkenScreenForSceneTransition ();
-//		yield return null;
-
-		// Second frame: Load up that business.
-		UnityEngine.SceneManagement.SceneManager.LoadScene (sceneName);
-		yield return null;
-	}
-
-	/** This actually shows "Loading" overlay FIRST, THEN next frame loads the world. */
+    // ----------------------------------------------------------------
 	public void StartGameAtLevel(LevelData levelData) { StartGameAtLevel(levelData.worldIndex, levelData.levelKey); }
 	public void StartGameAtLevel (int worldIndex, string levelKey) {
 		// Wipe everything totally clean.
@@ -193,7 +179,7 @@ public class GameController : MonoBehaviour {
 		if (nextLevelData != null) {
 			Vector2 playerVel = player.Vel; // remember this so we can preserves it, ya see!
 			dataManager.playerPosGlobalOnExitLevel = player.PosGlobal;
-			dataManager.playerSideEnterNextLevel = MathUtils.GetOppositeSide(sideEscaped);
+			dataManager.playerSideEnterNextLevel = Sides.GetOpposite(sideEscaped);
 			StartGameAtLevel(nextLevelData);
 			player.SetVel(playerVel); // messily restore the vel we had in the previous level.
 		}
@@ -214,7 +200,7 @@ public class GameController : MonoBehaviour {
 	}
 	private void UpdateTimeScale () {
 		if (isPaused) { Time.timeScale = 0; }
-		else if (debug_isSlowMo) { Time.timeScale = 0.2f; }
+		else if (isSlowMo) { Time.timeScale = 0.2f; }
 		else { Time.timeScale = 1; }
 	}
 //	public Vector3 GetLevelDoorPos(string levelDoorID) {
@@ -270,17 +256,17 @@ public class GameController : MonoBehaviour {
 		else if (Input.GetKeyDown(KeyCode.Quote)) { Debug_JumpToLevelAtSide(Sides.B); return; }
 		else if (Input.GetKeyDown(KeyCode.LeftBracket)) { Debug_JumpToLevelAtSide(Sides.L); return; }
 		else if (Input.GetKeyDown(KeyCode.J)) {
-			OpenScene(SceneNames.LevelJump);
+			SceneHelper.OpenScene(SceneNames.LevelJump);
 		}
 		else if (Input.GetKeyDown(KeyCode.M)) {
-			OpenScene(SceneNames.MapEditor);
+		    SceneHelper.OpenScene(SceneNames.MapEditor);
 		}
 		else if (Input.GetKeyDown(KeyCode.Return)) {
-			ReloadScene();
+			SceneHelper.ReloadScene();
 			return;
 		}
 		else if (Input.GetKeyDown(KeyCode.T)) {
-			debug_isSlowMo = !debug_isSlowMo;
+			isSlowMo = !isSlowMo;
 			UpdateTimeScale();
 		}
 
@@ -295,13 +281,17 @@ public class GameController : MonoBehaviour {
 			StartGameAtLevel(level.LevelDataRef);
 		}
 
-			
 		// ALT + ___
 		if (isKey_alt) {
-			
 		}
 		// CONTROL + ___
 		if (isKey_control) {
+            // CONTROL + DELETE = Clear all save data!
+            if (Input.GetKeyDown(KeyCode.Delete)) {
+                GameManagers.Instance.DataManager.ClearAllSaveData();
+                SceneHelper.ReloadScene();
+                return;
+            }
 			// CONTROL + N = Open new level!
 			if (Input.GetKeyDown(KeyCode.N)) {
 				StartNewBlankLevel();
@@ -320,22 +310,30 @@ public class GameController : MonoBehaviour {
 
 
 	// ----------------------------------------------------------------
-	//  Debug
-	// ----------------------------------------------------------------
-	private void Debug_JumpToLevelAtSide(int side) {
-		OnPlayerEscapeLevelBounds(side); // Pretend the player just exited in this direction.
-		player.SetPosLocal(level.Debug_PlayerStartPosLocal()); // just put the player at the PlayerStart.
-	}
-
-
-
-	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
 	private void OnPlayerDie(Player player) {
 		Invoke("ReloadScene", 1f);
 	}
 
+
+
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Debug
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#if UNITY_EDITOR
+    [UnityEditor.Callbacks.DidReloadScripts]
+    private static void OnScriptsReloaded() {
+        if (UnityEditor.EditorApplication.isPlaying) {
+            SceneHelper.ReloadScene();
+        }
+    }
+#endif
+    private void Debug_JumpToLevelAtSide(int side) {
+        OnPlayerEscapeLevelBounds(side); // Pretend the player just exited in this direction.
+        player.SetPosLocal(level.Debug_PlayerStartPosLocal()); // just put the player at the PlayerStart.
+    }
 
 
 

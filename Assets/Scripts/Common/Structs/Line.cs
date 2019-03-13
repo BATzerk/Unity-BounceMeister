@@ -17,7 +17,7 @@ public struct Line {
 
 	/** In RADIANS. */
 	public float GetAngleDeg () {
-		return MathUtils.GetVector2AngleDegrees (start-end);
+		return MathUtils.GetAngleDeg(start-end);
 	}
 	public Line Rotate (float radians) {
 		return new Line(MathUtils.GetRotatedVector2Rad(start, radians), MathUtils.GetRotatedVector2Rad(end, radians));

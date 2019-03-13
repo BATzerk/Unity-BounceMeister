@@ -14,8 +14,7 @@ public class PlatformManager {
 		return Application.platform == RuntimePlatform.LinuxPlayer;
 	}
 	public static bool IsMac () {
-		return //Application.platform == RuntimePlatform.OSXDashboardPlayer
-			   Application.platform == RuntimePlatform.OSXEditor
+		return Application.platform == RuntimePlatform.OSXEditor
 			|| Application.platform == RuntimePlatform.OSXPlayer;
 	}
 	public static bool IsWindows () {
@@ -23,9 +22,7 @@ public class PlatformManager {
 			|| Application.platform == RuntimePlatform.WindowsPlayer;
 	}
 	public static bool IsPlayStation () {
-		return Application.platform == RuntimePlatform.PS4 // Note: PS3 export no longer supported by Unity.
-			|| Application.platform == RuntimePlatform.PSM
-			|| Application.platform == RuntimePlatform.PSP2;
+		return Application.platform == RuntimePlatform.PS4; // Note: PS3 export no longer supported by Unity.
 	}
 	public static bool IsXbox () {
 		return Application.platform == RuntimePlatform.XboxOne; // Note: XBOX360 export no longer supported by Unity.
