@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-static public class MapEditorSettings {
-	static public bool DoMaskLevelContents;
-	static public bool DoShowInstructions;
-	static public bool DoShowDesignerFlags;
-	static public bool DoShowLevelNames;
-	static public bool DoShowLevelTileStars;
-	static public bool DoShowLevelProps;
+public class MapEditorSettings {
+	public bool DoMaskLevelContents;
+	public bool DoShowInstructions;
+	public bool DoShowDesignerFlags;
+	public bool DoShowLevelNames;
+	public bool DoShowLevelTileStars;
+	public bool DoShowLevelProps;
 
 
-
-	static public void LoadAll () {
+	public MapEditorSettings() {
 		DoMaskLevelContents = SaveStorage.GetInt (SaveKeys.MapEditor_DoMaskLevelContents, 1) == 1;
 		DoShowInstructions = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowInstructions, 0) == 1;
 		DoShowDesignerFlags = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowDesignerFlags, 0) == 1;
@@ -20,7 +19,7 @@ static public class MapEditorSettings {
 		DoShowLevelTileStars = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelTileStars, 1) == 1;
 		DoShowLevelProps = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelProps, 1) == 1;
 	}
-	static public void SaveAll () {
+	public void SaveAll () {
 		SaveStorage.SetInt (SaveKeys.MapEditor_DoMaskLevelContents, DoMaskLevelContents?1:0);
 		SaveStorage.SetInt (SaveKeys.MapEditor_DoShowInstructions, DoShowInstructions?1:0);
 		SaveStorage.SetInt (SaveKeys.MapEditor_DoShowDesignerFlags, DoShowDesignerFlags?1:0);

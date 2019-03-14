@@ -7,8 +7,8 @@ public class SaveKeys {
 //	public const string SONG_EDITOR_CAMERA_POS_Y = "songEditorCameraPosY";
 //	public const string SONG_EDITOR_CAMERA_ZOOM_AMOUNT = "songEditorCameraZoomAmount";
 
-	public const string LastPlayedLevelKey = "LastPlayedLevelKey";
 	public const string LastPlayedWorldIndex = "LastPlayedWorldIndex";
+    public static string LastPlayedLevelKey(int worldIndex) { return "LastPlayedLevelKey_w" + worldIndex; }
 
 	public const string MapEditor_CameraPosX = "MapEditor_CameraPosX";
 	public const string MapEditor_CameraPosY = "MapEditor_CameraPosY";

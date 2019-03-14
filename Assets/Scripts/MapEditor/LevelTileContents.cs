@@ -12,26 +12,28 @@ public class LevelTileContents : MonoBehaviour {
 	// Properties
 	private bool hasInitializedContent = false;
 	// References
-	private LevelTile levelTileRef;
-//	private WorldData worldDataRef;
 	[SerializeField] private Sprite s_gem=null;
 	[SerializeField] private Sprite s_ground=null;
 	[SerializeField] private Sprite s_spikes=null;
 	[SerializeField] private TextMesh levelNameText=null; // what's my name, again?
+    private LevelTile myLevelTile;
+    //	private WorldData worldDataRef;
+
+    private MapEditorSettings editorSettings { get { return myLevelTile.MapEditor.MySettings; } }
 
 
-	// ================================================================
-	//  Initialize
-	// ================================================================
-	public void Initialize (LevelTile _levelTileRef) {
-		levelTileRef = _levelTileRef;
+    // ================================================================
+    //  Initialize
+    // ================================================================
+    public void Initialize (LevelTile _levelTile) {
+		myLevelTile = _levelTile;
 		//this.transform.localPosition = Vector3.zero;
 		//this.transform.localScale = Vector3.one;
 		
 		designerFlag.UpdateDesignerFlagButtonVisuals ();
 	}
 	private void InitializeContent () {
-		LevelData ld = levelTileRef.LevelDataRef;
+		LevelData ld = myLevelTile.MyLevelData;
 
 		// Set the mask's pos/size!
 		propsMask.transform.localPosition = ld.BoundsLocal.center;
@@ -85,11 +87,11 @@ public class LevelTileContents : MonoBehaviour {
 		return newIcon;
 	}
 
-	public void UpdateComponentVisibilities () {
-		designerFlag.gameObject.SetActive (MapEditorSettings.DoShowDesignerFlags);
-		levelNameText.gameObject.SetActive (MapEditorSettings.DoShowLevelNames);
-		go_propsLayer.SetActive (MapEditorSettings.DoShowLevelProps);
-		SetMaskEnabled(MapEditorSettings.DoMaskLevelContents);
+    public void UpdateComponentVisibilities () {
+        designerFlag.gameObject.SetActive (editorSettings.DoShowDesignerFlags);
+		levelNameText.gameObject.SetActive (editorSettings.DoShowLevelNames);
+		go_propsLayer.SetActive (editorSettings.DoShowLevelProps);
+		SetMaskEnabled(editorSettings.DoMaskLevelContents);
 	}
 
 	public void SetTextPosY (float yPos) {
@@ -125,7 +127,7 @@ public class LevelTileContents : MonoBehaviour {
 			levelNameText.gameObject.SetActive (false);
 		}
 		else {
-			levelNameText.gameObject.SetActive (MapEditorSettings.DoShowLevelNames);
+			levelNameText.gameObject.SetActive (editorSettings.DoShowLevelNames);
 		}
 	}
 	

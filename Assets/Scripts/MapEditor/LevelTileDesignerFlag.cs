@@ -17,7 +17,7 @@ public class LevelTileDesignerFlag : MonoBehaviour {
 	}
 	
 	public void UpdateDesignerFlagButtonVisuals() {
-		flagSprite.sprite = designerFlagSprites [levelTileRef.LevelDataRef.DesignerFlag];
+		flagSprite.sprite = designerFlagSprites [levelTileRef.MyLevelData.DesignerFlag];
 	}
 	public void ApplyPosAndSize (Rect rect) {
 		const float w = 16;
@@ -40,10 +40,10 @@ public class LevelTileDesignerFlag : MonoBehaviour {
 	}
 	private void OnMouseDown() {
 		// Determine the new value of our flag!
-		int newDesignerFlagValue = levelTileRef.LevelDataRef.DesignerFlag + 1;
+		int newDesignerFlagValue = levelTileRef.MyLevelData.DesignerFlag + 1;
 		if (newDesignerFlagValue >= DesignerFlags.NumFlags) { newDesignerFlagValue = 0; } // Loop back to 0.
 		// Tell levelData to save the new flag! :)
-		levelTileRef.LevelDataRef.SetDesignerFlag (newDesignerFlagValue, true);
+		levelTileRef.MyLevelData.SetDesignerFlag (newDesignerFlagValue, true);
 		// Update the designerFlag button
 		UpdateDesignerFlagButtonVisuals ();
 	}

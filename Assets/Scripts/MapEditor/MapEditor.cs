@@ -18,35 +18,28 @@ public class MapEditor : MonoBehaviour {
 	[SerializeField] private LevelTileSelectionRect selectionRect=null;
 	private List<GameObject> worldLayerGOs; // purely for hierarchy cleanness, we wanna put all the tiles into their respective world's GameObject.
 	private List<List<LevelTile>> allLevelTiles; // LevelTiles for EVERY LEVEL IN THE GAME!
-//	private List<LevelLinkView> levelLinkViews;
 	// Properties
 	private bool isDragPanning; // true when we right-mouse-click and drag to fast-pan around the map.
 	private bool isGrabPanning; // true when we middle-mouse-click to pan around the map. This is the limited scroll.
-//	private bool isRemakingAllLevelLinkViews; // so we know when to update LevelTiles when a link is added. (Don't update 'em if we're loading up all the links afresh.)
 	private bool isSearchingLevel; // When we start typing letters, yeah! Narrow down our options.
-//	private bool willDeleteLevelLinkViewSelected;
 	private float mapScale;
-	private int currentWorldIndex=-1;
+	private int currWorldIndex=-1;
 	private string levelSearchString = "";
-	private Vector3 cameraPosOnMouseDown;
+    public MapEditorSettings MySettings { get; private set; }
+	private Vector2 cameraPosOnMouseDown;
 	private Vector2 mousePosScreenOnDown;
 	private Vector2 mousePosWorld;
 	// References
 	[SerializeField] private Text currentWorldText=null;
 	[SerializeField] private Text demoText;
 	[SerializeField] private Text instructionsText=null;
-	private GameObject levelTilePrefab;
-	private List<LevelTile> tilesSelected;
-	private MapEditorCamera editorCamera;
-	private WorldData CurrentWorldData { get { return GetWorldData (currentWorldIndex); } }
+	private List<LevelTile> tilesSelected = new List<LevelTile>();
+    private MapEditorCamera editorCamera;
+	private WorldData CurrentWorldData { get { return GetWorldData (currWorldIndex); } }
 	private WorldData GetWorldData (int worldIndex) {
 		if (worldIndex<0 || dataManager.NumWorldDatas == 0) { return null; }
 		return dataManager.GetWorldData (worldIndex);
 	}
-//	private LevelLinkView levelLinkViewSelected;
-//	private LevelTile newLinkFirstLevelTile; // when I make a new link, this is the FIRST dude in the link!
-	// Properties
-//	private Vector2 newLinkFirstConnectionPos; // when I make a new link, this is the LOCATION of the first connection in the link!
 	
 	
 	// ================================================================
@@ -55,12 +48,10 @@ public class MapEditor : MonoBehaviour {
 	private DataManager dataManager { get { return GameManagers.Instance.DataManager; } }
 	private InputController inputController { get { return InputController.Instance; } }
 	private float fTS { get { return TimeController.FrameTimeScaleUnscaled; } } // frame time scale
-	private List<LevelTile> CurrentWorldLevelTiles { get { return allLevelTiles==null?null : allLevelTiles [currentWorldIndex]; } }
+	private List<LevelTile> CurrWorldLevelTiles { get { return allLevelTiles==null?null : allLevelTiles [currWorldIndex]; } }
 
 	public float MapScale { get { return mapScale; } }
 	public bool CanSelectALevelTile() {
-//		// levelLinkViewSelected ISN'T null?! Return false automatically.
-//		if (levelLinkViewSelected != null) { return false; }
 		// Otherwise, NO tiles selected and our mouse isn't down? Yeah, return true!
 		if (tilesSelected.Count==0 && !Input.GetMouseButton(0)) { return true; }
 		// Okay, so some might be selected? Can we select multiple ones??
@@ -83,25 +74,16 @@ public class MapEditor : MonoBehaviour {
 	public bool IsDraggingSelectedLevelTiles() {
 		return MayMoveLevelTiles() && !CanSelectMultipleTiles () && Input.GetMouseButton (0);
 	}
-//	public bool WillDeleteLevelLinkViewSelected { get { return willDeleteLevelLinkViewSelected; } }
-//	public LevelLinkView LevelLinkViewSelected { get { return levelLinkViewSelected; } }
-//	public Vector3 MousePosWorld() { // Return the mouse position, scaled to the screen.
-//		Vector3 mousePos = Input.mousePosition / GameVisualProperties.ScreenScale - new Vector3(GameVisualProperties.OriginalScreenSize.x,GameVisualProperties.OriginalScreenSize.y,0)*0.5f;
-//		mousePos /= GameProperties.WORLD_SCALE * 2; // NOTE: Idk why *2 works. :P
-//		mousePos /= mapScale/mapScaleNeutral;
-//		mousePos += editorCamera.transform.localPosition;
-//		return mousePos;
-//	}
 	private LevelTile GetLevelTileByKey (string levelKey) {
-		for (int i=0; i<CurrentWorldLevelTiles.Count; i++) {
-			if (CurrentWorldLevelTiles[i].LevelKey == levelKey) {
-				return CurrentWorldLevelTiles[i];
+		for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
+			if (CurrWorldLevelTiles[i].LevelKey == levelKey) {
+				return CurrWorldLevelTiles[i];
 			}
 		}
 		return null;
 	}
 	private Vector2 GetConnectionPosRelativeToLevelTile(LevelTile levelTile, Vector2 globalPos) {
-		return new Vector2(globalPos.x-levelTile.LevelDataRef.PosGlobal.x, globalPos.y-levelTile.LevelDataRef.PosGlobal.y);
+		return new Vector2(globalPos.x-levelTile.MyLevelData.PosGlobal.x, globalPos.y-levelTile.MyLevelData.PosGlobal.y);
 	}
 	public Vector2 MousePosScreen { get { return inputController.MousePosScreen; } }
 	public Vector2 MousePosWorld { get { return mousePosWorld; } }
@@ -116,9 +98,9 @@ public class MapEditor : MonoBehaviour {
 		return mousePos;
 	}
 	private LevelTile GetLevelTileAtPoint(Vector2 point) {
-		if (CurrentWorldLevelTiles==null) { return null; } // Safety check for runtime compile.
-		for (int i=CurrentWorldLevelTiles.Count-1; i>=0; --i) { // loop thru backwards so we click NEWER tiles before older ones.
-            LevelTile tile = CurrentWorldLevelTiles[i];
+		if (CurrWorldLevelTiles==null) { return null; } // Safety check for runtime compile.
+		for (int i=CurrWorldLevelTiles.Count-1; i>=0; --i) { // loop thru backwards so we click NEWER tiles before older ones.
+            LevelTile tile = CurrWorldLevelTiles[i];
 			Rect boundsGlobal = tile.BoundsGlobal;
 			if (boundsGlobal.Contains(point+boundsGlobal.size*0.5f)) { // Note: convert back to center-aligned. SIGH. I would love to just make level's rect corner-aligned. Avoid any ambiguity.
 				return tile;
@@ -167,69 +149,55 @@ public class MapEditor : MonoBehaviour {
 	// ================================================================
 	private void Start() {
 		// Find references
-		editorCamera = GameObject.FindObjectOfType<MapEditorCamera>();
-		levelTilePrefab = ResourcesHandler.Instance.MapEditor_LevelTile;//(GameObject)Resources.Load (GameProperties.MAP_EDITOR_PREFABS_PATH + "LevelLinkView");
-
-		// Load settings
-		MapEditorSettings.LoadAll();
+		editorCamera = FindObjectOfType<MapEditorCamera>();
+        MySettings = new MapEditorSettings();
 
 //		// Set the whole map's scale to be the same as how the game's scale works.
 //		this.transform.localScale = new Vector3 (GameProperties.WORLD_SCALE, GameProperties.WORLD_SCALE, 1);
 
-		// Make the worldLayerGOs only once.
-		MakeWorldLayerGOs ();
-		
-		// Reset values
-		Time.timeScale = 1f;
+		// Make the worldLayerGOs and LevelTiles only once.
+		MakeWorldLayerGOs();
+        LoadAllLevelTiles();
+
+        // Reset values
+        Time.timeScale = 1f;
 		Cursor.visible = true;
-		tilesSelected = new List<LevelTile> ();
 
 		// Set current world
-		ResetMap (dataManager.currentWorldIndex);
+		SetCurrWorld(SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex));
 
 		// Move the camera to where we remember it was last time we was here!
-		editorCamera.transform.localPosition = new Vector3 (SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosX, 0), SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosY, 0), editorCamera.transform.localPosition.z);
-		float savedMapScale = SaveStorage.GetFloat (SaveKeys.MapEditor_MapScale, mapScaleNeutral);
-		if (savedMapScale != 0) {
-			SetMapScale (savedMapScale);
-		}
+        LoadCameraPosScale();
 	}
 
-	private void SetCurrentWorld (int _currentWorldIndex) {
-		if (_currentWorldIndex >= GameProperties.NUM_WORLDS) { return; } // Don't crash da game, bruddah.
+	private void SetCurrWorld (int _worldIndex) {
+		if (_worldIndex >= GameProperties.NUM_WORLDS) { return; } // Don't crash da game, bruddah.
 
 		// Deselect any tiles that might be selected!
 		DeselectAllLevelTiles ();
 
 		// If we're CHANGING the currentWorld...!!
-		if (currentWorldIndex != _currentWorldIndex) {
+		if (currWorldIndex != _worldIndex) {
 			// Tell all the tiles in the world we already were to hide their stuff!
-			if (currentWorldIndex != -1) {
-				for (int i=0; i<CurrentWorldLevelTiles.Count; i++) {
-					CurrentWorldLevelTiles[i].HideContents ();
+			if (currWorldIndex != -1) {
+				for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
+					CurrWorldLevelTiles[i].HideContents ();
 				}
 			}
-			currentWorldIndex = _currentWorldIndex;
-		}
-
-//		// Reload my linx!
-//		ReloadCurrentLevelLinkViews ();
+			currWorldIndex = _worldIndex;
+            SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, currWorldIndex);
+        }
 		
 		// Tell all the tiles in the NEW world to show their stuff!
-		for (int i=0; i<CurrentWorldLevelTiles.Count; i++) {
-			CurrentWorldLevelTiles[i].ShowContents ();
+		for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
+			CurrWorldLevelTiles[i].ShowContents ();
 		}
 		
 		// Set background colla
-		editorCamera.SetBackgroundColor (currentWorldIndex);
+		editorCamera.OnSetCurrentWorld(currWorldIndex);
 	}
-
-	private void ResetMap (int _worldIndex) {
-		// Load up everything!
-		LoadAllLevelTiles ();
-		SetCurrentWorld (_worldIndex);
-	}
-	private void ResetCamera () {
+    
+	private void ResetCameraToNeutral() {
 		// Reset scale
 		SetMapScale (mapScaleNeutral);
 		Vector2 averageLevelPos = new Vector2 (0,0);
@@ -237,7 +205,7 @@ public class MapEditor : MonoBehaviour {
 			averageLevelPos += ld.PosGlobal;
 		}
 		averageLevelPos /= CurrentWorldData.LevelDatas.Count;
-		editorCamera.transform.localPosition = new Vector3 (averageLevelPos.x,averageLevelPos.y, editorCamera.transform.localPosition.z);
+		editorCamera.Pos = averageLevelPos;
 	}
 
 	private void MakeWorldLayerGOs () {
@@ -257,6 +225,7 @@ public class MapEditor : MonoBehaviour {
 		DestroyAllLevelTiles ();
 		// Make 'em hot & fresh!
 		allLevelTiles = new List<List<LevelTile>>();
+		GameObject prefab = ResourcesHandler.Instance.MapEditor_LevelTile;
 		// For every world...
 		for (int worldIndex=0; worldIndex<dataManager.NumWorldDatas; worldIndex++) {
 			allLevelTiles.Add (new List<LevelTile>());
@@ -264,62 +233,45 @@ public class MapEditor : MonoBehaviour {
 			WorldData wd = dataManager.GetWorldData (worldIndex);
             Transform parent = worldLayerGOs[worldIndex].transform;
             foreach (LevelData levelData in wd.LevelDatas.Values) {
-                LevelTile newLevelTile = Instantiate (levelTilePrefab).GetComponent<LevelTile> ();
+                LevelTile newLevelTile = Instantiate (prefab).GetComponent<LevelTile>();
 				newLevelTile.Initialize(this, levelData, parent);
 				allLevelTiles[worldIndex].Add(newLevelTile);
 			}
 		}
 	}
-	/*
-	private void ReloadCurrentLevelLinkViews() {
-		isRemakingAllLevelLinkViews = true;
-		// Destroy 'em first!
-		DestroyAllLevelLinkViews ();
-		// Make 'em hot & fresh!
-		levelLinkViews = new List<LevelLinkView> ();
-		for (int i=0; i<CurrentWorldData.LevelLinkDatas.Count; i++) {
-			AddLevelLinkView(CurrentWorldData.LevelLinkDatas[i]);
-		}
-		isRemakingAllLevelLinkViews = false;
-	}
-	private void AddLevelLinkView(LevelLinkData levelLinkDataRef) {
-		LevelLinkView newLevelLinkView = ((GameObject) Instantiate(levelLinkPrefab)).GetComponent<LevelLinkView>();
-		newLevelLinkView.transform.SetParent (worldLayerGOs[currentWorldIndex].transform);
-		newLevelLinkView.Initialize (this, CurrentWorldData, levelLinkDataRef);
-		levelLinkViews.Add(newLevelLinkView);
-		// If I'm NOT initializing ALL the links here (i.e. I've just added ONE new link), then update the LevelTiles affected!!
-		if (!isRemakingAllLevelLinkViews) {
-			UpdateLevelTileWallsOfLevelLinkView (newLevelLinkView);
-		}
-	}
-	*/
 
-	private void ReloadAllWorldDatasAndRemakeMap () {
-		dataManager.ReloadWorldDatas ();
-		ResetMap (currentWorldIndex);
-	}
-		
-		
-		
-	// ================================================================
-	//  Doers
-	// ================================================================
-	private void SetMapScale(float _mapScale) {
+	private void ReloadAllWorldDatasAndScene() {
+        dataManager.ReloadWorldDatas();
+        SceneHelper.ReloadScene();
+    }
+
+    private void LoadCameraPosScale() {
+		float savedMapScale = SaveStorage.GetFloat(SaveKeys.MapEditor_MapScale, mapScaleNeutral);
+		SetMapScale(savedMapScale);
+    }
+    private void SaveCameraPosScale() {
+        SaveStorage.SetFloat(SaveKeys.MapEditor_MapScale, mapScale);
+    }
+
+
+
+    // ================================================================
+    //  Doers
+    // ================================================================
+    private void SetMapScale(float _mapScale) {
 		mapScale = _mapScale;
-		mapScale = Mathf.Max (0.4f, Mathf.Min (10, mapScale)); // Don't let scale get TOO crazy now.
-		editorCamera.SetScale (mapScale);
+		mapScale = Mathf.Max(0.4f, Mathf.Min (10, mapScale)); // Don't let scale get TOO crazy now.
+		editorCamera.SetScale(mapScale);
+        SaveCameraPosScale(); // save editor cam values!
 		// Update my level tiles' text scales!
 		if (allLevelTiles != null) {
-			foreach (LevelTile levelTile in CurrentWorldLevelTiles) {
+			foreach (LevelTile levelTile in CurrWorldLevelTiles) {
 				levelTile.OnMapScaleChanged (mapScale);
 			}
 		}
 	}
 	private void MoveCamera(float xMove, float yMove) {
-		editorCamera.transform.localPosition += new Vector3 (xMove, yMove);
-	}
-	private void MoveCameraTo(float xPos, float yPos) {
-		editorCamera.transform.localPosition = new Vector3 (xPos, yPos, editorCamera.transform.localPosition.z);
+		editorCamera.Pos += new Vector2(xMove, yMove);
 	}
 
 	
@@ -379,51 +331,22 @@ public class MapEditor : MonoBehaviour {
 	}
 	private void SelectAllLevelTiles() {
 		ReleaseLevelTilesSelected (); // Just in case release any if we're already holding some.
-		foreach (LevelTile levelTile in CurrentWorldLevelTiles) {
+		foreach (LevelTile levelTile in CurrWorldLevelTiles) {
 			SelectLevelTile(levelTile);
 		}
 	}
     private void DuplicateFirstSelectedLevel() {
         // No tiles selected? No gazpacho!
         if (tilesSelected.Count == 0) { return; }
-        DuplicateLevel(tilesSelected[0].LevelDataRef);
+        DuplicateLevel(tilesSelected[0].MyLevelData);
     }
     private void DuplicateLevel(LevelData originalData) {
         // Add a new level file, yo!
         string newLevelKey = originalData.levelKey + " copy";
         LevelSaverLoader.SaveLevelFileAs(originalData, originalData.worldIndex, newLevelKey);
         // Reload everything.
-        ReloadAllWorldDatasAndRemakeMap();
+        ReloadAllWorldDatasAndScene();
     }
-
-	/*
-	public void SetLevelLinkViewSelected(LevelLinkView thisLevelLinkView, LevelLinkViewConnectionCircle connectionCircle) {
-		levelLinkViewSelected = thisLevelLinkView;
-		connectionCircle.StartDraggingMe ();
-	}
-	private void DeselectLevelLinkViewSelected() {
-		levelLinkViewSelected.OnDeselected ();
-		levelLinkViewSelected = null;
-	}
-	
-	private void DeleteLevelLinkView(LevelLinkView levelLinkView) {
-		if (levelLinkView != null) {
-			// Remove from MY views
-			levelLinkViews.Remove(levelLinkView);
-			// Remove from levelLinks!
-			CurrentWorldData.RemoveLevelLinkData(levelLinkView.LevelLinkDataRef, true);
-			// Update the LevelTiles affected!!
-			UpdateLevelTileWallsOfLevelLinkView (levelLinkView);
-			// Destroy the levelLinkView!
-			Destroy (levelLinkView.gameObject);
-		}
-	}
-
-	private void UpdateLevelTileWallsOfLevelLinkView (LevelLinkView levelLinkView) {
-		GetLevelTileByKey (levelLinkView.LevelLinkDataRef.LevelDataAKey).RemakeWallLines ();
-		GetLevelTileByKey (levelLinkView.LevelLinkDataRef.LevelDataBKey).RemakeWallLines ();
-	}
-	*/
 
 	// TODO: This! Convert to StreamingAssets.
 	private void MoveLevelTilesSelectedLevelFilesToTrashFolder() {
@@ -431,7 +354,7 @@ public class MapEditor : MonoBehaviour {
 		if (tilesSelected.Count == 0) { return; }
 		// Simply delete all the LevelLinks involving these levels.
 		for (int i=0; i<tilesSelected.Count; i++) {
-			LevelData levelDeletingData = tilesSelected[i].LevelDataRef;
+			LevelData levelDeletingData = tilesSelected[i].MyLevelData;
 			// Move or delete LINKS affected!
 			List<LevelLinkData> linksWithJustThisLevel = CurrentWorldData.GetLevelLinksConnectingLevel (levelDeletingData.LevelKey);
 			foreach (LevelLinkData lld in linksWithJustThisLevel) {
@@ -454,7 +377,7 @@ public class MapEditor : MonoBehaviour {
 		#endif
 
 		// Reload this map, yo.
-		ReloadAllWorldDatasAndRemakeMap();
+		ReloadAllWorldDatasAndScene();
 	}
 
 	private void MoveLevelTilesSelectedAndLinksToWorld (int worldIndexTo) {
@@ -469,7 +392,7 @@ public class MapEditor : MonoBehaviour {
 		// Compile a list of the DATAS of all the levels we're moving.
 		LevelData[] levelDatasMoving = new LevelData [tilesSelected.Count];
 		for (int i=0; i<levelDatasMoving.Length; i++) {
-			levelDatasMoving[i] = tilesSelected[i].LevelDataRef;
+			levelDatasMoving[i] = tilesSelected[i].MyLevelData;
 		}
 		// MOVE LEVELS and UPDATE LINKS!!
 		for (int i=0; i<levelDatasMoving.Length; i++) {
@@ -498,11 +421,11 @@ public class MapEditor : MonoBehaviour {
 		
 		// Reload everything right away!! (Otherwise, we'll have to ALT + TAB out of Unity and back in for it to be refreshed.)
 		#if UNITY_EDITOR
-		UnityEditor.AssetDatabase.Refresh ();
+		UnityEditor.AssetDatabase.Refresh();
 		#endif
 		
 		// Reload this map, yo.
-		ReloadAllWorldDatasAndRemakeMap ();
+		ReloadAllWorldDatasAndScene();
 	}
 
 	private void MoveLevelLinkData (LevelLinkData levelLinkData, WorldData worldDataFrom, WorldData worldDataTo) {
@@ -532,80 +455,48 @@ public class MapEditor : MonoBehaviour {
 			if (tilesSelected.Contains(levelTile)) { DeselectLevelTile(levelTile); }
 			else { SelectLevelTile(levelTile); }
 		}
-		/*
-		// MAKING a LevelLinkData!
-		else {
-			// FIRST spot of the link??
-			if (newLinkFirstLevelTile==null){// && isPlacingFirstPointOfNewLink) {
-				newLinkFirstLevelTile = levelTile;
-				newLinkFirstConnectionPos = GetConnectionPosRelativeToLevelTile(levelTile, MousePosWorld);
-				// We're no longer placing the first point.
-//				isPlacingFirstPointOfNewLink = false;
-			}
-			// SECOND spot of the link!...
-			else if (newLinkFirstLevelTile!=null) {
-				// SAME tile as the one I already clicked? Okay, umm, cancel linking anything.
-				if (levelTile == newLinkFirstLevelTile) {
-				}
-				// DIFFERENT second tile!...
-				else {
-					// Add a new LevelLinkData!!
-					string levelKeyA = newLinkFirstLevelTile.LevelKey;
-					string levelKeyB = levelTile.LevelKey;
-					Vector2 connectionPosA = newLinkFirstConnectionPos;
-					Vector2 connectionPosB = GetConnectionPosRelativeToLevelTile(levelTile, MousePosWorld);
-					LevelLinkData newLevelLinkData = CurrentWorldData.AddLevelLinkData(levelKeyA,levelKeyB, connectionPosA,connectionPosB, true);
-					// Okay, add a new levelLinkView now.
-					AddLevelLinkView(newLevelLinkData);
-				}
-				// Aand now nullify the making-link variables.
-				newLinkFirstLevelTile = null;
-				newLinkFirstConnectionPos = Vector2.zero;
-			}
-		}
-		*/
 	}
 
 	private void UpdateComponentVisibilities() {
-		for (int i=0; i<CurrentWorldLevelTiles.Count; i++) { CurrentWorldLevelTiles[i].UpdateComponentVisibilities(); }
+		for (int i=0; i<CurrWorldLevelTiles.Count; i++) { CurrWorldLevelTiles[i].UpdateComponentVisibilities(); }
 //		for (int i=0; i<levelLinkViews.Count; i++) { levelLinkViews[i].UpdateComponentVisibilities(); }
 	}
-	private void ToggleLevelContentsMasked() {
-		MapEditorSettings.DoMaskLevelContents = !MapEditorSettings.DoMaskLevelContents;
-		UpdateComponentVisibilities ();
-	}
-	private void ToggleLevelTileDesignerFlagsVisibility() {
-		MapEditorSettings.DoShowDesignerFlags = !MapEditorSettings.DoShowDesignerFlags;
-		UpdateComponentVisibilities ();
-	}
-	private void ToggleLevelTileNamesVisibility() {
-		MapEditorSettings.DoShowLevelNames = !MapEditorSettings.DoShowLevelNames;
-		UpdateComponentVisibilities ();
-	}
-	private void ToggleLevelTileStarsVisibility() {
-		MapEditorSettings.DoShowLevelTileStars = !MapEditorSettings.DoShowLevelTileStars;
-		UpdateComponentVisibilities ();
-	}
-	private void ToggleLevelPropsVisibility() {
-		MapEditorSettings.DoShowLevelProps = !MapEditorSettings.DoShowLevelProps;
-		UpdateComponentVisibilities ();
-	}
-	private void ToggleInstructionsVisibility() {
-		MapEditorSettings.DoShowInstructions = !MapEditorSettings.DoShowInstructions;
-	}
-//	private void HighlightIncompleteLevelLinkConnections () {
-//		for (int i=0; i<levelLinkViews.Count; i++) {
-//			levelLinkViews[i].DisplayAsIncompleteIfBrokenConnection ();
-//		}
-//	}
+    private void ToggleLevelContentsMasked() {
+        MySettings.DoMaskLevelContents = !MySettings.DoMaskLevelContents;
+        OnChangeSettings();
+    }
+    private void ToggleLevelTileDesignerFlagsVisibility() {
+        MySettings.DoShowDesignerFlags = !MySettings.DoShowDesignerFlags;
+        OnChangeSettings();
+    }
+    private void ToggleLevelTileNamesVisibility() {
+        MySettings.DoShowLevelNames = !MySettings.DoShowLevelNames;
+        OnChangeSettings();
+    }
+    private void ToggleLevelTileStarsVisibility() {
+        MySettings.DoShowLevelTileStars = !MySettings.DoShowLevelTileStars;
+        OnChangeSettings();
+    }
+    private void ToggleLevelPropsVisibility() {
+        MySettings.DoShowLevelProps = !MySettings.DoShowLevelProps;
+        OnChangeSettings();
+    }
+    private void ToggleInstructionsVisibility() {
+        MySettings.DoShowInstructions = !MySettings.DoShowInstructions;
+        OnChangeSettings();
+    }
+    private void OnChangeSettings() {
+        UpdateComponentVisibilities();
+        MySettings.SaveAll();
+    }
 
-	public void OnLevelTileSelectionRectDeactivated () {
-		if (CurrentWorldLevelTiles==null) { return; } // Safety check for runtime compile.
+    public void OnLevelTileSelectionRectDeactivated () {
+		if (CurrWorldLevelTiles==null) { return; } // Safety check for runtime compile.
 		// Select all the extra ones selected by the selection rect!
-		for (int i=0; i<CurrentWorldLevelTiles.Count; i++) {
-			if (CurrentWorldLevelTiles[i].IsWithinLevelTileSelectionRect) {
-				if (!tilesSelected.Contains(CurrentWorldLevelTiles[i])) {
-					SelectLevelTile (CurrentWorldLevelTiles[i]);
+		for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
+			if (CurrWorldLevelTiles[i].IsWithinLevelTileSelectionRect) {
+				if (!tilesSelected.Contains(CurrWorldLevelTiles[i])) {
+					SelectLevelTile (CurrWorldLevelTiles[i]);
 				}
 			}
 		}
@@ -613,17 +504,17 @@ public class MapEditor : MonoBehaviour {
 	
 	private void UpdateLevelTilesFromSearchString () {
 		// Update their visibilities!
-		for (int i=0; i<CurrentWorldLevelTiles.Count; i++) {
-			CurrentWorldLevelTiles[i].UpdateVisibilityFromSearchCriteria (levelSearchString);
+		for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
+			CurrWorldLevelTiles[i].UpdateVisibilityFromSearchCriteria (levelSearchString);
 		}
 	}
 
 	private void ZoomMapAtPoint (Vector3 screenPoint, float deltaZoom) {
 		float pmapScale = mapScale;
-		SetMapScale (mapScale * (1 + deltaZoom));
+		SetMapScale(mapScale * (1 + deltaZoom));
 		// If we DID change the zoom, then also move to focus on that point!
 		if (mapScale - pmapScale != 0) {
-			MoveCamera (screenPoint.x * deltaZoom / mapScale, screenPoint.y * deltaZoom / mapScale);
+			MoveCamera(screenPoint.x * deltaZoom / mapScale, screenPoint.y * deltaZoom / mapScale);
 		}
 	}
 	
@@ -642,34 +533,31 @@ public class MapEditor : MonoBehaviour {
 		UpdateLevelTileSelectionRectSelection ();
 		UpdateCameraMovement ();
 		UpdateUI ();
-
-//		UpdateTilesFromLevelLinkViewSelected ();
 	}
 
 	private void UpdateMousePosWorld() {
 //		inputManager.UpdateMousePosRelative (editorCamera.transform.localPosition, mapScale);
 		mousePosWorld = inputController.MousePosScreen;// / ScreenHandler.ScreenScale;// - new Vector3(ScreenHandler.OriginalScreenSize.x,ScreenHandler.OriginalScreenSize.y,0)*0.5f;
-//		mousePosWorld /= GameProperties.WORLD_SCALE * 2; // NOTE: Idk why *2 works. :P
-		mousePosWorld /= mapScale;// /mapScaleNeutral;
-		mousePosWorld += new Vector2(editorCamera.transform.localPosition.x, editorCamera.transform.localPosition.y);
+		mousePosWorld /= mapScale;
+		mousePosWorld += editorCamera.Pos;
 	}
 
 	private void UpdateCameraMovement () {
 		// Grab Panning!
 		if (isGrabPanning) {
-			editorCamera.transform.localPosition = cameraPosOnMouseDown + new Vector3 (mousePosScreenOnDown.x-MousePosScreen.x, mousePosScreenOnDown.y-MousePosScreen.y, 0) / mapScale;
+			editorCamera.Pos = cameraPosOnMouseDown + new Vector2(mousePosScreenOnDown.x-MousePosScreen.x, mousePosScreenOnDown.y-MousePosScreen.y) / mapScale;
 		}
 		else if (isDragPanning) {
-			editorCamera.transform.localPosition += new Vector3 (MousePosScreen.x-mousePosScreenOnDown.x, MousePosScreen.y-mousePosScreenOnDown.y, 0) * DRAG_PANNING_SPEED * fTS;
+			editorCamera.Pos += new Vector2(MousePosScreen.x-mousePosScreenOnDown.x, MousePosScreen.y-mousePosScreenOnDown.y) * DRAG_PANNING_SPEED * fTS;
 		}
 	}
 
 	private void UpdateUI () {
 		// We can afford to update these every frame.
 		// currentWorldText
-		currentWorldText.text = currentWorldIndex.ToString ();
+		currentWorldText.text = currWorldIndex.ToString ();
 		// instructionsText
-		if (MapEditorSettings.DoShowInstructions) {
+		if (MySettings.DoShowInstructions) {
 			instructionsText.color = new Color (1,1,1, 0.36f);
 			instructionsText.text = instructionsTextString_enabled;
 		}
@@ -680,10 +568,10 @@ public class MapEditor : MonoBehaviour {
 	}
 
 	private void UpdateLevelTileSelectionRectSelection() {
-		if (CurrentWorldLevelTiles==null) { return; } // Safety check for runtime compile.
+		if (CurrWorldLevelTiles==null) { return; } // Safety check for runtime compile.
 		// Update which tiles are within the rect!
-		for (int i=0; i<CurrentWorldLevelTiles.Count; i++) {
-			CurrentWorldLevelTiles[i].IsWithinLevelTileSelectionRect = selectionRect.IsActive && selectionRect.SelectionRect.Contains(CurrentWorldLevelTiles[i].LevelDataRef.PosGlobal);
+		for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
+			CurrWorldLevelTiles[i].IsWithinLevelTileSelectionRect = selectionRect.IsActive && selectionRect.SelectionRect.Contains(CurrWorldLevelTiles[i].MyLevelData.PosGlobal);
 		}
 //		if (levelTileSelectionRect.IsActive) {
 //			levelTileSelectionRect.levelTilesSelected
@@ -715,9 +603,7 @@ public class MapEditor : MonoBehaviour {
         
         // ENTER = Reload datas and reload scene!
         else if (Input.GetKeyDown(KeyCode.Return)) {
-//          ReloadAllWorldDatasAndRemakeMap ();
-            dataManager.ReloadWorldDatas();
-            SceneHelper.ReloadScene();
+            ReloadAllWorldDatasAndScene();
         }
 		
 		// Backspace
@@ -778,20 +664,20 @@ public class MapEditor : MonoBehaviour {
 		else if (Input.GetKeyDown(KeyCode.I)) { ToggleInstructionsVisibility(); } // I = toggle instructions
 		
 		// LOAD DIFFERENT WORLDS
-		else if (Input.GetKeyDown(KeyCode.Alpha0)) { SetCurrentWorld(0); }
-		else if (Input.GetKeyDown(KeyCode.Alpha1)) { SetCurrentWorld(1); }
-		else if (Input.GetKeyDown(KeyCode.Alpha2)) { SetCurrentWorld(2); }
-		else if (Input.GetKeyDown(KeyCode.Alpha3)) { SetCurrentWorld(3); }
-		else if (Input.GetKeyDown(KeyCode.Alpha4)) { SetCurrentWorld(4); }
-		else if (Input.GetKeyDown(KeyCode.Alpha5)) { SetCurrentWorld(5); }
-		else if (Input.GetKeyDown(KeyCode.Alpha6)) { SetCurrentWorld(6); }
-		else if (Input.GetKeyDown(KeyCode.Alpha7)) { SetCurrentWorld(7); }
-		else if (Input.GetKeyDown(KeyCode.Alpha8)) { SetCurrentWorld(8); }
-		else if (Input.GetKeyDown(KeyCode.Alpha9)) { SetCurrentWorld(9); }
-		else if (Input.GetKeyDown(KeyCode.Minus)) { SetCurrentWorld (10); }
+		else if (Input.GetKeyDown(KeyCode.Alpha0)) { SetCurrWorld(0); }
+		else if (Input.GetKeyDown(KeyCode.Alpha1)) { SetCurrWorld(1); }
+		else if (Input.GetKeyDown(KeyCode.Alpha2)) { SetCurrWorld(2); }
+		else if (Input.GetKeyDown(KeyCode.Alpha3)) { SetCurrWorld(3); }
+		else if (Input.GetKeyDown(KeyCode.Alpha4)) { SetCurrWorld(4); }
+		else if (Input.GetKeyDown(KeyCode.Alpha5)) { SetCurrWorld(5); }
+		else if (Input.GetKeyDown(KeyCode.Alpha6)) { SetCurrWorld(6); }
+		else if (Input.GetKeyDown(KeyCode.Alpha7)) { SetCurrWorld(7); }
+		else if (Input.GetKeyDown(KeyCode.Alpha8)) { SetCurrWorld(8); }
+		else if (Input.GetKeyDown(KeyCode.Alpha9)) { SetCurrWorld(9); }
+		else if (Input.GetKeyDown(KeyCode.Minus)) { SetCurrWorld (10); }
 		
 		// Camera controls
-		else if (Input.GetKeyDown (KeyCode.C))  { ResetCamera (); }
+		else if (Input.GetKeyDown (KeyCode.C))  { ResetCameraToNeutral (); }
 		else if (Input.GetKey (KeyCode.LeftArrow))  { MoveCamera(-ARROW_KEYS_PAN_SPEED/mapScale*fTS,0); }
 		else if (Input.GetKey (KeyCode.RightArrow)) { MoveCamera( ARROW_KEYS_PAN_SPEED/mapScale*fTS,0); }
 		else if (Input.GetKey (KeyCode.DownArrow))  { MoveCamera(0,-ARROW_KEYS_PAN_SPEED/mapScale*fTS); }
@@ -834,7 +720,7 @@ public class MapEditor : MonoBehaviour {
 			isGrabPanning = true;
 		}
 		// Update on-mouse-down vectors!
-		cameraPosOnMouseDown = editorCamera.transform.localPosition;
+		cameraPosOnMouseDown = editorCamera.Pos;
 		mousePosScreenOnDown = MousePosScreen;
 	}
 	private void OnMouseUp() {
@@ -844,7 +730,7 @@ public class MapEditor : MonoBehaviour {
 		if (tilesSelected.Count>0 && mouseButton==0 && !CanSelectMultipleTiles()) {
 			// Save all dragging tiles' levelData to file (and clear out any snapshot datas)!
 			foreach (LevelTile tile in tilesSelected) {
-				LevelSaverLoader.UpdateLevelPropertiesInLevelFile(tile.LevelDataRef);
+				LevelSaverLoader.UpdateLevelPropertiesInLevelFile(tile.MyLevelData);
 			}
 			// Update the worlds' bounds!
 			CurrentWorldData.SetAllLevelDatasFundamentalProperties ();
@@ -863,8 +749,8 @@ public class MapEditor : MonoBehaviour {
 	}
 	private void OnMouseDoubleClicked() {
 		// Am I over any level?? Load it!!
-		for (int i=CurrentWorldLevelTiles.Count-1; i>=0; --i) {
-			LevelTile tile = CurrentWorldLevelTiles[i];
+		for (int i=CurrWorldLevelTiles.Count-1; i>=0; --i) {
+			LevelTile tile = CurrWorldLevelTiles[i];
 			if (tile.IsDragReadyMouseOverMe) {
 				OpenGameplayScene(tile.WorldIndex, tile.LevelKey);
 				break;
@@ -893,25 +779,6 @@ public class MapEditor : MonoBehaviour {
 			}
 			allLevelTiles.Clear();
 		}
-	}
-//	private void DestroyAllLevelLinkViews() {
-//		if (levelLinkViews != null) {
-//			for (int i=0; i<levelLinkViews.Count; i++) {
-//				Destroy (levelLinkViews[i].gameObject);
-//			}
-//			levelLinkViews.Clear();
-//		}
-//	}
-	private void OnDestroy() {
-		// Save values!
-		MapEditorSettings.SaveAll();
-
-		// Save where the camera is at!
-		if (editorCamera != null) {
-			SaveStorage.SetFloat (SaveKeys.MapEditor_CameraPosX, editorCamera.transform.localPosition.x);
-			SaveStorage.SetFloat (SaveKeys.MapEditor_CameraPosY, editorCamera.transform.localPosition.y);
-		}
-		SaveStorage.SetFloat (SaveKeys.MapEditor_MapScale, mapScale);
 	}
 
 

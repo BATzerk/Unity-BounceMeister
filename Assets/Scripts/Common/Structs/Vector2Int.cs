@@ -30,9 +30,12 @@ public struct Vector2Int {
 	public override string ToString() { return x+","+y; }
 	public override bool Equals(object o) { return base.Equals (o); } // NOTE: Just added these to appease compiler warnings. I don't suggest their usage (because idk what they even do).
 	public override int GetHashCode() { return base.GetHashCode(); } // NOTE: Just added these to appease compiler warnings. I don't suggest their usage (because idk what they even do).
-
+    
 	public static Vector2Int operator + (Vector2Int a, Vector2Int b) {
 		return new Vector2Int(a.x+b.x, a.y+b.y);
+	}
+	public static Vector2 operator * (Vector2Int v, float m) {
+		return v.ToVector2() * m;
 	}
 	public static bool operator == (Vector2Int a, Vector2Int b) {
 		return a.Equals(b);

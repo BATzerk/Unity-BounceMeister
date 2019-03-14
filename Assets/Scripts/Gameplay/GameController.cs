@@ -30,7 +30,7 @@ public class GameController : MonoBehaviour {
 		// We haven't provided a level to play and this is Gameplay scene? Ok, load up the last played level instead!
 		if (dataManager.currentLevelData==null && SceneHelper.IsGameplayScene()) {
 			int worldIndex = SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex);
-			string levelKey = SaveStorage.GetString(SaveKeys.LastPlayedLevelKey);
+			string levelKey = SaveStorage.GetString(SaveKeys.LastPlayedLevelKey(worldIndex));
 			dataManager.currentLevelData = dataManager.GetLevelData(worldIndex, levelKey, false);
 		}
 
@@ -95,11 +95,11 @@ public class GameController : MonoBehaviour {
 		// Reset things!
 		dataManager.SetCoinsCollected (0);
 		UpdateTimeScale();
-		GameUtils.SetEditorCameraPos(levelData.posGlobal); // conveniently move the editor camera, too!
+		GameUtils.SetEditorCameraPos(levelData.posGlobal); // conveniently move the Unity Editor camera, too!
 
 		// Save what's up!
 		SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, worldIndex);
-		SaveStorage.SetString(SaveKeys.LastPlayedLevelKey, levelKey);
+		SaveStorage.SetString(SaveKeys.LastPlayedLevelKey(worldIndex), levelKey);
 
 		// Use this opportunity to call SAVE with SaveStorage, yo! (This causes a brief stutter, so I'm opting to call it when the game is already loading.)
 		SaveStorage.Save ();
@@ -172,10 +172,9 @@ public class GameController : MonoBehaviour {
 	}
 
 
-	/** Super simple for now. One level per side. */
 	private void OnPlayerEscapeLevelBounds(int sideEscaped) {
 		WorldData currentWorldData = level.WorldDataRef;
-		LevelData nextLevelData = currentWorldData.GetLevelAtSide(level.LevelDataRef, sideEscaped);
+		LevelData nextLevelData = currentWorldData.Debug_GetSomeLevelAtSide(level.LevelDataRef, sideEscaped);
 		if (nextLevelData != null) {
 			Vector2 playerVel = player.Vel; // remember this so we can preserves it, ya see!
 			dataManager.playerPosGlobalOnExitLevel = player.PosGlobal;

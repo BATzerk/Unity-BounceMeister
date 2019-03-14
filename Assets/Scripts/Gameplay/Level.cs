@@ -247,7 +247,7 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 //		Rect viewRect
 		for (int side=0; side<Sides.NumSides; side++) {
 			// No level at this side?? Protect me with an InvisiBounds!
-			if (WorldDataRef.GetLevelAtSide(levelDataRef, side) == null) {
+			if (WorldDataRef.Debug_GetSomeLevelAtSide(levelDataRef, side) == null) {
 				BoxCollider2D col = new GameObject().AddComponent<BoxCollider2D>();
 				col.transform.SetParent(this.transform);
 				col.transform.localScale = Vector3.one;

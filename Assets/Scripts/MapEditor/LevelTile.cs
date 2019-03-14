@@ -2,9 +2,6 @@ using UnityEngine;
 using System.Collections;
 
 public class LevelTile : MonoBehaviour {
-	// References
-	private LevelData levelDataRef;
-	private MapEditor mapEditorRef;
 	// Properties
 	private bool isDragReadyMouseOverMe; // true if the mouse is over me AND able to click and drag LevelTiles.
 	private bool isWithinLevelTileSelectionRect; // true if the LevelTileSelectionRect is over me!
@@ -19,21 +16,24 @@ public class LevelTile : MonoBehaviour {
 	[SerializeField] private LevelTileContents contents=null;
 	[SerializeField] private SpriteRenderer sr_backing=null; // my whole placemat thing.
 	[SerializeField] private SpriteRenderer sr_border=null; // borders still look nice.
+	// References
+    public LevelData MyLevelData { get; private set; }
+	public MapEditor MapEditor { get; private set; }
 
-	
-	
-	// ================================================================
-	//  Getters / Setters
-	// ================================================================
-//	public float BackingXMin { get { return backingXMin; } }
-//	public float BackingXMax { get { return backingXMax; } }
-//	public float BackingYMin { get { return backingYMin; } }
-//	public float BackingYMax { get { return backingYMax; } }
-	public int WorldIndex { get { return levelDataRef.WorldIndex; } }
-	public string LevelKey { get { return levelDataRef.LevelKey; } }
+
+
+    // ================================================================
+    //  Getters / Setters
+    // ================================================================
+    //	public float BackingXMin { get { return backingXMin; } }
+    //	public float BackingXMax { get { return backingXMax; } }
+    //	public float BackingYMin { get { return backingYMin; } }
+    //	public float BackingYMax { get { return backingYMax; } }
+    public int WorldIndex { get { return MyLevelData.WorldIndex; } }
+	public string LevelKey { get { return MyLevelData.LevelKey; } }
 	//	public Rect PlacematRect { get { return new Rect (x-w*0.5f,y-h*0.5f, w,h); } }
-	public Rect BoundsGlobal { get { return levelDataRef.BoundsGlobal; } }
-	public Rect BoundsLocal { get { return levelDataRef.BoundsLocal; } }
+	public Rect BoundsGlobal { get { return MyLevelData.BoundsGlobal; } }
+	public Rect BoundsLocal { get { return MyLevelData.BoundsLocal; } }
 	public bool IsLevelLinkViewSelectedOverMePrimary {
 		get { return isLevelLinkViewSelectedOverMePrimary; }
 		set {
@@ -48,9 +48,8 @@ public class LevelTile : MonoBehaviour {
 			UpdateBorderLine();
 		}
 	}
-	private Vector2 Pos { get { return levelDataRef.PosGlobal; } }
-	public LevelData LevelDataRef { get { return levelDataRef; } }
-	public bool IsDragReadyMouseOverMe {
+	private Vector2 Pos { get { return MyLevelData.PosGlobal; } }
+    public bool IsDragReadyMouseOverMe {
 		get { return isDragReadyMouseOverMe; }
 		set {
 			if (isDragReadyMouseOverMe == value) { return; }
@@ -75,10 +74,10 @@ public class LevelTile : MonoBehaviour {
 	//  Initialize
 	// ================================================================
 	public void Initialize (MapEditor _mapEditorRef, LevelData _levelDataRef, Transform tf_parent) {
-		mapEditorRef = _mapEditorRef;
-		levelDataRef = _levelDataRef;
+		MapEditor = _mapEditorRef;
+		MyLevelData = _levelDataRef;
         GameUtils.ParentAndReset(this.gameObject, tf_parent);
-		this.gameObject.name = "LevelTile " + levelDataRef.levelKey;
+		this.gameObject.name = "LevelTile " + MyLevelData.levelKey;
 //		SetPosAndSizeValues ();
 
 		contents.Initialize (this);
@@ -137,7 +136,7 @@ public class LevelTile : MonoBehaviour {
 	public void ShowContents () {
 		this.gameObject.SetActive(true);// TEMP!! TOtally hiding.
 		contents.Show ();
-		contents.OnMapScaleChanged(mapEditorRef.MapScale);
+		contents.OnMapScaleChanged(MapEditor.MapScale);
 		
 		Color backingColor = new Color(0.3f,0.3f,0.3f);//Colors.GetBGColor_ViewGameplay (Colors.GetBGTheme (levelDataRef.WorldIndex));
 		backingColor = new Color (backingColor.r*1.4f, backingColor.g*1.4f, backingColor.b*1.4f, 0.2f);
@@ -154,7 +153,7 @@ public class LevelTile : MonoBehaviour {
 		}
 		// If my name's got this search string in it, then yeah!
 //		if (levelDataRef.LevelKey.Contains (searchString)) {
-		if (levelDataRef.LevelKey.ToLower().Contains (searchString.ToLower())) {
+		if (MyLevelData.LevelKey.ToLower().Contains (searchString.ToLower())) {
 			isInSearch = true;
 		}
 		// Go ahead and enable/disable the WHOLE thing, mate.
@@ -204,7 +203,7 @@ public class LevelTile : MonoBehaviour {
 			sr_border.color = new Color(1,0.8f,0f, 0.4f);
 		}
 		// Drag-ready mouse over me!
-		else if (mapEditorRef.CanSelectALevelTile() && isDragReadyMouseOverMe) {
+		else if (MapEditor.CanSelectALevelTile() && isDragReadyMouseOverMe) {
 			sr_border.color = new Color(1,0.8f,0f);
 		}
 		// Not being dragged nor over.
@@ -223,7 +222,7 @@ public class LevelTile : MonoBehaviour {
 		contents.OnMapScaleChanged (mapScale);
 	}
 	public void OnMouseEnterBodyCollider() {
-		if (mapEditorRef.CanSelectALevelTile()) {
+		if (MapEditor.CanSelectALevelTile()) {
 			IsDragReadyMouseOverMe = true;
 		}
 	}
@@ -245,14 +244,14 @@ public class LevelTile : MonoBehaviour {
 	private void RegisterMouseInput() {
 		// Clicked me??
 		if (isDragReadyMouseOverMe && Input.GetMouseButtonDown (0)) {
-			mapEditorRef.OnClickLevelTile (this);
+			MapEditor.OnClickLevelTile (this);
 		}
 		
 		// Dragging me??
-		if (isSelected && mapEditorRef.IsDraggingSelectedLevelTiles()) {
+		if (isSelected && MapEditor.IsDraggingSelectedLevelTiles()) {
 			// Update my LevelData's PosGlobal!!
-			Vector2 newPosGlobal = mapEditorRef.MousePosWorldDraggingGrid(mouseClickOffset);
-			levelDataRef.SetPosGlobal (newPosGlobal, false);
+			Vector2 newPosGlobal = MapEditor.MousePosWorldDraggingGrid(mouseClickOffset);
+			MyLevelData.SetPosGlobal (newPosGlobal, false);
 			ApplyPosition();
 		}
 	}

@@ -200,9 +200,9 @@ public class WorldData {
 		}
 		return returnRect;
 	}
-
-	/** FOR NOW, our level-traversal system is dead simple. Nothing's precalculated. We search for the next level the moment we exit one. */
-	public LevelData GetLevelAtSide(LevelData originLD, int side) {
+    
+	/// Use this for debug level-jumping. Will return level at side, irrespective of Player's position.
+	public LevelData Debug_GetSomeLevelAtSide(LevelData originLD, int side) {
 		// Find where a point in this next level would be. Then return the LevelData with that point in it!
 		Vector2Int dir = MathUtils.GetDir(side);
 		Vector2 originSize = originLD.BoundsGlobal.size;
@@ -211,19 +211,30 @@ public class WorldData {
 		// Instead of just looking at one point, put out TWO feelers, as levels can be irregularly aligned.
 		Vector2[] searchPoints = new Vector2[3];
 		if (side==Sides.L || side==Sides.R) {
-			searchPoints[0] = searchOrigin + new Vector2(0, originSize.y*0.4f);
 			searchPoints[1] = searchOrigin;
+			searchPoints[0] = searchOrigin + new Vector2(0, originSize.y*0.4f);
 			searchPoints[2] = searchOrigin - new Vector2(0, originSize.y*0.4f);
 		}
 		else {
-			searchPoints[0] = searchOrigin + new Vector2(originSize.x*0.4f, 0);
 			searchPoints[1] = searchOrigin;
+			searchPoints[0] = searchOrigin + new Vector2(originSize.x*0.4f, 0);
 			searchPoints[2] = searchOrigin - new Vector2(originSize.x*0.4f, 0);
 		}
 		foreach (Vector2 point in searchPoints) {
 			LevelData ldHere = GetLevelWithPoint(point);
 			if (ldHere != null) { return ldHere; }
 		}
+		return null;
+	}
+	/** FOR NOW, our level-traversal system is dead simple. Nothing's precalculated. We search for the next level the moment we exit one. */
+	public LevelData GetLevelAtSide(LevelData originLD, Vector2 playerPosLocal, int side) {
+        // Put playerPosLocal on the EDGE of the origin level-- we only wanna use its x/y value parallel to the next level.
+        playerPosLocal = LockPosOnLevelEdge(originLD, playerPosLocal, side);
+		// Find where a point in this next level would be. Then return the LevelData with that point in it!
+        Vector2Int dir = MathUtils.GetDir(side);
+		Vector2 searchPoint = originLD.posGlobal + playerPosLocal + dir*2f; // look ahead a few feet into the next level area.
+		LevelData ldHere = GetLevelWithPoint(searchPoint);
+		if (ldHere != null) { return ldHere; }
 		return null;
 	}
 	public LevelData GetLevelWithPoint(Vector2 point) {
@@ -234,7 +245,17 @@ public class WorldData {
 			if (bounds.Contains(point)) { return ld; }
 		}
 		return null; // Nah, nobody here.
-	}
+    }
+    /// Takes a LOCAL pos, and sets its x or y to the exact provided side of this level. E.g. Level's 500 tall, and pass in (0,0) and side Top: will return (0,250).
+    public Vector2 LockPosOnLevelEdge(LevelData ld, Vector2 pos, int side) {
+        switch (side) {
+            case Sides.B: return new Vector2(pos.x, ld.BoundsLocal.yMin);
+            case Sides.T: return new Vector2(pos.x, ld.BoundsLocal.yMax);
+            case Sides.L: return new Vector2(ld.BoundsLocal.xMin, pos.y);
+            case Sides.R: return new Vector2(ld.BoundsLocal.xMax, pos.y);
+            default: Debug.LogError("Side not recongized: " + side); return pos; // Hmm.
+        }
+    }
 
 
 	public string GetUnusedLevelKey() {
