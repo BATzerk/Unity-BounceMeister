@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SaveKeys {
-//	public const string SONG_EDITOR_CAMERA_POS_X = "songEditorCameraPosX";
-//	public const string SONG_EDITOR_CAMERA_POS_Y = "songEditorCameraPosY";
-//	public const string SONG_EDITOR_CAMERA_ZOOM_AMOUNT = "songEditorCameraZoomAmount";
+public static class SaveKeys {
 
 	public const string LastPlayedWorldIndex = "LastPlayedWorldIndex";
     public static string LastPlayedLevelKey(int worldIndex) { return "LastPlayedLevelKey_w" + worldIndex; }
 
-	public const string MapEditor_CameraPosX = "MapEditor_CameraPosX";
+    private static string FullLvlKey(Level l) { return "w" + l.WorldIndex + "_" + l.LevelKey; } // e.g. returns "w2_JumpPit".
+
+    public static string DidEatGem(Level level, int gemIndex) { return "DidEatGem_" + FullLvlKey(level) + "_" + gemIndex; }
+
+
+    public const string MapEditor_CameraPosX = "MapEditor_CameraPosX";
 	public const string MapEditor_CameraPosY = "MapEditor_CameraPosY";
 	public const string MapEditor_MapScale = "MapEditor_MapScale";
 	public const string MapEditor_DoShowInstructions = "MapEditor_DoShowInstructions";

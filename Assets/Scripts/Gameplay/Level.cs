@@ -5,8 +5,9 @@ using System.Collections.Generic;
 public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	// Properties
 	private GateChannel[] gateChannels;
-	// References
-	private GameController gameControllerRef;
+    private List<Gem> gems=new List<Gem>();
+    // References
+    private GameController gameControllerRef;
 	private LevelData levelDataRef;
 
 	// Getters (Public)
@@ -53,66 +54,48 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		ld.isConnectedToStart = levelDataRef.isConnectedToStart;
 
 		// -- Props --
-		Battery[] batteries = GameObject.FindObjectsOfType<Battery>();
+		Battery[] batteries = FindObjectsOfType<Battery>();
 		foreach (Battery obj in batteries) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		CameraBounds cameraBounds = GameObject.FindObjectOfType<CameraBounds>();
+		CameraBounds cameraBounds = FindObjectOfType<CameraBounds>();
 		if (cameraBounds != null) { ld.cameraBoundsData = cameraBounds.SerializeAsData(); }
 
-		Crate[] crates = GameObject.FindObjectsOfType<Crate>();
+		Crate[] crates = FindObjectsOfType<Crate>();
 		foreach (Crate obj in crates) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		DamageableGround[] damageableGrounds = GameObject.FindObjectsOfType<DamageableGround>();
+		DamageableGround[] damageableGrounds = FindObjectsOfType<DamageableGround>();
 		foreach (DamageableGround obj in damageableGrounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		Gate[] gates = GameObject.FindObjectsOfType<Gate>();
+		Gate[] gates = FindObjectsOfType<Gate>();
 		foreach (Gate obj in gates) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		GateButton[] gateButtons = GameObject.FindObjectsOfType<GateButton>();
+		GateButton[] gateButtons = FindObjectsOfType<GateButton>();
 		foreach (GateButton obj in gateButtons) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		Gem[] gems = GameObject.FindObjectsOfType<Gem>();
+		Gem[] gems = FindObjectsOfType<Gem>();
 		foreach (Gem obj in gems) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		Ground[] grounds = GameObject.FindObjectsOfType<Ground>();
+		Ground[] grounds = FindObjectsOfType<Ground>();
 		foreach (Ground obj in grounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		LevelDoor[] levelDoors = GameObject.FindObjectsOfType<LevelDoor>();
+		LevelDoor[] levelDoors = FindObjectsOfType<LevelDoor>();
 		foreach (LevelDoor obj in levelDoors) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		Lift[] lifts = GameObject.FindObjectsOfType<Lift>();
+		Lift[] lifts = FindObjectsOfType<Lift>();
 		foreach (Lift obj in lifts) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		Platform[] platforms = GameObject.FindObjectsOfType<Platform>();
+		Platform[] platforms = FindObjectsOfType<Platform>();
 		foreach (Platform obj in platforms) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		PlayerStart[] playerStarts = GameObject.FindObjectsOfType<PlayerStart>();
+		PlayerStart[] playerStarts = FindObjectsOfType<PlayerStart>();
 		foreach (PlayerStart obj in playerStarts) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		Spikes[] spikes = GameObject.FindObjectsOfType<Spikes>();
+		Spikes[] spikes = FindObjectsOfType<Spikes>();
 		foreach (Spikes obj in spikes) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		ToggleGround[] toggleGrounds = GameObject.FindObjectsOfType<ToggleGround>();
+		ToggleGround[] toggleGrounds = FindObjectsOfType<ToggleGround>();
 		foreach (ToggleGround obj in toggleGrounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-//		// Streets
-//		for (int i=0; i<streets.Count; i++) {
-//			System.Type propType = streets[i].GetType();
-//			if (propType == typeof(OneWayStreet)) {
-//				ld.oneWayStreetDatas.Add ((streets[i] as OneWayStreet).SerializeAsData());
-//			}
-//			else if (propType == typeof(MovingStreet)) {
-//				ld.movingStreetDatas.Add ((streets[i] as MovingStreet).SerializeAsData());
-//			}
-//			else if (propType == typeof(SegueStreet)) { } // DON'T serialize SegueStreets, yo. It IS inconsistent, BUT it ensures we don't have mismatched wirings between levels when we're editing stuff.
-//			else {
-//				ld.streetDatas.Add (streets[i].SerializeAsData());
-//			}
-//		}
-//		// Bombs
-//		foreach (Bomb prop in bombs) {
-//			ld.bombDatas.Add (prop.SerializeAsData());
-//		}
+        
 
 		return ld;
 	}
@@ -185,7 +168,8 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 			}
 			else if (propData is GemData) {
 				Gem newProp = Instantiate(rh.Gem).GetComponent<Gem>();
-				newProp.Initialize (this, propData as GemData);
+				newProp.Initialize (this, propData as GemData, gems.Count);
+                gems.Add(newProp);
 			}
 			else if (propData is LevelDoorData) {
 				LevelDoor newProp = Instantiate(rh.LevelDoor).GetComponent<LevelDoor>();

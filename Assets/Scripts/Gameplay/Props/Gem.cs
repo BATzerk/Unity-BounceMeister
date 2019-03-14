@@ -12,9 +12,11 @@ public class Gem : Prop, ISerializableData<GemData> {
 	private Player playerHoldingMe=null; // Player's gotta land on safe ground before they can eat me.
 	// Properties
 	private bool isEaten=false;
+    private bool wasEverEaten=false; // Gems that've been eaten in the past show up as ghosts.
+    private int myIndex; // used to save/load who was eaten.
 
-	// Getters (Private)
-	private float bodyRotation {
+    // Getters (Private)
+    private float bodyRotation {
 		get { return go_body.transform.localEulerAngles.z; }
 		set { go_body.transform.localEulerAngles = new Vector3(0, 0, value); }
 	}
@@ -27,15 +29,24 @@ public class Gem : Prop, ISerializableData<GemData> {
 	// ----------------------------------------------------------------
 	//  Initialize
 	// ----------------------------------------------------------------
-	public void Initialize(Level _myLevel, GemData data) {
+	public void Initialize(Level _myLevel, GemData data, int myIndex) {
 		base.BaseInitialize(_myLevel, data);
-	}
+        this.myIndex = myIndex;
+
+        // Load wasEverEaten!
+        wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatGem(myLevel, myIndex));
+
+        // Set wasEverEaten visuals.
+        if (wasEverEaten) {
+            sr_body.color = new Color(0.2f,0.2f,0.2f, 0.25f);
+        }
+    }
 
 
-	// ----------------------------------------------------------------
-	//  Events
-	// ----------------------------------------------------------------
-	private void OnTriggerEnter2D(Collider2D otherCol) {
+    // ----------------------------------------------------------------
+    //  Events
+    // ----------------------------------------------------------------
+    private void OnTriggerEnter2D(Collider2D otherCol) {
 		// Player??
 		Player player = otherCol.GetComponent<Player>();
 		if (player != null) {//LayerMask.LayerToName(otherCol.gameObject.layer) == Layers.Player) {
@@ -49,8 +60,12 @@ public class Gem : Prop, ISerializableData<GemData> {
 		snapScript.enabled = false;
 	}
 	public void GetEaten() {
-		bodyRotation = 0;
-		isEaten = true;
+        // Update and save!
+        isEaten = true;
+        wasEverEaten = true;
+        SaveStorage.SetBool(SaveKeys.DidEatGem(myLevel, myIndex), true);
+        // Visuals!
+        bodyRotation = 0;
 		myCollider.enabled = false;
 		sr_body.enabled = false;
 		ps_collectedBurst.Emit(15);
@@ -74,7 +89,7 @@ public class Gem : Prop, ISerializableData<GemData> {
 			Mathf.Sin(Time.time*4f)*0.3f);
 		Vector2 targetPos;
 		if (playerHoldingMe != null) {
-			targetPos = playerHoldingMe.PosLocal + new Vector2(0, 2.8f);
+			targetPos = playerHoldingMe.PosLocal + new Vector2(0, 3.3f);
 		}
 		else {
 			targetPos = this.pos;
