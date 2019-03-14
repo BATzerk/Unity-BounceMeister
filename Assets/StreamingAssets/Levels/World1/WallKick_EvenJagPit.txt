@@ -1,26 +1,26 @@
-levelProperties posGlobal:(124.0, 108.0);designerFlag:4
+levelProperties posGlobal:(120.0, 152.0);designerFlag:4
 CameraBounds myRect:(x:-25.00, y:-19.00, width:50.00, height:38.00)
-DamageableGround myRect:(x:-7.00, y:-14.50, width:12.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False;canEatGems:False
-DamageableGround myRect:(x:-7.00, y:-0.50, width:12.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False;canEatGems:False
-DamageableGround myRect:(x:-7.00, y:-7.50, width:12.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False;canEatGems:False
-Gem pos:(-7.0, -12.5)
+DamageableGround myRect:(x:-9.00, y:-7.50, width:12.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;doRegen:False;canEatGems:False
+DamageableGround myRect:(x:-9.00, y:-0.50, width:12.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;doRegen:False;canEatGems:False
+DamageableGround myRect:(x:-9.00, y:-14.50, width:12.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;doRegen:False;canEatGems:False
 Gem pos:(17.0, -13.0)
-Ground myRect:(x:2.00, y:5.00, width:4.00, height:2.00);colorType:0
-Ground myRect:(x:-20.50, y:0.50, width:11.00, height:35.00);colorType:0
-Ground myRect:(x:-12.00, y:18.50, width:28.00, height:3.00);colorType:0
-Ground myRect:(x:0.00, y:-18.50, width:52.00, height:3.00);colorType:0;canEatGems:False
-Ground myRect:(x:20.00, y:-3.00, width:12.00, height:16.00);colorType:0
-Ground myRect:(x:4.50, y:-5.50, width:7.00, height:23.00);colorType:0
-Ground myRect:(x:22.50, y:-14.00, width:7.00, height:12.00);colorType:0
-Ground myRect:(x:16.00, y:-2.00, width:4.00, height:18.00);colorType:0
-Ground myRect:(x:16.50, y:16.50, width:19.00, height:7.00);colorType:0
+Gem pos:(-9.0, -12.5)
+Ground myRect:(x:1.00, y:16.00, width:2.00, height:8.00);colorType:0
 Ground myRect:(x:16.00, y:-17.50, width:20.00, height:5.00);colorType:0;canEatGems:False
-Ground myRect:(x:0.50, y:16.00, width:3.00, height:8.00);colorType:0
+Ground myRect:(x:16.50, y:16.50, width:19.00, height:7.00);colorType:0
+Ground myRect:(x:16.00, y:-2.00, width:4.00, height:18.00);colorType:0
+Ground myRect:(x:22.50, y:-14.00, width:7.00, height:12.00);colorType:0
+Ground myRect:(x:3.50, y:-5.50, width:9.00, height:23.00);colorType:0
+Ground myRect:(x:20.00, y:-3.00, width:12.00, height:16.00);colorType:0
+Ground myRect:(x:0.00, y:-18.50, width:52.00, height:3.00);colorType:0;canEatGems:False
+Ground myRect:(x:-12.00, y:18.50, width:28.00, height:3.00);colorType:0
+Ground myRect:(x:-21.50, y:0.50, width:9.00, height:35.00);colorType:0
+Ground myRect:(x:1.00, y:5.00, width:6.00, height:2.00);colorType:0
 Platform myRect:(x:3.00, y:12.50, width:2.00, height:1.00)
 PlayerStart pos:(15.1, 8.9)
-Spikes myRect:(x:-7.00, y:-16.50, width:16.00, height:1.00);rotation:0
-Spikes myRect:(x:-14.50, y:0.00, width:34.00, height:1.00);rotation:270
-Spikes myRect:(x:0.50, y:-6.00, width:22.00, height:1.00);rotation:90
-Spikes myRect:(x:8.50, y:-8.50, width:1.00, height:1.00);rotation:270
-Spikes myRect:(x:8.50, y:-3.50, width:1.00, height:1.00);rotation:270
 Spikes myRect:(x:8.50, y:1.50, width:1.00, height:1.00);rotation:270
+Spikes myRect:(x:8.50, y:-3.50, width:1.00, height:1.00);rotation:270
+Spikes myRect:(x:8.50, y:-8.50, width:1.00, height:1.00);rotation:270
+Spikes myRect:(x:-1.50, y:-6.00, width:22.00, height:1.00);rotation:90
+Spikes myRect:(x:-16.50, y:0.00, width:34.00, height:1.00);rotation:270
+Spikes myRect:(x:-9.00, y:-16.50, width:16.00, height:1.00);rotation:0
