@@ -151,6 +151,11 @@ public class MapEditor : MonoBehaviour {
 		// Find references
 		editorCamera = FindObjectOfType<MapEditorCamera>();
         MySettings = new MapEditorSettings();
+		
+		// Reload everything right away!! (Otherwise, we'll have to ALT + TAB out of Unity and back in for it to be refreshed.)
+		#if UNITY_EDITOR
+		UnityEditor.AssetDatabase.Refresh();
+		#endif
 
 //		// Set the whole map's scale to be the same as how the game's scale works.
 //		this.transform.localScale = new Vector3 (GameProperties.WORLD_SCALE, GameProperties.WORLD_SCALE, 1);
@@ -352,23 +357,11 @@ public class MapEditor : MonoBehaviour {
 	private void MoveLevelTilesSelectedLevelFilesToTrashFolder() {
 		// No tiles selected? Womp, don't do anything LOL
 		if (tilesSelected.Count == 0) { return; }
-		// Simply delete all the LevelLinks involving these levels.
-		for (int i=0; i<tilesSelected.Count; i++) {
-			LevelData levelDeletingData = tilesSelected[i].MyLevelData;
-			// Move or delete LINKS affected!
-			List<LevelLinkData> linksWithJustThisLevel = CurrentWorldData.GetLevelLinksConnectingLevel (levelDeletingData.LevelKey);
-			foreach (LevelLinkData lld in linksWithJustThisLevel) {
-				CurrentWorldData.RemoveLevelLinkData (lld, false);
-			}
-		}
 		// Move the files!!
 		for (int i=tilesSelected.Count-1; i>=0; --i) {
 //			DeselectLevelTile (levelTilesSelected[i]);
 			CurrentWorldData.MoveLevelFileToTrashFolder (tilesSelected[i].LevelKey);
 		}
-
-		// Tell the worldData to update its LevelLinks file!
-		CurrentWorldData.ResaveLevelLinksFile ();
 		
 		// Reload everything right away!! (Otherwise, we'll have to ALT + TAB out of Unity and back in for it to be refreshed.)
 		#if UNITY_EDITOR
@@ -380,7 +373,7 @@ public class MapEditor : MonoBehaviour {
 		ReloadAllWorldDatasAndScene();
 	}
 
-	private void MoveLevelTilesSelectedAndLinksToWorld (int worldIndexTo) {
+	private void MoveLevelTilesSelectedToWorld (int worldIndexTo) {
 		// No tiles selected? Womp, don't do anything LOL
 		if (tilesSelected.Count == 0) { return; }
 		int worldIndexFrom = tilesSelected[0].WorldIndex; // We can assume all levelTilesSelected are in the same world.
@@ -394,43 +387,16 @@ public class MapEditor : MonoBehaviour {
 		for (int i=0; i<levelDatasMoving.Length; i++) {
 			levelDatasMoving[i] = tilesSelected[i].MyLevelData;
 		}
-		// MOVE LEVELS and UPDATE LINKS!!
+		// MOVE LEVELS!
 		for (int i=0; i<levelDatasMoving.Length; i++) {
 			string levelKey = levelDatasMoving[i].LevelKey;
-			// Move or delete LINKS affected!
-			List<LevelLinkData> linksWithJustThisLevel = GetWorldData (worldIndexFrom).GetLevelLinksConnectingLevel (levelKey);
-			foreach (LevelLinkData lld in linksWithJustThisLevel) {
-				string otherKey = lld.OtherKey (levelKey);
-				// Is the OTHER level coming with? MOVE it!
-				if (LevelUtils.IsLevelDataInArray (levelDatasMoving, otherKey)) {
-					MoveLevelLinkData (lld, worldDataFrom, worldDataTo);
-				}
-				// The other level is NOT coming with?? DELETE it!
-				else {
-					worldDataFrom.RemoveLevelLinkData (lld, false);
-				}
-			}
 			// Otherwise, move that glitterbomb!
 //			DeselectLevelTile (levelTilesSelected[i]);
 			CurrentWorldData.MoveLevelFileToWorldFolder (levelKey, worldIndexTo);
 		}
-
-		// NOW tell both worldDatas affected to update their LevelLinks files! :)
-		worldDataFrom.ResaveLevelLinksFile ();
-		worldDataTo.ResaveLevelLinksFile ();
-		
-		// Reload everything right away!! (Otherwise, we'll have to ALT + TAB out of Unity and back in for it to be refreshed.)
-		#if UNITY_EDITOR
-		UnityEditor.AssetDatabase.Refresh();
-		#endif
 		
 		// Reload this map, yo.
 		ReloadAllWorldDatasAndScene();
-	}
-
-	private void MoveLevelLinkData (LevelLinkData levelLinkData, WorldData worldDataFrom, WorldData worldDataTo) {
-		worldDataTo.AddLevelLinkData (levelLinkData, false);
-		worldDataFrom.RemoveLevelLinkData (levelLinkData, false);
 	}
 
 	
@@ -641,18 +607,18 @@ public class MapEditor : MonoBehaviour {
 
 		// CONTROL/ALT + ____
 		else if (Input.GetKey (KeyCode.LeftAlt) || Input.GetKey (KeyCode.LeftControl) || Input.GetKey (KeyCode.RightAlt) || Input.GetKey (KeyCode.RightControl)) {
-			// CONTROL + [number] = Move all LevelTiles/LevelLinks selected to that world!!
-			if (Input.GetKeyDown (KeyCode.Alpha0)) { MoveLevelTilesSelectedAndLinksToWorld (0); }
-			else if (Input.GetKeyDown (KeyCode.Alpha1)) { MoveLevelTilesSelectedAndLinksToWorld (1); }
-			else if (Input.GetKeyDown (KeyCode.Alpha2)) { MoveLevelTilesSelectedAndLinksToWorld (2); }
-			else if (Input.GetKeyDown (KeyCode.Alpha3)) { MoveLevelTilesSelectedAndLinksToWorld (3); }
-			else if (Input.GetKeyDown (KeyCode.Alpha4)) { MoveLevelTilesSelectedAndLinksToWorld (4); }
-			else if (Input.GetKeyDown (KeyCode.Alpha5)) { MoveLevelTilesSelectedAndLinksToWorld (5); }
-			else if (Input.GetKeyDown (KeyCode.Alpha6)) { MoveLevelTilesSelectedAndLinksToWorld (6); }
-			else if (Input.GetKeyDown (KeyCode.Alpha7)) { MoveLevelTilesSelectedAndLinksToWorld (7); }
-			else if (Input.GetKeyDown (KeyCode.Alpha8)) { MoveLevelTilesSelectedAndLinksToWorld (8); }
-			else if (Input.GetKeyDown (KeyCode.Alpha9)) { MoveLevelTilesSelectedAndLinksToWorld (9); }
-			else if (Input.GetKeyDown (KeyCode.Minus)) { MoveLevelTilesSelectedAndLinksToWorld (10); }
+			// CONTROL + [number] = Move all LevelTiles selected to that world!!
+			if (Input.GetKeyDown (KeyCode.Alpha0)) { MoveLevelTilesSelectedToWorld (0); }
+			else if (Input.GetKeyDown (KeyCode.Alpha1)) { MoveLevelTilesSelectedToWorld (1); }
+			else if (Input.GetKeyDown (KeyCode.Alpha2)) { MoveLevelTilesSelectedToWorld (2); }
+			else if (Input.GetKeyDown (KeyCode.Alpha3)) { MoveLevelTilesSelectedToWorld (3); }
+			else if (Input.GetKeyDown (KeyCode.Alpha4)) { MoveLevelTilesSelectedToWorld (4); }
+			else if (Input.GetKeyDown (KeyCode.Alpha5)) { MoveLevelTilesSelectedToWorld (5); }
+			else if (Input.GetKeyDown (KeyCode.Alpha6)) { MoveLevelTilesSelectedToWorld (6); }
+			else if (Input.GetKeyDown (KeyCode.Alpha7)) { MoveLevelTilesSelectedToWorld (7); }
+			else if (Input.GetKeyDown (KeyCode.Alpha8)) { MoveLevelTilesSelectedToWorld (8); }
+			else if (Input.GetKeyDown (KeyCode.Alpha9)) { MoveLevelTilesSelectedToWorld (9); }
+			else if (Input.GetKeyDown (KeyCode.Minus)) { MoveLevelTilesSelectedToWorld (10); }
 		}
 		
 		// Visibility togglin'

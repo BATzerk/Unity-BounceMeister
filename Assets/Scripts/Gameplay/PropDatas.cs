@@ -48,7 +48,6 @@ public class ToggleGroundData : BaseGroundData {
 public class DamageableGroundData : BaseGroundData {
 	public bool dieFromBounce;
 	public bool dieFromPlayerLeave;
-	public bool dieFromVel;
 	public bool doRegen;
 }
 //public class ConditionalGroundData : BaseGroundData {

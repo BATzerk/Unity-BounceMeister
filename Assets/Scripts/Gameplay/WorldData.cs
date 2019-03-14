@@ -7,7 +7,6 @@ using System.IO;
 public class WorldData {
 	// Components
 	public Dictionary<string, LevelData> levelDatas; // ALL level datas in this world! Loaded up when WE'RE loaded up.
-	public List<LevelLinkData> levelLinkDatas;
 	// Properties
 	public bool isWorldUnlocked;
 	public int worldIndex; // starts at 0.
@@ -31,7 +30,6 @@ public class WorldData {
 		isWorldUnlocked = true;//SaveStorage.GetInt (SaveKeys.IsWorldUnlocked (worldIndex)) == 1;
 
 		LoadAllLevelDatas ();
-		LoadLevelLinkDatas ();
 
 		SetAllLevelDatasFundamentalProperties ();
 //		Debug.Log ("World " + worldIndex + "  lvls: " + LevelUtils.GetNumLevelsConnectedToStart (levelDatas) + "   stars: " + LevelUtils.GetNumRegularStarsInLevelsConnectedToStart (levelDatas) + "   (" + LevelUtils.GetNumSecretStarsInLevelsConnectedToStart (levelDatas) + " secret stars)");
@@ -92,7 +90,6 @@ public class WorldData {
 	public bool IsWorldUnlocked { get { return isWorldUnlocked; } }
 	public int WorldIndex { get { return worldIndex; } }
 	public Dictionary<string, LevelData> LevelDatas { get { return levelDatas; } }
-	public List<LevelLinkData> LevelLinkDatas { get { return levelLinkDatas; } }
 	public Rect BoundsRectAllLevels { get { return boundsRectAllLevels; } }
 	public Rect BoundsRectPlayableLevels { get { return boundsRectPlayableLevels; } }
 
@@ -107,30 +104,13 @@ public class WorldData {
 			return null;
 		}
 	}
-//	public LevelLinkData GetLevelLinkDataConnectingLevels(string levelKeyA,string levelKeyB) {
-//		for (int i=0; i<levelLinkDatas.Count; i++) {
-//			if (levelLinkDatas[i].DoesLinkLevels(levelKeyA,levelKeyB)) {
-//				return levelLinkDatas[i];
-//			}
-//		}
-//		return null; // Whoops! There aren't LevelLinkDatas that connect THESE two levels.
-//	}
-	public List<LevelLinkData> GetLevelLinksConnectingLevel (string levelKey) {
-		List<LevelLinkData> returnList = new List<LevelLinkData> ();
-		for (int i=0; i<levelLinkDatas.Count; i++) {
-			if (levelLinkDatas[i].DoesLinkLevel (levelKey)) {
-				returnList.Add (levelLinkDatas[i]);
-			}
-		}
-		return returnList;
-	}
 	/** Look through every link and see if the provided key is used in ANY link. */
 	public bool DoesLevelLinkToAnotherLevel(string levelKey) {
-		for (int i=0; i<levelLinkDatas.Count; i++) {
-			if (levelLinkDatas[i].DoesLinkLevel(levelKey)) { // It's used in one! Return true.
-				return true;
-			}
-		}
+		//for (int i=0; i<levelLinkDatas.Count; i++) {
+		//	if (levelLinkDatas[i].DoesLinkLevel(levelKey)) { // It's used in one! Return true.
+		//		return true;
+		//	}
+		//}
 		return false; // It's not used in any. Return false.
 	}
 
@@ -139,14 +119,14 @@ public class WorldData {
 		// Default all falses.
 		bool[] isLinkAtSides = new bool[4];
 		for (int i=0; i<isLinkAtSides.Length; i++) isLinkAtSides[i] = false;
-		// Look through all levelLinkDatas and check how this dude compares to others!
-		for (int i=0; i<levelLinkDatas.Count; i++) {
-			LevelLinkData linkData = levelLinkDatas[i]; // For easier readability.
-			if (linkData.DoesLinkLevel(levelKey)) { // This link contains this level!
-				int relativeSide = GetSideLevelIsOn (levelKey, linkData.OtherKey(levelKey));
-				isLinkAtSides[relativeSide] = true;
-			}
-		}
+		//// Look through all levelLinkDatas and check how this dude compares to others!
+		//for (int i=0; i<levelLinkDatas.Count; i++) {
+		//	LevelLinkData linkData = levelLinkDatas[i]; // For easier readability.
+		//	if (linkData.DoesLinkLevel(levelKey)) { // This link contains this level!
+		//		int relativeSide = GetSideLevelIsOn (levelKey, linkData.OtherKey(levelKey));
+		//		isLinkAtSides[relativeSide] = true;
+		//	}
+		//}
 		return isLinkAtSides;
 	}
 
@@ -157,34 +137,6 @@ public class WorldData {
 		return MathUtils.GetSideRectIsOn (levelABounds, levelBBounds);
 	}
 
-	public List<LevelData> GetLevelDatasConnectedToLevelData (LevelData sourceLevelData) {
-		List<LevelData> returnLevelDatas = new List<LevelData> ();
-		// Look through all levelLinkDatas and find the levels this dude connects to!
-		for (int i=0; i<levelLinkDatas.Count; i++) {
-			LevelLinkData linkData = levelLinkDatas[i]; // For easier readability.
-			if (linkData.DoesLinkLevel(sourceLevelData.LevelKey)) { // This link contains this level! Boom, child!
-				// Add the OTHER level of this link!
-				string otherLevelDataKey = linkData.OtherKey(sourceLevelData.LevelKey);
-				LevelData otherLevelData = GetLevelData (otherLevelDataKey);
-				if (otherLevelData != null) {
-					returnLevelDatas.Add (otherLevelData);
-				}
-				else {
-					Debug.LogError ("Whoa! We're trying to access a nonexistent LevelData: " + otherLevelDataKey);
-				}
-			}
-		}
-		return returnLevelDatas;
-	}
-
-
-
-	private string MakeLevelLinkFileLine(LevelLinkData levelLinkData) {
-		string levelAKey = levelLinkData.Key (true);
-		string levelBKey = levelLinkData.Key (false);
-		string returnString = levelAKey+","+levelBKey;//  +  ","  +  connectingPosA.x+","+connectingPosA.y + "," + connectingPosB.x+","+connectingPosB.y;
-		return returnString;
-	}
 	public Vector2 GetBrandNewLevelPos () {
 		// Return where the MapEditor camera was last looking!!
 		return new Vector2 (SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosX), SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosY));
@@ -256,7 +208,6 @@ public class WorldData {
             default: Debug.LogError("Side not recongized: " + side); return pos; // Hmm.
         }
     }
-
 
 	public string GetUnusedLevelKey() {
 		string prefix = "NewLevel";
@@ -370,134 +321,28 @@ public class WorldData {
 
 
 	// ================================================================
-	//  LevelLinkDatas
-	// ================================================================
-	private void LoadLevelLinkDatas() {
-		/*
-		// Destroy all LevelLinkDatas if they already exist
-		RemoveAllLevelLinkDatas ();
-		// Make empty bucket for now
-		levelLinkDatas = new List<LevelLinkData>();
-
-		// Load the file via our Resources.Load function! (So it can work as a build, not just in the editor.)
-		string fileName = GetLevelLinksFileName ();
-		if ((Resources.Load (fileName) as TextAsset) == null) {  // Just a lil' check.
-			Debug.LogWarning("Hey! There's no LevelLinks file for this world: " + worldIndex);
-			return;
-		}
-		string textFile = (Resources.Load(fileName) as TextAsset).ToString();
-
-		string filePath = FilePaths.LevelLinksFileAddress(worldIndex);
-		if (!File.Exists(filePath)) {
-			Debug.LogWarning("Hey! There's no LevelLinks file for this world: " + worldIndex);
-			return;
-		}
-
-		StreamReader file = File.OpenText(filePath);
-		string wholeFile = file.ReadToEnd();
-		file.Close();
-		string[] levelLinkFile = TextUtils.GetStringArrayFromStringWithLineBreaks(wholeFile, System.StringSplitOptions.None);
-
-		for (int i=0; i<levelLinkFile.Length; i++) {
-			string lineString = levelLinkFile[i];
-			if (lineString.Length <= 0) { continue; } // Empty line? Skip it!
-			string[] data = lineString.Split(',');
-			if (data.Length < 6) {
-				Debug.LogError ("Invalid LevelLinks line (needs at least 6 params): " + lineString);
-				continue;
-			}
-			string levelKeyA = data[0];
-			string levelKeyB = data[1];
-//			Vector2 connectingPosA = new Vector2(TextUtils.ParseFloat(data[2]),TextUtils.ParseFloat(data[3]));
-//			Vector2 connectingPosB = new Vector2(TextUtils.ParseFloat(data[4]),TextUtils.ParseFloat(data[5]));
-//			bool isSecretLink = data.Length > 6 && bool.Parse(data[6]);
-			AddLevelLinkData(levelKeyA,levelKeyB, false);//, connectingPosA,connectingPosB, false);
-		}
-		*/
-	}
-	private int GetNumLevelLinkDatasConnectingLevels(string levelKeyA,string levelKeyB) {
-		int total = 0;
-		for (int i=0; i<levelLinkDatas.Count; i++) {
-			if (levelLinkDatas[i].DoesLinkLevels(levelKeyA,levelKeyB)) {
-				total ++;
-			}
-		}
-		return total;
-	}
-
-	private void RemoveAllLevelLinkDatas() {
-		if (levelLinkDatas == null) { return; }
-		for (int i=levelLinkDatas.Count-1; i>=0; --i) {
-			RemoveLevelLinkData(levelLinkDatas[i], false);
-		}
-	}
-	/** For ChallengeMode. Any LevelLinkData that connects a level that's NOT one of my LevelDatas will be removed. */
-	private void RemoveLevelLinkDatasNotConnectedToKnownLevels () {
-		for (int i=levelLinkDatas.Count-1; i>=0; --i) {
-			// If either of these levels in the link isn't in my list of levels, remove the link!
-			if (GetLevelData (levelLinkDatas[i].LevelAKey)==null || GetLevelData (levelLinkDatas[i].LevelBKey)==null) {
-				RemoveLevelLinkData (levelLinkDatas[i], false);
-			}
-		}
-	}
-
-	public LevelLinkData AddLevelLinkData (LevelLinkData levelLinkData, bool doUpdateFile) {
-		return AddLevelLinkData (levelLinkData.LevelAKey,levelLinkData.LevelBKey, doUpdateFile);//, levelLinkData.ConnectingPosA,levelLinkData.ConnectingPosB, doUpdateFile);
-	}
-	public LevelLinkData AddLevelLinkData (string levelKeyA,string levelKeyB, bool doUpdateFile){//, Vector2 connectingPosA,Vector2 connectingPosB, bool doUpdateFile) {
-//		int levelLinkID = GetNumLevelLinkDatasConnectingLevels(levelKeyA,levelKeyB); // To make the new LevelLinkData, we need to know how many others already exist that connect these two levels.
-		LevelLinkData newLevelLinkData = new LevelLinkData(levelKeyA,levelKeyB);
-		levelLinkDatas.Add(newLevelLinkData);
-		// Resave file!
-		if (doUpdateFile) { ResaveLevelLinksFile(); }
-		// Return the created data in case we need it.
-		return newLevelLinkData;
-	}
-	public void RemoveLevelLinkData (LevelLinkData levelLinkDataToRemove, bool doUpdateFile) {
-		// Remove from BUCKET
-		levelLinkDatas.Remove(levelLinkDataToRemove);
-		//		// Tell the LevelLink it's been destroyed (so it can take care of its references)!
-		//		levelLinkDataToRemove.Destroy ();
-		// Resave file!
-		if (doUpdateFile) { ResaveLevelLinksFile(); }
-	}
-
-
-	public void ResaveLevelLinksFile() {
-		// Remake the whole file afresh!
-		string levelLinksSaveFileName = FilePaths.LevelLinksFileAddress (worldIndex);
-		StreamWriter sr = File.CreateText(levelLinksSaveFileName);
-		for (int i=0; i<levelLinkDatas.Count; i++) {
-			sr.WriteLine(MakeLevelLinkFileLine(levelLinkDatas[i]));
-		}
-		sr.Close();
-
-		// Reload the text file right away!! (Otherwise, we'll have to ALT + TAB out of Unity and back in for it to be refreshed.)
-		#if UNITY_EDITOR
-		UnityEditor.AssetDatabase.ImportAsset (levelLinksSaveFileName);
-		#endif
-	}
-
-
-
-
-	// ================================================================
 	//	Level Files
 	// ================================================================
-	public void MoveLevelFileToWorldFolder (string levelKey, int worldIndexTo) {
-		string destFileName = FilePaths.WorldFileAddress (worldIndexTo) + levelKey + ".txt";
-		MoveLevelFileToFolder (levelKey, destFileName);
+	public void MoveLevelFileToWorldFolder(string levelKey, int worldIndexTo) {
+		string destDirectory = FilePaths.WorldFileAddress(worldIndexTo);
+		MoveLevelFileToFolder(levelKey, destDirectory);
 	}
-	public void MoveLevelFileToTrashFolder (string levelKey) {
-		string destFileName = FilePaths.WorldTrashFileAddress (worldIndex) + levelKey + ".txt";
-		MoveLevelFileToFolder (levelKey, destFileName);
+	public void MoveLevelFileToTrashFolder(string levelKey) {
+		string destDirectory = FilePaths.WorldTrashFileAddress(worldIndex);
+		MoveLevelFileToFolder(levelKey, destDirectory);
 	}
-	private void MoveLevelFileToFolder (string levelKey, string destFileName) {
-		string sourceFileName = FilePaths.WorldFileAddress (worldIndex) + levelKey + ".txt";
+	private void MoveLevelFileToFolder (string levelKey, string destDirectory) {
+		string sourceNameFull = FilePaths.WorldFileAddress(worldIndex) + levelKey + ".txt";
+        // Directory doesn't exist? Make it!
+        if (!Directory.Exists(destDirectory)) {
+            Directory.CreateDirectory(destDirectory);
+            Debug.LogWarning("Created directory: \"" + destDirectory + "\"");
+        }
+        string destNameFull = destDirectory + levelKey + ".txt";
 		try {
-			File.Move (sourceFileName, destFileName);
+			File.Move(sourceNameFull, destNameFull);
 		}
-		catch (System.Exception e) { Debug.LogError ("Error moving level file to world folder: " + sourceFileName + " to " + destFileName + ". " + e.ToString ()); }
+		catch (System.Exception e) { Debug.LogError ("Error moving level file to world folder: " + sourceNameFull + " to " + destNameFull + ". " + e.ToString ()); }
 	}
 
 

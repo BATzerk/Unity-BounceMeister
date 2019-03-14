@@ -84,13 +84,13 @@ public class LevelUtils {
 		// Use me use me!
 		startingLevelData.WasUsedInSearchAlgorithm = true;
 		// Arright, get ALL the levels that connect to the startingLevelData!
-		List<LevelData> neighborLevelDatas = worldDataRef.GetLevelDatasConnectedToLevelData (startingLevelData);
-		// Add the remaining ones that HAVEN'T yet been used in this search to the list AND do this function again for each of those unused neighboring levels!
-		for (int i=0; i<neighborLevelDatas.Count; i++) {
-			if (neighborLevelDatas[i].WasUsedInSearchAlgorithm) { continue; }// || (neighborLevelDatas[i].isSecretLevel && !neighborLevelDatas[i].hasPlayerBeenHere)
-			levelDatas.Add (neighborLevelDatas[i]);
-			RecursivelyAddLevelDatasConnectedToLevelData (worldDataRef, ref levelDatas, neighborLevelDatas[i]);
-		}
+		//List<LevelData> neighborLevelDatas = worldDataRef.GetLevelDatasConnectedToLevelData (startingLevelData);
+		//// Add the remaining ones that HAVEN'T yet been used in this search to the list AND do this function again for each of those unused neighboring levels!
+		//for (int i=0; i<neighborLevelDatas.Count; i++) {
+		//	if (neighborLevelDatas[i].WasUsedInSearchAlgorithm) { continue; }// || (neighborLevelDatas[i].isSecretLevel && !neighborLevelDatas[i].hasPlayerBeenHere)
+		//	levelDatas.Add (neighborLevelDatas[i]);
+		//	RecursivelyAddLevelDatasConnectedToLevelData (worldDataRef, ref levelDatas, neighborLevelDatas[i]);
+		//}
 	}
 
 	public static List<LevelData> GetLevelsConnectedToLevel (WorldData worldDataRef, LevelData sourceLevel, bool doIncludeSourceLevel=true) {
