@@ -63,8 +63,8 @@ abstract public class Player : PlatformCharacter {
 	}
 	private bool MayEatGems() {
 		return myWhiskers.MayEatGems();
-	}
-	override protected float HorzMoveInputVelXDelta() {
+    }
+    override protected float HorzMoveInputVelXDelta() {
 		if (InputController.Instance==null) { return 0; } // for building at runtime.
 		if (inputAxis.x == 0) { return 0; }
 		float dirX = MathUtils.Sign(inputAxis.x);
@@ -133,11 +133,11 @@ abstract public class Player : PlatformCharacter {
 
 
 
-	// ----------------------------------------------------------------
-	//  Update
-	// ----------------------------------------------------------------
+    // ----------------------------------------------------------------
+    //  Update
+    // ----------------------------------------------------------------
 	private void Update () {
-		if (Time.timeScale == 0) { return; } // No time? No dice.
+		if (!DoUpdate()) { return; } // Not supposed to Update? No dice.
 
 		AcceptJumpInput();
 		UpdatePostDamageImmunity();
@@ -171,9 +171,9 @@ abstract public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	virtual protected void FixedUpdate () {
 		if (InputController.Instance == null) { return; } // Safety check for runtime compile.
+        if (!DoUpdate()) { return; } // Not supposed to Update? No dice.
 
-		if (Time.timeScale == 0) { return; } // No time? No dice.
-		Vector2 ppos = pos;
+        Vector2 ppos = pos;
 		pvel = vel;
 
 		ApplyFriction();

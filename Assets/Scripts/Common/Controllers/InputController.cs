@@ -22,8 +22,9 @@ public class InputController : MonoBehaviour {
 	}
 	public bool IsDoubleClick { get { return isDoubleClick; } }
 	public Vector3 MousePosScreen { get { return (Input.mousePosition - new Vector3(Screen.width,Screen.height,0)*0.5f) / ScreenHandler.ScreenScale; } }
+    public Vector2 MousePosWorld { get { return Camera.main.ScreenToWorldPoint(Input.mousePosition); } }
 
-	static public int GetMouseButtonDown() {
+    static public int GetMouseButtonDown() {
 		if (Input.GetMouseButtonDown(0)) return 0;
 		if (Input.GetMouseButtonDown(1)) return 1;
 		if (Input.GetMouseButtonDown(2)) return 2;

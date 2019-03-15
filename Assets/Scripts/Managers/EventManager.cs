@@ -18,12 +18,11 @@ public class EventManager {
 	public event NoParamAction EditorSaveLevelEvent;
 	public event NoParamAction ScreenSizeChangedEvent;
 	public event NoParamAction CoinsCollectedChangedEvent;
+    public event BoolAction SetIsEditModeEvent;
 	public event BoolAction SetPausedEvent;
 	public event CoinAction CoinCollectedEvent;
 	public event LevelAction StartLevelEvent;
 	public event IntAction PlayerEscapeLevelBoundsEvent;
-	public event PlayerAction PlayerDashEvent;
-	public event PlayerAction PlayerDashEndEvent;
 	public event PlayerAction PlayerDieEvent;
 	public event PlayerAction PlayerJumpEvent;
 //	public event PlayerAction PlayerSpendPlungeEvent;
@@ -35,15 +34,14 @@ public class EventManager {
 	public void OnScreenSizeChanged () { if (ScreenSizeChangedEvent!=null) { ScreenSizeChangedEvent (); } }
 	// Game Events
 	public void OnEditorSaveLevel() { if (EditorSaveLevelEvent!=null) { EditorSaveLevelEvent(); } }
-	public void OnSetPaused(bool isPaused) { if (SetPausedEvent!=null) { SetPausedEvent(isPaused); } }
-	public void OnStartLevel(Level level) { if (StartLevelEvent!=null) { StartLevelEvent(level); } }
+    public void OnSetIsEditMode(bool isEditMode) { if (SetIsEditModeEvent!=null) { SetIsEditModeEvent(isEditMode); } }
+    public void OnSetPaused(bool isPaused) { if (SetPausedEvent!=null) { SetPausedEvent(isPaused); } }
+    public void OnStartLevel(Level level) { if (StartLevelEvent!=null) { StartLevelEvent(level); } }
 
 	public void OnCoinCollected(Coin coin) { if (CoinCollectedEvent!=null) { CoinCollectedEvent(coin); } }
 	public void OnCoinsCollectedChanged() { if (CoinsCollectedChangedEvent!=null) { CoinsCollectedChangedEvent(); } }
 
 	public void OnPlayerEscapeLevelBounds(int side) { if (PlayerEscapeLevelBoundsEvent!=null) { PlayerEscapeLevelBoundsEvent(side); } }
-	public void OnPlayerDash(Player player) { if (PlayerDashEvent!=null) { PlayerDashEvent(player); } }
-	public void OnPlayerDashEnd(Player player) { if (PlayerDashEndEvent!=null) { PlayerDashEndEvent(player); } }
 	public void OnPlayerDie(Player player) { if (PlayerDieEvent!=null) { PlayerDieEvent(player); } }
 	public void OnPlayerJump(Player player) { if (PlayerJumpEvent!=null) { PlayerJumpEvent(player); } }
 //	public void OnPlayerSpendBounce(Player player) { if (PlayerSpendPlungeEvent!=null) { PlayerSpendPlungeEvent(player); } }

@@ -38,7 +38,10 @@ public class PlatformCharacter : Collidable {
 	public bool feetOnGround() { return myWhiskers.OnSurface(Sides.B) && vel.y<=0; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
 	// Getters (Protected)
 	protected bool IsInvincible { get { return StartingHealth < 0; } }
-	protected int sideTouchingWall() {
+    public bool DoUpdate() { // If this is FALSE, I won't do Update nor FixedUpdate.
+        return Time.timeScale > 0; // No time? No dice.
+    }
+    protected int sideTouchingWall() {
 		if (myWhiskers.OnSurface(Sides.L)) { return -1; }
 		if (myWhiskers.OnSurface(Sides.R)) { return  1; }
 		return 0;

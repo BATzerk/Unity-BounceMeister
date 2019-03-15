@@ -46,9 +46,10 @@ public class ToggleGroundData : BaseGroundData {
 	public bool startsOn;
 }
 public class DamageableGroundData : BaseGroundData {
+	public bool doRegen;
 	public bool dieFromBounce;
 	public bool dieFromPlayerLeave;
-	public bool doRegen;
+    public bool dieFromVel;
 }
 //public class ConditionalGroundData : BaseGroundData {
 //	public bool isOffWhenPlungeSpent;

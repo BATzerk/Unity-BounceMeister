@@ -70,7 +70,7 @@ abstract public class PlayerBody : MonoBehaviour {
 	//  Update
 	// ----------------------------------------------------------------
 	private void Update() {
-		if (Time.timeScale == 0) { return; } // No time? No dice.
+		if (!myPlayer.DoUpdate()) { return; } // Not updating? No dice.
 
 		if (myPlayer.IsPostDamageImmunity) {
 			alpha = Random.Range(0.2f, 0.6f);

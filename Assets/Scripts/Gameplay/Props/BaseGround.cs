@@ -4,13 +4,13 @@ using UnityEngine;
 
 [RequireComponent (typeof(SpriteRenderer))]
 abstract public class BaseGround : Collidable {
+	// Properties
+	[SerializeField] private bool canEatGems = true; // teechnically, it's "Can Player eat Gems while on me?" If false, Player WON'T collect the Gem they're holding when they land on me!
+//	[SerializeField] private bool doDisappearAfterBounces = false;
+//	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
 	// Components
 	[SerializeField] protected SpriteRenderer bodySprite=null;
 	[SerializeField] protected BoxCollider2D myCollider=null;
-	// Properties
-	[SerializeField] private bool canEatGems = true; // technically "can Player eat Gems while on me." If this is false, a Player WON'T collect the Gem they're holding when they land on me!
-//	[SerializeField] private bool doDisappearAfterBounces = false;
-//	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
 
 	// Getters (Public)
 	public bool CanEatGems { get { return canEatGems; } }

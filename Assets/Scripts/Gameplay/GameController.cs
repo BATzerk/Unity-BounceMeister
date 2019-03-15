@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
-	// Properties
-	private bool isPaused = false;
-	private bool isSlowMo = false;
-	// References
-	[SerializeField] private Transform tf_world;
+    // Components
+    [SerializeField] private GameTimeController gameTimeController=null;
+    // References
+    [SerializeField] private Transform tf_world;
 	private Player player=null;
 	private Level level=null;
 
@@ -16,11 +15,7 @@ public class GameController : MonoBehaviour {
 
 	private DataManager dataManager { get { return GameManagers.Instance.DataManager; } }
 	private EventManager eventManager { get { return GameManagers.Instance.EventManager; } }
-	private InputController inputController { get { return InputController.Instance; } }
 
-	private Vector2 mousePosWorld() {
-		return Camera.main.ScreenToWorldPoint(Input.mousePosition);
-	}
 
 
 	// ----------------------------------------------------------------
@@ -59,19 +54,18 @@ public class GameController : MonoBehaviour {
 			MakePlayer(PlayerTypes.Alph, Vector2.zero);
 			level.InitializeAsPremadeLevel(this);
 			dataManager.SetCoinsCollected (0);
-			UpdateTimeScale();
 			eventManager.OnStartLevel(level);
 		}
 
 		// Add event listeners!
 		eventManager.PlayerDieEvent += OnPlayerDie;
-		eventManager.PlayerEscapeLevelBoundsEvent += OnPlayerEscapeLevelBounds;
-	}
+        eventManager.PlayerEscapeLevelBoundsEvent += OnPlayerEscapeLevelBounds;
+    }
 	private void OnDestroy() {
 		// Remove event listeners!
 		eventManager.PlayerDieEvent -= OnPlayerDie;
 		eventManager.PlayerEscapeLevelBoundsEvent -= OnPlayerEscapeLevelBounds;
-	}
+    }
 
 
     // ----------------------------------------------------------------
@@ -94,7 +88,6 @@ public class GameController : MonoBehaviour {
 
 		// Reset things!
 		dataManager.SetCoinsCollected (0);
-		UpdateTimeScale();
 		GameUtils.SetEditorCameraPos(levelData.posGlobal); // conveniently move the Unity Editor camera, too!
 
 		// Save what's up!
@@ -102,7 +95,7 @@ public class GameController : MonoBehaviour {
 		SaveStorage.SetString(SaveKeys.LastPlayedLevelKey(worldIndex), levelKey);
 
 		// Use this opportunity to call SAVE with SaveStorage, yo! (This causes a brief stutter, so I'm opting to call it when the game is already loading.)
-		SaveStorage.Save ();
+		SaveStorage.Save();
 		// Dispatch the post-function event!
 		eventManager.OnStartLevel(level);
 	}
@@ -187,22 +180,6 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-
-
-	// ----------------------------------------------------------------
-	//  Doers - Gameplay
-	// ----------------------------------------------------------------
-    private void ReloadScene() { SceneHelper.ReloadScene(); }
-	private void TogglePause () {
-		isPaused = !isPaused;
-		UpdateTimeScale ();
-		eventManager.OnSetPaused(isPaused);
-	}
-	private void UpdateTimeScale () {
-		if (isPaused) { Time.timeScale = 0; }
-		else if (isSlowMo) { Time.timeScale = 0.2f; }
-		else { Time.timeScale = 1; }
-	}
 //	public Vector3 GetLevelDoorPos(string levelDoorID) {
 //		LevelDoor[] allDoors = GameObject.FindObjectsOfType<LevelDoor>();
 //		LevelDoor correctDoor = null; // I'll specify next.
@@ -226,84 +203,69 @@ public class GameController : MonoBehaviour {
 	//  Update
 	// ----------------------------------------------------------------
 	private void Update () {
-		RegisterMouseInput();
-		RegisterButtonInput ();
+		RegisterButtonInput();
 	}
-
-	private void RegisterMouseInput() {
-		// ~~~~ DEBUG ~~~~
-		if (Input.GetMouseButton(1) && player!=null) {
-			player.SetPosGlobal(mousePosWorld());
-		}
-	}
+    
 	private void RegisterButtonInput () {
 		bool isKey_alt = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
 		bool isKey_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 		bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
-//		// Game Flow
-//		if (Input.GetKeyDown(KeyCode.Q)) {
-//			OpenScene(SceneNames.LevelSelect);
-//		}
-
+        // ESCAPE = Toggle Pause!
 		if (Input.GetKeyDown(KeyCode.Escape)) {
-			TogglePause();
+            gameTimeController.TogglePause();
 		}
 
 		// ~~~~ DEBUG ~~~~
-		if (Input.GetKeyDown(KeyCode.Equals)) { Debug_JumpToLevelAtSide(Sides.T); return; }
+        // Level-Jumping
+		if (Input.GetKeyDown(KeyCode.Equals))            { Debug_JumpToLevelAtSide(Sides.T); return; }
 		else if (Input.GetKeyDown(KeyCode.RightBracket)) { Debug_JumpToLevelAtSide(Sides.R); return; }
-		else if (Input.GetKeyDown(KeyCode.Quote)) { Debug_JumpToLevelAtSide(Sides.B); return; }
-		else if (Input.GetKeyDown(KeyCode.LeftBracket)) { Debug_JumpToLevelAtSide(Sides.L); return; }
-		else if (Input.GetKeyDown(KeyCode.J)) {
-			SceneHelper.OpenScene(SceneNames.LevelJump);
+		else if (Input.GetKeyDown(KeyCode.Quote))        { Debug_JumpToLevelAtSide(Sides.B); return; }
+		else if (Input.GetKeyDown(KeyCode.LeftBracket))  { Debug_JumpToLevelAtSide(Sides.L); return; }
+        // Scene Changing
+        else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.R)) {
+            SceneHelper.ReloadScene(); return;
+        }
+        else if (Input.GetKeyDown(KeyCode.J)) {
+			SceneHelper.OpenScene(SceneNames.LevelJump); return;
 		}
 		else if (Input.GetKeyDown(KeyCode.M)) {
-		    SceneHelper.OpenScene(SceneNames.MapEditor);
+		    SceneHelper.OpenScene(SceneNames.MapEditor); return;
 		}
-		else if (Input.GetKeyDown(KeyCode.Return)) {
-			SceneHelper.ReloadScene();
-			return;
+        // S = Save level as text file!
+        else if (Input.GetKeyDown(KeyCode.S)) {
+            LevelSaverLoader.SaveLevelFile(level);
+        }
+        // T = Toggle Slow-mo
+        else if (Input.GetKeyDown(KeyCode.T)) {
+            gameTimeController.ToggleSlowMo();
 		}
-		else if (Input.GetKeyDown(KeyCode.T)) {
-			isSlowMo = !isSlowMo;
-			UpdateTimeScale();
-		}
-
+        // A, B, C = Switch Characters
 		else if (Input.GetKeyDown(KeyCode.A)) { MakePlayer(PlayerTypes.Alph, level.LevelDataRef); }
 		else if (Input.GetKeyDown(KeyCode.B)) { MakePlayer(PlayerTypes.Britta, level.LevelDataRef); }
 		else if (Input.GetKeyDown(KeyCode.C)) { MakePlayer(PlayerTypes.Coco, level.LevelDataRef); }
 
-		else if (Input.GetKeyDown(KeyCode.S)) { // S = Save level as text file!
-			LevelSaverLoader.SaveLevelFile(level);
-		}
-		else if (Input.GetKeyDown(KeyCode.R)) { // R = Reload current Level.
-			StartGameAtLevel(level.LevelDataRef);
-		}
 
 		// ALT + ___
-		if (isKey_alt) {
-		}
-		// CONTROL + ___
-		if (isKey_control) {
+		if (isKey_alt) { }
+        // SHIFT + ___
+        if (isKey_shift) { }
+        // CONTROL + ___
+        if (isKey_control) {
             // CONTROL + DELETE = Clear all save data!
             if (Input.GetKeyDown(KeyCode.Delete)) {
                 GameManagers.Instance.DataManager.ClearAllSaveData();
                 SceneHelper.ReloadScene();
                 return;
             }
-			// CONTROL + N = Open new level!
+			// CONTROL + N = Create/Start new level!
 			if (Input.GetKeyDown(KeyCode.N)) {
 				StartNewBlankLevel();
 			}
-
 			// CONTROL + SHIFT + X = Flip Horizontal!
 			if (isKey_shift && Input.GetKeyDown(KeyCode.X)) {
 				if (level != null) { level.FlipHorz(); }
 			}
-		}
-		// SHIFT + ___
-		if (isKey_shift) {
 		}
 	}
 
@@ -313,8 +275,12 @@ public class GameController : MonoBehaviour {
 	//  Events
 	// ----------------------------------------------------------------
 	private void OnPlayerDie(Player _player) {
-		Invoke("ReloadScene", 1f);
+		StartCoroutine(Coroutine_ReloadSceneDelayed());
 	}
+    private IEnumerator Coroutine_ReloadSceneDelayed() {
+        yield return new WaitForSecondsRealtime(1f);
+        SceneHelper.ReloadScene();
+    }
 
 
 

@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageableGround : BaseGround, ISerializableData<DamageableGroundData> {
+    // Constants
+    const float RegenTime = 2.2f; // how long it takes for me to reappear after I've disappeared.
+    const float BreakVel = 0.6f; // how hard Player must hit me for me to break.
     // Components
     [SerializeField] public BoxCollider2D MyCollider=null;
     [SerializeField] private SpriteRenderer sr_stroke=null;
     [SerializeField] private DamageableGroundTiler tiler=null; // this guy correctly updates my sprite and collider tilings!
     // Properties
-    [SerializeField] private bool dieFromBounce = false;
-	[SerializeField] private bool dieFromPlayerLeave = true;
 	[SerializeField] private bool doRegen = true; // if TRUE, I'll come back after a moment!
-	private Color bodyColor; // depends on my properties, ya hear?
-	const float RegenTime = 2.2f; // how long it takes for me to reappear after I've disappeared.
+    [SerializeField] private bool dieFromBounce = false;
+    [SerializeField] private bool dieFromPlayerLeave = true;
+    [SerializeField] private bool dieFromVel = true; // NOTE: Not used in gameplay much.
+    private Color bodyColor; // depends on my properties, ya hear?
 	// References
 	//[SerializeField] private Sprite s_strokeSolid;
 	//[SerializeField] private Sprite s_strokeDashed;
@@ -29,13 +32,15 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 	public void Initialize(Level _myLevel, DamageableGroundData data) {
 		base.BaseGroundInitialize(_myLevel, data);
 
+		doRegen = data.doRegen;
 		dieFromBounce = data.dieFromBounce;
 		dieFromPlayerLeave = data.dieFromPlayerLeave;
-		doRegen = data.doRegen;
+        dieFromVel = data.dieFromVel;
 
-		// Color me impressed!
+        // Color me impressed!
         if (dieFromBounce) { bodyColor = ColorUtils.HexToColor("468EBA"); }
         else if (dieFromPlayerLeave) { bodyColor = ColorUtils.HexToColor("8F6BA4"); }
+        else if (dieFromVel) { bodyColor = ColorUtils.HexToColor("886611"); }
         bodySprite.color = bodyColor;
         sr_stroke.enabled = doRegen;
         sr_stroke.color = Color.Lerp(bodyColor, Color.black, 0.7f);
@@ -57,20 +62,20 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
         //if (charSide != Sides.B && MyRect.size.y==1) { return; } // Currently, we ONLY care about FEET if we're thin. Kinda a test.
         if (character is Player) {
             playerTouchingMe = character as Player;
-            //	if (dieFromVel) {
-            //		// Left or Right sides
-            //		if (charSide==Sides.L || charSide==Sides.R) {
-            //			if (Mathf.Abs(character.Vel.x) > BreakVel) {
-            //				TurnOff();
-            //			}
-            //		}
-            //		// Left or Right sides
-            //		else if (charSide==Sides.B || charSide==Sides.T) {
-            //			if (Mathf.Abs(character.Vel.y) > BreakVel) {
-            //				TurnOff();
-            //			}
-            //		}
-            //	}
+            if (dieFromVel) {
+                // Left or Right sides
+                if (charSide==Sides.L || charSide==Sides.R) {
+                    if (Mathf.Abs(character.Vel.x) > BreakVel) {
+                        TurnOff();
+                    }
+                }
+                // Top or Bottom sides
+                else if (charSide==Sides.B || charSide==Sides.T) {
+                    if (Mathf.Abs(character.Vel.y) > BreakVel) {
+                        TurnOff();
+                    }
+                }
+            }
         }
     }
 	override public void OnCharacterLeaveMe(int charSide, PlatformCharacter character) {
@@ -124,10 +129,11 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 		DamageableGroundData data = new DamageableGroundData();
 		data.myRect = MyRect;
 		data.canEatGems = CanEatGems;
-		data.dieFromBounce = dieFromBounce;
-		data.dieFromPlayerLeave = dieFromPlayerLeave;
 		data.doRegen = doRegen;
-		return data;
+		data.dieFromBounce = dieFromBounce;
+        data.dieFromPlayerLeave = dieFromPlayerLeave;
+        data.dieFromVel = dieFromVel;
+        return data;
 	}
 
 

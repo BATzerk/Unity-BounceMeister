@@ -133,7 +133,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 
 
 	// ----------------------------------------------------------------
-	//  DEPENDENT Update
+	//  DEPENDENT Updates
 	// ----------------------------------------------------------------
 	public void UpdateSurfaces() {
 		if (pcollidersTouching==null) { return; } // Safety check for runtime compile.

@@ -107,9 +107,12 @@ static public class LevelSaverLoader {
 			}
 			else if (type == typeof(DamageableGroundData)) {
 				DamageableGroundData d = propData as DamageableGroundData;
-				AddSomePropFieldsToFS(propData, "myRect", "dieFromBounce", "dieFromPlayerLeave", "doRegen");
-				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
-				AddFSLine();
+				AddSomePropFieldsToFS(propData, "myRect", "doRegen");
+                if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (!d.canEatGems) { fs += ";dieFromBounce:" + d.dieFromBounce; }
+                if (!d.canEatGems) { fs += ";dieFromPlayerLeave:" + d.dieFromPlayerLeave; }
+                if (!d.canEatGems) { fs += ";dieFromVel:" + d.dieFromVel; }
+                AddFSLine();
 			}
 			else if (type == typeof(GateData)) {
 				GateData d = propData as GateData;

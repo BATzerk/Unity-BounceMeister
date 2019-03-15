@@ -36,7 +36,7 @@ public class Enemy : PlatformCharacter {
 	//  FixedUpdate
 	// ----------------------------------------------------------------
 	private void FixedUpdate () {
-		if (Time.timeScale == 0) { return; } // No time? No dice.
+        if (!DoUpdate()) { return; }
 		Vector2 ppos = pos;
 
 		ApplyFriction();
