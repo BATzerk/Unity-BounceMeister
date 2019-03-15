@@ -74,10 +74,10 @@ public class GameController : MonoBehaviour {
 	}
 
 
-	// ----------------------------------------------------------------
-	//  Doers - Loading Level
     // ----------------------------------------------------------------
-	public void StartGameAtLevel(LevelData levelData) { StartGameAtLevel(levelData.worldIndex, levelData.levelKey); }
+    //  Doers - Loading Level
+    // ----------------------------------------------------------------
+    public void StartGameAtLevel(LevelData levelData) { StartGameAtLevel(levelData.worldIndex, levelData.levelKey); }
 	public void StartGameAtLevel (int worldIndex, string levelKey) {
 		// Wipe everything totally clean.
 		DestroyPlayer();

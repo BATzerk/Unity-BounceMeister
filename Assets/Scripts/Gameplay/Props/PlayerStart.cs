@@ -12,7 +12,7 @@ public class PlayerStart : Prop, ISerializableData<PlayerStartData> {
 	public void Initialize(Level _myLevel, PlayerStartData data) {
 		base.BaseInitialize(_myLevel, data);
 
-		this.GetComponent<SpriteRenderer>().enabled = false; // Of course, hide my sprite. It's just for the editor.
+		//this.GetComponent<SpriteRenderer>().enabled = false; // Of course, hide my sprite. It's just for the editor.
 	}
 
 

@@ -2,12 +2,13 @@
 using System.Collections;
 
 public class GameProperties : MonoBehaviour {
-//	private static readonly string[] player0Names = { "Tobias Fünke", "Blue Man Group Member #3", "Aggressive Blue Dot", "Sapphire Smasher", "Not Green", "Phthalocyanine Punisher" };//"\"I Blue Myself\"", 
-//	private static readonly string[] player1Names = { "Señor Verde", "The Green Slammer", "Verdant Spasm", "Christian Kale", "Lettuce Slave", "Kate Moss", "1 Rupee" };
+    public static bool IsEditModeAvailable {
+        // Currently, EditMode is only available via the Unity Editor.
+        get { return Application.isEditor; }
+    }
 
 
-	// Constants
-	public const float UnitSize = 1f; // in Unity units
+    public const float UnitSize = 1f; // Grid-snap units! In Unity units.
 
 	public const int NUM_WORLDS = 4;
 

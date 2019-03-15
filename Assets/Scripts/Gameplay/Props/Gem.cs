@@ -84,9 +84,10 @@ public class Gem : Prop, ISerializableData<GemData> {
 
 		bodyRotation = Mathf.Sin(Time.time*1.4f) * 20f;
 
-		Vector2 driftOffset = new Vector2(
-			Mathf.Cos(Time.time*3f) * 0.2f,
-			Mathf.Sin(Time.time*4f)*0.3f);
+        float oscOffset = myIndex*1.5f; // if multiple Gems in a level, this offsets their floaty animation.
+        Vector2 driftOffset = new Vector2(
+			Mathf.Cos(oscOffset+Time.time*3f) * 0.2f,
+			Mathf.Sin(oscOffset+Time.time*4f) * 0.3f);
 		Vector2 targetPos;
 		if (playerHoldingMe != null) {
 			targetPos = playerHoldingMe.PosLocal + new Vector2(0, 3.3f);
