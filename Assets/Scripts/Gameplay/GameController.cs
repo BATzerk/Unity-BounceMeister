@@ -232,22 +232,19 @@ public class GameController : MonoBehaviour {
 		else if (Input.GetKeyDown(KeyCode.M)) {
 		    SceneHelper.OpenScene(SceneNames.MapEditor); return;
 		}
-        // S = Save level as text file!
-        else if (Input.GetKeyDown(KeyCode.S)) {
-            LevelSaverLoader.SaveLevelFile(level);
-        }
         // T = Toggle Slow-mo
         else if (Input.GetKeyDown(KeyCode.T)) {
             gameTimeController.ToggleSlowMo();
 		}
-        // A, B, C = Switch Characters
-		else if (Input.GetKeyDown(KeyCode.A)) { MakePlayer(PlayerTypes.Alph, level.LevelDataRef); }
-		else if (Input.GetKeyDown(KeyCode.B)) { MakePlayer(PlayerTypes.Britta, level.LevelDataRef); }
-		else if (Input.GetKeyDown(KeyCode.C)) { MakePlayer(PlayerTypes.Coco, level.LevelDataRef); }
 
 
 		// ALT + ___
-		if (isKey_alt) { }
+		if (isKey_alt) {
+            // ALT + A, B, C = Switch Characters
+            if (Input.GetKeyDown(KeyCode.A)) { MakePlayer(PlayerTypes.Alph, level.LevelDataRef); }
+            else if (Input.GetKeyDown(KeyCode.B)) { MakePlayer(PlayerTypes.Britta, level.LevelDataRef); }
+            else if (Input.GetKeyDown(KeyCode.C)) { MakePlayer(PlayerTypes.Coco, level.LevelDataRef); }
+        }
         // SHIFT + ___
         if (isKey_shift) { }
         // CONTROL + ___
@@ -259,13 +256,18 @@ public class GameController : MonoBehaviour {
                 return;
             }
 			// CONTROL + N = Create/Start new level!
-			if (Input.GetKeyDown(KeyCode.N)) {
+			else if (Input.GetKeyDown(KeyCode.N)) {
 				StartNewBlankLevel();
 			}
 			// CONTROL + SHIFT + X = Flip Horizontal!
-			if (isKey_shift && Input.GetKeyDown(KeyCode.X)) {
+			else if (isKey_shift && Input.GetKeyDown(KeyCode.X)) {
 				if (level != null) { level.FlipHorz(); }
 			}
+            
+            // CONTROL + S = Save level as text file!
+            else if (Input.GetKeyDown(KeyCode.S)) {
+                LevelSaverLoader.SaveLevelFile(level);
+            }
 		}
 	}
 
