@@ -122,9 +122,10 @@ static public class LevelSaverLoader {
 			}
 			else if (type == typeof(GroundData)) {
 				GroundData d = propData as GroundData;
-				AddSomePropFieldsToFS(propData, "myRect", "colorType");
-				if (!d.canBounce) { fs += ";canBounce:" + d.canBounce; }
-				if (!d.doRechargePlayer) { fs += ";doRechargePlayer:" + d.doRechargePlayer; }
+				AddSomePropFieldsToFS(propData, "myRect");
+                if (d.colorType!=0) { fs += ";colorType:" + d.colorType; }
+                if (!d.canBounce) { fs += ";canBounce:" + d.canBounce; }
+                if (!d.doRechargePlayer) { fs += ";doRechargePlayer:" + d.doRechargePlayer; }
 				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
 				AddFSLine();
 			}

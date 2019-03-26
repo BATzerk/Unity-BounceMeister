@@ -27,13 +27,20 @@ public class LevelData {
 	public Vector2 PosGlobal { get { return posGlobal; } }
 //	public Rect BoundsLocal { get { return boundsLocal; } }
 	public WorldData WorldDataRef { get { return GameManagers.Instance.DataManager.GetWorldData(worldIndex); } }
-	public Vector2 PlayerStartPos() {
-		foreach (PropData propData in allPropDatas) {
-			if (propData is PlayerStartData) {
-				return propData.pos;
+    /// Returns the closest PlayerStart to the provided pos.
+	public Vector2 PlayerStartPos(Vector2 playerPos) {
+        float bestDist = Mathf.Infinity;
+        Vector2 bestPos = Vector2.zero;
+		foreach (PropData pd in allPropDatas) {
+			if (pd is PlayerStartData) {
+                float dist = Vector2.Distance(playerPos, pd.pos);
+                if (bestDist > dist) {
+                    bestDist = dist;
+                    bestPos = pd.pos;
+                }
 			}
 		}
-		return Vector2.zero; // Nah, didn't find a PlayerStart.
+		return bestPos;
 	}
 
 	// Setters

@@ -68,7 +68,7 @@ public class Gem : Prop, ISerializableData<GemData> {
         bodyRotation = 0;
 		myCollider.enabled = false;
 		sr_body.enabled = false;
-		ps_collectedBurst.Emit(15);
+		ps_collectedBurst.Emit(16);
 		playerHoldingMe = null;
 	}
 

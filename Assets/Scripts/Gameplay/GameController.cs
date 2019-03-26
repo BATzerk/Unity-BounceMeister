@@ -9,9 +9,11 @@ public class GameController : MonoBehaviour {
     [SerializeField] private Transform tf_world;
 	private Player player=null;
 	private Level level=null;
+    // Properties
+    static private Vector2 playerDiedPos; // set when Player dies; used to respawn Player at closest PlayerStart.
 
-	// Getters
-	public Player Player { get { return player; } }
+    // Getters
+    public Player Player { get { return player; } }
 
 	private DataManager dataManager { get { return GameManagers.Instance.DataManager; } }
 	private EventManager eventManager { get { return GameManagers.Instance.EventManager; } }
@@ -150,7 +152,7 @@ public class GameController : MonoBehaviour {
 		int sideEntering = dataManager.playerSideEnterNextLevel;
 		// Undefined?? Return the PlayerStart!
 		if (posExited.Equals(Vector2Extensions.NaN)) {
-			return ld.PlayerStartPos();
+			return ld.PlayerStartPos(playerDiedPos);
 		}
 		// Otherwise, use the knowledge we have!
 		dataManager.playerPosGlobalOnExitLevel = Vector2Extensions.NaN; // Make sure to "clear" this. It's been used!
@@ -277,7 +279,8 @@ public class GameController : MonoBehaviour {
 	//  Events
 	// ----------------------------------------------------------------
 	private void OnPlayerDie(Player _player) {
-		StartCoroutine(Coroutine_ReloadSceneDelayed());
+        playerDiedPos = _player.PosLocal;
+        StartCoroutine(Coroutine_ReloadSceneDelayed());
 	}
     private IEnumerator Coroutine_ReloadSceneDelayed() {
         yield return new WaitForSecondsRealtime(1f);

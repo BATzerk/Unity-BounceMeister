@@ -85,18 +85,21 @@ public class MapEditor : MonoBehaviour {
 	private Vector2 GetConnectionPosRelativeToLevelTile(LevelTile levelTile, Vector2 globalPos) {
 		return new Vector2(globalPos.x-levelTile.MyLevelData.PosGlobal.x, globalPos.y-levelTile.MyLevelData.PosGlobal.y);
 	}
+    private Vector2 SnapToGrid(Vector2 v) { return new Vector2(Mathf.Floor(v.x/gridSizeX)*gridSizeX, Mathf.Floor(v.y/gridSizeY)*gridSizeY); }
 	public Vector2 MousePosScreen { get { return inputController.MousePosScreen; } }
 	public Vector2 MousePosWorld { get { return mousePosWorld; } }
 	public Vector2 MousePosWorldDragging(Vector2 _mouseClickOffset) {
 		return mousePosWorld + _mouseClickOffset;
 	}
 	public Vector2 MousePosWorldDraggingGrid(Vector2 _mouseClickOffset) { // Return the mouse position, scaled to the screen and snapped to the grid.
-		Vector2 mousePos = MousePosWorldDragging(_mouseClickOffset);
-		if (!Input.GetKey (KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl)) { // Hold down CONTROL to prevent snapping.
-			mousePos = new Vector2(Mathf.Round(mousePos.x/gridSizeX)*gridSizeX, Mathf.Round(mousePos.y/gridSizeY)*gridSizeY);
-		}
-		return mousePos;
-	}
+        bool doSnap = !Input.GetKey (KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl); // Hold down CONTROL to prevent snapping.
+        if (doSnap) {
+            return MousePosWorldDragging(SnapToGrid(_mouseClickOffset));
+        }
+        else {
+            return MousePosWorldDragging(_mouseClickOffset);
+        }
+    }
 	private LevelTile GetLevelTileAtPoint(Vector2 point) {
 		if (CurrWorldLevelTiles==null) { return null; } // Safety check for runtime compile.
 		for (int i=CurrWorldLevelTiles.Count-1; i>=0; --i) { // loop thru backwards so we click NEWER tiles before older ones.
