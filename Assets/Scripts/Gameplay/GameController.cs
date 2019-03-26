@@ -167,7 +167,7 @@ public class GameController : MonoBehaviour {
 
 	private void OnPlayerEscapeLevelBounds(int sideEscaped) {
 		WorldData currentWorldData = level.WorldDataRef;
-		LevelData nextLevelData = currentWorldData.Debug_GetSomeLevelAtSide(level.LevelDataRef, sideEscaped);
+		LevelData nextLevelData = currentWorldData.GetLevelAtSide(level.LevelDataRef, Player.PosLocal, sideEscaped);
 		if (nextLevelData != null) {
 			Vector2 playerVel = player.Vel; // remember this so we can preserves it, ya see!
 			dataManager.playerPosGlobalOnExitLevel = player.PosGlobal;
