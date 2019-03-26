@@ -49,8 +49,20 @@ public class Alph : Player {
 
 		base.Start();
 	}
-
-
+    
+    
+    
+    // ----------------------------------------------------------------
+    //  Update
+    // ----------------------------------------------------------------
+    override protected void AcceptButtonInput() {
+        base.AcceptButtonInput();
+        if (Input.GetButtonDown("Plunge")) {
+            OnPlunge_Down();
+        }
+    }
+    
+    
 	// ----------------------------------------------------------------
 	//  FixedUpdate
 	// ----------------------------------------------------------------
@@ -70,19 +82,21 @@ public class Alph : Player {
 		else if (MayJump()) {
 			Jump();
 		}
-		else if (CanStartPlunge()) {
-			StartPlunge();
-		}
 		else {
 			ScheduleDelayedJump();
 		}
 	}
-	override protected void OnDown_Down() {
-		base.OnDown_Down();
-		if (CanStartPlunge()) {
-			StartPlunge();
-		}
-	}
+	//override protected void OnDown_Down() {
+	//	base.OnDown_Down();
+	//	if (CanStartPlunge()) {
+	//		StartPlunge();
+	//	}
+	//}
+    private void OnPlunge_Down() {
+        if (CanStartPlunge()) {
+            StartPlunge();
+        }
+    }
 
 
 	// ----------------------------------------------------------------

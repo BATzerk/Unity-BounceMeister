@@ -139,10 +139,10 @@ abstract public class Player : PlatformCharacter {
 	private void Update () {
 		if (!DoUpdate()) { return; } // Not supposed to Update? No dice.
 
-		AcceptJumpInput();
+		AcceptButtonInput();
 		UpdatePostDamageImmunity();
 	}
-	private void AcceptJumpInput() {
+	virtual protected void AcceptButtonInput() {
 //		if (Input.GetKeyDown(KeyCode.UpArrow)) {
 //			OnJumpPressed();
 //		}
@@ -309,7 +309,8 @@ abstract public class Player : PlatformCharacter {
 	abstract protected void OnUp_Down();
 	virtual protected void OnUp_Up() { }
 	virtual protected void OnDown_Down() { }
-
+    
+    // TODO: Also do wall-kick!
 	protected void ScheduleDelayedJump() {
 		timeWhenDelayedJump = Time.time + DelayedJumpWindow;
 	}

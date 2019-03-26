@@ -10,11 +10,11 @@ public class InputController : MonoBehaviour {
 	private int numQuickClicks=0; // for double-clicks (or maybe even more).
 	private bool isDoubleClick; // reset every frame.
 	private float timeWhenNullifyDoubleClick;
+    public Vector2 PlayerInput { get; private set; }
 	private Vector2 mousePosDown;
-	private Vector2 playerInput;
 
-	// Getters
-	static public InputController Instance {
+    // Getters
+    static public InputController Instance {
 		get {
 //			if (instance==null) { return this; } // Note: This is only here to prevent errors when recompiling code during runtime.
 			return instance;
@@ -42,15 +42,14 @@ public class InputController : MonoBehaviour {
 	static public bool IsMouseButtonUp () {
 		return GetMouseButtonUp() != -1;
 	}
-	public Vector2 PlayerInput { get { return playerInput; } }
 
 
 
 
-	// ----------------------------------------------------------------
-	//  Awake
-	// ----------------------------------------------------------------
-	private void Awake () {
+    // ----------------------------------------------------------------
+    //  Awake
+    // ----------------------------------------------------------------
+    private void Awake () {
 		// There can only be one (instance)!!
 		if (instance != null) {
 			Destroy (this.gameObject);
@@ -69,7 +68,7 @@ public class InputController : MonoBehaviour {
 	}
 
 	private void RegisterButtonInputs () {
-		playerInput = new Vector2(Input.GetAxis("Player0_Horz"), Input.GetAxis("Player0_Vert"));
+		PlayerInput = new Vector2(Input.GetAxis("Player0_Horz"), Input.GetAxis("Player0_Vert"));
 	}
 
 	private void RegisterMouseInputs () {
