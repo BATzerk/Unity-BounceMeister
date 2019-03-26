@@ -38,7 +38,7 @@ abstract public class Player : PlatformCharacter {
 	private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeLastWallKicked=Mathf.NegativeInfinity;
 	private float timeSinceDamage=Mathf.NegativeInfinity; // invincible until this time! Set to Time.time + PostDamageInvincibleDuration when we're hit.
-	private float timeWhenDelayedJump=Mathf.NegativeInfinity; // set when we're in the air and press Jump. If we touch ground before this time, we'll do a delayed jump!
+	private float timeWhenDelayedJump=Mathf.NegativeInfinity; // for jump AND wall-kick. Set when in air and press Jump. If we touch ground/wall before this time, we'll do a delayed jump or wall-kick!
 	private int numJumpsSinceGround;
 	private int wallSlideSide = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
 	private int hackTEMP_framesAlive=0;
@@ -146,12 +146,11 @@ abstract public class Player : PlatformCharacter {
 //		if (Input.GetKeyDown(KeyCode.UpArrow)) {
 //			OnJumpPressed();
 //		}
-		// TEMP! todo: Use pinputAxis within InputController in a *FixedUpdate* loop to determine if we've just pushed up/down.
-		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) {
-			OnUp_Down();
+		if (Input.GetButtonDown("Jump")) {
+			OnButtonJump_Down();
 		}
-		else if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.Space)) {
-			OnUp_Up();
+		else if (Input.GetButtonUp("Jump")) {
+			OnButtonJump_Up();
 		}
 		else if (Input.GetKeyDown(KeyCode.DownArrow)) {
 			OnDown_Down();
@@ -268,8 +267,9 @@ abstract public class Player : PlatformCharacter {
 		GameManagers.Instance.EventManager.OnPlayerJump(this);
 	}
 	virtual protected void WallKick() {
-		SetVel(new Vector2(-sideLastTouchedWall*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y)));
-		timeLastWallKicked = Time.time;
+		SetVel(new Vector2(-myWhiskers.SideLastTouchedWall*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y)));
+        timeWhenDelayedJump = -1; // reset this just in case.
+        timeLastWallKicked = Time.time;
 		isPreservingWallKickVel = true;
 		numJumpsSinceGround ++;
 		maxYSinceGround = pos.y; // TEST!!
@@ -279,7 +279,7 @@ abstract public class Player : PlatformCharacter {
 
 	virtual protected void StartWallSlide(int side) {
 		wallSlideSide = side;
-	}
+    }
 	protected void StopWallSlide() {
 		wallSlideSide = 0;
 	}
@@ -306,8 +306,8 @@ abstract public class Player : PlatformCharacter {
 //			timeWhenDelayedJump = Time.time + DelayedJumpWindow;
 //		}
 //	}
-	abstract protected void OnUp_Down();
-	virtual protected void OnUp_Up() { }
+	abstract protected void OnButtonJump_Down();
+	virtual protected void OnButtonJump_Up() { }
 	virtual protected void OnDown_Down() { }
     
     // TODO: Also do wall-kick!
@@ -383,37 +383,20 @@ abstract public class Player : PlatformCharacter {
 			OnCollideWithEnemy(enemy);
 		}
 
-//		else {
-//			// Should I bounce or jump?
-//			bool doBounce = IsBouncyCollidable(collidable);// && !IsDontBounceButtonHeld()
-//			if (doBounce) {
-//				BounceOffCollidable_Side(collidable);
-//			}
-//		}
-	}
+        // Delayed wall-kick? Do it right away!
+        if (Time.time <= timeWhenDelayedJump) {
+            WallKick();
+        }
 
-//	// We ARE wall-sliding!
-//	if (isWallSliding()) {
-//		// Should we stop wall-sliding??
-//		if (wallSlideSide==-1 && !onSurfaces[Sides.L]) {
-//			StopWallSlide();
-//		}
-//		else if (wallSlideSide==1 && !onSurfaces[Sides.R]) {
-//			StopWallSlide();
-//		}
-//	}
-//	// We're NOT wall-sliding...
-//	else {
-//		// Should we START wall-sliding??
-//		if (!feetOnGround() && !isPlunging) {
-//			if (onSurfaces[Sides.L] && vel.x<-0.001f) {
-//				StartWallSlide(-1);
-//			}
-//			else if (onSurfaces[Sides.R] && vel.x>0.001f) {
-//				StartWallSlide(1);
-//			}
-//		}
-//	}
+        //		else {
+        //			// Should I bounce or jump?
+        //			bool doBounce = IsBouncyCollidable(collidable);// && !IsDontBounceButtonHeld()
+        //			if (doBounce) {
+        //				BounceOffCollidable_Side(collidable);
+        //			}
+        //		}
+    }
+
 	virtual protected void BounceOffCollidable_Up(Collidable collidable) {
 		// Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
 		float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
@@ -456,7 +439,29 @@ abstract public class Player : PlatformCharacter {
 		SetVel(new Vector2(-dirToEnemy*HitByEnemyVel.x, HitByEnemyVel.y));
 		TakeDamage(1);
 	}
-
+    
+//	// We ARE wall-sliding!
+//	if (isWallSliding()) {
+//		// Should we stop wall-sliding??
+//		if (wallSlideSide==-1 && !onSurfaces[Sides.L]) {
+//			StopWallSlide();
+//		}
+//		else if (wallSlideSide==1 && !onSurfaces[Sides.R]) {
+//			StopWallSlide();
+//		}
+//	}
+//	// We're NOT wall-sliding...
+//	else {
+//		// Should we START wall-sliding??
+//		if (!feetOnGround() && !isPlunging) {
+//			if (onSurfaces[Sides.L] && vel.x<-0.001f) {
+//				StartWallSlide(-1);
+//			}
+//			else if (onSurfaces[Sides.R] && vel.x>0.001f) {
+//				StartWallSlide(1);
+//			}
+//		}
+//	}
 //	private void OnTriggerExit2D(Collider2D col) {
 //		Collidable collidable = col.GetComponent<Collidable>();
 //		if (collidable != null) {

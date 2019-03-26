@@ -19,7 +19,8 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	private Collider2D[,] collidersAroundMe; // by side,index.
 	private HashSet<Collider2D>[] collidersTouching;
 	private HashSet<Collider2D>[] pcollidersTouching;
-	private bool[] onSurfaces; // index is side.
+    public int SideLastTouchedWall { get; private set; } // for wall-kicking perhaps pixels away from a wall.
+    private bool[] onSurfaces; // index is side.
 	private float[,] surfaceDists; // by side,index. This is *all* whisker data.
 	private int[] minDistsIndexes; // by side. WHICH whisker at this side is the closest!
 	private RaycastHit2D hit; // only out here so we don't have to make a ton every frame.
@@ -37,9 +38,14 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 			pos += new Vector2(charSize.x*sideOffsetLoc, whiskerDirs[side].y*charSize.y*0.5f);
 		}
 		return pos;
-	}
-	/** It's most efficient only to search as far as the Player is going to move this frame. */
-	private float GetRaycastSearchDist(int side) {
+    }
+    public int SideTouchingWall() {
+        if (OnSurface(Sides.L)) { return -1; }
+        if (OnSurface(Sides.R)) { return  1; }
+        return 0;
+    }
+    /** It's most efficient only to search as far as the Player is going to move this frame. */
+    private float GetRaycastSearchDist(int side) {
 		const float bloat = 0.2f; // how much farther than the player's exact velocity to look. For safety.
 		switch (side) {
 		case Sides.L: return Mathf.Max(0, -myCharacter.Vel.x) + bloat;
@@ -143,10 +149,14 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 			collidersTouching[side].Clear();
 
 			UpdateSurface(side);
-		}
+        }
 
-		// Now that EVERY side's been updated, check: Have we STOPPED or STARTED touching an old/new collider?
-		for (int side=0; side<whiskerDirs.Length; side++) {
+        if (SideTouchingWall() != 0) {
+            SideLastTouchedWall = SideTouchingWall();
+        }
+
+        // Now that EVERY side's been updated, check: Have we STOPPED or STARTED touching an old/new collider?
+        for (int side=0; side<whiskerDirs.Length; side++) {
 			foreach (Collider2D col in pcollidersTouching[side]) {
 				if (!collidersTouching[side].Contains(col)) {
 					myCharacter.OnWhiskersLeaveCollider(side, col);
@@ -160,7 +170,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 				}
 			}
 		}
-	}
+    }
 	private void UpdateSurface(int side) {
 		if (surfaceDists==null) { return; } // Safety check (for runtime compile).
 		minDistsIndexes[side] = -1; // Default this to -1: There is no closest, because they're all infinity.

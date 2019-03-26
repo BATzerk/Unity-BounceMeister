@@ -23,15 +23,13 @@ public class PlatformCharacter : Collidable {
 	// Properties
 	private bool isDead = false;
 	protected int health; // we die when we hit 0. TODO: Make this private, and have Player and Enemy extend MY GetHit() function.
-	protected Vector2 vel=Vector2.zero;
-	private Vector2 size;
-	protected float timeLastTouchedWall=Mathf.NegativeInfinity;
-	protected int sideLastTouchedWall;
+    public Vector2 Size { get; private set; }
+    protected Vector2 vel=Vector2.zero;
+    protected float timeLastTouchedWall=Mathf.NegativeInfinity;
 
 	// Getters (Public)
 	public Vector2 Vel { get { return vel; } }
-	public Vector2 Size { get { return size; } }
-	public bool IsInLift { get; set; }
+    public bool IsInLift { get; set; }
 
 //	virtual public bool IsAffectedByLift() { return true; }
 	public bool IsDead { get { return isDead; } }
@@ -41,12 +39,7 @@ public class PlatformCharacter : Collidable {
     public bool DoUpdate() { // If this is FALSE, I won't do Update nor FixedUpdate.
         return Time.timeScale > 0; // No time? No dice.
     }
-    protected int sideTouchingWall() {
-		if (myWhiskers.OnSurface(Sides.L)) { return -1; }
-		if (myWhiskers.OnSurface(Sides.R)) { return  1; }
-		return 0;
-	}
-	protected bool isTouchingWall() { return sideTouchingWall() != 0; }
+	protected bool isTouchingWall() { return myWhiskers.SideTouchingWall() != 0; }
 	virtual protected float HorzMoveInputVelXDelta() {
 		return 0;
 	}
@@ -95,7 +88,7 @@ public class PlatformCharacter : Collidable {
 		health = StartingHealth;
 	}
 	virtual protected void SetSize(Vector2 _size) {
-		this.size = _size;
+		this.Size = _size;
 		bodyCollider.size = _size;
 	}
 
@@ -132,9 +125,6 @@ public class PlatformCharacter : Collidable {
 	protected void UpdateTimeLastTouchedWall() {
 		if (isTouchingWall()) {
 			timeLastTouchedWall = Time.time;
-		}
-		if (sideTouchingWall() != 0) {
-			sideLastTouchedWall = sideTouchingWall();
 		}
 	}
 

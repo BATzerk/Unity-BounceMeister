@@ -246,7 +246,12 @@ public class GameController : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.C)) { MakePlayer(PlayerTypes.Coco, level.LevelDataRef); }
         }
         // SHIFT + ___
-        if (isKey_shift) { }
+        if (isKey_shift) {
+            // SHIFT + S = Save level as text file!
+            if (Input.GetKeyDown(KeyCode.S)) {
+                LevelSaverLoader.SaveLevelFile(level);
+            }
+        }
         // CONTROL + ___
         if (isKey_control) {
             // CONTROL + DELETE = Clear all save data!
@@ -263,11 +268,6 @@ public class GameController : MonoBehaviour {
 			else if (isKey_shift && Input.GetKeyDown(KeyCode.X)) {
 				if (level != null) { level.FlipHorz(); }
 			}
-            
-            // CONTROL + S = Save level as text file!
-            else if (Input.GetKeyDown(KeyCode.S)) {
-                LevelSaverLoader.SaveLevelFile(level);
-            }
 		}
 	}
 

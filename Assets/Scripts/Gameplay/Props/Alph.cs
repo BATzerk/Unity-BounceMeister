@@ -75,7 +75,7 @@ public class Alph : Player {
 	// ----------------------------------------------------------------
 	//  Input
 	// ----------------------------------------------------------------
-	override protected void OnUp_Down() {
+	override protected void OnButtonJump_Down() {
 		if (MayWallKick()) {
 			WallKick();
 		}

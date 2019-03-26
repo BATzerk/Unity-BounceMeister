@@ -90,7 +90,7 @@ public class Coco : Player {
 	// ----------------------------------------------------------------
 	//  Input
 	// ----------------------------------------------------------------
-	override protected void OnUp_Down() {
+	override protected void OnButtonJump_Down() {
 		if (MayWallKick()) {
 			WallKick();
 		}
@@ -104,7 +104,7 @@ public class Coco : Player {
 			ScheduleDelayedJump();
 		}
 	}
-	override protected void OnUp_Up() {
+	override protected void OnButtonJump_Up() {
 		if (isJetting) {
 			StopJet();
 		}

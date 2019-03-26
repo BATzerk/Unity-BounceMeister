@@ -70,21 +70,18 @@ public class Britta : Player {
 	// ----------------------------------------------------------------
 	//  Input
 	// ----------------------------------------------------------------
-	override protected void OnUp_Down() {
+	override protected void OnButtonJump_Down() {
 		if (MayWallKick()) {
 			WallKick();
 		}
 		else if (MayJump()) {
 			Jump();
 		}
-//		else if (CanStartPlunge()) {
-//			StartPlunge();
-//		}
 		else {
 			ScheduleDelayedJump();
 		}
 	}
-	override protected void OnUp_Up() {
+	override protected void OnButtonJump_Up() {
 		isReducedJumpGravity = false; // Not anymore, boss!
 	}
 
