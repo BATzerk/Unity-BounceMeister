@@ -311,7 +311,6 @@ abstract public class Player : PlatformCharacter {
 	virtual protected void OnButtonJump_Up() { }
 	virtual protected void OnDown_Down() { }
     
-    // TODO: Also do wall-kick!
 	protected void ScheduleDelayedJump() {
 		timeWhenDelayedJump = Time.time + DelayedJumpWindow;
 	}

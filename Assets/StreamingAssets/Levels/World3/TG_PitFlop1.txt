@@ -17,4 +17,3 @@ ToggleGround myRect:(x:5.00, y:-2.50, width:6.00, height:1.00);startsOn:False;ca
 ToggleGround myRect:(x:-2.00, y:3.50, width:6.00, height:1.00);startsOn:True;canEatGems:False
 ToggleGround myRect:(x:5.00, y:-8.50, width:6.00, height:1.00);startsOn:True;canEatGems:False
 ToggleGround myRect:(x:-2.00, y:-8.50, width:6.00, height:1.00);startsOn:False;canEatGems:False
-

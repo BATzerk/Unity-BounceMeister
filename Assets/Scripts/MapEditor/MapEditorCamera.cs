@@ -177,22 +177,24 @@ public class MapEditorCamera : MonoBehaviour {
 		}
 	}
     private void RegisterButtonInput() {
-        // C = Reset to neutral
-		if (Input.GetKeyDown(KeyCode.C)) { ResetToNeutral(); }
+        if (!InputController.IsKeyDown_alt && !InputController.IsKeyDown_control && !InputController.IsKeyDown_shift) {
+            // C = Reset to neutral
+		    if (Input.GetKeyDown(KeyCode.C)) { ResetToNeutral(); }
 
-        // Arrow/WASD/Joystick Panning!
-        //else if (Input.GetKey(KeyCode.LeftArrow)) { MoveCamera(-ARROW_KEYS_PAN_SPEED/mapScale*fTS,0); }
-        //      else if (Input.GetKey(KeyCode.RightArrow)) { MoveCamera(ARROW_KEYS_PAN_SPEED/mapScale*fTS,0); }
-        //      else if (Input.GetKey(KeyCode.DownArrow)) { MoveCamera(0,-ARROW_KEYS_PAN_SPEED/mapScale*fTS); }
-        //      else if (Input.GetKey(KeyCode.UpArrow)) { MoveCamera(0,ARROW_KEYS_PAN_SPEED/mapScale*fTS); }
-        Vector2 inputAxis = InputController.Instance.PlayerInput;
-        if (inputAxis.magnitude > 0.1f) {
-            Pos += inputAxis * (ARROW_KEYS_PAN_SPEED/MapScale*fts);
+            // Arrow/WASD/Joystick Panning!
+            //else if (Input.GetKey(KeyCode.LeftArrow)) { MoveCamera(-ARROW_KEYS_PAN_SPEED/mapScale*fTS,0); }
+            //      else if (Input.GetKey(KeyCode.RightArrow)) { MoveCamera(ARROW_KEYS_PAN_SPEED/mapScale*fTS,0); }
+            //      else if (Input.GetKey(KeyCode.DownArrow)) { MoveCamera(0,-ARROW_KEYS_PAN_SPEED/mapScale*fTS); }
+            //      else if (Input.GetKey(KeyCode.UpArrow)) { MoveCamera(0,ARROW_KEYS_PAN_SPEED/mapScale*fTS); }
+            Vector2 inputAxis = InputController.Instance.PlayerInput;
+            if (inputAxis.magnitude > 0.1f) {
+                Pos += inputAxis * (ARROW_KEYS_PAN_SPEED/MapScale*fts);
+            }
+
+            // Zoom
+		    if (Input.GetKey(KeyCode.Z)) { SetMapScale(MapScale/(1-ZOOM_SPEED_KEYBOARD*fts)); }
+            else if (Input.GetKey(KeyCode.X)) { SetMapScale(MapScale*(1-ZOOM_SPEED_KEYBOARD*fts)); }
         }
-
-        // Zoom
-		if (Input.GetKey(KeyCode.Z)) { SetMapScale(MapScale/(1-ZOOM_SPEED_KEYBOARD*fts)); }
-        else if (Input.GetKey(KeyCode.X)) { SetMapScale(MapScale*(1-ZOOM_SPEED_KEYBOARD*fts)); }
     }
 
     private void UpdatePanning() {

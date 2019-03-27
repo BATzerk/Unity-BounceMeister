@@ -1,20 +1,17 @@
-levelProperties posGlobal:(-282.0, -88.0);designerFlag:1
+levelProperties posGlobal:(-264.0, 234.0);designerFlag:4
 CameraBounds myRect:(x:-25.00, y:-19.00, width:50.00, height:38.00)
-Gem pos:(20.0, 6.0)
-Ground myRect:(x:-2.00, y:-4.50, width:8.00, height:3.00);colorType:0
-Ground myRect:(x:15.50, y:9.50, width:5.00, height:3.00);colorType:0
-Ground myRect:(x:7.50, y:12.00, width:3.00, height:10.00);colorType:0
-Ground myRect:(x:5.50, y:-1.50, width:7.00, height:9.00);colorType:0
-Ground myRect:(x:-5.00, y:-11.00, width:2.00, height:14.00);colorType:0
-Ground myRect:(x:-16.50, y:0.00, width:11.00, height:20.00);colorType:0
-Ground myRect:(x:5.00, y:-19.00, width:42.00, height:2.00);colorType:0
-Ground myRect:(x:4.50, y:18.50, width:43.00, height:3.00);colorType:0
-Ground myRect:(x:24.00, y:-0.50, width:4.00, height:35.00);colorType:0
-Ground myRect:(x:-23.50, y:0.00, width:5.00, height:40.00);colorType:0
-Ground myRect:(x:-13.50, y:-18.00, width:5.00, height:4.00);colorType:0
-Platform myRect:(x:-17.50, y:-18.50, width:3.00, height:1.00)
-PlayerStart pos:(-14.8, -15.0)
-Spikes myRect:(x:-2.00, y:-2.50, width:8.00, height:1.00);rotation:0
-Spikes myRect:(x:5.00, y:-17.50, width:34.00, height:1.00);rotation:0
-ToggleGround myRect:(x:-8.50, y:-9.50, width:5.00, height:1.00);startsOn:False
-ToggleGround myRect:(x:-3.50, y:-1.50, width:5.00, height:1.00);startsOn:False
+Ground myRect:(x:-13.50, y:-15.00, width:5.00, height:4.00)
+Ground myRect:(x:-23.50, y:0.00, width:5.00, height:40.00)
+Ground myRect:(x:24.00, y:-0.50, width:4.00, height:35.00)
+Ground myRect:(x:4.50, y:18.50, width:43.00, height:3.00)
+Ground myRect:(x:5.00, y:-17.50, width:42.00, height:5.00)
+Ground myRect:(x:-16.50, y:3.00, width:11.00, height:20.00)
+Ground myRect:(x:5.50, y:1.50, width:7.00, height:9.00)
+Ground myRect:(x:14.00, y:-1.00, width:16.00, height:36.00)
+Ground myRect:(x:1.00, y:-7.50, width:14.00, height:15.00)
+Platform myRect:(x:-17.50, y:-16.50, width:3.00, height:1.00)
+PlayerStart pos:(-14.8, -11.9)
+Spikes myRect:(x:5.00, y:-14.50, width:34.00, height:1.00);rotation:0
+Spikes myRect:(x:-2.00, y:0.50, width:8.00, height:1.00);rotation:0
+ToggleGround myRect:(x:-3.50, y:1.50, width:5.00, height:1.00);startsOn:False
+ToggleGround myRect:(x:-8.50, y:-6.50, width:5.00, height:1.00);startsOn:False

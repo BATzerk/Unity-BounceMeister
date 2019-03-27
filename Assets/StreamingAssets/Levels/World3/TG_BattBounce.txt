@@ -1,4 +1,4 @@
-levelProperties posGlobal:(-4.0, 168.0);designerFlag:4
+levelProperties posGlobal:(-54.0, 234.0);designerFlag:4
 CameraBounds myRect:(x:-25.00, y:-19.00, width:50.00, height:38.00)
 Battery pos:(-4.0, 4.5)
 Battery pos:(4.0, 4.5)

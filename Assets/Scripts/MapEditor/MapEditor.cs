@@ -501,8 +501,6 @@ public class MapEditor : MonoBehaviour {
 		else if (InputController.IsMouseButtonUp()) { OnMouseUp(); }
 	}
 	private void RegisterKeyInputs() {
-        bool isKeyDown_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
-        bool isKeyDown_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 		// DELETE/BACKSPACE = move selected files to this world's trash folder
 		if (tilesSelected.Count>0 && !isSearchingLevel && (Input.GetKeyDown (KeyCode.Delete) || Input.GetKeyDown (KeyCode.Backspace))) {
 			MoveLevelTilesSelectedLevelFilesToTrashFolder ();
@@ -513,15 +511,19 @@ public class MapEditor : MonoBehaviour {
             ReloadAllWorldDatasAndScene();
         }
 		
-		// Backspace
+		// BACKSPACE
 		else if (Input.GetKeyDown (KeyCode.Backspace)) {//c == "\b"[0]) {
 			if (levelSearchString.Length != 0) {
 				levelSearchString = levelSearchString.Substring(0, levelSearchString.Length - 1);
 				UpdateLevelTilesFromSearchString ();
 			}
-		}
-		// SHIFT + Some typeable character = Search string!
-		else if (isKeyDown_shift && Input.inputString.Length > 0) {
+        }
+        // ESCAPE = Cancel searching
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            ClearLevelSearch();
+        }
+        // SHIFT + Some typeable character = Search string!
+        else if (InputController.IsKeyDown_shift && Input.inputString.Length > 0) {
 			char c = Input.inputString[0];
 			// Typeable character
 			if (char.IsLetterOrDigit(c) || char.IsPunctuation(c)) {
@@ -531,7 +533,7 @@ public class MapEditor : MonoBehaviour {
 		}
 
         // CONTROL + ...
-        if (isKeyDown_control) {// TODO: Test these
+        if (InputController.IsKeyDown_control) {
             // CONTROL + A = Select ALL LevelTiles!
             if (Input.GetKeyDown (KeyCode.A)) {
 			    SelectAllLevelTiles ();
@@ -546,9 +548,9 @@ public class MapEditor : MonoBehaviour {
             }
 		}
 
-		// CONTROL/ALT + ____
-		else if (Input.GetKey (KeyCode.LeftAlt) || Input.GetKey (KeyCode.LeftControl) || Input.GetKey (KeyCode.RightAlt) || Input.GetKey (KeyCode.RightControl)) {
-			// CONTROL + [number] = Move all LevelTiles selected to that world!!
+		// ALT + ____
+		else if (InputController.IsKeyDown_alt) {
+			// ALT + [number] = Move all LevelTiles selected to that world!!
 			if (Input.GetKeyDown (KeyCode.Alpha0)) { MoveLevelTilesSelectedToWorld (0); }
 			else if (Input.GetKeyDown (KeyCode.Alpha1)) { MoveLevelTilesSelectedToWorld (1); }
 			else if (Input.GetKeyDown (KeyCode.Alpha2)) { MoveLevelTilesSelectedToWorld (2); }
@@ -561,33 +563,34 @@ public class MapEditor : MonoBehaviour {
 			else if (Input.GetKeyDown (KeyCode.Alpha9)) { MoveLevelTilesSelectedToWorld (9); }
 			else if (Input.GetKeyDown (KeyCode.Minus)) { MoveLevelTilesSelectedToWorld (10); }
 		}
-		
-		// Visibility togglin'
-		else if (Input.GetKeyDown(KeyCode.F)) { ToggleLevelTileDesignerFlagsVisibility(); } // F = toggle flags
-		else if (Input.GetKeyDown(KeyCode.N)) { ToggleLevelTileNamesVisibility(); } // N = toggle names
-		else if (Input.GetKeyDown(KeyCode.P)) { ToggleLevelPropsVisibility(); } // P = toggle props
-		else if (Input.GetKeyDown(KeyCode.M)) { ToggleLevelContentsMasked(); } // M = toggle levelTile contents being masked
-		else if (Input.GetKeyDown(KeyCode.T)) { ToggleLevelTileStarsVisibility(); } // T = toggle stars
-		else if (Input.GetKeyDown(KeyCode.I)) { ToggleInstructionsVisibility(); } // I = toggle instructions
-		
-		// LOAD DIFFERENT WORLDS
-		else if (Input.GetKeyDown(KeyCode.Alpha0)) { SetCurrWorld(0); }
-		else if (Input.GetKeyDown(KeyCode.Alpha1)) { SetCurrWorld(1); }
-		else if (Input.GetKeyDown(KeyCode.Alpha2)) { SetCurrWorld(2); }
-		else if (Input.GetKeyDown(KeyCode.Alpha3)) { SetCurrWorld(3); }
-		else if (Input.GetKeyDown(KeyCode.Alpha4)) { SetCurrWorld(4); }
-		else if (Input.GetKeyDown(KeyCode.Alpha5)) { SetCurrWorld(5); }
-		else if (Input.GetKeyDown(KeyCode.Alpha6)) { SetCurrWorld(6); }
-		else if (Input.GetKeyDown(KeyCode.Alpha7)) { SetCurrWorld(7); }
-		else if (Input.GetKeyDown(KeyCode.Alpha8)) { SetCurrWorld(8); }
-		else if (Input.GetKeyDown(KeyCode.Alpha9)) { SetCurrWorld(9); }
-		else if (Input.GetKeyDown(KeyCode.Minus)) { SetCurrWorld (10); }
 
-		// ESCAPE = Cancel searching
-		else if (Input.GetKeyDown (KeyCode.Escape)) {
-			ClearLevelSearch ();
-		}
-
+        // SHIFT + ____
+        else if (InputController.IsKeyDown_shift) {
+        }
+		
+        // NO alt/control/shift...!
+        else {
+		    // Visibility togglin'
+		    if (Input.GetKeyDown(KeyCode.F)) { ToggleLevelTileDesignerFlagsVisibility(); } // F = toggle flags
+		    else if (Input.GetKeyDown(KeyCode.N)) { ToggleLevelTileNamesVisibility(); } // N = toggle names
+		    else if (Input.GetKeyDown(KeyCode.P)) { ToggleLevelPropsVisibility(); } // P = toggle props
+		    else if (Input.GetKeyDown(KeyCode.M)) { ToggleLevelContentsMasked(); } // M = toggle levelTile contents being masked
+		    else if (Input.GetKeyDown(KeyCode.T)) { ToggleLevelTileStarsVisibility(); } // T = toggle stars
+		    else if (Input.GetKeyDown(KeyCode.I)) { ToggleInstructionsVisibility(); } // I = toggle instructions
+		
+		    // LOAD DIFFERENT WORLDS
+		    else if (Input.GetKeyDown(KeyCode.Alpha0)) { SetCurrWorld(0); }
+		    else if (Input.GetKeyDown(KeyCode.Alpha1)) { SetCurrWorld(1); }
+		    else if (Input.GetKeyDown(KeyCode.Alpha2)) { SetCurrWorld(2); }
+		    else if (Input.GetKeyDown(KeyCode.Alpha3)) { SetCurrWorld(3); }
+		    else if (Input.GetKeyDown(KeyCode.Alpha4)) { SetCurrWorld(4); }
+		    else if (Input.GetKeyDown(KeyCode.Alpha5)) { SetCurrWorld(5); }
+		    else if (Input.GetKeyDown(KeyCode.Alpha6)) { SetCurrWorld(6); }
+		    else if (Input.GetKeyDown(KeyCode.Alpha7)) { SetCurrWorld(7); }
+		    else if (Input.GetKeyDown(KeyCode.Alpha8)) { SetCurrWorld(8); }
+		    else if (Input.GetKeyDown(KeyCode.Alpha9)) { SetCurrWorld(9); }
+		    else if (Input.GetKeyDown(KeyCode.Minus)) { SetCurrWorld (10); }
+        }
 	}
 	
 	

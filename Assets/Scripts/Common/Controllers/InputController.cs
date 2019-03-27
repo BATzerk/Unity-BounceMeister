@@ -43,6 +43,10 @@ public class InputController : MonoBehaviour {
 		return GetMouseButtonUp() != -1;
 	}
 
+    static public bool IsKeyDown_alt { get { return Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt); } }
+    static public bool IsKeyDown_shift { get { return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift); } }
+    static public bool IsKeyDown_control { get { return Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl); } }
+
 
 
 
