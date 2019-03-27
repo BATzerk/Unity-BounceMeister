@@ -62,7 +62,7 @@ abstract public class Player : PlatformCharacter {
 		return !feetOnGround();
 	}
 	private bool MayEatGems() {
-		return myWhiskers.MayEatGems();
+		return myWhiskers.AreFeetOnEatGemGround();
     }
     override protected float HorzMoveInputVelXDelta() {
 		if (InputController.Instance==null) { return 0; } // for building at runtime.

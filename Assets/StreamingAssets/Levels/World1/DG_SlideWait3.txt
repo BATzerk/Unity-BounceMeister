@@ -1,11 +1,11 @@
-levelProperties posGlobal:(-332.0, 216.0);designerFlag:1
+levelProperties posGlobal:(-322.0, 170.0);designerFlag:3
 CameraBounds myRect:(x:-25.00, y:-19.00, width:50.00, height:38.00)
-DamageableGround myRect:(x:11.50, y:5.50, width:1.00, height:9.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:True
+DamageableGround myRect:(x:11.50, y:5.50, width:1.00, height:9.00);doRegen:True;dieFromPlayerLeave:True
 Gem pos:(16.0, 3.0)
-Ground myRect:(x:-14.00, y:-2.50, width:4.00, height:31.00);colorType:0;canBounce:True;doRechargePlayer:True
-Ground myRect:(x:17.00, y:15.00, width:12.00, height:10.00);colorType:0;canBounce:True;doRechargePlayer:True
-Ground myRect:(x:-6.00, y:-5.50, width:4.00, height:13.00);colorType:0;canBounce:True;doRechargePlayer:True
-Ground myRect:(x:21.00, y:4.50, width:4.00, height:15.00);colorType:0;canBounce:True;doRechargePlayer:True
-Ground myRect:(x:3.50, y:-19.00, width:39.00, height:2.00);colorType:0;canBounce:True;doRechargePlayer:True
-Ground myRect:(x:17.00, y:-9.50, width:12.00, height:21.00);colorType:0;canBounce:True;doRechargePlayer:True
+Ground myRect:(x:17.00, y:-9.50, width:12.00, height:21.00)
+Ground myRect:(x:3.50, y:-19.00, width:39.00, height:2.00)
+Ground myRect:(x:21.00, y:4.50, width:4.00, height:15.00)
+Ground myRect:(x:-4.50, y:-5.50, width:7.00, height:13.00)
+Ground myRect:(x:17.00, y:15.00, width:12.00, height:10.00)
+Ground myRect:(x:-14.00, y:-2.50, width:4.00, height:31.00)
 PlayerStart pos:(-5.9, 3.1)

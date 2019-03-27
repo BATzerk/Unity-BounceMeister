@@ -109,9 +109,9 @@ static public class LevelSaverLoader {
 				DamageableGroundData d = propData as DamageableGroundData;
 				AddSomePropFieldsToFS(propData, "myRect", "doRegen");
                 if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
-                if (!d.canEatGems) { fs += ";dieFromBounce:" + d.dieFromBounce; }
-                if (!d.canEatGems) { fs += ";dieFromPlayerLeave:" + d.dieFromPlayerLeave; }
-                if (!d.canEatGems) { fs += ";dieFromVel:" + d.dieFromVel; }
+                if (d.dieFromBounce) { fs += ";dieFromBounce:" + d.dieFromBounce; }
+                if (d.dieFromPlayerLeave) { fs += ";dieFromPlayerLeave:" + d.dieFromPlayerLeave; }
+                if (d.dieFromVel) { fs += ";dieFromVel:" + d.dieFromVel; }
                 AddFSLine();
 			}
 			else if (type == typeof(GateData)) {
