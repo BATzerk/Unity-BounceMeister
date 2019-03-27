@@ -133,9 +133,9 @@ public class LevelTile : MonoBehaviour {
 		backingColor = new Color (backingColor.r*0.5f, backingColor.g*0.5f, backingColor.b*0.5f, 0.5f);
 		sr_backing.color = backingColor;
 	}
-	public void ShowContents () {
+	public void ShowContents() {
 		this.gameObject.SetActive(true);// TEMP!! TOtally hiding.
-		contents.Show ();
+		contents.Show();
 		contents.OnMapScaleChanged(MapEditor.MapScale);
 		
 		Color backingColor = new Color(0.3f,0.3f,0.3f);//Colors.GetBGColor_ViewGameplay (Colors.GetBGTheme (levelDataRef.WorldIndex));
@@ -218,8 +218,8 @@ public class LevelTile : MonoBehaviour {
 	// ================================================================
 	//  Events
 	// ================================================================
-	public void OnMapScaleChanged (float mapScale) {
-		contents.OnMapScaleChanged (mapScale);
+	public void OnMapScaleChanged() {
+		contents.OnMapScaleChanged(MapEditor.MapScale);
 	}
 	public void OnMouseEnterBodyCollider() {
 		if (MapEditor.CanSelectALevelTile()) {

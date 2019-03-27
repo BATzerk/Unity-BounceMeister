@@ -5,13 +5,8 @@ using System.Collections.Generic;
 
 public class MapEditor : MonoBehaviour {
 	// Constants
-	private const float ARROW_KEYS_PAN_SPEED = 20f; // for panning the map with the arrow keys. Scales based on mapScale.
-	private const float DRAG_PANNING_SPEED = 0.1f; // higher is faster.
-	private const float MOUSE_SCROLL_ZOOM_RATIO = 0.02f; // mouseScrollDelta * this = the % zoom change
 	private readonly float gridSizeX = 1;//GameVisualProperties.OriginalScreenSize.x * 0.25f;
 	private readonly float gridSizeY = 1;//GameVisualProperties.OriginalScreenSize.y * 0.25f;
-	private const float mapScaleNeutral = 0.003f; // when the map is at its neutral zoom level. (If this were 1, then one LevelTile would occupy the whole screen.)
-	private const float ZOOM_SPEED_KEYBOARD = 0.04f; // higher is faster.
 	private const string instructionsTextString_enabled = "change world:  [1-8]\ntoggle names:  'n'\ntoggle contents:  'p'\nsearch:  [hold 'SHIFT' and type lvl name; ESC to cancel]\nhide instructions:  'i'";//move/zoom:  [mouse or arrow keys]\nplay level:  [double-click one]\n
 	private const string instructionsTextString_disabled = "show instructions:  'i'";
 	// Components
@@ -19,23 +14,19 @@ public class MapEditor : MonoBehaviour {
 	private List<GameObject> worldLayerGOs; // purely for hierarchy cleanness, we wanna put all the tiles into their respective world's GameObject.
 	private List<List<LevelTile>> allLevelTiles; // LevelTiles for EVERY LEVEL IN THE GAME!
 	// Properties
-	private bool isDragPanning; // true when we right-mouse-click and drag to fast-pan around the map.
-	private bool isGrabPanning; // true when we middle-mouse-click to pan around the map. This is the limited scroll.
 	private bool isSearchingLevel; // When we start typing letters, yeah! Narrow down our options.
-	private float mapScale;
 	private int currWorldIndex=-1;
 	private string levelSearchString = "";
     public MapEditorSettings MySettings { get; private set; }
-	private Vector2 cameraPosOnMouseDown;
-	private Vector2 mousePosScreenOnDown;
-	private Vector2 mousePosWorld;
+	public Vector2 MousePosScreenOnDown { get; private set; }
+	public Vector2 MousePosWorld { get; private set; }
 	// References
 	[SerializeField] private Text currentWorldText=null;
 	[SerializeField] private Text demoText;
 	[SerializeField] private Text instructionsText=null;
 	private List<LevelTile> tilesSelected = new List<LevelTile>();
     private MapEditorCamera editorCamera;
-	private WorldData CurrentWorldData { get { return GetWorldData (currWorldIndex); } }
+	public WorldData CurrentWorldData { get { return GetWorldData(currWorldIndex); } }
 	private WorldData GetWorldData (int worldIndex) {
 		if (worldIndex<0 || dataManager.NumWorldDatas == 0) { return null; }
 		return dataManager.GetWorldData (worldIndex);
@@ -50,7 +41,6 @@ public class MapEditor : MonoBehaviour {
 	private float fTS { get { return TimeController.FrameTimeScaleUnscaled; } } // frame time scale
 	private List<LevelTile> CurrWorldLevelTiles { get { return allLevelTiles==null?null : allLevelTiles [currWorldIndex]; } }
 
-	public float MapScale { get { return mapScale; } }
 	public bool CanSelectALevelTile() {
 		// Otherwise, NO tiles selected and our mouse isn't down? Yeah, return true!
 		if (tilesSelected.Count==0 && !Input.GetMouseButton(0)) { return true; }
@@ -84,12 +74,13 @@ public class MapEditor : MonoBehaviour {
 	}
 	private Vector2 GetConnectionPosRelativeToLevelTile(LevelTile levelTile, Vector2 globalPos) {
 		return new Vector2(globalPos.x-levelTile.MyLevelData.PosGlobal.x, globalPos.y-levelTile.MyLevelData.PosGlobal.y);
-	}
+    }
+
+    public float MapScale { get { return editorCamera.MapScale; } }
     private Vector2 SnapToGrid(Vector2 v) { return new Vector2(Mathf.Floor(v.x/gridSizeX)*gridSizeX, Mathf.Floor(v.y/gridSizeY)*gridSizeY); }
 	public Vector2 MousePosScreen { get { return inputController.MousePosScreen; } }
-	public Vector2 MousePosWorld { get { return mousePosWorld; } }
-	public Vector2 MousePosWorldDragging(Vector2 _mouseClickOffset) {
-		return mousePosWorld + _mouseClickOffset;
+    private Vector2 MousePosWorldDragging(Vector2 _mouseClickOffset) {
+		return MousePosWorld + _mouseClickOffset;
 	}
 	public Vector2 MousePosWorldDraggingGrid(Vector2 _mouseClickOffset) { // Return the mouse position, scaled to the screen and snapped to the grid.
         bool doSnap = !Input.GetKey (KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl); // Hold down CONTROL to prevent snapping.
@@ -121,7 +112,7 @@ public class MapEditor : MonoBehaviour {
 		}
 		return false;
 		*/
-		return GetLevelTileAtPoint (mousePosWorld) != null;
+		return GetLevelTileAtPoint (MousePosWorld) != null;
 	}
 
 
@@ -173,9 +164,6 @@ public class MapEditor : MonoBehaviour {
 
 		// Set current world
 		SetCurrWorld(SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex));
-
-		// Move the camera to where we remember it was last time we was here!
-        LoadCameraPosScale();
 	}
 
 	private void SetCurrWorld (int _worldIndex) {
@@ -205,16 +193,6 @@ public class MapEditor : MonoBehaviour {
 		editorCamera.OnSetCurrentWorld(currWorldIndex);
 	}
     
-	private void ResetCameraToNeutral() {
-		// Reset scale
-		SetMapScale (mapScaleNeutral);
-		Vector2 averageLevelPos = new Vector2 (0,0);
-		foreach (LevelData ld in CurrentWorldData.LevelDatas.Values) {
-			averageLevelPos += ld.PosGlobal;
-		}
-		averageLevelPos /= CurrentWorldData.LevelDatas.Count;
-		editorCamera.Pos = averageLevelPos;
-	}
 
 	private void MakeWorldLayerGOs () {
 		worldLayerGOs = new List <GameObject> ();
@@ -253,36 +231,12 @@ public class MapEditor : MonoBehaviour {
         SceneHelper.ReloadScene();
     }
 
-    private void LoadCameraPosScale() {
-		float savedMapScale = SaveStorage.GetFloat(SaveKeys.MapEditor_MapScale, mapScaleNeutral);
-		SetMapScale(savedMapScale);
-    }
-    private void SaveCameraPosScale() {
-        SaveStorage.SetFloat(SaveKeys.MapEditor_MapScale, mapScale);
-    }
 
 
 
     // ================================================================
-    //  Doers
+    //  Doers: Level Tiles
     // ================================================================
-    private void SetMapScale(float _mapScale) {
-		mapScale = _mapScale;
-		mapScale = Mathf.Max(0.4f, Mathf.Min (10, mapScale)); // Don't let scale get TOO crazy now.
-		editorCamera.SetScale(mapScale);
-        SaveCameraPosScale(); // save editor cam values!
-		// Update my level tiles' text scales!
-		if (allLevelTiles != null) {
-			foreach (LevelTile levelTile in CurrWorldLevelTiles) {
-				levelTile.OnMapScaleChanged (mapScale);
-			}
-		}
-	}
-	private void MoveCamera(float xMove, float yMove) {
-		editorCamera.Pos += new Vector2(xMove, yMove);
-	}
-
-	
 	private void SelectLevelTile(LevelTile thisLevelTile) {
 		/*
 		// First, check if we're trying to set ANOTHER, different levelTile as levelTileDragging.
@@ -309,7 +263,7 @@ public class MapEditor : MonoBehaviour {
 		// Add it to my list!
 		tilesSelected.Add (thisLevelTile);
 		// Tell it what's up!
-		thisLevelTile.OnSelected (mousePosWorld);
+		thisLevelTile.OnSelected (MousePosWorld);
 	}
 	private void DeselectLevelTile(LevelTile thisLevelTile) {
 		thisLevelTile.OnDeselected ();
@@ -380,8 +334,8 @@ public class MapEditor : MonoBehaviour {
 		// No tiles selected? Womp, don't do anything LOL
 		if (tilesSelected.Count == 0) { return; }
 		int worldIndexFrom = tilesSelected[0].WorldIndex; // We can assume all levelTilesSelected are in the same world.
-		WorldData worldDataTo = GetWorldData (worldIndexTo);
-		WorldData worldDataFrom = GetWorldData (worldIndexFrom);
+		//WorldData worldDataTo = GetWorldData (worldIndexTo);
+		//WorldData worldDataFrom = GetWorldData (worldIndexFrom);
 //		string worldToFolderName = GameProperties.GetWorldName (worldIndexTo); // name of the folda we're moving the files TO.
 		// If we're trying to move these tiles to the world they're ALREADY in, do nothin'!
 		if (worldIndexFrom == worldIndexTo) { return; }
@@ -407,12 +361,15 @@ public class MapEditor : MonoBehaviour {
 	// ================================================================
 	//  Events
 	// ================================================================
-	private void ClearLevelSearch () {
-		isSearchingLevel = false;
-		levelSearchString = "";
-		UpdateLevelTilesFromSearchString ();
-	}
-	public void OnClickLevelTile(LevelTile levelTile) {
+    public void OnSetMapScale() {
+        // Update my level tiles' text scales!
+        if (allLevelTiles != null) {
+            foreach (LevelTile levelTile in CurrWorldLevelTiles) {
+                levelTile.OnMapScaleChanged();
+            }
+        }
+    }
+    public void OnClickLevelTile(LevelTile levelTile) {
 		// Conditions are right for selecting the tile!
 //		if (!Input.GetKey(KeyCode.LeftAlt) && newLinkFirstLevelTile==null) {
 		if (!Input.GetKey(KeyCode.LeftAlt)) {
@@ -470,22 +427,19 @@ public class MapEditor : MonoBehaviour {
 			}
 		}
 	}
-	
-	private void UpdateLevelTilesFromSearchString () {
+
+    private void ClearLevelSearch() {
+        isSearchingLevel = false;
+        levelSearchString = "";
+        UpdateLevelTilesFromSearchString();
+    }
+    private void UpdateLevelTilesFromSearchString () {
 		// Update their visibilities!
 		for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
 			CurrWorldLevelTiles[i].UpdateVisibilityFromSearchCriteria (levelSearchString);
 		}
 	}
 
-	private void ZoomMapAtPoint (Vector3 screenPoint, float deltaZoom) {
-		float pmapScale = mapScale;
-		SetMapScale(mapScale * (1 + deltaZoom));
-		// If we DID change the zoom, then also move to focus on that point!
-		if (mapScale - pmapScale != 0) {
-			MoveCamera(screenPoint.x * deltaZoom / mapScale, screenPoint.y * deltaZoom / mapScale);
-		}
-	}
 	
 	
 	
@@ -497,28 +451,17 @@ public class MapEditor : MonoBehaviour {
 		if (inputController==null) { return; } // Safety check for runtime compile.
 
 		UpdateMousePosWorld();
-		RegisterKeyInputs ();
-		RegisterMouseInputs ();
-		UpdateLevelTileSelectionRectSelection ();
-		UpdateCameraMovement ();
-		UpdateUI ();
+		RegisterKeyInputs();
+		RegisterMouseInputs();
+		UpdateLevelTileSelectionRectSelection();
+		UpdateUI();
 	}
 
 	private void UpdateMousePosWorld() {
 //		inputManager.UpdateMousePosRelative (editorCamera.transform.localPosition, mapScale);
-		mousePosWorld = inputController.MousePosScreen;// / ScreenHandler.ScreenScale;// - new Vector3(ScreenHandler.OriginalScreenSize.x,ScreenHandler.OriginalScreenSize.y,0)*0.5f;
-		mousePosWorld /= mapScale;
-		mousePosWorld += editorCamera.Pos;
-	}
-
-	private void UpdateCameraMovement () {
-		// Grab Panning!
-		if (isGrabPanning) {
-			editorCamera.Pos = cameraPosOnMouseDown + new Vector2(mousePosScreenOnDown.x-MousePosScreen.x, mousePosScreenOnDown.y-MousePosScreen.y) / mapScale;
-		}
-		else if (isDragPanning) {
-			editorCamera.Pos += new Vector2(MousePosScreen.x-mousePosScreenOnDown.x, MousePosScreen.y-mousePosScreenOnDown.y) * DRAG_PANNING_SPEED * fTS;
-		}
+		MousePosWorld = inputController.MousePosScreen;// / ScreenHandler.ScreenScale;// - new Vector3(ScreenHandler.OriginalScreenSize.x,ScreenHandler.OriginalScreenSize.y,0)*0.5f;
+		MousePosWorld /= editorCamera.MapScale;
+		MousePosWorld += editorCamera.Pos;
 	}
 
 	private void UpdateUI () {
@@ -554,13 +497,8 @@ public class MapEditor : MonoBehaviour {
 	private void RegisterMouseInputs() {
 		// Clickz
 		if (inputController.IsDoubleClick) { OnMouseDoubleClicked (); }
-		if (InputController.GetMouseButtonDown() != -1) { OnMouseDown(); }
-		else if (InputController.GetMouseButtonUp() != -1) { OnMouseUp(); }
-		// Wheelies
-		if (Input.mouseScrollDelta != Vector2.zero) {
-			float zoomSpeedScale = (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) ? 5 : 1; // hold down SHIFT to zoom fastahh!
-			ZoomMapAtPoint (MousePosScreen, Input.mouseScrollDelta.y*MOUSE_SCROLL_ZOOM_RATIO * zoomSpeedScale);
-		}
+		if (InputController.IsMouseButtonDown()) { OnMouseDown(); }
+		else if (InputController.IsMouseButtonUp()) { OnMouseUp(); }
 	}
 	private void RegisterKeyInputs() {
         bool isKeyDown_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
@@ -644,15 +582,6 @@ public class MapEditor : MonoBehaviour {
 		else if (Input.GetKeyDown(KeyCode.Alpha8)) { SetCurrWorld(8); }
 		else if (Input.GetKeyDown(KeyCode.Alpha9)) { SetCurrWorld(9); }
 		else if (Input.GetKeyDown(KeyCode.Minus)) { SetCurrWorld (10); }
-		
-		// Camera controls
-		else if (Input.GetKeyDown (KeyCode.C))  { ResetCameraToNeutral (); }
-		else if (Input.GetKey (KeyCode.LeftArrow))  { MoveCamera(-ARROW_KEYS_PAN_SPEED/mapScale*fTS,0); }
-		else if (Input.GetKey (KeyCode.RightArrow)) { MoveCamera( ARROW_KEYS_PAN_SPEED/mapScale*fTS,0); }
-		else if (Input.GetKey (KeyCode.DownArrow))  { MoveCamera(0,-ARROW_KEYS_PAN_SPEED/mapScale*fTS); }
-		else if (Input.GetKey (KeyCode.UpArrow))    { MoveCamera(0, ARROW_KEYS_PAN_SPEED/mapScale*fTS); }
-		else if (Input.GetKey (KeyCode.Z)) { SetMapScale(mapScale/(1-ZOOM_SPEED_KEYBOARD*fTS)); }
-		else if (Input.GetKey (KeyCode.X)) { SetMapScale(mapScale*(1-ZOOM_SPEED_KEYBOARD*fTS)); }
 
 		// ESCAPE = Cancel searching
 		else if (Input.GetKeyDown (KeyCode.Escape)) {
@@ -666,13 +595,13 @@ public class MapEditor : MonoBehaviour {
 		int mouseButton = InputController.GetMouseButtonDown();
 		// LEFT click?
 		if (mouseButton == 0) {
-			Debug.Log ("mousePosWorld: " + mousePosWorld);
+			Debug.Log ("mousePosWorld: " + MousePosWorld);
 			// Double-click?!
 //			Debug.Log(Time.frameCount + " timeSinceMouseButtonDown: " + timeSinceMouseButtonDown + "     " + Vector2.Distance (MousePosScreen, mousePosScreenOnDown));
 //			if (timeSinceMouseButtonDown < DOUBLE_CLICK_TIME && Vector2.Distance (MousePosScreen, mousePosScreenOnDown) < 4) {
 			// Tell ALL selected tiles to update their click offset!
 			foreach (LevelTile levelTile in tilesSelected) {
-				levelTile.SetMouseClickOffset (mousePosWorld);
+				levelTile.SetMouseClickOffset (MousePosWorld);
 			}
 			// Are we NOT over anything? Activate the selectionRect AND release any selected tiles!
 			if (!IsMouseOverAnything ()) {
@@ -680,17 +609,8 @@ public class MapEditor : MonoBehaviour {
 				ReleaseLevelTilesSelected();
 			}
 		}
-		// RIGHT click?
-		else if (mouseButton == 1) {
-			isDragPanning = true;
-		}
-		// MIDDLE click?
-		else if (mouseButton == 2) {
-			isGrabPanning = true;
-		}
 		// Update on-mouse-down vectors!
-		cameraPosOnMouseDown = editorCamera.Pos;
-		mousePosScreenOnDown = MousePosScreen;
+		MousePosScreenOnDown = MousePosScreen;
 	}
 	private void OnMouseUp() {
 		int mouseButton = InputController.GetMouseButtonUp ();
@@ -705,15 +625,6 @@ public class MapEditor : MonoBehaviour {
 			CurrentWorldData.SetAllLevelDatasFundamentalProperties ();
 //			// Mouse up = release all levelTilesSelected!
 //			ReleaseLevelTilesSelected();
-		}
-
-		// RIGHT click?
-		if (mouseButton == 1) {
-			isDragPanning = false;
-		}
-		// MIDDLE click?
-		else if (mouseButton == 2) {
-			isGrabPanning = false;
 		}
 	}
 	private void OnMouseDoubleClicked() {
