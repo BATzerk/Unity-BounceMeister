@@ -1,22 +1,21 @@
-levelProperties posGlobal:(390.0, 260.0);designerFlag:4
+levelProperties posGlobal:(174.0, 154.0);designerFlag:4
 CameraBounds myRect:(x:-25.00, y:-19.00, width:51.00, height:38.00)
-DamageableGround myRect:(x:1.00, y:-13.50, width:6.00, height:1.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
-DamageableGround myRect:(x:-6.00, y:-0.50, width:6.00, height:1.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
 DamageableGround myRect:(x:9.00, y:-6.50, width:6.00, height:1.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
-Gem pos:(-6.0, 2.5)
-Ground myRect:(x:-10.50, y:15.00, width:7.00, height:8.00)
-Ground myRect:(x:6.50, y:17.50, width:29.00, height:3.00)
-Ground myRect:(x:-20.00, y:5.00, width:12.00, height:28.00)
-Ground myRect:(x:0.50, y:-18.00, width:53.00, height:4.00)
-Ground myRect:(x:0.50, y:19.00, width:53.00, height:2.00)
-Ground myRect:(x:20.50, y:-7.50, width:13.00, height:23.00)
-Ground myRect:(x:-17.00, y:-16.50, width:18.00, height:7.00)
-Ground myRect:(x:20.00, y:3.00, width:14.00, height:2.00)
+DamageableGround myRect:(x:-6.00, y:-0.50, width:6.00, height:1.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:1.00, y:-13.50, width:6.00, height:1.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
 Ground myRect:(x:16.50, y:16.00, width:21.00, height:4.00)
+Ground myRect:(x:20.00, y:3.00, width:14.00, height:2.00)
+Ground myRect:(x:-17.00, y:-16.50, width:18.00, height:7.00)
+Ground myRect:(x:20.50, y:-7.50, width:13.00, height:23.00)
+Ground myRect:(x:0.50, y:19.00, width:53.00, height:2.00)
+Ground myRect:(x:0.50, y:-18.00, width:53.00, height:4.00)
+Ground myRect:(x:-20.00, y:5.00, width:12.00, height:28.00)
+Ground myRect:(x:6.50, y:17.50, width:29.00, height:3.00)
+Ground myRect:(x:-10.50, y:15.00, width:7.00, height:8.00)
 PlayerStart pos:(-10.8, -11.4)
-Spikes myRect:(x:-6.50, y:15.00, width:8.00, height:1.00);rotation:270
-Spikes myRect:(x:-12.50, y:10.50, width:11.00, height:1.00);rotation:180
-Spikes myRect:(x:3.50, y:-15.50, width:23.00, height:1.00);rotation:0
-Spikes myRect:(x:13.50, y:-6.00, width:20.00, height:1.00);rotation:90
-Spikes myRect:(x:-13.50, y:4.50, width:27.00, height:1.00);rotation:270
 Spikes myRect:(x:-0.50, y:15.50, width:15.00, height:1.00);rotation:180
+Spikes myRect:(x:-13.50, y:4.50, width:27.00, height:1.00);rotation:270
+Spikes myRect:(x:13.50, y:-6.00, width:20.00, height:1.00);rotation:90
+Spikes myRect:(x:3.50, y:-15.50, width:23.00, height:1.00);rotation:0
+Spikes myRect:(x:-12.50, y:10.50, width:11.00, height:1.00);rotation:180
+Spikes myRect:(x:-6.50, y:15.00, width:8.00, height:1.00);rotation:270

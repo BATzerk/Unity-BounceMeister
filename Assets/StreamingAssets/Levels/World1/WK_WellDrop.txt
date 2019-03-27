@@ -1,15 +1,14 @@
-levelProperties posGlobal:(288.0, 250.0);designerFlag:4
+levelProperties posGlobal:(-144.0, 20.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:51.00, height:38.00)
 Gem pos:(6.0, -9.5)
-Ground myRect:(x:13.50, y:0.50, width:9.00, height:17.00);colorType:0;canEatGems:False
-Ground myRect:(x:9.00, y:17.50, width:34.00, height:5.00);colorType:0
-Ground myRect:(x:1.00, y:0.50, width:4.00, height:17.00);colorType:0;canEatGems:False
-Ground myRect:(x:7.00, y:-18.00, width:22.00, height:4.00);colorType:0
-Ground myRect:(x:-14.00, y:-5.00, width:26.00, height:30.00);colorType:0
-Ground myRect:(x:16.00, y:-4.50, width:4.00, height:27.00);colorType:0
-Ground myRect:(x:20.00, y:-2.50, width:12.00, height:35.00);colorType:0
-Ground myRect:(x:-20.00, y:12.00, width:14.00, height:16.00);colorType:0
-Ground myRect:(x:-7.50, y:17.00, width:3.00, height:6.00);colorType:0
+Ground myRect:(x:13.50, y:0.50, width:9.00, height:17.00);canEatGems:False
+Ground myRect:(x:-0.50, y:17.50, width:53.00, height:5.00)
+Ground myRect:(x:-6.50, y:0.50, width:19.00, height:17.00);canEatGems:False
+Ground myRect:(x:7.00, y:-18.00, width:22.00, height:4.00)
+Ground myRect:(x:-14.00, y:-9.50, width:26.00, height:21.00)
+Ground myRect:(x:16.00, y:-4.50, width:4.00, height:27.00)
+Ground myRect:(x:20.00, y:-5.50, width:12.00, height:29.00)
+Ground myRect:(x:-23.50, y:12.50, width:7.00, height:15.00);canEatGems:False
 Platform myRect:(x:8.50, y:8.50, width:1.00, height:1.00);canEatGems:False
 Platform myRect:(x:3.50, y:8.50, width:1.00, height:1.00);canEatGems:False
 PlayerStart pos:(1.8, 10.0)

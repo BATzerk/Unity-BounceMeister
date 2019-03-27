@@ -27,15 +27,15 @@ abstract public class Player : PlatformCharacter {
 
 	private const float DelayedJumpWindow = 0.1f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
-	private const float PostWallKickHorzInputLockDur = 0.3f; // how long until we can provide horizontal input after jumping off a wall.
-	private const float WallKickExtensionWindow = 0.08f; // how long after touching a wall when we'll still allow wall-kicking!
+	private const float PostWallKickHorzInputLockDur = 0.3f; // affects isPreservingWallKickVel. How long until we can provide horizontal input after jumping off a wall. Note: This only has an affect for vals under like 0.4f (after that, Player's yVel is prob negative).
+    private const float WallKickExtensionWindow = 0.08f; // how long after touching a wall when we'll still allow wall-kicking!
 
 	// Components
 	[SerializeField] protected PlayerBody myBody=null;
 	// Properties
 	private bool isPostDamageImmunity = false;
-	protected bool isPreservingWallKickVel = false; // if TRUE, we don't apply air friction. Set to false if we provide opposite-dir input, and when we land.
-	private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
+	protected bool isPreservingWallKickVel = false; // if TRUE, we don't apply air friction. Set to false when A) Time's past PostWallKickHorzInputLockDur, B) Our yVel is negative, or C) We're on the ground.
+    private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeLastWallKicked=Mathf.NegativeInfinity;
 	private float timeSinceDamage=Mathf.NegativeInfinity; // invincible until this time! Set to Time.time + PostDamageInvincibleDuration when we're hit.
 	private float timeWhenDelayedJump=Mathf.NegativeInfinity; // for jump AND wall-kick. Set when in air and press Jump. If we touch ground/wall before this time, we'll do a delayed jump or wall-kick!
@@ -73,7 +73,7 @@ abstract public class Player : PlatformCharacter {
 		if (!MathUtils.IsSameSign(dirX, vel.x)) { // Pushing the other way? Make us go WAY the other way, ok?
 			mult = 3;
 			// If we're pushing AGAINST our velocity AND we just kicked off a wall, don't allow the input, ok?
-			if (Time.time < timeLastWallKicked+PostWallKickHorzInputLockDur) {
+			if (isPreservingWallKickVel) {//Time.time < timeLastWallKicked+PostWallKickHorzInputLockDur) {
 				mult = 0;
 			}
 		}
@@ -229,10 +229,11 @@ abstract public class Player : PlatformCharacter {
 //	}
 	private void UpdateIsPreservingWallKickVel() {
 		if (isPreservingWallKickVel) {
-			if (vel.y < 0) {
-				isPreservingWallKickVel = false; // Once we reach the height of our wall-kick, halt our velocity! It's tighter to control.
+			if (vel.y < 0  // Once we reach the height of our wall-kick, halt our velocity! It's tighter to control.
+             || feetOnGround()) {
+                isPreservingWallKickVel = false;
 			}
-			else if (Time.time-0.1f > timeLastWallKicked // If it's been at least a few grace frames since we wall-kicked...
+			else if (Time.time-PostWallKickHorzInputLockDur > timeLastWallKicked // If it's been at least a few grace frames since we wall-kicked...
 				&& !MathUtils.IsSameSign(vel.x, inputAxis.x)) { // Pushing against my vel? Stop preserving the vel!
 				isPreservingWallKickVel = false;
 			}
