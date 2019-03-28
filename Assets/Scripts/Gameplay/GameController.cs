@@ -100,9 +100,23 @@ public class GameController : MonoBehaviour {
 		SaveStorage.Save();
 		// Dispatch the post-function event!
 		eventManager.OnStartLevel(level);
-	}
 
-	private void MakePlayer(PlayerTypes type, LevelData levelData) {
+        // Expand the hierarchy!
+        ExpandLevelHierarchy();
+    }
+
+    private void ExpandLevelHierarchy() {
+        GameUtils.SetExpandedRecursive(level.gameObject, true); // Open up Level all the way down.
+        for (int i=0; i<level.transform.childCount; i++) { // Ok, now (messily) close all its children.
+            GameUtils.SetExpandedRecursive(level.transform.GetChild(i).gameObject, false);
+        }
+        GameUtils.FocusOnWindow("Game"); // focus back on Game window.
+        //GameUtils.SetGOCollapsed(transform.parent, false);
+        //GameUtils.SetGOCollapsed(tf_world, false);
+        //GameUtils.SetGOCollapsed(level.transform, false);
+    }
+
+    private void MakePlayer(PlayerTypes type, LevelData levelData) {
 		Vector2 startingPos = GetPlayerStartingPosInLevel(levelData);
 		MakePlayer(type, startingPos);
 	}
@@ -214,7 +228,7 @@ public class GameController : MonoBehaviour {
 		bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
         // ESCAPE = Toggle Pause!
-		if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
             gameTimeController.TogglePause();
 		}
 

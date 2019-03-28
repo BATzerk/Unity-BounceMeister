@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +13,33 @@ public static class GameUtils {
         go.transform.localEulerAngles = Vector3.zero;
         go.transform.localScale = Vector3.one;
     }
-    
+
+    public static void SetExpandedRecursive(GameObject go,bool expand) { // QQQ TODO: Use one or the other method.
+        var type = typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneHierarchyWindow");
+        var methodInfo = type.GetMethod("SetExpandedRecursive");
+        EditorWindow window = EditorWindow.GetWindow(type);
+        methodInfo.Invoke(window,new object[] { go.GetInstanceID(),expand });
+    }
+    //public static void SetGOCollapsed(Transform tf, bool isCollapsed) {
+    //    if (tf.childCount == 0) return; // No children? Do nothin'.
+    //    var hierarchy = GetFocusedWindow("General/Hierarchy");
+    //    SelectObject(tf);
+    //    // Create a new key event (RightArrow for collapsing, LeftArrow for folding)
+    //    var key = new Event { keyCode = isCollapsed ? KeyCode.RightArrow : KeyCode.LeftArrow, type = EventType.KeyDown };
+    //    // Finally, send the window the event
+    //    hierarchy.SendEvent(key);
+    //}
+    //public static void SelectObject(Object obj) {
+    //    Selection.activeObject = obj;
+    //}
+    //public static EditorWindow GetFocusedWindow(string window) {
+    //    FocusOnWindow(window);
+    //    return EditorWindow.focusedWindow;
+    //}
+    public static void FocusOnWindow(string window) {
+        EditorApplication.ExecuteMenuItem("Window/General/" + window);
+    }
+
     public static void CopyToClipboard(string str) {
         UnityEngine.GUIUtility.systemCopyBuffer = str;
         //UnityEditor.EditorGUIUtility.systemCopyBuffer = str;

@@ -35,7 +35,7 @@ public class Alph : Player {
 	// Getters (Private)
 	private bool CanStartPlunge() {
 		if (feetOnGround()) { return false; } // I can't plunge if I'm on the ground.
-		if (IsInLift) { return false; }
+		if (IsInLift()) { return false; }
 		return isPlungeRecharged;
 	}
 
@@ -146,8 +146,8 @@ public class Alph : Player {
 		base.LandOnCollidable(collidable);
 	}
 
-	override public void OnEnterLift() {
-		base.OnEnterLift();
+	override public void OnEnterLift(Lift lift) {
+		base.OnEnterLift(lift);
 		if (isPlunging) {
 			StopPlunge();
 		}

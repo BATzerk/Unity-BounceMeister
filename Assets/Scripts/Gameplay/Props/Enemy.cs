@@ -43,7 +43,8 @@ public class Enemy : PlatformCharacter {
         ApplyFriction();
 		ApplyGravity();
 		AcceptHorzMoveInput();
-		ApplyTerminalVel();
+        ApplyLiftForces();
+        ApplyTerminalVel();
 		myWhiskers.UpdateSurfaces(); // update these dependently now, so we guarantee most up-to-date info.
 		ApplyVel();
 

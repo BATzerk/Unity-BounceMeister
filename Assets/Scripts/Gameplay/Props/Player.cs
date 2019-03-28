@@ -180,6 +180,7 @@ abstract public class Player : PlatformCharacter {
 		ApplyGravity();
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
+        ApplyLiftForces(); // Note: This happens AFTER TerminalVel.
 		myWhiskers.UpdateSurfaces(); // update these dependently now, so we guarantee most up-to-date info.
 		UpdateWallSlide();
 		ApplyVel();

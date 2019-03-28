@@ -25,13 +25,14 @@ public class PlatformCharacter : Collidable {
 	protected int health; // we die when we hit 0. TODO: Make this private, and have Player and Enemy extend MY GetHit() function.
     public Vector2 Size { get; private set; }
     protected float timeLastTouchedWall=Mathf.NegativeInfinity;
+    // References
+    private List<Lift> liftsTouching = new List<Lift>();
 
-	// Getters (Public)
-    public bool IsInLift { get; set; }
-
+    // Getters
+    protected bool IsInLift() { return liftsTouching.Count > 0; }
 //	virtual public bool IsAffectedByLift() { return true; }
 	public bool IsDead { get { return isDead; } }
-	public bool feetOnGround() { return myWhiskers.OnSurface(Sides.B) && vel.y<=0; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
+	public bool feetOnGround() { return myWhiskers.OnSurface(Sides.B) && vel.y<0.001f; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
 	// Getters (Protected)
 	protected bool IsInvincible { get { return StartingHealth < 0; } }
     public bool DoUpdate() { // If this is FALSE, I won't do Update nor FixedUpdate.
@@ -112,7 +113,9 @@ public class PlatformCharacter : Collidable {
 		vel += Gravity;
 	}
 	protected void ApplyFriction() {
-		if (feetOnGround()) {
+        if (IsInLift()) {
+        }
+		else if (feetOnGround()) {
 			SetVel(new Vector2(vel.x*FrictionGround, vel.y));
 		}
 		else {
@@ -123,6 +126,7 @@ public class PlatformCharacter : Collidable {
 		vel += new Vector2(HorzMoveInputVelXDelta(), 0);
 	}
 	protected void ApplyTerminalVel() {
+        //if (IsInLift) { return; } // HACK TEMP TEST
 		float maxXVel = feetOnGround() ? MaxVelXGround : MaxVelXAir;
 		float xVel = Mathf.Clamp(vel.x, -maxXVel,maxXVel);
 		float yVel = Mathf.Clamp(vel.y, MaxVelYDown,MaxVelYUp);
@@ -133,6 +137,11 @@ public class PlatformCharacter : Collidable {
 			timeLastTouchedWall = Time.time;
 		}
 	}
+    protected void ApplyLiftForces() {
+        for (int i=0; i<liftsTouching.Count; i++) {
+            ChangeVel(liftsTouching[i].Force);
+        }
+    }
 
 //	protected void UpdateOnSurfaces() {
 //		for (int side=0; side<NumSides; side++) {
@@ -166,7 +175,7 @@ public class PlatformCharacter : Collidable {
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
-	public void ChangeVel(Vector2 delta) {
+	private void ChangeVel(Vector2 delta) {
 		vel += delta;
 	}
 	virtual protected void Die() {
@@ -177,12 +186,13 @@ public class PlatformCharacter : Collidable {
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-	virtual public void OnEnterLift() {
-		IsInLift = true;
+	virtual public void OnEnterLift(Lift lift) {
+		liftsTouching.Add(lift);
 	}
-	virtual public void OnExitLift() {
-		IsInLift = false;
+	virtual public void OnExitLift(Lift lift) {
+		liftsTouching.Remove(lift);
 	}
+
 
 
 }
