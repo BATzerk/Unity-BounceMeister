@@ -27,7 +27,7 @@ abstract public class Player : PlatformCharacter {
 
 	private const float DelayedJumpWindow = 0.1f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
-	private const float PostWallKickHorzInputLockDur = 0.3f; // affects isPreservingWallKickVel. How long until we can provide horizontal input after jumping off a wall. Note: This only has an affect for vals under like 0.4f (after that, Player's yVel is prob negative).
+	private const float PostWallKickHorzInputLockDur = 0.22f; // affects isPreservingWallKickVel. How long until we can provide horz-input after wall-kicking.
     private const float WallKickExtensionWindow = 0.08f; // how long after touching a wall when we'll still allow wall-kicking!
 
 	// Components
@@ -229,12 +229,7 @@ abstract public class Player : PlatformCharacter {
 //	}
 	private void UpdateIsPreservingWallKickVel() {
 		if (isPreservingWallKickVel) {
-			if (vel.y < 0  // Once we reach the height of our wall-kick, halt our velocity! It's tighter to control.
-             || feetOnGround()) {
-                isPreservingWallKickVel = false;
-			}
-			else if (Time.time-PostWallKickHorzInputLockDur > timeLastWallKicked // If it's been at least a few grace frames since we wall-kicked...
-				&& !MathUtils.IsSameSign(vel.x, inputAxis.x)) { // Pushing against my vel? Stop preserving the vel!
+			if (Time.time >= timeLastWallKicked+PostWallKickHorzInputLockDur) { // If our preserve-wall-kick-vel window is over...
 				isPreservingWallKickVel = false;
 			}
 		}
@@ -542,3 +537,17 @@ abstract public class Player : PlatformCharacter {
 //		currentSize = Vector2.Lerp(currentSize, targetSize, 0.8f); // ease!
 //		ApplyCurrentSize();
 //	}
+
+
+//private void UpdateIsPreservingWallKickVel() {
+//    if (isPreservingWallKickVel) {
+//        if (vel.y < 0  // Once we reach the height of our wall-kick, halt our velocity! It's tighter to control.
+//         || feetOnGround()) {
+//            isPreservingWallKickVel = false;
+//        }
+//        else if (Time.time-PostWallKickHorzInputLockDur > timeLastWallKicked // If it's been at least a few grace frames since we wall-kicked...
+//            && !MathUtils.IsSameSign(vel.x,inputAxis.x)) { // Pushing against my vel? Stop preserving the vel!
+//            isPreservingWallKickVel = false;
+//        }
+//    }
+//}

@@ -5,8 +5,7 @@ using UnityEngine;
 [RequireComponent (typeof(SpriteRenderer))]
 public class Spikes : Collidable, ISerializableData<SpikesData> {
 	// Components
-	[SerializeField] private SpriteRenderer bodySprite;
-
+	[SerializeField] private SpriteRenderer bodySprite=null;
 
 	// Getters
 	private Rect MyRect {
@@ -40,18 +39,12 @@ public class Spikes : Collidable, ISerializableData<SpikesData> {
 	}
 
 
-//	override public void OnPlayerTouchMe(Player player, int playerSide) {
 	override public void OnCharacterTouchMe(int charSide, PlatformCharacter character) {
 		Player player = character as Player;
 		if (player != null) {
 			player.OnTouchSpikes(this);
 		}
 	}
-//		// Kinda hacked in for now. (Hacked 'cause we're using colliders and our custom system independently.)
-//		Spikes spikes = surfaceCol.GetComponent<Spikes>();
-//		if (spikes != null) {
-//			OnTouchSpikes(spikes);
-//		}
 
 
 

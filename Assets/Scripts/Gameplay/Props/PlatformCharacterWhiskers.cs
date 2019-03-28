@@ -23,7 +23,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     private bool[] onSurfaces; // index is side.
 	private float[,] surfaceDists; // by side,index. This is *all* whisker data.
 	private int[] minDistsIndexes; // by side. WHICH whisker at this side is the closest!
-	private RaycastHit2D hit; // only out here so we don't have to make a ton every frame.
+	private RaycastHit2D[] hits; // only out here so we don't have to make a ton every frame.
 	private Vector2[] whiskerDirs;
 
 	// Getters
@@ -189,17 +189,28 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 		Vector2 pos = WhiskerPos(side, index);
 		float raycastSearchDist = GetRaycastSearchDist(side);
 		LayerMask mask = GetLayerMask(side);
-		hit = Physics2D.Raycast(pos, dir, raycastSearchDist, mask);
-		float dist = Mathf.Infinity; // default to infinity in case we don't hit any ground.
-		if (hit.collider != null) {
-			dist = Vector2.Distance(hit.point, pos);
-		}
+
+        // Find the relevant collider we're touching.
+		hits = Physics2D.RaycastAll(pos, dir, raycastSearchDist, mask);
+        RaycastHit2D h = new RaycastHit2D();
+        for (int i=0; i<hits.Length; i++) { // Check every collision for a non-trigger.
+            if (hits[i].collider != null && !hits[i].collider.isTrigger) { // This one's a non-trigger: It's the one!
+                h = hits[i];
+                break;
+            }
+        }
+
+        // Update my knowledge!
+        float dist = Mathf.Infinity; // default to infinity in case we don't hit any ground.
+        if (h.collider != null) { // If we hit a non-trigger...!
+            dist = Vector2.Distance(h.point, pos);
+        }
 		surfaceDists[side,index] = dist;
-		collidersAroundMe[side,index] = hit.collider;
+		collidersAroundMe[side,index] = h.collider;
 		// If we're (just about) touching this collider...!
 		if (dist < TouchDistThreshold) {
-			if (hit.collider != null && !collidersTouching[side].Contains(hit.collider)) {
-				collidersTouching[side].Add(hit.collider);
+			if (h.collider != null && !collidersTouching[side].Contains(h.collider)) {
+				collidersTouching[side].Add(h.collider);
 			}
 		}
 //		// Is the collider for this raycast DIFFERENT?? Tell my character we've touched/left surfaces!!

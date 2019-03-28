@@ -15,10 +15,10 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
     [SerializeField] private bool dieFromBounce = false;
     [SerializeField] private bool dieFromPlayerLeave = true;
     [SerializeField] private bool dieFromVel = true; // NOTE: Not used in gameplay much.
+    private bool isOn;
     private Color bodyColor; // depends on my properties, ya hear?
 	// References
-	//[SerializeField] private Sprite s_strokeSolid;
-	//[SerializeField] private Sprite s_strokeDashed;
+    private Coroutine c_planTurnOn; // if I regen, this is the coroutine that'll make me turn on again.
 	private Player playerTouchingMe;
 
     // Getters (Public)
@@ -47,7 +47,11 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 
         // Init my tiler.
         tiler.Initialize();
+
+        // Start on.
+        SetIsOn(true);
     }
+
 
     // ----------------------------------------------------------------
     //  Events
@@ -57,7 +61,6 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 			TurnOff();
 		}
 	}
-
 	override public void OnCharacterTouchMe(int charSide, PlatformCharacter character) {
         //if (charSide != Sides.B && MyRect.size.y==1) { return; } // Currently, we ONLY care about FEET if we're thin. Kinda a test.
         if (character is Player) {
@@ -86,28 +89,73 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 		}
 	}
 
-	// Kinda hacked in for now.
-	private void TurnOff() {
-		SetIsOn(false);
+
+    private PlatformCharacter charInMyTrigger; // ONLY not null when we're off and about to regen.
+    private void OnTriggerEnter2D(Collider2D col) {
+        PlatformCharacter character = col.gameObject.GetComponent<PlatformCharacter>();
+        if (character != null) {
+            charInMyTrigger = character;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D col) {
+        PlatformCharacter character = col.gameObject.GetComponent<PlatformCharacter>();
+        if (character != null) {
+            charInMyTrigger = null;
+        }
+    }
+
+
+
+
+    // ----------------------------------------------------------------
+    //  Doers
+    // ----------------------------------------------------------------
+    private void TurnOff() {
+        SetIsOn(false);
 		if (doRegen) {
-			Invoke("TurnOn", RegenTime);
+            PlanTurnOn();
 		}
 	}
-	private void TurnOn() {
+    private void PlanTurnOn() {
+        CancelPlanTurnOn();
+        c_planTurnOn = StartCoroutine(Coroutine_PlanTurnOn());
+    }
+
+    private void CancelPlanTurnOn() {
+        if (c_planTurnOn != null) { StopCoroutine(c_planTurnOn); }
+    }
+    private IEnumerator Coroutine_PlanTurnOn() {
+        yield return new WaitForSeconds(RegenTime);
+
+        // There's a character touching me??...
+        if (charInMyTrigger != null) {
+            // Wait for them to leave.
+            while (charInMyTrigger != null) {
+                // Oscillate alpha.
+                float alpha = MathUtils.SinRange(0.4f, 0.45f, Time.time*16f);
+                GameUtils.SetSpriteAlpha(bodySprite,alpha);
+                yield return null;
+            }
+        }
+
+        // Ok, we're good to turn on! Do!
 		SetIsOn(true);
-	}
+        yield return null;
+    }
+
 	private void SetIsOn(bool _isOn) {
-		GameUtils.SetSpriteAlpha (bodySprite, 1); // Always reset my alpha here.
-		if (myCollider!=null) { myCollider.enabled = _isOn; }
-		if (bodySprite!=null) {
-			bodySprite.enabled = _isOn;
-//			if (doRegen) {
-////				GameUtils.SetSpriteAlpha (bodySprite, _isOn ? 1f : 0.15f);
-//			}
-//			else {
-//				bodySprite.enabled = _isOn;
-//			}
-		}
+        // Stop any coroutine if it's going.
+        CancelPlanTurnOn();
+
+        isOn = _isOn;
+        // Update collider.
+		if (myCollider!=null) { myCollider.isTrigger = !isOn; }
+        // Update body alpha.
+        float bodyAlpha;
+        if (isOn) { bodyAlpha = 1; }
+        else if (doRegen) { bodyAlpha = 0.09f; }
+        else { bodyAlpha = 0; }
+        GameUtils.SetSpriteAlpha(bodySprite,bodyAlpha);
 	}
 
 
@@ -115,10 +163,12 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 	//  Update
 	// ----------------------------------------------------------------
 	private void Update() {
-		if (dieFromPlayerLeave && playerTouchingMe != null) {
-			float alpha = 0.6f + Mathf.Sin(Time.time*20f)*0.3f;
-			GameUtils.SetSpriteAlpha (bodySprite, alpha);
-		}
+		if (isOn) {
+            if (dieFromPlayerLeave && playerTouchingMe != null) {
+			    float alpha = 0.6f + Mathf.Sin(Time.time*20f)*0.3f;
+			    GameUtils.SetSpriteAlpha (bodySprite, alpha);
+		    }
+        }
 	}
 
 

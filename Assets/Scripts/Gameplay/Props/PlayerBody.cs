@@ -52,17 +52,17 @@ abstract public class PlayerBody : MonoBehaviour {
 		ps_dieBurst.transform.SetParent(myPlayer.transform.parent);
 		ps_dieBurst.Emit(40);
 //		print("Enabled? " + ps_dieBurst.inheritVelocity.enabled);
-		// Give all the particles the velocity of my Player!
-		ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ps_dieBurst.particleCount];
-		ps_dieBurst.GetParticles(particles);
-		for (int i=0; i<particles.Length; i++) {
-			ParticleSystem.Particle particle = particles[i];
-			float velScale = Random.Range(30f, 60f);
-			particle.velocity += new Vector3(myPlayer.Vel.x, myPlayer.Vel.y, 0) * velScale;
-			particles[i] = particle;
-		}
-		// Set the array back to the particleSystem
-		ps_dieBurst.SetParticles(particles, particles.Length);
+		//// Give all the particles the velocity of my Player!
+		//ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ps_dieBurst.particleCount];
+		//ps_dieBurst.GetParticles(particles);
+		//for (int i=0; i<particles.Length; i++) {
+		//	ParticleSystem.Particle particle = particles[i];
+		//	float velScale = Random.Range(6f, 12f);
+		//	particle.velocity += new Vector3(myPlayer.Vel.x, myPlayer.Vel.y, 0) * velScale;
+		//	particles[i] = particle;
+		//}
+		//// Set the array back to the particleSystem
+		//ps_dieBurst.SetParticles(particles, particles.Length);
 	}
 
 
