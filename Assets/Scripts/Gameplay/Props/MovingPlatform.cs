@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour {
-	// Properties
-	[SerializeField] private float oscillationOffset;
-	private const float yPosA = -12f;
+    // Components
+    [SerializeField] private Transform tf_a;
+    [SerializeField] private Transform tf_b;
+    // Properties
+    [SerializeField] private float oscOffset;
+    [SerializeField] private float oscSpeed;
+    private const float yPosA = -12f;
 	private const float yPosB = -1f;
 	private float xPosNeutral;
 	private Vector3 posOffset, posOffsetVel;
@@ -41,9 +45,9 @@ public class MovingPlatform : MonoBehaviour {
 	}
 
 	private void UpdatePos() {
-		float xPosLoc = 0.5f + Mathf.Cos(Time.time*0.2f+oscillationOffset)*0.5f;
+		float xPosLoc = 0.5f + Mathf.Cos(Time.time*0.2f+oscOffset)*0.5f;
 		float xPos = Mathf.Lerp(xPosNeutral, xPosNeutral+6, xPosLoc);
-		float yPosLoc = 0.5f + Mathf.Sin(Time.time*0.2f+oscillationOffset)*0.5f;
+		float yPosLoc = 0.5f + Mathf.Sin(Time.time*0.2f+oscOffset)*0.5f;
 		float yPos = Mathf.Lerp(yPosA, yPosB, yPosLoc);
 		pos = posOffset + new Vector3(xPos, yPos, pos.z);
 	}

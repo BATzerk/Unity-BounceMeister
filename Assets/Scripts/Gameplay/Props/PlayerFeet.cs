@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Is this class used? Can we make it not Player-specific?
 public class PlayerFeet : MonoBehaviour {
 	// Components
 	[SerializeField] private BoxCollider2D myCollider=null;

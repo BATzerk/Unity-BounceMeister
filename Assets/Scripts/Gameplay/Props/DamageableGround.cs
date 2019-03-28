@@ -68,13 +68,13 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
             if (dieFromVel) {
                 // Left or Right sides
                 if (charSide==Sides.L || charSide==Sides.R) {
-                    if (Mathf.Abs(character.Vel.x) > BreakVel) {
+                    if (Mathf.Abs(character.vel.x) > BreakVel) {
                         TurnOff();
                     }
                 }
                 // Top or Bottom sides
                 else if (charSide==Sides.B || charSide==Sides.T) {
-                    if (Mathf.Abs(character.Vel.y) > BreakVel) {
+                    if (Mathf.Abs(character.vel.y) > BreakVel) {
                         TurnOff();
                     }
                 }

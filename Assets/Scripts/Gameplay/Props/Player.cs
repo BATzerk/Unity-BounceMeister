@@ -175,6 +175,7 @@ abstract public class Player : PlatformCharacter {
         Vector2 ppos = pos;
 		pvel = vel;
 
+        ApplyVelFromFloor();
 		ApplyFriction();
 		ApplyGravity();
 		AcceptHorzMoveInput();

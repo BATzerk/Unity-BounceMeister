@@ -16,7 +16,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	// Properties
 	LayerMask lm_LRTB; // The LMs that care about every side (L, R, T, B). E.g. Ground.
 	LayerMask lm_B;    // The LMs that care about the bottom side. E.g. Platforms.
-	private Collider2D[,] collidersAroundMe; // by side,index.
+	private Collider2D[,] collidersAroundMe; // by side, index.
 	private HashSet<Collider2D>[] collidersTouching;
 	private HashSet<Collider2D>[] pcollidersTouching;
     public int SideLastTouchedWall { get; private set; } // for wall-kicking perhaps pixels away from a wall.
@@ -26,8 +26,18 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	private RaycastHit2D[] hits; // only out here so we don't have to make a ton every frame.
 	private Vector2[] whiskerDirs;
 
-	// Getters
-	private Vector2 charSize { get { return myCharacter.Size; } }
+    // Getters
+    public Collidable TEMP_GetFloorCollidable() {
+        for (int i=0; i<NumWhiskersPerSide; i++) {
+            Collider2D collider2D = collidersAroundMe[Sides.B,i];
+            if (collider2D == null) { continue; }
+            Collidable collidable = collider2D.GetComponent<Collidable>();
+            if (collidable != null) { return collidable; }
+        }
+        return null;
+    }
+
+    private Vector2 charSize { get { return myCharacter.Size; } }
 	private Vector2 WhiskerPos(int side, int index) {
 		Vector2 pos = myCharacter.PosGlobal;
 		float sideOffsetLoc = SideOffsetLocs[index];
@@ -48,10 +58,10 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     private float GetRaycastSearchDist(int side) {
 		const float bloat = 0.2f; // how much farther than the player's exact velocity to look. For safety.
 		switch (side) {
-		case Sides.L: return Mathf.Max(0, -myCharacter.Vel.x) + bloat;
-		case Sides.R: return Mathf.Max(0,  myCharacter.Vel.x) + bloat;
-		case Sides.B: return Mathf.Max(0, -myCharacter.Vel.y) + bloat;
-		case Sides.T: return Mathf.Max(0,  myCharacter.Vel.y) + bloat;
+		case Sides.L: return Mathf.Max(0, -myCharacter.vel.x) + bloat;
+		case Sides.R: return Mathf.Max(0,  myCharacter.vel.x) + bloat;
+		case Sides.B: return Mathf.Max(0, -myCharacter.vel.y) + bloat;
+		case Sides.T: return Mathf.Max(0,  myCharacter.vel.y) + bloat;
 		default: Debug.LogError("Side undefined in GetRaycastSearchDist!: " + side); return 0;
 		}
 	}

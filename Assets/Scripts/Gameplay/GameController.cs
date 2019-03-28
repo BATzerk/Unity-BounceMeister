@@ -171,7 +171,7 @@ public class GameController : MonoBehaviour {
 		WorldData currentWorldData = level.WorldDataRef;
 		LevelData nextLevelData = currentWorldData.GetLevelAtSide(level.LevelDataRef, Player.PosLocal, sideEscaped);
 		if (nextLevelData != null) {
-			Vector2 playerVel = player.Vel; // remember this so we can preserves it, ya see!
+			Vector2 playerVel = player.vel; // remember this so we can preserves it, ya see!
 			dataManager.playerPosGlobalOnExitLevel = player.PosGlobal;
 			dataManager.playerSideEnterNextLevel = Sides.GetOpposite(sideEscaped);
 			StartGameAtLevel(nextLevelData);

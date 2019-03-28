@@ -24,11 +24,9 @@ public class PlatformCharacter : Collidable {
 	private bool isDead = false;
 	protected int health; // we die when we hit 0. TODO: Make this private, and have Player and Enemy extend MY GetHit() function.
     public Vector2 Size { get; private set; }
-    protected Vector2 vel=Vector2.zero;
     protected float timeLastTouchedWall=Mathf.NegativeInfinity;
 
 	// Getters (Public)
-	public Vector2 Vel { get { return vel; } }
     public bool IsInLift { get; set; }
 
 //	virtual public bool IsAffectedByLift() { return true; }
@@ -102,7 +100,15 @@ public class PlatformCharacter : Collidable {
 			pos += appliedVel;
 		}
 	}
-	protected void ApplyGravity() {
+    protected void ApplyVelFromFloor() {
+        if (feetOnGround()) {
+            Collidable c = myWhiskers.TEMP_GetFloorCollidable();
+            if (c != null) {
+                pos += c.vel*0.5f;//*0.5f is HACK! TEMP! TODO: If we like TravelingPlatforms, then improve. Find a way to move Character on a Platform appropriately (it's a neat little challenge).
+            }
+        }
+    }
+    protected void ApplyGravity() {
 		vel += Gravity;
 	}
 	protected void ApplyFriction() {
