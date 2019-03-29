@@ -14,11 +14,13 @@ public static class GameUtils {
         go.transform.localScale = Vector3.one;
     }
 
-    public static void SetExpandedRecursive(GameObject go,bool expand) { // QQQ TODO: Use one or the other method.
+    public static void SetExpandedRecursive(GameObject go, bool expand) {
+        #if UNITY_EDITOR
         var type = typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneHierarchyWindow");
         var methodInfo = type.GetMethod("SetExpandedRecursive");
         EditorWindow window = EditorWindow.GetWindow(type);
         methodInfo.Invoke(window,new object[] { go.GetInstanceID(),expand });
+        #endif
     }
     //public static void SetGOCollapsed(Transform tf, bool isCollapsed) {
     //    if (tf.childCount == 0) return; // No children? Do nothin'.
@@ -37,7 +39,9 @@ public static class GameUtils {
     //    return EditorWindow.focusedWindow;
     //}
     public static void FocusOnWindow(string window) {
+        #if UNITY_EDITOR
         EditorApplication.ExecuteMenuItem("Window/General/" + window);
+        #endif
     }
 
     public static GameObject CurrSelectedGO() {
@@ -219,10 +223,12 @@ public static class GameUtils {
     }
 
     static public void SetEditorCameraPos(Vector2 pos) {
+        #if UNITY_EDITOR
         if (UnityEditor.SceneView.lastActiveSceneView != null) {
             UnityEditor.SceneView.lastActiveSceneView.LookAt(new Vector3(pos.x,pos.y, -10));
         }
         else { Debug.LogWarning("Can't set editor camera position: UnityEditor.SceneView.lastActiveSceneView is null."); }
+        #endif
     }
 
 

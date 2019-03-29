@@ -21,7 +21,6 @@ public class EditModeController : MonoBehaviour {
     private GameObject prevSelectedGO; // for checking when we change our UI selection.
 
 
-
     // ----------------------------------------------------------------
     //  Awake
     // ----------------------------------------------------------------
@@ -37,6 +36,8 @@ public class EditModeController : MonoBehaviour {
     }
 
 
+
+#if UNITY_EDITOR
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
@@ -108,5 +109,5 @@ public class EditModeController : MonoBehaviour {
         }
     }
 
-
+#endif
 }

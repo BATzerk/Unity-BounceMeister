@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour {
 		// We haven't provided a level to play and this is Gameplay scene? Ok, load up the last played level instead!
 		if (dataManager.currentLevelData==null && SceneHelper.IsGameplayScene()) {
 			int worldIndex = SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex);
-			string levelKey = SaveStorage.GetString(SaveKeys.LastPlayedLevelKey(worldIndex));
+			string levelKey = SaveStorage.GetString(SaveKeys.LastPlayedLevelKey(worldIndex), GameProperties.GetFirstLevelName(worldIndex));
 			dataManager.currentLevelData = dataManager.GetLevelData(worldIndex, levelKey, false);
 		}
 

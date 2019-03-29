@@ -10,7 +10,7 @@ public class GameProperties : MonoBehaviour {
 
     public static string GetFirstLevelName(int worldIndex) {
         switch (worldIndex) {
-            default: return "Level0";
+            default: return "WorldStart";
         }
     }
     public static string GetLastLevelName(int worldIndex) {
