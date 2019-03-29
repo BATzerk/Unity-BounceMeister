@@ -159,6 +159,17 @@ public class GameController : MonoBehaviour {
 		LevelData emptyLevelData = worldData.GetLevelData(levelKey, true);
 		StartGameAtLevel(emptyLevelData);
 	}
+    private void DuplicateCurrLevel() {
+        // Add a new level file, yo!
+        LevelData currLD = level.LevelDataRef;
+        string newLevelKey = currLD.WorldDataRef.GetUnusedLevelKey(currLD.LevelKey);
+        LevelSaverLoader.SaveLevelFileAs(currLD, currLD.worldIndex, newLevelKey);
+        dataManager.ReloadWorldDatas();
+        LevelData newLD = dataManager.GetLevelData(currLD.worldIndex,newLevelKey, false);
+        newLD.SetPosGlobal(newLD.posGlobal + new Vector2(1,-1)*GameProperties.UnitSize*10, true); // offset its position a bit.
+        dataManager.currentLevelData = newLD;
+        SceneHelper.ReloadScene();
+    }
 
 
 	private Vector2 GetPlayerStartingPosInLevel(LevelData ld) {
@@ -281,12 +292,16 @@ public class GameController : MonoBehaviour {
                 SceneHelper.ReloadScene();
                 return;
             }
-			// CONTROL + N = Create/Start new level!
-			else if (Input.GetKeyDown(KeyCode.N)) {
-				StartNewBlankLevel();
-			}
-			// CONTROL + SHIFT + X = Flip Horizontal!
-			else if (isKey_shift && Input.GetKeyDown(KeyCode.X)) {
+            // CONTROL + N = Create/Start new level!
+            else if (Input.GetKeyDown(KeyCode.N)) {
+                StartNewBlankLevel();
+            }
+            // CONTROL + D = Duplicate/Start new level!
+            else if (Input.GetKeyDown(KeyCode.D)) {
+                DuplicateCurrLevel();
+            }
+            // CONTROL + SHIFT + X = Flip Horizontal!
+            else if (isKey_shift && Input.GetKeyDown(KeyCode.X)) {
 				if (level != null) { level.FlipHorz(); }
 			}
 		}

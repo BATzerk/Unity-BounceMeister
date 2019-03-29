@@ -67,7 +67,7 @@ public class EditModeUI : MonoBehaviour {
             dataManager.ReloadWorldDatas();
             // Save that this is the most recent level we've been to!
             SaveStorage.SetString(SaveKeys.LastPlayedLevelKey(level.WorldIndex),newName);
-            dataManager.currentLevelData = dataManager.GetLevelData(level.WorldIndex,level.LevelKey,false);
+            dataManager.currentLevelData = dataManager.GetLevelData(level.WorldIndex,level.LevelKey, false);
             // Reload the scene for safety.
             SceneHelper.ReloadScene();
         }

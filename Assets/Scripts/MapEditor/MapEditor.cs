@@ -356,11 +356,20 @@ public class MapEditor : MonoBehaviour {
 		ReloadAllWorldDatasAndScene();
 	}
 
-	
-	
-	// ================================================================
-	//  Events
-	// ================================================================
+    private void AddAndStartNewLevel() {
+        // Make a LevelData with a unique name, put it where the Camera is, and open the level!
+        string levelKey = CurrentWorldData.GetUnusedLevelKey();
+        LevelData newLD = CurrentWorldData.GetLevelData(levelKey, true);
+        Vector2 pos = SnapToGrid(editorCamera.Pos);
+        newLD.SetPosGlobal(pos, false);
+        OpenGameplayScene(newLD);
+    }
+
+
+
+    // ================================================================
+    //  Events
+    // ================================================================
     public void OnSetMapScale() {
         // Update my level tiles' text scales!
         if (allLevelTiles != null) {
@@ -536,17 +545,21 @@ public class MapEditor : MonoBehaviour {
         if (InputController.IsKeyDown_control) {
             // CONTROL + A = Select ALL LevelTiles!
             if (Input.GetKeyDown (KeyCode.A)) {
-			    SelectAllLevelTiles ();
+			    SelectAllLevelTiles();
             }
             // CONTROL + D = Duplicate ONE selected level.
             else if (Input.GetKeyDown(KeyCode.D)) {
                 DuplicateFirstSelectedLevel();
             }
+            // CONTROL + N = Add and open a new level!
+            else if (Input.GetKeyDown(KeyCode.N)) {
+                AddAndStartNewLevel();
+            }
             // CONTROL + J = Open LevelJump!
-            else if (Input.GetKeyDown (KeyCode.J)) {
+            else if (Input.GetKeyDown(KeyCode.J)) {
                 SceneHelper.OpenScene(SceneNames.LevelJump);
             }
-		}
+        }
 
 		// ALT + ____
 		else if (InputController.IsKeyDown_alt) {
@@ -643,7 +656,10 @@ public class MapEditor : MonoBehaviour {
 
 	private void OpenGameplayScene(int worldIndex, string levelKey) {
 //		GameplaySnapshotController.SetWorldAndLevelToLoad (worldIndex, levelKey);
-		dataManager.currentLevelData = dataManager.GetLevelData(worldIndex, levelKey, true);
+        OpenGameplayScene(dataManager.GetLevelData(worldIndex, levelKey, true));
+    }
+	private void OpenGameplayScene(LevelData ld) {
+		dataManager.currentLevelData = ld;
 		SceneHelper.OpenScene(SceneNames.Gameplay);
 	}
 

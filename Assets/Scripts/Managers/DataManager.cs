@@ -10,7 +10,7 @@ public class DataManager {
 //	private int worldIndexOnLoadGameScene;
 //	public int mostRecentlySavedLevel_worldIndex; // an nbd shortcut to highlight the most recently created level in the MapEditor.
 //	public string mostRecentlySavedLevel_levelKey; // an nbd shortcut to highlight the most recently created level in the MapEditor.
-	public LevelData currentLevelData = null; // if this is defined when GameController opens, we'll open THAT level!
+	public LevelData currentLevelData = null; // TODO: Remove this. We don't need it (right?). if this is defined when GameController opens, we'll open THAT level!
 	public Vector2 playerPosGlobalOnExitLevel=Vector2Extensions.NaN; // The suuuuper simple way we know how to set the Player's pos on entering the next level.
 	public int playerSideEnterNextLevel=-1; // pairs with playerPosGlobalOnExitLevel.
 

@@ -209,8 +209,7 @@ public class WorldData {
         }
     }
 
-	public string GetUnusedLevelKey() {
-		string prefix = "NewLevel";
+	public string GetUnusedLevelKey(string prefix="NewLevel") {
 		int suffixIndex = 0;
 		int safetyCount = 0;
 		while (safetyCount++ < 99) { // 'Cause I'm feeling cautious. :)
