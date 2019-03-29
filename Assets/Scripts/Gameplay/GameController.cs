@@ -223,6 +223,11 @@ public class GameController : MonoBehaviour {
 	}
     
 	private void RegisterButtonInput () {
+        // Canvas has a selected element? Ignore ALL button input.
+        if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != null) {
+            return;
+        }
+
 		bool isKey_alt = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
 		bool isKey_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 		bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);

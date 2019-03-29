@@ -40,6 +40,11 @@ public static class GameUtils {
         EditorApplication.ExecuteMenuItem("Window/General/" + window);
     }
 
+    public static GameObject CurrSelectedGO() {
+        if (UnityEngine.EventSystems.EventSystem.current==null) { return null; }
+        return UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+    }
+
     public static void CopyToClipboard(string str) {
         UnityEngine.GUIUtility.systemCopyBuffer = str;
         //UnityEditor.EditorGUIUtility.systemCopyBuffer = str;

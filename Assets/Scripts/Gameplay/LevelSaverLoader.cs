@@ -260,15 +260,14 @@ static public class LevelSaverLoader {
 
 	static private void SaveLevelFileFromStringArray(int worldIndex, string levelKey, string[] levelFileArray) {
 		// Otherwise, SAVE! :D
-		string fileName = levelKey + ".txt";
-		string filePath = FilePaths.WorldFileAddress (worldIndex) + fileName;
+		string filePath = FilePaths.LevelFileAddress(worldIndex, levelKey);
 		try {
 			StreamWriter sr = File.CreateText (filePath);
 			foreach (string lineString in levelFileArray) {
 				sr.WriteLine (lineString);
 			}
 			sr.Close();
-			Debug.Log("SAVED LEVEL " + fileName);
+			Debug.Log("SAVED LEVEL " + levelKey);
 
 			GameManagers.Instance.EventManager.OnEditorSaveLevel();
 
@@ -460,8 +459,31 @@ static public class LevelSaverLoader {
 		}
 	}
 
+    
+    static public bool MayRenameLevelFile(Level level, string newName) { return MayRenameLevelFile(level.LevelDataRef, newName); }
+    static public bool MayRenameLevelFile(LevelData ld, string newName) {
+        if (string.IsNullOrEmpty(newName)) { return false; } // Empty name? Nah.
+        if (ld.levelKey == newName) { return false; } // Same name? Nah.
+        string newPath = FilePaths.LevelFileAddress(ld.WorldIndex, newName);
+        if (File.Exists(newPath)) { return false; } // File already here? Nah.
+        // Looks good!
+        return true;
+    }
+    static public void RenameLevelFile(Level level, string newName) { RenameLevelFile(level.LevelDataRef, newName); }
+    static public void RenameLevelFile(LevelData ld, string newName) {
+        string oldPath = FilePaths.LevelFileAddress(ld.WorldIndex, ld.LevelKey);
+        string newPath = FilePaths.LevelFileAddress(ld.WorldIndex, newName);
+        // File already here with this name?
+        if (File.Exists(newPath)) {
+            Debug.LogWarning("Can't rename level. Already a file here: \"" + newPath + "\"");
+        }
+        else {
+            File.Move(oldPath, newPath);
+        }
+    }
 
-	/*
+
+    /*
 		debug_levelDataLoadingLevelKey = ld.LevelKey; // for printing to console.
 		string affectName = "undefined"; // when we reach a name of a class, or something ELSE we can affect (e.g. posGlobal), we'll set this to that.
 		for (int i=0; i<levelFile.Length; i++) {
@@ -502,7 +524,7 @@ static public class LevelSaverLoader {
 		}
 	}*/
 
-	/*
+    /*
 	if (ld.batteryDatas.Count > 0) {
 		AddFSLineHeader(BATTERY);
 		foreach (BatteryData obj in ld.batteryDatas) {

@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class FilePaths {
 
-	public static string WorldFileAddress(int worldIndex) {
-		return Application.streamingAssetsPath + "/Levels/World" + worldIndex + "/";
-	}
-	public static string WorldTrashFileAddress(int worldIndex) {
+    public static string LevelFileAddress(int worldIndex, string levelKey) {
+        return WorldFileAddress(worldIndex) + levelKey + ".txt";
+    }
+    public static string WorldFileAddress(int worldIndex) {
+        return Application.streamingAssetsPath + "/Levels/World" + worldIndex + "/";
+    }
+    public static string WorldTrashFileAddress(int worldIndex) {
 		return Application.streamingAssetsPath + "/Levels/WorldTrash" + worldIndex + "/";
 	}
-	public static string LevelLinksFileAddress(int worldIndex) {
-		return WorldFileAddress (worldIndex) + "_LevelLinks.txt";
-	}
+	//public static string LevelLinksFileAddress(int worldIndex) {
+	//	return WorldFileAddress (worldIndex) + "_LevelLinks.txt";
+	//}
 
 }
