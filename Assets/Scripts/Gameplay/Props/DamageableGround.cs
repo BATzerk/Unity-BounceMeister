@@ -24,12 +24,18 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
     // Getters (Public)
     public SpriteRenderer BodySprite { get { return bodySprite; } }
     public SpriteRenderer sr_Stroke { get { return sr_stroke; } }
+    static public Color GetBodyColor(DamageableGroundData data) {
+        if (data.dieFromBounce) { return ColorUtils.HexToColor("468EBA"); }
+        else if (data.dieFromPlayerLeave) { return ColorUtils.HexToColor("8F6BA4"); }
+        else if (data.dieFromVel) { return ColorUtils.HexToColor("886611"); }
+        return Color.magenta; // Hmm.
+    }
 
 
-	// ----------------------------------------------------------------
-	//  Initialize
-	// ----------------------------------------------------------------
-	public void Initialize(Level _myLevel, DamageableGroundData data) {
+    // ----------------------------------------------------------------
+    //  Initialize
+    // ----------------------------------------------------------------
+    public void Initialize(Level _myLevel, DamageableGroundData data) {
 		base.BaseGroundInitialize(_myLevel, data);
 
 		doRegen = data.doRegen;
@@ -38,9 +44,7 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
         dieFromVel = data.dieFromVel;
 
         // Color me impressed!
-        if (dieFromBounce) { bodyColor = ColorUtils.HexToColor("468EBA"); }
-        else if (dieFromPlayerLeave) { bodyColor = ColorUtils.HexToColor("8F6BA4"); }
-        else if (dieFromVel) { bodyColor = ColorUtils.HexToColor("886611"); }
+        bodyColor = GetBodyColor(data);
         bodySprite.color = bodyColor;
         sr_stroke.enabled = doRegen;
         sr_stroke.color = Color.Lerp(bodyColor, Color.black, 0.7f);

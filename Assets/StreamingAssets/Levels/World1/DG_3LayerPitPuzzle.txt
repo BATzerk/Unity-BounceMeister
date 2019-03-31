@@ -1,4 +1,4 @@
-levelProperties posGlobal:(436.0, 222.0);designerFlag:4
+levelProperties posGlobal:(500.0, 208.0);designerFlag:4
 CameraBounds myRect:(x:-25.00, y:-19.00, width:50.00, height:38.00)
 DamageableGround myRect:(x:4.00, y:-13.50, width:14.00, height:1.00);doRegen:False;canEatGems:False;dieFromPlayerLeave:True
 DamageableGround myRect:(x:4.00, y:0.50, width:14.00, height:1.00);doRegen:False;canEatGems:False;dieFromPlayerLeave:True
@@ -14,4 +14,3 @@ PlayerStart pos:(-8.4, 4.2)
 Spikes myRect:(x:4.00, y:-15.50, width:16.00, height:1.00);rotation:0
 Spikes myRect:(x:-3.50, y:-7.00, width:20.00, height:1.00);rotation:270
 Spikes myRect:(x:11.50, y:-2.50, width:29.00, height:1.00);rotation:90
-

@@ -27,10 +27,9 @@ public class LevelTileContents : MonoBehaviour {
     // ================================================================
     public void Initialize (LevelTile _levelTile) {
 		myLevelTile = _levelTile;
-		//this.transform.localPosition = Vector3.zero;
-		//this.transform.localScale = Vector3.one;
-		
-		designerFlag.UpdateDesignerFlagButtonVisuals ();
+        levelNameText.GetComponent<Renderer>().sortingOrder = 110; // render LevelNameText over its contents.
+
+        designerFlag.UpdateDesignerFlagButtonVisuals();
 	}
 	private void InitializeContent () {
 		LevelData ld = myLevelTile.MyLevelData;
@@ -51,17 +50,24 @@ public class LevelTileContents : MonoBehaviour {
 			if (propData.GetType() == typeof(GroundData)) {
 				GroundData groundData = propData as GroundData;
 				Color color = new Color(91/255f,107/255f,67/255f, 0.92f);
-				AddSpriteRenderer ("Ground", s_ground, go_propsLayer, groundData.myRect.position, groundData.myRect.size, 0, color);//WHY POSITION? why not center?
+				AddSpriteRenderer("Ground", s_ground, go_propsLayer, groundData.myRect.position, groundData.myRect.size, 1, color);//WHY POSITION? why not center?
+			}
+			// -- DamageableGrounds --
+			if (propData.GetType() == typeof(DamageableGroundData)) {
+                DamageableGroundData groundData = propData as DamageableGroundData;
+				Color color = DamageableGround.GetBodyColor(groundData);
+                color = new Color(color.r,color.g,color.b, color.a*0.6f); // alpha it out a bit, to taste.
+                AddSpriteRenderer("DamageableGround", s_ground, go_propsLayer, groundData.myRect.position, groundData.myRect.size, 1, color);
 			}
 			// -- Gems --
 			else if (propData.GetType() == typeof(GemData)) {
 				GemData gemData = propData as GemData;
-				AddSpriteRenderer ("Gem", s_gem, go_propsLayer, gemData.pos, GemIconSize, 0, Color.white);
+				AddSpriteRenderer("Gem", s_gem, go_propsLayer, gemData.pos, GemIconSize, 10, Color.white);
 			}
 			// -- Spikes --
 			else if (propData.GetType() == typeof(SpikesData)) {
 				SpikesData spikesData = propData as SpikesData;
-				SpriteRenderer newSprite = AddSpriteRenderer ("Spikes", s_spikes, go_propsLayer, spikesData.myRect.position, Vector2.one, 0, new Color(0.7f,0.1f,0f, 0.6f));
+				SpriteRenderer newSprite = AddSpriteRenderer("Spikes", s_spikes, go_propsLayer, spikesData.myRect.position, Vector2.one, 0, new Color(0.7f,0.1f,0f, 0.6f));
 				newSprite.drawMode = SpriteDrawMode.Tiled;
 				newSprite.size = spikesData.myRect.size;
 				newSprite.transform.localEulerAngles = new Vector3(0, 0, spikesData.rotation);

@@ -6,7 +6,7 @@ public class MapEditorCamera : MonoBehaviour {
 	private const float ARROW_KEYS_PAN_SPEED = 20f; // for panning the map with the arrow keys. Scales based on mapScale.
 	private const float DRAG_PANNING_SPEED = 0.1f; // higher is faster.
 	private const float MOUSE_SCROLL_ZOOM_RATIO = 0.02f; // mouseScrollDelta * this = the % zoom change
-	private const float mapScaleNeutral = 0.003f; // when the map is at its neutral zoom level. (If this were 1, then one LevelTile would occupy the whole screen.)
+	private const float MAP_SCALE_DEFAULT = 0.9f;
 	private const float ZOOM_SPEED_KEYBOARD = 0.04f; // higher is faster.
 	// Components
 	new private Camera camera; // set in Awake.
@@ -55,7 +55,7 @@ public class MapEditorCamera : MonoBehaviour {
         Pos = new Vector2(SaveStorage.GetFloat(SaveKeys.MapEditor_CameraPosX), SaveStorage.GetFloat(SaveKeys.MapEditor_CameraPosY));
     }
     private void LoadScale() {
-        SetMapScale(SaveStorage.GetFloat(SaveKeys.MapEditor_MapScale, mapScaleNeutral));
+        SetMapScale(SaveStorage.GetFloat(SaveKeys.MapEditor_MapScale, MAP_SCALE_DEFAULT));
     }
     private void SavePos() {
         SaveStorage.SetFloat(SaveKeys.MapEditor_CameraPosX, Pos.x);
@@ -72,7 +72,7 @@ public class MapEditorCamera : MonoBehaviour {
     // ----------------------------------------------------------------
     private void ResetToNeutral() {
         // Reset scale
-        SetMapScale(mapScaleNeutral);
+        SetMapScale(MAP_SCALE_DEFAULT);
         Vector2 averageLevelPos = new Vector2 (0,0);
         WorldData wd = editor.CurrentWorldData;
         foreach (LevelData ld in wd.LevelDatas.Values) {
