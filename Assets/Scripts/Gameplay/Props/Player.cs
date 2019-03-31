@@ -43,8 +43,9 @@ abstract public class Player : PlatformCharacter {
 	private int wallSlideSide = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
 	private int hackTEMP_framesAlive=0;
 	private Vector2 pvel; // previous velocity.
-	// References
-	private Rect camBoundsLocal; // for detecting when we exit the level!
+    static public Vector2 GroundedRespawnPos=Vector2Extensions.NaN; // I'll respawn at this pos. Set when we leave a Ground that has IsPlayerRespawn.
+    // References
+    private Rect camBoundsLocal; // for detecting when we exit the level!
 	private List<Gem> gemsHolding = new List<Gem>(); // like in Celeste. I hold Gems until I'm standing somewhere safe to "eat" (aka collect) them.
 
 	// Getters (Public)
@@ -64,6 +65,7 @@ abstract public class Player : PlatformCharacter {
 	private bool MayEatGems() {
 		return myWhiskers.AreFeetOnEatGemGround();
     }
+    virtual protected bool MaySetGroundedRespawnPos() { return true; } // Override if you don't wanna set GroundedRespawnPos while plunging, etc.
     override protected float HorzMoveInputVelXDelta() {
 		if (InputController.Instance==null) { return 0; } // for building at runtime.
 		if (inputAxis.x == 0) { return 0; }
@@ -117,9 +119,12 @@ abstract public class Player : PlatformCharacter {
 		camBoundsLocal = myLevel.GetCameraBoundsLocal();
 		camBoundsLocal.size += new Vector2(boundsBloat,boundsBloat)*2f;
 		camBoundsLocal.position -= new Vector2(boundsBloat,boundsBloat);
-	}
 
-	override protected void SetSize(Vector2 _size) {
+        // Clear out GroundedRespawnPos.
+        GroundedRespawnPos = Vector2Extensions.NaN;
+    }
+
+    override protected void SetSize(Vector2 _size) {
 		base.SetSize(_size);
 		myBody.SetSize(_size);
 	}
@@ -345,6 +350,12 @@ abstract public class Player : PlatformCharacter {
 	}
 	override public void OnWhiskersLeaveCollider(int side, Collider2D col) {
 		base.OnWhiskersLeaveCollider(side, col);
+        Collidable collidable = col.GetComponent<Collidable>();
+
+        // Feet?
+        if (side == Sides.B) {
+            OnFeetLeaveCollidable(collidable);
+        }
 
 		// We ARE wall-sliding!
 		if (isWallSliding()) {
@@ -393,8 +404,32 @@ abstract public class Player : PlatformCharacter {
         //			}
         //		}
     }
+    private void OnFeetLeaveCollidable(Collidable collidable) {
+        // Left Ground?
+        BaseGround ground = collidable as BaseGround;
+        if (ground != null) {
+            // Left respawn-friendly Ground, AND we can set GroundedRespawnPos??
+            if (ground.IsPlayerRespawn && MaySetGroundedRespawnPos()) {
+                SetGroundedRespawnPos(ground);
+            }
+        }
+    }
+    /// Intelligently sets what GroundedRespawnPos SHOULD be based on our position relative to this Ground. I.e. not on its edge, or in the air.
+    private void SetGroundedRespawnPos(BaseGround ground) {
+        Rect gr = ground.MyRect();
+        float marginX = 2f; // how much farther from the edge we wanna prevent spawning from.
+        marginX = Mathf.Min(marginX, gr.width*0.5f); // limit marginX for small grounds/platforms.
+        float posX = pos.x;
+        float posY = gr.y + gr.height*0.5f + Size.y*0.5f + 0.01f; // top 'o the ground.
+        posX = Mathf.Max(gr.x-gr.width*0.5f + marginX, posX);
+        posX = Mathf.Min(gr.x+gr.width*0.5f - marginX, posX);
 
-	virtual protected void BounceOffCollidable_Up(Collidable collidable) {
+        GroundedRespawnPos = new Vector2(posX, posY);
+    }
+
+
+
+    virtual protected void BounceOffCollidable_Up(Collidable collidable) {
 		// Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
 		float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
 		distToRestore += 3.2f; // TEST! Give us MORE than we started with!

@@ -78,7 +78,7 @@ public class Crate : BaseGround, ISerializableData<CrateData> {
 	// ----------------------------------------------------------------
 	public CrateData SerializeAsData() {
 		CrateData data = new CrateData();
-		data.myRect = MyRect;
+		data.myRect = MyRect();
 		data.hitsUntilBreak = hitsUntilBreak;
 		data.numCoinsInMe = numCoinsInMe;
 		return data;

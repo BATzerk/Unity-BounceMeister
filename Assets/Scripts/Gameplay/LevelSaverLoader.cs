@@ -102,13 +102,15 @@ static public class LevelSaverLoader {
 			else if (type == typeof(CrateData)) {
 				CrateData d = propData as CrateData;
 				AddSomePropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe");
-				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
-				AddFSLine();
+                if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
+                AddFSLine();
 			}
 			else if (type == typeof(DamageableGroundData)) {
 				DamageableGroundData d = propData as DamageableGroundData;
 				AddSomePropFieldsToFS(propData, "myRect", "doRegen");
                 if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 if (d.dieFromBounce) { fs += ";dieFromBounce:" + d.dieFromBounce; }
                 if (d.dieFromPlayerLeave) { fs += ";dieFromPlayerLeave:" + d.dieFromPlayerLeave; }
                 if (d.dieFromVel) { fs += ";dieFromVel:" + d.dieFromVel; }
@@ -118,28 +120,32 @@ static public class LevelSaverLoader {
 				GateData d = propData as GateData;
 				AddSomePropFieldsToFS(propData, "myRect", "channelID");
 				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
-				AddFSLine();
+                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
+                AddFSLine();
 			}
 			else if (type == typeof(GroundData)) {
 				GroundData d = propData as GroundData;
 				AddSomePropFieldsToFS(propData, "myRect");
+                if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 if (d.colorType!=0) { fs += ";colorType:" + d.colorType; }
                 if (!d.canBounce) { fs += ";canBounce:" + d.canBounce; }
                 if (!d.doRechargePlayer) { fs += ";doRechargePlayer:" + d.doRechargePlayer; }
-				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
-				AddFSLine();
+                AddFSLine();
 			}
 			else if (type == typeof(PlatformData)) {
 				PlatformData d = propData as PlatformData;
 				AddSomePropFieldsToFS(propData, "myRect");
 				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
-				AddFSLine();
+                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
+                AddFSLine();
 			}
 			else if (type == typeof(ToggleGroundData)) {
 				ToggleGroundData d = propData as ToggleGroundData;
 				AddSomePropFieldsToFS(propData, "myRect", "startsOn");
 				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
-				AddFSLine();
+                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
+                AddFSLine();
 			}
 		}
 

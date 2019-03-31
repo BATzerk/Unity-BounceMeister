@@ -21,7 +21,11 @@ public class Alph : Player {
 
 	// Getters (Public)
 	override public bool CanUseBattery() { return isPlungeRecharged; }
-	public bool IsPlungeRecharged { get { return isPlungeRecharged; } }
+    override protected bool MaySetGroundedRespawnPos() {
+        if (isPlunging || !isPlungeRecharged) { return false; } // Plunging? Not safe to set GroundedRespawnPos.
+        return base.MaySetGroundedRespawnPos();
+    }
+    public bool IsPlungeRecharged { get { return isPlungeRecharged; } }
 	// Getters (Protected)
 //	override public bool IsAffectedByLift() { return !isPlunging; } // We're immune to Lifts while plunging!
 	override protected bool MayWallSlide() {

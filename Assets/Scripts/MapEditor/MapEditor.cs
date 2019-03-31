@@ -362,7 +362,7 @@ public class MapEditor : MonoBehaviour {
         LevelData newLD = CurrentWorldData.GetLevelData(levelKey, true);
         Vector2 pos = SnapToGrid(editorCamera.Pos);
         newLD.SetPosGlobal(pos, false);
-        OpenGameplayScene(newLD);
+        SceneHelper.OpenGameplayScene(newLD);
     }
 
 
@@ -648,19 +648,10 @@ public class MapEditor : MonoBehaviour {
 		for (int i=CurrWorldLevelTiles.Count-1; i>=0; --i) {
 			LevelTile tile = CurrWorldLevelTiles[i];
 			if (tile.IsDragReadyMouseOverMe) {
-				OpenGameplayScene(tile.WorldIndex, tile.LevelKey);
+				SceneHelper.OpenGameplayScene(tile.WorldIndex, tile.LevelKey);
 				break;
 			}
 		}
-	}
-
-	private void OpenGameplayScene(int worldIndex, string levelKey) {
-//		GameplaySnapshotController.SetWorldAndLevelToLoad (worldIndex, levelKey);
-        OpenGameplayScene(dataManager.GetLevelData(worldIndex, levelKey, true));
-    }
-	private void OpenGameplayScene(LevelData ld) {
-		dataManager.currentLevelData = ld;
-		SceneHelper.OpenScene(SceneNames.Gameplay);
 	}
 
 

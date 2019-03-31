@@ -6,27 +6,27 @@ using UnityEngine;
 abstract public class BaseGround : Collidable {
 	// Properties
 	[SerializeField] private bool canEatGems = true; // teechnically, it's "Can Player eat Gems while on me?" If false, Player WON'T collect the Gem they're holding when they land on me!
+    [SerializeField] private bool isPlayerRespawn = false; // if TRUE, then Player will set GroundedRespawnPos when they leave me! When Player dies, they'll respawn at that pos.
 //	[SerializeField] private bool doDisappearAfterBounces = false;
 //	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
 	// Components
 	[SerializeField] protected SpriteRenderer bodySprite=null;
 	[SerializeField] protected BoxCollider2D myCollider=null;
 
-	// Getters (Public)
-	public bool CanEatGems { get { return canEatGems; } }
-	// Getters (Private)
-	protected Rect MyRect {
-		get {
-			Vector2 center = bodySprite.transform.localPosition;
-			Vector2 size;
-			if (bodySprite.drawMode == SpriteDrawMode.Simple) { // Simple draw mode? Ok, use my SCALE.
-				size = bodySprite.transform.localScale;
-			}
-			else { // Tiled draw mode? Ok, use the SPRITE SIZE.
-				size = bodySprite.size;
-			}
-			return new Rect(center, size);
+    // Getters (Public)
+    public bool CanEatGems { get { return canEatGems; } }
+    public bool IsPlayerRespawn { get { return isPlayerRespawn; } }
+    // Getters (Private)
+    public Rect MyRect() {
+		Vector2 center = bodySprite.transform.localPosition;
+		Vector2 size;
+		if (bodySprite.drawMode == SpriteDrawMode.Simple) { // Simple draw mode? Ok, use my SCALE.
+			size = bodySprite.transform.localScale;
 		}
+		else { // Tiled draw mode? Ok, use the SPRITE SIZE.
+			size = bodySprite.size;
+		}
+		return new Rect(center, size);
 	}
 
 
@@ -43,8 +43,9 @@ abstract public class BaseGround : Collidable {
 		base.BaseInitialize(_myLevel, data);
 
 		canEatGems = data.canEatGems;
+        isPlayerRespawn = data.isPlayerRespawn;
 
-		if (bodySprite.drawMode == SpriteDrawMode.Simple) { // Simple draw mode? Ok, use my SCALE.
+        if (bodySprite.drawMode == SpriteDrawMode.Simple) { // Simple draw mode? Ok, use my SCALE.
 			bodySprite.transform.localScale = data.myRect.size;
 		}
 		else { // Tiled draw mode? Ok, use the SPRITE SIZE.

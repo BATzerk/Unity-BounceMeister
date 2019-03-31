@@ -12,7 +12,31 @@ public static class SceneHelper {
     //  Doers
     // ----------------------------------------------------------------
     static public void ReloadScene() { OpenScene(SceneManager.GetActiveScene().name); }
-    static public void OpenScene(string sceneName) { SceneManager.LoadScene(sceneName); }
+    static public void OpenScene(string sceneName) {
+        // Opening NON-Gameplay scene? Reset static values!
+        if (sceneName != SceneNames.Gameplay) {
+            ResetGameplayStaticValues();
+        }
+        // Open the scene.
+        SceneManager.LoadScene(sceneName);
+    }
+
+    
+
+	static public void OpenGameplayScene(int worldIndex, string levelKey) {
+//		GameplaySnapshotController.SetWorldAndLevelToLoad (worldIndex, levelKey);
+        OpenGameplayScene(GameManagers.Instance.DataManager.GetLevelData(worldIndex, levelKey, true));
+    }
+    static public void OpenGameplayScene(LevelData ld) {
+        GameManagers.Instance.DataManager.currentLevelData = ld;
+		OpenScene(SceneNames.Gameplay);
+	}
+
+
+    /// Kinda sloppy with this static stuff.
+    static private void ResetGameplayStaticValues() {
+        Player.GroundedRespawnPos = Vector2Extensions.NaN;
+    }
 
 
 }

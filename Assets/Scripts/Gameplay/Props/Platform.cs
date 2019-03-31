@@ -18,8 +18,9 @@ public class Platform : BaseGround, ISerializableData<PlatformData> {
 	// ----------------------------------------------------------------
 	public PlatformData SerializeAsData() {
 		PlatformData data = new PlatformData();
-		data.myRect = MyRect;
+		data.myRect = MyRect();
 		data.canEatGems = CanEatGems;
-		return data;
+        data.isPlayerRespawn = IsPlayerRespawn;
+        return data;
 	}
 }

@@ -50,6 +50,7 @@ public class TravelingPlatform : BaseGround {//, ISerializableData<TravelingPlat
     //	PlatformData data = new PlatformData();
     //	data.myRect = MyRect;
     //	data.canEatGems = CanEatGems;
+    //  data.isPlayerRespawn = IsPlayerRespawn;
     //	return data;
     //}
 }

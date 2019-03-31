@@ -181,9 +181,10 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 	// ----------------------------------------------------------------
 	public DamageableGroundData SerializeAsData() {
 		DamageableGroundData data = new DamageableGroundData();
-		data.myRect = MyRect;
+		data.myRect = MyRect();
 		data.canEatGems = CanEatGems;
-		data.doRegen = doRegen;
+        data.isPlayerRespawn = IsPlayerRespawn;
+        data.doRegen = doRegen;
 		data.dieFromBounce = dieFromBounce;
         data.dieFromPlayerLeave = dieFromPlayerLeave;
         data.dieFromVel = dieFromVel;

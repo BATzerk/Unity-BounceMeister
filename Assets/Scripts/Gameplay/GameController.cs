@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour {
 	private Player player=null;
 	private Level level=null;
     // Properties
-    static private Vector2 playerDiedPos; // set when Player dies; used to respawn Player at closest PlayerStart.
+    //static private Vector2 playerDiedPos; // set when Player dies; used to respawn Player at closest PlayerStart.
 
     // Getters
     public Player Player { get { return player; } }
@@ -174,21 +174,27 @@ public class GameController : MonoBehaviour {
 
 	private Vector2 GetPlayerStartingPosInLevel(LevelData ld) {
 		Vector2 posExited = dataManager.playerPosGlobalOnExitLevel;
-		int sideEntering = dataManager.playerSideEnterNextLevel;
-		// Undefined?? Return the PlayerStart!
-		if (posExited.Equals(Vector2Extensions.NaN)) {
-			return ld.PlayerStartPos(playerDiedPos);
-		}
-		// Otherwise, use the knowledge we have!
-		dataManager.playerPosGlobalOnExitLevel = Vector2Extensions.NaN; // Make sure to "clear" this. It's been used!
-		dataManager.playerSideEnterNextLevel = -1; // Make sure to "clear" this. It's been used!
-//		Vector2 originalPos = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
-//		int sideEntered = MathUtils.GetSidePointIsOn(ld.BoundsGlobal, posExited);
-		Vector2Int offsetDir = MathUtils.GetOppositeDir(sideEntering);
-		const float extraDistToEnter = 3f; // Well let me just take an extra step in; I really wanna feel at "home".
-
-		Vector2 posRelative = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
-		return posRelative + new Vector2(offsetDir.x*extraDistToEnter, offsetDir.y*extraDistToEnter);
+        // Entering from previous level?
+        if (!posExited.Equals(Vector2Extensions.NaN)) {
+            // Otherwise, use the knowledge we have!
+            int sideEntering = dataManager.playerSideEnterNextLevel;
+            dataManager.playerPosGlobalOnExitLevel = Vector2Extensions.NaN; // Make sure to "clear" this. It's been used!
+            dataManager.playerSideEnterNextLevel = -1; // Make sure to "clear" this. It's been used!
+    //		Vector2 originalPos = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
+    //		int sideEntered = MathUtils.GetSidePointIsOn(ld.BoundsGlobal, posExited);
+            Vector2Int offsetDir = MathUtils.GetOppositeDir(sideEntering);
+            const float extraDistToEnter = 2f; // Well let me just take an extra step in; I really wanna feel at "home".
+            Vector2 posRelative = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
+            return posRelative + new Vector2(offsetDir.x*extraDistToEnter,offsetDir.y*extraDistToEnter);
+        }
+        // Respawning from death?
+        else if (!Player.GroundedRespawnPos.Equals(Vector2Extensions.NaN)) {
+            return Player.GroundedRespawnPos;
+        }
+        // Totally undefined? Default to PlayerStart.
+        else {
+            return ld.PlayerStartPos(Vector2.one);//NOTE: Uncleaned code. playerDiedPos);
+        }
 	}
 
 
@@ -313,7 +319,7 @@ public class GameController : MonoBehaviour {
 	//  Events
 	// ----------------------------------------------------------------
 	private void OnPlayerDie(Player _player) {
-        playerDiedPos = _player.PosLocal;
+        //playerDiedPos = _player.PosLocal;
         StartCoroutine(Coroutine_ReloadSceneDelayed());
 	}
     private IEnumerator Coroutine_ReloadSceneDelayed() {
