@@ -114,6 +114,7 @@ public class PlatformCharacter : Collidable {
 	}
 	protected void ApplyFriction() {
         if (IsInLift()) {
+			SetVel(new Vector2(vel.x*FrictionAir, vel.y));
         }
 		else if (feetOnGround()) {
 			SetVel(new Vector2(vel.x*FrictionGround, vel.y));

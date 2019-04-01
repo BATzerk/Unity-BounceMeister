@@ -6,7 +6,7 @@ public class GameProperties : MonoBehaviour {
     public const bool DoPauseInEditMode = true; // if TRUE, we'll automatically pause gameplay while editing a level in Gameplay Scene.
 
     public const float UnitSize = 1f; // Grid-snap units! In Unity units.
-	public const int NUM_WORLDS = 4;
+	public const int NUM_WORLDS = 5; // including World 0 for testing.
 
     public static string GetFirstLevelName(int worldIndex) {
         switch (worldIndex) {
