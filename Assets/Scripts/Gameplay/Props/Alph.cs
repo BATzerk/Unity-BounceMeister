@@ -28,6 +28,9 @@ public class Alph : Player {
     public bool IsPlungeRecharged { get { return isPlungeRecharged; } }
 	// Getters (Protected)
 //	override public bool IsAffectedByLift() { return !isPlunging; } // We're immune to Lifts while plunging!
+    override protected bool MayEatGems() {
+        return base.MayEatGems() && !isPlunging;
+    }
 	override protected bool MayWallSlide() {
 		return base.MayWallSlide() && !isPlunging;
 	}

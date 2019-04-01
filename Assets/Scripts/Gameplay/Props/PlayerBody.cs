@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 abstract public class PlayerBody : MonoBehaviour {
-	// Components
-	[SerializeField] private SpriteRenderer sr_body=null;
-	[SerializeField] private ParticleSystem ps_dieBurst=null;
+    // Components
+    [SerializeField] private GameObject go_wallSliding=null;
+    [SerializeField] private SpriteRenderer sr_body=null;
+    [SerializeField] private ParticleSystem ps_dieBurst=null;
 	// Properties
 	protected Color bodyColor_neutral = Color.magenta;
 	private Color bodyColor;
@@ -20,6 +21,7 @@ abstract public class PlayerBody : MonoBehaviour {
 	virtual protected void Start() {
 		alpha = 1;
 		SetBodyColor(bodyColor_neutral);
+        OnStopWallSlide();
 	}
 
 
@@ -65,13 +67,25 @@ abstract public class PlayerBody : MonoBehaviour {
 		//ps_dieBurst.SetParticles(particles, particles.Length);
 	}
 
+    public void OnStartWallSlide(int wallSlideSide) {
+        go_wallSliding.SetActive(true);
+        //go_wallSliding.transform.localScale = new Vector3(wallSlideSide, 1,1);
+    }
+    public void OnStopWallSlide() {
+        go_wallSliding.SetActive(false);
+    }
 
-	// ----------------------------------------------------------------
-	//  Update
-	// ----------------------------------------------------------------
-	private void Update() {
+
+    // ----------------------------------------------------------------
+    //  Update
+    // ----------------------------------------------------------------
+    private void Update() {
 		if (!myPlayer.DoUpdate()) { return; } // Not updating? No dice.
 
+        // Face correct dir
+        this.transform.localScale = new Vector3(myPlayer.DirFacing, 1, 1);
+
+        // Flash from damage
 		if (myPlayer.IsPostDamageImmunity) {
 			alpha = Random.Range(0.2f, 0.6f);
 			ApplyBodyColor();
