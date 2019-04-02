@@ -37,6 +37,7 @@ public class CrateData : BaseGroundData {
 	public int numCoinsInMe;
 }
 public class GroundData : BaseGroundData {
+    public bool isBouncy=false;
 	public bool canBounce=true;
 	public bool doRechargePlayer=true;
 	public int colorType;
@@ -78,6 +79,9 @@ public class PlayerData : PropData {
 }
 
 public class PlayerStartData : PropData {
+}
+
+public class SnackData : PropData {
 }
 
 public class SpikesData : PropData {

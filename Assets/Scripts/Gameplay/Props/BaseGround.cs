@@ -14,7 +14,7 @@ abstract public class BaseGround : Collidable {
 	[SerializeField] protected BoxCollider2D myCollider=null;
 
     // Getters (Public)
-    public bool CanEatGems { get { return canEatGems; } }
+    public bool CanEatEdibles { get { return canEatGems; } }//TODO: Rename to MayPlayerEat! In saves and stuff!
     public bool IsPlayerRespawn { get { return isPlayerRespawn; } }
     // Getters (Private)
     public Rect MyRect() {

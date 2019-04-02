@@ -23,7 +23,8 @@ static public class LevelSaverLoader {
 	const string LIFT = "Lift";
 	const string PLATFORM = "Platform";
 	const string PLAYER_START = "PlayerStart";
-	const string SPIKES = "Spikes";
+    const string SNACK = "Snack";
+    const string SPIKES = "Spikes";
 	const string TOGGLE_GROUND = "ToggleGround";
 	// Properties
 	private static string debug_levelDataLoadingLevelKey; // purely for printing to the console without having to pass this parameter through a chain of functions
@@ -97,6 +98,7 @@ static public class LevelSaverLoader {
 			else if (type == typeof(GemData)) { AddAllPropFieldsToFS(propData, "pos"); }
 			else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
 			else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
+            else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos"); }
 			else if (type == typeof(SpikesData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation"); }
 			// Props with optional params
 			else if (type == typeof(CrateData)) {
@@ -127,6 +129,7 @@ static public class LevelSaverLoader {
 				GroundData d = propData as GroundData;
 				AddSomePropFieldsToFS(propData, "myRect");
                 if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (d.isBouncy) { fs += ";isBouncy:" + d.isBouncy; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 if (d.colorType!=0) { fs += ";colorType:" + d.colorType; }
                 if (!d.canBounce) { fs += ";canBounce:" + d.canBounce; }
@@ -343,22 +346,8 @@ static public class LevelSaverLoader {
 				}
 				// Props!
 				else {
-					PropData propData;
-					if (affectName == BATTERY) { propData = new BatteryData(); }
-					else if (affectName == CAMERA_BOUNDS) { propData = new CameraBoundsData(); }
-					else if (affectName == CRATE) { propData = new CrateData(); }
-					else if (affectName == DAMAGEABLE_GROUND) { propData = new DamageableGroundData(); }
-					else if (affectName == GATE) { propData = new GateData(); }
-					else if (affectName == GATE_BUTTON) { propData = new GateButtonData(); }
-					else if (affectName == GEM) { propData = new GemData(); }
-					else if (affectName == GROUND) { propData = new GroundData(); }
-					else if (affectName == LEVEL_DOOR) { propData = new LevelDoorData(); }
-					else if (affectName == LIFT) { propData = new LiftData(); }
-					else if (affectName == PLATFORM) { propData = new PlatformData(); }
-					else if (affectName == PLAYER_START) { propData = new PlayerStartData(); }
-					else if (affectName == SPIKES) { propData = new SpikesData(); }
-					else if (affectName == TOGGLE_GROUND) { propData = new ToggleGroundData(); }
-					else {
+					PropData propData = GetNewPropDataFromAffectName(affectName);
+					if (propData == null) { // Safety check.
 						Debug.LogError ("Oops! Unidentifiable text in lvl file: " + ld.LevelKey + ". Text: \"" + lineString + "\"");
 						continue;
 					}
@@ -372,6 +361,26 @@ static public class LevelSaverLoader {
 			}
 		}
 	}
+    static private PropData GetNewPropDataFromAffectName(string affectName) {
+        switch (affectName) {
+            case BATTERY: return new BatteryData();
+            case CAMERA_BOUNDS: return new CameraBoundsData();
+            case CRATE: return new CrateData();
+            case DAMAGEABLE_GROUND: return new DamageableGroundData();
+            case GATE: return new GateData();
+            case GATE_BUTTON: return new GateButtonData();
+            case GEM: return new GemData();
+            case GROUND: return new GroundData();
+            case LEVEL_DOOR: return new LevelDoorData();
+            case LIFT: return new LiftData();
+            case PLATFORM: return new PlatformData();
+            case PLAYER_START: return new PlayerStartData();
+            case SNACK: return new SnackData();
+            case SPIKES: return new SpikesData();
+            case TOGGLE_GROUND: return new ToggleGroundData();
+            default: return null;
+        }
+    }
 	static private void AddEmptyLevelElements(ref LevelData ld) {
 		CameraBoundsData cameraBoundsData = new CameraBoundsData();
 		cameraBoundsData.myRect = new Rect(-25,-19, 50,38);
@@ -382,7 +391,7 @@ static public class LevelSaverLoader {
 		playerStartData.pos = new Vector2(-20, -14);
 		ld.allPropDatas.Add(playerStartData);
 
-		Rect[] groundRects = new Rect[]{
+		Rect[] groundRects = {
 			new Rect(0,-18, 52,4),
 			new Rect(-24,0, 4,32),
 			new Rect(24,0, 4,32),

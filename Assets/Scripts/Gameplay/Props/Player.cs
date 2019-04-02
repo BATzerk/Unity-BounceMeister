@@ -47,7 +47,7 @@ abstract public class Player : PlatformCharacter {
     static public Vector2 GroundedRespawnPos=Vector2Extensions.NaN; // I'll respawn at this pos. Set when we leave a Ground that has IsPlayerRespawn.
     // References
     private Rect camBoundsLocal; // for detecting when we exit the level!
-	private List<Gem> gemsHolding = new List<Gem>(); // like in Celeste. I hold Gems until I'm standing somewhere safe to "eat" (aka collect) them.
+	private List<Edible> ediblesHolding = new List<Edible>(); // like in Celeste. I hold Edibles (i.e. Gem, Snack) until I'm standing somewhere safe to "eat" (aka collect) them.
 
 	// Getters (Public)
 	virtual public bool CanUseBattery() { return false; }
@@ -63,8 +63,8 @@ abstract public class Player : PlatformCharacter {
 	virtual protected bool MayWallSlide() {
 		return !feetOnGround();
 	}
-    virtual protected bool MayEatGems() {
-		return myWhiskers.AreFeetOnEatGemGround();
+    virtual protected bool MayEatEdibles() {
+		return myWhiskers.AreFeetOnEatEdiblesGround();
     }
     virtual protected bool MaySetGroundedRespawnPos() { return true; } // Override if you don't wanna set GroundedRespawnPos while plunging, etc.
     override protected float HorzMoveInputVelXDelta() {
@@ -391,8 +391,8 @@ abstract public class Player : PlatformCharacter {
 	}
 	private void OnFeetTouchCollidable(Collidable collidable) {
         numJumpsSinceGround = 0;
-		if (MayEatGems()) {
-			EatGemsHolding();
+		if (MayEatEdibles()) {
+			EatEdiblesHolding();
 		}
 
 		bool doBounce = DoBounceOffCollidable(collidable);
@@ -523,21 +523,21 @@ abstract public class Player : PlatformCharacter {
 //		}
 //	}
 
-	public void OnTouchGem(Gem gem) {
-		if (MayEatGems()) {
-			gem.GetEaten();
+	public void OnTouchEdible(Edible edible) {
+		if (MayEatEdibles()) {
+			edible.GetEaten();
 		}
 		else {
-			gemsHolding.Add(gem);
-			gem.OnPlayerPickMeUp(this);
+			ediblesHolding.Add(edible);
+			edible.OnPlayerPickMeUp(this);
 		}
 	}
-	private void EatGemsHolding() {
-		foreach (Gem gem in gemsHolding) {
-			gem.transform.SetParent(this.transform.parent); // pop the Gem back onto the Level.
-			gem.GetEaten();
+	private void EatEdiblesHolding() {
+		foreach (Edible obj in ediblesHolding) {
+			obj.transform.SetParent(this.transform.parent); // pop the Edible back onto the Level.
+			obj.GetEaten();
 		}
-		gemsHolding.Clear();
+		ediblesHolding.Clear();
 	}
 
 

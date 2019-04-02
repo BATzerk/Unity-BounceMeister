@@ -44,6 +44,7 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 		colorType = data.colorType;
 		canBounce = data.canBounce;
 		doRechargePlayer = data.doRechargePlayer;
+        isBouncy = data.isBouncy;
 		ApplyBodySpriteColor();
 	}
 	private void ApplyBodySpriteColor() {
@@ -57,14 +58,16 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 	//  Serializing
 	// ----------------------------------------------------------------
 	public GroundData SerializeAsData() {
-		GroundData data = new GroundData();
-		data.myRect = MyRect();
-		data.canEatGems = CanEatGems;
-        data.isPlayerRespawn = IsPlayerRespawn;
-        data.canBounce = canBounce;
-		data.doRechargePlayer = doRechargePlayer;
-		data.colorType = colorType;
-		return data;
+        GroundData data = new GroundData {
+            myRect = MyRect(),
+            canEatGems = CanEatEdibles,
+            isPlayerRespawn = IsPlayerRespawn,
+            isBouncy = isBouncy,
+            canBounce = canBounce,
+            doRechargePlayer = doRechargePlayer,
+            colorType = colorType
+        };
+        return data;
 	}
 
 

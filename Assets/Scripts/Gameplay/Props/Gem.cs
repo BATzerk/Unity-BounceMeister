@@ -2,28 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gem : Prop, ISerializableData<GemData> {
-	// Components
-	[SerializeField] private BoxCollider2D myCollider=null;
-	[SerializeField] private ParticleSystem ps_collectedBurst=null;
-	[SerializeField] private SpriteRenderer sr_body=null;
-	[SerializeField] private GameObject go_body=null;
-	// References
-	private Player playerHoldingMe=null; // Player's gotta land on safe ground before they can eat me.
-	// Properties
-	private bool isEaten=false;
-    private bool wasEverEaten=false; // Gems that've been eaten in the past show up as ghosts.
-    private int myIndex; // used to save/load who was eaten.
-
-    // Getters (Private)
-    private float bodyRotation {
-		get { return go_body.transform.localEulerAngles.z; }
-		set { go_body.transform.localEulerAngles = new Vector3(0, 0, value); }
-	}
-	private Vector2 bodyPos {
-		get { return go_body.transform.localPosition; }
-		set { go_body.transform.localPosition = value; }
-	}
+public class Gem : Edible, ISerializableData<GemData> {
 
 
 	// ----------------------------------------------------------------
@@ -46,30 +25,12 @@ public class Gem : Prop, ISerializableData<GemData> {
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    private void OnTriggerEnter2D(Collider2D otherCol) {
-		// Player??
-		Player player = otherCol.GetComponent<Player>();
-		if (player != null) {//LayerMask.LayerToName(otherCol.gameObject.layer) == Layers.Player) {
-			player.OnTouchGem(this);
-		}
-	}
-	public void OnPlayerPickMeUp(Player player) {
-		playerHoldingMe = player;
-		// Oh, disable my gridSnap script so it doesn't interfere with our positioning.
-		GridSnapPos snapScript = GetComponent<GridSnapPos>();
-		snapScript.enabled = false;
-	}
-	public void GetEaten() {
-        // Update and save!
-        isEaten = true;
-        wasEverEaten = true;
-        SaveStorage.SetBool(SaveKeys.DidEatGem(myLevel, myIndex), true);
-        // Visuals!
-        bodyRotation = 0;
-		myCollider.enabled = false;
-		sr_body.enabled = false;
-		ps_collectedBurst.Emit(16);
-		playerHoldingMe = null;
+	override public void GetEaten() {
+        base.GetEaten();
+        // Save the value!
+        SaveStorage.SetBool(SaveKeys.DidEatSnack(myLevel, myIndex), true);
+        // Particle bursttt
+        ps_collectedBurst.Emit(16);
 	}
 
 
@@ -108,9 +69,10 @@ public class Gem : Prop, ISerializableData<GemData> {
 	//  Serializing
 	// ----------------------------------------------------------------
 	public GemData SerializeAsData() {
-		GemData data = new GemData();
-		data.pos = pos;
-		return data;
+        GemData data = new GemData {
+            pos = pos
+        };
+        return data;
 	}
 
 }

@@ -6,6 +6,7 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	// Properties
 	private GateChannel[] gateChannels;
     private List<Gem> gems=new List<Gem>();
+    private List<Snack> snacks=new List<Snack>();
     // References
     private GameController gameControllerRef;
 	private LevelData levelDataRef;
@@ -54,6 +55,7 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		ld.isConnectedToStart = levelDataRef.isConnectedToStart;
 
 		// -- Props --
+        // TODO: Find objects of type Prop instead, right?? (Can have Prop class say whether to serialize with the rest or not)
 		Battery[] batteries = FindObjectsOfType<Battery>();
 		foreach (Battery obj in batteries) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
@@ -72,8 +74,8 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		GateButton[] gateButtons = FindObjectsOfType<GateButton>();
 		foreach (GateButton obj in gateButtons) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
-		Gem[] gems = FindObjectsOfType<Gem>();
-		foreach (Gem obj in gems) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+		Gem[] _gems = FindObjectsOfType<Gem>();
+		foreach (Gem obj in _gems) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
 		Ground[] grounds = FindObjectsOfType<Ground>();
 		foreach (Ground obj in grounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
@@ -89,6 +91,9 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 
 		PlayerStart[] playerStarts = FindObjectsOfType<PlayerStart>();
 		foreach (PlayerStart obj in playerStarts) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        Snack[] _snacks = FindObjectsOfType<Snack>();
+        foreach (Snack obj in _snacks) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
 		Spikes[] spikes = FindObjectsOfType<Spikes>();
 		foreach (Spikes obj in spikes) { ld.allPropDatas.Add(obj.SerializeAsData()); }
@@ -183,6 +188,11 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 				PlayerStart newProp = Instantiate(rh.PlayerStart).GetComponent<PlayerStart>();
 				newProp.Initialize (this, propData as PlayerStartData);
 			}
+            else if (propData is SnackData) {
+                Snack newProp = Instantiate(rh.Snack).GetComponent<Snack>();
+                newProp.Initialize (this, propData as SnackData, snacks.Count);
+                snacks.Add(newProp);
+            }
 			else if (propData is SpikesData) {
 				Spikes newProp = Instantiate(rh.Spikes).GetComponent<Spikes>();
 				newProp.Initialize (this, propData as SpikesData);

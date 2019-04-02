@@ -133,7 +133,7 @@ public sealed class ToggleGround : BaseGround, ISerializableData<ToggleGroundDat
 	public ToggleGroundData SerializeAsData() {
 		ToggleGroundData data = new ToggleGroundData();
 		data.myRect = MyRect();
-		data.canEatGems = CanEatGems;
+		data.canEatGems = CanEatEdibles;
         data.isPlayerRespawn = IsPlayerRespawn;
         data.startsOn = startsOn;
 		return data;

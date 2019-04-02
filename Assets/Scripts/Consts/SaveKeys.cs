@@ -9,7 +9,8 @@ public static class SaveKeys {
 
     private static string FullLvlKey(Level l) { return "w" + l.WorldIndex + "_" + l.LevelKey; } // e.g. returns "w2_JumpPit".
 
-    public static string DidEatGem(Level level, int gemIndex) { return "DidEatGem_" + FullLvlKey(level) + "_" + gemIndex; }
+    public static string DidEatGem(Level level, int objIndex) { return "DidEatGem_" + FullLvlKey(level) + "_" + objIndex; }
+    public static string DidEatSnack(Level level, int objIndex) { return "DidEatSnack_" + FullLvlKey(level) + "_" + objIndex; }
 
 
     public const string MapEditor_CameraPosX = "MapEditor_CameraPosX";

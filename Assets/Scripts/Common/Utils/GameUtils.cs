@@ -19,7 +19,7 @@ public static class GameUtils {
         var type = typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneHierarchyWindow");
         var methodInfo = type.GetMethod("SetExpandedRecursive");
         EditorWindow window = EditorWindow.GetWindow(type);
-        methodInfo.Invoke(window,new object[] { go.GetInstanceID(),expand });
+        methodInfo.Invoke(window, new object[] { go.GetInstanceID(),expand });
         #endif
     }
     //public static void SetGOCollapsed(Transform tf, bool isCollapsed) {
