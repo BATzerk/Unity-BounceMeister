@@ -111,7 +111,6 @@ public class Plunga : Player {
 	// ----------------------------------------------------------------
 	private void StartPlunge() {
 		if (isPlunging) { return; } // Already plunging? Do nothing.
-        SetSize(new Vector2(1f, 2f));//TEST
 		StopWallSlide(); // can't both plunge AND wall-slide.
 		isPlunging = true;
 		isPlungeRecharged = false; // spent!
@@ -123,13 +122,11 @@ public class Plunga : Player {
 	}
 	private void StopPlunge() {
 		if (!isPlunging) { return; } // Not plunging? Do nothing.
-        SetSize(new Vector2(1.5f,1.8f));//2f,1.1f));//TEST
         isPlunging = false;
 		myPlungaBody.OnStopPlunge();
 	}
 	private void RechargePlunge() {
         if (isPlungeRecharged) { return; } // Already recharged? Do nothing.
-        SetSize(new Vector2(1.5f,1.8f));//TEST
         isPlungeRecharged = true;
 		myPlungaBody.OnRechargePlunge();
 		GameManagers.Instance.EventManager.OnPlayerRechargePlunge(this);

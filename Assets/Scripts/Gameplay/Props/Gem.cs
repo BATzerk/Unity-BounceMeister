@@ -28,7 +28,7 @@ public class Gem : Edible, ISerializableData<GemData> {
 	override public void GetEaten() {
         base.GetEaten();
         // Save the value!
-        SaveStorage.SetBool(SaveKeys.DidEatSnack(myLevel, myIndex), true);
+        SaveStorage.SetBool(SaveKeys.DidEatGem(myLevel, myIndex), true);
         // Particle bursttt
         ps_collectedBurst.Emit(16);
 	}

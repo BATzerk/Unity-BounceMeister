@@ -73,7 +73,8 @@ public class InputController : MonoBehaviour {
 
 	private void RegisterButtonInputs () {
 		PlayerInput = new Vector2(Input.GetAxis("Player0_Horz"), Input.GetAxis("Player0_Vert"));
-	}
+        //print(Time.frameCount + " PlayerInput: " + PlayerInput);
+    }
 
 	private void RegisterMouseInputs () {
 		isDoubleClick = false; // I'll say otherwise in a moment.

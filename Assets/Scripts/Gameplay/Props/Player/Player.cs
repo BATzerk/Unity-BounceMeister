@@ -96,9 +96,13 @@ abstract public class Player : PlatformCharacter {
 		if (collidable == null) { return false; } // The collidable is undefined? Default to NOT bouncy.
 		return collidable.IsBouncy;
 	}
+    // Setters
+    public void SetDirFacing(int _dir) {
+        DirFacing = _dir;
+    }
 
-	// Debug
-	private void OnDrawGizmos() {
+    // Debug
+    private void OnDrawGizmos() {
 		if (myLevel==null) { return; }
 		Gizmos.color = Color.cyan;
 		Gizmos.DrawWireCube (myLevel.PosGlobal+camBoundsLocal.center, new Vector3(camBoundsLocal.size.x,camBoundsLocal.size.y, 10));

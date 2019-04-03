@@ -183,9 +183,10 @@ public class GameController : MonoBehaviour {
     //		Vector2 originalPos = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
     //		int sideEntered = MathUtils.GetSidePointIsOn(ld.BoundsGlobal, posExited);
             Vector2Int offsetDir = MathUtils.GetOppositeDir(sideEntering);
-            const float extraDistToEnter = 2f; // Well let me just take an extra step in; I really wanna feel at "home".
+            const float extraEnterDistX = 0; // How much extra step do I wanna take in to really feel at "home"?
+            const float extraEnterDistY = 3; // How much extra step do I wanna take in to really feel at "home"?
             Vector2 posRelative = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
-            return posRelative + new Vector2(offsetDir.x*extraDistToEnter,offsetDir.y*extraDistToEnter);
+            return posRelative + new Vector2(offsetDir.x*extraEnterDistX,offsetDir.y*extraEnterDistY);
         }
         // Respawning from death?
         else if (!Player.GroundedRespawnPos.Equals(Vector2Extensions.NaN)) {
@@ -202,11 +203,14 @@ public class GameController : MonoBehaviour {
 		WorldData currentWorldData = level.WorldDataRef;
 		LevelData nextLevelData = currentWorldData.GetLevelAtSide(level.LevelDataRef, Player.PosLocal, sideEscaped);
 		if (nextLevelData != null) {
-			Vector2 playerVel = player.vel; // remember this so we can preserves it, ya see!
-			dataManager.playerPosGlobalOnExitLevel = player.PosGlobal;
+            int playerDir = player.DirFacing; // remember these so we can preserves 'em, ya see!
+            Vector2 playerVel = player.vel;
+            dataManager.playerPosGlobalOnExitLevel = player.PosGlobal;
 			dataManager.playerSideEnterNextLevel = Sides.GetOpposite(sideEscaped);
 			StartGameAtLevel(nextLevelData);
-			player.SetVel(playerVel); // messily restore the vel we had in the previous level.
+            // Restore the vel/dir we had in the previous level.
+            player.SetDirFacing(playerDir);
+            player.SetVel(playerVel);
 		}
 		else {
 			Debug.LogWarning("Whoa! No level at this side: " + sideEscaped);

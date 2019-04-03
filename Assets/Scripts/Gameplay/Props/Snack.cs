@@ -16,14 +16,12 @@ public class Snack : Edible, ISerializableData<SnackData> {
 
         // Load wasEverEaten!
         wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatSnack(myLevel, myIndex));
+        isEaten = wasEverEaten;
 
-        //// Set wasEverEaten visuals.
-        //if (wasEverEaten) {
-        //    sr_body.color = new Color(0.2f,0.2f,0.2f, 0.25f);
-        //}
-        //sr_aura.enabled = !isEaten;
-        // I've been eaten? Hide me entirely!
-        this.gameObject.SetActive(!wasEverEaten);
+        // Set wasEverEaten visuals.
+        sr_body.enabled = !wasEverEaten;
+        sr_aura.enabled = !wasEverEaten;
+        myCollider.enabled = !wasEverEaten;
     }
 
 

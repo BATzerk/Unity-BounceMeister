@@ -37,9 +37,11 @@ public class PlungaBody : PlayerBody {
     // ----------------------------------------------------------------
     public void OnStartPlunge() {
 		SetBodyColor(bodyColor_plunging);
-	}
+        SetSize(new Vector2(1f,2f));//TEST
+    }
 	public void OnStopPlunge() {
-		if (myPlunga.IsPlungeRecharged) {
+        SetSize(myBasePlayer.Size);//new Vector2(2f,1.1f));//TEST
+        if (myPlunga.IsPlungeRecharged) {
 			SetBodyColor(bodyColor_neutral);
 		}
 		else {
@@ -49,6 +51,7 @@ public class PlungaBody : PlayerBody {
 
 	public void OnRechargePlunge() {
 		SetBodyColor(bodyColor_neutral);
+        SetSize(myBasePlayer.Size);//TEST
         // Flash me white!
         GameUtils.SetSpriteAlpha(sr_highlight, 1f);
         LeanTween.cancel(sr_highlight.gameObject);

@@ -74,16 +74,16 @@ public class PlatformCharacter : Collidable {
 		}
 	}
 
-	// Setters
-	public void SetVel(Vector2 _vel) {
-		vel = _vel;
-	}
+    // Setters
+    public void SetVel(Vector2 _vel) {
+        vel = _vel;
+    }
 
 
-	// ----------------------------------------------------------------
-	//  Start
-	// ----------------------------------------------------------------
-	virtual protected void Start () {
+    // ----------------------------------------------------------------
+    //  Start
+    // ----------------------------------------------------------------
+    virtual protected void Start () {
 		health = StartingHealth;
 	}
 	virtual protected void SetSize(Vector2 _size) {
