@@ -10,7 +10,9 @@ public class WorldData {
 	// Properties
 	public bool isWorldUnlocked;
 	public int worldIndex; // starts at 0.
-	private Rect boundsRectAllLevels; // For the release version of Linelight, it doesn't make sense to have TWO rects. But in development, a lot of worlds' levels aren't used. So we have to make the distinction.
+    public int NumSnacksCollected { get; private set; }
+    public int NumSnacksTotal { get; private set; }
+    private Rect boundsRectAllLevels; // For the release version of Linelight, it doesn't make sense to have TWO rects. But in development, a lot of worlds' levels aren't used. So we have to make the distinction.
 	private Rect boundsRectPlayableLevels; // For determining LevelSelect view and WorldSelect view.
 
 	// Getters
@@ -29,9 +31,9 @@ public class WorldData {
 	public void Initialize () {
 		isWorldUnlocked = true;//SaveStorage.GetInt (SaveKeys.IsWorldUnlocked (worldIndex)) == 1;
 
-		LoadAllLevelDatas ();
+		LoadAllLevelDatas();
 
-		SetAllLevelDatasFundamentalProperties ();
+		SetAllLevelDatasFundamentalProperties();
 //		Debug.Log ("World " + worldIndex + "  lvls: " + LevelUtils.GetNumLevelsConnectedToStart (levelDatas) + "   stars: " + LevelUtils.GetNumRegularStarsInLevelsConnectedToStart (levelDatas) + "   (" + LevelUtils.GetNumSecretStarsInLevelsConnectedToStart (levelDatas) + " secret stars)");
 	}
 //	/** Initialize from an existing World; for serialization. */
@@ -52,7 +54,7 @@ public class WorldData {
 		SetLevelsIsConnectedToStart ();
 		UpdateWorldBoundsRects ();
 //		SetAllLevelDatasPosWorld (); // now that I know MY center position, let's tell all my LevelDatas their posWorld (based on their global position)!
-	}
+    }
 	private void UpdateWorldBoundsRects () {
 		// Calculate my boundsRectAllLevels so I can know when the camera is lookin' at me!
 		boundsRectAllLevels = new Rect (0,0, 0,0);
@@ -93,7 +95,8 @@ public class WorldData {
 	public Rect BoundsRectAllLevels { get { return boundsRectAllLevels; } }
 	public Rect BoundsRectPlayableLevels { get { return boundsRectPlayableLevels; } }
 
-	public LevelData GetLevelData (string key, bool doMakeOneIfItDoesntExist=false) {
+
+    public LevelData GetLevelData (string key, bool doMakeOneIfItDoesntExist=false) {
 		if (levelDatas.ContainsKey(key)) {
 			return levelDatas [key];
 		}
@@ -219,15 +222,49 @@ public class WorldData {
 		}
 		Debug.LogError("Wowza. Somehow got caught in an infinite naming loop. Either you have 99 levels named NewLevel0-99, or bad code.");
 		return "NewLevel";
-	}
+    }
 
 
+    // ================================================================
+    //  Doers
+    // ================================================================
+    public void UpdateNumSnacksCollected() {
+        NumSnacksCollected = 0;
+        foreach (LevelData ld in levelDatas.Values) {
+            int snackIndex=0; // incremented every time we find a Snack in this Level's Prop list.
+            foreach (PropData pd in ld.allPropDatas) {
+                if (pd is SnackData) {
+                    if (SaveStorage.GetBool(SaveKeys.DidEatSnack(ld,snackIndex))) { NumSnacksCollected++; }
+                    snackIndex++;
+                }
+            }
+        }
+    }
+    public void UpdateNumSnacksTotal() {
+        NumSnacksTotal = 0;
+        foreach (LevelData ld in levelDatas.Values) {
+            foreach (PropData pd in ld.allPropDatas) {
+                if (pd is SnackData) { NumSnacksTotal++; }
+            }
+        }
+    }
 
-	// ================================================================
-	//  LevelDatas
-	// ================================================================
-	/** Makes a LevelData for every level file in our world's levels folder!! */
-	private void LoadAllLevelDatas () {
+    // ================================================================
+    //  Events
+    // ================================================================
+    public void OnPlayerEatSnack() {
+        // Update counts!
+        UpdateNumSnacksCollected();
+        // Dispatch event!
+        GameManagers.Instance.EventManager.OnSnacksCollectedChanged(WorldIndex);
+    }
+
+
+    // ================================================================
+    //  LevelDatas
+    // ================================================================
+    /** Makes a LevelData for every level file in our world's levels folder!! */
+    private void LoadAllLevelDatas () {
 		levelDatas = new Dictionary<string, LevelData>();
 
 		string worldPath = FilePaths.WorldFileAddress (worldIndex);
@@ -247,22 +284,25 @@ public class WorldData {
 		}
 		else {
 			Debug.LogError("World folder not found! " + worldIndex);
-		}
+        }
 
-//		if (File.Exists(filePath)) {
-//			StreamReader file = File.OpenText(filePath);
-//			string wholeFile = file.ReadToEnd();
-//			file.Close();
-//			return TextUtils.GetStringArrayFromStringWithLineBreaks(wholeFile, StringSplitOptions.None);
-//		}
+        UpdateNumSnacksCollected();
+        UpdateNumSnacksTotal();
 
-//		TextAsset[] levelFiles = Resources.LoadAll<TextAsset> (worldPath);
-//		foreach (TextAsset t in levelFiles) {
-//			if (t.name == "_LevelLinks") { continue; } // Ignore the _LevelLinks.txt file.
-//			string levelKey = t.name;
-//			AddLevelData (levelKey);
-//		}
-	}
+        //		if (File.Exists(filePath)) {
+        //			StreamReader file = File.OpenText(filePath);
+        //			string wholeFile = file.ReadToEnd();
+        //			file.Close();
+        //			return TextUtils.GetStringArrayFromStringWithLineBreaks(wholeFile, StringSplitOptions.None);
+        //		}
+
+        //		TextAsset[] levelFiles = Resources.LoadAll<TextAsset> (worldPath);
+        //		foreach (TextAsset t in levelFiles) {
+        //			if (t.name == "_LevelLinks") { continue; } // Ignore the _LevelLinks.txt file.
+        //			string levelKey = t.name;
+        //			AddLevelData (levelKey);
+        //		}
+    }
 	private LevelData AddLevelData (string levelKey) {
 		LevelData newLevelData = new LevelData (worldIndex, levelKey);
 		LevelSaverLoader.LoadLevelDataFromItsFile (newLevelData);

@@ -37,6 +37,8 @@ public class Snack : Edible, ISerializableData<SnackData> {
         // Particle bursttt and visuals
         sr_aura.enabled = false;
         ps_collectedBurst.Emit(4);
+        // Tell my WorldData!
+        myLevel.WorldDataRef.OnPlayerEatSnack();
     }
 
 

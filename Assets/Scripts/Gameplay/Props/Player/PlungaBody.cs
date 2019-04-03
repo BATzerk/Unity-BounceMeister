@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlungaBody : PlayerBody {
-	// Properties
-	private readonly Color bodyColor_plunging = Color.green;
-	private readonly Color bodyColor_plungeExhausted = Color.gray;
+    // Components
+    [SerializeField] private SpriteRenderer sr_highlight=null; // flashes white when recharge plunge.
+    // Properties
+    private readonly Color bodyColor_plunging = new Color(60/255f, 255/255f, 160/255f);
+    private readonly Color bodyColor_plungeExhausted = new Color(0.2f,0.2f,0.2f, 0.3f);
 	// References
 	private Plunga myPlunga;
 
@@ -18,13 +20,22 @@ public class PlungaBody : PlayerBody {
 		bodyColor_neutral = new Color(25/255f, 175/255f, 181/255f);
 
 		base.Start();
-	}
+    }
 
 
-	// ----------------------------------------------------------------
-	//  Events
-	// ----------------------------------------------------------------
-	public void OnStartPlunge() {
+    // ----------------------------------------------------------------
+    //  Doers
+    // ----------------------------------------------------------------
+    override public void SetSize(Vector2 _size) {
+        base.SetSize(_size);
+        GameUtils.SizeSpriteRenderer(sr_highlight,_size);
+    }
+
+
+    // ----------------------------------------------------------------
+    //  Events
+    // ----------------------------------------------------------------
+    public void OnStartPlunge() {
 		SetBodyColor(bodyColor_plunging);
 	}
 	public void OnStopPlunge() {
@@ -38,6 +49,10 @@ public class PlungaBody : PlayerBody {
 
 	public void OnRechargePlunge() {
 		SetBodyColor(bodyColor_neutral);
+        // Flash me white!
+        GameUtils.SetSpriteAlpha(sr_highlight, 1f);
+        LeanTween.cancel(sr_highlight.gameObject);
+        LeanTween.alpha(sr_highlight.gameObject, 0, 0.2f).setEaseOutQuad();
 	}
 
 

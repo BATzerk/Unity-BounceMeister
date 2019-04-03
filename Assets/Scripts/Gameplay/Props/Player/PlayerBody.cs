@@ -31,7 +31,7 @@ abstract public class PlayerBody : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
-	public void SetSize(Vector2 _size) {
+	virtual public void SetSize(Vector2 _size) {
 		GameUtils.SizeSpriteRenderer(sr_body, _size);
 	}
 	protected void SetBodyColor(Color color) {

@@ -7,10 +7,13 @@ public static class SaveKeys {
 	public const string LastPlayedWorldIndex = "LastPlayedWorldIndex";
     public static string LastPlayedLevelKey(int worldIndex) { return "LastPlayedLevelKey_w" + worldIndex; }
 
-    private static string FullLvlKey(Level l) { return "w" + l.WorldIndex + "_" + l.LevelKey; } // e.g. returns "w2_JumpPit".
-
-    public static string DidEatGem(Level level, int objIndex) { return "DidEatGem_" + FullLvlKey(level) + "_" + objIndex; }
-    public static string DidEatSnack(Level level, int objIndex) { return "DidEatSnack_" + FullLvlKey(level) + "_" + objIndex; }
+    private static string FullLvlKey(Level l) { return FullLvlKey(l.LevelDataRef); }
+    private static string FullLvlKey(LevelData ld) { return "w" + ld.WorldIndex + "_" + ld.LevelKey; } // e.g. returns "w2_JumpPit".
+    
+    public static string DidEatGem(Level level, int objIndex) { return DidEatGem(level.LevelDataRef, objIndex); }
+    public static string DidEatGem(LevelData ld, int objIndex) { return "DidEatGem_" + FullLvlKey(ld) + "_" + objIndex; }
+    public static string DidEatSnack(Level level, int objIndex) { return DidEatSnack(level.LevelDataRef, objIndex); }
+    public static string DidEatSnack(LevelData ld, int objIndex) { return "DidEatSnack_" + FullLvlKey(ld) + "_" + objIndex; }
 
 
     public const string MapEditor_CameraPosX = "MapEditor_CameraPosX";

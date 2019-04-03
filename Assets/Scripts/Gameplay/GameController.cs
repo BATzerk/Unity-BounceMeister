@@ -287,7 +287,7 @@ public class GameController : MonoBehaviour {
         if (isKey_shift) {
             // SHIFT + S = Save level as text file!
             if (Input.GetKeyDown(KeyCode.S)) {
-                LevelSaverLoader.SaveLevelFile(level);
+                SaveLevelFile();
             }
         }
         // CONTROL + ___
@@ -313,12 +313,20 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+    private void SaveLevelFile() {
+        // Save it!
+        LevelSaverLoader.SaveLevelFile(level);
+        // Update properties that may have changed.
+        level.WorldDataRef.UpdateNumSnacksTotal();
+        level.WorldDataRef.UpdateNumSnacksCollected();
+    }
 
 
-	// ----------------------------------------------------------------
-	//  Events
-	// ----------------------------------------------------------------
-	private void OnPlayerDie(Player _player) {
+
+        // ----------------------------------------------------------------
+        //  Events
+        // ----------------------------------------------------------------
+        private void OnPlayerDie(Player _player) {
         //playerDiedPos = _player.PosLocal;
         StartCoroutine(Coroutine_ReloadSceneDelayed());
 	}

@@ -25,14 +25,20 @@ public class DataManager {
 		return GetWorldData(worldIndex).GetLevelData(levelKey, doMakeOneIfItDoesntExist);
 	}
 	public WorldData GetWorldData (int worldIndex) {
-		return worldDatas [worldIndex];
-	}
+		return worldDatas[worldIndex];
+    }
+    public int NumSnacksCollected(int worldIndex) {
+        return GetWorldData(worldIndex).NumSnacksCollected;
+    }
+    public int NumSnacksTotal(int worldIndex) {
+        return GetWorldData(worldIndex).NumSnacksTotal;
+    }
 
 
-	// ----------------------------------------------------------------
-	//  Setters
-	// ----------------------------------------------------------------
-	public void ChangeCoinsCollected(int value) {
+    // ----------------------------------------------------------------
+    //  Setters
+    // ----------------------------------------------------------------
+    public void ChangeCoinsCollected(int value) {
 		SetCoinsCollected (coinsCollected + value);
 	}
 	public void SetCoinsCollected(int value) {

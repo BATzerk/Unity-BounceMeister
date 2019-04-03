@@ -1,7 +1,8 @@
 levelProperties posGlobal:(114.0, 44.0);designerFlag:0
 CameraBounds myRect:(x:-25.00, y:-19.00, width:50.00, height:38.00)
-Ground myRect:(x:-21.00, y:-0.50, width:28.00, height:35.00);isPlayerRespawn:True
-Ground myRect:(x:0.00, y:-15.00, width:52.00, height:10.00);isPlayerRespawn:True
 Ground myRect:(x:9.50, y:5.00, width:33.00, height:20.00);isPlayerRespawn:True
+Ground myRect:(x:0.00, y:-15.00, width:52.00, height:10.00);isPlayerRespawn:True
+Ground myRect:(x:-21.00, y:-0.50, width:28.00, height:35.00);isPlayerRespawn:True
 PlayerStart pos:(-5.3, -8.9)
+Snack pos:(0.0, 0.0)
 
