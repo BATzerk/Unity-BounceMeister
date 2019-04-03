@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour {
 				tf_world = GameObject.Find("GameWorld").transform;
 			}
 //			player = GameObject.FindObjectOfType<Player>(); // Again, this is only for editing.
-			MakePlayer(PlayerTypes.Alph, Vector2.zero);
+			MakePlayer(PlayerTypes.Plunga, Vector2.zero);
 			level.InitializeAsPremadeLevel(this);
 			dataManager.SetCoinsCollected (0);
 			eventManager.OnStartLevel(level);
@@ -86,7 +86,7 @@ public class GameController : MonoBehaviour {
 		level = new GameObject().AddComponent<Level>();
 		level.Initialize(this, tf_world, levelData);
 		// Make Player!
-		MakePlayer(PlayerTypes.Alph, levelData);
+		MakePlayer(PlayerTypes.Plunga, levelData);
 
 		// Reset things!
 		dataManager.SetCoinsCollected (0);
@@ -124,14 +124,14 @@ public class GameController : MonoBehaviour {
 		if (player != null) { DestroyPlayer(); } // Just in case.
 
 		switch (type) {
-		case PlayerTypes.Alph:
-			player = Instantiate(ResourcesHandler.Instance.Alph).GetComponent<Alph>();
+		case PlayerTypes.Plunga:
+			player = Instantiate(ResourcesHandler.Instance.Plunga).GetComponent<Plunga>();
 				break;
-		case PlayerTypes.Britta:
-			player = Instantiate(ResourcesHandler.Instance.Britta).GetComponent<Britta>();
+		case PlayerTypes.Slippa:
+			player = Instantiate(ResourcesHandler.Instance.Slippa).GetComponent<Slippa>();
 			break;
-		case PlayerTypes.Coco:
-			player = Instantiate(ResourcesHandler.Instance.Coco).GetComponent<Coco>();
+		case PlayerTypes.Jetta:
+			player = Instantiate(ResourcesHandler.Instance.Jetta).GetComponent<Jetta>();
 			break;
 		default:
 			Debug.LogError("Whoa! Player type totally not recognized: " + type);
@@ -278,10 +278,10 @@ public class GameController : MonoBehaviour {
 
 		// ALT + ___
 		if (isKey_alt) {
-            // ALT + A, B, C = Switch Characters
-            if (Input.GetKeyDown(KeyCode.A)) { MakePlayer(PlayerTypes.Alph, level.LevelDataRef); }
-            else if (Input.GetKeyDown(KeyCode.B)) { MakePlayer(PlayerTypes.Britta, level.LevelDataRef); }
-            else if (Input.GetKeyDown(KeyCode.C)) { MakePlayer(PlayerTypes.Coco, level.LevelDataRef); }
+            // ALT + Q, W, E = Switch Characters
+            if (Input.GetKeyDown(KeyCode.Q)) { MakePlayer(PlayerTypes.Plunga, level.LevelDataRef); }
+            else if (Input.GetKeyDown(KeyCode.W)) { MakePlayer(PlayerTypes.Slippa, level.LevelDataRef); }
+            else if (Input.GetKeyDown(KeyCode.E)) { MakePlayer(PlayerTypes.Jetta, level.LevelDataRef); }
         }
         // SHIFT + ___
         if (isKey_shift) {

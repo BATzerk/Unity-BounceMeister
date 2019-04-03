@@ -1,5 +1,5 @@
 ﻿public enum PlayerTypes {
-	Alph,
-	Britta,
-	Coco,
+	Plunga,
+	Slippa,
+	Jetta,
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 abstract public class Collidable : Prop {
 	// Properties
-	[SerializeField] protected bool canBounce = true; // if false, Alph cannot bounce off of me! He'll just land.
-	[SerializeField] protected bool doRechargePlayer = true; // if true, we recharge Alph's plunge when their feet touch me!
+	[SerializeField] protected bool canBounce = true; // if false, Plunga cannot bounce off of me! They'll just land.
+	[SerializeField] protected bool doRechargePlayer = true; // if true, we recharge Plunga's plunge when their feet touch me!
 	[SerializeField] protected bool isBouncy = false; // TODO: Move this into Ground (not even BaseGround)? Make according changes in Player.
     public Vector2 vel { get; protected set; }
 

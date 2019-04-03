@@ -8,7 +8,7 @@ public class TravelingPlatform : BaseGround {//, ISerializableData<TravelingPlat
     [SerializeField] private Transform tf_b;
     [SerializeField] private Transform tf_body;
     // Properties
-    [SerializeField] private float oscOffset=0;
+    //[SerializeField] private float oscOffset=0;
     [SerializeField] private float oscSpeed=1;
 
     // Getters / Setters
