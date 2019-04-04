@@ -1,4 +1,4 @@
-levelProperties posGlobal:(-36.0, 140.0);designerFlag:4
+levelProperties posGlobal:(-40.0, 140.0);designerFlag:4
 CameraBounds myRect:(x:-25.00, y:-19.00, width:51.00, height:38.00)
 Gem pos:(6.0, -9.5)
 Ground myRect:(x:2.00, y:3.50, width:2.00, height:23.00);canEatGems:False
@@ -19,4 +19,3 @@ Spikes myRect:(x:-13.50, y:-0.50, width:31.00, height:1.00);rotation:270
 Spikes myRect:(x:11.50, y:-0.50, width:15.00, height:1.00);rotation:270
 Spikes myRect:(x:0.50, y:3.50, width:23.00, height:1.00);rotation:90
 Spikes myRect:(x:-6.00, y:14.50, width:16.00, height:1.00);rotation:180
-

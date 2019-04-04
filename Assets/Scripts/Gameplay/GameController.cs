@@ -279,6 +279,11 @@ public class GameController : MonoBehaviour {
             gameTimeController.ToggleSlowMo();
 		}
 
+        // TEMP L = Calculate LevelOpenings
+        else if (Input.GetKeyDown(KeyCode.L)) {
+            level.LevelDataRef.CalculateOpenings();
+		}
+
 
 		// ALT + ___
 		if (isKey_alt) {

@@ -1,5 +1,5 @@
-levelProperties posGlobal:(14.0, 154.0);designerFlag:3
-CameraBounds myRect:(x:-25.00, y:-19.00, width:50.00, height:38.00)
+levelProperties posGlobal:(12.0, 154.0);designerFlag:3
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Gem pos:(1.0, 9.5)
 Ground myRect:(x:-18.00, y:2.00, width:18.00, height:24.00)
 Ground myRect:(x:-14.50, y:5.50, width:25.00, height:17.00)
@@ -14,4 +14,3 @@ PlayerStart pos:(-1.5, -12.8)
 Spikes myRect:(x:-1.50, y:10.00, width:6.00, height:1.00);rotation:270
 Spikes myRect:(x:3.50, y:10.00, width:6.00, height:1.00);rotation:90
 Spikes myRect:(x:6.50, y:0.00, width:2.00, height:1.00);rotation:270
-

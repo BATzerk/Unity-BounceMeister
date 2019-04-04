@@ -360,7 +360,10 @@ static public class LevelSaverLoader {
 				}
 			}
 		}
-	}
+
+        // Calculate layout properties now that LevelData's got its props!
+        ld.CalculateOpenings();//TODO: More efficient way. Save 'em or something.
+    }
     static private PropData GetNewPropDataFromAffectName(string affectName) {
         switch (affectName) {
             case BATTERY: return new BatteryData();
@@ -383,7 +386,7 @@ static public class LevelSaverLoader {
     }
 	static private void AddEmptyLevelElements(ref LevelData ld) {
 		CameraBoundsData cameraBoundsData = new CameraBoundsData();
-		cameraBoundsData.myRect = new Rect(-25,-19, 50,38);
+		cameraBoundsData.myRect = new Rect(-26,-19, 52,38);
 		cameraBoundsData.pos = cameraBoundsData.myRect.center;
 		ld.allPropDatas.Add(cameraBoundsData);
 

@@ -277,13 +277,24 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		}
 	}
 
+    
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //	Debug
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    private void OnDrawGizmos() {
+        Vector2 posGlobal = levelDataRef.posGlobal;
+        Gizmos.color = new Color(1,0.5f,0);
+        foreach (LevelOpening lo in levelDataRef.Openings) {
+            Gizmos.DrawLine(posGlobal+lo.posStart, posGlobal+lo.posEnd);
+        }
+    }
 
 
 
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	//	Editing
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	public void FlipHorz() {
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //	Editing
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    public void FlipHorz() {
 		Prop[] allProps = GameObject.FindObjectsOfType<Prop>();
 		foreach (Prop prop in allProps) {
 			prop.FlipHorz();

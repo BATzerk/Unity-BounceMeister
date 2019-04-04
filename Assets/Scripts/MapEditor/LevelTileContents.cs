@@ -6,9 +6,11 @@ public class LevelTileContents : MonoBehaviour {
 	// Constants
 	static private readonly Vector2 GemIconSize = new Vector2(2,2);
 	// Components
-	[SerializeField] private GameObject go_propsLayer=null;
+	[SerializeField] private GameObject go_openings=null; // level-openings sprites.
+	[SerializeField] private GameObject go_props=null;
 	[SerializeField] private LevelTileDesignerFlag designerFlag=null;
 	[SerializeField] private SpriteMask propsMask=null;
+    private List<SpriteRenderer> srs_openings;
 	// Properties
 	private bool hasInitializedContent = false;
 	// References
@@ -45,30 +47,32 @@ public class LevelTileContents : MonoBehaviour {
 //			levelNameText.color = new Color(1, 0.8f, 0.2f); // If I'm the most recently saved level, make me stand out! :)
 //		}
 
+        AddOpeningsSprites();
+
 		foreach (PropData propData in ld.allPropDatas) {
 			// -- Grounds --
 			if (propData.GetType() == typeof(GroundData)) {
 				GroundData groundData = propData as GroundData;
 				Color color = new Color(91/255f,107/255f,67/255f, 0.92f);
-				AddSpriteRenderer("Ground", s_ground, go_propsLayer, groundData.myRect.position, groundData.myRect.size, 1, color);//WHY POSITION? why not center?
+				AddSpriteRenderer("Ground", s_ground, go_props, groundData.myRect.position, groundData.myRect.size, 1, color);//WHY POSITION? why not center?
 			}
 			// -- DamageableGrounds --
 			if (propData.GetType() == typeof(DamageableGroundData)) {
                 DamageableGroundData groundData = propData as DamageableGroundData;
 				Color color = DamageableGround.GetBodyColor(groundData);
                 color = new Color(color.r,color.g,color.b, color.a*0.6f); // alpha it out a bit, to taste.
-                AddSpriteRenderer("DamageableGround", s_ground, go_propsLayer, groundData.myRect.position, groundData.myRect.size, 1, color);
+                AddSpriteRenderer("DamageableGround", s_ground, go_props, groundData.myRect.position, groundData.myRect.size, 1, color);
 			}
 			// -- Gems --
 			else if (propData.GetType() == typeof(GemData)) {
 				GemData gemData = propData as GemData;
                 Sprite sprite = ResourcesHandler.Instance.GetGemSprite(gemData.type);
-				AddSpriteRenderer("Gem",sprite, go_propsLayer, gemData.pos, GemIconSize, 10, Color.white);
+				AddSpriteRenderer("Gem",sprite, go_props, gemData.pos, GemIconSize, 10, Color.white);
 			}
 			// -- Spikes --
 			else if (propData.GetType() == typeof(SpikesData)) {
 				SpikesData spikesData = propData as SpikesData;
-				SpriteRenderer newSprite = AddSpriteRenderer("Spikes", s_spikes, go_propsLayer, spikesData.myRect.position, Vector2.one, 0, new Color(0.7f,0.1f,0f, 0.6f));
+				SpriteRenderer newSprite = AddSpriteRenderer("Spikes", s_spikes, go_props, spikesData.myRect.position, Vector2.one, 0, new Color(0.7f,0.1f,0f, 0.6f));
 				newSprite.drawMode = SpriteDrawMode.Tiled;
 				newSprite.size = spikesData.myRect.size;
 				newSprite.transform.localEulerAngles = new Vector3(0, 0, spikesData.rotation);
@@ -83,27 +87,54 @@ public class LevelTileContents : MonoBehaviour {
 
 	private SpriteRenderer AddSpriteRenderer(string goName, Sprite sprite, GameObject parentGO, Vector2 pos, Vector2 size, int sortingOrder, Color color) {
 		GameObject iconGO = new GameObject ();
-		SpriteRenderer newIcon = iconGO.AddComponent<SpriteRenderer> ();
-		newIcon.name = goName;
-		newIcon.sprite = sprite;
-		newIcon.transform.SetParent (parentGO.transform);
-		newIcon.transform.localPosition = pos;
-		GameUtils.SizeSpriteRenderer (newIcon, size);
-		newIcon.sortingOrder = sortingOrder;
-		newIcon.color = color;
-		return newIcon;
+		SpriteRenderer sr = iconGO.AddComponent<SpriteRenderer> ();
+		sr.name = goName;
+		sr.sprite = sprite;
+		sr.transform.SetParent (parentGO.transform);
+		sr.transform.localPosition = pos;
+		GameUtils.SizeSpriteRenderer (sr, size);
+		sr.sortingOrder = sortingOrder;
+		sr.color = color;
+		return sr;
 	}
 
     public void UpdateComponentVisibilities () {
         designerFlag.gameObject.SetActive (editorSettings.DoShowDesignerFlags);
 		levelNameText.gameObject.SetActive (editorSettings.DoShowLevelNames);
-		go_propsLayer.SetActive (editorSettings.DoShowLevelProps);
+		go_props.SetActive (editorSettings.DoShowLevelProps);
 		SetMaskEnabled(editorSettings.DoMaskLevelContents);
 	}
 
+    // TODO: Fix this positioning.
 	public void SetTextPosY (float yPos) {
 		levelNameText.transform.localPosition = new Vector3 (levelNameText.transform.localPosition.x, yPos, levelNameText.transform.localPosition.z);
 	}
+    private void AddOpeningsSprites() {
+        srs_openings = new List<SpriteRenderer>();
+
+        LevelData ld = myLevelTile.MyLevelData;
+        for (int i=0; i<ld.Openings.Count; i++) {
+            AddOpeningsSprite(ld.Openings[i]);
+        }
+    }
+    private void AddOpeningsSprite(LevelOpening lo) {
+        string _name = "Opening" + lo.side;
+        Vector2 _pos = lo.posCenter;
+        Vector2 _size = GetOpeningSpriteSize(lo);
+        Sprite _sprite = ResourcesHandler.Instance.s_whiteSquare;
+        SpriteRenderer newSprite = AddSpriteRenderer(name, _sprite, go_openings, _pos,_size, 120, GetOpeningColor(lo));
+        srs_openings.Add(newSprite);
+    }
+
+    private Vector2 GetOpeningSpriteSize(LevelOpening lo) {
+        float thickness = 1f;
+        if (lo.side==Sides.L || lo.side==Sides.R) { return new Vector2(thickness, lo.length); }
+        return new Vector2(lo.length, thickness);
+    }
+    public Color GetOpeningColor(LevelOpening lo) {
+        // TODO: Different color if connected!!
+        return new Color(1, 0.4f, 0, 0.75f);
+    }
 
 
 
@@ -120,7 +151,7 @@ public class LevelTileContents : MonoBehaviour {
 
 	public void SetMaskEnabled(bool isEnabled) {
 		SpriteMaskInteraction maskInteraction = isEnabled ? SpriteMaskInteraction.VisibleInsideMask : SpriteMaskInteraction.None;
-		SpriteRenderer[] propSprites = go_propsLayer.GetComponentsInChildren<SpriteRenderer>();
+		SpriteRenderer[] propSprites = go_props.GetComponentsInChildren<SpriteRenderer>();
 		foreach (SpriteRenderer sr in propSprites) {
 			sr.maskInteraction = maskInteraction;
 		}

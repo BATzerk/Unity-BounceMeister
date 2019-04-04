@@ -102,11 +102,11 @@ abstract public class Player : PlatformCharacter {
     }
 
     // Debug
-    private void OnDrawGizmos() {
-		if (myLevel==null) { return; }
-		Gizmos.color = Color.cyan;
-		Gizmos.DrawWireCube (myLevel.PosGlobal+camBoundsLocal.center, new Vector3(camBoundsLocal.size.x,camBoundsLocal.size.y, 10));
-	}
+ //   private void OnDrawGizmos() {
+	//	if (myLevel==null) { return; }
+	//	Gizmos.color = Color.cyan;
+	//	Gizmos.DrawWireCube (myLevel.PosGlobal+camBoundsLocal.center, new Vector3(camBoundsLocal.size.x,camBoundsLocal.size.y, 10));
+	//}
 
 	// ----------------------------------------------------------------
 	//  Start

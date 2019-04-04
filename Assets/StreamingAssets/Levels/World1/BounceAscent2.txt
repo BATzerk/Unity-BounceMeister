@@ -1,4 +1,4 @@
-levelProperties posGlobal:(182.0, 180.0);designerFlag:3
+levelProperties posGlobal:(180.0, 180.0);designerFlag:3
 CameraBounds myRect:(x:-28.00, y:-19.00, width:50.00, height:38.00)
 DamageableGround myRect:(x:291.00, y:174.50, width:4.00, height:1.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
 DamageableGround myRect:(x:292.00, y:163.50, width:6.00, height:1.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True

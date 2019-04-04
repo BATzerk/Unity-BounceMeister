@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/** NOTE: UNUSED. Artifact from Linelight. */
 [System.Serializable]
 public class LevelLinkData {
 	// Properties

@@ -10,6 +10,7 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject MapEditor_LevelTile;
 
 	[SerializeField] public GameObject backgroundTileSprite;
+    [SerializeField] public Sprite s_whiteSquare;
     [SerializeField] public Sprite s_gem0;
     [SerializeField] public Sprite s_gem1;
 

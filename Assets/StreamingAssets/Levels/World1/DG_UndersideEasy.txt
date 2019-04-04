@@ -1,5 +1,5 @@
 levelProperties posGlobal:(-446.0, 372.0);designerFlag:1
-CameraBounds myRect:(x:-25.00, y:-19.00, width:50.00, height:38.00)
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 DamageableGround myRect:(x:9.00, y:-11.50, width:4.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;doRegen:True;canEatGems:False
 Ground myRect:(x:-9.50, y:-4.50, width:27.00, height:7.00);colorType:0;canEatGems:False
 Ground myRect:(x:2.00, y:-6.50, width:4.00, height:11.00);colorType:0;canEatGems:False

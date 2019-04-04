@@ -1,5 +1,5 @@
 levelProperties posGlobal:(-444.0, 148.0);designerFlag:3
-CameraBounds myRect:(x:-25.00, y:-19.00, width:50.00, height:38.00)
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Gem pos:(-5.5, 12.0)
 Ground myRect:(x:-5.50, y:-0.50, width:5.00, height:21.00);canEatGems:False
 Ground myRect:(x:0.00, y:-17.50, width:52.00, height:5.00)
