@@ -180,8 +180,8 @@ public class LevelTile : MonoBehaviour {
 	}
 	
 	
-	public void UpdateComponentVisibilities () {
-		contents.UpdateComponentVisibilities ();
+	public void UpdateComponentVisibilities() {
+		contents.UpdateComponentVisibilities();
 	}
 
 	public void UpdateBorderLine() {
@@ -210,8 +210,11 @@ public class LevelTile : MonoBehaviour {
 		else {
 			sr_border.color = new Color(1,1,1, 0.1f);
 		}
-
 	}
+
+    public void UpdateOpeningsColors() {
+        contents.UpdateOpeningsColors();
+    }
 
 	
 	
@@ -244,14 +247,14 @@ public class LevelTile : MonoBehaviour {
 	private void RegisterMouseInput() {
 		// Clicked me??
 		if (isDragReadyMouseOverMe && Input.GetMouseButtonDown (0)) {
-			MapEditor.OnClickLevelTile (this);
+			MapEditor.OnClickLevelTile(this);
 		}
 		
 		// Dragging me??
 		if (isSelected && MapEditor.IsDraggingSelectedLevelTiles()) {
 			// Update my LevelData's PosGlobal!!
 			Vector2 newPosGlobal = MapEditor.MousePosWorldDraggingGrid(mouseClickOffset);
-			MyLevelData.SetPosGlobal (newPosGlobal, false);
+			MyLevelData.SetPosGlobal(newPosGlobal);
 			ApplyPosition();
 		}
 	}

@@ -45,12 +45,12 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	//	Serialization
 	// ----------------------------------------------------------------
 	public LevelData SerializeAsData () {
-		LevelData ld = new LevelData (WorldIndex, LevelKey);
+		LevelData ld = new LevelData(WorldDataRef, LevelKey);
 
 		// -- General Properties --
-		ld.SetPosGlobal (PosGlobal, false);
+		ld.SetPosGlobal(PosGlobal);
 //		ld.SetPosWorld (PosGlobal);//-WorldDataRef.CenterPos); // NOTE: Is this technically redundant? Don't we want to not care about storing this value, and have it always made fresh by our WorldDataRef?
-		ld.SetDesignerFlag (levelDataRef.designerFlag, false);
+		ld.SetDesignerFlag(levelDataRef.designerFlag);
 //		ld.hasPlayerBeenHere = hasPlayerBeenHere;
 		ld.isConnectedToStart = levelDataRef.isConnectedToStart;
 
@@ -217,7 +217,7 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 
 		// TEMP totes hacky, yo.
 		string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-		levelDataRef = new LevelData(0, sceneName); // NOTE! Be careful; we can easily overwrite levels like this.
+		levelDataRef = new LevelData(WorldDataRef, sceneName); // NOTE! Be careful; we can easily overwrite levels like this.
 		levelDataRef = SerializeAsData();
 
 		// Initialize things!
@@ -237,10 +237,9 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 			cameraBounds.Initialize(this, cameraBounds.SerializeAsData()); // Strange and hacky: It initializes itself as what it already is. Just to go through other paperwork.
 		}
 	}
-
+    /*
 	private void AutoAddSilentBoundaries() {
 		Rect camBounds = levelDataRef.cameraBoundsData.myRect;
-//		Rect viewRect
 		for (int side=0; side<Sides.NumSides; side++) {
 			// No level at this side?? Protect me with an InvisiBounds!
 			if (WorldDataRef.Debug_GetSomeLevelAtSide(levelDataRef, side) == null) {
@@ -276,6 +275,33 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 			}
 		}
 	}
+    */
+	private void AutoAddSilentBoundaries() {
+		for (int i=0; i<levelDataRef.Neighbors.Count; i++) {
+			// No level here?? Protect me with an InvisiBounds!
+            LevelNeighborData lnd = levelDataRef.Neighbors[i];
+            if (!lnd.IsLevelTo) {
+				BoxCollider2D col = new GameObject().AddComponent<BoxCollider2D>();
+				col.transform.SetParent(this.transform);
+				col.transform.localScale = Vector3.one;
+				col.transform.localEulerAngles = Vector3.zero;
+				col.gameObject.layer = LayerMask.NameToLayer("Ground"); // so our feet stop on it, yanno.
+				col.name = "Invisibounds";
+				// Determine the collider's rect, ok?
+				Rect rect = new Rect();
+                rect.size = GetInvisiboundSize(lnd.OpeningFrom);
+                rect.center = lnd.OpeningFrom.posCenter;
+				// Make it happen!
+				col.transform.localPosition = rect.center;
+				col.size = rect.size;
+			}
+		}
+	}
+    private Vector2 GetInvisiboundSize(LevelOpening lo) {
+        float thickness = 1f;
+        if (lo.side==Sides.L || lo.side==Sides.R) { return new Vector2(thickness, lo.length); }
+        return new Vector2(lo.length, thickness);
+    }
 
     
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -283,9 +309,9 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private void OnDrawGizmos() {
         Vector2 posGlobal = levelDataRef.posGlobal;
-        Gizmos.color = new Color(1,0.5f,0);
-        foreach (LevelOpening lo in levelDataRef.Openings) {
-            Gizmos.DrawLine(posGlobal+lo.posStart, posGlobal+lo.posEnd);
+        foreach (LevelNeighborData lnd in levelDataRef.Neighbors) {
+            Gizmos.color = lnd.LevelTo!=null ? new Color(0.5f,1,0) : new Color(1,0.5f,0);
+            Gizmos.DrawLine(posGlobal+lnd.OpeningFrom.posStart, posGlobal+lnd.OpeningFrom.posEnd);
         }
     }
 

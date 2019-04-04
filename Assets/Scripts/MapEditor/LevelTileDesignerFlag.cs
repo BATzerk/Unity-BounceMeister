@@ -39,13 +39,15 @@ public class LevelTileDesignerFlag : MonoBehaviour {
 		GameUtils.SetSpriteAlpha (flagSprite, SPRITE_ALPHA_DEFAULT);
 	}
 	private void OnMouseDown() {
+        LevelData ld = levelTileRef.MyLevelData;
 		// Determine the new value of our flag!
-		int newDesignerFlagValue = levelTileRef.MyLevelData.DesignerFlag + 1;
+		int newDesignerFlagValue = ld.DesignerFlag + 1;
 		if (newDesignerFlagValue >= DesignerFlags.NumFlags) { newDesignerFlagValue = 0; } // Loop back to 0.
-		// Tell levelData to save the new flag! :)
-		levelTileRef.MyLevelData.SetDesignerFlag (newDesignerFlagValue, true);
+		// Set and save!
+		ld.SetDesignerFlag(newDesignerFlagValue);
+		LevelSaverLoader.UpdateLevelPropertiesInLevelFile(ld);
 		// Update the designerFlag button
-		UpdateDesignerFlagButtonVisuals ();
+		UpdateDesignerFlagButtonVisuals();
 	}
 
 

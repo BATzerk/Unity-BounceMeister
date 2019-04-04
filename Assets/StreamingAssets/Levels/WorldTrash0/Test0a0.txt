@@ -1,6 +1,0 @@
-levelProperties posGlobal:(124.0, 34.0);designerFlag:0
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Gem pos:(2.0, -7.0);type:0
-Ground myRect:(x:0.00, y:-15.00, width:52.00, height:10.00);isPlayerRespawn:True
-Ground myRect:(x:-21.00, y:-0.50, width:28.00, height:35.00);isPlayerRespawn:True
-PlayerStart pos:(-5.3, -8.9)

@@ -73,7 +73,7 @@ public class GameController : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Doers - Loading Level
     // ----------------------------------------------------------------
-    public void StartGameAtLevel(LevelData levelData) { StartGameAtLevel(levelData.worldIndex, levelData.levelKey); }
+    public void StartGameAtLevel(LevelData levelData) { StartGameAtLevel(levelData.WorldIndex, levelData.levelKey); }
 	public void StartGameAtLevel (int worldIndex, string levelKey) {
 		// Wipe everything totally clean.
 		DestroyPlayer();
@@ -163,10 +163,11 @@ public class GameController : MonoBehaviour {
         // Add a new level file, yo!
         LevelData currLD = level.LevelDataRef;
         string newLevelKey = currLD.WorldDataRef.GetUnusedLevelKey(currLD.LevelKey);
-        LevelSaverLoader.SaveLevelFileAs(currLD, currLD.worldIndex, newLevelKey);
+        LevelSaverLoader.SaveLevelFileAs(currLD, currLD.WorldIndex, newLevelKey);
         dataManager.ReloadWorldDatas();
-        LevelData newLD = dataManager.GetLevelData(currLD.worldIndex,newLevelKey, false);
-        newLD.SetPosGlobal(newLD.posGlobal + new Vector2(1,-1)*GameProperties.UnitSize*10, true); // offset its position a bit.
+        LevelData newLD = dataManager.GetLevelData(currLD.WorldIndex,newLevelKey, false);
+        newLD.SetPosGlobal(newLD.posGlobal + new Vector2(1,-1)*GameProperties.UnitSize*10); // offset its position a bit.
+        LevelSaverLoader.UpdateLevelPropertiesInLevelFile(newLD); // update file!
         dataManager.currentLevelData = newLD;
         SceneHelper.ReloadScene();
     }

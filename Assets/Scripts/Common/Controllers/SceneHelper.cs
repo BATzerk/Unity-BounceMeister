@@ -24,7 +24,7 @@ public static class SceneHelper {
     
 
 	static public void OpenGameplayScene(int worldIndex, string levelKey) {
-//		GameplaySnapshotController.SetWorldAndLevelToLoad (worldIndex, levelKey);
+//		GameplaySnapshotController.SetWorldAndLevelToLoad (WorldIndex, levelKey);
         OpenGameplayScene(GameManagers.Instance.DataManager.GetLevelData(worldIndex, levelKey, true));
     }
     static public void OpenGameplayScene(LevelData ld) {

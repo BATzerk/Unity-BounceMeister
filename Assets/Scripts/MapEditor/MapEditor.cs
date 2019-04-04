@@ -305,7 +305,7 @@ public class MapEditor : MonoBehaviour {
     private void DuplicateLevel(LevelData originalData) {
         // Add a new level file, yo!
         string newLevelKey = originalData.levelKey + " copy";
-        LevelSaverLoader.SaveLevelFileAs(originalData, originalData.worldIndex, newLevelKey);
+        LevelSaverLoader.SaveLevelFileAs(originalData, originalData.WorldIndex, newLevelKey);
         // Reload everything.
         ReloadAllWorldDatasAndScene();
     }
@@ -361,7 +361,7 @@ public class MapEditor : MonoBehaviour {
         string levelKey = CurrentWorldData.GetUnusedLevelKey();
         LevelData newLD = CurrentWorldData.GetLevelData(levelKey, true);
         Vector2 pos = SnapToGrid(editorCamera.Pos);
-        newLD.SetPosGlobal(pos, false);
+        newLD.SetPosGlobal(pos);
         SceneHelper.OpenGameplayScene(newLD);
     }
 
@@ -637,8 +637,13 @@ public class MapEditor : MonoBehaviour {
 			foreach (LevelTile tile in tilesSelected) {
 				LevelSaverLoader.UpdateLevelPropertiesInLevelFile(tile.MyLevelData);
 			}
-			// Update the worlds' bounds!
-			CurrentWorldData.SetAllLevelDatasFundamentalProperties ();
+			// Update the world-bounds, level neighbors, etc.!
+			CurrentWorldData.SetAllLevelDatasFundamentalProperties();
+            // Update ALL Tiles' visuals.
+			foreach (LevelTile tile in CurrWorldLevelTiles) {
+				tile.UpdateOpeningsColors();
+			}
+
 //			// Mouse up = release all levelTilesSelected!
 //			ReleaseLevelTilesSelected();
 		}

@@ -82,6 +82,8 @@ static public class LevelSaverLoader {
 	static public void SaveLevelFileAs (Level l, int worldIndex,string levelKey) {
 		LevelData ld = l.SerializeAsData();
 		SaveLevelFileAs(ld, worldIndex, levelKey);
+        // Update ALL WorldData level stuff (actually just for openings/neighbors atm).
+        GameManagers.Instance.DataManager.GetWorldData(worldIndex).SetAllLevelDatasFundamentalProperties();
 	}
 
 	static public void SaveLevelFileAs(LevelData ld, int worldIndex,string levelKey) {
@@ -176,7 +178,7 @@ static public class LevelSaverLoader {
 		ld.WorldDataRef.ReloadLevelData (levelKey);
 
 //		// Update who the most recently created level is!
-//		GameManagers.Instance.DataManager.mostRecentlySavedLevel_worldIndex = worldIndex;
+//		GameManagers.Instance.DataManager.mostRecentlySavedLevel_worldIndex = WorldIndex;
 //		GameManagers.Instance.DataManager.mostRecentlySavedLevel_levelKey = levelKey;
 	}
 
@@ -290,9 +292,9 @@ static public class LevelSaverLoader {
 		}
 
 //		// Finally! Delete the saved snapshot of this level completely! If we don't, a number of odd behaviors can occur from the data conflict. One notable effect is when changing posGlobal: carts' joints will be all wonky (because they were saved in a different part of the world).
-//		GameplaySnapshotController.DeleteLevelSnapshotFromSaveStorage (worldIndex, levelKey);
+//		GameplaySnapshotController.DeleteLevelSnapshotFromSaveStorage (WorldIndex, levelKey);
 //		// Also delete the saved snapshot of the player if it's in this exact level.
-//		GameplaySnapshotController.DeletePlayerDataSnapshotFromSaveStorageIfInLevelStatic (worldIndex, levelKey);
+//		GameplaySnapshotController.DeletePlayerDataSnapshotFromSaveStorageIfInLevelStatic (WorldIndex, levelKey);
 	}
 
 
@@ -360,9 +362,6 @@ static public class LevelSaverLoader {
 				}
 			}
 		}
-
-        // Calculate layout properties now that LevelData's got its props!
-        ld.CalculateOpenings();//TODO: More efficient way. Save 'em or something.
     }
     static private PropData GetNewPropDataFromAffectName(string affectName) {
         switch (affectName) {
@@ -418,10 +417,10 @@ static public class LevelSaverLoader {
 			string value = nameAndValue[1];
 			try {
 				if (name == "posGlobal") {
-					ld.SetPosGlobal (TextUtils.GetVector2FromString(value), false);
+					ld.SetPosGlobal(TextUtils.GetVector2FromString(value));
 				}
 				else if (name == "designerFlag") {
-					ld.SetDesignerFlag (TextUtils.ParseInt(value), false);
+					ld.SetDesignerFlag(TextUtils.ParseInt(value));
 				}
 			}
 			catch (Exception e) {

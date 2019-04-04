@@ -17,7 +17,7 @@ public class DataManager {
 	// ----------------------------------------------------------------
 	//  Getters
 	// ----------------------------------------------------------------
-	public int currentWorldIndex { get { return currentLevelData==null ? 0 : currentLevelData.worldIndex; } }
+	public int currentWorldIndex { get { return currentLevelData==null ? 0 : currentLevelData.WorldIndex; } }
 	public int CoinsCollected { get { return coinsCollected; } }
 	public int NumWorldDatas { get { return worldDatas.Count; } }
 //	public int WorldIndexOnLoadGameScene { get { return worldIndexOnLoadGameScene; } }
@@ -46,8 +46,8 @@ public class DataManager {
 		// Dispatch event!
 		GameManagers.Instance.EventManager.OnCoinsCollectedChanged();
 	}
-//	public void SetWorldIndexOnLoadGameScene (int worldIndex) {
-//		worldIndexOnLoadGameScene = worldIndex;
+//	public void SetWorldIndexOnLoadGameScene (int WorldIndex) {
+//		worldIndexOnLoadGameScene = WorldIndex;
 //		SaveStorage.SetInt (SaveKeys.LastWorldPlayedIndex, worldIndexOnLoadGameScene);
 //	}
 
@@ -90,17 +90,17 @@ public class DataManager {
 //		SaveStorage.DeleteKey (SaveKeys.TotalStarsCollectedNotYours (slotIndex));
 //		// It's UGLY, but use all my known WorldDatas to take care of this.
 //		foreach (WorldData wd in worldDatas) {
-//			int worldIndex = wd.WorldIndex;
-//			SaveStorage.DeleteKey (SaveKeys.DidPlayerReachWorldEnd (slotIndex, worldIndex));
-//			SaveStorage.DeleteKey (SaveKeys.HasUnveiledWorld (slotIndex, worldIndex));
-//			SaveStorage.DeleteKey (SaveKeys.IsWorldUnlocked (slotIndex, worldIndex));
-//			SaveStorage.DeleteKey (SaveKeys.SnapshotGameplayData (worldIndex));
-//			SaveStorage.DeleteKey (SaveKeys.SnapshotPlayerData (worldIndex));
+//			int WorldIndex = wd.WorldIndex;
+//			SaveStorage.DeleteKey (SaveKeys.DidPlayerReachWorldEnd (slotIndex, WorldIndex));
+//			SaveStorage.DeleteKey (SaveKeys.HasUnveiledWorld (slotIndex, WorldIndex));
+//			SaveStorage.DeleteKey (SaveKeys.IsWorldUnlocked (slotIndex, WorldIndex));
+//			SaveStorage.DeleteKey (SaveKeys.SnapshotGameplayData (WorldIndex));
+//			SaveStorage.DeleteKey (SaveKeys.SnapshotPlayerData (WorldIndex));
 //			foreach (LevelData ld in wd.LevelDatas.Values) {
 //				string levelKey = ld.LevelKey;
-//				SaveStorage.DeleteKey (SaveKeys.SerializedLevelDataSnapshot (worldIndex, levelKey));
+//				SaveStorage.DeleteKey (SaveKeys.SerializedLevelDataSnapshot (WorldIndex, levelKey));
 //				for (int s=0; s<ld.starDatas.Count; s++) {
-//					SaveStorage.DeleteKey (SaveKeys.IsStarCollected (slotIndex, worldIndex, levelKey, s));
+//					SaveStorage.DeleteKey (SaveKeys.IsStarCollected (slotIndex, WorldIndex, levelKey, s));
 //				}
 //			}
 //		}

@@ -83,7 +83,7 @@ public class MapEditorCamera : MonoBehaviour {
     }
 
     private void SetBackgroundColor(int worldIndex) {
-//		BGTheme bgTheme = Colors.GetBGTheme (worldIndex);
+//		BGTheme bgTheme = Colors.GetBGTheme (WorldIndex);
 //		camera.backgroundColor = Color.Lerp (Colors.GetBGColor_ViewGameplay (bgTheme), Color.white, 0.2f); // make it lighter so we can see shit better
 	}
 	public void BlurScreenForLoading() {

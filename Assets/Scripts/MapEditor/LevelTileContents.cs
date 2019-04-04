@@ -113,16 +113,17 @@ public class LevelTileContents : MonoBehaviour {
         srs_openings = new List<SpriteRenderer>();
 
         LevelData ld = myLevelTile.MyLevelData;
-        for (int i=0; i<ld.Openings.Count; i++) {
-            AddOpeningsSprite(ld.Openings[i]);
+        for (int i=0; i<ld.Neighbors.Count; i++) {
+            AddOpeningsSprite(ld.Neighbors[i]);
         }
     }
-    private void AddOpeningsSprite(LevelOpening lo) {
+    private void AddOpeningsSprite(LevelNeighborData ln) {
+        LevelOpening lo = ln.OpeningFrom;
         string _name = "Opening" + lo.side;
         Vector2 _pos = lo.posCenter;
         Vector2 _size = GetOpeningSpriteSize(lo);
         Sprite _sprite = ResourcesHandler.Instance.s_whiteSquare;
-        SpriteRenderer newSprite = AddSpriteRenderer(name, _sprite, go_openings, _pos,_size, 120, GetOpeningColor(lo));
+        SpriteRenderer newSprite = AddSpriteRenderer(_name, _sprite, go_openings, _pos,_size, 120, GetOpeningColor(ln));
         srs_openings.Add(newSprite);
     }
 
@@ -131,9 +132,8 @@ public class LevelTileContents : MonoBehaviour {
         if (lo.side==Sides.L || lo.side==Sides.R) { return new Vector2(thickness, lo.length); }
         return new Vector2(lo.length, thickness);
     }
-    public Color GetOpeningColor(LevelOpening lo) {
-        // TODO: Different color if connected!!
-        return new Color(1, 0.4f, 0, 0.75f);
+    public Color GetOpeningColor(LevelNeighborData ln) {
+        return ln.IsLevelTo ? Color.clear : new Color(1,0.3f,0.7f, 0.94f);//new Color(0.4f,1,0, 0.3f)
     }
 
 
@@ -172,6 +172,12 @@ public class LevelTileContents : MonoBehaviour {
 	public void ApplyPosAndSize (Rect rect) {
 		designerFlag.ApplyPosAndSize (rect); // Just pass this along to my designerFlag.
 	}
+
+    public void UpdateOpeningsColors() {
+        for (int i=0; i<srs_openings.Count; i++) {
+            srs_openings[i].color = GetOpeningColor(myLevelTile.MyLevelData.Neighbors[i]);
+        }
+    }
 
 
 

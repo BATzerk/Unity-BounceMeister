@@ -171,11 +171,11 @@ public class LevelUtils {
 	*/
 
 	/*
-	public static void SetLevelsNumLevelsFromStart (int worldIndex, Dictionary<string, Level> levels) {
+	public static void SetLevelsNumLevelsFromStart (int WorldIndex, Dictionary<string, Level> levels) {
 		// Default all lvls to NOT even being connected to the start!
 		foreach (Level l in levels.Values) { l.numLevelsFromStart = -1; }
 		// Firsht off, if this start level doesn't exist, don't continue doing anything. This whole world is total anarchy.
-		Level startLevel = levels [GameProperties.GetFirstLevelName (worldIndex)];
+		Level startLevel = levels [GameProperties.GetFirstLevelName (WorldIndex)];
 		if (startLevel == null) {
 			return;
 		}

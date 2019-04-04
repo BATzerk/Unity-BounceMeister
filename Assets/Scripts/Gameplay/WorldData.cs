@@ -29,12 +29,12 @@ public class WorldData {
 
 	/** Initialize from scratch, only from file data and stuff. */
 	public void Initialize () {
-		isWorldUnlocked = true;//SaveStorage.GetInt (SaveKeys.IsWorldUnlocked (worldIndex)) == 1;
+		isWorldUnlocked = true;//SaveStorage.GetInt (SaveKeys.IsWorldUnlocked (WorldIndex)) == 1;
 
 		LoadAllLevelDatas();
 
 		SetAllLevelDatasFundamentalProperties();
-//		Debug.Log ("World " + worldIndex + "  lvls: " + LevelUtils.GetNumLevelsConnectedToStart (levelDatas) + "   stars: " + LevelUtils.GetNumRegularStarsInLevelsConnectedToStart (levelDatas) + "   (" + LevelUtils.GetNumSecretStarsInLevelsConnectedToStart (levelDatas) + " secret stars)");
+//		Debug.Log ("World " + WorldIndex + "  lvls: " + LevelUtils.GetNumLevelsConnectedToStart (levelDatas) + "   stars: " + LevelUtils.GetNumRegularStarsInLevelsConnectedToStart (levelDatas) + "   (" + LevelUtils.GetNumSecretStarsInLevelsConnectedToStart (levelDatas) + " secret stars)");
 	}
 //	/** Initialize from an existing World; for serialization. */
 //	public void InitializeFromExistingWorld (Dictionary<string, Level> _levels, List<LevelLinkData> _levelLinkDatas) {
@@ -50,9 +50,10 @@ public class WorldData {
 //	}
 
 	/** Call this immediately after we've got our list of LevelDatas. This function is essential: it sets the fundamental properties of all my LevelDatas, as well as my own world bounds rects. */
-	public void SetAllLevelDatasFundamentalProperties () {
-		SetLevelsIsConnectedToStart ();
-		UpdateWorldBoundsRects ();
+	public void SetAllLevelDatasFundamentalProperties() {
+        UpdateAllLevelsOpeningsAndNeighbors();
+		SetLevelsIsConnectedToStart();
+		UpdateWorldBoundsRects();
 //		SetAllLevelDatasPosWorld (); // now that I know MY center position, let's tell all my LevelDatas their posWorld (based on their global position)!
     }
 	private void UpdateWorldBoundsRects () {
@@ -107,38 +108,15 @@ public class WorldData {
 			return null;
 		}
 	}
-	/** Look through every link and see if the provided key is used in ANY link. */
-	public bool DoesLevelLinkToAnotherLevel(string levelKey) {
+	///** Look through every link and see if the provided key is used in ANY link. */
+	//public bool DoesLevelLinkToAnotherLevel(string levelKey) {
 		//for (int i=0; i<levelLinkDatas.Count; i++) {
 		//	if (levelLinkDatas[i].DoesLinkLevel(levelKey)) { // It's used in one! Return true.
 		//		return true;
 		//	}
 		//}
-		return false; // It's not used in any. Return false.
-	}
-
-	/** E.g. If this level links to other levels ABOVE and BELOW it, this'll return [true, false, true, false]. */
-	public bool[] SidesLevelLinksToOtherLevels (string levelKey) {
-		// Default all falses.
-		bool[] isLinkAtSides = new bool[4];
-		for (int i=0; i<isLinkAtSides.Length; i++) isLinkAtSides[i] = false;
-		//// Look through all levelLinkDatas and check how this dude compares to others!
-		//for (int i=0; i<levelLinkDatas.Count; i++) {
-		//	LevelLinkData linkData = levelLinkDatas[i]; // For easier readability.
-		//	if (linkData.DoesLinkLevel(levelKey)) { // This link contains this level!
-		//		int relativeSide = GetSideLevelIsOn (levelKey, linkData.OtherKey(levelKey));
-		//		isLinkAtSides[relativeSide] = true;
-		//	}
-		//}
-		return isLinkAtSides;
-	}
-
-	/** 0 top, 1 right, 2 bottom, 3 left. E.g. If the second level is to the RIGHT of the first, this'll return 1. */
-	private int GetSideLevelIsOn (string levelKeyA, string levelKeyB) {
-		Rect levelABounds = GetLevelData (levelKeyA).BoundsGlobal;
-		Rect levelBBounds = GetLevelData (levelKeyB).BoundsGlobal;
-		return MathUtils.GetSideRectIsOn (levelABounds, levelBBounds);
-	}
+	//	return false; // It's not used in any. Return false.
+	//}
 
 	public Vector2 GetBrandNewLevelPos () {
 		// Return where the MapEditor camera was last looking!!
@@ -156,6 +134,11 @@ public class WorldData {
 		return returnRect;
 	}
     
+
+    public LevelData GetLevelNeighbor(LevelData originLD, LevelOpening opening) {
+        return GetLevelAtSide(originLD, opening.posCenter, opening.side);
+    }
+    // TODO: Replace this with known neighbors now!!
 	/// Use this for debug level-jumping. Will return level at side, irrespective of Player's position.
 	public LevelData Debug_GetSomeLevelAtSide(LevelData originLD, int side) {
 		// Find where a point in this next level would be. Then return the LevelData with that point in it!
@@ -182,12 +165,12 @@ public class WorldData {
 		return null;
 	}
 	/** FOR NOW, our level-traversal system is dead simple. Nothing's precalculated. We search for the next level the moment we exit one. */
-	public LevelData GetLevelAtSide(LevelData originLD, Vector2 playerPosLocal, int side) {
-        // Put playerPosLocal on the EDGE of the origin level-- we only wanna use its x/y value parallel to the next level.
-        playerPosLocal = LockPosOnLevelEdge(originLD, playerPosLocal, side);
+	public LevelData GetLevelAtSide(LevelData originLD, Vector2 searchPos, int side) {
+        // Lock searchPos on the EDGE of the origin level-- we only wanna use its x/y value parallel to the next level.
+        searchPos = LockPosOnLevelEdge(originLD, searchPos, side);
 		// Find where a point in this next level would be. Then return the LevelData with that point in it!
         Vector2Int dir = MathUtils.GetDir(side);
-		Vector2 searchPoint = originLD.posGlobal + playerPosLocal + dir*2f; // look ahead a few feet into the next level area.
+		Vector2 searchPoint = originLD.posGlobal + searchPos + dir*1f; // look ahead a few feet into the next level area.
 		LevelData ldHere = GetLevelWithPoint(searchPoint);
 		if (ldHere != null) { return ldHere; }
 		return null;
@@ -304,7 +287,7 @@ public class WorldData {
         //		}
     }
 	private LevelData AddLevelData (string levelKey) {
-		LevelData newLevelData = new LevelData (worldIndex, levelKey);
+		LevelData newLevelData = new LevelData(this, levelKey);
 		LevelSaverLoader.LoadLevelDataFromItsFile (newLevelData);
 		levelDatas.Add (levelKey, newLevelData);
 		return newLevelData;
@@ -332,17 +315,23 @@ public class WorldData {
 			// MAKE one!!
 			levelData = AddLevelData (levelKey);
 			// Set its pos to somewhere convenient!
-			levelData.SetPosGlobal (GetBrandNewLevelPos (), false);
+			levelData.SetPosGlobal(GetBrandNewLevelPos ());
 			// Update our boundsRects to include the new guy!
 			AddLevelBoundsToWorldBoundsRects (levelData);
 //			// Update who the most recently saved level is! Note: HACKY. We didn't actually *save* anything yet.
-//			GameManagers.Instance.DataManager.mostRecentlySavedLevel_worldIndex = worldIndex;
+//			GameManagers.Instance.DataManager.mostRecentlySavedLevel_worldIndex = WorldIndex;
 //			GameManagers.Instance.DataManager.mostRecentlySavedLevel_levelKey = levelKey;
 		}
 		return levelData;
 	}
 
-	private void SetLevelsIsConnectedToStart () {
+
+    private void UpdateAllLevelsOpeningsAndNeighbors() {
+        foreach (LevelData ld in levelDatas.Values) { ld.CalculateOpenings(); }
+        foreach (LevelData ld in levelDatas.Values) { ld.UpdateNeighbors(); }
+    }
+    // TODO: This.
+	private void SetLevelsIsConnectedToStart() {
 		// Tell all of them they're NOT first.
 		foreach (LevelData ld in levelDatas.Values) { ld.isConnectedToStart = false; }
 		// Get the special ones that are.
