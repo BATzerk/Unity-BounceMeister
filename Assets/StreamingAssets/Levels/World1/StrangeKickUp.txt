@@ -1,15 +1,16 @@
 levelProperties posGlobal:(-446.0, 274.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Gem pos:(9.5, 1.5)
-Ground myRect:(x:0.00, y:14.50, width:52.00, height:11.00);colorType:0
-Ground myRect:(x:6.00, y:-2.50, width:10.00, height:1.00);colorType:0
-Ground myRect:(x:8.50, y:-2.00, width:9.00, height:2.00);colorType:0
-Ground myRect:(x:12.00, y:-5.00, width:2.00, height:6.00);colorType:0
-Ground myRect:(x:-2.00, y:-9.50, width:4.00, height:1.00);colorType:0
-Ground myRect:(x:0.00, y:-17.50, width:52.00, height:5.00);colorType:0
-Ground myRect:(x:-15.00, y:-4.50, width:22.00, height:31.00);colorType:0
-Ground myRect:(x:22.50, y:9.50, width:7.00, height:21.00);colorType:0
-PlayerStart pos:(7.7, -15.6)
 Spikes myRect:(x:6.00, y:-3.50, width:10.00, height:1.00);rotation:180
 Spikes myRect:(x:4.00, y:-1.50, width:6.00, height:1.00);rotation:0
 Spikes myRect:(x:-2.00, y:-8.50, width:4.00, height:1.00);rotation:0
+PlayerStart pos:(7.7, -13.4)
+Ground myRect:(x:0.00, y:14.50, width:52.00, height:11.00)
+Ground myRect:(x:6.00, y:-2.50, width:10.00, height:1.00)
+Ground myRect:(x:8.50, y:-2.00, width:9.00, height:2.00)
+Ground myRect:(x:12.00, y:-5.00, width:2.00, height:6.00)
+Ground myRect:(x:-2.00, y:-9.50, width:4.00, height:1.00)
+Ground myRect:(x:0.00, y:-17.50, width:52.00, height:5.00)
+Ground myRect:(x:-15.00, y:-4.50, width:22.00, height:31.00)
+Ground myRect:(x:22.50, y:9.50, width:7.00, height:21.00)
+Gem pos:(9.5, 1.5);type:0
+

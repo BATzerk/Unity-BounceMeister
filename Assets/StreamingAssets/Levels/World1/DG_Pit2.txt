@@ -1,18 +1,19 @@
 levelProperties posGlobal:(-376.0, 272.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-DamageableGround myRect:(x:-9.00, y:-4.50, width:4.00, height:1.00);doRegen:False;canEatGems:False;dieFromPlayerLeave:True
-DamageableGround myRect:(x:9.00, y:-11.50, width:2.00, height:1.00);doRegen:False;canEatGems:False;dieFromPlayerLeave:True
-DamageableGround myRect:(x:9.00, y:-4.50, width:4.00, height:1.00);doRegen:False;canEatGems:False;dieFromPlayerLeave:True
-DamageableGround myRect:(x:0.00, y:-4.50, width:4.00, height:1.00);doRegen:False;canEatGems:False;dieFromPlayerLeave:True
-DamageableGround myRect:(x:-9.00, y:2.50, width:4.00, height:1.00);doRegen:False;canEatGems:False;dieFromPlayerLeave:True
-Gem pos:(9.0, -9.5)
+Spikes myRect:(x:15.50, y:0.50, width:33.00, height:1.00);rotation:90
+Spikes myRect:(x:2.50, y:-15.50, width:35.00, height:1.00);rotation:0
+Spikes myRect:(x:-14.50, y:-7.50, width:17.00, height:1.00);rotation:270
+PlayerStart pos:(-17.6, 6.4)
 Ground myRect:(x:-20.00, y:2.00, width:12.00, height:2.00)
 Ground myRect:(x:-20.50, y:-7.50, width:11.00, height:17.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
 Ground myRect:(x:21.00, y:0.00, width:10.00, height:32.00)
 Ground myRect:(x:-24.00, y:0.00, width:4.00, height:32.00)
 Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
-PlayerStart pos:(-17.6, 6.4)
-Spikes myRect:(x:15.50, y:0.50, width:33.00, height:1.00);rotation:90
-Spikes myRect:(x:2.50, y:-15.50, width:35.00, height:1.00);rotation:0
-Spikes myRect:(x:-14.50, y:-7.50, width:17.00, height:1.00);rotation:270
+Gem pos:(9.0, -9.5);type:1
+DamageableGround myRect:(x:-9.00, y:-4.50, width:4.00, height:1.00);doRegen:False;canEatGems:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:9.00, y:-11.50, width:2.00, height:1.00);doRegen:False;canEatGems:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:9.00, y:-4.50, width:4.00, height:1.00);doRegen:False;canEatGems:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:0.00, y:-4.50, width:4.00, height:1.00);doRegen:False;canEatGems:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:-9.00, y:2.50, width:4.00, height:1.00);doRegen:False;canEatGems:False;dieFromPlayerLeave:True
+
