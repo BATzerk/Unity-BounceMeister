@@ -10,8 +10,10 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject MapEditor_LevelTile;
 
 	[SerializeField] public GameObject backgroundTileSprite;
+    [SerializeField] public Sprite s_gem0;
+    [SerializeField] public Sprite s_gem1;
 
-	[SerializeField] public GameObject Plunga;
+    [SerializeField] public GameObject Plunga;
 	[SerializeField] public GameObject Slippa;
 	[SerializeField] public GameObject Jetta;
 
@@ -33,8 +35,18 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject ToggleGround;
 
 
-	// Instance
-	static private ResourcesHandler instance;
+    // Getters
+    public Sprite GetGemSprite(int type) {
+        switch (type) {
+            case 0: return s_gem0;
+            case 1: return s_gem1;
+            default: Debug.LogWarning("No sprite for Gem type: " + type); return null;
+        }
+    }
+
+
+    // Instance
+    static private ResourcesHandler instance;
 	static public ResourcesHandler Instance { get { return instance; } }
 
 	// Awake

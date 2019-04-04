@@ -101,6 +101,8 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		ToggleGround[] toggleGrounds = FindObjectsOfType<ToggleGround>();
 		foreach (ToggleGround obj in toggleGrounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
         
+        // Reverse the propDatas list so it's saved in the same order each time. (Kinda weird, but this is the easy solution.)
+        ld.allPropDatas.Reverse();
 
 		return ld;
 	}

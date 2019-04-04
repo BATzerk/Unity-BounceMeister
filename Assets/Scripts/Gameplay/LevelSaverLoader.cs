@@ -95,7 +95,7 @@ static public class LevelSaverLoader {
 			Type type = propData.GetType();
 			if (type == typeof(BatteryData)) { AddAllPropFieldsToFS(propData, "pos"); }
 			else if (type == typeof(GateButtonData)) { AddAllPropFieldsToFS(propData, "pos", "channelID"); }
-			else if (type == typeof(GemData)) { AddAllPropFieldsToFS(propData, "pos"); }
+			else if (type == typeof(GemData)) { AddAllPropFieldsToFS(propData, "pos", "type"); }
 			else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
 			else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
             else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos"); }

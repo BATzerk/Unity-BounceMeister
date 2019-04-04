@@ -11,4 +11,3 @@ PlayerStart pos:(-5.4, -14.7)
 Snack pos:(9.0, -4.5)
 Snack pos:(-7.0, 14.0)
 Snack pos:(2.0, 14.0)
-

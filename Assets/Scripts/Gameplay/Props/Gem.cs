@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Gem : Edible, ISerializableData<GemData> {
+    // Properties
+    [SerializeField] private int type = 0; // 0 is action, 1 is puzzle.
 
 
 	// ----------------------------------------------------------------
@@ -11,6 +13,7 @@ public class Gem : Edible, ISerializableData<GemData> {
 	public void Initialize(Level _myLevel, GemData data, int myIndex) {
 		base.BaseInitialize(_myLevel, data);
         this.myIndex = myIndex;
+        this.type = data.type;
 
         // Load wasEverEaten!
         wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatGem(myLevel, myIndex));
@@ -19,6 +22,9 @@ public class Gem : Edible, ISerializableData<GemData> {
         if (wasEverEaten) {
             sr_body.color = new Color(0.2f,0.2f,0.2f, 0.25f);
         }
+
+        // Apply type visuals.
+        sr_body.sprite = ResourcesHandler.Instance.GetGemSprite(type);
     }
 
 
@@ -70,7 +76,8 @@ public class Gem : Edible, ISerializableData<GemData> {
 	// ----------------------------------------------------------------
 	public GemData SerializeAsData() {
         GemData data = new GemData {
-            pos = pos
+            pos = pos,
+            type = type,
         };
         return data;
 	}

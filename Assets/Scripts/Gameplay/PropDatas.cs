@@ -25,6 +25,7 @@ public class GateButtonData : PropData {
 }
 
 public class GemData : PropData {
+    public int type=0;
 }
 
 public class BaseGroundData : PropData {

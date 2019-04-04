@@ -12,7 +12,7 @@ public class LevelTileContents : MonoBehaviour {
 	// Properties
 	private bool hasInitializedContent = false;
 	// References
-	[SerializeField] private Sprite s_gem=null;
+	//[SerializeField] private Sprite s_gem=null;
 	[SerializeField] private Sprite s_ground=null;
 	[SerializeField] private Sprite s_spikes=null;
 	[SerializeField] private TextMesh levelNameText=null; // what's my name, again?
@@ -62,7 +62,8 @@ public class LevelTileContents : MonoBehaviour {
 			// -- Gems --
 			else if (propData.GetType() == typeof(GemData)) {
 				GemData gemData = propData as GemData;
-				AddSpriteRenderer("Gem", s_gem, go_propsLayer, gemData.pos, GemIconSize, 10, Color.white);
+                Sprite sprite = ResourcesHandler.Instance.GetGemSprite(gemData.type);
+				AddSpriteRenderer("Gem",sprite, go_propsLayer, gemData.pos, GemIconSize, 10, Color.white);
 			}
 			// -- Spikes --
 			else if (propData.GetType() == typeof(SpikesData)) {
