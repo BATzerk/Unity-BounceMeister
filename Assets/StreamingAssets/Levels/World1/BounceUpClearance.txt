@@ -1,0 +1,14 @@
+levelProperties posGlobal:(408.0, 410.0);designerFlag:4
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+Spikes myRect:(x:1.50, y:-11.50, width:19.00, height:1.00);rotation:0
+PlayerStart pos:(-10.6, 4.9)
+Ground myRect:(x:0.00, y:17.50, width:52.00, height:5.00)
+Ground myRect:(x:0.50, y:11.00, width:1.00, height:10.00)
+Ground myRect:(x:-24.00, y:0.00, width:4.00, height:32.00)
+Ground myRect:(x:0.00, y:-16.00, width:52.00, height:8.00)
+Ground myRect:(x:-16.50, y:-6.50, width:19.00, height:21.00)
+Ground myRect:(x:18.50, y:-6.50, width:15.00, height:25.00)
+Ground myRect:(x:23.00, y:-0.50, width:6.00, height:37.00)
+Gem pos:(17.0, 8.5);type:1
+DamageableGround myRect:(x:5.50, y:5.00, width:11.00, height:2.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:2.00, y:-9.50, width:16.00, height:1.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True

@@ -83,7 +83,7 @@ public class GameController : MonoBehaviour {
 		dataManager.currentLevelData = levelData;
 
 		// Make Level!
-		level = new GameObject().AddComponent<Level>();
+		level = Instantiate(ResourcesHandler.Instance.Level).GetComponent<Level>();
 		level.Initialize(this, tf_world, levelData);
 		// Make Player!
 		MakePlayer(PlayerTypes.Plunga, levelData);

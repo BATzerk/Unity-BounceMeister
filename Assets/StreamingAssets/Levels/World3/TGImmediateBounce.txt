@@ -1,4 +1,4 @@
-levelProperties posGlobal:(-8.0, 104.0);designerFlag:4
+levelProperties posGlobal:(-8.0, 104.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:-13.50, y:-15.00, width:5.00, height:4.00)
 Ground myRect:(x:-23.50, y:-3.50, width:5.00, height:33.00)
@@ -15,4 +15,3 @@ Spikes myRect:(x:5.00, y:-14.50, width:34.00, height:1.00);rotation:0
 Spikes myRect:(x:-2.00, y:0.50, width:8.00, height:1.00);rotation:0
 ToggleGround myRect:(x:-3.50, y:1.50, width:5.00, height:1.00);startsOn:False
 ToggleGround myRect:(x:-8.50, y:-6.50, width:5.00, height:1.00);startsOn:False
-

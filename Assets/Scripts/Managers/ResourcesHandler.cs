@@ -13,6 +13,8 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] public Sprite s_whiteSquare;
     [SerializeField] public Sprite s_gem0;
     [SerializeField] public Sprite s_gem1;
+    
+    [SerializeField] public GameObject Level;
 
     [SerializeField] public GameObject Plunga;
 	[SerializeField] public GameObject Slippa;
