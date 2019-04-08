@@ -1,4 +1,4 @@
-levelProperties posGlobal:(-454.0, 28.0);designerFlag:3
+levelProperties posGlobal:(-504.0, 26.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Gem pos:(-9.0, 11.5)
 Ground myRect:(x:19.00, y:-14.50, width:14.00, height:11.00)
