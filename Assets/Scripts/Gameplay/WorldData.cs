@@ -136,7 +136,22 @@ public class WorldData {
     
 
     public LevelData GetLevelNeighbor(LevelData originLD, LevelOpening opening) {
-        return GetLevelAtSide(originLD, opening.posCenter, opening.side);
+        // Get the neighbor, ignoring ITS openings.
+        LevelData neighbor = GetLevelAtSide(originLD, opening.posCenter, opening.side);
+        if (neighbor == null) { return null; } // NOTHing there? Return null!
+        // Ok, if this neighbor HAS a corresponding opening, return it!!
+        //Vector2 levelPosDiff = originLD.PosGlobal - neighbor.PosGlobal;
+        //Vector2 opPosStartRel = opening.posStart + levelPosDiff;
+        //Vector2 opPosEndRel = opening.posEnd + levelPosDiff;
+        Rect opRect = opening.GetCollRectGlobal(originLD.PosGlobal);
+        for (int i=0; i<neighbor.Openings.Count; i++) {
+            Rect otherOpRect = neighbor.Openings[i].GetCollRectGlobal(neighbor.PosGlobal);
+            if (opRect.Overlaps(otherOpRect)) {
+                return neighbor;
+            }
+        }
+        // Ah, NO corresponding opening. Return null.
+        return null;
     }
     // TODO: Replace this with known neighbors now!!
 	/// Use this for debug level-jumping. Will return level at side, irrespective of Player's position.

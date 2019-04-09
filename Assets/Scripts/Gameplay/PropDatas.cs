@@ -47,6 +47,7 @@ public class GroundData : BaseGroundData {
 	public int colorType;
 }
 public class PlatformData : BaseGroundData {
+    public bool canDropThru=true; // if TRUE, Player can fall through me when pressing down!
 }
 public class ToggleGroundData : BaseGroundData {
 	public bool startsOn;

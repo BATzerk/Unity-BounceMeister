@@ -1,6 +1,6 @@
-levelProperties posGlobal:(-108.0, 148.0);designerFlag:3
+levelProperties posGlobal:(-46.0, 132.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-0.2, -5.7)
-Ground myRect:(x:25.50, y:-0.50, width:1.00, height:39.00);isPlayerRespawn:True
-Ground myRect:(x:0.00, y:-10.00, width:52.00, height:4.00)
-Ground myRect:(x:0.00, y:16.00, width:52.00, height:6.00);isPlayerRespawn:True
+Ground myRect:(x:21.50, y:-0.50, width:9.00, height:39.00);isPlayerRespawn:True
+Ground myRect:(x:0.00, y:-14.00, width:52.00, height:12.00)
+Ground myRect:(x:0.00, y:16.50, width:52.00, height:7.00);isPlayerRespawn:True

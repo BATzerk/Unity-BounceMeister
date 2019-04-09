@@ -333,7 +333,12 @@ abstract public class Player : PlatformCharacter {
 //	}
 	abstract protected void OnButtonJump_Down();
 	virtual protected void OnButtonJump_Up() { }
-	virtual protected void OnDown_Down() { }
+	virtual protected void OnDown_Down() {
+        // On a Platform? Pass down through it!
+        if (myWhiskers.AreFeetOnCanDropThruPlatform()) {
+            pos += new Vector2(0, -0.2f);
+        }
+    }
     
 	protected void ScheduleDelayedJump() {
 		timeWhenDelayedJump = Time.time + DelayedJumpWindow;

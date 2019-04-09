@@ -15,7 +15,8 @@ public class LevelTileContents : MonoBehaviour {
 	private bool hasInitializedContent = false;
 	// References
 	//[SerializeField] private Sprite s_gem=null;
-	[SerializeField] private Sprite s_ground=null;
+    [SerializeField] private Sprite s_ground=null;
+    [SerializeField] private Sprite s_snack=null;
 	[SerializeField] private Sprite s_spikes=null;
 	[SerializeField] private TextMesh levelNameText=null; // what's my name, again?
     private LevelTile myLevelTile;
@@ -52,23 +53,28 @@ public class LevelTileContents : MonoBehaviour {
 		foreach (PropData propData in ld.allPropDatas) {
 			// -- Grounds --
 			if (propData.GetType() == typeof(GroundData)) {
-				GroundData groundData = propData as GroundData;
+				GroundData pd = propData as GroundData;
 				Color color = new Color(91/255f,107/255f,67/255f, 0.92f);
-				AddSpriteRenderer("Ground", s_ground, go_props, groundData.myRect.position, groundData.myRect.size, 1, color);//WHY POSITION? why not center?
+				AddSpriteRenderer("Ground", s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, color);//WHY POSITION? why not center?
 			}
 			// -- DamageableGrounds --
 			if (propData.GetType() == typeof(DamageableGroundData)) {
-                DamageableGroundData groundData = propData as DamageableGroundData;
-				Color color = DamageableGround.GetBodyColor(groundData);
+                DamageableGroundData pd = propData as DamageableGroundData;
+				Color color = DamageableGround.GetBodyColor(pd);
                 color = new Color(color.r,color.g,color.b, color.a*0.6f); // alpha it out a bit, to taste.
-                AddSpriteRenderer("DamageableGround", s_ground, go_props, groundData.myRect.position, groundData.myRect.size, 1, color);
+                AddSpriteRenderer("DamageableGround", s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, color);
 			}
-			// -- Gems --
-			else if (propData.GetType() == typeof(GemData)) {
-				GemData gemData = propData as GemData;
-                Sprite sprite = ResourcesHandler.Instance.GetGemSprite(gemData.type);
-				AddSpriteRenderer("Gem",sprite, go_props, gemData.pos, GemIconSize, 10, Color.white);
-			}
+            // -- Gems --
+            else if (propData.GetType() == typeof(GemData)) {
+                GemData pd = propData as GemData;
+                Sprite sprite = ResourcesHandler.Instance.GetGemSprite(pd.type);
+                AddSpriteRenderer("Gem",sprite, go_props, pd.pos, GemIconSize, 10, Color.white);
+            }
+            // -- Snacks --
+            else if (propData.GetType() == typeof(SnackData)) {
+                SnackData pd = propData as SnackData;
+                AddSpriteRenderer("Snack",s_snack, go_props, pd.pos, GemIconSize, 10, Color.white);
+            }
 			// -- Spikes --
 			else if (propData.GetType() == typeof(SpikesData)) {
 				SpikesData spikesData = propData as SpikesData;

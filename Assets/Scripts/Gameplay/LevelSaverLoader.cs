@@ -141,7 +141,8 @@ static public class LevelSaverLoader {
 			else if (type == typeof(PlatformData)) {
 				PlatformData d = propData as PlatformData;
 				AddSomePropFieldsToFS(propData, "myRect");
-				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (!d.canDropThru) { fs += ";canDropThru:" + d.canDropThru; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 AddFSLine();
 			}
