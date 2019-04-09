@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public sealed class Ground : BaseGround, ISerializableData<GroundData> {
+public sealed class Ground : BaseGround {
 	// Properties
 //	[SerializeField] private bool doDisappearAfterBounces = false;
 //	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
@@ -59,7 +59,7 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public GroundData SerializeAsData() {
+    override public PropData SerializeAsData() {
         GroundData data = new GroundData {
             myRect = MyRect(),
             canEatGems = CanEatEdibles,

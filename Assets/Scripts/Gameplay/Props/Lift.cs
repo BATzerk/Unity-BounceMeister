@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lift : Prop, ISerializableData<LiftData> {
+public class Lift : Prop {
 	// Components
-	[SerializeField] private SpriteRenderer sr_body;
+	[SerializeField] private SpriteRenderer sr_body=null;
 	// Properties
 	[SerializeField] private float strength = 0.08f;
 	private bool isCharacterInMe = false;
@@ -110,7 +110,7 @@ public class Lift : Prop, ISerializableData<LiftData> {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public LiftData SerializeAsData() {
+    override public PropData SerializeAsData() {
 		LiftData data = new LiftData();
 		data.myRect = MyRect;
 		data.rotation = rotation;

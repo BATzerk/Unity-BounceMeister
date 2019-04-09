@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/** NOTE: NOT SAVED to Level file! */
 public sealed class ConditionalGround : BaseGround {
 	// Properties
 	[SerializeField] private bool isOffWhenPlungeSpent = false; // we disappear when the Player spends their bounce, and re-appear when the Player recharges!
@@ -64,6 +65,17 @@ public sealed class ConditionalGround : BaseGround {
 			TurnOff();
 		}
 	}
+
+
+    // ----------------------------------------------------------------
+    //  Serializing
+    // ----------------------------------------------------------------
+    override public PropData SerializeAsData() { // NOTE: Just here to pacify errors. This class isn't used in the game yet.
+        GroundData data = new GroundData {
+            myRect = MyRect()
+        };
+        return data;
+    }
 
 
 }

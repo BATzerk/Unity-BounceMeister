@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Platform : BaseGround, ISerializableData<PlatformData> {
+public class Platform : BaseGround {
     // Constants
     [SerializeField] private Color c_canDropThru=Color.white;
     [SerializeField] private Color c_cannotDropThru=Color.white;
@@ -28,7 +28,7 @@ public class Platform : BaseGround, ISerializableData<PlatformData> {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public PlatformData SerializeAsData() {
+    override public PropData SerializeAsData() {
         PlatformData data = new PlatformData {
             myRect = MyRect(),
             canEatGems = CanEatEdibles,

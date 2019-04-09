@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class GateButton : Prop, ISerializableData<GateButtonData> {
+public class GateButton : Prop {
 	// Components
 //	[SerializeField] private Collider2D myCollider;
-	[SerializeField] private SpriteRenderer sr_body;
+	[SerializeField] private SpriteRenderer sr_body=null;
 	// Properties
 	[SerializeField] private int channelID;
 	private Color bodyColor=Color.red;
@@ -64,7 +64,7 @@ public class GateButton : Prop, ISerializableData<GateButtonData> {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public GateButtonData SerializeAsData() {
+    override public PropData SerializeAsData() {
 		GateButtonData data = new GateButtonData();
 		data.pos = pos;
 		data.channelID = channelID;

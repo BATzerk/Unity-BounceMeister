@@ -1,7 +1,9 @@
-levelProperties posGlobal:(-98.0, 124.0);designerFlag:0
+levelProperties posGlobal:(98.0, 32.0);designerFlag:0
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-20.0, -14.0)
 Ground myRect:(x:-12.50, y:-18.00, width:27.00, height:4.00)
 Ground myRect:(x:-24.00, y:0.00, width:4.00, height:32.00)
 Ground myRect:(x:24.00, y:-7.50, width:4.00, height:17.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+ProgressGate myRect:(x:-4.50, y:-11.50, width:5.00, height:7.00);numGemsReq:8;numSnacksReq:8
+

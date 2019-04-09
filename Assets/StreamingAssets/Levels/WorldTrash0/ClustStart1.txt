@@ -1,0 +1,5 @@
+levelProperties posGlobal:(98.0, 32.0);designerFlag:0
+CameraBounds myRect:(x:0.00, y:0.00, width:0.00, height:0.00)
+PlayerStart pos:(-5.3, -8.9)
+Ground myRect:(x:0.00, y:-16.00, width:52.00, height:8.00);isPlayerRespawn:True
+ProgressGate myRect:(x:0.00, y:0.00, width:4.00, height:4.00);numGemsReq:8;numSnacksReq:8

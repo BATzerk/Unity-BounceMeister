@@ -97,20 +97,22 @@ public class WorldData {
         // Remake Clusters!
         clusters = new List<LevelClusterData>();
         foreach (LevelData ld in levelDatas.Values) {
-            if (ld.WasUsedInSearchAlgorithm) { continue; } // Safety check.
+            if (ld.WasUsedInSearchAlgorithm) { continue; } // Already used this fella? Skip 'em.
             // If this is a ClusterStart level...!
             if (ld.isClustStart) {
                 // Add a new Cluster, and populate it!
                 LevelClusterData newClust = new LevelClusterData(clusters.Count);
                 clusters.Add(newClust);
                 RecursivelyAddLevelToCluster(ld, newClust);
+                // Update the Cluster's values!
+                newClust.UpdateCollectablesCounts();
             }
         }
-        
         // Reset Levels' WasUsedInSearchAlgorithm.
         foreach (LevelData ld in levelDatas.Values) {
             ld.WasUsedInSearchAlgorithm = false;
         }
+        
     }
     private void RecursivelyAddLevelToCluster(LevelData ld, LevelClusterData cluster) {
         if (ld.WasUsedInSearchAlgorithm) { return; } // This LevelData was used? Ignore it.

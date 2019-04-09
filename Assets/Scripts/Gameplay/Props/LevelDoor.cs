@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelDoor : Prop, ISerializableData<LevelDoorData> {
+public class LevelDoor : Prop {
 	// Components
 	[SerializeField] private SpriteRenderer sr_body=null;
 	// Properties
@@ -76,7 +76,7 @@ public class LevelDoor : Prop, ISerializableData<LevelDoorData> {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public LevelDoorData SerializeAsData() {
+    override public PropData SerializeAsData() {
 		LevelDoorData data = new LevelDoorData();
 		data.pos = PosLocal;
 		data.myID = myID;

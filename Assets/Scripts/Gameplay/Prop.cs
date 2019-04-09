@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Prop : MonoBehaviour {
+abstract public class Prop : MonoBehaviour {
+    // Overrideables
+    virtual public bool DoSaveInLevelFile() { return true; } // by default, ALL Props wanna get saved into the Level text file. But some (e.g. Player) do NOT.
 	// References
 	protected Level myLevel;
 
@@ -37,5 +39,7 @@ public class Prop : MonoBehaviour {
 		pos = new Vector2(-pos.x, pos.y);
 		rotation = -rotation;
 	}
+    
+    abstract public PropData SerializeAsData();
 
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gem : Edible, ISerializableData<GemData> {
+public class Gem : Edible {
     // Properties
     [SerializeField] private int type = 0; // 0 is action, 1 is puzzle.
 
@@ -74,7 +74,7 @@ public class Gem : Edible, ISerializableData<GemData> {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public GemData SerializeAsData() {
+    override public PropData SerializeAsData() {
         GemData data = new GemData {
             pos = pos,
             type = type,

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStart : Prop, ISerializableData<PlayerStartData> {
+public class PlayerStart : Prop {
 
 
 
@@ -19,7 +19,7 @@ public class PlayerStart : Prop, ISerializableData<PlayerStartData> {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public PlayerStartData SerializeAsData() {
+    override public PropData SerializeAsData() {
 		PlayerStartData data = new PlayerStartData();
 		data.pos = PosLocal;
 		return data;

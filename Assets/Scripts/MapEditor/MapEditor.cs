@@ -515,7 +515,10 @@ public class MapEditor : MonoBehaviour {
 		if (CurrWorldLevelTiles==null) { return; } // Safety check for runtime compile.
 		// Update which tiles are within the rect!
 		for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
-			CurrWorldLevelTiles[i].IsWithinLevelTileSelectionRect = selectionRect.IsActive && selectionRect.SelectionRect.Contains(CurrWorldLevelTiles[i].MyLevelData.PosGlobal);
+			CurrWorldLevelTiles[i].IsWithinLevelTileSelectionRect =
+                   CurrWorldLevelTiles[i].BodyCollider.IsEnabled
+                && selectionRect.IsActive
+                && selectionRect.SelectionRect.Contains(CurrWorldLevelTiles[i].MyLevelData.PosGlobal);
 		}
 //		if (levelTileSelectionRect.IsActive) {
 //			levelTileSelectionRect.levelTilesSelected

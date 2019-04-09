@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 public class LevelTileSelectionRect : MonoBehaviour {
 	// Components
-	[SerializeField] private SpriteRenderer sr_body;
+	[SerializeField] private SpriteRenderer sr_body=null;
 	// Properties
 	private bool isActive; // this is true when user clicks on NOT a LevelTile or anything, and is then draggin' around. False when we release.
 	private Vector2 clickPos; // in world coordinates
 	private Rect selectionRect = new Rect (); // the Rect that represents our selction box.
 	// References
-	[SerializeField] private MapEditor mapEditorRef;
+	[SerializeField] private MapEditor mapEditorRef=null;
 
 	// Getters (private)
 	private Vector2 MousePosWorld { get { return mapEditorRef.MousePosWorld; } }

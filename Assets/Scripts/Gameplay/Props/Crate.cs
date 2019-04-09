@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Crate : BaseGround, ISerializableData<CrateData> {
+public class Crate : BaseGround {
 	// Properties
 	[SerializeField] private int hitsUntilBreak = -1;
 	[SerializeField] private int numCoinsInMe = 0;
@@ -76,12 +76,13 @@ public class Crate : BaseGround, ISerializableData<CrateData> {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public CrateData SerializeAsData() {
-		CrateData data = new CrateData();
-		data.myRect = MyRect();
-		data.hitsUntilBreak = hitsUntilBreak;
-		data.numCoinsInMe = numCoinsInMe;
-		return data;
+    override public PropData SerializeAsData() {
+        CrateData data = new CrateData {
+            myRect = MyRect(),
+            hitsUntilBreak = hitsUntilBreak,
+            numCoinsInMe = numCoinsInMe
+        };
+        return data;
 	}
 
 

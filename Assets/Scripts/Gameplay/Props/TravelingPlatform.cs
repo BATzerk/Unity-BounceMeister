@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TravelingPlatform : BaseGround {//, ISerializableData<TravelingPlatformData> {
     // Components
-    [SerializeField] private Transform tf_a;
-    [SerializeField] private Transform tf_b;
-    [SerializeField] private Transform tf_body;
+    [SerializeField] private Transform tf_a=null;
+    [SerializeField] private Transform tf_b=null;
+    [SerializeField] private Transform tf_body=null;
     // Properties
     //[SerializeField] private float oscOffset=0;
     [SerializeField] private float oscSpeed=1;
@@ -43,14 +43,14 @@ public class TravelingPlatform : BaseGround {//, ISerializableData<TravelingPlat
     //	base.BaseGroundInitialize(_myLevel, data);
     //}
 
-    //// ----------------------------------------------------------------
-    ////  Serializing
-    //// ----------------------------------------------------------------
-    //public PlatformData SerializeAsData() {
-    //	PlatformData data = new PlatformData();
-    //	data.myRect = MyRect;
-    //	data.canEatGems = CanEatGems;
-    //  data.isPlayerRespawn = IsPlayerRespawn;
-    //	return data;
-    //}
+    // ----------------------------------------------------------------
+    //  Serializing
+    // ----------------------------------------------------------------
+    override public PropData SerializeAsData() {//TODO: This, I guess.
+    	PlatformData data = new PlatformData();
+    	//data.myRect = MyRect;
+    	//data.canEatGems = CanEatGems;
+        data.isPlayerRespawn = IsPlayerRespawn;
+    	return data;
+    }
 }

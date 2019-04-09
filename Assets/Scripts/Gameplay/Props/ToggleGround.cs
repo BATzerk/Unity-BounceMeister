@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public sealed class ToggleGround : BaseGround, ISerializableData<ToggleGroundData> {
+public sealed class ToggleGround : BaseGround {
 	// Properties
 	[SerializeField] private bool startsOn=false;
 	private bool pstartsOn;
@@ -130,7 +130,7 @@ public sealed class ToggleGround : BaseGround, ISerializableData<ToggleGroundDat
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public ToggleGroundData SerializeAsData() {
+    override public PropData SerializeAsData() {
 		ToggleGroundData data = new ToggleGroundData();
 		data.myRect = MyRect();
 		data.canEatGems = CanEatEdibles;

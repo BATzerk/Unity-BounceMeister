@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class Gate : BaseGround, ISerializableData<GateData> {
+public class Gate : BaseGround {
 	// Properties
 	[SerializeField] private int channelID;
 	private Color bodyColor=Color.red;
@@ -62,7 +62,7 @@ public class Gate : BaseGround, ISerializableData<GateData> {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public GateData SerializeAsData() {
+    override public PropData SerializeAsData() {
 		GateData data = new GateData();
 		data.myRect = MyRect();
 		data.canEatGems = CanEatEdibles;

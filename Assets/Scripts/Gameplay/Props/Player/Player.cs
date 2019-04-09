@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 abstract public class Player : PlatformCharacter {
+    // Prop Overrides
+    override public bool DoSaveInLevelFile() { return false; }
 	// Constants
 	override protected int StartingHealth { get { return 1; } }
 	override protected float FrictionAir { get { return isPreservingWallKickVel ? 1f : FrictionGround; } } // No air friction while we're preserving our precious wall-kick vel.

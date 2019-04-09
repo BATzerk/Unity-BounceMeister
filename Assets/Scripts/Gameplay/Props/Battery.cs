@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Battery : Prop, ISerializableData<BatteryData> {
+public class Battery : Prop {
 	// Constants
 	private float RegenDuration = 0.5f; // how many SECONDS until I regenerate.
 	// Components
@@ -85,10 +85,11 @@ public class Battery : Prop, ISerializableData<BatteryData> {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public BatteryData SerializeAsData() {
-		BatteryData data = new BatteryData();
-		data.pos = pos;
-		return data;
+	override public PropData SerializeAsData() {
+        BatteryData data = new BatteryData {
+            pos = pos
+        };
+        return data;
 	}
 
 

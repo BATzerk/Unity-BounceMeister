@@ -55,7 +55,15 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		ld.isConnectedToStart = levelDataRef.isConnectedToStart;
 
 		// -- Props --
-        // TODO: Find objects of type Prop instead, right?? (Can have Prop class say whether to serialize with the rest or not)
+        Prop[] allProps = FindObjectsOfType<Prop>();
+        foreach (Prop prop in allProps) {
+            if (!prop.DoSaveInLevelFile()) { continue; } // This type of Prop doesn't save to Level file? Skip it.
+            ld.allPropDatas.Add(prop.SerializeAsData());
+        }
+        // HACK TEMP TODO: clean this up
+        CameraBounds cameraBounds = FindObjectOfType<CameraBounds>();
+        if (cameraBounds != null) { ld.cameraBoundsData = cameraBounds.SerializeAsData() as CameraBoundsData; }
+        /*
 		Battery[] batteries = FindObjectsOfType<Battery>();
 		foreach (Battery obj in batteries) { ld.allPropDatas.Add(obj.SerializeAsData()); }
 
@@ -100,6 +108,7 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 
 		ToggleGround[] toggleGrounds = FindObjectsOfType<ToggleGround>();
 		foreach (ToggleGround obj in toggleGrounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+        */
         
         // Reverse the propDatas list so it's saved in the same order each time. (Kinda weird, but this is the easy solution.)
         ld.allPropDatas.Reverse();
@@ -186,10 +195,14 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 				Lift newProp = Instantiate(rh.Lift).GetComponent<Lift>();
 				newProp.Initialize (this, propData as LiftData);
 			}
-			else if (propData is PlayerStartData) {
-				PlayerStart newProp = Instantiate(rh.PlayerStart).GetComponent<PlayerStart>();
-				newProp.Initialize (this, propData as PlayerStartData);
-			}
+            else if (propData is PlayerStartData) {
+                PlayerStart newProp = Instantiate(rh.PlayerStart).GetComponent<PlayerStart>();
+                newProp.Initialize (this, propData as PlayerStartData);
+            }
+            else if (propData is ProgressGateData) {
+                ProgressGate newProp = Instantiate(rh.ProgressGate).GetComponent<ProgressGate>();
+                newProp.Initialize (this, propData as ProgressGateData);
+            }
             else if (propData is SnackData) {
                 Snack newProp = Instantiate(rh.Snack).GetComponent<Snack>();
                 newProp.Initialize (this, propData as SnackData, snacks.Count);
@@ -232,9 +245,9 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		}
 		playerRef.Initialize(this, playerData);
 		// CameraBounds
-		if (GameObject.FindObjectOfType<CameraBounds>() == null) {
+		if (FindObjectOfType<CameraBounds>() == null) {
 			CameraBounds cameraBounds = Instantiate(ResourcesHandler.Instance.CameraBounds).GetComponent<CameraBounds>();
-			cameraBounds.Initialize(this, cameraBounds.SerializeAsData()); // Strange and hacky: It initializes itself as what it already is. Just to go through other paperwork.
+			cameraBounds.Initialize(this, cameraBounds.SerializeAsData() as CameraBoundsData); // Strange and hacky: It initializes itself as what it already is. Just to go through other paperwork.
 		}
 	}
     /*

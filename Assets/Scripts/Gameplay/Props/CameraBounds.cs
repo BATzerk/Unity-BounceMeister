@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof(SpriteRenderer))]
-public class CameraBounds : Prop, ISerializableData<CameraBoundsData> {
+public class CameraBounds : Prop {
 	// Components
 	[SerializeField] private SpriteRenderer bodySprite=null;
 
@@ -40,10 +40,11 @@ public class CameraBounds : Prop, ISerializableData<CameraBoundsData> {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public CameraBoundsData SerializeAsData() {
-		CameraBoundsData data = new CameraBoundsData();
-		data.myRect = RectLocal;
-		return data;
+	override public PropData SerializeAsData() {
+        CameraBoundsData data = new CameraBoundsData {
+            myRect = RectLocal
+        };
+        return data;
 	}
 
 

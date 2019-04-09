@@ -14,6 +14,11 @@ public class LevelTileBodyCollider : MonoBehaviour {
 		boxCollider.transform.localPosition = new Vector3 (rect.center.x,rect.center.y, 0);
 		boxCollider.size = rect.size;
 	}
+    
+    public bool IsEnabled { get { return boxCollider.enabled; } }
+    public void SetIsEnabled(bool val) {
+        boxCollider.enabled = val;
+    }
 
 	
 	private void OnMouseEnter() {

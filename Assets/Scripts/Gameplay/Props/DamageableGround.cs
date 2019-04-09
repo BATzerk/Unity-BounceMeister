@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageableGround : BaseGround, ISerializableData<DamageableGroundData> {
+public class DamageableGround : BaseGround {
     // Constants
     const float RegenTime = 2.2f; // how long it takes for me to reappear after I've disappeared.
     const float BreakVel = 0.6f; // how hard Player must hit me for me to break.
@@ -179,15 +179,16 @@ public class DamageableGround : BaseGround, ISerializableData<DamageableGroundDa
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public DamageableGroundData SerializeAsData() {
-		DamageableGroundData data = new DamageableGroundData();
-		data.myRect = MyRect();
-		data.canEatGems = CanEatEdibles;
-        data.isPlayerRespawn = IsPlayerRespawn;
-        data.doRegen = doRegen;
-		data.dieFromBounce = dieFromBounce;
-        data.dieFromPlayerLeave = dieFromPlayerLeave;
-        data.dieFromVel = dieFromVel;
+    override public PropData SerializeAsData() {
+        DamageableGroundData data = new DamageableGroundData {
+            myRect = MyRect(),
+            canEatGems = CanEatEdibles,
+            isPlayerRespawn = IsPlayerRespawn,
+            doRegen = doRegen,
+            dieFromBounce = dieFromBounce,
+            dieFromPlayerLeave = dieFromPlayerLeave,
+            dieFromVel = dieFromVel
+        };
         return data;
 	}
 

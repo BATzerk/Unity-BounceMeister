@@ -86,6 +86,11 @@ public class PlayerData : PropData {
 public class PlayerStartData : PropData {
 }
 
+public class ProgressGateData : BaseGroundData {
+    public int numGemsReq;
+    public int numSnacksReq;
+}
+
 public class SnackData : PropData {
 }
 

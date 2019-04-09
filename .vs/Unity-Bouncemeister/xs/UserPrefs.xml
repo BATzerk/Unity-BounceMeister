@@ -1,20 +1,15 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MapEditor/LevelTile.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Level.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="72" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="99" Column="54" />
-      <File FileName="Assets/Scripts/Gameplay/Level.cs" Line="104" Column="76" />
-      <File FileName="Assets/Scripts/Gameplay/LevelData.cs" Line="69" Column="45" />
-      <File FileName="Assets/Scripts/Gameplay/LevelClusterData.cs" Line="14" Column="6" />
-      <File FileName="Assets/Scripts/Gameplay/LevelUtils.cs" Line="28" Column="3" />
-      <File FileName="Assets/Scripts/MapEditor/LevelTileContents.cs" Line="175" Column="61" />
-      <File FileName="Assets/Scripts/Gameplay/LevelSaverLoader.cs" Line="425" Column="6" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Ground.cs" Line="53" Column="39" />
-      <File FileName="Assets/Scripts/MapEditor/MapEditorSettings.cs" Line="10" Column="36" />
-      <File FileName="Assets/Scripts/Consts/SaveKeys.cs" Line="26" Column="82" />
-      <File FileName="Assets/Scripts/MapEditor/MapEditor.cs" Line="374" Column="10" />
-      <File FileName="Assets/Scripts/MapEditor/LevelTile.cs" Line="215" Column="17" />
+      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="225" Column="36" />
+      <File FileName="Assets/Scripts/Gameplay/LevelData.cs" Line="6" Column="14" />
+      <File FileName="Assets/Scripts/Gameplay/PropDatas.cs" Line="89" Column="47" />
+      <File FileName="Assets/Scripts/Gameplay/LevelSaverLoader.cs" Line="91" Column="40" />
+      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="7" Column="5" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PlayerStart.cs" Line="5" Column="32" />
+      <File FileName="Assets/Scripts/Gameplay/Level.cs" Line="62" Column="10" />
+      <File FileName="Assets/Scripts/Gameplay/Props/CameraBounds.cs" Line="45" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

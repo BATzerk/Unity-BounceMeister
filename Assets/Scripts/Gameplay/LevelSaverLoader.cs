@@ -21,8 +21,9 @@ static public class LevelSaverLoader {
 	const string GROUND = "Ground";
 	const string LEVEL_DOOR = "LevelDoor";
 	const string LIFT = "Lift";
-	const string PLATFORM = "Platform";
+    const string PLATFORM = "Platform";
 	const string PLAYER_START = "PlayerStart";
+    const string PROGRESS_GATE = "ProgressGate";
     const string SNACK = "Snack";
     const string SPIKES = "Spikes";
 	const string TOGGLE_GROUND = "ToggleGround";
@@ -138,14 +139,21 @@ static public class LevelSaverLoader {
                 if (!d.doRechargePlayer) { fs += ";doRechargePlayer:" + d.doRechargePlayer; }
                 AddFSLine();
 			}
-			else if (type == typeof(PlatformData)) {
-				PlatformData d = propData as PlatformData;
-				AddSomePropFieldsToFS(propData, "myRect");
+            else if (type == typeof(PlatformData)) {
+                PlatformData d = propData as PlatformData;
+                AddSomePropFieldsToFS(propData, "myRect");
                 if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
                 if (!d.canDropThru) { fs += ";canDropThru:" + d.canDropThru; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 AddFSLine();
-			}
+            }
+            else if (type == typeof(ProgressGateData)) {
+                ProgressGateData d = propData as ProgressGateData;
+                AddSomePropFieldsToFS(propData, "myRect", "numGemsReq", "numSnacksReq");
+                if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
+                AddFSLine();
+            }
 			else if (type == typeof(ToggleGroundData)) {
 				ToggleGroundData d = propData as ToggleGroundData;
 				AddSomePropFieldsToFS(propData, "myRect", "startsOn");
@@ -378,6 +386,7 @@ static public class LevelSaverLoader {
             case LIFT: return new LiftData();
             case PLATFORM: return new PlatformData();
             case PLAYER_START: return new PlayerStartData();
+            case PROGRESS_GATE: return new ProgressGateData();
             case SNACK: return new SnackData();
             case SPIKES: return new SpikesData();
             case TOGGLE_GROUND: return new ToggleGroundData();

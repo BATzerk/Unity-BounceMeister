@@ -29,6 +29,7 @@ public class LevelTile : MonoBehaviour {
     //	public float BackingXMax { get { return backingXMax; } }
     //	public float BackingYMin { get { return backingYMin; } }
     //	public float BackingYMax { get { return backingYMax; } }
+    public LevelTileBodyCollider BodyCollider { get { return bodyCollider; } }
     public int WorldIndex { get { return MyLevelData.WorldIndex; } }
 	public string LevelKey { get { return MyLevelData.LevelKey; } }
 	//	public Rect PlacematRect { get { return new Rect (x-w*0.5f,y-h*0.5f, w,h); } }
@@ -156,8 +157,9 @@ public class LevelTile : MonoBehaviour {
 		if (MyLevelData.LevelKey.ToLower().Contains (searchString.ToLower())) {
 			isInSearch = true;
 		}
-		// Go ahead and enable/disable the WHOLE thing, mate.
-		this.gameObject.SetActive (isInSearch);
+		// Update visuals!
+        bodyCollider.SetIsEnabled(isInSearch);
+        contents.gameObject.SetActive(isInSearch);//TEMP TEST
 	}
 //	public void RemakeWallLines() {
 //		contents.CreateWallLines (); // Go ahead and pass this baton on to my content.
@@ -183,6 +185,9 @@ public class LevelTile : MonoBehaviour {
 	public void RefreshAllVisuals() {
 		contents.RefreshAllVisuals();
 	}
+    public void RefreshColors() {
+        contents.RefreshColors();
+    }
 
 	public void UpdateBorderLine() {
 		// Selected!
@@ -212,9 +217,6 @@ public class LevelTile : MonoBehaviour {
 		}
 	}
 
-    public void RefreshColors() {
-        contents.RefreshColors();
-    }
 
 	
 	

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof(SpriteRenderer))]
-public class Spikes : Collidable, ISerializableData<SpikesData> {
+public class Spikes : Collidable {
 	// Components
 	[SerializeField] private SpriteRenderer bodySprite=null;
 
@@ -51,7 +51,7 @@ public class Spikes : Collidable, ISerializableData<SpikesData> {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	public SpikesData SerializeAsData() {
+    override public PropData SerializeAsData() {
 		SpikesData data = new SpikesData();
 		data.myRect = MyRect;
 		data.rotation = rotation;

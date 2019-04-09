@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Snack : Edible, ISerializableData<SnackData> {
+public class Snack : Edible {
     // Components
     [SerializeField] private SpriteRenderer sr_aura=null;
 
@@ -75,7 +75,7 @@ public class Snack : Edible, ISerializableData<SnackData> {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    public SnackData SerializeAsData() {
+    override public PropData SerializeAsData() {
         SnackData data = new SnackData {
             pos = pos
         };
