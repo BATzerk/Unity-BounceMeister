@@ -1,4 +1,4 @@
-levelProperties posGlobal:(-28.0, 172.0);designerFlag:3
+levelProperties posGlobal:(-28.0, 172.0);designerFlag:3;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Snack pos:(5.5, 10.5)
 Snack pos:(-2.5, -8.0)

@@ -13,17 +13,19 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 //	private bool IsInvincible { get { return numBouncesLeft < 0; } }
 
 
-	private Color GetBodySpriteColor() {
+    static public Color GetBodyColor(Ground g) { return GetBodyColor(g.colorType, g.isBouncy, g.canBounce, g.doRechargePlayer); }
+    static public Color GetBodyColor(GroundData g) { return GetBodyColor(g.colorType, g.isBouncy, g.canBounce, g.doRechargePlayer); }
+	static public Color GetBodyColor(int colorType, bool isBouncy, bool canBounce, bool doRechargePlayer) {
 		Color color;
 		switch (colorType) {
-			case 1: color = IsBouncy ? new ColorHSB(190/360f, 0.73f, 0.83f).ToColor() : new ColorHSB(190/360f, 0.24f, 0.57f).ToColor(); break; // blue
-			case 2: color = IsBouncy ? new ColorHSB(280/360f, 0.76f, 0.83f).ToColor() : new ColorHSB(280/360f, 0.35f, 0.45f).ToColor(); break; // purple
-			default: color = IsBouncy ? new ColorHSB(76/360f, 0.84f, 0.83f).ToColor() : new ColorHSB(85/360f, 0.37f, 0.42f).ToColor(); break; // green
+			case 1: color = isBouncy ? new ColorHSB(190/360f, 0.73f, 0.83f).ToColor() : new ColorHSB(190/360f, 0.24f, 0.57f).ToColor(); break; // blue
+			case 2: color = isBouncy ? new ColorHSB(280/360f, 0.76f, 0.83f).ToColor() : new ColorHSB(280/360f, 0.35f, 0.45f).ToColor(); break; // purple
+			default: color = isBouncy ? new ColorHSB(76/360f, 0.84f, 0.83f).ToColor() : new ColorHSB(85/360f, 0.37f, 0.42f).ToColor(); break; // green
 		}
-		if (!CanBounce) {
+		if (!canBounce) {
 			color = Color.Lerp(color, Color.black, 0.7f);
 		}
-		if (!DoRechargePlayer) {
+		if (!doRechargePlayer) {
 			color = Color.Lerp(color, Color.black, 0.4f);
 		}
 		return color;
@@ -48,7 +50,7 @@ public sealed class Ground : BaseGround, ISerializableData<GroundData> {
 		ApplyBodySpriteColor();
 	}
 	private void ApplyBodySpriteColor() {
-		bodySprite.color = GetBodySpriteColor();
+		bodySprite.color = GetBodyColor(this);
 	}
 
 

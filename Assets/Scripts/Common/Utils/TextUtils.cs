@@ -11,6 +11,7 @@ public class TextUtils {
     /** Use THIS function instead of float.Parse!! Because... on PlayStation 4, if the system's language is French, it treats periods as commas. We want ONLY to use English-style punctuation throughout all our backend. */
     public static float ParseFloat (string _string) { return float.Parse (_string, parserCulture); }
     public static int ParseInt (string _string) { return int.Parse (_string, parserCulture); }
+    public static bool ParseBool(string str) { return bool.Parse(str); }
 
     /** Converts "123" to {"1","2","3"}. */
     public static string[] StringToStringArray (string str) {

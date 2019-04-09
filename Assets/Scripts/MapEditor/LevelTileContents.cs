@@ -10,17 +10,18 @@ public class LevelTileContents : MonoBehaviour {
 	[SerializeField] private GameObject go_props=null;
 	[SerializeField] private LevelTileDesignerFlag designerFlag=null;
 	[SerializeField] private SpriteMask propsMask=null;
+    private List<SpriteRenderer> srs_grounds=new List<SpriteRenderer>();
     private List<SpriteRenderer> srs_openings;
 	// Properties
 	private bool hasInitializedContent = false;
 	// References
-	//[SerializeField] private Sprite s_gem=null;
     [SerializeField] private Sprite s_ground=null;
     [SerializeField] private Sprite s_snack=null;
 	[SerializeField] private Sprite s_spikes=null;
 	[SerializeField] private TextMesh levelNameText=null; // what's my name, again?
+    private List<GroundData> groundDatas = new List<GroundData>();
+    private LevelData myLD;
     private LevelTile myLevelTile;
-    //	private WorldData worldDataRef;
 
     private MapEditorSettings editorSettings { get { return myLevelTile.MapEditor.MySettings; } }
 
@@ -30,32 +31,38 @@ public class LevelTileContents : MonoBehaviour {
     // ================================================================
     public void Initialize (LevelTile _levelTile) {
 		myLevelTile = _levelTile;
+        myLD = myLevelTile.MyLevelData;
         levelNameText.GetComponent<Renderer>().sortingOrder = 110; // render LevelNameText over its contents.
 
         designerFlag.UpdateDesignerFlagButtonVisuals();
 	}
 	private void InitializeContent () {
-		LevelData ld = myLevelTile.MyLevelData;
-
 		// Set the mask's pos/size!
-		propsMask.transform.localPosition = ld.BoundsLocal.center;
-		GameUtils.SizeSpriteMask (propsMask, ld.BoundsLocal.size);
+		propsMask.transform.localPosition = myLD.BoundsLocal.center;
+		GameUtils.SizeSpriteMask (propsMask, myLD.BoundsLocal.size);
 
 		// Set text string!
-		levelNameText.text = ld.LevelKey;
-		levelNameText.transform.localPosition = -ld.BoundsLocal.size*0.5f; // bottom-left align.
+		levelNameText.text = myLD.LevelKey;
+		levelNameText.transform.localPosition = -myLD.BoundsLocal.size*0.5f; // bottom-left align.
 //		if (GameManagers.Instance.DataManager.mostRecentlySavedLevel_worldIndex == worldDataRef.WorldIndex && GameManagers.Instance.DataManager.mostRecentlySavedLevel_levelKey==levelTileRef.LevelKey) {
 //			levelNameText.color = new Color(1, 0.8f, 0.2f); // If I'm the most recently saved level, make me stand out! :)
 //		}
 
         AddOpeningsSprites();
+        AddPropSprites();
 
-		foreach (PropData propData in ld.allPropDatas) {
+        RefreshAllVisuals();
+
+        // Yes, we have! :)
+        hasInitializedContent = true;
+    }
+    private void AddPropSprites() {
+		foreach (PropData propData in myLD.allPropDatas) {
 			// -- Grounds --
 			if (propData.GetType() == typeof(GroundData)) {
 				GroundData pd = propData as GroundData;
-				Color color = new Color(91/255f,107/255f,67/255f, 0.92f);
-				AddSpriteRenderer("Ground", s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, color);//WHY POSITION? why not center?
+                groundDatas.Add(pd); // also add it to my ref list!
+				srs_grounds.Add(AddSpriteRenderer("Ground", s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, Color.white));//WHY POSITION? why not center?
 			}
 			// -- DamageableGrounds --
 			if (propData.GetType() == typeof(DamageableGroundData)) {
@@ -84,11 +91,6 @@ public class LevelTileContents : MonoBehaviour {
 				newSprite.transform.localEulerAngles = new Vector3(0, 0, spikesData.rotation);
 			}
 		}
-
-		UpdateComponentVisibilities ();
-
-		// Yes, we have! :)
-		hasInitializedContent = true;
 	}
 
 	private SpriteRenderer AddSpriteRenderer(string goName, Sprite sprite, GameObject parentGO, Vector2 pos, Vector2 size, int sortingOrder, Color color) {
@@ -104,10 +106,11 @@ public class LevelTileContents : MonoBehaviour {
 		return sr;
 	}
 
-    public void UpdateComponentVisibilities () {
+    public void RefreshAllVisuals() {
         designerFlag.gameObject.SetActive (editorSettings.DoShowDesignerFlags);
 		levelNameText.gameObject.SetActive (editorSettings.DoShowLevelNames);
 		go_props.SetActive (editorSettings.DoShowLevelProps);
+        RefreshColors();
 		SetMaskEnabled(editorSettings.DoMaskLevelContents);
 	}
 
@@ -117,10 +120,8 @@ public class LevelTileContents : MonoBehaviour {
 	}
     private void AddOpeningsSprites() {
         srs_openings = new List<SpriteRenderer>();
-
-        LevelData ld = myLevelTile.MyLevelData;
-        for (int i=0; i<ld.Neighbors.Count; i++) {
-            AddOpeningsSprite(ld.Neighbors[i]);
+        for (int i=0; i<myLD.Neighbors.Count; i++) {
+            AddOpeningsSprite(myLD.Neighbors[i]);
         }
     }
     private void AddOpeningsSprite(LevelNeighborData ln) {
@@ -179,9 +180,25 @@ public class LevelTileContents : MonoBehaviour {
 		designerFlag.ApplyPosAndSize (rect); // Just pass this along to my designerFlag.
 	}
 
-    public void UpdateOpeningsColors() {
+    public void RefreshColors() {
+        if (!hasInitializedContent) { return; } // Haven't initted content? Do nothin'.
+        // Grounds
+        if (editorSettings.DoShowClusters) { // Color ALL by my CLUSTER!
+            float s = myLD.isClustStart ? 0.6f : 0.34f;
+            Color groundColor = new ColorHSB((20 + myLD.ClusterIndex*60)/255f, s, 0.5f).ToColor();
+            for (int i=0; i<srs_grounds.Count; i++) {
+                srs_grounds[i].color = groundColor;
+            }
+        }
+        else { // Otherwise, color EACH how Ground ACTUALLY looks.
+            //Color groundColor = new Color(91/255f,107/255f,67/255f, 0.92f);
+            for (int i=0; i<srs_grounds.Count; i++) {
+                srs_grounds[i].color = Ground.GetBodyColor(groundDatas[i]);
+            }
+        }
+        // Openings
         for (int i=0; i<srs_openings.Count; i++) {
-            srs_openings[i].color = GetOpeningColor(myLevelTile.MyLevelData.Neighbors[i]);
+            srs_openings[i].color = GetOpeningColor(myLD.Neighbors[i]);
         }
     }
 

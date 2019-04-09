@@ -82,7 +82,7 @@ public class LevelTile : MonoBehaviour {
 
 		contents.Initialize (this);
 		
-		UpdateComponentVisibilities ();
+		RefreshAllVisuals ();
 
 		ApplyPosition ();
 		ApplySize ();
@@ -142,7 +142,7 @@ public class LevelTile : MonoBehaviour {
 		backingColor = new Color (backingColor.r*1.4f, backingColor.g*1.4f, backingColor.b*1.4f, 0.2f);
 		sr_backing.color = backingColor;
 
-		UpdateComponentVisibilities ();
+		RefreshAllVisuals ();
 	}
 
 	public void UpdateVisibilityFromSearchCriteria (string searchString) {
@@ -180,8 +180,8 @@ public class LevelTile : MonoBehaviour {
 	}
 	
 	
-	public void UpdateComponentVisibilities() {
-		contents.UpdateComponentVisibilities();
+	public void RefreshAllVisuals() {
+		contents.RefreshAllVisuals();
 	}
 
 	public void UpdateBorderLine() {
@@ -212,8 +212,8 @@ public class LevelTile : MonoBehaviour {
 		}
 	}
 
-    public void UpdateOpeningsColors() {
-        contents.UpdateOpeningsColors();
+    public void RefreshColors() {
+        contents.RefreshColors();
     }
 
 	

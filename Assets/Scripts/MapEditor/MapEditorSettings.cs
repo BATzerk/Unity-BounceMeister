@@ -5,27 +5,30 @@ using UnityEngine;
 public class MapEditorSettings {
 	public bool DoMaskLevelContents;
 	public bool DoShowInstructions;
+    public bool DoShowClusters;
 	public bool DoShowDesignerFlags;
-	public bool DoShowLevelNames;
-	public bool DoShowLevelTileStars;
+    public bool DoShowLevelEdibles;
+    public bool DoShowLevelNames;
 	public bool DoShowLevelProps;
 
 
 	public MapEditorSettings() {
-		DoMaskLevelContents = SaveStorage.GetInt (SaveKeys.MapEditor_DoMaskLevelContents, 1) == 1;
-		DoShowInstructions = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowInstructions, 0) == 1;
-		DoShowDesignerFlags = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowDesignerFlags, 0) == 1;
-		DoShowLevelNames = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelNames, 1) == 1;
-		DoShowLevelTileStars = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelTileStars, 1) == 1;
-		DoShowLevelProps = SaveStorage.GetInt (SaveKeys.MapEditor_DoShowLevelProps, 1) == 1;
+		DoMaskLevelContents = SaveStorage.GetBool (SaveKeys.MapEditor_DoMaskLevelContents, true);
+        DoShowClusters = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowClusters, true);
+        DoShowDesignerFlags = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowDesignerFlags, false);
+        DoShowInstructions = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowInstructions, true);
+        DoShowLevelEdibles = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowLevelEdibles, true);
+        DoShowLevelNames = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowLevelNames, true);
+		DoShowLevelProps = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowLevelProps, true);
 	}
 	public void SaveAll () {
-		SaveStorage.SetInt (SaveKeys.MapEditor_DoMaskLevelContents, DoMaskLevelContents?1:0);
-		SaveStorage.SetInt (SaveKeys.MapEditor_DoShowInstructions, DoShowInstructions?1:0);
-		SaveStorage.SetInt (SaveKeys.MapEditor_DoShowDesignerFlags, DoShowDesignerFlags?1:0);
-		SaveStorage.SetInt (SaveKeys.MapEditor_DoShowLevelNames, DoShowLevelNames?1:0);
-		SaveStorage.SetInt (SaveKeys.MapEditor_DoShowLevelTileStars, DoShowLevelTileStars?1:0);
-		SaveStorage.SetInt (SaveKeys.MapEditor_DoShowLevelProps, DoShowLevelProps?1:0);
+		SaveStorage.SetBool (SaveKeys.MapEditor_DoMaskLevelContents, DoMaskLevelContents);
+        SaveStorage.SetBool (SaveKeys.MapEditor_DoShowClusters, DoShowClusters);
+        SaveStorage.SetBool (SaveKeys.MapEditor_DoShowDesignerFlags, DoShowDesignerFlags);
+        SaveStorage.SetBool (SaveKeys.MapEditor_DoShowInstructions, DoShowInstructions);
+        SaveStorage.SetBool (SaveKeys.MapEditor_DoShowLevelEdibles, DoShowLevelEdibles);
+        SaveStorage.SetBool (SaveKeys.MapEditor_DoShowLevelNames, DoShowLevelNames);
+		SaveStorage.SetBool (SaveKeys.MapEditor_DoShowLevelProps, DoShowLevelProps);
 	}
 
 

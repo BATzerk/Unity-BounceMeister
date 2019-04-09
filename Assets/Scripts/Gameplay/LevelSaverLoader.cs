@@ -67,8 +67,8 @@ static public class LevelSaverLoader {
 	private static string GetLevelPropertiesLine (LevelData ld) {
 		string returnString = LEVEL_PROPERTIES + " ";
 		returnString += "posGlobal:" + ld.PosGlobal;
-		returnString += ";";
-		returnString += "designerFlag:" + ld.DesignerFlag;
+		returnString += ";designerFlag:" + ld.DesignerFlag;
+        if (ld.isClustStart) { returnString += ";isClustStart:" + ld.isClustStart; }
 		return returnString;
 	}
 
@@ -423,6 +423,9 @@ static public class LevelSaverLoader {
 				else if (name == "designerFlag") {
 					ld.SetDesignerFlag(TextUtils.ParseInt(value));
 				}
+                else if (name == "isClustStart") {
+                    ld.isClustStart = TextUtils.ParseBool(value);
+                }
 			}
 			catch (Exception e) {
 				Debug.LogError ("Level file has a parameter we don't recognize: " + ld.LevelKey + ", " + name + ", " + value + ". " + e.ToString ());

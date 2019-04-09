@@ -12,8 +12,10 @@ public class LevelData {
 	// Properties
 	public bool hasPlayerBeenHere; // false until the player enters me!
 	public bool isConnectedToStart; // true if I'm connected to the starting level of this world. Used to determine to render me on zooming the camera out.
+    public bool isClustStart;// { get; private set; }
 	public string levelKey; // everything we use to reference this level! Including the level's file name (minus the .txt suffix).
 	public int designerFlag; // for the level designer! We can flag any level to be like "testing" or "good" or etc.
+    public int ClusterIndex=-1;
 	public bool WasUsedInSearchAlgorithm { get; set; }
 	public Vector2 posGlobal; // my position, global to ALL worlds! These values get big (up to around 70,000)!
     public List<LevelNeighborData> Neighbors; // EXACTLY like Openings, except contains refs to other levels (which can totally be null if there's no lvl at an opening)!

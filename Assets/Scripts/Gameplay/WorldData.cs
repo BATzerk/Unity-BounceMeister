@@ -7,12 +7,13 @@ using System.IO;
 public class WorldData {
 	// Components
 	public Dictionary<string, LevelData> levelDatas; // ALL level datas in this world! Loaded up when WE'RE loaded up.
+    public List<LevelClusterData> clusters;
 	// Properties
 	public bool isWorldUnlocked;
 	public int worldIndex; // starts at 0.
     public int NumSnacksCollected { get; private set; }
     public int NumSnacksTotal { get; private set; }
-    private Rect boundsRectAllLevels; // For the release version of Linelight, it doesn't make sense to have TWO rects. But in development, a lot of worlds' levels aren't used. So we have to make the distinction.
+    private Rect boundsRectAllLevels; // For the finished game, it doesn't make sense to have TWO rects. But in development, a lot of worlds' levels aren't used. So we have to make the distinction.
 	private Rect boundsRectPlayableLevels; // For determining LevelSelect view and WorldSelect view.
 
 	// Getters
@@ -52,7 +53,7 @@ public class WorldData {
 	/** Call this immediately after we've got our list of LevelDatas. This function is essential: it sets the fundamental properties of all my LevelDatas, as well as my own world bounds rects. */
 	public void SetAllLevelDatasFundamentalProperties() {
         UpdateAllLevelsOpeningsAndNeighbors();
-		SetLevelsIsConnectedToStart();
+        RecalculateLevelClusters();
 		UpdateWorldBoundsRects();
 //		SetAllLevelDatasPosWorld (); // now that I know MY center position, let's tell all my LevelDatas their posWorld (based on their global position)!
     }
@@ -86,6 +87,45 @@ public class WorldData {
 //			ld.SetPosWorld (new Vector2 (ld.posGlobal.x-CenterPos.x, ld.posGlobal.y-CenterPos.y));
 //		}
 //	}
+    private void RecalculateLevelClusters() {
+        // Reset Levels' ClusterIndex.
+        foreach (LevelData ld in levelDatas.Values) {
+            ld.ClusterIndex = -1;
+            ld.WasUsedInSearchAlgorithm = false;
+        }
+        
+        // Remake Clusters!
+        clusters = new List<LevelClusterData>();
+        foreach (LevelData ld in levelDatas.Values) {
+            if (ld.WasUsedInSearchAlgorithm) { continue; } // Safety check.
+            // If this is a ClusterStart level...!
+            if (ld.isClustStart) {
+                // Add a new Cluster, and populate it!
+                LevelClusterData newClust = new LevelClusterData(clusters.Count);
+                clusters.Add(newClust);
+                RecursivelyAddLevelToCluster(ld, newClust);
+            }
+        }
+        
+        // Reset Levels' WasUsedInSearchAlgorithm.
+        foreach (LevelData ld in levelDatas.Values) {
+            ld.WasUsedInSearchAlgorithm = false;
+        }
+    }
+    private void RecursivelyAddLevelToCluster(LevelData ld, LevelClusterData cluster) {
+        if (ld.WasUsedInSearchAlgorithm) { return; } // This LevelData was used? Ignore it.
+        // Update Level's values, and add to Cluster's list!
+        ld.ClusterIndex = cluster.ClusterIndex;
+        ld.WasUsedInSearchAlgorithm = true;
+        cluster.levels.Add(ld);
+        // Now try for all its neighbors!
+        for (int i=0; i<ld.Neighbors.Count; i++) {
+            if (ld.Neighbors[i].IsLevelTo) {
+                RecursivelyAddLevelToCluster(ld.Neighbors[i].LevelTo, cluster);
+            }
+        }
+    }
+    
 
 	// ================================================================
 	//  Getters
@@ -108,15 +148,6 @@ public class WorldData {
 			return null;
 		}
 	}
-	///** Look through every link and see if the provided key is used in ANY link. */
-	//public bool DoesLevelLinkToAnotherLevel(string levelKey) {
-		//for (int i=0; i<levelLinkDatas.Count; i++) {
-		//	if (levelLinkDatas[i].DoesLinkLevel(levelKey)) { // It's used in one! Return true.
-		//		return true;
-		//	}
-		//}
-	//	return false; // It's not used in any. Return false.
-	//}
 
 	public Vector2 GetBrandNewLevelPos () {
 		// Return where the MapEditor camera was last looking!!
@@ -140,9 +171,6 @@ public class WorldData {
         LevelData neighbor = GetLevelAtSide(originLD, opening.posCenter, opening.side);
         if (neighbor == null) { return null; } // NOTHing there? Return null!
         // Ok, if this neighbor HAS a corresponding opening, return it!!
-        //Vector2 levelPosDiff = originLD.PosGlobal - neighbor.PosGlobal;
-        //Vector2 opPosStartRel = opening.posStart + levelPosDiff;
-        //Vector2 opPosEndRel = opening.posEnd + levelPosDiff;
         Rect opRect = opening.GetCollRectGlobal(originLD.PosGlobal);
         for (int i=0; i<neighbor.Openings.Count; i++) {
             Rect otherOpRect = neighbor.Openings[i].GetCollRectGlobal(neighbor.PosGlobal);
@@ -345,22 +373,6 @@ public class WorldData {
         foreach (LevelData ld in levelDatas.Values) { ld.CalculateOpenings(); }
         foreach (LevelData ld in levelDatas.Values) { ld.UpdateNeighbors(); }
     }
-    // TODO: This.
-	private void SetLevelsIsConnectedToStart() {
-		// Tell all of them they're NOT first.
-		foreach (LevelData ld in levelDatas.Values) { ld.isConnectedToStart = false; }
-		// Get the special ones that are.
-		LevelData startLevel = GetLevelData (GameProperties.GetFirstLevelName (worldIndex));
-		// Firsht off, if this start level doesn't exist, don't continue doing anything. This whole world is total anarchy.
-		if (startLevel != null) {
-			List<LevelData> levelsConnectedToStart = LevelUtils.GetLevelsConnectedToLevel (this, startLevel);
-			// Tell these levels they're connected to the start dude!
-			startLevel.isConnectedToStart = true;
-			for (int i=0; i<levelsConnectedToStart.Count; i++) {
-				levelsConnectedToStart [i].isConnectedToStart = true;
-			}
-		}
-	}
 
 
 	// ================================================================
@@ -390,15 +402,25 @@ public class WorldData {
 
 
 
-
-
-
-
-
-
 }
 
 
-
+/*
+    private void SetLevelsIsConnectedToStart() {
+        // Tell all of them they're NOT first.
+        foreach (LevelData ld in levelDatas.Values) { ld.isConnectedToStart = false; }
+        // Get the special ones that are.
+        LevelData startLevel = GetLevelData (GameProperties.GetFirstLevelName (worldIndex));
+        // Firsht off, if this start level doesn't exist, don't continue doing anything. This whole world is total anarchy.
+        if (startLevel != null) {
+            List<LevelData> levelsConnectedToStart = LevelUtils.GetLevelsConnectedToLevel (this, startLevel);
+            // Tell these levels they're connected to the start dude!
+            startLevel.isConnectedToStart = true;
+            for (int i=0; i<levelsConnectedToStart.Count; i++) {
+                levelsConnectedToStart [i].isConnectedToStart = true;
+            }
+        }
+    }
+    */
 
 

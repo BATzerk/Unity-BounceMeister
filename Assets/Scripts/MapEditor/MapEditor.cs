@@ -364,6 +364,25 @@ public class MapEditor : MonoBehaviour {
         newLD.SetPosGlobal(pos);
         SceneHelper.OpenGameplayScene(newLD);
     }
+    
+    // TODO: Test this, yo. And explain why we even have it.
+    private void SnapTilesSelectedToGrid() {
+        foreach (LevelTile tile in tilesSelected) {
+            Vector2 pos = tile.MyLevelData.PosGlobal;
+            pos = SnapToGrid(pos);
+            tile.MyLevelData.SetPosGlobal(pos);
+        }
+    }
+    private void ToggleTilesSelectedIsClustStart() {
+        // Toggle and save 'em all.
+        foreach (LevelTile tile in tilesSelected) {
+            LevelData ld = tile.MyLevelData;
+            ld.isClustStart = !ld.isClustStart;
+            LevelSaverLoader.UpdateLevelPropertiesInLevelFile(ld);
+        }
+        // Reload the world, as our Clusters may have changed from this.
+        ReloadAllWorldDatasAndScene();
+    }
 
 
 
@@ -392,36 +411,40 @@ public class MapEditor : MonoBehaviour {
 		}
 	}
 
-	private void UpdateComponentVisibilities() {
-		for (int i=0; i<CurrWorldLevelTiles.Count; i++) { CurrWorldLevelTiles[i].UpdateComponentVisibilities(); }
+	private void RefreshAllTileVisuals() {
+		for (int i=0; i<CurrWorldLevelTiles.Count; i++) { CurrWorldLevelTiles[i].RefreshAllVisuals(); }
 //		for (int i=0; i<levelLinkViews.Count; i++) { levelLinkViews[i].UpdateComponentVisibilities(); }
 	}
-    private void ToggleLevelContentsMasked() {
+    private void TogSettings_LevelContentMasks() {
         MySettings.DoMaskLevelContents = !MySettings.DoMaskLevelContents;
         OnChangeSettings();
     }
-    private void ToggleLevelTileDesignerFlagsVisibility() {
+    private void TogSettings_DoShowClusters() {
+        MySettings.DoShowClusters = !MySettings.DoShowClusters;
+        OnChangeSettings();
+    }
+    private void TogSettings_DoShowDesignerFlags() {
         MySettings.DoShowDesignerFlags = !MySettings.DoShowDesignerFlags;
         OnChangeSettings();
     }
-    private void ToggleLevelTileNamesVisibility() {
+    private void TogSettings_DoShowLevelNames() {
         MySettings.DoShowLevelNames = !MySettings.DoShowLevelNames;
         OnChangeSettings();
     }
-    private void ToggleLevelTileStarsVisibility() {
-        MySettings.DoShowLevelTileStars = !MySettings.DoShowLevelTileStars;
+    private void TogSettings_DoShowEdibles() {
+        MySettings.DoShowLevelEdibles = !MySettings.DoShowLevelEdibles;
         OnChangeSettings();
     }
-    private void ToggleLevelPropsVisibility() {
+    private void TogSettings_DoShowProps() {
         MySettings.DoShowLevelProps = !MySettings.DoShowLevelProps;
         OnChangeSettings();
     }
-    private void ToggleInstructionsVisibility() {
+    private void TogSettings_DoShowInstructions() {
         MySettings.DoShowInstructions = !MySettings.DoShowInstructions;
         OnChangeSettings();
     }
     private void OnChangeSettings() {
-        UpdateComponentVisibilities();
+        RefreshAllTileVisuals();
         MySettings.SaveAll();
     }
 
@@ -555,6 +578,14 @@ public class MapEditor : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.N)) {
                 AddAndStartNewLevel();
             }
+            // CONTROL + P = Snap tilesSelected to grid!
+            else if (Input.GetKeyDown(KeyCode.P)) {
+                SnapTilesSelectedToGrid();
+            }
+            // CONTROL + U = Toggle tilesSelected isClustStart!
+            else if (Input.GetKeyDown(KeyCode.U)) {
+                ToggleTilesSelectedIsClustStart();
+            }
             // CONTROL + J = Open LevelJump!
             else if (Input.GetKeyDown(KeyCode.J)) {
                 SceneHelper.OpenScene(SceneNames.LevelJump);
@@ -584,12 +615,13 @@ public class MapEditor : MonoBehaviour {
         // NO alt/control/shift...!
         else {
 		    // Visibility togglin'
-		    if (Input.GetKeyDown(KeyCode.F)) { ToggleLevelTileDesignerFlagsVisibility(); } // F = toggle flags
-		    else if (Input.GetKeyDown(KeyCode.N)) { ToggleLevelTileNamesVisibility(); } // N = toggle names
-		    else if (Input.GetKeyDown(KeyCode.P)) { ToggleLevelPropsVisibility(); } // P = toggle props
-		    else if (Input.GetKeyDown(KeyCode.M)) { ToggleLevelContentsMasked(); } // M = toggle levelTile contents being masked
-		    else if (Input.GetKeyDown(KeyCode.T)) { ToggleLevelTileStarsVisibility(); } // T = toggle stars
-		    else if (Input.GetKeyDown(KeyCode.I)) { ToggleInstructionsVisibility(); } // I = toggle instructions
+            if (Input.GetKeyDown(KeyCode.U)) { TogSettings_DoShowClusters(); } // U = toggle LevelCluster visuals
+		    else if (Input.GetKeyDown(KeyCode.F)) { TogSettings_DoShowDesignerFlags(); } // F = toggle DesignerFlags
+            else if (Input.GetKeyDown(KeyCode.E)) { TogSettings_DoShowEdibles(); } // E = toggle Edibles
+            else if (Input.GetKeyDown(KeyCode.N)) { TogSettings_DoShowLevelNames(); } // N = toggle Level names
+            else if (Input.GetKeyDown(KeyCode.I)) { TogSettings_DoShowInstructions(); } // I = toggle instructions
+            else if (Input.GetKeyDown(KeyCode.P)) { TogSettings_DoShowProps(); } // P = toggle Props
+            else if (Input.GetKeyDown(KeyCode.M)) { TogSettings_LevelContentMasks(); } // M = toggle LevelTile contents being masked
 		
 		    // LOAD DIFFERENT WORLDS
 		    else if (Input.GetKeyDown(KeyCode.Alpha0)) { SetCurrWorld(0); }
@@ -641,7 +673,7 @@ public class MapEditor : MonoBehaviour {
 			CurrentWorldData.SetAllLevelDatasFundamentalProperties();
             // Update ALL Tiles' visuals.
 			foreach (LevelTile tile in CurrWorldLevelTiles) {
-				tile.UpdateOpeningsColors();
+				tile.RefreshColors();
 			}
 
 //			// Mouse up = release all levelTilesSelected!
