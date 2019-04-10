@@ -1,25 +1,26 @@
 levelProperties posGlobal:(128.0, -36.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-DamageableGround myRect:(x:10.00, y:8.00, width:6.00, height:2.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:True
-Ground myRect:(x:-11.50, y:7.00, width:9.00, height:14.00);colorType:0
-Ground myRect:(x:3.50, y:19.00, width:45.00, height:2.00);colorType:0
-Ground myRect:(x:-18.00, y:-14.00, width:4.00, height:10.00);colorType:0
-Ground myRect:(x:22.00, y:-1.00, width:8.00, height:38.00);colorType:0
-Ground myRect:(x:18.00, y:-16.00, width:12.00, height:10.00);colorType:0
-Ground myRect:(x:3.00, y:-19.00, width:46.00, height:2.00);colorType:0
-Ground myRect:(x:-25.50, y:0.00, width:3.00, height:40.00);colorType:0
-Ground myRect:(x:-20.00, y:6.00, width:8.00, height:16.00);colorType:0
-Ground myRect:(x:3.00, y:-2.50, width:20.00, height:1.00);colorType:0
-Ground myRect:(x:14.00, y:1.00, width:2.00, height:16.00);colorType:0
-Ground myRect:(x:-7.50, y:-0.50, width:1.00, height:5.00);colorType:0
+DamageableGround myRect:(x:10.00, y:8.00, width:6.00, height:2.00);doRegen:True;dieFromPlayerLeave:True
+Ground myRect:(x:-11.50, y:7.00, width:9.00, height:14.00)
+Ground myRect:(x:3.50, y:19.00, width:45.00, height:2.00)
+Ground myRect:(x:-18.00, y:-14.00, width:4.00, height:10.00)
+Ground myRect:(x:22.00, y:-1.00, width:8.00, height:38.00)
+Ground myRect:(x:18.00, y:-16.00, width:12.00, height:10.00)
+Ground myRect:(x:3.00, y:-19.00, width:46.00, height:2.00)
+Ground myRect:(x:-25.50, y:0.00, width:3.00, height:40.00)
+Ground myRect:(x:-20.00, y:6.00, width:8.00, height:16.00)
+Ground myRect:(x:3.00, y:-2.50, width:20.00, height:1.00)
+Ground myRect:(x:14.00, y:1.00, width:2.00, height:16.00)
+Ground myRect:(x:-7.50, y:-0.50, width:1.00, height:5.00)
 Lift myRect:(x:-2.00, y:-13.00, width:12.00, height:4.00);rotation:0;strength:0.08
 Lift myRect:(x:0.00, y:4.00, width:8.00, height:10.00);rotation:0;strength:0.08
 Platform myRect:(x:-14.00, y:-9.50, width:4.00, height:1.00)
 Platform myRect:(x:9.00, y:-11.50, width:6.00, height:1.00)
-Platform myRect:(x:-21.00, y:-17.50, width:2.00, height:1.00)
+Platform myRect:(x:-22.00, y:-17.50, width:4.00, height:1.00)
 PlayerStart pos:(-16.8, -7.7)
 Spikes myRect:(x:11.50, y:-16.00, width:4.00, height:1.00);rotation:90
 Spikes myRect:(x:-1.00, y:-17.50, width:30.00, height:1.00);rotation:0
 Spikes myRect:(x:-6.50, y:6.00, width:16.00, height:1.00);rotation:270
 Spikes myRect:(x:2.50, y:-1.50, width:21.00, height:1.00);rotation:0
 Spikes myRect:(x:-15.50, y:-16.00, width:4.00, height:1.00);rotation:270
+

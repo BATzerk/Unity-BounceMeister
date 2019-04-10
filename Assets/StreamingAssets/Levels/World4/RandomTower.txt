@@ -34,7 +34,7 @@ Lift myRect:(x:-14.00, y:5.00, width:6.00, height:8.00);rotation:0;strength:0.08
 Lift myRect:(x:7.00, y:21.00, width:14.00, height:2.00);rotation:0;strength:0.08
 Lift myRect:(x:17.00, y:10.00, width:6.00, height:16.00);rotation:0;strength:0.08
 Lift myRect:(x:17.00, y:33.00, width:6.00, height:14.00);rotation:0;strength:0.08
-Platform myRect:(x:-16.00, y:39.50, width:12.00, height:1.00);isPlayerRespawn:True
+Platform myRect:(x:-16.00, y:39.50, width:12.00, height:1.00);canDropThru:False;isPlayerRespawn:True
 Platform myRect:(x:16.00, y:39.50, width:4.00, height:1.00);isPlayerRespawn:True
 Platform myRect:(x:-16.00, y:34.50, width:12.00, height:1.00);isPlayerRespawn:True
 PlayerStart pos:(-19.0, -14.7)
@@ -71,3 +71,4 @@ Spikes myRect:(x:-3.50, y:5.50, width:13.00, height:1.00);rotation:270
 Spikes myRect:(x:-6.50, y:-5.00, width:2.00, height:1.00);rotation:90
 Spikes myRect:(x:-7.50, y:5.50, width:13.00, height:1.00);rotation:90
 Spikes myRect:(x:-10.50, y:23.50, width:13.00, height:1.00);rotation:90
+

@@ -8,8 +8,7 @@ Spikes myRect:(x:-9.50, y:-6.50, width:1.00, height:1.00);rotation:180
 Spikes myRect:(x:-8.50, y:1.00, width:14.00, height:1.00);rotation:270
 Spikes myRect:(x:-10.50, y:5.00, width:22.00, height:1.00);rotation:90
 Spikes myRect:(x:7.50, y:-3.00, width:22.00, height:1.00);rotation:90
-Snack pos:(3.0, -10.5)
-Snack pos:(5.0, -10.5)
+Snack pos:(4.0, -11.0)
 PlayerStart pos:(-13.7, -10.3)
 Ground myRect:(x:3.00, y:13.00, width:26.00, height:10.00)
 Ground myRect:(x:-0.50, y:-6.50, width:1.00, height:11.00)
@@ -22,3 +21,4 @@ Ground myRect:(x:0.50, y:-18.00, width:51.00, height:4.00);canEatGems:False
 Ground myRect:(x:4.00, y:-15.00, width:8.00, height:6.00);canEatGems:False
 DamageableGround myRect:(x:-5.00, y:-6.50, width:4.00, height:1.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
 DamageableGround myRect:(x:4.00, y:-6.50, width:4.00, height:1.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
+

@@ -17,7 +17,7 @@ abstract public class Player : PlatformCharacter {
 	protected Vector2 GravityNeutral = new Vector2(0, -0.042f);
 	virtual protected float InputScaleX { get { return 0.1f; } }
 
-	virtual protected float JumpForce { get { return 0.58f; } }
+	virtual protected float JumpForce { get { return 0.61f; } }
 	virtual protected float WallSlideMinYVel { get { return -0.13f; } }
 	private readonly Vector2 WallKickVel = new Vector2(0.5f, 0.52f);
 	private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);

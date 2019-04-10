@@ -1,18 +1,18 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/PropDatas.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/Player.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="259" Column="17" />
+      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="52" Column="1" />
       <File FileName="Assets/Scripts/Gameplay/LevelData.cs" Line="6" Column="14" />
-      <File FileName="Assets/Scripts/Gameplay/LevelSaverLoader.cs" Line="100" Column="100" />
+      <File FileName="Assets/Scripts/Gameplay/LevelSaverLoader.cs" Line="403" Column="48" />
       <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="7" Column="5" />
-      <File FileName="Assets/Scripts/Gameplay/Level.cs" Line="19" Column="69" />
-      <File FileName="Assets/Scripts/Managers/DataManager.cs" Line="10" Column="40" />
-      <File FileName="Assets/Scripts/Gameplay/Props/LevelDoor.cs" Line="24" Column="37" />
+      <File FileName="Assets/Scripts/MapEditor/LevelTileContents.cs" Line="46" Column="93" />
+      <File FileName="Assets/Scripts/MapEditor/MapEditor.cs" Line="368" Column="39" />
+      <File FileName="Assets/Scripts/Gameplay/Level.cs" Line="146" Column="52" />
+      <File FileName="Assets/Scripts/Gameplay/Props/ProgressGate.cs" Line="42" Column="72" />
       <File FileName="Assets/Scripts/Gameplay/Props/CameraBounds.cs" Line="47" Column="31" />
-      <File FileName="Assets/Scripts/Gameplay/GameCameraController.cs" Line="106" Column="40" />
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="40" Column="69" />
-      <File FileName="Assets/Scripts/Gameplay/PropDatas.cs" Line="68" Column="29" />
+      <File FileName="Assets/Scripts/Gameplay/Props/GridSnapPosScale.cs" Line="54" Column="17" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="19" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

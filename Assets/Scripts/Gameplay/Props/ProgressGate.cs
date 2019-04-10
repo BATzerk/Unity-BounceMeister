@@ -18,8 +18,6 @@ public class ProgressGate : BaseGround {
 	// ----------------------------------------------------------------
 	public void Initialize(Level _myLevel, ProgressGateData data) {
 		base.BaseGroundInitialize(_myLevel, data);
-        
-        myText.GetComponent<Renderer>().sortingOrder = 11;
 
         numSnacksReq = data.numSnacksReq;
         UpdateText();
@@ -27,6 +25,9 @@ public class ProgressGate : BaseGround {
 	}
     override protected void Start() {
         base.Start();
+        
+        myText.GetComponent<Renderer>().sortingOrder = 11;
+        
         // Add event listeners!
         GameManagers.Instance.EventManager.SnacksCollectedChangedEvent += OnSnacksCollectedChanged;
     }
@@ -49,7 +50,7 @@ public class ProgressGate : BaseGround {
     //  Doers
     // ----------------------------------------------------------------
     private void UpdateText() {
-        myText.text = "snacks:\n" + NumSnacksColl + " / " + numSnacksReq;
+        myText.text = NumSnacksColl + " / " + numSnacksReq;
     }
     private void UpdateIsOpen() {
         bool isOpen = NumSnacksColl >= numSnacksReq;
@@ -57,7 +58,7 @@ public class ProgressGate : BaseGround {
     }
 	private void SetIsOpen(bool isOpen) {
 		myCollider.enabled = !isOpen;
-        Color bodyColor = Color.green;
+        Color bodyColor = new Color255(35, 94, 42).ToColor();
 		if (isOpen) {
             bodySprite.color = new Color(bodyColor.r,bodyColor.g,bodyColor.b, 0.1f);
         }

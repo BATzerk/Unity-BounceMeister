@@ -9,4 +9,3 @@ ProgressGate myRect:(x:12.00, y:-14.50, width:8.00, height:3.00);numSnacksReq:2
 Snack pos:(12.5, -8.0)
 Snack pos:(17.0, -8.0)
 LevelDoor pos:(-9.5, -14.5);myID:0;worldToIndex:1;levelToKey:Test2;levelToDoorID:0
-

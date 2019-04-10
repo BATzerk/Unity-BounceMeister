@@ -57,6 +57,11 @@ public class WorldData {
 		UpdateWorldBoundsRects();
 //		SetAllLevelDatasPosWorld (); // now that I know MY center position, let's tell all my LevelDatas their posWorld (based on their global position)!
     }
+
+    private void UpdateAllLevelsOpeningsAndNeighbors() {
+        foreach (LevelData ld in levelDatas.Values) { ld.CalculateOpenings(); }
+        foreach (LevelData ld in levelDatas.Values) { ld.UpdateNeighbors(); }
+    }
 	private void UpdateWorldBoundsRects () {
 		// Calculate my boundsRectAllLevels so I can know when the camera is lookin' at me!
 		boundsRectAllLevels = new Rect (0,0, 0,0);
@@ -141,17 +146,17 @@ public class WorldData {
 
     public LevelData GetLevelData (string key, bool doMakeOneIfItDoesntExist=false) {
 		if (levelDatas.ContainsKey(key)) {
-			return levelDatas [key];
+			return levelDatas[key];
 		}
 		if (doMakeOneIfItDoesntExist) {
-			return AddLevelData(key);
+            return AddNewLevel(key);
 		}
 		else {
 			return null;
 		}
 	}
 
-	public Vector2 GetBrandNewLevelPos () {
+	private Vector2 GetBrandNewLevelPos() {
 		// Return where the MapEditor camera was last looking!!
 		return new Vector2 (SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosX), SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosY));
 	}
@@ -307,7 +312,7 @@ public class WorldData {
 				string fileName = file.Name.Substring(0, file.Name.Length-4); // Remove the ".txt".
 				if (fileName == "_LevelLinks") { continue; } // Ignore the _LevelLinks.txt file.
 				string levelKey = fileName;
-				AddLevelData (levelKey);
+				AddLevelFromFile (levelKey);
 			}
 		}
 		else {
@@ -328,53 +333,45 @@ public class WorldData {
         //		foreach (TextAsset t in levelFiles) {
         //			if (t.name == "_LevelLinks") { continue; } // Ignore the _LevelLinks.txt file.
         //			string levelKey = t.name;
-        //			AddLevelData (levelKey);
+        //			AddLevelFromFile (levelKey);
         //		}
     }
-	private LevelData AddLevelData (string levelKey) {
+	private LevelData AddLevelFromFile(string levelKey) {
 		LevelData newLevelData = new LevelData(this, levelKey);
 		LevelSaverLoader.LoadLevelDataFromItsFile (newLevelData);
-		levelDatas.Add (levelKey, newLevelData);
+		levelDatas.Add(levelKey, newLevelData);
 		return newLevelData;
 	}
 	public void ReloadLevelData(string levelKey) {
-		// FIRSTLY, check if this brah exists. If now, make 'im first!
-		if (!levelDatas.ContainsKey (levelKey)) {
-			AddLevelData (levelKey);
-		}
-		// If it DOES already exist, then reload this guy!
-		else {
-			LevelData levelData = GetLevelData(levelKey);
-			// Reload all of this levelData's contents! (WITHOUT remaking it or anything-- it's important to retain all references to it!)
-			LevelSaverLoader.LoadLevelDataFromItsFile(levelData);
-		}
-		// Update our world bounds! NOTE!! I don't know why we call this. If we call this, it would mean we also probably must call it along with everything else in SetAllLevelDatasFundamentalProperties.
-		UpdateWorldBoundsRects ();
+        // Safety check.
+        if (!levelDatas.ContainsKey(levelKey)) {
+            Debug.LogWarning("Can't reload LevelData; doesn't exist. World: " + worldIndex + ", LevelKey: " + levelKey);
+            return;
+        }
+		LevelData levelData = GetLevelData(levelKey);
+		// Reload all of this levelData's contents! (WITHOUT remaking it or anything-- it's important to retain all references to it!)
+		LevelSaverLoader.LoadLevelDataFromItsFile(levelData);
+        // Refresh fundamental world/level properties!
+        SetAllLevelDatasFundamentalProperties();
 	}
 
 
-	public LevelData CreateLevelDataIfKeyDoesntExist(string levelKey) {
-		LevelData levelData = GetLevelData (levelKey);
-		// If there ISN'T a level with this key...!!
-		if (levelData == null) {
-			// MAKE one!!
-			levelData = AddLevelData (levelKey);
-			// Set its pos to somewhere convenient!
-			levelData.SetPosGlobal(GetBrandNewLevelPos ());
-			// Update our boundsRects to include the new guy!
-			AddLevelBoundsToWorldBoundsRects (levelData);
-//			// Update who the most recently saved level is! Note: HACKY. We didn't actually *save* anything yet.
-//			GameManagers.Instance.DataManager.mostRecentlySavedLevel_worldIndex = WorldIndex;
-//			GameManagers.Instance.DataManager.mostRecentlySavedLevel_levelKey = levelKey;
-		}
-		return levelData;
+	private LevelData AddNewLevel(string levelKey) {
+        if (GetLevelData(levelKey) != null) { // Safety check.
+            Debug.LogError("Whoa, trying to make a Level with key: " + levelKey + ", but one already exists!");
+            return null;
+        }
+		// Make/populate/add it!
+		LevelData ld = new LevelData(this, levelKey);
+        ld.SetPosGlobal(GetBrandNewLevelPos());
+        LevelSaverLoader.AddEmptyLevelElements(ref ld);
+        levelDatas.Add(levelKey, ld);
+        // Refresh fundamental world/level properties!
+        SetAllLevelDatasFundamentalProperties();
+        // Save the file!
+        LevelSaverLoader.SaveLevelFile(ld);
+		return ld;
 	}
-
-
-    private void UpdateAllLevelsOpeningsAndNeighbors() {
-        foreach (LevelData ld in levelDatas.Values) { ld.CalculateOpenings(); }
-        foreach (LevelData ld in levelDatas.Values) { ld.UpdateNeighbors(); }
-    }
 
 
 	// ================================================================

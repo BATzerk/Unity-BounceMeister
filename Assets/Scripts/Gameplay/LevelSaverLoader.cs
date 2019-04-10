@@ -62,7 +62,6 @@ static public class LevelSaverLoader {
 			Debug.LogError("Level file not found! World " + worldIndex + ", levelKey " + levelKey + "\nfilePath: \"" + filePath + "\"");
 			return null;
 		}
-
 	}
 
 	private static string GetLevelPropertiesLine (LevelData ld) {
@@ -79,13 +78,13 @@ static public class LevelSaverLoader {
 	// ================================================================
 	/** I couldn't decide where this function belonged. It's here in LevelData (instead of in Level, or in WorldData) so it can be right by the loading function. */
 	static private string fs; // Messy. I don't like how this is out here. This could be avoided if we were able to use anonymous functions.
-	static public void SaveLevelFile (Level l) { SaveLevelFileAs (l, l.WorldIndex, l.LevelKey); }
-	static public void SaveLevelFileAs (Level l, int worldIndex,string levelKey) {
-		LevelData ld = l.SerializeAsData();
-		SaveLevelFileAs(ld, worldIndex, levelKey);
-        // Update ALL WorldData level stuff (actually just for openings/neighbors atm).
-        GameManagers.Instance.DataManager.GetWorldData(worldIndex).SetAllLevelDatasFundamentalProperties();
-	}
+    static public void SaveLevelFile (Level l) { SaveLevelFile (l.SerializeAsData()); }
+    static public void SaveLevelFile (LevelData ld) { SaveLevelFileAs (ld, ld.WorldIndex, ld.LevelKey); }
+	//static public void SaveLevelFileAs (Level l, int worldIndex,string levelKey) {
+	//	SaveLevelFileAs(l.SerializeAsData(), worldIndex, levelKey);
+ //       //// Update ALL WorldData level stuff (actually just for openings/neighbors atm).
+ //       //GameManagers.Instance.DataManager.GetWorldData(worldIndex).SetAllLevelDatasFundamentalProperties();
+	//}
 
 	static public void SaveLevelFileAs(LevelData ld, int worldIndex,string levelKey) {
 		fs = ""; // fileString. this guy will be packed with \n line-breaks, then at the very end split by \n. It's less code to look at.
@@ -397,10 +396,11 @@ static public class LevelSaverLoader {
             default: return null;
         }
     }
-	static private void AddEmptyLevelElements(ref LevelData ld) {
+	static public void AddEmptyLevelElements(ref LevelData ld) {
 		CameraBoundsData cameraBoundsData = new CameraBoundsData();
 		cameraBoundsData.myRect = new Rect(-26,-19, 52,38);
 		cameraBoundsData.pos = cameraBoundsData.myRect.center;
+        ld.cameraBoundsData = cameraBoundsData;
 		ld.allPropDatas.Add(cameraBoundsData);
 
 		PlayerStartData playerStartData = new PlayerStartData();

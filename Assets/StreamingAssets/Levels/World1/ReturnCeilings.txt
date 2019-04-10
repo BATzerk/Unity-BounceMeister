@@ -1,6 +1,5 @@
-levelProperties posGlobal:(2.0, -70.0);designerFlag:4
+levelProperties posGlobal:(110.0, -56.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Gem pos:(21.0, 10.0)
 Ground myRect:(x:9.00, y:-17.00, width:4.00, height:4.00);canEatGems:False
 Ground myRect:(x:-6.00, y:-17.00, width:4.00, height:4.00);canEatGems:False
 Ground myRect:(x:-21.50, y:13.00, width:11.00, height:14.00)
@@ -21,3 +20,4 @@ Spikes myRect:(x:15.50, y:-0.50, width:11.00, height:1.00);rotation:90
 Spikes myRect:(x:-14.50, y:11.50, width:5.00, height:1.00);rotation:180
 Spikes myRect:(x:1.00, y:-0.50, width:2.00, height:1.00);rotation:180
 Spikes myRect:(x:-6.50, y:12.50, width:17.00, height:1.00);rotation:180
+Snack pos:(20.5, 10.0)

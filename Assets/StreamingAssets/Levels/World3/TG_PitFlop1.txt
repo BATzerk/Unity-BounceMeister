@@ -6,8 +6,8 @@ ToggleGround myRect:(x:-2.00, y:3.50, width:6.00, height:1.00);startsOn:True;can
 ToggleGround myRect:(x:5.00, y:-2.50, width:6.00, height:1.00);startsOn:False;canEatGems:False
 Spikes myRect:(x:6.50, y:-15.50, width:29.00, height:1.00);rotation:0
 PlayerStart pos:(-11.0, -4.2)
-Platform myRect:(x:-14.50, y:-17.50, width:3.00, height:1.00)
-Platform myRect:(x:-14.50, y:-8.50, width:3.00, height:1.00)
+Platform myRect:(x:-15.50, y:-17.50, width:5.00, height:1.00)
+Platform myRect:(x:-15.50, y:-8.50, width:5.00, height:1.00)
 Ground myRect:(x:-22.50, y:-5.00, width:9.00, height:30.00);colorType:1
 Ground myRect:(x:7.00, y:-18.00, width:40.00, height:4.00);colorType:1
 Ground myRect:(x:6.00, y:19.00, width:42.00, height:2.00);colorType:1

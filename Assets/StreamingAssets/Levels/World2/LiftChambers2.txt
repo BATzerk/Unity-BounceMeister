@@ -11,8 +11,7 @@ Ground myRect:(x:19.50, y:7.00, width:13.00, height:26.00)
 Ground myRect:(x:0.00, y:6.00, width:6.00, height:24.00)
 Lift myRect:(x:-8.00, y:-9.00, width:10.00, height:14.00);rotation:0;strength:0.08
 Lift myRect:(x:8.00, y:-9.00, width:10.00, height:14.00);rotation:0;strength:0.08
-Platform myRect:(x:18.50, y:-16.50, width:3.00, height:1.00)
-Platform myRect:(x:20.50, y:-18.50, width:3.00, height:1.00)
+Platform myRect:(x:19.50, y:-16.50, width:5.00, height:1.00)
 PlayerStart pos:(17.8, -14.3)
 Spikes myRect:(x:-8.00, y:8.50, width:10.00, height:1.00);rotation:180
 Spikes myRect:(x:3.50, y:2.00, width:16.00, height:1.00);rotation:270
@@ -20,3 +19,4 @@ Spikes myRect:(x:-12.50, y:7.00, width:18.00, height:1.00);rotation:270
 Spikes myRect:(x:-3.50, y:2.00, width:16.00, height:1.00);rotation:90
 Spikes myRect:(x:12.50, y:7.00, width:18.00, height:1.00);rotation:90
 Spikes myRect:(x:8.00, y:8.50, width:10.00, height:1.00);rotation:180
+

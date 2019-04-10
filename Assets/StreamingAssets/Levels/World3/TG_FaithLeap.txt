@@ -9,8 +9,7 @@ Ground myRect:(x:22.50, y:-8.50, width:9.00, height:17.00);colorType:1
 Ground myRect:(x:0.50, y:-18.00, width:53.00, height:4.00);colorType:1
 Ground myRect:(x:-12.50, y:18.00, width:27.00, height:4.00);colorType:1
 Ground myRect:(x:-21.00, y:-11.00, width:10.00, height:10.00);colorType:1
-Platform myRect:(x:5.00, y:13.50, width:2.00, height:1.00)
-Platform myRect:(x:7.00, y:8.50, width:2.00, height:1.00)
+Platform myRect:(x:6.00, y:8.50, width:4.00, height:1.00)
 PlayerStart pos:(-20.4, -4.8)
 Spikes myRect:(x:2.00, y:-15.50, width:42.00, height:1.00);rotation:0
 ToggleGround myRect:(x:-10.00, y:-6.50, width:4.00, height:1.00);startsOn:False

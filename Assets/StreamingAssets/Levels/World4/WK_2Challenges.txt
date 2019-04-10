@@ -12,9 +12,8 @@ Ground myRect:(x:-19.00, y:5.00, width:14.00, height:30.00)
 Ground myRect:(x:0.50, y:-18.00, width:27.00, height:4.00);isPlayerRespawn:True
 Ground myRect:(x:0.50, y:-6.00, width:15.00, height:20.00)
 Ground myRect:(x:-22.00, y:-18.00, width:8.00, height:4.00);isPlayerRespawn:True
-Platform myRect:(x:15.00, y:-18.50, width:2.00, height:1.00);isPlayerRespawn:True
-Platform myRect:(x:18.00, y:-17.50, width:2.00, height:1.00);isPlayerRespawn:True
-Platform myRect:(x:-16.50, y:-18.50, width:3.00, height:1.00);isPlayerRespawn:True
+Platform myRect:(x:16.50, y:-18.50, width:5.00, height:1.00);isPlayerRespawn:True
+Platform myRect:(x:-15.50, y:-18.50, width:5.00, height:1.00);isPlayerRespawn:True
 PlayerStart pos:(-11.0, -14.9)
 Snack pos:(-2.0, 10.5)
 Snack pos:(-4.5, 10.5)
@@ -30,3 +29,4 @@ Spikes myRect:(x:13.50, y:-3.50, width:1.00, height:1.00);rotation:90
 Spikes myRect:(x:13.50, y:-8.50, width:1.00, height:1.00);rotation:90
 Spikes myRect:(x:13.50, y:1.50, width:1.00, height:1.00);rotation:90
 Spikes myRect:(x:8.50, y:3.50, width:1.00, height:1.00);rotation:270
+
