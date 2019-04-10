@@ -30,7 +30,7 @@ public class LevelButton : MonoBehaviour {
 	//  Events
 	// ----------------------------------------------------------------
 	public void OnClick() {
-		GameManagers.Instance.DataManager.currentLevelData = myLevelData;
+		GameManagers.Instance.DataManager.currLevelData = myLevelData;
 
 		UnityEngine.SceneManagement.SceneManager.LoadScene(SceneNames.Gameplay);
 	}

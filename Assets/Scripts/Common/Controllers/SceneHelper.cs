@@ -28,7 +28,7 @@ public static class SceneHelper {
         OpenGameplayScene(GameManagers.Instance.DataManager.GetLevelData(worldIndex, levelKey, true));
     }
     static public void OpenGameplayScene(LevelData ld) {
-        GameManagers.Instance.DataManager.currentLevelData = ld;
+        GameManagers.Instance.DataManager.currLevelData = ld;
 		OpenScene(SceneNames.Gameplay);
 	}
 

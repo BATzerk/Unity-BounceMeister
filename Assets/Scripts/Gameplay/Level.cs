@@ -9,14 +9,13 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
     private List<Snack> snacks=new List<Snack>();
     // References
     private GameController gameControllerRef;
-	private LevelData levelDataRef;
+    public LevelData LevelDataRef { get; private set; }
 
-	// Getters (Public)
-	public LevelData LevelDataRef { get { return levelDataRef; } }
-	public WorldData WorldDataRef { get { return levelDataRef.WorldDataRef; } }
-	public int WorldIndex { get { return levelDataRef.WorldIndex; } }
-	public string LevelKey { get { return levelDataRef.LevelKey; } }
-	public Vector2 PosGlobal { get { return levelDataRef.PosGlobal; } }
+    // Getters (Public)
+    public WorldData WorldDataRef { get { return LevelDataRef.WorldDataRef; } }
+	public int WorldIndex { get { return LevelDataRef.WorldIndex; } }
+	public string LevelKey { get { return LevelDataRef.LevelKey; } }
+	public Vector2 PosGlobal { get { return LevelDataRef.PosGlobal; } }
 //	public Vector2 PosWorld { get { return levelDataRef.PosWorld; } }
 	public GateChannel[] GateChannels { get { return gateChannels; } }
 	public Rect GetCameraBoundsLocal() {
@@ -49,10 +48,9 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 
 		// -- General Properties --
 		ld.SetPosGlobal(PosGlobal);
-//		ld.SetPosWorld (PosGlobal);//-WorldDataRef.CenterPos); // NOTE: Is this technically redundant? Don't we want to not care about storing this value, and have it always made fresh by our WorldDataRef?
-		ld.SetDesignerFlag(levelDataRef.designerFlag);
+		ld.SetDesignerFlag(LevelDataRef.designerFlag);
 //		ld.hasPlayerBeenHere = hasPlayerBeenHere;
-		ld.isConnectedToStart = levelDataRef.isConnectedToStart;
+		ld.isConnectedToStart = LevelDataRef.isConnectedToStart;
 
 		// -- Props --
         Prop[] allProps = FindObjectsOfType<Prop>();
@@ -63,52 +61,6 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
         // HACK TEMP TODO: clean this up
         CameraBounds cameraBounds = FindObjectOfType<CameraBounds>();
         if (cameraBounds != null) { ld.cameraBoundsData = cameraBounds.SerializeAsData() as CameraBoundsData; }
-        /*
-		Battery[] batteries = FindObjectsOfType<Battery>();
-		foreach (Battery obj in batteries) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-		CameraBounds cameraBounds = FindObjectOfType<CameraBounds>();
-		if (cameraBounds != null) { ld.cameraBoundsData = cameraBounds.SerializeAsData(); }
-
-		Crate[] crates = FindObjectsOfType<Crate>();
-		foreach (Crate obj in crates) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-		DamageableGround[] damageableGrounds = FindObjectsOfType<DamageableGround>();
-		foreach (DamageableGround obj in damageableGrounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-		Gate[] gates = FindObjectsOfType<Gate>();
-		foreach (Gate obj in gates) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-		GateButton[] gateButtons = FindObjectsOfType<GateButton>();
-		foreach (GateButton obj in gateButtons) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-		Gem[] _gems = FindObjectsOfType<Gem>();
-		foreach (Gem obj in _gems) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-		Ground[] grounds = FindObjectsOfType<Ground>();
-		foreach (Ground obj in grounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-		LevelDoor[] levelDoors = FindObjectsOfType<LevelDoor>();
-		foreach (LevelDoor obj in levelDoors) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-		Lift[] lifts = FindObjectsOfType<Lift>();
-		foreach (Lift obj in lifts) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-		Platform[] platforms = FindObjectsOfType<Platform>();
-		foreach (Platform obj in platforms) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-		PlayerStart[] playerStarts = FindObjectsOfType<PlayerStart>();
-		foreach (PlayerStart obj in playerStarts) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-        Snack[] _snacks = FindObjectsOfType<Snack>();
-        foreach (Snack obj in _snacks) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-		Spikes[] spikes = FindObjectsOfType<Spikes>();
-		foreach (Spikes obj in spikes) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-
-		ToggleGround[] toggleGrounds = FindObjectsOfType<ToggleGround>();
-		foreach (ToggleGround obj in toggleGrounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
-        */
         
         // Reverse the propDatas list so it's saved in the same order each time. (Kinda weird, but this is the easy solution.)
         ld.allPropDatas.Reverse();
@@ -122,8 +74,8 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	// ----------------------------------------------------------------
 	public void Initialize (GameController _gameControllerRef, Transform tf_world, LevelData _levelDataRef) {
 		gameControllerRef = _gameControllerRef;
-		levelDataRef = _levelDataRef;
-		this.gameObject.name = levelDataRef.LevelKey;
+		LevelDataRef = _levelDataRef;
+		this.gameObject.name = LevelDataRef.LevelKey;
 
 		this.transform.SetParent (tf_world); // Parent me to my world!
 		this.transform.localScale = Vector3.one; // Make sure my scale is 1 from the very beginning.
@@ -134,12 +86,8 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		for (int i=0; i<gateChannels.Length; i++) { gateChannels[i] = new GateChannel(this, i); }
 
 		// Instantiate my props!
-		LevelData ld = levelDataRef;
+		LevelData ld = LevelDataRef;
 		ResourcesHandler rh = ResourcesHandler.Instance;
-
-//		// CameraBounds
-//		CameraBounds cameraBounds = Instantiate(ResourcesHandler.Instance.CameraBounds).GetComponent<CameraBounds>();
-//		cameraBounds.Initialize(this, ld.cameraBoundsData);
 
 		foreach (PropData propData in ld.allPropDatas) {
 			// Grounds
@@ -230,16 +178,13 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 
 		// TEMP totes hacky, yo.
 		string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-		levelDataRef = new LevelData(WorldDataRef, sceneName); // NOTE! Be careful; we can easily overwrite levels like this.
-		levelDataRef = SerializeAsData();
+		LevelDataRef = new LevelData(WorldDataRef, sceneName); // NOTE! Be careful; we can easily overwrite levels like this.
+		LevelDataRef = SerializeAsData();
 
 		// Initialize things!
 		// Player
 		PlayerData playerData = new PlayerData();
-//		if (GameObject.FindObjectOfType<Player>() == null) {
-//			playerRef = Instantiate(ResourcesHandler.Instance.Player).GetComponent<Player>();
-//		}
-		PlayerStart playerStart = GameObject.FindObjectOfType<PlayerStart>();
+		PlayerStart playerStart = FindObjectOfType<PlayerStart>();
 		if (playerStart != null) {
 			playerData.pos = playerStart.PosLocal;
 		}
@@ -290,9 +235,9 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	}
     */
 	private void AutoAddSilentBoundaries() {
-		for (int i=0; i<levelDataRef.Neighbors.Count; i++) {
+		for (int i=0; i<LevelDataRef.Neighbors.Count; i++) {
 			// No level here?? Protect me with an InvisiBounds!
-            LevelNeighborData lnd = levelDataRef.Neighbors[i];
+            LevelNeighborData lnd = LevelDataRef.Neighbors[i];
             if (!lnd.IsLevelTo) {
 				BoxCollider2D col = new GameObject().AddComponent<BoxCollider2D>();
 				col.transform.SetParent(this.transform);
@@ -300,12 +245,13 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 				col.transform.localEulerAngles = Vector3.zero;
 				col.gameObject.layer = LayerMask.NameToLayer("Ground"); // so our feet stop on it, yanno.
 				col.name = "Invisibounds";
-				// Determine the collider's rect, ok?
-				Rect rect = new Rect();
-                rect.size = GetInvisiboundSize(lnd.OpeningFrom);
-                rect.center = lnd.OpeningFrom.posCenter;
-				// Make it happen!
-				col.transform.localPosition = rect.center;
+                // Determine the collider's rect, ok?
+                Rect rect = new Rect {
+                    size = GetInvisiboundSize(lnd.OpeningFrom),
+                    center = lnd.OpeningFrom.posCenter
+                };
+                // Make it happen!
+                col.transform.localPosition = rect.center;
 				col.size = rect.size;
 			}
 		}
@@ -321,8 +267,8 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
     //	Debug
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private void OnDrawGizmos() {
-        Vector2 posGlobal = levelDataRef.posGlobal;
-        foreach (LevelNeighborData lnd in levelDataRef.Neighbors) {
+        Vector2 posGlobal = LevelDataRef.posGlobal;
+        foreach (LevelNeighborData lnd in LevelDataRef.Neighbors) {
             Gizmos.color = lnd.LevelTo!=null ? new Color(0.5f,1,0) : new Color(1,0.5f,0);
             Gizmos.DrawLine(posGlobal+lnd.OpeningFrom.posStart, posGlobal+lnd.OpeningFrom.posEnd);
         }
@@ -334,7 +280,7 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
     //	Editing
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     public void FlipHorz() {
-		Prop[] allProps = GameObject.FindObjectsOfType<Prop>();
+		Prop[] allProps = FindObjectsOfType<Prop>();
 		foreach (Prop prop in allProps) {
 			prop.FlipHorz();
 		}
@@ -347,6 +293,52 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 
 
 
+        /*
+        Battery[] batteries = FindObjectsOfType<Battery>();
+        foreach (Battery obj in batteries) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        CameraBounds cameraBounds = FindObjectOfType<CameraBounds>();
+        if (cameraBounds != null) { ld.cameraBoundsData = cameraBounds.SerializeAsData(); }
+
+        Crate[] crates = FindObjectsOfType<Crate>();
+        foreach (Crate obj in crates) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        DamageableGround[] damageableGrounds = FindObjectsOfType<DamageableGround>();
+        foreach (DamageableGround obj in damageableGrounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        Gate[] gates = FindObjectsOfType<Gate>();
+        foreach (Gate obj in gates) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        GateButton[] gateButtons = FindObjectsOfType<GateButton>();
+        foreach (GateButton obj in gateButtons) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        Gem[] _gems = FindObjectsOfType<Gem>();
+        foreach (Gem obj in _gems) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        Ground[] grounds = FindObjectsOfType<Ground>();
+        foreach (Ground obj in grounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        LevelDoor[] levelDoors = FindObjectsOfType<LevelDoor>();
+        foreach (LevelDoor obj in levelDoors) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        Lift[] lifts = FindObjectsOfType<Lift>();
+        foreach (Lift obj in lifts) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        Platform[] platforms = FindObjectsOfType<Platform>();
+        foreach (Platform obj in platforms) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        PlayerStart[] playerStarts = FindObjectsOfType<PlayerStart>();
+        foreach (PlayerStart obj in playerStarts) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        Snack[] _snacks = FindObjectsOfType<Snack>();
+        foreach (Snack obj in _snacks) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        Spikes[] spikes = FindObjectsOfType<Spikes>();
+        foreach (Spikes obj in spikes) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+
+        ToggleGround[] toggleGrounds = FindObjectsOfType<ToggleGround>();
+        foreach (ToggleGround obj in toggleGrounds) { ld.allPropDatas.Add(obj.SerializeAsData()); }
+        */
 
 
 

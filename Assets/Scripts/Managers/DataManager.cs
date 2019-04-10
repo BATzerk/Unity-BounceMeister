@@ -7,20 +7,19 @@ public class DataManager {
 	private int coinsCollected; // the total value of all the coins we've collected!
 //	public string levelToDoorID = "0"; // default this to something. When we enter a level, this is the door we'll start at!
 	private List<WorldData> worldDatas;
-//	private int worldIndexOnLoadGameScene;
 //	public int mostRecentlySavedLevel_worldIndex; // an nbd shortcut to highlight the most recently created level in the MapEditor.
 //	public string mostRecentlySavedLevel_levelKey; // an nbd shortcut to highlight the most recently created level in the MapEditor.
-	public LevelData currentLevelData = null; // TODO: Remove this. We don't need it (right?). if this is defined when GameController opens, we'll open THAT level!
+	public LevelData currLevelData = null; // TODO: Remove this. We don't need it (right?). if this is defined when GameController opens, we'll open THAT level!
 	public Vector2 playerPosGlobalOnExitLevel=Vector2Extensions.NaN; // The suuuuper simple way we know how to set the Player's pos on entering the next level.
 	public int playerSideEnterNextLevel=-1; // pairs with playerPosGlobalOnExitLevel.
 
 	// ----------------------------------------------------------------
 	//  Getters
 	// ----------------------------------------------------------------
-	public int currentWorldIndex { get { return currentLevelData==null ? 0 : currentLevelData.WorldIndex; } }
+    public WorldData CurrWorldData { get { return currLevelData==null ? null : currLevelData.WorldDataRef; } }
+	//public int currentWorldIndex { get { return currLevelData==null ? 0 : currLevelData.WorldIndex; } }
 	public int CoinsCollected { get { return coinsCollected; } }
 	public int NumWorldDatas { get { return worldDatas.Count; } }
-//	public int WorldIndexOnLoadGameScene { get { return worldIndexOnLoadGameScene; } }
 	public LevelData GetLevelData(int worldIndex, string levelKey, bool doMakeOneIfItDoesntExist) {
 		return GetWorldData(worldIndex).GetLevelData(levelKey, doMakeOneIfItDoesntExist);
 	}

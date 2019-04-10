@@ -25,21 +25,21 @@ public class GameController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void Start () {
 		// We haven't provided a level to play and this is Gameplay scene? Ok, load up the last played level instead!
-		if (dataManager.currentLevelData==null && SceneHelper.IsGameplayScene()) {
+		if (dataManager.currLevelData==null && SceneHelper.IsGameplayScene()) {
 			int worldIndex = SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex);
 			string levelKey = SaveStorage.GetString(SaveKeys.LastPlayedLevelKey(worldIndex), GameProperties.GetFirstLevelName(worldIndex));
-			dataManager.currentLevelData = dataManager.GetLevelData(worldIndex, levelKey, false);
+			dataManager.currLevelData = dataManager.GetLevelData(worldIndex, levelKey, false);
 		}
 
 		// We've defined our currentLevelData before this scene! Load up THAT level!!
-		if (dataManager.currentLevelData != null) {
-			StartGameAtLevel(dataManager.currentLevelData);
+		if (dataManager.currLevelData != null) {
+			StartGameAtLevel(dataManager.currLevelData);
 		}
 		// We have NOT provided any currentLevelData!...
 		else {
 			// Initialize the existing level as a premade level! So we can start editing/playing/saving it right outta the scene.
 			// TEMP! For converting scenes into level text files.
-			level = GameObject.FindObjectOfType<Level>();
+			level = FindObjectOfType<Level>();
 			if (level == null) {
 				GameObject levelGO = GameObject.Find("Structure");
 				if (levelGO==null) {
@@ -80,7 +80,7 @@ public class GameController : MonoBehaviour {
 		DestroyLevel();
 
 		LevelData levelData = dataManager.GetLevelData(worldIndex, levelKey, true);
-		dataManager.currentLevelData = levelData;
+		dataManager.currLevelData = levelData;
 
 		// Make Level!
 		level = Instantiate(ResourcesHandler.Instance.Level).GetComponent<Level>();
@@ -168,7 +168,7 @@ public class GameController : MonoBehaviour {
         LevelData newLD = dataManager.GetLevelData(currLD.WorldIndex,newLevelKey, false);
         newLD.SetPosGlobal(newLD.posGlobal + new Vector2(1,-1)*GameProperties.UnitSize*10); // offset its position a bit.
         LevelSaverLoader.UpdateLevelPropertiesInLevelFile(newLD); // update file!
-        dataManager.currentLevelData = newLD;
+        dataManager.currLevelData = newLD;
         SceneHelper.ReloadScene();
     }
 
@@ -333,10 +333,10 @@ public class GameController : MonoBehaviour {
 
 
 
-        // ----------------------------------------------------------------
-        //  Events
-        // ----------------------------------------------------------------
-        private void OnPlayerDie(Player _player) {
+    // ----------------------------------------------------------------
+    //  Events
+    // ----------------------------------------------------------------
+    private void OnPlayerDie(Player _player) {
         //playerDiedPos = _player.PosLocal;
         StartCoroutine(Coroutine_ReloadSceneDelayed());
 	}

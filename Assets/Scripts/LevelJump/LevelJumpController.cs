@@ -18,7 +18,7 @@ public class LevelJumpController : MonoBehaviour {
 	private void Start() {
 		t_version.text = Application.version;
 
-		LevelData currentLD = GameManagers.Instance.DataManager.currentLevelData;
+		LevelData currentLD = GameManagers.Instance.DataManager.currLevelData;
 		int worldIndex = currentLD == null ? 0 : currentLD.WorldIndex;
 		SetSelectedWorld(worldIndex);
 	}

@@ -4,8 +4,10 @@ using UnityEngine;
 
 [RequireComponent (typeof(SpriteRenderer))]
 public class CameraBounds : Prop {
-	// Components
-	[SerializeField] private SpriteRenderer bodySprite=null;
+    // Overrides
+    public override bool DoSaveInLevelFile() { return false; } // Note: CameraBounds are saved differently from other Props, as there's always only one.
+    // Components
+    [SerializeField] private SpriteRenderer bodySprite=null;
 
 	// Getters (Private)
 	public Rect RectLocal { // Note that we save/load our Rect locally, not globally. (Otherwise we'd be wonked when levels are moved.)

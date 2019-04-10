@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
-public class GridSnapPos: MonoBehaviour {
+//[ExecuteInEditMode]
+public class GridSnapPos : MonoBehaviour {
 	// Properties
-	[SerializeField] private Vector2 posOffset; // e.g. (0, 0.1): we'll be 1/10th of the way higher to the next row. Useful for things that we want ON grounds (e.g. platforms and spikes).
+	[SerializeField] private Vector2 posOffset=Vector2.zero; // e.g. (0, 0.1): we'll be 1/10th of the way higher to the next row. Useful for things that we want ON grounds (e.g. platforms and spikes).
 
 
 	private float UnitSize { get { return GameProperties.UnitSize; } }

@@ -65,6 +65,7 @@ public class DamageableGroundData : BaseGroundData {
 
 public class LevelDoorData : PropData {
 	public string myID;
+    public int worldToIndex;
 	public string levelToKey;
 	public string levelToDoorID;
 //	public LevelDoorData (Vector2 pos, string myID, string levelToKey, string levelToDoorID) {
@@ -87,7 +88,7 @@ public class PlayerStartData : PropData {
 }
 
 public class ProgressGateData : BaseGroundData {
-    public int numGemsReq;
+    //public int numGemsReq;
     public int numSnacksReq;
 }
 
