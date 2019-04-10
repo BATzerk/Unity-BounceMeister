@@ -165,8 +165,8 @@ abstract public class Player : PlatformCharacter {
 		else if (Input.GetButtonUp("Jump")) {
 			OnButtonJump_Up();
 		}
-		else if (Input.GetKeyDown(KeyCode.DownArrow)) {
-			OnDown_Down();
+		else if (InputController.Instance.IsButtonDown_Held) {
+			OnDown_Held();
 		}
 	}
 	private void UpdatePostDamageImmunity() {
@@ -335,7 +335,7 @@ abstract public class Player : PlatformCharacter {
 //	}
 	abstract protected void OnButtonJump_Down();
 	virtual protected void OnButtonJump_Up() { }
-	virtual protected void OnDown_Down() {
+	virtual protected void OnDown_Held() {
         // On a Platform? Pass down through it!
         if (myWhiskers.AreFeetOnCanDropThruPlatform()) {
             pos += new Vector2(0, -0.2f);

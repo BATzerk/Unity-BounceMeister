@@ -109,12 +109,12 @@ public class Jetta : Player {
 			StopJet();
 		}
 	}
-	override protected void OnDown_Down() {
-		base.OnDown_Down();
-		if (CanStartJetting()) {
-			StartJet();
-		}
-	}
+	//override protected void OnDown_Down() {
+	//	base.OnDown_Down();
+	//	if (CanStartJetting()) {
+	//		StartJet();
+	//	}
+	//}
 
 
 	// ----------------------------------------------------------------

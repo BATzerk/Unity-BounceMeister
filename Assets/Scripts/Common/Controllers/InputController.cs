@@ -11,6 +11,8 @@ public class InputController : MonoBehaviour {
 	private bool isDoubleClick; // reset every frame.
 	private float timeWhenNullifyDoubleClick;
     public Vector2 PlayerInput { get; private set; }
+    //public static bool IsButtonDown_Down { get; private set; }
+    //public static bool IsButtonDown_Held { get; private set; }
 	private Vector2 mousePosDown;
 
     // Getters
@@ -20,6 +22,7 @@ public class InputController : MonoBehaviour {
 			return instance;
 		}
 	}
+    public bool IsButtonDown_Held { get { return PlayerInput.y < -0.7f; } }
 	public bool IsDoubleClick { get { return isDoubleClick; } }
 	public Vector3 MousePosScreen { get { return (Input.mousePosition - new Vector3(Screen.width,Screen.height,0)*0.5f) / ScreenHandler.ScreenScale; } }
     public Vector2 MousePosWorld { get { return Camera.main.ScreenToWorldPoint(Input.mousePosition); } }
@@ -74,6 +77,14 @@ public class InputController : MonoBehaviour {
 	private void RegisterButtonInputs () {
 		PlayerInput = new Vector2(Input.GetAxis("Player0_Horz"), Input.GetAxis("Player0_Vert"));
         //print(Time.frameCount + " PlayerInput: " + PlayerInput);
+        
+        //// Update IsButtonDown_Down/Held.
+        //if (IsButtonDown_Held) {
+        //    IsButtonDown_Down &= PlayerInput.y <= -0.7f; // NOT pushing down? Make false.
+        //}
+        //else {
+        //    IsButtonDown_Down |= PlayerInput.y < -0.7f; // YES pushing down? Make true!
+        //}
     }
 
 	private void RegisterMouseInputs () {

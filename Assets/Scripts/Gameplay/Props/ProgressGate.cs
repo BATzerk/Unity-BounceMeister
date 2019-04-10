@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ProgressGate : BaseGround {
     // Components
+    [SerializeField] private SpriteRenderer sr_snackIcon=null;
     [SerializeField] private TextMesh myText=null;
 	// Properties
     [SerializeField] private int numSnacksReq;
@@ -60,9 +61,11 @@ public class ProgressGate : BaseGround {
 		myCollider.enabled = !isOpen;
         Color bodyColor = new Color255(35, 94, 42).ToColor();
 		if (isOpen) {
+            GameUtils.SetSpriteAlpha(sr_snackIcon, 0.1f);
             bodySprite.color = new Color(bodyColor.r,bodyColor.g,bodyColor.b, 0.1f);
         }
         else {
+            GameUtils.SetSpriteAlpha(sr_snackIcon, 1);
             bodySprite.color = bodyColor;
 		}
 	}

@@ -169,7 +169,7 @@ public class DamageableGround : BaseGround {
 	private void Update() {
 		if (isOn) {
             if (dieFromPlayerLeave && playerTouchingMe != null) {
-			    float alpha = 0.6f + Mathf.Sin(Time.time*20f)*0.3f;
+			    float alpha = MathUtils.SinRange(0.45f,0.8f, Time.time*10f);
 			    GameUtils.SetSpriteAlpha (bodySprite, alpha);
 		    }
         }
