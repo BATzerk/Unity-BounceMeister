@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour {
     // Getters
     public Player Player { get { return player; } }
 
-	private DataManager dataManager { get { return GameManagers.Instance.DataManager; } }
+	private DataManager dm { get { return GameManagers.Instance.DataManager; } }
 	private EventManager eventManager { get { return GameManagers.Instance.EventManager; } }
 
 
@@ -25,15 +25,15 @@ public class GameController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void Start () {
 		// We haven't provided a level to play and this is Gameplay scene? Ok, load up the last played level instead!
-		if (dataManager.currLevelData==null && SceneHelper.IsGameplayScene()) {
+		if (dm.currLevelData==null && SceneHelper.IsGameplayScene()) {
 			int worldIndex = SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex);
 			string levelKey = SaveStorage.GetString(SaveKeys.LastPlayedLevelKey(worldIndex), GameProperties.GetFirstLevelName(worldIndex));
-			dataManager.currLevelData = dataManager.GetLevelData(worldIndex, levelKey, false);
+			dm.currLevelData = dm.GetLevelData(worldIndex, levelKey, false);
 		}
 
 		// We've defined our currentLevelData before this scene! Load up THAT level!!
-		if (dataManager.currLevelData != null) {
-			StartGameAtLevel(dataManager.currLevelData);
+		if (dm.currLevelData != null) {
+			StartGameAtLevel(dm.currLevelData);
 		}
 		// We have NOT provided any currentLevelData!...
 		else {
@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour {
 //			player = GameObject.FindObjectOfType<Player>(); // Again, this is only for editing.
 			MakePlayer(PlayerTypes.Plunga, Vector2.zero);
 			level.InitializeAsPremadeLevel(this);
-			dataManager.SetCoinsCollected (0);
+			dm.SetCoinsCollected (0);
 			eventManager.OnStartLevel(level);
 		}
 
@@ -79,8 +79,8 @@ public class GameController : MonoBehaviour {
 		DestroyPlayer();
 		DestroyLevel();
 
-		LevelData levelData = dataManager.GetLevelData(worldIndex, levelKey, true);
-		dataManager.currLevelData = levelData;
+		LevelData levelData = dm.GetLevelData(worldIndex, levelKey, true);
+		dm.currLevelData = levelData;
 
 		// Make Level!
 		level = Instantiate(ResourcesHandler.Instance.Level).GetComponent<Level>();
@@ -89,7 +89,8 @@ public class GameController : MonoBehaviour {
 		MakePlayer(PlayerTypes.Plunga, levelData);
 
 		// Reset things!
-		dataManager.SetCoinsCollected (0);
+        dm.ResetLevelEnterValues();
+		dm.SetCoinsCollected(0);
 		GameUtils.SetEditorCameraPos(levelData.posGlobal); // conveniently move the Unity Editor camera, too!
 
 		// Save what's up!
@@ -154,7 +155,7 @@ public class GameController : MonoBehaviour {
 
 	private void StartNewBlankLevel() {
 		// Keep it in the current world, and give it a unique name.
-		WorldData worldData = dataManager.GetWorldData(level.WorldIndex);
+		WorldData worldData = dm.GetWorldData(level.WorldIndex);
 		string levelKey = worldData.GetUnusedLevelKey();
 		LevelData emptyLevelData = worldData.GetLevelData(levelKey, true);
 		StartGameAtLevel(emptyLevelData);
@@ -164,40 +165,47 @@ public class GameController : MonoBehaviour {
         LevelData currLD = level.LevelDataRef;
         string newLevelKey = currLD.WorldDataRef.GetUnusedLevelKey(currLD.LevelKey);
         LevelSaverLoader.SaveLevelFileAs(currLD, currLD.WorldIndex, newLevelKey);
-        dataManager.ReloadWorldDatas();
-        LevelData newLD = dataManager.GetLevelData(currLD.WorldIndex,newLevelKey, false);
+        dm.ReloadWorldDatas();
+        LevelData newLD = dm.GetLevelData(currLD.WorldIndex,newLevelKey, false);
         newLD.SetPosGlobal(newLD.posGlobal + new Vector2(1,-1)*GameProperties.UnitSize*10); // offset its position a bit.
         LevelSaverLoader.UpdateLevelPropertiesInLevelFile(newLD); // update file!
-        dataManager.currLevelData = newLD;
+        dm.currLevelData = newLD;
         SceneHelper.ReloadScene();
     }
 
 
 	private Vector2 GetPlayerStartingPosInLevel(LevelData ld) {
-		Vector2 posExited = dataManager.playerPosGlobalOnExitLevel;
         // Entering from previous level?
-        if (!posExited.Equals(Vector2Extensions.NaN)) {
-            // Otherwise, use the knowledge we have!
-            int sideEntering = dataManager.playerSideEnterNextLevel;
-            dataManager.playerPosGlobalOnExitLevel = Vector2Extensions.NaN; // Make sure to "clear" this. It's been used!
-            dataManager.playerSideEnterNextLevel = -1; // Make sure to "clear" this. It's been used!
-    //		Vector2 originalPos = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
-    //		int sideEntered = MathUtils.GetSidePointIsOn(ld.BoundsGlobal, posExited);
-            Vector2Int offsetDir = MathUtils.GetOppositeDir(sideEntering);
-            const float extraEnterDistX = 0; // How much extra step do I wanna take in to really feel at "home"?
-            const float extraEnterDistY = 3; // How much extra step do I wanna take in to really feel at "home"?
-            Vector2 posRelative = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
-            return posRelative + new Vector2(offsetDir.x*extraEnterDistX,offsetDir.y*extraEnterDistY);
+        if (!dm.playerPosGlobalOnExitLevel.Equals(Vector2Extensions.NaN)) {
+            return GetPlayerStartingPosFromPreviousExitPos(ld);
         }
         // Respawning from death?
-        else if (!Player.GroundedRespawnPos.Equals(Vector2Extensions.NaN)) {
-            return Player.GroundedRespawnPos;
+        else if (!dm.playerGroundedRespawnPos.Equals(Vector2Extensions.NaN)) {
+            return dm.playerGroundedRespawnPos;
+        }
+        // Starting at LevelDoor?
+        else if (!string.IsNullOrEmpty(dm.levelToDoorID)) {
+            return ld.GetLevelDoorPos(dm.levelToDoorID);
         }
         // Totally undefined? Default to PlayerStart.
         else {
-            return ld.PlayerStartPos(Vector2.one);//NOTE: Uncleaned code. playerDiedPos);
+            return ld.DefaultPlayerStartPos();
         }
 	}
+    
+    private Vector2 GetPlayerStartingPosFromPreviousExitPos(LevelData ld) {
+        int sideEntering = dm.playerSideEnterNextLevel;
+        Vector2 posExited = dm.playerPosGlobalOnExitLevel;
+        dm.playerPosGlobalOnExitLevel = Vector2Extensions.NaN; // Make sure to "clear" this. It's been used!
+        dm.playerSideEnterNextLevel = -1; // Make sure to "clear" this. It's been used!
+//      Vector2 originalPos = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
+//      int sideEntered = MathUtils.GetSidePointIsOn(ld.BoundsGlobal, posExited);
+        Vector2Int offsetDir = MathUtils.GetOppositeDir(sideEntering);
+        const float extraEnterDistX = 0; // How much extra step do I wanna take in to really feel at "home"?
+        const float extraEnterDistY = 3; // How much extra step do I wanna take in to really feel at "home"?
+        Vector2 posRelative = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
+        return posRelative + new Vector2(offsetDir.x*extraEnterDistX,offsetDir.y*extraEnterDistY);
+    }
 
 
 	private void OnPlayerEscapeLevelBounds(int sideEscaped) {
@@ -206,8 +214,8 @@ public class GameController : MonoBehaviour {
 		if (nextLevelData != null) {
             int playerDir = player.DirFacing; // remember these so we can preserves 'em, ya see!
             Vector2 playerVel = player.vel;
-            dataManager.playerPosGlobalOnExitLevel = player.PosGlobal;
-			dataManager.playerSideEnterNextLevel = Sides.GetOpposite(sideEscaped);
+            dm.playerPosGlobalOnExitLevel = player.PosGlobal;
+			dm.playerSideEnterNextLevel = Sides.GetOpposite(sideEscaped);
 			StartGameAtLevel(nextLevelData);
             // Restore the vel/dir we had in the previous level.
             player.SetDirFacing(playerDir);
@@ -279,11 +287,10 @@ public class GameController : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.T)) {
             gameTimeController.ToggleSlowMo();
 		}
-
-        // TEMP L = Calculate LevelOpenings
-        else if (Input.GetKeyDown(KeyCode.L)) {
-            level.LevelDataRef.CalculateOpenings();
-		}
+        // Y = Execute one FixedUpdate step
+        else if (Input.GetKeyDown(KeyCode.Y)) {
+            gameTimeController.ExecuteApproximatelyOneFUStep();
+        }
 
 
 		// ALT + ___

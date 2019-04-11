@@ -29,21 +29,42 @@ public class LevelData {
 	public Vector2 PosGlobal { get { return posGlobal; } }
 //	public Rect BoundsLocal { get { return boundsLocal; } }
 	public WorldData WorldDataRef { get; private set; }
-    /// Returns the closest PlayerStart to the provided pos.
-	public Vector2 PlayerStartPos(Vector2 playerPos) {
-        float bestDist = Mathf.Infinity;
-        Vector2 bestPos = Vector2.zero;
-		foreach (PropData pd in allPropDatas) {
-			if (pd is PlayerStartData) {
-                float dist = Vector2.Distance(playerPos, pd.pos);
-                if (bestDist > dist) {
-                    bestDist = dist;
-                    bestPos = pd.pos;
+    ///// Returns the closest PlayerStart to the provided pos.
+    //public Vector2 ClosestPlayerStartPos(Vector2 playerPos) {
+    //    float bestDist = Mathf.Infinity;
+    //    Vector2 bestPos = Vector2.zero;
+    //    foreach (PropData pd in allPropDatas) {
+    //        if (pd is PlayerStartData) {
+    //            float dist = Vector2.Distance(playerPos, pd.pos);
+    //            if (bestDist > dist) {
+    //                bestDist = dist;
+    //                bestPos = pd.pos;
+    //            }
+    //        }
+    //    }
+    //    return bestPos;
+    //}
+    /// Returns the first PlayerStart in our list.
+    public Vector2 DefaultPlayerStartPos() {
+        foreach (PropData pd in allPropDatas) {
+            if (pd is PlayerStartData) {
+                return pd.pos;
+            }
+        }
+        return Vector2.zero; // Oops.
+    }
+    public Vector2 GetLevelDoorPos(string doorID) {
+        foreach (PropData pd in allPropDatas) {
+            if (pd is LevelDoorData) {
+                if ((pd as LevelDoorData).myID == doorID) {
+                    return pd.pos;
                 }
-			}
-		}
-		return bestPos;
-	}
+            }
+        }
+        // Oops, no door with this ID.
+        Debug.LogWarning("Oops! No LevelDoor with doorID. Level: " + levelKey + ", doorID: " + doorID);
+        return DefaultPlayerStartPos();
+    }
 
 	// Setters
 	public void SetPosGlobal (Vector2 _posGlobal) {

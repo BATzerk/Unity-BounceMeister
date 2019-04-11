@@ -1,11 +1,12 @@
 levelProperties posGlobal:(98.0, 32.0);designerFlag:0
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(-9.4, -14.6)
+PlayerStart pos:(3.0, -10.2)
 Ground myRect:(x:0.50, y:-18.00, width:53.00, height:4.00)
 Ground myRect:(x:-24.00, y:0.00, width:4.00, height:32.00)
 Ground myRect:(x:24.00, y:8.50, width:4.00, height:17.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-ProgressGate myRect:(x:12.00, y:-14.50, width:8.00, height:3.00);numSnacksReq:2
-Snack pos:(12.5, -8.0)
-Snack pos:(17.0, -8.0)
-LevelDoor pos:(-9.5, -14.5);myID:0;worldToIndex:1;levelToKey:Test2;levelToDoorID:0
+LevelDoor pos:(17.5, 11.0);myID:0;worldToIndex:1;levelToKey:Test2;levelToDoorID:0
+Platform myRect:(x:-3.00, y:0.50, width:6.00, height:1.00)
+Ground myRect:(x:-3.50, y:-13.00, width:13.00, height:2.00)
+Platform myRect:(x:-9.00, y:0.50, width:6.00, height:1.00);canDropThru:False
+Ground myRect:(x:9.50, y:-13.50, width:13.00, height:3.00)

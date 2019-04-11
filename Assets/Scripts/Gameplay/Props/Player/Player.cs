@@ -46,7 +46,6 @@ abstract public class Player : PlatformCharacter {
 	private int wallSlideSide = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
 	private int hackTEMP_framesAlive=0;
 	private Vector2 pvel; // previous velocity.
-    static public Vector2 GroundedRespawnPos=Vector2Extensions.NaN; // I'll respawn at this pos. Set when we leave a Ground that has IsPlayerRespawn.
     // References
     private Rect camBoundsLocal; // for detecting when we exit the level!
 	private List<Edible> ediblesHolding = new List<Edible>(); // like in Celeste. I hold Edibles (i.e. Gem, Snack) until I'm standing somewhere safe to "eat" (aka collect) them.
@@ -129,7 +128,6 @@ abstract public class Player : PlatformCharacter {
 
         // Reset stuff.
         DirFacing = 1;
-        GroundedRespawnPos = Vector2Extensions.NaN;
     }
 
     override protected void SetSize(Vector2 _size) {
@@ -337,7 +335,7 @@ abstract public class Player : PlatformCharacter {
 	virtual protected void OnButtonJump_Up() { }
 	virtual protected void OnDown_Held() {
         // On a Platform? Pass down through it!
-        if (myWhiskers.AreFeetOnCanDropThruPlatform()) {
+        if (myWhiskers.AreFeetOnlyOnCanDropThruPlatform()) {
             pos += new Vector2(0, -0.2f);
         }
     }
@@ -350,9 +348,23 @@ abstract public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
+    private bool IsMovingAwayFromCollider(int side) {
+        switch (side) {
+            case Sides.L: return vel.x >  0.01f;
+            case Sides.R: return vel.x < -0.01f;
+            case Sides.B: return vel.y >  0.01f;
+            case Sides.T: return vel.y < -0.01f;
+            default: return false; // Hmm.
+        }
+    }
 	override public void OnWhiskersTouchCollider(int side, Collider2D col) {
-		base.OnWhiskersTouchCollider(side, col);
-
+        // We're moving AWAY from this collider? Ignore the collision! (This prevents whiskers-touching-2-things issues, like recharging plunge or cancelling preserving wall-kick vel.) Note: We can possibly bring this check all the way up to Whiskers for consistency.
+        if (IsMovingAwayFromCollider(side)) {
+            return;
+        }
+        
+        base.OnWhiskersTouchCollider(side, col);
+        
         // Touching any side EXCEPT my head immediately stops our wall-kick-vel preservation. (Exception is so that we don't halt x-vel just by bumping our head.)
         if (side != Sides.T) {
             isPreservingWallKickVel = false;
@@ -405,7 +417,7 @@ abstract public class Player : PlatformCharacter {
 		if (MayEatEdibles()) {
 			EatEdiblesHolding();
 		}
-
+        
 		bool doBounce = DoBounceOffCollidable(collidable);
 		// Bounce!
 		if (doBounce) {
@@ -456,7 +468,7 @@ abstract public class Player : PlatformCharacter {
         posX = Mathf.Max(gr.x-gr.width*0.5f + marginX, posX);
         posX = Mathf.Min(gr.x+gr.width*0.5f - marginX, posX);
 
-        GroundedRespawnPos = new Vector2(posX, posY);
+        GameManagers.Instance.DataManager.playerGroundedRespawnPos = new Vector2(posX, posY);
     }
 
 

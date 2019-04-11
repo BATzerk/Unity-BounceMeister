@@ -15,7 +15,7 @@ public static class SceneHelper {
     static public void OpenScene(string sceneName) {
         // Opening NON-Gameplay scene? Reset static values!
         if (sceneName != SceneNames.Gameplay) {
-            ResetGameplayStaticValues();
+            GameManagers.Instance.DataManager.ResetLevelEnterValues();
         }
         // Open the scene.
         SceneManager.LoadScene(sceneName);
@@ -33,10 +33,6 @@ public static class SceneHelper {
 	}
 
 
-    /// Kinda sloppy with this static stuff.
-    static private void ResetGameplayStaticValues() {
-        Player.GroundedRespawnPos = Vector2Extensions.NaN;
-    }
 
 
 }

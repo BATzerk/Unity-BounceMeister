@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelDoor : Prop {
 	// Components
-	[SerializeField] private SpriteRenderer sr_body=null;
+	//[SerializeField] private SpriteRenderer sr_body=null;
 	// Properties
 	[SerializeField] private string myID;
     [SerializeField] private int worldToIndex=-1; // if this is -1, we'll stay in THIS world.
@@ -51,7 +51,7 @@ public class LevelDoor : Prop {
 	// ----------------------------------------------------------------
 	private void GoToMyLevel() {
 		// Set the door we're gonna start at!
-//		GameManagers.Instance.DataManager.levelToDoorID = levelToDoorID;
+		GameManagers.Instance.DataManager.levelToDoorID = levelToDoorID;
 		// Load the level!
         int _worldIndex = worldToIndex==-1 ? myLevel.WorldIndex : worldToIndex; // Haven't defined worldToIndex? Stay in my world.
         LevelData ldTo = GameManagers.Instance.DataManager.GetLevelData(_worldIndex, levelToKey, false);

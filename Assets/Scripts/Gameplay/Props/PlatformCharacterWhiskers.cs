@@ -88,14 +88,18 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
         }
         return false; // Wow, nah, we're not touching any gem-friendly grounds.
     }
-    public bool AreFeetOnCanDropThruPlatform() {
-        foreach (Collider2D col in collidersTouching[Sides.B]) {
+    public bool AreFeetOnlyOnCanDropThruPlatform() {
+        bool isOnOkPlatform = false; // will say otherwise next.
+        foreach (Collider2D col in collidersTouching[Sides.B]) { // For every collider our feet are touching...
             Platform platform = col.GetComponent<Platform>();
-            if (platform != null && platform.CanDropThru) {
-                return true; // This one's good!
+            if (platform!=null && platform.CanDropThru) { // This one works!
+                isOnOkPlatform = true; // Yes, we are!
+            }
+            else { // Ooh, there's something we CAN'T drop thru. Return false immediately.
+                return false;
             }
         }
-        return false; // Nah.
+        return isOnOkPlatform; // We didn't run into any non-ok platforms! Return if we're on an ok one too.
     }
 
 

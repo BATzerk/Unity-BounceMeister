@@ -1,6 +1,6 @@
 levelProperties posGlobal:(-22.0, 134.0);designerFlag:3;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(-14.4, 12.4)
+PlayerStart pos:(-13.8, 0.7)
 Ground myRect:(x:-18.00, y:18.00, width:16.00, height:4.00)
 Ground myRect:(x:-22.00, y:-1.00, width:8.00, height:36.00)
 Ground myRect:(x:22.00, y:0.50, width:8.00, height:39.00)
@@ -9,7 +9,7 @@ Ground myRect:(x:0.00, y:-10.50, width:52.00, height:19.00)
 Ground myRect:(x:-0.50, y:12.00, width:5.00, height:16.00)
 Ground myRect:(x:-10.50, y:12.00, width:3.00, height:16.00)
 Platform myRect:(x:-6.00, y:4.50, width:6.00, height:1.00)
-Platform myRect:(x:-15.00, y:10.50, width:6.00, height:1.00)
+Platform myRect:(x:-15.00, y:10.50, width:6.00, height:1.00);isPlayerRespawn:True
 ProgressGate myRect:(x:5.00, y:2.50, width:6.00, height:7.00);numSnacksReq:10
 LevelDoor pos:(-16.0, 12.0);myID:0;worldToIndex:-1;levelToKey:Clust1End;levelToDoorID:0
 Ground myRect:(x:11.50, y:11.00, width:21.00, height:10.00)

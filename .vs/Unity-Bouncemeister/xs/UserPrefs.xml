@@ -1,17 +1,14 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/Player.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="52" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/LevelData.cs" Line="6" Column="14" />
-      <File FileName="Assets/Scripts/Gameplay/LevelSaverLoader.cs" Line="403" Column="48" />
-      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="7" Column="5" />
-      <File FileName="Assets/Scripts/MapEditor/LevelTileContents.cs" Line="46" Column="93" />
-      <File FileName="Assets/Scripts/MapEditor/MapEditor.cs" Line="368" Column="39" />
-      <File FileName="Assets/Scripts/Gameplay/Level.cs" Line="146" Column="52" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="169" Column="15" />
-      <File FileName="Assets/Scripts/Common/Controllers/InputController.cs" Line="9" Column="15" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Jetta.cs" Line="111" Column="3" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="292" Column="50" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="361" Column="46" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Plunga.cs" Line="128" Column="29" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlungaBody.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/GameTimeController.cs" Line="58" Column="5" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="164" Column="28" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" Line="192" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

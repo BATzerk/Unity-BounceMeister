@@ -6,3 +6,4 @@ Ground myRect:(x:13.00, y:-1.50, width:26.00, height:35.00)
 Ground myRect:(x:0.00, y:14.00, width:52.00, height:12.00)
 Ground myRect:(x:-20.50, y:11.00, width:11.00, height:18.00)
 LevelDoor pos:(-3.0, -2.0);myID:0;worldToIndex:-1;levelToKey:Clust1Start;levelToDoorID:0
+
