@@ -1,0 +1,20 @@
+levelProperties posGlobal:(372.0, 174.0);designerFlag:2
+CameraBounds myRect:(x:-26.00, y:-19.00, width:104.00, height:38.00)
+Ground myRect:(x:26.00, y:18.00, width:104.00, height:4.00)
+Ground myRect:(x:74.00, y:3.50, width:8.00, height:25.00)
+Ground myRect:(x:-24.00, y:-3.50, width:4.00, height:25.00)
+Ground myRect:(x:17.00, y:-18.00, width:28.00, height:4.00)
+Ground myRect:(x:-14.50, y:-18.00, width:23.00, height:4.00)
+PlayerStart pos:(-20.0, -14.0)
+Ground myRect:(x:16.00, y:3.50, width:4.00, height:25.00)
+Ground myRect:(x:25.50, y:-3.50, width:3.00, height:25.00)
+Platform myRect:(x:0.00, y:-17.50, width:6.00, height:1.00)
+Ground myRect:(x:30.50, y:6.50, width:13.00, height:5.00)
+Ground myRect:(x:37.50, y:-3.50, width:3.00, height:25.00)
+Ground myRect:(x:57.00, y:-18.00, width:42.00, height:4.00)
+Platform myRect:(x:33.50, y:-17.50, width:5.00, height:1.00)
+Gate myRect:(x:56.00, y:-12.50, width:4.00, height:7.00);channelID:0
+GateButton pos:(34.0, 1.5);channelID:0
+Ground myRect:(x:33.50, y:-6.00, width:5.00, height:10.00)
+Ground myRect:(x:56.50, y:3.50, width:5.00, height:25.00)
+

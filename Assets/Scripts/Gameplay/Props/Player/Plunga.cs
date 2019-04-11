@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Plunga : Player {
-	// Overrides
+    // Overrides
+    override public PlayerTypes PlayerType() { return PlayerTypes.Plunga; }
 	private Vector2 GravityPlunging = new Vector2(0, -0.084f); // gravity is much stronger when we're plunging!
 	override protected Vector2 Gravity {
 		get {

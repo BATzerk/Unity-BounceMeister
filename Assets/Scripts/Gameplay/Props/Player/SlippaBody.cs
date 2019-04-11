@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class SlippaBody : PlayerBody {
 
-	// ----------------------------------------------------------------
-	//  Start
-	// ----------------------------------------------------------------
-	override protected void Start() {
-		bodyColor_neutral = new Color(185/255f, 125/255f, 25/255f);
+	//// ----------------------------------------------------------------
+	////  Start
+	//// ----------------------------------------------------------------
+	//override protected void Start() {
+	//	bodyColor_neutral = new Color(185/255f, 125/255f, 25/255f);
 
-		base.Start();
-	}
+	//	base.Start();
+	//}
 
 }

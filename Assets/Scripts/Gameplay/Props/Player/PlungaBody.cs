@@ -17,7 +17,6 @@ public class PlungaBody : PlayerBody {
 	// ----------------------------------------------------------------
 	override protected void Start() {
         myPlunga = myBasePlayer as Plunga;
-		bodyColor_neutral = new Color(25/255f, 175/255f, 181/255f);
 
 		base.Start();
     }

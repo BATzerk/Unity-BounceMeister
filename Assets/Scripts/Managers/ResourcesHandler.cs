@@ -22,6 +22,7 @@ public class ResourcesHandler : MonoBehaviour {
 
 	[SerializeField] public GameObject Battery;
 	[SerializeField] public GameObject CameraBounds;
+    [SerializeField] public GameObject CharBarrel;
 	[SerializeField] public GameObject Coin;
 	[SerializeField] public GameObject Crate;
 	[SerializeField] public GameObject DamageableGround;

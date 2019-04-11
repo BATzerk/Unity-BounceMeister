@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour {
 
 		// We've defined our currentLevelData before this scene! Load up THAT level!!
 		if (dm.currLevelData != null) {
-			StartGameAtLevel(dm.currLevelData);
+			StartGameAtLevel(dm.currLevelData, PlayerTypes.Plunga);
 		}
 		// We have NOT provided any currentLevelData!...
 		else {
@@ -73,8 +73,8 @@ public class GameController : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Doers - Loading Level
     // ----------------------------------------------------------------
-    public void StartGameAtLevel(LevelData levelData) { StartGameAtLevel(levelData.WorldIndex, levelData.levelKey); }
-	public void StartGameAtLevel (int worldIndex, string levelKey) {
+    public void StartGameAtLevel(LevelData levelData, PlayerTypes playerType) { StartGameAtLevel(levelData.WorldIndex, levelData.levelKey, playerType); }
+	public void StartGameAtLevel (int worldIndex, string levelKey, PlayerTypes playerType) {
 		// Wipe everything totally clean.
 		DestroyPlayer();
 		DestroyLevel();
@@ -86,7 +86,7 @@ public class GameController : MonoBehaviour {
 		level = Instantiate(ResourcesHandler.Instance.Level).GetComponent<Level>();
 		level.Initialize(this, tf_world, levelData);
 		// Make Player!
-		MakePlayer(PlayerTypes.Plunga, levelData);
+		MakePlayer(playerType, levelData);
 
 		// Reset things!
         dm.ResetLevelEnterValues();
@@ -116,7 +116,10 @@ public class GameController : MonoBehaviour {
         //GameUtils.SetGOCollapsed(tf_world, false);
         //GameUtils.SetGOCollapsed(level.transform, false);
     }
-
+    
+    public void TEMP_SwapPlayerType(PlayerTypes _type) {
+        MakePlayer(_type, player.PosLocal);
+    }
     private void MakePlayer(PlayerTypes type, LevelData levelData) {
 		Vector2 startingPos = GetPlayerStartingPosInLevel(levelData);
 		MakePlayer(type, startingPos);
@@ -158,7 +161,7 @@ public class GameController : MonoBehaviour {
 		WorldData worldData = dm.GetWorldData(level.WorldIndex);
 		string levelKey = worldData.GetUnusedLevelKey();
 		LevelData emptyLevelData = worldData.GetLevelData(levelKey, true);
-		StartGameAtLevel(emptyLevelData);
+		StartGameAtLevel(emptyLevelData, PlayerTypes.Plunga);
 	}
     private void DuplicateCurrLevel() {
         // Add a new level file, yo!
@@ -212,11 +215,12 @@ public class GameController : MonoBehaviour {
 		WorldData currentWorldData = level.WorldDataRef;
 		LevelData nextLevelData = currentWorldData.GetLevelAtSide(level.LevelDataRef, Player.PosLocal, sideEscaped);
 		if (nextLevelData != null) {
+            PlayerTypes playerType = player.PlayerType(); // HACK TEMP. Willdo: Clean this up.
             int playerDir = player.DirFacing; // remember these so we can preserves 'em, ya see!
             Vector2 playerVel = player.vel;
             dm.playerPosGlobalOnExitLevel = player.PosGlobal;
 			dm.playerSideEnterNextLevel = Sides.GetOpposite(sideEscaped);
-			StartGameAtLevel(nextLevelData);
+			StartGameAtLevel(nextLevelData, playerType);
             // Restore the vel/dir we had in the previous level.
             player.SetDirFacing(playerDir);
             player.SetVel(playerVel);

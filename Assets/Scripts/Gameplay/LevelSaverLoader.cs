@@ -13,6 +13,7 @@ static public class LevelSaverLoader {
 	// Constants (Objects)
 	const string BATTERY = "Battery";
 	const string CAMERA_BOUNDS = "CameraBounds";
+	const string CHAR_BARREL = "CharBarrel";
 	const string CRATE = "Crate";
 	const string DAMAGEABLE_GROUND = "DamageableGround";
 	const string GATE = "Gate";
@@ -96,6 +97,7 @@ static public class LevelSaverLoader {
 		foreach (PropData propData in ld.allPropDatas) {
 			Type type = propData.GetType();
 			if (type == typeof(BatteryData)) { AddAllPropFieldsToFS(propData, "pos"); }
+			else if (type == typeof(CharBarrelData)) { AddAllPropFieldsToFS(propData, "pos", "otherCharName"); }
 			else if (type == typeof(GateButtonData)) { AddAllPropFieldsToFS(propData, "pos", "channelID"); }
 			else if (type == typeof(GemData)) { AddAllPropFieldsToFS(propData, "pos", "type"); }
             else if (type == typeof(LevelDoorData)) { AddAllPropFieldsToFS(propData, "pos", "myID", "worldToIndex", "levelToKey", "levelToDoorID"); }
@@ -379,6 +381,7 @@ static public class LevelSaverLoader {
         switch (affectName) {
             case BATTERY: return new BatteryData();
             case CAMERA_BOUNDS: return new CameraBoundsData();
+            case CHAR_BARREL: return new CharBarrelData();
             case CRATE: return new CrateData();
             case DAMAGEABLE_GROUND: return new DamageableGroundData();
             case GATE: return new GateData();

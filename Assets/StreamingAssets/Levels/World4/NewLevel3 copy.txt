@@ -1,8 +1,8 @@
-levelProperties posGlobal:(360.0, 218.0);designerFlag:2
+levelProperties posGlobal:(494.0, 220.0);designerFlag:2
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:3.00, y:17.00, width:46.00, height:6.00)
-Ground myRect:(x:-22.00, y:15.50, width:8.00, height:9.00)
-Ground myRect:(x:23.00, y:10.50, width:6.00, height:11.00)
-Ground myRect:(x:-17.00, y:-5.00, width:18.00, height:22.00)
-Ground myRect:(x:0.00, y:-10.00, width:52.00, height:20.00)
-PlayerStart pos:(-18.4, 7.6)
+Ground myRect:(x:20.00, y:18.00, width:12.00, height:4.00)
+Ground myRect:(x:-9.00, y:18.00, width:34.00, height:4.00)
+Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00)
+Ground myRect:(x:-24.00, y:3.00, width:4.00, height:26.00)
+Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
+PlayerStart pos:(-20.0, -14.0)

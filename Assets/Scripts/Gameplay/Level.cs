@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	// Properties
 	private GateChannel[] gateChannels;
+    private List<CharBarrel> charBarrels=new List<CharBarrel>();
     private List<Gem> gems=new List<Gem>();
     private List<Snack> snacks=new List<Snack>();
     // References
@@ -120,6 +121,11 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 			else if (propData is BatteryData) {
 				Battery newProp = Instantiate(rh.Battery).GetComponent<Battery>();
 				newProp.Initialize (this, propData as BatteryData);
+			}
+			else if (propData is CharBarrelData) {
+				CharBarrel newProp = Instantiate(rh.CharBarrel).GetComponent<CharBarrel>();
+				newProp.Initialize (this, propData as CharBarrelData, charBarrels.Count);
+                charBarrels.Add(newProp);
 			}
 			else if (propData is CameraBoundsData) {
 				CameraBounds newProp = Instantiate(rh.CameraBounds).GetComponent<CameraBounds>();
@@ -274,7 +280,13 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
         GameUtils.ParentAndReset(go, this.transform);
         go.transform.localPosition = _pos;
     }
-    
+
+
+
+
+    public void TEMP_SwapPlayerType(PlayerTypes _type) {
+        gameControllerRef.TEMP_SwapPlayerType(_type);
+    }
 
     
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

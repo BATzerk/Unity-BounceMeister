@@ -1,0 +1,22 @@
+levelProperties posGlobal:(372.0, 98.0);designerFlag:2
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+Ground myRect:(x:22.50, y:6.50, width:7.00, height:19.00)
+Ground myRect:(x:8.50, y:-18.00, width:35.00, height:4.00);isPlayerRespawn:True
+Ground myRect:(x:-24.00, y:3.50, width:4.00, height:25.00)
+PlayerStart pos:(-17.2, -3.5)
+Platform myRect:(x:312.00, y:148.50, width:6.00, height:1.00)
+Ground myRect:(x:22.50, y:-16.00, width:7.00, height:12.00)
+Ground myRect:(x:-20.50, y:-18.00, width:11.00, height:4.00);isPlayerRespawn:True
+Platform myRect:(x:-12.00, y:-17.50, width:6.00, height:1.00);isPlayerRespawn:True
+Spikes myRect:(x:14.00, y:4.50, width:10.00, height:1.00);rotation:0
+Ground myRect:(x:14.50, y:3.00, width:11.00, height:2.00)
+Ground myRect:(x:14.50, y:16.00, width:11.00, height:2.00)
+Spikes myRect:(x:14.00, y:14.50, width:10.00, height:1.00);rotation:180
+Ground myRect:(x:-11.50, y:3.00, width:21.00, height:2.00)
+Spikes myRect:(x:-11.50, y:4.50, width:21.00, height:1.00);rotation:0
+Spikes myRect:(x:-12.50, y:14.50, width:23.00, height:1.00);rotation:180
+Ground myRect:(x:-12.50, y:16.00, width:23.00, height:2.00)
+CharBarrel pos:(-2.5, -13.0);otherCharName:Jetta
+Lift myRect:(x:4.00, y:-6.00, width:4.00, height:12.00);rotation:0;strength:0.08
+

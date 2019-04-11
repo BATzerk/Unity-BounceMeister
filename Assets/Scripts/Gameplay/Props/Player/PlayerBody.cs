@@ -14,6 +14,15 @@ abstract public class PlayerBody : MonoBehaviour {
 	// References
 	protected Player myBasePlayer=null; // set in Awake.
 
+    static public Color GetBodyColorNeutral(PlayerTypes playerType) {
+        switch (playerType) {
+            case PlayerTypes.Jetta: return new ColorHSB(290/360f, 0.7f, 0.7f).ToColor();
+            case PlayerTypes.Plunga: return new Color255(25, 175, 181).ToColor();
+            case PlayerTypes.Slippa: return new Color255(185, 125, 25).ToColor();
+            default: return Color.magenta; // Oops.
+        }
+    }
+
 
     // ----------------------------------------------------------------
     //  Start
@@ -22,6 +31,8 @@ abstract public class PlayerBody : MonoBehaviour {
         myBasePlayer = GetComponentInParent<Player>();
     }
     virtual protected void Start() {
+		bodyColor_neutral = GetBodyColorNeutral(myBasePlayer.PlayerType());
+
 		alpha = 1;
 		SetBodyColor(bodyColor_neutral);
         OnStopWallSlide();

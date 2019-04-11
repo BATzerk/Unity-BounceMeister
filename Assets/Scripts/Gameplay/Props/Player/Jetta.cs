@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Jetta : Player {
 	// Overrides
+    override public PlayerTypes PlayerType() { return PlayerTypes.Jetta; }
 //	private Vector2 GravityJettingWhileFalling = new Vector2(0, 0.02f); // gravity will actually work WITH us while we're falling! So we halt super fast.
 //	override protected Vector2 Gravity {
 //		get {

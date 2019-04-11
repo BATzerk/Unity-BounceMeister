@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Slippa : Player {
 	// Overrides
-	override protected float InputScaleX { get { return 0.03f; } }
+    override public PlayerTypes PlayerType() { return PlayerTypes.Slippa; }
+	override protected float InputScaleX { get { return 0.05f; } }
+	override protected float FrictionAir { get { return 1; } }
 	override protected float FrictionGround {
 		get {
 			if (Mathf.Abs(inputAxis.x) > 0.1f) { return 0.95f; } // Providing input? Less friction!
@@ -13,16 +15,17 @@ public class Slippa : Player {
 	}
 	override protected Vector2 Gravity {
 		get {
-			if (isReducedJumpGravity) { return GravityNeutral * 0.5f; } // We're still holding down the jump button? Reduce gravity!
-			if (isTouchingWall()) { return GravityNeutral * 0.7f; } // On a wall? Reduce gravity!
-			return GravityNeutral;
+			if (isReducedJumpGravity) { return GravityNeutral * 0.7f; } // We're still holding down the jump button? Reduce gravity!
+			if (isTouchingWall()) { return GravityNeutral * 1.1f; } // On a wall? Reduce gravity!
+			return GravityNeutral * 2f;
 		}
 	}
 	override protected float MaxVelXAir { get { return 0.5f; } }
 	override protected float MaxVelXGround { get { return 0.5f; } }
 
-	override protected float JumpForce { get { return 0.48f; } }
+	override protected float JumpForce { get { return 0.6f; } }
 	override protected float WallSlideMinYVel { get { return -0.5f; } }
+	override protected Vector2 WallKickVel { get { return new Vector2(0.3f,0.8f); } }
 
 	// Properties
 	private bool isReducedJumpGravity; // true when we jump. False when A) We release the jump button, or B) We hit our jump apex.
@@ -49,8 +52,8 @@ public class Slippa : Player {
 	}
 	override protected void StartWallSlide(int side) {
 		base.StartWallSlide(side);
-		// Convert all our horizontal speed to vertical speed!
-		float newYVel = Mathf.Abs(vel.x)*0.7f + Mathf.Max(0, vel.y);
+		// Convert our horizontal speed to vertical speed!
+		float newYVel = Mathf.Abs(vel.x)*0.5f + Mathf.Max(0, vel.y);
 		SetVel(new Vector2(vel.x, newYVel));
 	}
 

@@ -15,7 +15,6 @@ public class JettaBody : PlayerBody {
 	// ----------------------------------------------------------------
 	override protected void Start() {
 		myJetta = myBasePlayer as Jetta;
-		bodyColor_neutral = new ColorHSB(290/360f, 0.7f, 0.7f).ToColor();
 
 		base.Start();
 	}

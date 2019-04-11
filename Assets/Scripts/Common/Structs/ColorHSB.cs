@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public struct ColorHSB {
-	public float h;
-	public float s;
-	public float b;
-	public float a;
+	public float h; // from 0 to 360
+	public float s; // from 0 to 1
+	public float b; // from 0 to 1
+	public float a; // from 0 to 1
 
 	public ColorHSB(float h, float s, float b, float a) {
 		this.h = h;

@@ -15,6 +15,9 @@ public class BatteryData : PropData {
 public class CameraBoundsData : PropData {
 	public Rect myRect=new Rect();
 }
+public class CharBarrelData : PropData {
+    public string otherCharName;
+}
 //public class EnemyData : PropData {
 //}
 public class GateData : BaseGroundData {

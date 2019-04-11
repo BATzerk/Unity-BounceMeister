@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 abstract public class Player : PlatformCharacter {
-    // Prop Overrides
+    // Overrides
     override public bool DoSaveInLevelFile() { return false; }
+    abstract public PlayerTypes PlayerType();
 	// Constants
 	override protected int StartingHealth { get { return 1; } }
 	override protected float FrictionAir { get { return isPreservingWallKickVel ? 1f : FrictionGround; } } // No air friction while we're preserving our precious wall-kick vel.
@@ -19,7 +20,7 @@ abstract public class Player : PlatformCharacter {
 
 	virtual protected float JumpForce { get { return 0.61f; } }
 	virtual protected float WallSlideMinYVel { get { return -0.13f; } }
-	private readonly Vector2 WallKickVel = new Vector2(0.5f, 0.52f);
+	virtual protected Vector2 WallKickVel { get { return new Vector2(0.5f,0.52f); } }
 	private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);
 
 	override protected float MaxVelXAir { get { return 0.35f; } }
