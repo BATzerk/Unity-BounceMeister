@@ -36,7 +36,7 @@ public class Gate : BaseGround {
 
 		channelID = data.channelID;
 		bodyColor = MyChannel.Color;
-		SetIsOn(true);
+		SetIsOn(!MyChannel.IsUnlocked);
 	}
 
 

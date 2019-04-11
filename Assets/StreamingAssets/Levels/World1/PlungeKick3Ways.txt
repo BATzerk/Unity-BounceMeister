@@ -1,4 +1,4 @@
-levelProperties posGlobal:(-46.0, -42.0);designerFlag:4
+levelProperties posGlobal:(-80.0, -26.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Spikes myRect:(x:0.50, y:4.00, width:4.00, height:1.00);rotation:270
 Spikes myRect:(x:6.00, y:5.50, width:16.00, height:1.00);rotation:180
@@ -24,4 +24,3 @@ Ground myRect:(x:-8.50, y:18.50, width:37.00, height:3.00)
 Ground myRect:(x:24.00, y:13.50, width:4.00, height:13.00)
 Ground myRect:(x:-2.50, y:2.50, width:5.00, height:1.00)
 Snack pos:(0.0, 14.5)
-

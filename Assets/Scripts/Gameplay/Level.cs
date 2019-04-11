@@ -167,9 +167,10 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 
 		// For development, add bounds so we don't fall out of unconnected levels!
 		AutoAddSilentBoundaries();
+        AddHardcodedLevelElements();
 
-		// Reset channels!
-		foreach (GateChannel channel in gateChannels) { channel.Reset(); }
+		//// Reset channels!
+		//foreach (GateChannel channel in gateChannels) { channel.Reset(); }
 	}
 
 	/** Slightly sloppy, whatever-it-takes housekeeping to allow us to start up the game with a novel level and edit/play/save it right off the bat. */
@@ -261,6 +262,19 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
         if (lo.side==Sides.L || lo.side==Sides.R) { return new Vector2(thickness, lo.length); }
         return new Vector2(lo.length, thickness);
     }
+    private void AddHardcodedLevelElements() {
+        // CANDO: If this function starts getting big, make new Prop, Decor. Has prefabName, pos, rotation, scale. :)
+        if (LevelKey == "IntroPlunge") {
+            AddDecor("InstructsPlunge", new Vector2(0, 11));
+        }
+    }
+    private void AddDecor(string prefabName, Vector2 _pos) {
+        GameObject go = Instantiate(ResourcesHandler.Instance.GetDecor(prefabName));
+        if (go == null) { Debug.LogError("Can't find Decor prefab: " + prefabName); return; }
+        GameUtils.ParentAndReset(go, this.transform);
+        go.transform.localPosition = _pos;
+    }
+    
 
     
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

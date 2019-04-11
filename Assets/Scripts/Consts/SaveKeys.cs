@@ -14,6 +14,9 @@ public static class SaveKeys {
     public static string DidEatGem(LevelData ld, int objIndex) { return "DidEatGem_" + FullLvlKey(ld) + "_" + objIndex; }
     public static string DidEatSnack(Level level, int objIndex) { return DidEatSnack(level.LevelDataRef, objIndex); }
     public static string DidEatSnack(LevelData ld, int objIndex) { return "DidEatSnack_" + FullLvlKey(ld) + "_" + objIndex; }
+    
+    public static string IsGateUnlocked(Level level, int objIndex) { return IsGateUnlocked(level.LevelDataRef, objIndex); }
+    public static string IsGateUnlocked(LevelData ld, int objIndex) { return "IsGateUnlocked_" + FullLvlKey(ld) + "_" + objIndex; }
 
 
     public const string MapEditor_CameraPosX = "MapEditor_CameraPosX";

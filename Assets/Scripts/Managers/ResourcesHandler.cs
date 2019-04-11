@@ -47,6 +47,9 @@ public class ResourcesHandler : MonoBehaviour {
             default: Debug.LogWarning("No sprite for Gem type: " + type); return null;
         }
     }
+    public GameObject GetDecor(string prefabName) {
+        return Resources.Load<GameObject>("Prefabs/Gameplay/Decor/" + prefabName);
+    }
 
 
     // Instance

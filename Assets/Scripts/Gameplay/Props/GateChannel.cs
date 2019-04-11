@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class GateChannel {
 	// Properties
-	private int channelID=-1;
+    public bool IsUnlocked { get; private set; } // this value's saved/loaded!
+    private int channelID=-1;
 	// References
-//	private Level myLevel;
+	private Level myLevel;
 	private List<Gate> myGates = new List<Gate>();
 	private List<GateButton> myButtons = new List<GateButton>();
 
@@ -35,18 +36,28 @@ public class GateChannel {
 	//  Initialize
 	// ----------------------------------------------------------------
 	public GateChannel(Level myLevel, int channelID) {
-//		this.myLevel = myLevel;
+		this.myLevel = myLevel;
 		this.channelID = channelID;
+        IsUnlocked = SaveStorage.GetBool(SaveKeys.IsGateUnlocked(myLevel, channelID));
 	}
 
-	public void Reset() {
-		bool areAllButtonsPressed = AreAllMyButtonsPressed();
-		foreach (Gate gate in myGates) {
-			if (gate==null || gate.ChannelID!=channelID) { continue; }
-			gate.SetIsOn(!areAllButtonsPressed);
-		}
+	//public void Reset() {
+    //    SetIsUnlocked(false);
+    //}
+    private void SetIsUnlocked(bool val) {
+        if (IsUnlocked != val) {
+            IsUnlocked = val;
+            SaveStorage.SetBool(SaveKeys.IsGateUnlocked(myLevel, channelID), IsUnlocked);
+    		foreach (Gate gate in myGates) {
+    			if (gate==null || gate.ChannelID!=channelID) { continue; }
+    			gate.SetIsOn(!IsUnlocked);
+    		}
+        }
 	}
-
+    
+    // ----------------------------------------------------------------
+    //  Doers
+    // ----------------------------------------------------------------
 	public void AddGate(Gate _gate) {
 		myGates.Add(_gate);
 	}
@@ -59,13 +70,11 @@ public class GateChannel {
 	//  Events
 	// ----------------------------------------------------------------
 	public void OnButtonPressed() {
-		bool areAllButtonsPressed = AreAllMyButtonsPressed();
-		if (areAllButtonsPressed) {
-			foreach (Gate gate in myGates) {
-				if (gate==null || gate.ChannelID!=channelID) { continue; }
-				gate.UnlockMe();
-			}
-		}
+        if (!IsUnlocked) { // I'm not yet unlocked...!
+    		if (AreAllMyButtonsPressed()) { // All my buttons are pressed?? Unlock me!!
+                SetIsUnlocked(true);
+    		}
+        }
 	}
 
 

@@ -29,15 +29,19 @@ public class GateButton : Prop {
 		channelID = data.channelID;
 		bodyColor = MyChannel.Color;
 		sr_body.color = bodyColor;
+        SetIsPressed(MyChannel.IsUnlocked);
 	}
 
 
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
+    private void SetIsPressed(bool val) {
+        isPressed = val;
+        GameUtils.SetSpriteColorWithCompoundAlpha(sr_body, bodyColor, isPressed ? 0.1f : 1);
+    }
 	private void GetPressed() {
-		isPressed = true;
-		sr_body.color = new Color(bodyColor.r,bodyColor.g,bodyColor.b, 0.1f);
+        SetIsPressed(true);
 		if (MyChannel != null) {
 			MyChannel.OnButtonPressed();
 		}
