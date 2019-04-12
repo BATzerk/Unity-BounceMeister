@@ -261,33 +261,30 @@ public class WorldData {
     // ================================================================
     //  Doers
     // ================================================================
-    public void UpdateNumSnacksCollected() {
+    public void UpdateNumSnacks() {
+        NumSnacksTotal = 0;
         NumSnacksCollected = 0;
         foreach (LevelData ld in levelDatas.Values) {
-            int snackIndex=0; // incremented every time we find a Snack in this Level's Prop list.
-            foreach (PropData pd in ld.allPropDatas) {
-                if (pd is SnackData) {
-                    if (SaveStorage.GetBool(SaveKeys.DidEatSnack(ld,snackIndex))) { NumSnacksCollected++; }
-                    snackIndex++;
-                }
-            }
+            ld.UpdateNumSnacks();
+            NumSnacksTotal += ld.NumSnacksTotal;
+            NumSnacksCollected += ld.NumSnacksCollected;
         }
     }
-    public void UpdateNumSnacksTotal() {
-        NumSnacksTotal = 0;
-        foreach (LevelData ld in levelDatas.Values) {
-            foreach (PropData pd in ld.allPropDatas) {
-                if (pd is SnackData) { NumSnacksTotal++; }
-            }
-        }
-    }
+    //public void UpdateNumSnacksTotal() {
+    //    NumSnacksTotal = 0;
+    //    foreach (LevelData ld in levelDatas.Values) {
+    //        foreach (PropData pd in ld.allPropDatas) {
+    //            if (pd is SnackData) { NumSnacksTotal++; }
+    //        }
+    //    }
+    //}
 
     // ================================================================
     //  Events
     // ================================================================
     public void OnPlayerEatSnack() {
         // Update counts!
-        UpdateNumSnacksCollected();
+        UpdateNumSnacks(); // CANDO #optimization: Only update the snacks in the level we ate it in.
         // Dispatch event!
         GameManagers.Instance.EventManager.OnSnacksCollectedChanged(WorldIndex);
     }
@@ -319,8 +316,7 @@ public class WorldData {
 			Debug.LogError("World folder not found! " + worldIndex);
         }
 
-        UpdateNumSnacksCollected();
-        UpdateNumSnacksTotal();
+        UpdateNumSnacks();
 
         //		if (File.Exists(filePath)) {
         //			StreamReader file = File.OpenText(filePath);

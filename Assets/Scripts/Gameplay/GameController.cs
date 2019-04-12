@@ -112,14 +112,16 @@ public class GameController : MonoBehaviour {
     }
 
     private void ExpandLevelHierarchy() {
-        GameUtils.SetExpandedRecursive(level.gameObject, true); // Open up Level all the way down.
-        for (int i=0; i<level.transform.childCount; i++) { // Ok, now (messily) close all its children.
-            GameUtils.SetExpandedRecursive(level.transform.GetChild(i).gameObject, false);
+        if (!GameUtils.IsEditorWindowMaximized()) { // If we're maximized, do nothing (we don't want to open up the Hierarchy if it's not already open).
+            GameUtils.SetExpandedRecursive(level.gameObject, true); // Open up Level all the way down.
+            for (int i=0; i<level.transform.childCount; i++) { // Ok, now (messily) close all its children.
+                GameUtils.SetExpandedRecursive(level.transform.GetChild(i).gameObject, false);
+            }
+            GameUtils.FocusOnWindow("Game"); // focus back on Game window.
+            //GameUtils.SetGOCollapsed(transform.parent, false);
+            //GameUtils.SetGOCollapsed(tf_world, false);
+            //GameUtils.SetGOCollapsed(level.transform, false);
         }
-        GameUtils.FocusOnWindow("Game"); // focus back on Game window.
-        //GameUtils.SetGOCollapsed(transform.parent, false);
-        //GameUtils.SetGOCollapsed(tf_world, false);
-        //GameUtils.SetGOCollapsed(level.transform, false);
     }
     
     private void MakePlayer(PlayerTypes type, LevelData levelData) {
@@ -305,8 +307,7 @@ public class GameController : MonoBehaviour {
         // Save it!
         LevelSaverLoader.SaveLevelFile(level);
         // Update properties that may have changed.
-        level.WorldDataRef.UpdateNumSnacksTotal();
-        level.WorldDataRef.UpdateNumSnacksCollected();
+        level.WorldDataRef.UpdateNumSnacks();
     }
 
 

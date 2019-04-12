@@ -16,6 +16,8 @@ public class LevelData {
 	public string levelKey; // everything we use to reference this level! Including the level's file name (minus the .txt suffix).
 	public int designerFlag; // for the level designer! We can flag any level to be like "testing" or "good" or etc.
     public int ClusterIndex=-1;
+    public int NumSnacksCollected { get; private set; }
+    public int NumSnacksTotal { get; private set; }
 	public bool WasUsedInSearchAlgorithm { get; set; }
 	public Vector2 posGlobal; // my position, global to ALL worlds! These values get big (up to around 70,000)!
     public List<LevelNeighborData> Neighbors; // EXACTLY like Openings, except contains refs to other levels (which can totally be null if there's no lvl at an opening)!
@@ -64,6 +66,19 @@ public class LevelData {
         // Oops, no door with this ID.
         Debug.LogWarning("Oops! No LevelDoor with doorID. Level: " + levelKey + ", doorID: " + doorID);
         return DefaultPlayerStartPos();
+    }
+    public bool AreEdiblesLeft() {
+        return NumSnacksCollected < NumSnacksTotal;
+    }
+    public void UpdateNumSnacks() {
+        NumSnacksTotal = 0;
+        NumSnacksCollected = 0;
+        foreach (PropData pd in allPropDatas) {
+            if (pd is SnackData) {
+                if (SaveStorage.GetBool(SaveKeys.DidEatSnack(this, NumSnacksTotal))) { NumSnacksCollected++; }
+                NumSnacksTotal ++;
+            }
+        }
     }
 
 	// Setters

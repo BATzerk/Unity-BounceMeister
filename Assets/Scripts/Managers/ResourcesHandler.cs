@@ -15,6 +15,7 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] public Sprite s_gem1;
     
     [SerializeField] public GameObject Level;
+    [SerializeField] public GameObject MiniMapLevelTile;
 
     [SerializeField] private GameObject Plunga;
 	[SerializeField] private GameObject Slippa;

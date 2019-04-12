@@ -1,14 +1,13 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/Player.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/LevelData.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="145" Column="48" />
-      <File FileName="Assets/Scripts/Gameplay/Level.cs" Line="173" Column="9" />
-      <File FileName="Assets/Scripts/Gameplay/PlayerTypes.cs" Line="11" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="602" Column="64" />
-      <File FileName="Assets/Scripts/Managers/DataManager.cs" Line="95" Column="30" />
-      <File FileName="Assets/Scripts/Gameplay/Props/CharBarrel.cs" Line="39" Column="56" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="196" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="116" Column="94" />
+      <File FileName="Assets/Scripts/Gameplay/Level.cs" Line="72" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/UI/MiniMap.cs" Line="12" Column="39" />
+      <File FileName="Assets/Scripts/Gameplay/UI/MiniMapLevelTile.cs" Line="17" Column="57" />
+      <File FileName="Assets/Scripts/Gameplay/LevelData.cs" Line="68" Column="46" />
+      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="13" Column="40" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

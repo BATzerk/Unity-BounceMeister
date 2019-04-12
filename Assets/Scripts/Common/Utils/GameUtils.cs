@@ -15,7 +15,16 @@ public static class GameUtils {
         go.transform.localEulerAngles = Vector3.zero;
         go.transform.localScale = Vector3.one;
     }
-
+    
+    public static bool IsEditorWindowMaximized() {
+        #if UNITY_EDITOR
+        var type = typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView");
+        EditorWindow gameWindow = EditorWindow.GetWindow(type);
+        return gameWindow!=null && gameWindow.maximized;
+        #else
+        return false;
+        #endif
+    }
     public static void SetExpandedRecursive(GameObject go, bool expand) {
         #if UNITY_EDITOR
         var type = typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneHierarchyWindow");
