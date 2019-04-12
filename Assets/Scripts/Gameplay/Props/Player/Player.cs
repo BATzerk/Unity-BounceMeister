@@ -120,15 +120,15 @@ abstract public class Player : PlatformCharacter {
 	}
 	public void Initialize(Level _myLevel, PlayerData data) {
 		base.BaseInitialize(_myLevel, data);
+        
+        DirFacing = data.dirFacing;
+        SetVel(data.vel);
 
 		// Set camBoundsLocal!
 		const float boundsBloat = 0f; // I have to like *really* be off-screen for this to register.
 		camBoundsLocal = myLevel.GetCameraBoundsLocal();
 		camBoundsLocal.size += new Vector2(boundsBloat,boundsBloat)*2f;
 		camBoundsLocal.position -= new Vector2(boundsBloat,boundsBloat);
-
-        // Reset stuff.
-        DirFacing = 1;
     }
 
     override protected void SetSize(Vector2 _size) {
@@ -594,6 +594,19 @@ abstract public class Player : PlatformCharacter {
 	}
 
 	virtual public void OnUseBattery() { }
+    
+
+    // ----------------------------------------------------------------
+    //  Serializing
+    // ----------------------------------------------------------------
+    override public PropData SerializeAsData() {
+        return new PlayerData {
+            pos = pos,
+            vel = vel,
+            dirFacing = DirFacing,
+            type = PlayerType(),
+        };
+    }
 
 
 }

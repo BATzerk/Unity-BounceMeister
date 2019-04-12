@@ -6,22 +6,10 @@ public class CharBarrel : Prop {
     // Components
     [SerializeField] private SpriteRenderer sr_body=null;
     // Properties
-    [SerializeField] private string otherCharName = "Slippa"; // this value DOESN'T change. It's the default other guy I've got.
+    [SerializeField] private string otherCharName = "Slippa"; // this value DOESN'T change. It's the DEFAULT other guy I've got.
 	private int myIndex; // which CharBarrel I am in Level.
     private float timeWhenCanSensePlayer; // in SCALED seconds. So we don't keep swapping between two Player types.
 	public PlayerTypes CharTypeInMe { get; private set; }
-
-	// Getters
-	//public string DefaultCharName { get { return otherCharName; } }
-
-    private static PlayerTypes GetCharType(string typeName) {
-        if (typeName == "Jetta")  { return PlayerTypes.Jetta; }
-        if (typeName == "Plunga") { return PlayerTypes.Plunga; }
-        if (typeName == "Slippa") { return PlayerTypes.Slippa; }
-        // Oops.
-        Debug.LogError("PlayerType not defined: " + typeName);
-        return PlayerTypes.Plunga;
-    }
 
 
     // ----------------------------------------------------------------
@@ -48,7 +36,7 @@ public class CharBarrel : Prop {
 
         // Load what character's in me!
         string savedCharType = SaveStorage.GetString(SaveKeys.CharBarrelTypeInMe(myLevel.LevelDataRef, myIndex), otherCharName);
-        SetCharTypeInMe(GetCharType(savedCharType));
+        SetCharTypeInMe(PlayerTypeHelper.TypeFromString(savedCharType));
 	}
 
 
@@ -66,12 +54,12 @@ public class CharBarrel : Prop {
         PlayerTypes playerNewType = CharTypeInMe;
         PlayerTypes myNewType = player.PlayerType();
         // Set Player's type!
-        myLevel.TEMP_SwapPlayerType(playerNewType);
+        myLevel.SwapPlayerType(playerNewType);
         // Set/save my type!
         SetCharTypeInMe(myNewType);
         SaveStorage.SetString(SaveKeys.CharBarrelTypeInMe(myLevel.LevelDataRef, myIndex), myNewType.ToString());
         // Reset timeWhenCanSensePlayer!
-        timeWhenCanSensePlayer = Time.time;
+        timeWhenCanSensePlayer = Time.time + 0.1f;
 	}
 
 
@@ -81,7 +69,7 @@ public class CharBarrel : Prop {
 	//  Events
 	// ----------------------------------------------------------------
     private void OnTriggerEnter2D(Collider2D col) {
-        if (Time.time < timeWhenCanSensePlayer+0.1f) { return; } // I was like JUST born?? Do nothin'.
+        if (Time.time < timeWhenCanSensePlayer) { return; } // I was like JUST born?? Do nothin'.
         
         bool isPlayer = LayerMask.LayerToName(col.gameObject.layer) == Layers.Player;
         if (isPlayer) {

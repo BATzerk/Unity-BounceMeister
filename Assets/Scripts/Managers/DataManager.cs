@@ -11,8 +11,8 @@ public class DataManager {
     public LevelData currLevelData = null; // TODO: Remove this. We don't need it (right?). if this is defined when GameController opens, we'll open THAT level!
     // Entering-Level Properties
     public string levelToDoorID = null; // defined when use a LevelDoor. When we enter a level, this is the door we'll start at!
-    public int playerSideEnterNextLevel=-1; // pairs with playerPosGlobalOnExitLevel.
-    public Vector2 playerPosGlobalOnExitLevel=Vector2Extensions.NaN; // The suuuuper simple way we know how to set the Player's pos on entering the next level.
+    //public int playerSideEnterNextLevel=-1; // pairs with playerPosGlobalOnExitLevel.
+    //public Vector2 playerPosGlobalOnExitLevel=Vector2Extensions.NaN; // The suuuuper simple way we know how to set the Player's pos on entering the next level.
     public Vector2 playerGroundedRespawnPos=Vector2Extensions.NaN; // I'll respawn at this pos. Set when we leave a Ground that has IsPlayerRespawn.
 
 	// ----------------------------------------------------------------
@@ -80,6 +80,25 @@ public class DataManager {
 	}
 
 
+
+    // ----------------------------------------------------------------
+    //  Doers
+    // ----------------------------------------------------------------
+    public void ClearAllSaveData() {
+        // NOOK IT
+        SaveStorage.DeleteAll ();
+        Reset ();
+        Debug.Log ("All SaveStorage CLEARED!");
+    }
+    /// Resets static values that determine where Player will start when reloading a Level (e.g. LevelDoorID, prev-level-exit-pos, grounded-respawn-pos).
+    public void ResetLevelEnterValues() {
+        levelToDoorID = null;
+        playerGroundedRespawnPos = Vector2Extensions.NaN;
+        //playerSideEnterNextLevel = -1;
+        //playerPosGlobalOnExitLevel = Vector2Extensions.NaN;
+    }
+
+
 //	public void EraseSaveSlot (int slotIndex) {
 //		// SIGH. There's no cleaner way (aka not hardcode-erasing every value) to do this WITHOUT switching to a non-SaveStorage system.
 //		int originalCurrentSlotIndex = currentSaveSlotIndex;
@@ -138,25 +157,6 @@ public class DataManager {
 	//		highestWorldEndEverReached = Mathf.Max (highestWorldEndEverReached, _worldIndex);
 	//		SaveStorage.SetInt (SaveKeys.HIGHEST_WORLD_END_EVER_REACHED, highestWorldEndEverReached);
 	//	}
-
-
-
-	// ----------------------------------------------------------------
-	//  Doers
-	// ----------------------------------------------------------------
-	public void ClearAllSaveData() {
-		// NOOK IT
-		SaveStorage.DeleteAll ();
-		Reset ();
-		Debug.Log ("All SaveStorage CLEARED!");
-	}
-    /// Resets static values that determine where Player will start when reloading a Level (e.g. LevelDoorID, prev-level-exit-pos, grounded-respawn-pos).
-    public void ResetLevelEnterValues() {
-        levelToDoorID = null;
-        playerGroundedRespawnPos = Vector2Extensions.NaN;
-        playerSideEnterNextLevel = -1;
-        playerPosGlobalOnExitLevel = Vector2Extensions.NaN;
-    }
 
 }
 

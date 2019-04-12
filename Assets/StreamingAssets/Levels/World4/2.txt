@@ -13,4 +13,3 @@ Gate myRect:(x:21.00, y:-13.00, width:4.00, height:6.00);channelID:0
 Gate myRect:(x:9.00, y:3.50, width:6.00, height:5.00);channelID:0
 GateButton pos:(15.5, 8.5);channelID:0
 CharBarrel pos:(5.0, -13.5);otherCharName:Slippa
-

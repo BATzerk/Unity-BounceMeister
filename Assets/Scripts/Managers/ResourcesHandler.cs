@@ -16,9 +16,9 @@ public class ResourcesHandler : MonoBehaviour {
     
     [SerializeField] public GameObject Level;
 
-    [SerializeField] public GameObject Plunga;
-	[SerializeField] public GameObject Slippa;
-	[SerializeField] public GameObject Jetta;
+    [SerializeField] private GameObject Plunga;
+	[SerializeField] private GameObject Slippa;
+	[SerializeField] private GameObject Jetta;
 
 	[SerializeField] public GameObject Battery;
 	[SerializeField] public GameObject CameraBounds;
@@ -41,6 +41,16 @@ public class ResourcesHandler : MonoBehaviour {
 
 
     // Getters
+    public GameObject Player(PlayerTypes type) {
+        switch (type) {
+            case PlayerTypes.Jetta: return Jetta;
+            case PlayerTypes.Plunga: return Plunga;
+            case PlayerTypes.Slippa: return Slippa;
+            default:
+                Debug.LogError("Whoa! Player type totally not recognized: " + type);
+                return null;
+        }
+    }
     public Sprite GetGemSprite(int type) {
         switch (type) {
             case 0: return s_gem0;

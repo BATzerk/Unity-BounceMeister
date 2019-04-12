@@ -6,6 +6,7 @@ public static class SaveKeys {
 
 	public const string LastPlayedWorldIndex = "LastPlayedWorldIndex";
     public static string LastPlayedLevelKey(int worldIndex) { return "LastPlayedLevelKey_w" + worldIndex; }
+    public const string LastPlayedPlayerType = "LastPlayedPlayerType";
 
     private static string FullLvlKey(Level l) { return FullLvlKey(l.LevelDataRef); }
     private static string FullLvlKey(LevelData ld) { return "w" + ld.WorldIndex + "_" + ld.LevelKey; } // e.g. returns "w2_JumpPit".

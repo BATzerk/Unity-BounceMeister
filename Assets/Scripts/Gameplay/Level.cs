@@ -170,13 +170,11 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 				Debug.LogWarning("PropData not recognized: " + propData);
 			}
 		}
-
-		// For development, add bounds so we don't fall out of unconnected levels!
-		AutoAddSilentBoundaries();
+        
         AddHardcodedLevelElements();
 
-		//// Reset channels!
-		//foreach (GateChannel channel in gateChannels) { channel.Reset(); }
+        // For development, add bounds so we don't fall out of unconnected levels!
+        AutoAddSilentBoundaries();
 	}
 
 	/** Slightly sloppy, whatever-it-takes housekeeping to allow us to start up the game with a novel level and edit/play/save it right off the bat. */
@@ -202,45 +200,6 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 			cameraBounds.Initialize(this, cameraBounds.SerializeAsData() as CameraBoundsData); // Strange and hacky: It initializes itself as what it already is. Just to go through other paperwork.
 		}
 	}
-    /*
-	private void AutoAddSilentBoundaries() {
-		Rect camBounds = levelDataRef.cameraBoundsData.myRect;
-		for (int side=0; side<Sides.NumSides; side++) {
-			// No level at this side?? Protect me with an InvisiBounds!
-			if (WorldDataRef.Debug_GetSomeLevelAtSide(levelDataRef, side) == null) {
-				BoxCollider2D col = new GameObject().AddComponent<BoxCollider2D>();
-				col.transform.SetParent(this.transform);
-				col.transform.localScale = Vector3.one;
-				col.transform.localEulerAngles = Vector3.zero;
-				col.gameObject.layer = LayerMask.NameToLayer("Ground"); // so our feet stop on it, yanno.
-				col.name = "InvisiBounds_Side" + side;
-				// Determine the collider's rect, ok?
-				Rect rect = new Rect();
-				switch(side) { // Ehh nbd. Easier to understand.
-					case Sides.L:
-						rect.size = new Vector2(1, camBounds.height);
-						rect.position = new Vector2(camBounds.xMin-rect.size.x, camBounds.y);
-						break;
-					case Sides.R:
-						rect.size = new Vector2(1, camBounds.height);
-						rect.position = new Vector2(camBounds.xMax, camBounds.y);
-						break;
-					case Sides.B:
-						rect.size = new Vector2(camBounds.width, 1);
-						rect.position = new Vector2(camBounds.x, camBounds.yMin-rect.size.y);
-						break;
-					case Sides.T:
-						rect.size = new Vector2(camBounds.width, 1);
-						rect.position = new Vector2(camBounds.x, camBounds.yMax);
-						break;
-				}
-				// Make it happen!
-				col.transform.localPosition = rect.center;
-				col.size = rect.size;
-			}
-		}
-	}
-    */
 	private void AutoAddSilentBoundaries() {
 		for (int i=0; i<LevelDataRef.Neighbors.Count; i++) {
 			// No level here?? Protect me with an InvisiBounds!
@@ -282,12 +241,15 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
     }
 
 
-
-
-    public void TEMP_SwapPlayerType(PlayerTypes _type) {
-        gameControllerRef.TEMP_SwapPlayerType(_type);
+    // ----------------------------------------------------------------
+    //  Doers
+    // ----------------------------------------------------------------
+    public void SwapPlayerType(PlayerTypes _type) {
+        gameControllerRef.SwapPlayerType(_type);
     }
 
+    
+    
     
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //	Debug
@@ -369,4 +331,43 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 
 
 
+    /*
+    private void AutoAddSilentBoundaries() {
+        Rect camBounds = levelDataRef.cameraBoundsData.myRect;
+        for (int side=0; side<Sides.NumSides; side++) {
+            // No level at this side?? Protect me with an InvisiBounds!
+            if (WorldDataRef.Debug_GetSomeLevelAtSide(levelDataRef, side) == null) {
+                BoxCollider2D col = new GameObject().AddComponent<BoxCollider2D>();
+                col.transform.SetParent(this.transform);
+                col.transform.localScale = Vector3.one;
+                col.transform.localEulerAngles = Vector3.zero;
+                col.gameObject.layer = LayerMask.NameToLayer("Ground"); // so our feet stop on it, yanno.
+                col.name = "InvisiBounds_Side" + side;
+                // Determine the collider's rect, ok?
+                Rect rect = new Rect();
+                switch(side) { // Ehh nbd. Easier to understand.
+                    case Sides.L:
+                        rect.size = new Vector2(1, camBounds.height);
+                        rect.position = new Vector2(camBounds.xMin-rect.size.x, camBounds.y);
+                        break;
+                    case Sides.R:
+                        rect.size = new Vector2(1, camBounds.height);
+                        rect.position = new Vector2(camBounds.xMax, camBounds.y);
+                        break;
+                    case Sides.B:
+                        rect.size = new Vector2(camBounds.width, 1);
+                        rect.position = new Vector2(camBounds.x, camBounds.yMin-rect.size.y);
+                        break;
+                    case Sides.T:
+                        rect.size = new Vector2(camBounds.width, 1);
+                        rect.position = new Vector2(camBounds.x, camBounds.yMax);
+                        break;
+                }
+                // Make it happen!
+                col.transform.localPosition = rect.center;
+                col.size = rect.size;
+            }
+        }
+    }
+    */
 

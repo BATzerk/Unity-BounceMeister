@@ -85,6 +85,9 @@ public class LiftData : PropData {
 }
 
 public class PlayerData : PropData {
+    public PlayerTypes type = PlayerTypes.Undefined;
+    public Vector2 vel = Vector2.zero;
+    public int dirFacing = 1;
 }
 
 public class PlayerStartData : PropData {

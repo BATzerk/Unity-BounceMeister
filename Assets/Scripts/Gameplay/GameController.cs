@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour {
 
 		// We've defined our currentLevelData before this scene! Load up THAT level!!
 		if (dm.currLevelData != null) {
-			StartGameAtLevel(dm.currLevelData, PlayerTypes.Plunga);
+			StartGameAtLevel(dm.currLevelData);
 		}
 		// We have NOT provided any currentLevelData!...
 		else {
@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour {
 				tf_world = GameObject.Find("GameWorld").transform;
 			}
 //			player = GameObject.FindObjectOfType<Player>(); // Again, this is only for editing.
-			MakePlayer(PlayerTypes.Plunga, Vector2.zero);
+			MakePlayer(new PlayerData{type=PlayerTypes.Plunga});
 			level.InitializeAsPremadeLevel(this);
 			dm.SetCoinsCollected (0);
 			eventManager.OnStartLevel(level);
@@ -73,29 +73,34 @@ public class GameController : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Doers - Loading Level
     // ----------------------------------------------------------------
-    public void StartGameAtLevel(LevelData levelData, PlayerTypes playerType) { StartGameAtLevel(levelData.WorldIndex, levelData.levelKey, playerType); }
-	public void StartGameAtLevel (int worldIndex, string levelKey, PlayerTypes playerType) {
+    //public void StartGameAtLevel (int worldIndex, string levelKey) { StartGameAtLevel(dm.GetLevelData(worldIndex, levelKey, true)); }
+    private void StartGameAtLevel(LevelData ld) {
+        PlayerData playerData = new PlayerData {
+            pos = GetPlayerStartingPosInLevel(ld),
+            type = PlayerTypeHelper.LoadLastPlayedType(),
+        };
+        StartGameAtLevel(ld, playerData);
+    }
+    public void StartGameAtLevel(LevelData ld, PlayerData playerData) {
 		// Wipe everything totally clean.
 		DestroyPlayer();
 		DestroyLevel();
 
-		LevelData levelData = dm.GetLevelData(worldIndex, levelKey, true);
-		dm.currLevelData = levelData;
+		dm.currLevelData = ld;
 
-		// Make Level!
+		// Make Level and Player!
 		level = Instantiate(ResourcesHandler.Instance.Level).GetComponent<Level>();
-		level.Initialize(this, tf_world, levelData);
-		// Make Player!
-		MakePlayer(playerType, levelData);
+		level.Initialize(this, tf_world, ld);
+        MakePlayer(playerData);
 
 		// Reset things!
         dm.ResetLevelEnterValues();
 		dm.SetCoinsCollected(0);
-		GameUtils.SetEditorCameraPos(levelData.posGlobal); // conveniently move the Unity Editor camera, too!
+		GameUtils.SetEditorCameraPos(ld.posGlobal); // conveniently move the Unity Editor camera, too!
 
 		// Save what's up!
-		SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, worldIndex);
-		SaveStorage.SetString(SaveKeys.LastPlayedLevelKey(worldIndex), levelKey);
+		SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, ld.WorldIndex);
+		SaveStorage.SetString(SaveKeys.LastPlayedLevelKey(ld.WorldIndex), ld.LevelKey);
 
 		// Use this opportunity to call SAVE with SaveStorage, yo! (This causes a brief stutter, so I'm opting to call it when the game is already loading.)
 		SaveStorage.Save();
@@ -117,34 +122,27 @@ public class GameController : MonoBehaviour {
         //GameUtils.SetGOCollapsed(level.transform, false);
     }
     
-    public void TEMP_SwapPlayerType(PlayerTypes _type) {
-        MakePlayer(_type, player.PosLocal);
-    }
     private void MakePlayer(PlayerTypes type, LevelData levelData) {
 		Vector2 startingPos = GetPlayerStartingPosInLevel(levelData);
-		MakePlayer(type, startingPos);
+        PlayerData playerData = new PlayerData {
+            pos = startingPos,
+            type = type,
+        };
+		MakePlayer(playerData);
 	}
-	private void MakePlayer(PlayerTypes type, Vector2 startingPos) {
+	private void MakePlayer(PlayerData playerData) {
 		if (player != null) { DestroyPlayer(); } // Just in case.
-
-		switch (type) {
-		case PlayerTypes.Plunga:
-			player = Instantiate(ResourcesHandler.Instance.Plunga).GetComponent<Plunga>();
-				break;
-		case PlayerTypes.Slippa:
-			player = Instantiate(ResourcesHandler.Instance.Slippa).GetComponent<Slippa>();
-			break;
-		case PlayerTypes.Jetta:
-			player = Instantiate(ResourcesHandler.Instance.Jetta).GetComponent<Jetta>();
-			break;
-		default:
-			Debug.LogError("Whoa! Player type totally not recognized: " + type);
-			break;
-		}
-		PlayerData playerData = new PlayerData();
-		playerData.pos = startingPos;
+        // Make 'em!
+        player = Instantiate(ResourcesHandler.Instance.Player(playerData.type)).GetComponent<Player>();
 		player.Initialize(level, playerData);
+        // Save lastPlayedType!
+        PlayerTypeHelper.SaveLastPlayedType(player.PlayerType());
 	}
+    public void SwapPlayerType(PlayerTypes _type) {
+        PlayerData playerData = player.SerializeAsData() as PlayerData;
+        playerData.type = _type;
+        MakePlayer(playerData);
+    }
 
 
 	private void DestroyLevel() {
@@ -161,7 +159,7 @@ public class GameController : MonoBehaviour {
 		WorldData worldData = dm.GetWorldData(level.WorldIndex);
 		string levelKey = worldData.GetUnusedLevelKey();
 		LevelData emptyLevelData = worldData.GetLevelData(levelKey, true);
-		StartGameAtLevel(emptyLevelData, PlayerTypes.Plunga);
+		StartGameAtLevel(emptyLevelData);
 	}
     private void DuplicateCurrLevel() {
         // Add a new level file, yo!
@@ -170,20 +168,16 @@ public class GameController : MonoBehaviour {
         LevelSaverLoader.SaveLevelFileAs(currLD, currLD.WorldIndex, newLevelKey);
         dm.ReloadWorldDatas();
         LevelData newLD = dm.GetLevelData(currLD.WorldIndex,newLevelKey, false);
-        newLD.SetPosGlobal(newLD.posGlobal + new Vector2(1,-1)*GameProperties.UnitSize*10); // offset its position a bit.
+        newLD.SetPosGlobal(newLD.posGlobal + new Vector2(15,-15)*GameProperties.UnitSize); // offset its position a bit.
         LevelSaverLoader.UpdateLevelPropertiesInLevelFile(newLD); // update file!
         dm.currLevelData = newLD;
         SceneHelper.ReloadScene();
     }
 
 
-	private Vector2 GetPlayerStartingPosInLevel(LevelData ld) {
-        // Entering from previous level?
-        if (!dm.playerPosGlobalOnExitLevel.Equals(Vector2Extensions.NaN)) {
-            return GetPlayerStartingPosFromPreviousExitPos(ld);
-        }
+    private Vector2 GetPlayerStartingPosInLevel(LevelData ld) {
         // Respawning from death?
-        else if (!dm.playerGroundedRespawnPos.Equals(Vector2Extensions.NaN)) {
+        if (!dm.playerGroundedRespawnPos.Equals(Vector2Extensions.NaN)) {
             return dm.playerGroundedRespawnPos;
         }
         // Starting at LevelDoor?
@@ -194,59 +188,32 @@ public class GameController : MonoBehaviour {
         else {
             return ld.DefaultPlayerStartPos();
         }
-	}
+    }
     
-    private Vector2 GetPlayerStartingPosFromPreviousExitPos(LevelData ld) {
-        int sideEntering = dm.playerSideEnterNextLevel;
-        Vector2 posExited = dm.playerPosGlobalOnExitLevel;
-        dm.playerPosGlobalOnExitLevel = Vector2Extensions.NaN; // Make sure to "clear" this. It's been used!
-        dm.playerSideEnterNextLevel = -1; // Make sure to "clear" this. It's been used!
-//      Vector2 originalPos = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
-//      int sideEntered = MathUtils.GetSidePointIsOn(ld.BoundsGlobal, posExited);
+    private Vector2 GetPlayerStartingPosFromPrevExitPos(LevelData ld, int sideEntering, Vector2 posExited) {
         Vector2Int offsetDir = MathUtils.GetOppositeDir(sideEntering);
         const float extraEnterDistX = 0; // How much extra step do I wanna take in to really feel at "home"?
         const float extraEnterDistY = 3; // How much extra step do I wanna take in to really feel at "home"?
         Vector2 posRelative = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
-        return posRelative + new Vector2(offsetDir.x*extraEnterDistX,offsetDir.y*extraEnterDistY);
+        return posRelative + new Vector2(offsetDir.x*extraEnterDistX, offsetDir.y*extraEnterDistY);
     }
 
 
 	private void OnPlayerEscapeLevelBounds(int sideEscaped) {
-		WorldData currentWorldData = level.WorldDataRef;
-		LevelData nextLevelData = currentWorldData.GetLevelAtSide(level.LevelDataRef, Player.PosLocal, sideEscaped);
-		if (nextLevelData != null) {
-            PlayerTypes playerType = player.PlayerType(); // HACK TEMP. Willdo: Clean this up.
-            int playerDir = player.DirFacing; // remember these so we can preserves 'em, ya see!
-            Vector2 playerVel = player.vel;
-            dm.playerPosGlobalOnExitLevel = player.PosGlobal;
-			dm.playerSideEnterNextLevel = Sides.GetOpposite(sideEscaped);
-			StartGameAtLevel(nextLevelData, playerType);
-            // Restore the vel/dir we had in the previous level.
-            player.SetDirFacing(playerDir);
-            player.SetVel(playerVel);
+		WorldData currWorldData = level.WorldDataRef;
+		LevelData nextLD = currWorldData.GetLevelAtSide(level.LevelDataRef, Player.PosLocal, sideEscaped);
+		if (nextLD != null) {
+            int sideEntering = Sides.GetOpposite(sideEscaped);
+            Vector2 posExited = player.PosGlobal;
+            
+            PlayerData pd = player.SerializeAsData() as PlayerData; // Remember Player's physical properties (e.g. vel) so we can preserve 'em.
+            pd.pos = GetPlayerStartingPosFromPrevExitPos(nextLD, sideEntering, posExited);
+			StartGameAtLevel(nextLD, pd);
 		}
 		else {
 			Debug.LogWarning("Whoa! No level at this side: " + sideEscaped);
 		}
 	}
-
-//	public Vector3 GetLevelDoorPos(string levelDoorID) {
-//		LevelDoor[] allDoors = GameObject.FindObjectsOfType<LevelDoor>();
-//		LevelDoor correctDoor = null; // I'll specify next.
-//		foreach (LevelDoor door in allDoors) {
-//			if (correctDoor==null || door.MyID == levelDoorID) { // note: if there's no correctDoor yet, just set it to this first guy. So we at least end up at SOME door.
-//				correctDoor = door;
-//				break;
-//			}
-//		}
-//		if (correctDoor != null) {
-//			return correctDoor.PosLocal;
-//		}
-//		else {
-//			Debug.LogWarning("Oops! Couldn't find a door with this ID: " + levelDoorID);
-//			return Vector3.zero;
-//		}
-//	}
 
 
 	// ----------------------------------------------------------------
@@ -300,9 +267,9 @@ public class GameController : MonoBehaviour {
 		// ALT + ___
 		if (isKey_alt) {
             // ALT + Q, W, E = Switch Characters
-            if (Input.GetKeyDown(KeyCode.Q)) { MakePlayer(PlayerTypes.Plunga, level.LevelDataRef); }
-            else if (Input.GetKeyDown(KeyCode.W)) { MakePlayer(PlayerTypes.Slippa, level.LevelDataRef); }
-            else if (Input.GetKeyDown(KeyCode.E)) { MakePlayer(PlayerTypes.Jetta, level.LevelDataRef); }
+            if (Input.GetKeyDown(KeyCode.Q)) { SwapPlayerType(PlayerTypes.Plunga); }
+            else if (Input.GetKeyDown(KeyCode.W)) { SwapPlayerType(PlayerTypes.Slippa); }
+            else if (Input.GetKeyDown(KeyCode.E)) { SwapPlayerType(PlayerTypes.Jetta); }
         }
         // SHIFT + ___
         if (isKey_shift) {
