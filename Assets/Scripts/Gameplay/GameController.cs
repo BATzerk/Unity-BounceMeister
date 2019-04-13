@@ -92,12 +92,13 @@ public class GameController : MonoBehaviour {
 		level = Instantiate(ResourcesHandler.Instance.Level).GetComponent<Level>();
 		level.Initialize(this, tf_world, ld);
         MakePlayer(playerData);
+        // Tell the LevelData it's on!
+        ld.OnPlayerEnterMe();
 
-		// Reset things!
+        // Reset things!
         dm.ResetLevelEnterValues();
-		dm.SetCoinsCollected(0);
-		GameUtils.SetEditorCameraPos(ld.posGlobal); // conveniently move the Unity Editor camera, too!
-
+        dm.SetCoinsCollected(0);
+        
 		// Save what's up!
 		SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, ld.WorldIndex);
 		SaveStorage.SetString(SaveKeys.LastPlayedLevelKey(ld.WorldIndex), ld.LevelKey);
@@ -107,8 +108,9 @@ public class GameController : MonoBehaviour {
 		// Dispatch the post-function event!
 		eventManager.OnStartLevel(level);
 
-        // Expand the hierarchy!
+        // Expand the hierarchy for easier Level-editing!
         ExpandLevelHierarchy();
+        GameUtils.SetEditorCameraPos(ld.posGlobal); // conveniently move the Unity Editor camera, too!
     }
 
     private void ExpandLevelHierarchy() {

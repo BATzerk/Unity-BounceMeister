@@ -81,8 +81,8 @@ public class WorldData {
 		Rect ldBounds = ld.BoundsGlobal;
 		// Add ALL levels to the allLevels list.
 		boundsRectAllLevels = MathUtils.GetCompoundRectangle (boundsRectAllLevels, ldBounds);
-		// Only add levels CONNECTED TO START for the playableLevels list.
-		if (ld.isConnectedToStart) {
+		// Only add levels IN CLUSTERS for the playableLevels list.
+		if (ld.IsInCluster) {
 			boundsRectPlayableLevels = MathUtils.GetCompoundRectangle (boundsRectPlayableLevels, ldBounds);
 		}
 	}

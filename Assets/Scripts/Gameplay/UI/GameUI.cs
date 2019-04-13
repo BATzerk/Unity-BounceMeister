@@ -66,8 +66,9 @@ public class GameUI : MonoBehaviour {
     private void UpdateSnacksCollectedText() {
         int numCollected = currLevel.WorldDataRef.NumSnacksCollected;
         int numTotal = currLevel.WorldDataRef.NumSnacksTotal;
-        go_snacksCollected.SetActive(numTotal > 0); // Only show SnacksCollected if there ARE any Snacks in this World.
-        t_snacksCollected.text = numCollected + " / " + numTotal;
+        // DISABLED snacksCollected text.
+        //go_snacksCollected.SetActive(numTotal > 0); // Only show SnacksCollected if there ARE any Snacks in this World.
+        //t_snacksCollected.text = numCollected + " / " + numTotal;
     }
 
 

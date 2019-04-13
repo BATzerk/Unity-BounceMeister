@@ -7,13 +7,15 @@ public class MiniMap : MonoBehaviour {
     // Components
     [SerializeField] private RectTransform myRectTransform;
     [SerializeField] private RectTransform rt_tiles;
-    private List<MiniMapLevelTile> tiles;
+    private Dictionary<string,MiniMapLevelTile> tiles; // levelKey is key.
     // Properties
     private const float mapScale = 0.5f;//0.8f; // NOTE: Unity units to Screen units automatically makes levels way smaller (1 Unity unit is 1 pixel).
     private Vector2 mapPosTarget;
     // References
-    private Level myLevel;
+    private Level currLevel;
     
+    // Getters (Private)
+    private LevelData currLevelData { get { return currLevel.LevelDataRef; } }
     // Setters
     private Vector2 MapPos {
         get { return rt_tiles.anchoredPosition; }
@@ -30,16 +32,18 @@ public class MiniMap : MonoBehaviour {
         
         // Add event listeners!
         GameManagers.Instance.EventManager.StartLevelEvent += OnStartLevel;
+        GameManagers.Instance.EventManager.SnacksCollectedChangedEvent += OnSnacksCollectedChanged;
     }
     private void OnDestroy() {
         // Remove event listeners!
         GameManagers.Instance.EventManager.StartLevelEvent -= OnStartLevel;
+        GameManagers.Instance.EventManager.SnacksCollectedChangedEvent -= OnSnacksCollectedChanged;
     }
     
     private void DestroyAllTiles() {
         if (tiles != null) {
-            for (int i=0; i<tiles.Count; i++) {
-                Destroy(tiles[i].gameObject);
+            foreach (MiniMapLevelTile tile in tiles.Values) {
+                Destroy(tile.gameObject);
             }
             tiles = null;
         }
@@ -48,12 +52,12 @@ public class MiniMap : MonoBehaviour {
         DestroyAllTiles();
         
         // TODO: Just do clusters?
-        tiles = new List<MiniMapLevelTile>();
-        WorldData wd = myLevel.WorldDataRef;
+        tiles = new Dictionary<string, MiniMapLevelTile>();
+        WorldData wd = currLevel.WorldDataRef;
         foreach (LevelData ld in wd.levelDatas.Values) {
             MiniMapLevelTile tile = Instantiate(ResourcesHandler.Instance.MiniMapLevelTile).GetComponent<MiniMapLevelTile>();
             tile.Initialize(rt_tiles, ld);
-            tiles.Add(tile);
+            tiles.Add(ld.levelKey, tile);
         }
     }
     
@@ -75,6 +79,15 @@ public class MiniMap : MonoBehaviour {
     
     
     // ----------------------------------------------------------------
+    //  Doers
+    // ----------------------------------------------------------------
+    private void UpdateAllTilesVisuals() {
+        foreach (MiniMapLevelTile tile in tiles.Values) {
+            tile.UpdateVisuals(currLevelData);
+        }
+    }
+    
+    // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
     private void OnStartLevel(Level level) {
@@ -82,17 +95,18 @@ public class MiniMap : MonoBehaviour {
         mapPosTarget = level.PosGlobal*mapScale * -1;
         
         // We changed worlds??
-        int prevWorldIndex = myLevel==null ? -1 : myLevel.WorldIndex;
-        this.myLevel = level;
+        int prevWorldIndex = currLevel==null ? -1 : currLevel.WorldIndex;
+        this.currLevel = level;
         if (prevWorldIndex != level.WorldIndex) {
             MakeAllTiles();
             MapPos = mapPosTarget; // start at right level.
         }
         
         // Update tile visuals!
-        foreach (MiniMapLevelTile tile in tiles) { // TODO: This more efficiently?
-            tile.UpdateVisuals(level.LevelDataRef);
-        }
+        UpdateAllTilesVisuals();// TODO: This more efficiently?
+    }
+    private void OnSnacksCollectedChanged(int worldIndex) {
+        tiles[currLevel.LevelKey].UpdateVisuals(currLevelData); // Update the visuals of the current LevelTile.
     }
     
     

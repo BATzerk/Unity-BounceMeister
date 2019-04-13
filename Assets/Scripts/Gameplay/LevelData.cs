@@ -10,8 +10,8 @@ public class LevelData {
 	public CameraBoundsData cameraBoundsData;
 	public List<PropData> allPropDatas;
 	// Properties
-	public bool hasPlayerBeenHere; // false until the player enters me!
-	public bool isConnectedToStart; // true if I'm connected to the starting level of this world. Used to determine to render me on zooming the camera out.
+	private bool hasPlayerBeenHere; // false until the player enters me for the first time!
+	//public bool isConnectedToStart; // true if I'm connected to the starting level of this world. Used to determine to render me on zooming the camera out.
     public bool isClustStart;// { get; private set; }
 	public string levelKey; // everything we use to reference this level! Including the level's file name (minus the .txt suffix).
 	public int designerFlag; // for the level designer! We can flag any level to be like "testing" or "good" or etc.
@@ -23,6 +23,7 @@ public class LevelData {
     public List<LevelNeighborData> Neighbors; // EXACTLY like Openings, except contains refs to other levels (which can totally be null if there's no lvl at an opening)!
     public List<LevelOpening> Openings { get; private set; } // JUST the openings. These can be saved.
 	// Getters
+    public bool HasPlayerBeenHere { get { return hasPlayerBeenHere; } }
 	public string LevelKey { get { return levelKey; } }
 	public int DesignerFlag { get { return designerFlag; } }
 	public int WorldIndex { get { return WorldDataRef.WorldIndex; } }
@@ -31,6 +32,7 @@ public class LevelData {
 	public Vector2 PosGlobal { get { return posGlobal; } }
 //	public Rect BoundsLocal { get { return boundsLocal; } }
 	public WorldData WorldDataRef { get; private set; }
+    public bool IsInCluster { get { return ClusterIndex != -1; } }
     ///// Returns the closest PlayerStart to the provided pos.
     //public Vector2 ClosestPlayerStartPos(Vector2 playerPos) {
     //    float bestDist = Mathf.Infinity;
@@ -100,17 +102,25 @@ public class LevelData {
 	public LevelData(WorldData _worldDataRef, string _key) { //, Vector2 defaultAbsolutePos) {
 		WorldDataRef = _worldDataRef;
 		levelKey = _key;
+        hasPlayerBeenHere = SaveStorage.GetBool(SaveKeys.HasPlayerBeenInLevel(this), false);
+        
 		// Initialize all my PropData lists.
 		ClearAllPropDataLists ();
         Openings = new List<LevelOpening>();
 	}
-
-
 	public void ClearAllPropDataLists () {
 		allPropDatas = new List<PropData>();
 		cameraBoundsData = new CameraBoundsData();
 	}
-
+    
+    public void OnPlayerEnterMe() {
+        // First time in level?? Update hasPlayerBeenHere!!
+        if (!HasPlayerBeenHere) {
+            hasPlayerBeenHere = true;
+            SaveStorage.SetBool(SaveKeys.HasPlayerBeenInLevel(this), hasPlayerBeenHere);
+        }
+    }
+    
     
 	// ----------------------------------------------------------------
 	//  Doers

@@ -21,11 +21,11 @@ public class LevelUtils {
 	// ================================================================
 	//	Getters
 	// ================================================================
-	public static int GetNumLevelsConnectedToStart (Dictionary<string, LevelData> levelDatas) {
-		int total = 0;
-		foreach (LevelData ld in levelDatas.Values) { if (ld.isConnectedToStart) { total ++; } }
-		return total;
-	}
+	//public static int GetNumLevelsConnectedToStart (Dictionary<string, LevelData> levelDatas) {
+	//	int total = 0;
+	//	foreach (LevelData ld in levelDatas.Values) { if (ld.isConnectedToStart) { total ++; } }
+	//	return total;
+	//}
 //	public static int GetNumRegularStarsInLevelsConnectedToStart (Dictionary<string, LevelData> levelDatas) {
 //		int total = 0;
 //		foreach (LevelData ld in levelDatas.Values) {

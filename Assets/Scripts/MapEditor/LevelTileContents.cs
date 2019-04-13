@@ -186,7 +186,7 @@ public class LevelTileContents : MonoBehaviour {
         if (editorSettings.DoShowClusters) { // Color ALL by my CLUSTER!
             float s = myLD.isClustStart ? 0.6f : 0.34f;
             Color groundColor;
-            if (myLD.ClusterIndex < 0) { groundColor = new ColorHSB(0.2f, 0.12f, 0.4f).ToColor(); } // No Cluster? Gray-ish.
+            if (!myLD.IsInCluster) { groundColor = new ColorHSB(0.2f, 0.12f, 0.4f).ToColor(); } // No Cluster? Gray-ish.
             else { groundColor = new ColorHSB((20 + myLD.ClusterIndex*60)/360f, s, 0.5f).ToColor(); }
             for (int i=0; i<srs_grounds.Count; i++) {
                 srs_grounds[i].color = groundColor;

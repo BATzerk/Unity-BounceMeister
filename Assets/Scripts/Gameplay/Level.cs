@@ -50,8 +50,8 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 		// -- General Properties --
 		ld.SetPosGlobal(PosGlobal);
 		ld.SetDesignerFlag(LevelDataRef.designerFlag);
-//		ld.hasPlayerBeenHere = hasPlayerBeenHere;
-		ld.isConnectedToStart = LevelDataRef.isConnectedToStart;
+		//ld.hasPlayerBeenHere = hasPlayerBeenHere;
+		//ld.isConnectedToStart = LevelDataRef.isConnectedToStart;
 
 		// -- Props --
         Prop[] allProps = FindObjectsOfType<Prop>();
