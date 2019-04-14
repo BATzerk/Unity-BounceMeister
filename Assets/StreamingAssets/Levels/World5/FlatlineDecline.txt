@@ -1,0 +1,19 @@
+levelProperties posGlobal:(218.0, -6.0);designerFlag:4
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+PlayerStart pos:(-14.0, -11.3)
+Ground myRect:(x:0.00, y:-16.50, width:52.00, height:7.00)
+Ground myRect:(x:-21.50, y:-1.50, width:9.00, height:13.00)
+Ground myRect:(x:22.50, y:1.50, width:7.00, height:29.00)
+Ground myRect:(x:7.00, y:16.50, width:40.00, height:7.00)
+Spikes myRect:(x:12.50, y:4.50, width:5.00, height:1.00);rotation:0
+Spikes myRect:(x:1.50, y:-3.50, width:23.00, height:1.00);rotation:0
+Ground myRect:(x:1.50, y:-6.00, width:23.00, height:4.00)
+Ground myRect:(x:12.50, y:-2.00, width:5.00, height:12.00)
+Ground myRect:(x:-8.50, y:8.00, width:19.00, height:12.00)
+Spikes myRect:(x:8.00, y:12.50, width:24.00, height:1.00);rotation:180
+Spikes myRect:(x:-8.50, y:1.50, width:19.00, height:1.00);rotation:180
+Spikes myRect:(x:1.50, y:8.00, width:12.00, height:1.00);rotation:270
+Spikes myRect:(x:9.50, y:-2.00, width:12.00, height:1.00);rotation:90
+Ground myRect:(x:-19.00, y:12.50, width:14.00, height:15.00)
+Platform myRect:(x:-13.50, y:-7.50, width:7.00, height:1.00)
+Gem pos:(-13.5, -5.0);type:0
