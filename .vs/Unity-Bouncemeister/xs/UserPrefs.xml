@@ -1,17 +1,17 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Enemy.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="277" Column="89" />
-      <File FileName="Assets/Scripts/Gameplay/Level.cs" Line="259" Column="57" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="134" Column="8" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="8" Column="77" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="306" Column="24" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="94" Column="34" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/FlatlineBody.cs" Line="9" Column="52" />
       <File FileName="Assets/Scripts/Gameplay/Props/Player/Slippa.cs" Line="18" Column="91" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" Line="233" Column="14" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="72" Column="31" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" Line="52" Column="52" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlungaBody.cs" Line="31" Column="37" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Enemy.cs" Line="32" Column="3" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" Line="10" Column="52" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="41" Column="17" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Jetta.cs" Line="57" Column="29" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/JettaBody.cs" Line="19" Column="16" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" Line="91" Column="50" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

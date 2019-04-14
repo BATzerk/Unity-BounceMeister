@@ -44,7 +44,7 @@ abstract public class Player : PlatformCharacter {
 	private float timeWhenDelayedJump=Mathf.NegativeInfinity; // for jump AND wall-kick. Set when in air and press Jump. If we touch ground/wall before this time, we'll do a delayed jump or wall-kick!
     public int DirFacing { get; private set; }
     private int numJumpsSinceGround;
-	private int wallSlideSide = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
+	private int wallSlideDir = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
 	private int hackTEMP_framesAlive=0;
 	protected Vector2 pvel { get; private set; } // previous velocity.
     // References
@@ -87,7 +87,7 @@ abstract public class Player : PlatformCharacter {
 	}
 	// Getters (Private)
 	protected Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
-	private bool isWallSliding() { return wallSlideSide!=0; }
+	protected bool isWallSliding() { return wallSlideDir!=0; }
 	private bool CanTakeDamage() {
 		return !isPostDamageImmunity;
 	}
@@ -222,17 +222,17 @@ abstract public class Player : PlatformCharacter {
 		if (!isWallSliding()) {
 			// Should we START wall-sliding??
 			if (MayWallSlide()) {
-				if (myWhiskers.OnSurface(Sides.L) && vel.x<-0.01f) {
+				if (myWhiskers.OnSurface(Sides.L) && vel.x<=0) {
 					StartWallSlide(-1);
 				}
-				else if (myWhiskers.OnSurface(Sides.R) && vel.x>0.01f) {
+				else if (myWhiskers.OnSurface(Sides.R) && vel.x>=0) {
 					StartWallSlide(1);
 				}
 			}
 		}
 	}
 
-//	private int wallSlideSide {
+//	private int wallSlideDir {
 //		get {
 //			if (isPlunging) { return 0; } // No wall-sliding if I'm plunging, ok?
 //			if (!feetOnGround()) { // If my feet AREN'T on the ground...!
@@ -300,13 +300,13 @@ abstract public class Player : PlatformCharacter {
 	}
 
 
-	virtual protected void StartWallSlide(int side) {
-		wallSlideSide = side;
-        DirFacing = wallSlideSide * -1;
-        myBody.OnStartWallSlide(wallSlideSide);
+	virtual protected void StartWallSlide(int dir) {
+		wallSlideDir = dir;
+        DirFacing = wallSlideDir * -1;
+        myBody.OnStartWallSlide();
     }
 	protected void StopWallSlide() {
-		wallSlideSide = 0;
+		wallSlideDir = 0;
         myBody.OnStopWallSlide();
     }
 
@@ -384,7 +384,7 @@ abstract public class Player : PlatformCharacter {
         switch (side) {
             case Sides.B: OnFeetTouchCollidable(collidable); break;
             case Sides.T: OnHeadTouchCollidable(collidable); break;
-            case Sides.L: case Sides.R: OnArmTouchCollidable(collidable); break;
+            case Sides.L: case Sides.R: OnArmTouchCollidable(side, collidable); break;
             default: break; // Hmm.
         }
 
@@ -413,10 +413,10 @@ abstract public class Player : PlatformCharacter {
 		// We ARE wall-sliding!
 		if (isWallSliding()) {
 			// Should we stop wall-sliding??
-			if (wallSlideSide==-1 && !myWhiskers.OnSurface(Sides.L)) {//side==Sides.L) {
+			if (wallSlideDir==-1 && !myWhiskers.OnSurface(Sides.L)) {//side==Sides.L) {
 				StopWallSlide();
 			}
-			else if (wallSlideSide==1 && !myWhiskers.OnSurface(Sides.R)) {//side==Sides.R) {
+			else if (wallSlideDir==1 && !myWhiskers.OnSurface(Sides.R)) {//side==Sides.R) {
 				StopWallSlide();
 			}
 		}
@@ -440,9 +440,9 @@ abstract public class Player : PlatformCharacter {
     private void OnHeadTouchCollidable(Collidable collidable) {
     
     }
-	virtual protected void OnArmTouchCollidable(Collidable collidable) {
+	virtual protected void OnArmTouchCollidable(int side, Collidable collidable) {
         // Delayed wall-kick? Do it right away!
-        if (Time.time <= timeWhenDelayedJump) {
+        if (isWallSliding() && Time.time <= timeWhenDelayedJump) {
             WallKick();
         }
 
@@ -526,10 +526,10 @@ abstract public class Player : PlatformCharacter {
 //	// We ARE wall-sliding!
 //	if (isWallSliding()) {
 //		// Should we stop wall-sliding??
-//		if (wallSlideSide==-1 && !onSurfaces[Sides.L]) {
+//		if (wallSlideDir==-1 && !onSurfaces[Sides.L]) {
 //			StopWallSlide();
 //		}
-//		else if (wallSlideSide==1 && !onSurfaces[Sides.R]) {
+//		else if (wallSlideDir==1 && !onSurfaces[Sides.R]) {
 //			StopWallSlide();
 //		}
 //	}

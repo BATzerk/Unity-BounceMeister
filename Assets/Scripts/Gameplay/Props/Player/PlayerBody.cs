@@ -88,9 +88,8 @@ abstract public class PlayerBody : MonoBehaviour {
 		//ps_dieBurst.SetParticles(particles, particles.Length);
 	}
 
-    public void OnStartWallSlide(int wallSlideSide) {
+    public void OnStartWallSlide() {
         go_wallSliding.SetActive(true);
-        //go_wallSliding.transform.localScale = new Vector3(wallSlideSide, 1,1);
     }
     public void OnStopWallSlide() {
         go_wallSliding.SetActive(false);
