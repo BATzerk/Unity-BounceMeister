@@ -72,7 +72,8 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 //		return lm_ground; // All other sides only care about ground.
 	}
 
-	public bool OnSurface(int side) { return onSurfaces[side]; }
+    public bool OnSurface(int side) { return onSurfaces[side]; }
+    public bool IsTouchingAnySurface() { return onSurfaces[Sides.L] || onSurfaces[Sides.R] || onSurfaces[Sides.B] || onSurfaces[Sides.T]; }
 	public float SurfaceDistMin(int side) {
 		if (surfaceDists==null) { return 0; } // Safety check for runtime compile.
 		if (minDistsIndexes[side] == -1) { return Mathf.Infinity; } // No closest whisker (none collide)? They're all infinity, then.

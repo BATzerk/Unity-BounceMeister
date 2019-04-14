@@ -454,7 +454,7 @@ abstract public class Player : PlatformCharacter {
         //			}
         //		}
     }
-    private void OnFeetLeaveCollidable(Collidable collidable) {
+    virtual protected void OnFeetLeaveCollidable(Collidable collidable) {
         // Left Ground?
         BaseGround ground = collidable as BaseGround;
         if (ground != null) {

@@ -31,11 +31,13 @@ public class Flatline : Player {
     
     // Properties
     private const float SuspensionDur = 2f; // we can only stay suspended for a few seconds.
+    private bool isButtonHeld_Suspension;
     public bool IsSuspended { get; private set; }
     private float timeWhenEndSuspension;
     private Vector2 ppvel; // HACKY workaround for getting vel from hitting a wall. ppvel is ACTUALLY how fast we were going before we hit the wall.
     // References
     private FlatlineBody myFlatlineBody;
+
 
     // ----------------------------------------------------------------
     //  Start
@@ -87,6 +89,15 @@ public class Flatline : Player {
         base.OnWhiskersTouchCollider(side, col);
         StopSuspension();
     }
+    protected override void OnFeetLeaveCollidable(Collidable collidable) {
+        base.OnFeetLeaveCollidable(collidable);
+        // We're not touching ANYthing?!
+        if (!myWhiskers.IsTouchingAnySurface()) {
+            if (isButtonHeld_Suspension) {
+                StartSuspension();
+            }
+        }
+    }
     override protected void OnArmTouchCollidable(int side, Collidable collidable) {
         base.OnArmTouchCollidable(side, collidable);
         // It's a Ground??
@@ -128,7 +139,7 @@ public class Flatline : Player {
 			WallKick();
 		}
         
-        //isButtonHeld_Jump = true;
+        isButtonHeld_Suspension = true;
         
         // In the air? Start suspension!
         if (!feetOnGround() && !isTouchingWall()) {
@@ -136,7 +147,7 @@ public class Flatline : Player {
         }
 	}
 	override protected void OnButtonJump_Up() {
-        //isButtonHeld_Jump = false;
+        isButtonHeld_Suspension = false;
         StopSuspension();
     }
 

@@ -232,6 +232,9 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
         if (LevelKey == "IntroPlunge") {
             AddDecor("InstructsPlunge", new Vector2(0, 11));
         }
+        else if (LevelKey == "IntroFlatlineSuspension") {
+            AddDecor("InstructsFlatlineSuspension", new Vector2(0, 11));
+        }
     }
     private void AddDecor(string prefabName, Vector2 _pos) {
         GameObject go = Instantiate(ResourcesHandler.Instance.GetDecor(prefabName));
