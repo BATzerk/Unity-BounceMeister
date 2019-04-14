@@ -7,7 +7,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	abstract protected string[] GetLayerMaskNames_LRTB();
 	abstract protected string[] GetLayerMaskNames_B();
 	// Constants
-	private const float TouchDistThreshold = 0.02f; // if we're this close to a surface, we count it as touching. This COULD be 0 and still work, but I like the grace for slightly-more-generous wall-detection.
+	private const float TouchDistThreshold = 0.02f;//0 // if we're this close to a surface, we count it as touching. This COULD be 0 and still work, but I like the grace for slightly-more-generous wall-detection.
 	private const int NumSides = PlatformCharacter.NumSides;
 	private const int NumWhiskersPerSide = 3; // this MUST match SideOffsetLocs! Just made its own variable for easy/readable access.
 	private float[] SideOffsetLocs = new float[]{-0.45f, 0f, 0.45f}; // 3 whiskers per side: left, center, right.
@@ -114,7 +114,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 			Vector2 dir = whiskerDirs[side];
 			for (int index=0; index<NumWhiskersPerSide; index++) {
 				Vector2 startPos = WhiskerPos(side, index);
-				bool isTouching = surfaceDists[side,index] < TouchDistThreshold;
+				bool isTouching = surfaceDists[side,index] <= TouchDistThreshold;
 				Gizmos.color = isTouching ? Color.green : Color.red;
 				Gizmos.DrawLine(startPos, startPos + dir * length);
 			}
@@ -231,7 +231,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 		surfaceDists[side,index] = dist;
 		collidersAroundMe[side,index] = h.collider;
 		// If we're (just about) touching this collider...!
-		if (dist < TouchDistThreshold) {
+		if (dist <= TouchDistThreshold) {
 			if (h.collider != null && !collidersTouching[side].Contains(h.collider)) {
 				collidersTouching[side].Add(h.collider);
 			}

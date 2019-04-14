@@ -16,10 +16,11 @@ abstract public class PlayerBody : MonoBehaviour {
 
     static public Color GetBodyColorNeutral(PlayerTypes playerType) {
         switch (playerType) {
+            case PlayerTypes.Flatline: return new ColorHSB(170/360f, 0.67f, 0.87f).ToColor();
             case PlayerTypes.Jetta: return new ColorHSB(290/360f, 0.7f, 0.7f).ToColor();
             case PlayerTypes.Plunga: return new Color255(25, 175, 181).ToColor();
             case PlayerTypes.Slippa: return new Color255(185, 125, 25).ToColor();
-            default: return Color.magenta; // Oops.
+            default: Debug.LogWarning("PlayerBody color not defined: " + playerType + "."); return Color.magenta; // Oops.
         }
     }
 
@@ -35,6 +36,7 @@ abstract public class PlayerBody : MonoBehaviour {
 
 		alpha = 1;
 		SetBodyColor(bodyColor_neutral);
+        SetVisualScale(Vector2.one);
         OnStopWallSlide();
 	}
 
@@ -42,9 +44,14 @@ abstract public class PlayerBody : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
-	virtual public void SetSize(Vector2 _size) {
-		GameUtils.SizeSpriteRenderer(sr_body, _size);
-	}
+	//virtual public void SetSize(Vector2 _size) {
+	//	GameUtils.SizeSpriteRenderer(sr_body, _size);
+	//}
+    /// Changes the visuals of our body components without affecting collisions.
+    virtual protected void SetVisualScale(Vector2 _scale) {
+        Vector2 _size = myBasePlayer.Size * _scale;
+        GameUtils.SizeSpriteRenderer(sr_body, _size);
+    }
 	protected void SetBodyColor(Color color) {
 		bodyColor = color;
 		ApplyBodyColor();

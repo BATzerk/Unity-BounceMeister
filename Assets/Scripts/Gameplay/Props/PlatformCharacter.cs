@@ -7,6 +7,7 @@ public class PlatformCharacter : Collidable {
 	public const int NumSides = 4; // it's hip to be square.
 	// Overrideables
 	virtual protected int StartingHealth { get { return 1; } }
+    virtual public Vector2 Size { get { return new Vector2(1.5f, 1.8f); } }
 
 	virtual protected float FrictionAir { get { return 0.6f; } }
 	virtual protected float FrictionGround { get { return 0.6f; } }
@@ -23,7 +24,6 @@ public class PlatformCharacter : Collidable {
 	// Properties
 	private bool isDead = false;
 	protected int health; // we die when we hit 0. TODO: Make this private, and have Player and Enemy extend MY GetHit() function.
-    public Vector2 Size { get; private set; }
     protected float timeLastTouchedWall=Mathf.NegativeInfinity;
     // References
     private List<Lift> liftsTouching = new List<Lift>();
@@ -85,11 +85,11 @@ public class PlatformCharacter : Collidable {
     // ----------------------------------------------------------------
     virtual protected void Start () {
 		health = StartingHealth;
+        bodyCollider.size = Size;
 	}
-	virtual protected void SetSize(Vector2 _size) {
-		this.Size = _size;
-		bodyCollider.size = _size;
-	}
+	//virtual protected void SetSize(Vector2 _size) {
+	//	this.Size = _size;
+	//}
 
 
 	// ----------------------------------------------------------------

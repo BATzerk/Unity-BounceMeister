@@ -17,9 +17,10 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] public GameObject Level;
     [SerializeField] public GameObject MiniMapLevelTile;
 
+    [SerializeField] private GameObject Flatline;
+    [SerializeField] private GameObject Jetta;
     [SerializeField] private GameObject Plunga;
-	[SerializeField] private GameObject Slippa;
-	[SerializeField] private GameObject Jetta;
+    [SerializeField] private GameObject Slippa;
 
 	[SerializeField] public GameObject Battery;
 	[SerializeField] public GameObject CameraBounds;
@@ -44,6 +45,7 @@ public class ResourcesHandler : MonoBehaviour {
     // Getters
     public GameObject Player(PlayerTypes type) {
         switch (type) {
+            case PlayerTypes.Flatline: return Flatline;
             case PlayerTypes.Jetta: return Jetta;
             case PlayerTypes.Plunga: return Plunga;
             case PlayerTypes.Slippa: return Slippa;
@@ -75,7 +77,7 @@ public class ResourcesHandler : MonoBehaviour {
 			instance = this;
 		}
 		else {
-			GameObject.Destroy (this);
+			Destroy(this);
 		}
 	}
 }

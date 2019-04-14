@@ -272,8 +272,9 @@ public class GameController : MonoBehaviour {
 		if (isKey_alt) {
             // ALT + Q, W, E = Switch Characters
             if (Input.GetKeyDown(KeyCode.Q)) { SwapPlayerType(PlayerTypes.Plunga); }
-            else if (Input.GetKeyDown(KeyCode.W)) { SwapPlayerType(PlayerTypes.Slippa); }
-            else if (Input.GetKeyDown(KeyCode.E)) { SwapPlayerType(PlayerTypes.Jetta); }
+            else if (Input.GetKeyDown(KeyCode.W)) { SwapPlayerType(PlayerTypes.Flatline); }
+            else if (Input.GetKeyDown(KeyCode.E)) { SwapPlayerType(PlayerTypes.Slippa); }
+            else if (Input.GetKeyDown(KeyCode.R)) { SwapPlayerType(PlayerTypes.Jetta); }
         }
         // SHIFT + ___
         if (isKey_shift) {

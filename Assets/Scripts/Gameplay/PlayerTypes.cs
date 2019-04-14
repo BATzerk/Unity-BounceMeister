@@ -1,9 +1,10 @@
 ﻿public enum PlayerTypes {
     Undefined,
     
+    Flatline,
+    Jetta,
     Plunga,
     Slippa,
-    Jetta,
 }
 
 
@@ -19,9 +20,10 @@ static public class PlayerTypeHelper {
     
     public static PlayerTypes TypeFromString(string str) {
         switch (str) {
-            case "Jetta":  return PlayerTypes.Jetta;
-            case "Plunga": return PlayerTypes.Plunga;
-            case "Slippa": return PlayerTypes.Slippa;
+            case "Flatline": return PlayerTypes.Flatline;
+            case "Jetta":    return PlayerTypes.Jetta;
+            case "Plunga":   return PlayerTypes.Plunga;
+            case "Slippa":   return PlayerTypes.Slippa;
             default: return PlayerTypes.Undefined; // Oops.
         }
     }

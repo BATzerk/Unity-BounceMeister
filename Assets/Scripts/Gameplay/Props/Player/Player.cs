@@ -30,7 +30,7 @@ abstract public class Player : PlatformCharacter {
 
 	private const float DelayedJumpWindow = 0.1f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
-	private const float PostWallKickHorzInputLockDur = 0.22f; // affects isPreservingWallKickVel. How long until we can provide horz-input after wall-kicking.
+	virtual protected float PostWallKickHorzInputLockDur { get { return 0.22f; } } // affects isPreservingWallKickVel. How long until we can provide horz-input after wall-kicking.
     private const float WallKickExtensionWindow = 0.08f; // how long after touching a wall when we'll still allow wall-kicking!
 
 	// Components
@@ -46,7 +46,7 @@ abstract public class Player : PlatformCharacter {
     private int numJumpsSinceGround;
 	private int wallSlideSide = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
 	private int hackTEMP_framesAlive=0;
-	private Vector2 pvel; // previous velocity.
+	protected Vector2 pvel { get; private set; } // previous velocity.
     // References
     private Rect camBoundsLocal; // for detecting when we exit the level!
 	private List<Edible> ediblesHolding = new List<Edible>(); // like in Celeste. I hold Edibles (i.e. Gem, Snack) until I'm standing somewhere safe to "eat" (aka collect) them.
@@ -113,11 +113,11 @@ abstract public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	override protected void Start () {
-		base.Start();
+	//override protected void Start () {
+	//	base.Start();
 
-		SetSize (new Vector2(1.5f, 1.8f));
-	}
+	//	SetSize (new Vector2(1.5f, 1.8f));
+	//}
 	public void Initialize(Level _myLevel, PlayerData data) {
 		base.BaseInitialize(_myLevel, data);
         
@@ -131,10 +131,10 @@ abstract public class Player : PlatformCharacter {
 		camBoundsLocal.position -= new Vector2(boundsBloat,boundsBloat);
     }
 
-    override protected void SetSize(Vector2 _size) {
-		base.SetSize(_size);
-		myBody.SetSize(_size);
-	}
+ //   override protected void SetSize(Vector2 _size) {
+	//	base.SetSize(_size);
+	//	myBody.SetSize(_size);
+	//}
 	public void SetPosLocal(Vector2 _posLocal) {
 		pos = _posLocal;
 		SetVel(Vector2.zero);
@@ -245,7 +245,7 @@ abstract public class Player : PlatformCharacter {
     private void UpdateDirFacing() {
         // If I'm NOT wall-sliding, then make my DirFacing be what dir input is pushing.
         if (!isWallSliding()) {
-            float inputX = HorzMoveInputVelXDelta();
+            float inputX = inputAxis.x;//HorzMoveInputVelXDelta();
             if (Mathf.Abs(inputX) > 0.001f) {
                 DirFacing = MathUtils.Sign(inputX);
             }
@@ -365,20 +365,28 @@ abstract public class Player : PlatformCharacter {
         }
         
         base.OnWhiskersTouchCollider(side, col);
+        Collidable collidable = col.GetComponent<Collidable>();
         
         // Touching any side EXCEPT my head immediately stops our wall-kick-vel preservation. (Exception is so that we don't halt x-vel just by bumping our head.)
         if (side != Sides.T) {
             isPreservingWallKickVel = false;
         }
+        // NOT our feet? Register Enemy.
+        if (side != Sides.B) {
+            // Enemy??
+            Enemy enemy = collidable as Enemy;
+            if (enemy != null && CanTakeDamage()) {
+                OnCollideWithEnemy(enemy);
+            }
+        }
 
-		// Do my own stuff!
-		Collidable collidable = col.GetComponent<Collidable>();
-		if (side == Sides.B) {
-			OnFeetTouchCollidable(collidable);
-		}
-		else {
-			OnNonFeetTouchCollidable(collidable);
-		}
+        // Do my own stuff!
+        switch (side) {
+            case Sides.B: OnFeetTouchCollidable(collidable); break;
+            case Sides.T: OnHeadTouchCollidable(collidable); break;
+            case Sides.L: case Sides.R: OnArmTouchCollidable(collidable); break;
+            default: break; // Hmm.
+        }
 
 		// We're NOT wall-sliding...
 //		if (!isWallSliding()) {
@@ -429,13 +437,10 @@ abstract public class Player : PlatformCharacter {
 			LandOnCollidable(collidable);
 		}
 	}
-	private void OnNonFeetTouchCollidable(Collidable collidable) {
-		// Enemy??
-		Enemy enemy = collidable as Enemy;
-		if (enemy != null && CanTakeDamage()) {
-			OnCollideWithEnemy(enemy);
-		}
-
+    private void OnHeadTouchCollidable(Collidable collidable) {
+    
+    }
+	virtual protected void OnArmTouchCollidable(Collidable collidable) {
         // Delayed wall-kick? Do it right away!
         if (Time.time <= timeWhenDelayedJump) {
             WallKick();

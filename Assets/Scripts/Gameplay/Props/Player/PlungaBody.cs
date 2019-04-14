@@ -19,15 +19,17 @@ public class PlungaBody : PlayerBody {
         myPlunga = myBasePlayer as Plunga;
 
 		base.Start();
+        
+        GameUtils.SizeSpriteRenderer(sr_highlight, myBasePlayer.Size);
     }
 
 
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
-    override public void SetSize(Vector2 _size) {
-        base.SetSize(_size);
-        GameUtils.SizeSpriteRenderer(sr_highlight,_size);
+    override protected void SetVisualScale(Vector2 _scale) {
+        base.SetVisualScale(_scale);
+        GameUtils.SizeSpriteRenderer(sr_highlight, myBasePlayer.Size*_scale);
     }
 
 
@@ -36,10 +38,10 @@ public class PlungaBody : PlayerBody {
     // ----------------------------------------------------------------
     public void OnStartPlunge() {
 		SetBodyColor(bodyColor_plunging);
-        SetSize(new Vector2(1f,2f));//TEST
+        SetVisualScale(new Vector2(0.7f, 1.2f));
     }
 	public void OnStopPlunge() {
-        SetSize(myBasePlayer.Size);//new Vector2(2f,1.1f));//TEST
+        SetVisualScale(Vector2.one);
         if (myPlunga.IsPlungeRecharged) {
 			SetBodyColor(bodyColor_neutral);
 		}
@@ -49,8 +51,8 @@ public class PlungaBody : PlayerBody {
 	}
 
 	public void OnRechargePlunge() {
-		SetBodyColor(bodyColor_neutral);
-        SetSize(myBasePlayer.Size);//TEST
+        SetVisualScale(Vector2.one);
+        SetBodyColor(bodyColor_neutral);
         // Flash me white!
         GameUtils.SetSpriteAlpha(sr_highlight, 1f);
         LeanTween.cancel(sr_highlight.gameObject);
