@@ -19,7 +19,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	private Collider2D[,] collidersAroundMe; // by side, index.
 	private HashSet<Collider2D>[] collidersTouching;
 	private HashSet<Collider2D>[] pcollidersTouching;
-    public int SideLastTouchedWall { get; private set; } // for wall-kicking perhaps pixels away from a wall.
+    public int DirLastTouchedWall { get; private set; } // for wall-kicking perhaps pixels away from a wall.
     private bool[] onSurfaces; // index is side.
 	private float[,] surfaceDists; // by side,index. This is *all* whisker data.
 	private int[] minDistsIndexes; // by side. WHICH whisker at this side is the closest!
@@ -49,20 +49,20 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 		}
 		return pos;
     }
-    public int SideTouchingWall() {
+    public int DirTouchingWall() {
         if (OnSurface(Sides.L)) { return -1; }
         if (OnSurface(Sides.R)) { return  1; }
         return 0;
     }
     /** It's most efficient only to search as far as the Player is going to move this frame. */
     private float GetRaycastSearchDist(int side) {
-		const float bloat = 0.2f; // how much farther than the player's exact velocity to look. For safety.
+		const float bloat = 5f; //0.2f NOTE: Increased this lots so we can ALSO know what else is around us! // how much farther than the player's exact velocity to look. For safety.
 		switch (side) {
-		case Sides.L: return Mathf.Max(0, -myCharacter.vel.x) + bloat;
-		case Sides.R: return Mathf.Max(0,  myCharacter.vel.x) + bloat;
-		case Sides.B: return Mathf.Max(0, -myCharacter.vel.y) + bloat;
-		case Sides.T: return Mathf.Max(0,  myCharacter.vel.y) + bloat;
-		default: Debug.LogError("Side undefined in GetRaycastSearchDist!: " + side); return 0;
+    		case Sides.L: return Mathf.Max(0, -myCharacter.vel.x) + bloat;
+    		case Sides.R: return Mathf.Max(0,  myCharacter.vel.x) + bloat;
+    		case Sides.B: return Mathf.Max(0, -myCharacter.vel.y) + bloat;
+    		case Sides.T: return Mathf.Max(0,  myCharacter.vel.y) + bloat;
+    		default: Debug.LogError("Side undefined in GetRaycastSearchDist!: " + side); return 0;
 		}
 	}
 	private LayerMask GetLayerMask(int side) {
@@ -175,8 +175,8 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 			UpdateSurface(side);
         }
 
-        if (SideTouchingWall() != 0) {
-            SideLastTouchedWall = SideTouchingWall();
+        if (DirTouchingWall() != 0) {
+            DirLastTouchedWall = DirTouchingWall();
         }
 
         // Now that EVERY side's been updated, check: Have we STOPPED or STARTED touching an old/new collider?

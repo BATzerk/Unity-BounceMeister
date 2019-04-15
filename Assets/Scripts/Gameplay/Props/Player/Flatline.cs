@@ -25,7 +25,7 @@ public class Flatline : Player {
 	override protected float MaxVelXGround { get { return 0.8f; } }
 
 	override protected float JumpForce { get { return 0; } }
-	override protected float WallSlideMinYVel { get { return -0.75f; } }
+	override protected float WallSlideMinYVel { get { return -5f; } }
     override protected Vector2 WallKickVel { get { return new Vector2(Mathf.Abs(vel.y), 0); } }
     override protected float PostWallKickHorzInputLockDur { get { return 999f; } }
     
@@ -89,6 +89,19 @@ public class Flatline : Player {
         base.OnWhiskersTouchCollider(side, col);
         StopSuspension();
     }
+    override protected void LandOnCollidable(Collidable collidable) {
+        base.LandOnCollidable(collidable);
+        // Are we VERY CLOSE to a wall?? Convert VERT vel into HORZ vel!
+        if (myWhiskers.SurfaceDistMin(Sides.L) < 0.9f) {
+            ConvertVertVelToHorz(1);
+        }
+        else if (myWhiskers.SurfaceDistMin(Sides.R) < 0.9f) {
+            ConvertVertVelToHorz(-1);
+        }
+    }
+    private void ConvertVertVelToHorz(int dir) {
+        vel = new Vector2(Mathf.Abs(ppvel.y)*dir, 0);
+    }
     protected override void OnFeetLeaveCollidable(Collidable collidable) {
         base.OnFeetLeaveCollidable(collidable);
         // We're not touching ANYthing?!
@@ -104,7 +117,7 @@ public class Flatline : Player {
         if (!isWallSliding() && collidable is BaseGround) {
             int dir = side==Sides.L ? -1 : 1;
             StartWallSlide(dir);
-            // Immediately start going UP!
+            // Convert HORZ vel to VERT vel!
             vel = new Vector2(0, Mathf.Abs(ppvel.x));
         }
     }

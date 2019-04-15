@@ -290,7 +290,7 @@ abstract public class Player : PlatformCharacter {
 	}
 	virtual protected void WallKick() {
         StopWallSlide();
-        SetVel(new Vector2(-myWhiskers.SideLastTouchedWall*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y)));
+        SetVel(new Vector2(-myWhiskers.DirLastTouchedWall*WallKickVel.x, Mathf.Max(vel.y, WallKickVel.y)));
         timeWhenDelayedJump = -1; // reset this just in case.
         timeLastWallKicked = Time.time;
 		isPreservingWallKickVel = true;

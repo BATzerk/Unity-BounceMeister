@@ -38,7 +38,7 @@ public class PlatformCharacter : Collidable {
     public bool DoUpdate() { // If this is FALSE, I won't do Update nor FixedUpdate.
         return Time.timeScale > 0; // No time? No dice.
     }
-	protected bool isTouchingWall() { return myWhiskers.SideTouchingWall() != 0; }
+	protected bool isTouchingWall() { return myWhiskers.DirTouchingWall() != 0; }
 	virtual protected float HorzMoveInputVelXDelta() {
 		return 0;
 	}
