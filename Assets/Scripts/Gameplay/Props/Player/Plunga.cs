@@ -5,17 +5,17 @@ using UnityEngine;
 public class Plunga : Player {
     // Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Plunga; }
-	private Vector2 GravityPlunging = new Vector2(0, -0.084f); // gravity is much stronger when we're plunging!
-	override protected Vector2 Gravity {
-		get {
-			if (isPlunging) { return GravityPlunging; }
-			return GravityNeutral;
-		}
-	}
+	private Vector2 PlungeForce = new Vector2(0, -0.042f); // applied in addition to Gravity.
+	//override protected Vector2 Gravity {
+	//	get {
+	//		if (isPlunging) { return GravityPlunging; }
+	//		return GravityNeutral;
+	//	}
+	//}
 	// Properties
 	private bool isPlunging = false;
 	private bool isPlungeRecharged = true;
-	private bool groundedSincePlunge; // TEST for interactions with Batteries.
+	private bool groundedSincePlunge=true; // TEST for interactions with Batteries.
 	// References
 	private PlungaBody myPlungaBody;
 
@@ -40,6 +40,10 @@ public class Plunga : Player {
 		if (isPlunging) { return true; }
 		return base.DoBounceOffCollidable(collidable);
 	}
+    override protected float ExtraBounceDistToRestore() {
+        if (isPlunging) { return 3.2f; } // Give us MORE than we started with!
+        return base.ExtraBounceDistToRestore();
+    }
 	// Getters (Private)
 	private bool CanStartPlunge() {
 		if (feetOnGround()) { return false; } // I can't plunge if I'm on the ground.
@@ -69,12 +73,18 @@ public class Plunga : Player {
             OnPlunge_Down();
         }
     }
-    
-    
-	// ----------------------------------------------------------------
-	//  FixedUpdate
-	// ----------------------------------------------------------------
-	override protected void UpdateMaxYSinceGround() {
+
+
+    // ----------------------------------------------------------------
+    //  FixedUpdate
+    // ----------------------------------------------------------------
+    override protected void ApplyInternalForces() {
+        base.ApplyInternalForces();
+        if (isPlunging) {
+            vel += PlungeForce;
+        }
+    }
+    override protected void UpdateMaxYSinceGround() {
 		// TEST!!
 		if (!groundedSincePlunge) { return; }
 		base.UpdateMaxYSinceGround();
@@ -138,10 +148,10 @@ public class Plunga : Player {
 	//  Events (Physics)
 	// ----------------------------------------------------------------
 	override protected void BounceOffCollidable_Up(Collidable collidable) {
+        // Base call.
+        base.BounceOffCollidable_Up(collidable);
 		// Bouncing up off a surface stops the plunge.
 		StopPlunge();
-		// Base call.
-		base.BounceOffCollidable_Up(collidable);
 	}
 	override protected void LandOnCollidable(Collidable collidable) {
 		// Landing on a surface stops the plunge.

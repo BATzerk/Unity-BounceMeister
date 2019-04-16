@@ -6,7 +6,12 @@ public class Flatline : Player {
 	// Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Flatline; }
     override public Vector2 Size { get { return new Vector2(1.6f, 1.6f); } }
-	override protected float InputScaleX { get { return IsHovering ? 0 : 0.018f; } } // No horz input while hovering.
+	override protected float InputScaleX {
+        get {
+            if (IsHovering || HoverTimeLeft<HoverDur) { return 0; } // No horz input while hovering.
+            return 0.018f;
+        }
+    }
 	override protected float FrictionAir { get { return 1; } }
 	override protected float FrictionGround {
 		get {
@@ -75,6 +80,8 @@ public class Flatline : Player {
         SetVel(new Vector2(vel.x, 0));
         // Tell my body!
         myFlatlineBody.OnStartHover();
+        // Dispatch event!
+        GameManagers.Instance.EventManager.OnPlayerStartHover(this);
     }
     private void StopHover() {
         if (!IsHovering) { return; } // Already not hovering? Do nothin'.

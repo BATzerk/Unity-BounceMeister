@@ -26,6 +26,7 @@ public class EventManager {
 	public event IntAction PlayerEscapeLevelBoundsEvent;
     public event PlayerAction PlayerDieEvent;
 	public event PlayerAction PlayerJumpEvent;
+    public event PlayerAction PlayerStartHoverEvent;
 //	public event PlayerAction PlayerSpendPlungeEvent;
 	public event PlayerAction PlayerStartPlungeEvent;
 	public event PlayerAction PlayerRechargePlungeEvent;
@@ -46,6 +47,7 @@ public class EventManager {
     public void OnPlayerEscapeLevelBounds(int side) { if (PlayerEscapeLevelBoundsEvent!=null) { PlayerEscapeLevelBoundsEvent(side); } }
 	public void OnPlayerDie(Player player) { if (PlayerDieEvent!=null) { PlayerDieEvent(player); } }
 	public void OnPlayerJump(Player player) { if (PlayerJumpEvent!=null) { PlayerJumpEvent(player); } }
+    public void OnPlayerStartHover(Player player) { if (PlayerStartHoverEvent!=null) { PlayerStartHoverEvent(player); } }
 //	public void OnPlayerSpendBounce(Player player) { if (PlayerSpendPlungeEvent!=null) { PlayerSpendPlungeEvent(player); } }
 	public void OnPlayerStartPlunge(Player player) { if (PlayerStartPlungeEvent!=null) { PlayerStartPlungeEvent(player); } }
 	public void OnPlayerRechargePlunge(Player player) { if (PlayerRechargePlungeEvent!=null) { PlayerRechargePlungeEvent(player); } }

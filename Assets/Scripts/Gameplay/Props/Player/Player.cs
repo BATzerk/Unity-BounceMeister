@@ -64,7 +64,7 @@ abstract public class Player : PlatformCharacter {
 		return isTouchingWall() || Time.time < timeLastTouchedWall+WallKickExtensionWindow;
 	}
 	virtual protected bool MayWallSlide() {
-		return !feetOnGround();
+		return !feetOnGround() && !IsInLift(); // TODO: Fix this Lift check not working.
 	}
     virtual protected bool MayEatEdibles() {
 		return myWhiskers.AreFeetOnEatEdiblesGround();
@@ -95,6 +95,7 @@ abstract public class Player : PlatformCharacter {
 	virtual protected bool DoBounceOffCollidable(Collidable collidable) {
 		return IsBouncyCollidable(collidable);
 	}
+    virtual protected float ExtraBounceDistToRestore() { return 0; }
 	private bool IsBouncyCollidable(Collidable collidable) {
 		if (collidable == null) { return false; } // The collidable is undefined? Default to NOT bouncy.
 		return collidable.IsBouncy;
@@ -191,6 +192,7 @@ abstract public class Player : PlatformCharacter {
         ApplyVelFromFloor();
 		ApplyFriction();
 		ApplyGravity();
+        ApplyInternalForces();
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
         ApplyLiftForces(); // Note: This happens AFTER TerminalVel.
@@ -486,9 +488,10 @@ abstract public class Player : PlatformCharacter {
     virtual protected void BounceOffCollidable_Up(Collidable collidable) {
 		// Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
 		float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
-		distToRestore += 3.2f; // TEST! Give us MORE than we started with!
+		distToRestore += ExtraBounceDistToRestore(); // Give us __ more height than we started with.
 		float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
-		yVel += 0.025f; // Hack!! We're not getting all our height back exactly. Fudge it for now.
+        //yVel += 0.025f; // Hack!! We're not getting all our height back exactly. Fudge it for now.
+        yVel -= 0.025f; // Hack!! We're getting too much height back; fudge it for now.
 		SetVel(new Vector2(vel.x, yVel));
 		// Inform the collidable!!
 		if (collidable != null) {

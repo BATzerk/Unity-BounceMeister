@@ -13,7 +13,7 @@ public class Jetta : Player {
 //		}
 //	}
 	private Vector2 GravityJetting = new Vector2(0, 0); // TEST
-	override protected Vector2 Gravity {
+	override protected Vector2 Gravity { // TODO: Put this into ApplyInternalForces!
 		get {
 			if (isJetting) { return GravityJetting; }
 			return GravityNeutral;

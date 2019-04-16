@@ -112,6 +112,7 @@ public class PlatformCharacter : Collidable {
     protected void ApplyGravity() {
 		vel += Gravity;
 	}
+    virtual protected void ApplyInternalForces() {} // For Plunga's plunge-force, Jetta's jetting, etc.
 	protected void ApplyFriction() {
         if (IsInLift()) {
 			SetVel(new Vector2(vel.x*FrictionAir, vel.y));

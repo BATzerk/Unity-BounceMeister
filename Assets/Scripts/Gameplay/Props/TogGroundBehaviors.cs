@@ -43,17 +43,19 @@ public class TogGroundBehavior_Plunge : TogGroundBehavior_Base {
     // ----------------------------------------------------------------
     private void Start() {
         // Add event listeners!
-        GameManagers.Instance.EventManager.PlayerStartPlungeEvent += OnPlayerStartPlunge;
+        GameManagers.Instance.EventManager.PlayerStartHoverEvent += OnPlayerAction;
+        GameManagers.Instance.EventManager.PlayerStartPlungeEvent += OnPlayerAction;
     }
     private void OnDestroy() {
         // Remove event listeners!
-        GameManagers.Instance.EventManager.PlayerStartPlungeEvent -= OnPlayerStartPlunge;
+        GameManagers.Instance.EventManager.PlayerStartHoverEvent -= OnPlayerAction;
+        GameManagers.Instance.EventManager.PlayerStartPlungeEvent -= OnPlayerAction;
     }
 
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    private void OnPlayerStartPlunge(Player player) {
+    private void OnPlayerAction(Player player) {
         ToggleIsOn();
     }
 }
