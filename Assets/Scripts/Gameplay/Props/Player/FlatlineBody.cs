@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FlatlineBody : PlayerBody {
+    // Enums
+    private enum EyeTypes { Undefined, Normal, Squint }
+    // Constants
+    [SerializeField] private Color c_hoverlight=Color.white;
+    [SerializeField] private Color c_hoverlightEnding=Color.white;
     // Components
-    [SerializeField] private GameObject go_eyesNormal=null;
-    [SerializeField] private GameObject go_eyesSuspended=null; // squinting!
+    [SerializeField] private GameObject go_eyesNormal=null; // wide open. I can see the world.
+    [SerializeField] private GameObject go_eyesSquint=null; // squinting in earnest consternation.
     [SerializeField] private SpriteRenderer sr_highlight=null;
     // References
     private Flatline myFlatline;
@@ -25,17 +30,34 @@ public class FlatlineBody : PlayerBody {
 
 
     // ----------------------------------------------------------------
+    //  Doers
+    // ----------------------------------------------------------------
+    private void SetEyes(EyeTypes eyeType) {
+        go_eyesNormal.SetActive(false);
+        go_eyesSquint.SetActive(false);
+        switch (eyeType) {
+            case EyeTypes.Normal: go_eyesNormal.SetActive(true); break;
+            case EyeTypes.Squint: go_eyesSquint.SetActive(true); break;
+            default: Debug.LogWarning("FlatlineBody EyeType not recognized: " + eyeType); break;
+        }
+    }
+
+
+    // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    public void OnStartSuspension() {
+    public void OnStartHover() {
         sr_highlight.enabled = true;
-        go_eyesNormal.SetActive(false);
-        go_eyesSuspended.SetActive(true);
+        SetEyes(EyeTypes.Squint);
     }
-    public void OnStopSuspension() {
+    public void OnStopHover() {
         sr_highlight.enabled = false;
-        go_eyesNormal.SetActive(true);
-        go_eyesSuspended.SetActive(false);
+        if (myFlatline.HoverTimeLeft > 0) { // Not out of hover-time? Open my eyes.
+            SetEyes(EyeTypes.Normal);
+        }
+    }
+    public void OnRechargeHover() {
+        SetEyes(EyeTypes.Normal);
     }
 
 
@@ -43,9 +65,20 @@ public class FlatlineBody : PlayerBody {
     //  FixedUpdate
     // ----------------------------------------------------------------
     private void FixedUpdate() {
-        // Update highlight!
-        if (myFlatline.IsSuspended) {
-            float alpha = MathUtils.SinRange(0.2f,0.6f, Time.time*13f);
+        UpdateHoverHighlight();
+    }
+    private void UpdateHoverHighlight() {
+        if (myFlatline.IsHovering) {
+            float alpha;
+            float hovTimeLeft = myFlatline.HoverTimeLeft;
+            if (hovTimeLeft > 0.45f) { // Oscillate normally.
+                sr_highlight.color = c_hoverlight;
+                alpha = MathUtils.SinRange(0.2f,0.6f, hovTimeLeft*13f);
+            }
+            else { // Almost out? Oscillate FAST!
+                sr_highlight.color = c_hoverlightEnding;
+                alpha = MathUtils.SinRange(0.2f,0.7f, hovTimeLeft*40f);
+            }
             GameUtils.SetSpriteAlpha(sr_highlight, alpha);
         }
     }

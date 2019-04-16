@@ -6,18 +6,22 @@ public class Flatline : Player {
 	// Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Flatline; }
     override public Vector2 Size { get { return new Vector2(1.6f, 1.6f); } }
-	override protected float InputScaleX { get { return IsSuspended ? 0 : 0.018f; } } // No horz input while suspended.
+	override protected float InputScaleX { get { return IsHovering ? 0 : 0.018f; } } // No horz input while hovering.
 	override protected float FrictionAir { get { return 1; } }
 	override protected float FrictionGround {
 		get {
-			if (Mathf.Abs(inputAxis.x) > 0.1f) { return 0.98f; } // Providing input? Less friction!
-			return 0.76f;
+			if (Mathf.Abs(inputAxis.x) > 0.1f // Providing input?
+             || Time.time < timeWhenLanded+0.25f // Recently landed?
+            ) {
+                return 0.98f; // Less friction!
+            }
+			return 0.76f; // Normal friction.
 		}
 	}
 	override protected Vector2 Gravity {
 		get {
             if (isTouchingWall()) { return GravityNeutral * 0.2f; } // On a wall? Reduce gravity!
-            if (IsSuspended) { return Vector2.zero; } // Suspended? No gravity!
+            if (IsHovering) { return Vector2.zero; } // Hovering? No gravity!
 			return GravityNeutral * 1f;
 		}
 	}
@@ -29,11 +33,18 @@ public class Flatline : Player {
     override protected Vector2 WallKickVel { get { return new Vector2(Mathf.Abs(vel.y), 0); } }
     override protected float PostWallKickHorzInputLockDur { get { return 999f; } }
     
+    private bool MayStartHover() {
+        return !feetOnGround() // FEET touching nothing?
+            && !isTouchingWall() // ARMS touching nothing?
+            && HoverTimeLeft > 0; // not out of hover-time?
+    }
+    
     // Properties
-    private const float SuspensionDur = 2f; // we can only stay suspended for a few seconds.
-    private bool isButtonHeld_Suspension;
-    public bool IsSuspended { get; private set; }
-    private float timeWhenEndSuspension;
+    private const float HoverDur = 2f; // we can only stay hovering for a few seconds.
+    private bool isButtonHeld_Hover;
+    public bool IsHovering { get; private set; }
+    public float HoverTimeLeft { get; private set; }
+    private float timeWhenLanded; // time when feet last landed on a collider.
     private Vector2 ppvel; // HACKY workaround for getting vel from hitting a wall. ppvel is ACTUALLY how fast we were going before we hit the wall.
     // References
     private FlatlineBody myFlatlineBody;
@@ -44,6 +55,7 @@ public class Flatline : Player {
     // ----------------------------------------------------------------
     override protected void Start() {
         myFlatlineBody = myBody as FlatlineBody;
+        HoverTimeLeft = HoverDur; // start out with fuel.
         base.Start();
     }
 
@@ -54,48 +66,52 @@ public class Flatline : Player {
     override protected void Jump() { } // Flatline can't jump.
 	override protected void WallKick() {
 		base.WallKick();
-        StartSuspension();
+        StartHover();
     }
-    private void StartSuspension() {
-        if (IsSuspended) { return; } // Already suspended? Do nothin'.
-        IsSuspended = true;
-        timeWhenEndSuspension = Time.time + SuspensionDur;
+    private void StartHover() {
+        if (IsHovering) { return; } // Already hovering? Do nothin'.
+        IsHovering = true;
         // No yVel.
         SetVel(new Vector2(vel.x, 0));
         // Tell my body!
-        myFlatlineBody.OnStartSuspension();
+        myFlatlineBody.OnStartHover();
     }
-    private void StopSuspension() {
-        if (!IsSuspended) { return; } // Already not suspended? Do nothin'.
-        IsSuspended = false;
+    private void StopHover() {
+        if (!IsHovering) { return; } // Already not hovering? Do nothin'.
+        IsHovering = false;
         // Tell my body!
-        myFlatlineBody.OnStopSuspension();
+        myFlatlineBody.OnStopHover();
+    }
+    private void RechargeHover() {
+        HoverTimeLeft = HoverDur;
+        // Tell my body!
+        myFlatlineBody.OnRechargeHover();
     }
 
 
-	// ----------------------------------------------------------------
-	//  Events
-	// ----------------------------------------------------------------
-	override protected void StartWallSlide(int dir) {
-		base.StartWallSlide(dir);
-        // Lose any negative yVel.
-        SetVel(new Vector2(vel.x, Mathf.Max(0, vel.y)));
-    }
+	//// ----------------------------------------------------------------
+	////  Events
+	//// ----------------------------------------------------------------
+	//override protected void StartWallSlide(int dir) {
+		//base.StartWallSlide(dir);
+    //}
 
     // ----------------------------------------------------------------
     //  Events (Physics)
     // ----------------------------------------------------------------
     public override void OnWhiskersTouchCollider(int side, Collider2D col) {
         base.OnWhiskersTouchCollider(side, col);
-        StopSuspension();
+        RechargeHover(); // ANY contact recharges our hover!
+        StopHover();
     }
     override protected void LandOnCollidable(Collidable collidable) {
         base.LandOnCollidable(collidable);
-        // Are we VERY CLOSE to a wall?? Convert VERT vel into HORZ vel!
-        if (myWhiskers.SurfaceDistMin(Sides.L) < 0.9f) {
+        timeWhenLanded = Time.time;
+        // Are we VERY CLOSE to a wall, and facing away from it?? Convert VERT vel into HORZ vel!
+        if (myWhiskers.SurfaceDistMin(Sides.L) < 0.4f && DirFacing==1) {
             ConvertVertVelToHorz(1);
         }
-        else if (myWhiskers.SurfaceDistMin(Sides.R) < 0.9f) {
+        else if (myWhiskers.SurfaceDistMin(Sides.R) < 0.4f && DirFacing==-1) {
             ConvertVertVelToHorz(-1);
         }
     }
@@ -106,8 +122,8 @@ public class Flatline : Player {
         base.OnFeetLeaveCollidable(collidable);
         // We're not touching ANYthing?!
         if (!myWhiskers.IsTouchingAnySurface()) {
-            if (isButtonHeld_Suspension) {
-                StartSuspension();
+            if (isButtonHeld_Hover) {
+                StartHover();
             }
         }
     }
@@ -117,8 +133,15 @@ public class Flatline : Player {
         if (!isWallSliding() && collidable is BaseGround) {
             int dir = side==Sides.L ? -1 : 1;
             StartWallSlide(dir);
-            // Convert HORZ vel to VERT vel!
-            vel = new Vector2(0, Mathf.Abs(ppvel.x));
+            // Modify our yVel.
+            if (vel.y < -0.2f) { // Moving DOWN? Keep going down.
+                
+            }
+            else { // Moving UP? Convert HORZ vel to VERT vel!
+                int dirY = vel.y>-0.2f ? 1 : -1; // NOT moving down? Convert to yVel UP! Moving DOWN? Convert to yVel DOWN!
+                float yVel = Mathf.Abs(ppvel.x) * dirY;
+                vel = new Vector2(0, yVel);
+            }
         }
     }
     
@@ -132,14 +155,18 @@ public class Flatline : Player {
         
         base.FixedUpdate();
         
-        // End suspension?
-        if (Time.time >= timeWhenEndSuspension) {
-            StopSuspension();
-        }
-        
-        // Suspended? 0 yVel!
-        if (IsSuspended) {
+        UpdateHover();
+    }
+    private void UpdateHover() {
+        if (IsHovering) {
+            // 0 yVel!
             SetVel(new Vector2(vel.x, 0));
+        
+            // End hover?
+            HoverTimeLeft -= Time.deltaTime;
+            if (HoverTimeLeft <= 0) {
+                StopHover();
+            }
         }
     }
 
@@ -152,16 +179,16 @@ public class Flatline : Player {
 			WallKick();
 		}
         
-        isButtonHeld_Suspension = true;
+        isButtonHeld_Hover = true;
         
-        // In the air? Start suspension!
-        if (!feetOnGround() && !isTouchingWall()) {
-            StartSuspension();
+        // In the air? Start hover!
+        if (MayStartHover()) {
+            StartHover();
         }
 	}
 	override protected void OnButtonJump_Up() {
-        isButtonHeld_Suspension = false;
-        StopSuspension();
+        isButtonHeld_Hover = false;
+        StopHover();
     }
 
 
