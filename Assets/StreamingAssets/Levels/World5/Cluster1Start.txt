@@ -1,4 +1,4 @@
-levelProperties posGlobal:(30.0, 186.0);designerFlag:3
+levelProperties posGlobal:(218.0, 262.0);designerFlag:3;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(19.4, -14.0)
 Ground myRect:(x:7.00, y:-18.00, width:38.00, height:4.00)
@@ -12,4 +12,3 @@ Ground myRect:(x:19.50, y:-2.00, width:5.00, height:18.00)
 Ground myRect:(x:-8.00, y:-5.00, width:10.00, height:8.00)
 ProgressGate myRect:(x:-16.00, y:-17.00, width:6.00, height:4.00);numSnacksReq:8
 Platform myRect:(x:-16.00, y:-14.50, width:6.00, height:1.00)
-

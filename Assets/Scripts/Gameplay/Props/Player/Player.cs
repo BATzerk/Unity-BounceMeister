@@ -342,6 +342,7 @@ abstract public class Player : PlatformCharacter {
         // On a Platform? Pass down through it!
         if (myWhiskers.AreFeetOnlyOnCanDropThruPlatform()) {
             pos += new Vector2(0, -0.2f);
+            vel += new Vector2(0, -0.16f);
         }
     }
     

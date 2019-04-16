@@ -1,4 +1,4 @@
-levelProperties posGlobal:(226.0, 38.0);designerFlag:4
+levelProperties posGlobal:(378.0, 68.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-14.0, -11.3)
 Ground myRect:(x:-22.00, y:-16.50, width:8.00, height:7.00)
@@ -20,4 +20,3 @@ Ground myRect:(x:7.00, y:-16.50, width:38.00, height:7.00)
 Gate myRect:(x:-15.00, y:-16.50, width:6.00, height:3.00);channelID:0
 GateButton pos:(-13.5, -5.5);channelID:0
 Platform myRect:(x:-15.00, y:-13.50, width:6.00, height:1.00)
-

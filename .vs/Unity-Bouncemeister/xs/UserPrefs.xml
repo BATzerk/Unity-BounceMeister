@@ -1,15 +1,16 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/Plunga.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/Flatline.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="178" Column="35" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="67" Column="40" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="8" Column="44" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="67" Column="83" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="179" Column="1" />
       <File FileName="Assets/Scripts/Gameplay/Props/Player/FlatlineBody.cs" Line="55" Column="56" />
       <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" Line="27" Column="32" />
       <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="115" Column="104" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Plunga.cs" Line="30" Column="24" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Plunga.cs" Line="36" Column="45" />
       <File FileName="Assets/Scripts/Gameplay/Props/Player/Jetta.cs" Line="16" Column="82" />
+      <File FileName="Assets/Scripts/Gameplay/Props/GateButton.cs" Line="4" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

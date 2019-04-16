@@ -27,14 +27,14 @@ public class Flatline : Player {
 		get {
             if (isTouchingWall()) { return GravityNeutral * 0.2f; } // On a wall? Reduce gravity!
             if (IsHovering) { return Vector2.zero; } // Hovering? No gravity!
-			return GravityNeutral * 1f;
+			return GravityNeutral * 1;
 		}
 	}
-	override protected float MaxVelXAir { get { return 0.5f; } }
+	override protected float MaxVelXAir { get { return 99f; } }
 	override protected float MaxVelXGround { get { return 0.8f; } }
 
 	override protected float JumpForce { get { return 0; } }
-	override protected float WallSlideMinYVel { get { return -5f; } }
+	override protected float WallSlideMinYVel { get { return -999f; } }
     override protected Vector2 WallKickVel { get { return new Vector2(Mathf.Abs(vel.y), 0); } }
     override protected float PostWallKickHorzInputLockDur { get { return 999f; } }
     
@@ -147,6 +147,7 @@ public class Flatline : Player {
             else { // Moving UP? Convert HORZ vel to VERT vel!
                 int dirY = vel.y>-0.2f ? 1 : -1; // NOT moving down? Convert to yVel UP! Moving DOWN? Convert to yVel DOWN!
                 float yVel = Mathf.Abs(ppvel.x) * dirY;
+                yVel = Mathf.Max(vel.y, yVel); // if we're already going up fast, keep dat.
                 vel = new Vector2(0, yVel);
             }
         }
