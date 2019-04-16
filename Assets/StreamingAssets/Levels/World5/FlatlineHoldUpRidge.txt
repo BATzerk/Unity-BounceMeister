@@ -1,13 +1,13 @@
-levelProperties posGlobal:(-216.0, 226.0);designerFlag:3
+levelProperties posGlobal:(370.0, 234.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-12.2, -10.2)
 Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
 Ground myRect:(x:-23.00, y:0.00, width:6.00, height:32.00)
 Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00)
 Ground myRect:(x:0.00, y:17.00, width:52.00, height:6.00)
-Ground myRect:(x:10.00, y:-12.50, width:4.00, height:9.00)
+Ground myRect:(x:8.00, y:-12.50, width:8.00, height:9.00)
 Ground myRect:(x:17.00, y:-12.50, width:14.00, height:7.00);canEatGems:False
-Spikes myRect:(x:10.00, y:-7.50, width:4.00, height:1.00);rotation:0
+Spikes myRect:(x:8.00, y:-7.50, width:8.00, height:1.00);rotation:0
 Gem pos:(20.5, -8.0);type:1
 Ground myRect:(x:-18.50, y:5.50, width:3.00, height:31.00)
 Ground myRect:(x:21.50, y:7.00, width:3.00, height:26.00)

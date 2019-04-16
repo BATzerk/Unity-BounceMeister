@@ -54,6 +54,8 @@ public class PlatformData : BaseGroundData {
 }
 public class ToggleGroundData : BaseGroundData {
 	public bool startsOn;
+    public bool togFromContact=false;
+    public bool togFromPlunge=true;
 }
 public class DamageableGroundData : BaseGroundData {
 	public bool doRegen;

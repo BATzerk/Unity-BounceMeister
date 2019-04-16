@@ -195,11 +195,14 @@ public class GameController : MonoBehaviour {
     }
     
     private Vector2 GetPlayerStartingPosFromPrevExitPos(LevelData ld, int sideEntering, Vector2 posExited) {
-        Vector2Int offsetDir = MathUtils.GetOppositeDir(sideEntering);
-        const float extraEnterDistX = 0; // How much extra step do I wanna take in to really feel at "home"?
-        const float extraEnterDistY = 3; // How much extra step do I wanna take in to really feel at "home"?
+        //Vector2Int offsetDir = MathUtils.GetOppositeDir(sideEntering);
+        //const float extraEnterDistX = 0; // How much extra step do I wanna take in to really feel at "home"?
+        //const float extraEnterDistY = 3; // How much extra step do I wanna take in to really feel at "home"?
+        //return posRelative + new Vector2(offsetDir.x*extraEnterDistX, offsetDir.y*extraEnterDistY);
         Vector2 posRelative = posExited - ld.posGlobal; // Convert the last known coordinates to this level's coordinates.
-        return posRelative + new Vector2(offsetDir.x*extraEnterDistX, offsetDir.y*extraEnterDistY);
+        Vector2 returnPos = posRelative;
+        if (sideEntering == Sides.B) { returnPos += new Vector2(0, 3); } // Coming up from below? Start a few steps farther up into the level!
+        return returnPos;
     }
 
 

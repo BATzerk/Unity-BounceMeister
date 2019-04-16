@@ -158,7 +158,7 @@ static public class LevelSaverLoader {
             }
 			else if (type == typeof(ToggleGroundData)) {
 				ToggleGroundData d = propData as ToggleGroundData;
-				AddSomePropFieldsToFS(propData, "myRect", "startsOn");
+				AddSomePropFieldsToFS(propData, "myRect", "startsOn", "togFromContact", "togFromPlunge");
 				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 AddFSLine();

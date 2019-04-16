@@ -50,6 +50,7 @@ public class LevelDoor : Prop {
 	//  Doers
 	// ----------------------------------------------------------------
 	private void GoToMyLevel() {
+        if (myLevel==null) { return; } // Safety check.
 		// Set the door we're gonna start at!
 		GameManagers.Instance.DataManager.levelToDoorID = levelToDoorID;
 		// Load the level!

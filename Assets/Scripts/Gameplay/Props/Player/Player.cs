@@ -37,6 +37,7 @@ abstract public class Player : PlatformCharacter {
 	[SerializeField] protected PlayerBody myBody=null;
 	// Properties
 	private bool isPostDamageImmunity = false;
+    private bool pfeetOnGround; // last frame's feetOnGround truthiness.
 	protected bool isPreservingWallKickVel = false; // if TRUE, we don't apply air friction. Set to false when A) Time's past PostWallKickHorzInputLockDur, or B) Non-head touches any collider (so landing on ground, or side-hitting wall).
     private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeLastWallKicked=Mathf.NegativeInfinity;
@@ -209,6 +210,7 @@ abstract public class Player : PlatformCharacter {
 
 		// Update vel to be the distance we ended up moving this frame.
 		SetVel(pos - ppos);
+        pfeetOnGround = feetOnGround();
 
 		UpdateExitedLevel();
 	}
@@ -427,14 +429,16 @@ abstract public class Player : PlatformCharacter {
 			EatEdiblesHolding();
 		}
         
-		bool doBounce = DoBounceOffCollidable(collidable);
 		// Bounce!
-		if (doBounce) {
+		if (DoBounceOffCollidable(collidable)) {
 			BounceOffCollidable_Up(collidable);
 		}
-		// Land!
+		// Otherwise...
 		else {
-			LandOnCollidable(collidable);
+            // Feet WEREN'T on ground?? Consider this a landing!
+            if (!pfeetOnGround) {
+			    LandOnCollidable(collidable);
+            }
 		}
 	}
     private void OnHeadTouchCollidable(Collidable collidable) {
@@ -501,6 +505,7 @@ abstract public class Player : PlatformCharacter {
 			collidable.OnPlayerBounceOnMe(this);
 		}
 	}
+    /// Called when our feet WEREN'T touching ground, but now they are (and we're NOT bouncing).
 	virtual protected void LandOnCollidable(Collidable collidable) {
 		// Finally reset maxYSinceGround.
 		maxYSinceGround = pos.y;
@@ -509,12 +514,6 @@ abstract public class Player : PlatformCharacter {
         if (Time.time <= timeWhenDelayedJump) {
 			Jump();
 		}
-//			else { // TEMP TEST!
-//				SetVel(new Vector2(vel.x, -vel.y * 0.2f));
-//				if (Mathf.Abs(vel.y) < 0.05f) {
-//					SetVel(new Vector2(vel.x, 0));
-//				}
-//			}
 	}
 
 	private void OnCollideWithEnemy(Enemy enemy) {

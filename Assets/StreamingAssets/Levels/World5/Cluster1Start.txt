@@ -1,0 +1,13 @@
+levelProperties posGlobal:(-84.0, 128.0);designerFlag:0
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+PlayerStart pos:(19.4, -14.0)
+Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
+Ground myRect:(x:-22.50, y:0.00, width:7.00, height:32.00)
+Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00)
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+LevelDoor pos:(20.5, -15.0);myID:0;worldToIndex:-1;levelToKey:Cluster0End;levelToDoorID:0
+Ground myRect:(x:12.00, y:-1.00, width:20.00, height:16.00)
+Ground myRect:(x:-5.50, y:-17.00, width:41.00, height:6.00)
+Ground myRect:(x:19.50, y:-2.00, width:5.00, height:18.00)
+Ground myRect:(x:-8.50, y:-5.00, width:11.00, height:8.00)
+

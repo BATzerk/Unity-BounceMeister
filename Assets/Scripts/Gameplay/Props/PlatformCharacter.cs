@@ -127,7 +127,7 @@ public class PlatformCharacter : Collidable {
 		vel += new Vector2(HorzMoveInputVelXDelta(), 0);
 	}
 	protected void ApplyTerminalVel() {
-        //if (IsInLift) { return; } // HACK TEMP TEST
+        //if (IsInLift) { return; } // TEST
 		float maxXVel = feetOnGround() ? MaxVelXGround : MaxVelXAir;
 		float xVel = Mathf.Clamp(vel.x, -maxXVel,maxXVel);
 		float yVel = Mathf.Clamp(vel.y, MaxVelYDown,MaxVelYUp);
