@@ -26,9 +26,10 @@ public class Flatline : Player {
 	}
 	override protected Vector2 Gravity {
 		get {
-            if (isTouchingWall()) { return GravityNeutral * 0.2f; } // On a wall? Reduce gravity!
+            Vector2 gravNeutral = new Vector2(0, -0.042f);
+            if (isTouchingWall()) { return gravNeutral * 0.2f; } // On a wall? Reduce gravity!
             if (IsHovering) { return Vector2.zero; } // Hovering? No gravity!
-			return GravityNeutral * 1;
+			return gravNeutral;
 		}
 	}
 	override protected float MaxVelXAir { get { return 99f; } }

@@ -6,6 +6,7 @@ public class Plunga : Player {
     // Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Plunga; }
 	private Vector2 PlungeForce = new Vector2(0, -0.042f); // applied in addition to Gravity.
+    override protected Vector2 Gravity { get { return new Vector2(0, -0.042f); } }
 	//override protected Vector2 Gravity {
 	//	get {
 	//		if (isPlunging) { return GravityPlunging; }
@@ -41,7 +42,7 @@ public class Plunga : Player {
 		return base.DoBounceOffCollidable(collidable);
 	}
     override protected float ExtraBounceDistToRestore() {
-        if (isPlunging) { return 3.2f; } // Give us MORE than we started with!
+        if (isPlunging) { return 3.0f; } // Give us MORE than we started with!
         return base.ExtraBounceDistToRestore();
     }
 	// Getters (Private)

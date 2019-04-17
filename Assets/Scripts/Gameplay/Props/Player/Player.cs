@@ -15,7 +15,7 @@ abstract public class Player : PlatformCharacter {
             return 0.5f; // No input? Basically halt.
         }
 	}
-	protected Vector2 GravityNeutral = new Vector2(0, -0.042f);
+	//protected Vector2 GravityNeutral = new Vector2(0, -0.042f);
 	virtual protected float InputScaleX { get { return 0.1f; } }
 
 	virtual protected float JumpForce { get { return 0.61f; } }
@@ -478,7 +478,6 @@ abstract public class Player : PlatformCharacter {
 		distToRestore += ExtraBounceDistToRestore(); // Give us __ more height than we started with.
 		float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
         //yVel += 0.025f; // Hack!! We're not getting all our height back exactly. Fudge it for now.
-        yVel -= 0.025f; // Hack!! We're getting too much height back; fudge it for now.
 		SetVel(new Vector2(vel.x, yVel));
 		// Inform the collidable!!
 		if (collidable != null) {

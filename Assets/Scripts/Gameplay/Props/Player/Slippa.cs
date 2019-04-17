@@ -15,9 +15,10 @@ public class Slippa : Player {
     }
     override protected Vector2 Gravity {
         get {
-            if (isTouchingWall()) { return GravityNeutral * 0.2f; } // On a wall? Reduce gravity!
-            if (isReducedJumpGravity) { return GravityNeutral * 0.7f; } // We're still holding down the jump button? Reduce gravity!
-            return GravityNeutral * 1.6f;
+            Vector2 gravNeutral = new Vector2(0, -0.042f);
+            if (isTouchingWall()) { return gravNeutral * 0.2f; } // On a wall? Reduce gravity!
+            if (isReducedJumpGravity) { return gravNeutral * 0.7f; } // We're still holding down the jump button? Reduce gravity!
+            return gravNeutral * 1.6f;
         }
     }
     override protected float MaxVelXAir { get { return 0.5f; } }
