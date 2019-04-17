@@ -197,6 +197,15 @@ public static class MathUtils {
     // ----------------------------------------------------------------
     //  Rects
     // ----------------------------------------------------------------
+    public static Line GetRectSideLine(Rect r, int side) {
+        switch (side) {
+            case Sides.L: return new Line(r.xMin,r.yMin, r.xMin,r.yMax);
+            case Sides.R: return new Line(r.xMax,r.yMin, r.xMax,r.yMax);
+            case Sides.B: return new Line(r.xMin,r.yMin, r.xMax,r.yMin);
+            case Sides.T: return new Line(r.xMin,r.yMax, r.xMax,r.yMax);
+            default: Debug.LogWarning("Side not recognized: " + side); return new Line(); // Hmm.
+        }
+    }
 	/** easing: Higher is SLOWER. */
 	public static void EaseRect (ref Rect rect, Rect rectTarget, float easing) {
 		rect.xMin += (rectTarget.xMin-rect.xMin) / easing;

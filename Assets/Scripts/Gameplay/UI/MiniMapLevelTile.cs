@@ -7,8 +7,9 @@ public class MiniMapLevelTile : MonoBehaviour {
     // Components
     [SerializeField] private RectTransform myRectTransform;
     [SerializeField] private Image i_back;
-    [SerializeField] private Image i_stroke;
+    //[SerializeField] private Image i_stroke;
     [SerializeField] private Image i_snack; // hidden if no snack
+    private ImageLine[] i_borders; // index corresponds to side. Null if no border.
     // References
     public LevelData MyLevelData { get; private set; }
     
@@ -22,6 +23,16 @@ public class MiniMapLevelTile : MonoBehaviour {
         //if (areEdiblesLeft) { return new Color255(135,200,210).ToColor(); }
         //return new Color255(105,120,123, 80).ToColor();
         return new Color255(135,200,210).ToColor();
+    }
+    private bool IsBorderLine(int side) {
+        for (int i=0; i<MyLevelData.Neighbors.Count; i++) {
+            if (!MyLevelData.Neighbors[i].IsLevelTo) { continue; } // No neighboring level? No line.
+            if (MyLevelData.Neighbors[i].OpeningFrom.side == side) { return false; } // There's a neighbor at this side!
+        }
+        return true; // No neighbor at this side?? Yes border line!
+    }
+    private Line GetBorderLine(int side) {
+        return MathUtils.GetRectSideLine(MyLevelData.BoundsLocal, side);
     }
     
     
@@ -38,6 +49,26 @@ public class MiniMapLevelTile : MonoBehaviour {
         // Size/position!
         myRectTransform.sizeDelta = myLevelData.BoundsGlobal.size;// - new Vector2(5,5); // TEST shrink 'em all a little
         myRectTransform.anchoredPosition = myLevelData.BoundsGlobal.position;
+        
+        // Border lines!
+        MakeBorderLines();
+    }
+    private void MakeBorderLines() {
+        i_borders = new ImageLine[4];
+        for (int side=0; side<i_borders.Length; side++) {
+            if (IsBorderLine(side)) {
+                MakeBorderLine(side);
+            }
+        }
+    }
+    private void MakeBorderLine(int side) {
+        Line line = GetBorderLine(side);
+        ImageLine imageLine = Instantiate(ResourcesHandler.Instance.imageLine).GetComponent<ImageLine>();
+        imageLine.Initialize(this.transform, line.start,line.end);
+        imageLine.name = "BorderLine_" + side;
+        imageLine.SetThickness(4);
+        imageLine.SetColor(new Color(0,0,0, 0.75f));
+        i_borders[side] = imageLine;
     }
     
     

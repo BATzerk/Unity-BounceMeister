@@ -7,7 +7,7 @@ using System.Collections;
 
 public class SpriteLine : MonoBehaviour {
 	// Components
-	[SerializeField] private SpriteRenderer sprite; // the actual line sprite thingy
+	[SerializeField] private SpriteRenderer sprite=null; // the actual line sprite thingy
 	// Properties
 	private float angle; // in DEGREES.
 	private float length;

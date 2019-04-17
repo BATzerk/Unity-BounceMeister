@@ -1,14 +1,15 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Common/Utils/LineUtils.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="178" Column="35" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="361" Column="6" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="131" Column="50" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/FlatlineBody.cs" Line="55" Column="56" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" Line="199" Column="77" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="115" Column="104" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Plunga.cs" Line="36" Column="45" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="351" Column="22" />
+      <File FileName="Assets/Scripts/Gameplay/UI/MiniMapLevelTile.cs" Line="17" Column="48" />
+      <File FileName="Assets/Scripts/Common/Objects/ImageLine.cs" Line="68" Column="34" />
+      <File FileName="Assets/Scripts/Gameplay/LevelData.cs" Line="71" Column="6" />
+      <File FileName="Assets/Scripts/Common/Utils/MathUtils.cs" Line="200" Column="29" />
+      <File FileName="Assets/Scripts/Common/Objects/SpriteLine.cs" Line="74" Column="19" />
+      <File FileName="Assets/Scripts/Common/Utils/LineUtils.cs" Line="10" Column="22" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

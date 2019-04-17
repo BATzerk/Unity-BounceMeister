@@ -53,11 +53,8 @@ public class ImageLine : MonoBehaviour {
 	public void Initialize (Transform _parentTransform, Vector2 _startPos, Vector2 _endPos) {
 		startPos = _startPos;
 		endPos = _endPos;
-
-		this.transform.SetParent (_parentTransform);
-		this.transform.localEulerAngles = Vector3.zero;
-		this.transform.localPosition = Vector3.zero;
-		this.transform.localScale = Vector3.one;
+        
+        GameUtils.ParentAndReset(this.gameObject, _parentTransform);
 
 		UpdateAngleLengthPosition ();
 	}
@@ -96,7 +93,7 @@ public class ImageLine : MonoBehaviour {
 //	}
 	public void SetThickness(float _thickness) {
 		thickness = _thickness;
-		GameUtils.SizeUIGraphic(image, thickness, length);
+		GameUtils.SizeUIGraphic(image, length, thickness);
 	}
 
 
