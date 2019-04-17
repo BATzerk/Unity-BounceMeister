@@ -24,4 +24,3 @@ Ground myRect:(x:32.50, y:-2.50, width:9.00, height:3.00)
 Ground myRect:(x:33.00, y:-6.50, width:8.00, height:11.00)
 Ground myRect:(x:21.50, y:0.50, width:3.00, height:9.00)
 Platform myRect:(x:-13.00, y:8.50, width:6.00, height:1.00)
-

@@ -246,31 +246,6 @@ public class GameController : MonoBehaviour {
 		}
 
 		// ~~~~ DEBUG ~~~~
-        // Level-Jumping
-		if (Input.GetKeyDown(KeyCode.Equals))            { Debug_JumpToLevelAtSide(Sides.T); return; }
-		else if (Input.GetKeyDown(KeyCode.RightBracket)) { Debug_JumpToLevelAtSide(Sides.R); return; }
-		else if (Input.GetKeyDown(KeyCode.Quote))        { Debug_JumpToLevelAtSide(Sides.B); return; }
-		else if (Input.GetKeyDown(KeyCode.LeftBracket))  { Debug_JumpToLevelAtSide(Sides.L); return; }
-        // Scene Changing
-        else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.R)) {
-            SceneHelper.ReloadScene(); return;
-        }
-        else if (Input.GetKeyDown(KeyCode.J)) {
-			SceneHelper.OpenScene(SceneNames.LevelJump); return;
-		}
-		else if (Input.GetKeyDown(KeyCode.M)) {
-		    SceneHelper.OpenScene(SceneNames.MapEditor); return;
-		}
-        // T = Toggle Slow-mo
-        else if (Input.GetKeyDown(KeyCode.T)) {
-            gameTimeController.ToggleSlowMo();
-		}
-        // Y = Execute one FixedUpdate step
-        else if (Input.GetKeyDown(KeyCode.Y)) {
-            gameTimeController.ExecuteApproximatelyOneFUStep();
-        }
-
-
 		// ALT + ___
 		if (isKey_alt) {
             // ALT + Q, W, E = Switch Characters
@@ -307,6 +282,33 @@ public class GameController : MonoBehaviour {
 				if (level != null) { level.FlipHorz(); }
 			}
 		}
+        
+        // NOTHING + _____
+        if (!isKey_alt && !isKey_shift && !isKey_control) {
+            // Level-Jumping
+            if (Input.GetKeyDown(KeyCode.Equals))            { Debug_JumpToLevelAtSide(Sides.T); return; }
+            else if (Input.GetKeyDown(KeyCode.RightBracket)) { Debug_JumpToLevelAtSide(Sides.R); return; }
+            else if (Input.GetKeyDown(KeyCode.Quote))        { Debug_JumpToLevelAtSide(Sides.B); return; }
+            else if (Input.GetKeyDown(KeyCode.LeftBracket))  { Debug_JumpToLevelAtSide(Sides.L); return; }
+            // Scene Changing
+            else if (Input.GetKeyDown(KeyCode.Return)) {
+                SceneHelper.ReloadScene(); return;
+            }
+            else if (Input.GetKeyDown(KeyCode.J)) {
+                SceneHelper.OpenScene(SceneNames.LevelJump); return;
+            }
+            else if (Input.GetKeyDown(KeyCode.M)) {
+                SceneHelper.OpenScene(SceneNames.MapEditor); return;
+            }
+            // T = Toggle Slow-mo
+            else if (Input.GetKeyDown(KeyCode.T)) {
+                gameTimeController.ToggleSlowMo();
+            }
+            // Y = Execute one FixedUpdate step
+            else if (Input.GetKeyDown(KeyCode.Y)) {
+                gameTimeController.ExecuteApproximatelyOneFUStep();
+            }
+        }
 	}
 
     private void SaveLevelFile() {

@@ -9,6 +9,7 @@ public class Flatline : Player {
 	override protected float InputScaleX {
         get {
             if (IsHovering || HoverTimeLeft<HoverDur) { return 0; } // No horz input while hovering.
+            //if (!feetOnGround()) { return 0.01f; } // In the air? Reduced input scale.
             return 0.018f;
         }
     }
