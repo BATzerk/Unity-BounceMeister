@@ -4,12 +4,12 @@ Ground myRect:(x:-12.00, y:11.00, width:2.00, height:12.00)
 Ground myRect:(x:-3.50, y:-1.50, width:5.00, height:1.00)
 Ground myRect:(x:-0.50, y:17.50, width:53.00, height:5.00)
 Ground myRect:(x:-21.50, y:1.50, width:9.00, height:17.00);isPlayerRespawn:True
-Ground myRect:(x:23.50, y:4.00, width:5.00, height:24.00)
+Ground myRect:(x:23.50, y:4.50, width:5.00, height:23.00)
 Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
-Ground myRect:(x:-15.50, y:-16.50, width:21.00, height:7.00)
+Ground myRect:(x:-15.00, y:-16.50, width:22.00, height:7.00)
 Ground myRect:(x:15.50, y:-16.00, width:21.00, height:8.00)
 Ground myRect:(x:4.50, y:1.00, width:21.00, height:4.00)
-Ground myRect:(x:14.00, y:-2.50, width:4.00, height:11.00)
+Ground myRect:(x:14.00, y:-2.00, width:4.00, height:10.00)
 Ground myRect:(x:6.50, y:4.00, width:5.00, height:4.00)
 Ground myRect:(x:6.50, y:16.00, width:5.00, height:4.00)
 Ground myRect:(x:-4.50, y:2.50, width:5.00, height:1.00)
@@ -22,5 +22,8 @@ Spikes myRect:(x:-6.50, y:0.50, width:5.00, height:1.00);rotation:90
 Spikes myRect:(x:6.50, y:6.50, width:5.00, height:1.00);rotation:0
 Spikes myRect:(x:6.50, y:13.50, width:5.00, height:1.00);rotation:180
 Spikes myRect:(x:15.00, y:14.50, width:12.00, height:1.00);rotation:180
-Snack pos:(-20.0, 11.0)
+Snack pos:(-20.0, 11.0);playerType:Plunga
 Ground myRect:(x:-24.00, y:4.00, width:4.00, height:22.00);isPlayerRespawn:True
+Ground myRect:(x:-18.00, y:0.00, width:2.00, height:20.00);isPlayerRespawn:True
+Snack pos:(13.5, 5.0);playerType:Flatline
+

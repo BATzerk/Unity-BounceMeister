@@ -5,29 +5,70 @@ using UnityEngine;
 public class Snack : Edible {
     // Components
     [SerializeField] private SpriteRenderer sr_aura=null;
+    // Properties
+    [SerializeField] private PlayerTypes playerType=PlayerTypes.Undefined;
 
 
     // ----------------------------------------------------------------
     //  Initialize
     // ----------------------------------------------------------------
+    private void Awake() {
+        // Add event listeners!
+        GameManagers.Instance.EventManager.PlayerInitEvent += OnPlayerInit;
+    }
+    private void OnDestroy() {
+        // Remove event listeners!
+        GameManagers.Instance.EventManager.PlayerInitEvent -= OnPlayerInit;
+    }
     public void Initialize(Level _myLevel, SnackData data, int myIndex) {
         base.BaseInitialize(_myLevel, data);
         this.myIndex = myIndex;
+        this.playerType = PlayerTypeHelper.TypeFromString(data.playerType);
 
         // Load wasEverEaten!
         wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatSnack(myLevel, myIndex));
         isEaten = wasEverEaten;
-
-        // Set wasEverEaten visuals.
-        sr_body.enabled = !wasEverEaten;
+        
+        
+        UpdatePresence();
+    }
+    
+    
+    // ----------------------------------------------------------------
+    //  Doers
+    // ----------------------------------------------------------------
+    private void UpdatePresence() {
+        Player currPlayer = myLevel.Player;
+        bool isMyType = currPlayer!=null && currPlayer.PlayerType()==playerType;
+        
+        // Update my color by my PlayerType.
+        Color playerColor = PlayerBody.GetBodyColorNeutral(playerType);
+        sr_aura.color = playerColor;
+        sr_body.color = playerColor;
+        
         sr_aura.enabled = !wasEverEaten;
-        myCollider.enabled = !wasEverEaten;
+        
+        if (isMyType) {
+            sr_body.enabled = !wasEverEaten;
+            myCollider.enabled = !wasEverEaten;
+        }
+        else {
+            myCollider.enabled = false;
+            sr_body.enabled = !wasEverEaten;
+            //sr_body.color = Color.Lerp(playerColor, new Color(0,0,0, 0.15f), 0.7f);
+            //sr_aura.color = new Color(0,0,0, 0.07f);
+            GameUtils.SetSpriteAlpha(sr_aura, 0.1f);
+            GameUtils.SetSpriteAlpha(sr_body, 0.3f);
+        }
     }
 
 
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
+    private void OnPlayerInit(Player player) {
+        UpdatePresence();
+    }
     override public void GetEaten() {
         base.GetEaten();
         // Save the value!
@@ -77,7 +118,8 @@ public class Snack : Edible {
     // ----------------------------------------------------------------
     override public PropData SerializeAsData() {
         SnackData data = new SnackData {
-            pos = pos
+            pos = pos,
+            playerType = playerType.ToString(),
         };
         return data;
     }

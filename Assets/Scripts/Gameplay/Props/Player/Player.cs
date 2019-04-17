@@ -131,6 +131,9 @@ abstract public class Player : PlatformCharacter {
 		camBoundsLocal = myLevel.GetCameraBoundsLocal();
 		camBoundsLocal.size += new Vector2(boundsBloat,boundsBloat)*2f;
 		camBoundsLocal.position -= new Vector2(boundsBloat,boundsBloat);
+        
+        // Dispatch event!
+        GameManagers.Instance.EventManager.OnPlayerInit(this);
     }
 
  //   override protected void SetSize(Vector2 _size) {

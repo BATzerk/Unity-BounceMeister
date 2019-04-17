@@ -17,6 +17,7 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
 	public int WorldIndex { get { return LevelDataRef.WorldIndex; } }
 	public string LevelKey { get { return LevelDataRef.LevelKey; } }
 	public Vector2 PosGlobal { get { return LevelDataRef.PosGlobal; } }
+    public Player Player { get { return gameControllerRef.Player; } }
 //	public Vector2 PosWorld { get { return levelDataRef.PosWorld; } }
 	public GateChannel[] GateChannels { get { return gateChannels; } }
 	public Rect GetCameraBoundsLocal() {

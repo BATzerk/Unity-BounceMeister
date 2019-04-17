@@ -16,10 +16,10 @@ abstract public class PlayerBody : MonoBehaviour {
 
     static public Color GetBodyColorNeutral(PlayerTypes playerType) {
         switch (playerType) {
-            case PlayerTypes.Flatline: return new ColorHSB(170/360f, 0.67f, 0.87f).ToColor();
+            case PlayerTypes.Flatline: return new ColorHSB(160/360f, 0.67f, 0.87f).ToColor();
             case PlayerTypes.Jetta: return new ColorHSB(290/360f, 0.7f, 0.7f).ToColor();
             case PlayerTypes.Plunga: return new Color255(25, 175, 181).ToColor();
-            case PlayerTypes.Slippa: return new Color255(185, 125, 25).ToColor();
+            case PlayerTypes.Slippa: return new Color255(220, 160, 40).ToColor();
             default: Debug.LogWarning("PlayerBody color not defined: " + playerType + "."); return Color.magenta; // Oops.
         }
     }

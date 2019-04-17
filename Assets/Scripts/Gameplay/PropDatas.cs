@@ -101,6 +101,7 @@ public class ProgressGateData : BaseGroundData {
 }
 
 public class SnackData : PropData {
+    public string playerType="Plunga";
 }
 
 public class SpikesData : PropData {

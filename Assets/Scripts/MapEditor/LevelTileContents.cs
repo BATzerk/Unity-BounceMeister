@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class LevelTileContents : MonoBehaviour {
 	// Constants
-	static private readonly Vector2 GemIconSize = new Vector2(2,2);
+    static private readonly Vector2 GemIconSize = new Vector2(3,3);
+    static private readonly Vector2 SnackIconSize = new Vector2(5,5);
 	// Components
 	[SerializeField] private GameObject go_openings=null; // level-openings sprites.
 	[SerializeField] private GameObject go_props=null;
@@ -80,7 +81,8 @@ public class LevelTileContents : MonoBehaviour {
             // -- Snacks --
             else if (propData.GetType() == typeof(SnackData)) {
                 SnackData pd = propData as SnackData;
-                AddSpriteRenderer("Snack",s_snack, go_props, pd.pos, GemIconSize, 10, Color.white);
+                Color color = PlayerBody.GetBodyColorNeutral(PlayerTypeHelper.TypeFromString(pd.playerType));
+                AddSpriteRenderer("Snack",s_snack, go_props, pd.pos, SnackIconSize, 10, color);
             }
 			// -- Spikes --
 			else if (propData.GetType() == typeof(SpikesData)) {

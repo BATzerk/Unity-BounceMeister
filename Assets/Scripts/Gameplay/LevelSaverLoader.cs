@@ -103,7 +103,7 @@ static public class LevelSaverLoader {
             else if (type == typeof(LevelDoorData)) { AddAllPropFieldsToFS(propData, "pos", "myID", "worldToIndex", "levelToKey", "levelToDoorID"); }
             else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
 			else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
-            else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos"); }
+            else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos", "playerType"); }
 			else if (type == typeof(SpikesData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation"); }
 			// Props with optional params
 			else if (type == typeof(CrateData)) {
