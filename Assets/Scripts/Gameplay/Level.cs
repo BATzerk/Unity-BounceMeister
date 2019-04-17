@@ -232,8 +232,8 @@ public class Level : MonoBehaviour, ISerializableData<LevelData> {
         if (LevelKey == "IntroPlunge") {
             AddDecor("InstructsPlunge", new Vector2(0, 11));
         }
-        else if (LevelKey == "IntroFlatlineSuspension") {
-            AddDecor("InstructsFlatlineSuspension", new Vector2(0, 11));
+        else if (LevelKey == "IntroHover") {
+            AddDecor("InstructsHover", new Vector2(0, 11));
         }
     }
     private void AddDecor(string prefabName, Vector2 _pos) {

@@ -17,10 +17,11 @@ Spikes myRect:(x:-13.50, y:-7.50, width:1.00, height:1.00);rotation:90
 Spikes myRect:(x:0.50, y:-6.50, width:27.00, height:1.00);rotation:0
 Spikes myRect:(x:-6.50, y:-1.50, width:25.00, height:1.00);rotation:0
 Spikes myRect:(x:-4.50, y:3.50, width:17.00, height:1.00);rotation:0
-Ground myRect:(x:9.50, y:3.00, width:11.00, height:2.00);canEatGems:False
+Ground myRect:(x:9.50, y:3.00, width:11.00, height:2.00);canEatGems:False;isPlayerRespawn:True
 Ground myRect:(x:23.00, y:5.00, width:6.00, height:26.00)
 Snack pos:(10.5, 6.0)
 Ground myRect:(x:24.00, y:-13.50, width:4.00, height:1.00)
 Ground myRect:(x:19.50, y:-17.00, width:13.00, height:6.00)
 Platform myRect:(x:10.00, y:-17.50, width:6.00, height:1.00)
 Platform myRect:(x:10.00, y:-14.50, width:6.00, height:1.00)
+

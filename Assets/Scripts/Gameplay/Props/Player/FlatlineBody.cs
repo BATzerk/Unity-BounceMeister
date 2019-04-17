@@ -51,12 +51,16 @@ public class FlatlineBody : PlayerBody {
         SetEyes(EyeTypes.Squint);
     }
     public void OnStopHover() {
-        sr_highlight.enabled = false;
         if (myFlatline.HoverTimeLeft > 0) { // Not out of hover-time? Open my eyes.
             SetEyes(EyeTypes.Normal);
+            sr_highlight.enabled = false;
+        }
+        else {
+            GameUtils.SetSpriteColorWithCompoundAlpha(sr_highlight, c_hoverlightEnding, 0.6f);
         }
     }
     public void OnRechargeHover() {
+        sr_highlight.enabled = false;
         SetEyes(EyeTypes.Normal);
     }
 

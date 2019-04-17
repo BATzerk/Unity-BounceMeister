@@ -9,5 +9,7 @@ Ground myRect:(x:17.00, y:-11.50, width:14.00, height:7.00);canEatGems:False
 Spikes myRect:(x:6.50, y:-6.50, width:11.00, height:1.00);rotation:0
 Ground myRect:(x:-18.00, y:7.50, width:16.00, height:29.00)
 Ground myRect:(x:21.50, y:8.00, width:3.00, height:26.00)
-Spikes myRect:(x:-9.50, y:-1.50, width:11.00, height:1.00);rotation:270
+Spikes myRect:(x:-9.50, y:4.50, width:23.00, height:1.00);rotation:270
 Snack pos:(20.5, -6.5)
+Spikes myRect:(x:19.50, y:5.50, width:21.00, height:1.00);rotation:90
+
