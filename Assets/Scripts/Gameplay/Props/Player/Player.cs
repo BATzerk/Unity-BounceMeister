@@ -205,10 +205,6 @@ abstract public class Player : PlatformCharacter {
 		DetectJumpApex();
 		UpdateMaxYSinceGround();
 		UpdateIsPreservingWallKickVel();
-		// TEST auto-plunge
-//		if (!feetOnGround() && !isPlunging && vel.y<-0.5f) {
-//			StartBouncing();
-//		}
 
 		// Update vel to be the distance we ended up moving this frame.
 		SetVel(pos - ppos);
@@ -354,18 +350,9 @@ abstract public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	//  Events (Physics)
 	// ----------------------------------------------------------------
-    private bool IsMovingAwayFromCollider(int side) {
-        switch (side) {
-            case Sides.L: return vel.x >  0.01f;
-            case Sides.R: return vel.x < -0.01f;
-            case Sides.B: return vel.y >  0.01f;
-            case Sides.T: return vel.y < -0.01f;
-            default: return false; // Hmm.
-        }
-    }
 	override public void OnWhiskersTouchCollider(int side, Collider2D col) {
         // We're moving AWAY from this collider? Ignore the collision! (This prevents whiskers-touching-2-things issues, like recharging plunge or cancelling preserving wall-kick vel.) Note: We can possibly bring this check all the way up to Whiskers for consistency.
-        if (IsMovingAwayFromCollider(side)) {
+        if (IsMovingAwayFromSide(side)) {
             return;
         }
         
@@ -445,7 +432,6 @@ abstract public class Player : PlatformCharacter {
 		}
 	}
     private void OnHeadTouchCollidable(Collidable collidable) {
-    
     }
 	virtual protected void OnArmTouchCollidable(int side, Collidable collidable) {
         // Delayed wall-kick? Do it right away!

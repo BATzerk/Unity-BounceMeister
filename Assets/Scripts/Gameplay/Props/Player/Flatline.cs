@@ -123,7 +123,10 @@ public class Flatline : Player {
         }
     }
     private void ConvertVertVelToHorz(int dir) {
-        vel = new Vector2(Mathf.Abs(ppvel.y)*dir, 0);
+        float vertSpeed = Mathf.Abs(ppvel.y);
+        if (vertSpeed > 0.1f) { // Add small threshold check, so we can get close into a corner if we want to.
+            vel = new Vector2(vertSpeed*dir, 0);
+        }
     }
     protected override void OnFeetLeaveCollidable(Collidable collidable) {
         base.OnFeetLeaveCollidable(collidable);

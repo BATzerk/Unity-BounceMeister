@@ -231,12 +231,15 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
         }
 		surfaceDists[side,index] = dist;
 		collidersAroundMe[side,index] = h.collider;
-		// If we're (just about) touching this collider...!
-		if (dist <= TouchDistThreshold) {
-			if (h.collider != null && !collidersTouching[side].Contains(h.collider)) {
-				collidersTouching[side].Add(h.collider);
-			}
-		}
+        // If we're NOT moving away from this side...! (This prevents registering any contact when passing up thru a Platform.)
+        if (!myCharacter.IsMovingAwayFromSide(side)) {
+            // If we're (just about) touching this collider...!
+    		if (dist <= TouchDistThreshold) {
+    			if (h.collider != null && !collidersTouching[side].Contains(h.collider)) {
+    				collidersTouching[side].Add(h.collider);
+    			}
+    		}
+        }
 //		// Is the collider for this raycast DIFFERENT?? Tell my character we've touched/left surfaces!!
 //		if (pCollider != hit.collider) {
 //			if (pCollider != null) {

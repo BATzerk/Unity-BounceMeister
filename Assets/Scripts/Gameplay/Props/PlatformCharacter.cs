@@ -73,6 +73,15 @@ public class PlatformCharacter : Collidable {
 		default: Debug.LogError("Side not recognized: " + side); return 0;
 		}
 	}
+    public bool IsMovingAwayFromSide(int side) {
+        switch (side) {
+            case Sides.L: return vel.x >  0.01f;
+            case Sides.R: return vel.x < -0.01f;
+            case Sides.B: return vel.y >  0.01f;
+            case Sides.T: return vel.y < -0.01f;
+            default: return false; // Hmm.
+        }
+    }
 
     // Setters
     public void SetVel(Vector2 _vel) {
