@@ -1,4 +1,4 @@
-﻿roomProperties posGlobal:(372.0, 98.0);designerFlag:2
+roomProperties posGlobal:(208.0, 352.0);designerFlag:2
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
 Ground myRect:(x:22.50, y:6.50, width:7.00, height:19.00)
@@ -19,4 +19,3 @@ Spikes myRect:(x:-12.50, y:14.50, width:23.00, height:1.00);rotation:180
 Ground myRect:(x:-12.50, y:16.00, width:23.00, height:2.00)
 CharBarrel pos:(-2.5, -13.0);otherCharName:Jetta
 Lift myRect:(x:4.00, y:-6.00, width:4.00, height:12.00);rotation:0;strength:0.08
-

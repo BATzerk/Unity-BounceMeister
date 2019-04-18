@@ -1,4 +1,4 @@
-﻿roomProperties posGlobal:(128.0, -110.0);designerFlag:4
+roomProperties posGlobal:(174.0, 52.0);designerFlag:4;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:16.00, y:17.00, width:2.00, height:6.00)
 Ground myRect:(x:24.00, y:14.00, width:4.00, height:12.00)

@@ -1,4 +1,4 @@
-﻿roomProperties posGlobal:(242.0, 208.0);designerFlag:4
+roomProperties posGlobal:(436.0, 284.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 ToggleGround myRect:(x:-13.00, y:-13.50, width:6.00, height:1.00);startsOn:True;mayPlayerEat:False
 ToggleGround myRect:(x:-8.50, y:1.50, width:1.00, height:1.00);startsOn:False;mayPlayerEat:False
@@ -14,4 +14,3 @@ Ground myRect:(x:-1.50, y:-18.00, width:55.00, height:4.00);colorType:1
 Ground myRect:(x:19.50, y:-9.50, width:13.00, height:15.00);colorType:1
 Gem pos:(-13.0, -10.5);type:0
 Battery pos:(-12.5, 3.5)
-

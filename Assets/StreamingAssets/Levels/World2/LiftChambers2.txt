@@ -1,4 +1,4 @@
-﻿roomProperties posGlobal:(130.0, 38.0);designerFlag:3
+roomProperties posGlobal:(176.0, 200.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:24.00, y:-16.50, width:4.00, height:7.00)
 Ground myRect:(x:-21.50, y:6.00, width:9.00, height:28.00)
@@ -19,4 +19,3 @@ Spikes myRect:(x:-12.50, y:7.00, width:18.00, height:1.00);rotation:270
 Spikes myRect:(x:-3.50, y:2.00, width:16.00, height:1.00);rotation:90
 Spikes myRect:(x:12.50, y:7.00, width:18.00, height:1.00);rotation:90
 Spikes myRect:(x:8.00, y:8.50, width:10.00, height:1.00);rotation:180
-

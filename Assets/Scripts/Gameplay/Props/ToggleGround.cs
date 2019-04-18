@@ -7,7 +7,7 @@ public sealed class ToggleGround : BaseGround {
     private TogGroundBehavior_Base togBehavior; // added in Initialize!
 	// Properties
 	[SerializeField] private bool startsOn=false;
-    [SerializeField] private bool togFromPlunge;
+    [SerializeField] private bool togFromAction;
     [SerializeField] private bool togFromContact;
 	private bool isOn;
     private bool isPlayerInMe=false;
@@ -30,12 +30,12 @@ public sealed class ToggleGround : BaseGround {
 		base.BaseGroundInitialize(_myRoom, data);
 
 		startsOn = data.startsOn;
-        togFromPlunge = data.togFromPlunge;
+        togFromAction = data.togFromAction;
         togFromContact = data.togFromContact;
         if (togFromContact) {
             togBehavior = gameObject.AddComponent<TogGroundBehavior_Contact>();
         }
-        else if (togFromPlunge) {
+        else if (togFromAction) {
             togBehavior = gameObject.AddComponent<TogGroundBehavior_Plunge>();
         }
         else {
@@ -109,7 +109,7 @@ public sealed class ToggleGround : BaseGround {
         data.isPlayerRespawn = IsPlayerRespawn;
         data.startsOn = startsOn;
         data.togFromContact = togFromContact;//togBehavior is TogGroundBehavior_Contact;
-        data.togFromPlunge = togFromPlunge;//togBehavior is TogGroundBehavior_Plunge;
+        data.togFromAction = togFromAction;//togBehavior is TogGroundBehavior_Plunge;
 		return data;
 	}
 

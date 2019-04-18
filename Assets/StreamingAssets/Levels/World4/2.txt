@@ -1,4 +1,4 @@
-﻿roomProperties posGlobal:(372.0, 136.0);designerFlag:2
+roomProperties posGlobal:(208.0, 390.0);designerFlag:2
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:-14.50, y:18.00, width:23.00, height:4.00)
 Ground myRect:(x:22.50, y:3.00, width:7.00, height:26.00)
@@ -13,4 +13,3 @@ Gate myRect:(x:21.00, y:-13.00, width:4.00, height:6.00);channelID:0
 GateButton pos:(15.5, 6.5);channelID:0
 CharBarrel pos:(5.0, -13.5);otherCharName:Slippa
 Ground myRect:(x:-4.00, y:14.50, width:2.00, height:11.00)
-

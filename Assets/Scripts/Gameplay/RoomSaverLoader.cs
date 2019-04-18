@@ -158,7 +158,7 @@ static public class RoomSaverLoader {
             }
 			else if (type == typeof(ToggleGroundData)) {
 				ToggleGroundData d = propData as ToggleGroundData;
-				AddSomePropFieldsToFS(propData, "myRect", "startsOn", "togFromContact", "togFromPlunge");
+				AddSomePropFieldsToFS(propData, "myRect", "startsOn", "togFromContact", "togFromAction");
 				if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 AddFSLine();
