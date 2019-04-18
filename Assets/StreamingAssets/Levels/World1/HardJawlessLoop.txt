@@ -1,4 +1,4 @@
-﻿roomProperties posGlobal:(1058.0, 500.0);designerFlag:3
+roomProperties posGlobal:(1264.0, 478.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Gem pos:(20.0, 6.0)
 Ground myRect:(x:15.50, y:9.50, width:5.00, height:3.00);mayPlayerEat:False

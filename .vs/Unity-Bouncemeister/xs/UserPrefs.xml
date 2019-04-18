@@ -1,23 +1,19 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/RoomClusterData.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/Flatline.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="17" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="9" Column="44" />
-      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="242" Column="33" />
-      <File FileName="Assets/Scripts/Gameplay/RoomClusterData.cs" Line="31" Column="13" />
-      <File FileName="Assets/Scripts/Managers/DataManager.cs" Line="82" Column="22" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Snack.cs" Line="93" Column="42" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="323" Column="20" />
+      <File FileName="Assets/Scripts/Gameplay/RoomData.cs" Line="30" Column="110" />
       <File FileName="Assets/Scripts/Gameplay/UI/MiniMap.cs" Line="40" Column="97" />
-      <File FileName="Assets/Scripts/Gameplay/UI/MiniMapRoomTile.cs" Line="75" Column="72" />
-      <File FileName="Assets/Scripts/Gameplay/RoomData.cs" Line="73" Column="17" />
+      <File FileName="Assets/Scripts/Gameplay/UI/MiniMapRoomTile.cs" Line="32" Column="6" />
+      <File FileName="Assets/Scripts/MapEditor/RoomTileContents.cs" Line="42" Column="63" />
+      <File FileName="Assets/Scripts/MapEditor/RoomTile.cs" Line="52" Column="62" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="78" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/bretttaylor/Documents/GitHub/Unity-Bouncemeister/Assets/Scripts/Gameplay/UI/MiniMapRoomTile.cs" relfile="Assets/Scripts/Gameplay/UI/MiniMapRoomTile.cs" line="82" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />

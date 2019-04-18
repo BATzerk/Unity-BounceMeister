@@ -323,7 +323,9 @@ public class GameController : MonoBehaviour {
         // Save it!
         RoomSaverLoader.SaveRoomFile(room);
         // Update properties that may have changed.
-        room.MyClusterData.UpdateEdiblesCounts();
+        if (room.MyClusterData != null) {
+            room.MyClusterData.UpdateEdiblesCounts();
+        }
         // Update total edibles counts!
         dm.RefreshTotalEdiblesEaten();
     }

@@ -1,4 +1,4 @@
-﻿roomProperties posGlobal:(-438.0, 64.0);designerFlag:3
+roomProperties posGlobal:(-242.0, 254.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Spikes myRect:(x:-2.00, y:6.50, width:4.00, height:1.00);rotation:0
 Snack pos:(-2.0, 13.0)

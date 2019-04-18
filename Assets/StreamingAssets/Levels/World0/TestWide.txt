@@ -1,0 +1,9 @@
+roomProperties posGlobal:(26.0, -84.0);designerFlag:0;isClustStart:True
+CameraBounds myRect:(x:-26.00, y:-19.00, width:81.00, height:38.00)
+PlayerStart pos:(-16.8, -9.1)
+Ground myRect:(x:14.50, y:-15.00, width:81.00, height:10.00)
+Ground myRect:(x:14.50, y:18.50, width:81.00, height:3.00)
+Ground myRect:(x:50.00, y:2.00, width:10.00, height:36.00)
+Snack pos:(-13.5, -7.0);playerType:Plunga
+RoomDoor pos:(-17.0, -9.0);myID:0;worldToIndex:0;roomToKey:NewRoom0;roomToDoorID:0
+Ground myRect:(x:-22.50, y:2.00, width:7.00, height:36.00)

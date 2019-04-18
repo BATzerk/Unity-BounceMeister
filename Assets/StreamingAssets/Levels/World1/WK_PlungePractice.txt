@@ -1,18 +1,18 @@
-﻿roomProperties posGlobal:(24.0, -26.0);designerFlag:3
+roomProperties posGlobal:(328.0, 204.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:-12.00, y:11.00, width:2.00, height:12.00)
 Ground myRect:(x:-3.50, y:-1.50, width:5.00, height:1.00)
 Ground myRect:(x:-0.50, y:17.50, width:53.00, height:5.00)
 Ground myRect:(x:-21.50, y:1.50, width:9.00, height:17.00);isPlayerRespawn:True
-Ground myRect:(x:23.50, y:4.50, width:5.00, height:23.00)
+Ground myRect:(x:23.50, y:5.00, width:5.00, height:22.00)
 Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
 Ground myRect:(x:-15.00, y:-16.50, width:22.00, height:7.00)
 Ground myRect:(x:15.50, y:-16.00, width:21.00, height:8.00)
 Ground myRect:(x:4.50, y:1.00, width:21.00, height:4.00)
-Ground myRect:(x:14.00, y:-2.00, width:4.00, height:10.00)
+Ground myRect:(x:14.00, y:-1.50, width:4.00, height:9.00)
 Ground myRect:(x:6.50, y:4.00, width:5.00, height:4.00)
 Ground myRect:(x:6.50, y:16.00, width:5.00, height:4.00)
-Ground myRect:(x:-4.50, y:2.50, width:5.00, height:1.00)
+Ground myRect:(x:-4.50, y:2.00, width:5.00, height:2.00)
 Platform myRect:(x:-15.00, y:9.50, width:4.00, height:1.00);isPlayerRespawn:True
 PlayerStart pos:(-9.8, -11.9)
 Spikes myRect:(x:5.50, y:-1.50, width:13.00, height:1.00);rotation:180
