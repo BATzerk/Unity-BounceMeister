@@ -14,10 +14,10 @@ Spikes myRect:(x:13.00, y:10.50, width:22.00, height:1.00);rotation:180
 Spikes myRect:(x:14.50, y:-7.50, width:15.00, height:1.00);rotation:90
 Spikes myRect:(x:4.50, y:-7.50, width:29.00, height:1.00);rotation:0
 PlayerStart pos:(-14.2, 0.4)
-Ground myRect:(x:-3.50, y:2.50, width:1.00, height:1.00);canEatGems:False
-Ground myRect:(x:9.50, y:4.50, width:1.00, height:1.00);canEatGems:False
-Ground myRect:(x:3.00, y:0.00, width:4.00, height:4.00);canEatGems:False
-Ground myRect:(x:20.00, y:1.00, width:12.00, height:4.00);canEatGems:False
+Ground myRect:(x:-3.50, y:2.50, width:1.00, height:1.00);mayPlayerEat:False
+Ground myRect:(x:9.50, y:4.50, width:1.00, height:1.00);mayPlayerEat:False
+Ground myRect:(x:3.00, y:0.00, width:4.00, height:4.00);mayPlayerEat:False
+Ground myRect:(x:20.00, y:1.00, width:12.00, height:4.00);mayPlayerEat:False
 Ground myRect:(x:-19.50, y:13.50, width:15.00, height:13.00)
 Ground myRect:(x:0.00, y:-14.50, width:52.00, height:13.00)
 Ground myRect:(x:4.50, y:15.50, width:43.00, height:9.00)
@@ -25,5 +25,5 @@ Ground myRect:(x:24.50, y:0.00, width:3.00, height:26.00)
 Ground myRect:(x:-12.50, y:-2.00, width:9.00, height:2.00)
 Ground myRect:(x:-17.50, y:-12.00, width:17.00, height:20.00)
 Ground myRect:(x:-7.50, y:11.50, width:19.00, height:3.00)
-Ground myRect:(x:20.50, y:-10.00, width:11.00, height:22.00);canEatGems:False
+Ground myRect:(x:20.50, y:-10.00, width:11.00, height:22.00);mayPlayerEat:False
 Gem pos:(20.5, 5.0);type:1

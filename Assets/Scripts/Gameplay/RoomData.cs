@@ -10,28 +10,26 @@ public class RoomData {
 	public CameraBoundsData cameraBoundsData;
 	public List<PropData> allPropDatas;
 	// Properties
-	private bool hasPlayerBeenHere; // false until the player enters me for the first time!
-	//public bool isConnectedToStart; // true if I'm connected to the starting room of this world. Used to determine to render me on zooming the camera out.
+    public bool HasPlayerBeenHere { get; private set; } // false until the player enters me for the first time!
     public bool isClustStart;// { get; private set; }
-	public string roomKey; // everything we use to reference this room! Including the room's file name (minus the .txt suffix).
+    public string roomKey; // everything we use to reference this room! Including the room's file name (minus the .txt suffix).
 	public int designerFlag; // for the room designer! We can flag any room to be like "testing" or "good" or etc.
     public int ClusterIndex=-1;
     public int NumSnacksCollected { get; private set; }
     public int NumSnacksTotal { get; private set; }
 	public bool WasUsedInSearchAlgorithm { get; set; }
 	public Vector2 posGlobal; // my position, global to ALL worlds! These values get big (up to around 70,000)!
-    public List<RoomNeighborData> Neighbors; // EXACTLY like Openings, except contains refs to other rooms (which can totally be null if there's no room at an opening)!
+    public List<RoomNeighborData> Neighbors; // EXACTLY like Openings, except contains refs to other rooms (which *can be null* if there's no room at an opening)!
     public List<RoomOpening> Openings { get; private set; } // JUST the openings. These can be saved.
-	// Getters
-    public bool HasPlayerBeenHere { get { return hasPlayerBeenHere; } }
-	public string RoomKey { get { return roomKey; } }
+    // Getters
+    public string RoomKey { get { return roomKey; } }
 	public int DesignerFlag { get { return designerFlag; } }
-	public int WorldIndex { get { return WorldDataRef.WorldIndex; } }
+	public int WorldIndex { get { return MyWorldData.WorldIndex; } }
 	public Rect BoundsLocal { get { return new Rect(cameraBoundsData.myRect); } } // Currently, the camera bounds and room bounds are one in the same.
 	public Rect BoundsGlobal { get { return new Rect(cameraBoundsData.myRect.center+posGlobal, cameraBoundsData.myRect.size); } }
 	public Vector2 PosGlobal { get { return posGlobal; } }
 //	public Rect BoundsLocal { get { return boundsLocal; } }
-	public WorldData WorldDataRef { get; private set; }
+	public WorldData MyWorldData { get; private set; }
     public bool IsInCluster { get { return ClusterIndex != -1; } }
     ///// Returns the closest PlayerStart to the provided pos.
     //public Vector2 ClosestPlayerStartPos(Vector2 playerPos) {
@@ -99,10 +97,10 @@ public class RoomData {
 	// ================================================================
 	//  Initialize
 	// ================================================================
-	public RoomData(WorldData _worldDataRef, string _key) { //, Vector2 defaultAbsolutePos) {
-		WorldDataRef = _worldDataRef;
+	public RoomData(WorldData _worldData, string _key) { //, Vector2 defaultAbsolutePos) {
+		MyWorldData = _worldData;
 		roomKey = _key;
-        hasPlayerBeenHere = SaveStorage.GetBool(SaveKeys.HasPlayerBeenInRoom(this), false);
+        HasPlayerBeenHere = SaveStorage.GetBool(SaveKeys.HasPlayerBeenInRoom(this), false);
         
 		// Initialize all my PropData lists.
 		ClearAllPropDataLists ();
@@ -116,8 +114,8 @@ public class RoomData {
     public void OnPlayerEnterMe() {
         // First time in room?? Update hasPlayerBeenHere!!
         if (!HasPlayerBeenHere) {
-            hasPlayerBeenHere = true;
-            SaveStorage.SetBool(SaveKeys.HasPlayerBeenInRoom(this), hasPlayerBeenHere);
+            HasPlayerBeenHere = true;
+            SaveStorage.SetBool(SaveKeys.HasPlayerBeenInRoom(this), HasPlayerBeenHere);
         }
     }
     
@@ -219,7 +217,7 @@ public class RoomData {
         Neighbors = new List<RoomNeighborData>();
         // Add a neighbor for EVERY opening! Even ones that DON'T lead anywhere. That way we know where we have null neighbors.
         for (int i=0; i<Openings.Count; i++) {
-            RoomData otherLD = WorldDataRef.GetRoomNeighbor(this, Openings[i]);
+            RoomData otherLD = MyWorldData.GetRoomNeighbor(this, Openings[i]);
             Neighbors.Add(new RoomNeighborData(otherLD, Openings[i]));
         }
     }

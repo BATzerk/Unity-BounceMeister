@@ -1,7 +1,7 @@
 ﻿roomProperties posGlobal:(462.0, 174.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Gem pos:(0.0, 15.5)
-Ground myRect:(x:0.00, y:6.00, width:4.00, height:12.00);colorType:0;canEatGems:False
+Ground myRect:(x:0.00, y:6.00, width:4.00, height:12.00);colorType:0;mayPlayerEat:False
 Ground myRect:(x:19.00, y:9.00, width:14.00, height:22.00);colorType:0
 Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00);colorType:0
 Ground myRect:(x:-19.00, y:9.50, width:14.00, height:23.00);colorType:0

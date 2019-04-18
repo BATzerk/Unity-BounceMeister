@@ -1,8 +1,8 @@
 ﻿roomProperties posGlobal:(242.0, 208.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-ToggleGround myRect:(x:-13.00, y:-13.50, width:6.00, height:1.00);startsOn:True;canEatGems:False
-ToggleGround myRect:(x:-8.50, y:1.50, width:1.00, height:1.00);startsOn:False;canEatGems:False
-ToggleGround myRect:(x:1.00, y:1.50, width:2.00, height:1.00);startsOn:False;canEatGems:False
+ToggleGround myRect:(x:-13.00, y:-13.50, width:6.00, height:1.00);startsOn:True;mayPlayerEat:False
+ToggleGround myRect:(x:-8.50, y:1.50, width:1.00, height:1.00);startsOn:False;mayPlayerEat:False
+ToggleGround myRect:(x:1.00, y:1.50, width:2.00, height:1.00);startsOn:False;mayPlayerEat:False
 Spikes myRect:(x:0.00, y:-15.50, width:52.00, height:1.00);rotation:0
 PlayerStart pos:(20.1, -0.4)
 Ground myRect:(x:24.50, y:8.00, width:3.00, height:20.00);colorType:1

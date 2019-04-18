@@ -2,7 +2,7 @@
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Gem pos:(16.5, 0.5)
 Ground myRect:(x:17.00, y:-2.50, width:10.00, height:1.00);colorType:0
-Ground myRect:(x:16.50, y:-2.00, width:3.00, height:2.00);colorType:0;canEatGems:False
+Ground myRect:(x:16.50, y:-2.00, width:3.00, height:2.00);colorType:0;mayPlayerEat:False
 Ground myRect:(x:-15.50, y:-5.50, width:1.00, height:1.00);colorType:0
 Ground myRect:(x:-14.50, y:15.50, width:5.00, height:3.00);colorType:0
 Ground myRect:(x:-17.50, y:-18.00, width:17.00, height:4.00);colorType:0

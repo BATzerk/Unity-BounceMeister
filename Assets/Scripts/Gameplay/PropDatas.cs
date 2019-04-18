@@ -33,7 +33,7 @@ public class GemData : PropData {
 
 public class BaseGroundData : PropData {
 	public Rect myRect;
-	public bool canEatGems=true;
+	public bool mayPlayerEat=true;
     public bool isPlayerRespawn=false;
     public Rect MyRectTLAligned() {
         return new Rect(myRect.position-myRect.size*0.5f, myRect.size);

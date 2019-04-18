@@ -1,9 +1,9 @@
 ﻿roomProperties posGlobal:(-8.0, 28.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-ToggleGround myRect:(x:-2.00, y:-8.50, width:6.00, height:1.00);startsOn:False;canEatGems:False
-ToggleGround myRect:(x:5.00, y:-8.50, width:6.00, height:1.00);startsOn:True;canEatGems:False
-ToggleGround myRect:(x:-2.00, y:3.50, width:6.00, height:1.00);startsOn:True;canEatGems:False
-ToggleGround myRect:(x:5.00, y:-2.50, width:6.00, height:1.00);startsOn:False;canEatGems:False
+ToggleGround myRect:(x:-2.00, y:-8.50, width:6.00, height:1.00);startsOn:False;mayPlayerEat:False
+ToggleGround myRect:(x:5.00, y:-8.50, width:6.00, height:1.00);startsOn:True;mayPlayerEat:False
+ToggleGround myRect:(x:-2.00, y:3.50, width:6.00, height:1.00);startsOn:True;mayPlayerEat:False
+ToggleGround myRect:(x:5.00, y:-2.50, width:6.00, height:1.00);startsOn:False;mayPlayerEat:False
 Spikes myRect:(x:6.50, y:-15.50, width:29.00, height:1.00);rotation:0
 PlayerStart pos:(-11.0, -4.2)
 Platform myRect:(x:-15.50, y:-17.50, width:5.00, height:1.00)

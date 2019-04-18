@@ -4,24 +4,20 @@ using UnityEngine;
 
 public class DataManager {
 	// Properties
-	private int coinsCollected; // the total value of all the coins we've collected!
     private List<WorldData> worldDatas;
-//  public int mostRecentlySavedRoom_worldIndex; // an nbd shortcut to highlight the most recently created room in the MapEditor.
-//  public string mostRecentlySavedRoom_roomKey; // an nbd shortcut to highlight the most recently created room in the MapEditor.
+    public int CoinsCollected { get; private set; } // NOTE: Not fully implemented.
+    //  public int mostRecentlySavedRoom_worldIndex; // an nbd shortcut to highlight the most recently created room in the MapEditor.
+    //  public string mostRecentlySavedRoom_roomKey; // an nbd shortcut to highlight the most recently created room in the MapEditor.
     public RoomData currRoomData = null; // TODO: Remove this. We don't need it (right?). if this is defined when GameController opens, we'll open THAT room!
     // Entering-Room Properties
     public string roomToDoorID = null; // defined when use a RoomDoor. When we enter a room, this is the door we'll start at!
-    //public int playerSideEnterNextRoom=-1; // pairs with playerPosGlobalOnExitRoom.
-    //public Vector2 playerPosGlobalOnExitRoom=Vector2Extensions.NaN; // The suuuuper simple way we know how to set the Player's pos on entering the next room.
     public Vector2 playerGroundedRespawnPos=Vector2Extensions.NaN; // I'll respawn at this pos. Set when we leave a Ground that has IsPlayerRespawn.
 
 	// ----------------------------------------------------------------
 	//  Getters
 	// ----------------------------------------------------------------
-    public WorldData CurrWorldData { get { return currRoomData==null ? null : currRoomData.WorldDataRef; } }
-	//public int currentWorldIndex { get { return currRoomData==null ? 0 : currRoomData.WorldIndex; } }
-	public int CoinsCollected { get { return coinsCollected; } }
-	public int NumWorldDatas { get { return worldDatas.Count; } }
+    public WorldData CurrWorldData { get { return currRoomData==null ? null : currRoomData.MyWorldData; } }
+    public int NumWorldDatas { get { return worldDatas.Count; } }
 	public RoomData GetRoomData(int worldIndex, string roomKey, bool doMakeOneIfItDoesntExist) {
 		return GetWorldData(worldIndex).GetRoomData(roomKey, doMakeOneIfItDoesntExist);
 	}
@@ -43,10 +39,10 @@ public class DataManager {
     //  Setters
     // ----------------------------------------------------------------
     public void ChangeCoinsCollected(int value) {
-		SetCoinsCollected (coinsCollected + value);
+		SetCoinsCollected (CoinsCollected + value);
 	}
 	public void SetCoinsCollected(int value) {
-		coinsCollected = value;
+		CoinsCollected = value;
 		// Dispatch event!
 		GameManagers.Instance.EventManager.OnCoinsCollectedChanged();
 	}
@@ -69,7 +65,7 @@ public class DataManager {
 	}
 
 	private void Reset () {
-		coinsCollected = 0;
+		CoinsCollected = 0;
 //		debug_doShowRoomTileDesignerFlags = SaveStorage.GetInt (SaveKeys.DEBUG_DO_SHOW_LEVEL_TILE_DESIGNER_FLAGS, 0) == 1;
 //		highestWorldEndEverReached = SaveStorage.GetInt (SaveKeys.HIGHEST_WORLD_END_EVER_REACHED);
 
@@ -97,7 +93,7 @@ public class DataManager {
         Debug.Log ("All SaveStorage CLEARED!");
     }
 
-    public void ClearRoomSaveData(Room room) { ClearRoomSaveData(room.RoomDataRef); }
+    public void ClearRoomSaveData(Room room) { ClearRoomSaveData(room.MyRoomData); }
     public void ClearRoomSaveData(RoomData rd) {
         SaveStorage.DeleteKey(SaveKeys.HasPlayerBeenInRoom(rd));
         for (int i=0; i<9; i++) { // Sloppy and inefficient!! But NBD for our purposes.
@@ -112,8 +108,6 @@ public class DataManager {
     public void ResetRoomEnterValues() {
         roomToDoorID = null;
         playerGroundedRespawnPos = Vector2Extensions.NaN;
-        //playerSideEnterNextRoom = -1;
-        //playerPosGlobalOnExitRoom = Vector2Extensions.NaN;
     }
 
 

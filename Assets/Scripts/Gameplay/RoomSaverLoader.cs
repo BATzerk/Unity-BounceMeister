@@ -109,14 +109,14 @@ static public class RoomSaverLoader {
 			else if (type == typeof(CrateData)) {
 				CrateData d = propData as CrateData;
 				AddSomePropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe");
-                if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 AddFSLine();
 			}
 			else if (type == typeof(DamageableGroundData)) {
 				DamageableGroundData d = propData as DamageableGroundData;
 				AddSomePropFieldsToFS(propData, "myRect", "doRegen");
-                if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 if (d.dieFromBounce) { fs += ";dieFromBounce:" + d.dieFromBounce; }
                 if (d.dieFromPlayerLeave) { fs += ";dieFromPlayerLeave:" + d.dieFromPlayerLeave; }
@@ -126,14 +126,14 @@ static public class RoomSaverLoader {
 			else if (type == typeof(GateData)) {
 				GateData d = propData as GateData;
 				AddSomePropFieldsToFS(propData, "myRect", "channelID");
-				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+				if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 AddFSLine();
 			}
 			else if (type == typeof(GroundData)) {
 				GroundData d = propData as GroundData;
 				AddSomePropFieldsToFS(propData, "myRect");
-                if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isBouncy) { fs += ";isBouncy:" + d.isBouncy; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 if (d.colorType!=0) { fs += ";colorType:" + d.colorType; }
@@ -144,7 +144,7 @@ static public class RoomSaverLoader {
             else if (type == typeof(PlatformData)) {
                 PlatformData d = propData as PlatformData;
                 AddSomePropFieldsToFS(propData, "myRect");
-                if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (!d.canDropThru) { fs += ";canDropThru:" + d.canDropThru; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 AddFSLine();
@@ -152,14 +152,14 @@ static public class RoomSaverLoader {
             else if (type == typeof(ProgressGateData)) {
                 ProgressGateData d = propData as ProgressGateData;
                 AddSomePropFieldsToFS(propData, "myRect", "numSnacksReq");
-                if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 AddFSLine();
             }
 			else if (type == typeof(ToggleGroundData)) {
 				ToggleGroundData d = propData as ToggleGroundData;
 				AddSomePropFieldsToFS(propData, "myRect", "startsOn", "togFromContact", "togFromPlunge");
-				if (!d.canEatGems) { fs += ";canEatGems:" + d.canEatGems; }
+				if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 AddFSLine();
 			}
@@ -189,7 +189,7 @@ static public class RoomSaverLoader {
 //		l.WorldDataRef.ResaveRoomLinksFile();
 
 		// We're done saving! Now that we've got the updated saved text file, reload the corresponding RoomData.
-		rd.WorldDataRef.ReloadRoomData (roomKey);
+		rd.MyWorldData.ReloadRoomData (roomKey);
 
 //		// Update who the most recently created room is!
 //		GameManagers.Instance.DataManager.mostRecentlySavedRoom_worldIndex = WorldIndex;
@@ -497,7 +497,7 @@ static public class RoomSaverLoader {
 	}
 
     
-    static public bool MayRenameRoomFile(Room room, string newName) { return MayRenameRoomFile(room.RoomDataRef, newName); }
+    static public bool MayRenameRoomFile(Room room, string newName) { return MayRenameRoomFile(room.MyRoomData, newName); }
     static public bool MayRenameRoomFile(RoomData rd, string newName) {
         if (string.IsNullOrEmpty(newName)) { return false; } // Empty name? Nah.
         if (rd.roomKey == newName) { return false; } // Same name? Nah.
@@ -506,7 +506,7 @@ static public class RoomSaverLoader {
         // Looks good!
         return true;
     }
-    static public void RenameRoomFile(Room room, string newName) { RenameRoomFile(room.RoomDataRef, newName); }
+    static public void RenameRoomFile(Room room, string newName) { RenameRoomFile(room.MyRoomData, newName); }
     static public void RenameRoomFile(RoomData rd, string newName) {
         string oldPath = FilePaths.RoomFileAddress(rd.WorldIndex, rd.RoomKey);
         string newPath = FilePaths.RoomFileAddress(rd.WorldIndex, newName);

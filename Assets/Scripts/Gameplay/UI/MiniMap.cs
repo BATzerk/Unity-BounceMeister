@@ -15,7 +15,7 @@ public class MiniMap : MonoBehaviour {
     private Room currRoom;
     
     // Getters (Private)
-    private RoomData currRoomData { get { return currRoom.RoomDataRef; } }
+    private RoomData currRoomData { get { return currRoom.MyRoomData; } }
     // Setters
     private Vector2 MapPos {
         get { return rt_tiles.anchoredPosition; }
@@ -53,7 +53,7 @@ public class MiniMap : MonoBehaviour {
         
         // TODO: Just do clusters?
         tiles = new Dictionary<string, MiniMapRoomTile>();
-        WorldData wd = currRoom.WorldDataRef;
+        WorldData wd = currRoom.MyWorldData;
         foreach (RoomData rd in wd.roomDatas.Values) {
             MiniMapRoomTile tile = Instantiate(ResourcesHandler.Instance.MiniMapRoomTile).GetComponent<MiniMapRoomTile>();
             tile.Initialize(rt_tiles, rd);

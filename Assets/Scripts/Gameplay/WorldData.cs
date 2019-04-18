@@ -400,22 +400,4 @@ public class WorldData {
 }
 
 
-/*
-    private void SetRoomsIsConnectedToStart() {
-        // Tell all of them they're NOT first.
-        foreach (RoomData rd in roomDatas.Values) { rd.isConnectedToStart = false; }
-        // Get the special ones that are.
-        RoomData startRoom = GetRoomData (GameProperties.GetFirstRoomName (worldIndex));
-        // Firsht off, if this start room doesn't exist, don't continue doing anything. This whole world is total anarchy.
-        if (startRoom != null) {
-            List<RoomData> roomsConnectedToStart = RoomUtils.GetRoomsConnectedToRoom (this, startRoom);
-            // Tell these rooms they're connected to the start dude!
-            startRoom.isConnectedToStart = true;
-            for (int i=0; i<roomsConnectedToStart.Count; i++) {
-                roomsConnectedToStart [i].isConnectedToStart = true;
-            }
-        }
-    }
-    */
-
 

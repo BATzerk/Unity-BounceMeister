@@ -1,7 +1,7 @@
 ﻿roomProperties posGlobal:(214.0, -352.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-DamageableGround myRect:(x:-4.00, y:-11.50, width:4.00, height:1.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
-DamageableGround myRect:(x:2.50, y:-4.50, width:1.00, height:11.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:-4.00, y:-11.50, width:4.00, height:1.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:2.50, y:-4.50, width:1.00, height:11.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
 Gem pos:(8.0, -7.5)
 Ground myRect:(x:-13.50, y:-2.50, width:1.00, height:7.00)
 Ground myRect:(x:-22.00, y:-6.00, width:8.00, height:20.00)
@@ -10,7 +10,7 @@ Ground myRect:(x:0.00, y:2.50, width:28.00, height:3.00)
 Ground myRect:(x:-14.00, y:-13.00, width:8.00, height:6.00)
 Ground myRect:(x:18.50, y:-6.50, width:15.00, height:21.00)
 Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
-Ground myRect:(x:8.00, y:-13.00, width:12.00, height:6.00);canEatGems:False
+Ground myRect:(x:8.00, y:-13.00, width:12.00, height:6.00);mayPlayerEat:False
 Ground myRect:(x:-7.00, y:0.00, width:12.00, height:4.00)
 PlayerStart pos:(-15.0, -8.8)
 Spikes myRect:(x:-5.00, y:0.50, width:14.00, height:1.00);rotation:180

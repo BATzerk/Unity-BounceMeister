@@ -13,7 +13,7 @@ Ground myRect:(x:12.50, y:-18.00, width:27.00, height:4.00)
 Ground myRect:(x:0.00, y:18.50, width:52.00, height:3.00)
 Ground myRect:(x:23.50, y:0.00, width:5.00, height:38.00)
 Ground myRect:(x:-22.50, y:5.00, width:7.00, height:26.00)
-Ground myRect:(x:0.00, y:-18.50, width:52.00, height:3.00);canEatGems:False
+Ground myRect:(x:0.00, y:-18.50, width:52.00, height:3.00);mayPlayerEat:False
 Ground myRect:(x:-12.00, y:-11.50, width:4.00, height:15.00)
 Ground myRect:(x:-11.50, y:-5.00, width:5.00, height:2.00)
 Gem pos:(-5.0, -15.5);type:1

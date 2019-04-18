@@ -1,17 +1,17 @@
 ﻿roomProperties posGlobal:(464.0, 216.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:20.00, y:-15.00, width:12.00, height:4.00);canEatGems:False
-Ground myRect:(x:14.50, y:19.00, width:23.00, height:2.00);canEatGems:False
+Ground myRect:(x:20.00, y:-15.00, width:12.00, height:4.00);mayPlayerEat:False
+Ground myRect:(x:14.50, y:19.00, width:23.00, height:2.00);mayPlayerEat:False
 Ground myRect:(x:16.00, y:9.00, width:20.00, height:2.00);isPlayerRespawn:True
-Ground myRect:(x:10.50, y:7.50, width:7.00, height:1.00);canEatGems:False
-Ground myRect:(x:1.00, y:12.00, width:4.00, height:10.00);canEatGems:False
-Ground myRect:(x:-6.50, y:-12.00, width:13.00, height:8.00);canEatGems:False
-Ground myRect:(x:-3.50, y:9.50, width:5.00, height:13.00);canEatGems:False
-Ground myRect:(x:-11.50, y:18.00, width:29.00, height:4.00);canEatGems:False
-Ground myRect:(x:20.00, y:-2.50, width:12.00, height:21.00);canEatGems:False
-Ground myRect:(x:-18.00, y:-7.00, width:16.00, height:24.00);canEatGems:False;isPlayerRespawn:True
+Ground myRect:(x:10.50, y:7.50, width:7.00, height:1.00);mayPlayerEat:False
+Ground myRect:(x:1.00, y:12.00, width:4.00, height:10.00);mayPlayerEat:False
+Ground myRect:(x:-6.50, y:-12.00, width:13.00, height:8.00);mayPlayerEat:False
+Ground myRect:(x:-3.50, y:9.50, width:5.00, height:13.00);mayPlayerEat:False
+Ground myRect:(x:-11.50, y:18.00, width:29.00, height:4.00);mayPlayerEat:False
+Ground myRect:(x:20.00, y:-2.50, width:12.00, height:21.00);mayPlayerEat:False
+Ground myRect:(x:-18.00, y:-7.00, width:16.00, height:24.00);mayPlayerEat:False;isPlayerRespawn:True
 Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
-Ground myRect:(x:11.00, y:-13.00, width:6.00, height:6.00);canEatGems:False
+Ground myRect:(x:11.00, y:-13.00, width:6.00, height:6.00);mayPlayerEat:False
 Lift myRect:(x:4.00, y:-6.00, width:2.00, height:16.00);rotation:0;strength:0.07
 Lift myRect:(x:-4.00, y:-2.00, width:8.00, height:2.00);rotation:0;strength:0.08
 PlayerStart pos:(10.2, 10.9)

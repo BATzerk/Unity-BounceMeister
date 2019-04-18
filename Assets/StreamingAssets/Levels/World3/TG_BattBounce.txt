@@ -4,7 +4,7 @@ Battery pos:(-4.0, 4.5)
 Battery pos:(4.0, 4.5)
 Gem pos:(-21.0, -0.5)
 Ground myRect:(x:23.00, y:10.50, width:6.00, height:19.00);colorType:1
-Ground myRect:(x:-22.50, y:-10.00, width:7.00, height:14.00);canEatGems:False;colorType:1
+Ground myRect:(x:-22.50, y:-10.00, width:7.00, height:14.00);mayPlayerEat:False;colorType:1
 Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00);colorType:1
 Ground myRect:(x:0.00, y:18.50, width:52.00, height:3.00);colorType:1
 Ground myRect:(x:22.00, y:-9.50, width:8.00, height:13.00);isPlayerRespawn:True;colorType:1

@@ -14,8 +14,8 @@ public class MiniMapRoomTile : MonoBehaviour {
     public RoomData MyRoomData { get; private set; }
     
     // Getters
-    private Color BackColor(RoomData currLD) {
-        bool isCurrRoom = MyRoomData == currLD;
+    private Color BackColor(RoomData currRD) {
+        bool isCurrRoom = MyRoomData == currRD;
         //bool areEdiblesLeft = MyRoomData.AreEdiblesLeft();
         bool hasPlayerBeenHere = MyRoomData.HasPlayerBeenHere;
         if (isCurrRoom) { return new Color255(215,202,62).ToColor(); }
@@ -75,13 +75,13 @@ public class MiniMapRoomTile : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
-    public void UpdateVisuals(RoomData currLD) {
+    public void UpdateVisuals(RoomData currRD) {
         // Not my cluster? Hide.
-        bool isMyCluster = currLD.ClusterIndex == MyRoomData.ClusterIndex;
+        bool isMyCluster = currRD.ClusterIndex == MyRoomData.ClusterIndex;
         if (isMyCluster) {
             this.gameObject.SetActive(true);
             // Back color.
-            i_back.color = BackColor(currLD);
+            i_back.color = BackColor(currRD);
             // Snack icon.
             i_snack.enabled = MyRoomData.NumSnacksTotal > 0 && MyRoomData.HasPlayerBeenHere;
             bool areSnacksLeft = MyRoomData.NumSnacksCollected < MyRoomData.NumSnacksTotal;

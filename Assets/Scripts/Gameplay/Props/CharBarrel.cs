@@ -35,7 +35,7 @@ public class CharBarrel : Prop {
         this.myIndex = myIndex;
 
         // Load what character's in me!
-        string savedCharType = SaveStorage.GetString(SaveKeys.CharBarrelTypeInMe(myRoom.RoomDataRef, myIndex), otherCharName);
+        string savedCharType = SaveStorage.GetString(SaveKeys.CharBarrelTypeInMe(myRoom.MyRoomData, myIndex), otherCharName);
         SetCharTypeInMe(PlayerTypeHelper.TypeFromString(savedCharType));
 	}
 
@@ -57,7 +57,7 @@ public class CharBarrel : Prop {
         myRoom.SwapPlayerType(playerNewType);
         // Set/save my type!
         SetCharTypeInMe(myNewType);
-        SaveStorage.SetString(SaveKeys.CharBarrelTypeInMe(myRoom.RoomDataRef, myIndex), myNewType.ToString());
+        SaveStorage.SetString(SaveKeys.CharBarrelTypeInMe(myRoom.MyRoomData, myIndex), myNewType.ToString());
         // Reset timeWhenCanSensePlayer!
         timeWhenCanSensePlayer = Time.time + 0.1f;
 	}

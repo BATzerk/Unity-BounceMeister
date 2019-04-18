@@ -1,11 +1,11 @@
 ﻿roomProperties posGlobal:(22.0, 518.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-DamageableGround myRect:(x:2.00, y:1.00, width:6.00, height:6.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
-DamageableGround myRect:(x:2.00, y:7.00, width:6.00, height:6.00);doRegen:True;canEatGems:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:2.00, y:1.00, width:6.00, height:6.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:2.00, y:7.00, width:6.00, height:6.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
 Ground myRect:(x:6.00, y:9.50, width:2.00, height:1.00)
 Ground myRect:(x:-23.00, y:2.00, width:6.00, height:36.00)
 Ground myRect:(x:-1.50, y:-9.50, width:37.00, height:15.00)
-Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00);canEatGems:False
+Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00);mayPlayerEat:False
 Ground myRect:(x:-13.50, y:15.00, width:25.00, height:10.00)
 Ground myRect:(x:16.00, y:-3.50, width:20.00, height:27.00)
 Ground myRect:(x:24.00, y:1.50, width:4.00, height:37.00)

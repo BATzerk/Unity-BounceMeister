@@ -182,7 +182,7 @@ public class DamageableGround : BaseGround {
     override public PropData SerializeAsData() {
         DamageableGroundData data = new DamageableGroundData {
             myRect = MyRect(),
-            canEatGems = CanEatEdibles,
+            mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
             doRegen = doRegen,
             dieFromBounce = dieFromBounce,

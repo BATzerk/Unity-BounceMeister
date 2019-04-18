@@ -10,15 +10,14 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
     private List<Snack> snacks=new List<Snack>();
     // References
     private GameController gameControllerRef;
-    public RoomData RoomDataRef { get; private set; }
+    public RoomData MyRoomData { get; private set; }
 
     // Getters (Public)
-    public WorldData WorldDataRef { get { return RoomDataRef.WorldDataRef; } }
-	public int WorldIndex { get { return RoomDataRef.WorldIndex; } }
-	public string RoomKey { get { return RoomDataRef.RoomKey; } }
-	public Vector2 PosGlobal { get { return RoomDataRef.PosGlobal; } }
+    public WorldData MyWorldData { get { return MyRoomData.MyWorldData; } }
+	public int WorldIndex { get { return MyRoomData.WorldIndex; } }
+	public string RoomKey { get { return MyRoomData.RoomKey; } }
+	public Vector2 PosGlobal { get { return MyRoomData.PosGlobal; } }
     public Player Player { get { return gameControllerRef.Player; } }
-//	public Vector2 PosWorld { get { return roomDataRef.PosWorld; } }
 	public GateChannel[] GateChannels { get { return gateChannels; } }
 	public Rect GetCameraBoundsLocal() {
 		CameraBounds cameraBounds = GetComponentInChildren<CameraBounds>();
@@ -46,13 +45,12 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 	//	Serialization
 	// ----------------------------------------------------------------
 	public RoomData SerializeAsData () {
-		RoomData rd = new RoomData(WorldDataRef, RoomKey);
+		RoomData rd = new RoomData(MyWorldData, RoomKey);
 
 		// -- General Properties --
 		rd.SetPosGlobal(PosGlobal);
-		rd.SetDesignerFlag(RoomDataRef.designerFlag);
+		rd.SetDesignerFlag(MyRoomData.designerFlag);
 		//rd.hasPlayerBeenHere = hasPlayerBeenHere;
-		//rd.isConnectedToStart = RoomDataRef.isConnectedToStart;
 
 		// -- Props --
         Prop[] allProps = FindObjectsOfType<Prop>();
@@ -74,10 +72,10 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 	// ----------------------------------------------------------------
 	//	Initialize
 	// ----------------------------------------------------------------
-	public void Initialize (GameController _gameControllerRef, Transform tf_world, RoomData _roomDataRef) {
+	public void Initialize (GameController _gameControllerRef, Transform tf_world, RoomData _roomData) {
 		gameControllerRef = _gameControllerRef;
-		RoomDataRef = _roomDataRef;
-		this.gameObject.name = RoomDataRef.RoomKey;
+		MyRoomData = _roomData;
+		this.gameObject.name = MyRoomData.RoomKey;
 
 		this.transform.SetParent (tf_world); // Parent me to my world!
 		this.transform.localScale = Vector3.one; // Make sure my scale is 1 from the very beginning.
@@ -88,7 +86,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 		for (int i=0; i<gateChannels.Length; i++) { gateChannels[i] = new GateChannel(this, i); }
 
 		// Instantiate my props!
-		RoomData rd = RoomDataRef;
+		RoomData rd = MyRoomData;
 		ResourcesHandler rh = ResourcesHandler.Instance;
 
 		foreach (PropData propData in rd.allPropDatas) {
@@ -184,8 +182,8 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 
 		// TEMP totes hacky, yo.
 		string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-		RoomDataRef = new RoomData(WorldDataRef, sceneName); // NOTE! Be careful; we can easily overwrite rooms like this.
-		RoomDataRef = SerializeAsData();
+		MyRoomData = new RoomData(MyWorldData, sceneName); // NOTE! Be careful; we can easily overwrite rooms like this.
+		MyRoomData = SerializeAsData();
 
 		// Initialize things!
 		// Player
@@ -202,9 +200,9 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 		}
 	}
 	private void AutoAddSilentBoundaries() {
-		for (int i=0; i<RoomDataRef.Neighbors.Count; i++) {
+		for (int i=0; i<MyRoomData.Neighbors.Count; i++) {
 			// No room here?? Protect me with an InvisiBounds!
-            RoomNeighborData lnd = RoomDataRef.Neighbors[i];
+            RoomNeighborData lnd = MyRoomData.Neighbors[i];
             if (!lnd.IsRoomTo) {
 				BoxCollider2D col = new GameObject().AddComponent<BoxCollider2D>();
 				col.transform.SetParent(this.transform);
@@ -259,8 +257,8 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
     //	Debug
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private void OnDrawGizmos() {
-        Vector2 posGlobal = RoomDataRef.posGlobal;
-        foreach (RoomNeighborData lnd in RoomDataRef.Neighbors) {
+        Vector2 posGlobal = MyRoomData.posGlobal;
+        foreach (RoomNeighborData lnd in MyRoomData.Neighbors) {
             Gizmos.color = lnd.RoomTo!=null ? new Color(0.5f,1,0) : new Color(1,0.5f,0);
             Gizmos.DrawLine(posGlobal+lnd.OpeningFrom.posStart, posGlobal+lnd.OpeningFrom.posEnd);
         }

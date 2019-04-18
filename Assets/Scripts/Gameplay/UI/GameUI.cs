@@ -6,10 +6,10 @@ using TMPro;
 
 public class GameUI : MonoBehaviour {
     // Components
-    [SerializeField] private GameObject go_snacksCollected=null;
+    //[SerializeField] private GameObject go_snacksCollected=null;
     [SerializeField] private Image i_pausedBorder=null;
     [SerializeField] private Text t_coinsCollected=null;
-    [SerializeField] private TextMeshProUGUI t_snacksCollected=null;
+    //[SerializeField] private TextMeshProUGUI t_snacksCollected=null;
     // References
     private Room currRoom;
 
@@ -64,8 +64,8 @@ public class GameUI : MonoBehaviour {
         t_coinsCollected.text = dm.CoinsCollected.ToString();
     }
     private void UpdateSnacksCollectedText() {
-        int numCollected = currRoom.WorldDataRef.NumSnacksCollected;
-        int numTotal = currRoom.WorldDataRef.NumSnacksTotal;
+        int numCollected = currRoom.MyWorldData.NumSnacksCollected;
+        int numTotal = currRoom.MyWorldData.NumSnacksTotal;
         // DISABLED snacksCollected text.
         //go_snacksCollected.SetActive(numTotal > 0); // Only show SnacksCollected if there ARE any Snacks in this World.
         //t_snacksCollected.text = numCollected + " / " + numTotal;

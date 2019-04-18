@@ -83,7 +83,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     public bool AreFeetOnEatEdiblesGround() {
         foreach (Collider2D col in collidersTouching[Sides.B]) {
             BaseGround baseGround = col.GetComponent<BaseGround>();
-            if (baseGround != null && baseGround.CanEatEdibles) {
+            if (baseGround != null && baseGround.MayPlayerEatHere) {
                 return true; // This one's good!
             }
         }

@@ -90,7 +90,7 @@ public class Snack : Edible {
         sr_aura.enabled = false;
         ps_collectedBurst.Emit(4);
         // Tell my WorldData!
-        myRoom.WorldDataRef.OnPlayerEatSnack();
+        myRoom.MyWorldData.OnPlayerEatSnack();
     }
 
 

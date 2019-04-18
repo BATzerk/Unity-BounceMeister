@@ -62,7 +62,7 @@ public sealed class Ground : BaseGround {
     override public PropData SerializeAsData() {
         GroundData data = new GroundData {
             myRect = MyRect(),
-            canEatGems = CanEatEdibles,
+            mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
             isBouncy = isBouncy,
             canBounce = canBounce,

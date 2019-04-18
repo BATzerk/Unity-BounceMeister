@@ -105,7 +105,7 @@ public sealed class ToggleGround : BaseGround {
     override public PropData SerializeAsData() {
 		ToggleGroundData data = new ToggleGroundData();
 		data.myRect = MyRect();
-		data.canEatGems = CanEatEdibles;
+		data.mayPlayerEat = MayPlayerEatHere;
         data.isPlayerRespawn = IsPlayerRespawn;
         data.startsOn = startsOn;
         data.togFromContact = togFromContact;//togBehavior is TogGroundBehavior_Contact;
@@ -248,7 +248,7 @@ public sealed class ToggleGround : BaseGround {
     override public PropData SerializeAsData() {
         ToggleGroundData data = new ToggleGroundData();
         data.myRect = MyRect();
-        data.canEatGems = CanEatEdibles;
+        data.mayPlayerEat = CanEatEdibles;
         data.isPlayerRespawn = IsPlayerRespawn;
         data.startsOn = startsOn;
         return data;
@@ -334,7 +334,7 @@ public sealed class ToggleGround : BaseGround {
     override public PropData SerializeAsData() {
         ToggleGroundData data = new ToggleGroundData();
         data.myRect = MyRect();
-        data.canEatGems = CanEatEdibles;
+        data.mayPlayerEat = CanEatEdibles;
         data.isPlayerRespawn = IsPlayerRespawn;
         data.startsOn = startsOn;
         return data;

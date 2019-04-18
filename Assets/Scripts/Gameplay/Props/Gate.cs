@@ -65,7 +65,7 @@ public class Gate : BaseGround {
     override public PropData SerializeAsData() {
 		GateData data = new GateData();
 		data.myRect = MyRect();
-		data.canEatGems = CanEatEdibles;
+		data.mayPlayerEat = MayPlayerEatHere;
         data.isPlayerRespawn = IsPlayerRespawn;
         data.channelID = channelID;
 		return data;

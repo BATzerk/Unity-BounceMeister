@@ -31,7 +31,7 @@ public class Platform : BaseGround {
     override public PropData SerializeAsData() {
         PlatformData data = new PlatformData {
             myRect = MyRect(),
-            canEatGems = CanEatEdibles,
+            mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
             canDropThru = canDropThru,
         };

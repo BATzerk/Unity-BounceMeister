@@ -8,15 +8,15 @@ Spikes myRect:(x:0.50, y:0.00, width:16.00, height:1.00);rotation:90
 Spikes myRect:(x:-6.00, y:6.50, width:16.00, height:1.00);rotation:180
 Snack pos:(6.0, -9.0)
 PlayerStart pos:(10.1, 10.0)
-Platform myRect:(x:3.50, y:8.50, width:1.00, height:1.00);canEatGems:False
-Platform myRect:(x:8.50, y:8.50, width:1.00, height:1.00);canEatGems:False
-Ground myRect:(x:2.00, y:0.50, width:2.00, height:17.00);canEatGems:False
+Platform myRect:(x:3.50, y:8.50, width:1.00, height:1.00);mayPlayerEat:False
+Platform myRect:(x:8.50, y:8.50, width:1.00, height:1.00);mayPlayerEat:False
+Ground myRect:(x:2.00, y:0.50, width:2.00, height:17.00);mayPlayerEat:False
 Ground myRect:(x:0.50, y:17.50, width:53.00, height:5.00)
-Ground myRect:(x:10.00, y:0.50, width:2.00, height:17.00);canEatGems:False
+Ground myRect:(x:10.00, y:0.50, width:2.00, height:17.00);mayPlayerEat:False
 Ground myRect:(x:0.50, y:-18.00, width:53.00, height:4.00)
 Ground myRect:(x:20.50, y:-7.50, width:13.00, height:25.00)
 Ground myRect:(x:-20.00, y:-5.50, width:12.00, height:29.00)
-Ground myRect:(x:23.50, y:16.00, width:7.00, height:8.00);canEatGems:False
-Ground myRect:(x:15.00, y:0.50, width:2.00, height:17.00);canEatGems:False
+Ground myRect:(x:23.50, y:16.00, width:7.00, height:8.00);mayPlayerEat:False
+Ground myRect:(x:15.00, y:0.50, width:2.00, height:17.00);mayPlayerEat:False
 Ground myRect:(x:12.50, y:8.00, width:7.00, height:2.00)
 Ground myRect:(x:-10.00, y:8.00, width:26.00, height:2.00)

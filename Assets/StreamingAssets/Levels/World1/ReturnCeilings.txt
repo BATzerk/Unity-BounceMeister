@@ -1,10 +1,10 @@
 ﻿roomProperties posGlobal:(76.0, -38.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:9.00, y:-17.00, width:4.00, height:4.00);canEatGems:False
-Ground myRect:(x:-6.00, y:-17.00, width:4.00, height:4.00);canEatGems:False
+Ground myRect:(x:9.00, y:-17.00, width:4.00, height:4.00);mayPlayerEat:False
+Ground myRect:(x:-6.00, y:-17.00, width:4.00, height:4.00);mayPlayerEat:False
 Ground myRect:(x:-22.50, y:13.00, width:9.00, height:14.00)
-Ground myRect:(x:1.00, y:2.00, width:2.00, height:4.00);canEatGems:False
-Ground myRect:(x:21.00, y:6.50, width:12.00, height:3.00);canEatGems:False
+Ground myRect:(x:1.00, y:2.00, width:2.00, height:4.00);mayPlayerEat:False
+Ground myRect:(x:21.00, y:6.50, width:12.00, height:3.00);mayPlayerEat:False
 Ground myRect:(x:0.00, y:-19.00, width:52.00, height:4.00)
 Ground myRect:(x:6.00, y:18.50, width:40.00, height:3.00)
 Ground myRect:(x:24.50, y:6.00, width:3.00, height:26.00)

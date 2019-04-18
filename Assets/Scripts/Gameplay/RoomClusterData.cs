@@ -38,25 +38,4 @@ public class RoomClusterData {
     }
     
     
-    
-    
-    
-//  public static int GetNumRegularStarsInRoomsConnectedToStart (Dictionary<string, RoomData> roomDatas) {
-//      int total = 0;
-//      foreach (RoomData rd in roomDatas.Values) {
-//          if (rd.isConnectedToStart) {
-//              foreach (StarData starData in rd.starDatas) { if (!starData.isSecretStar && !starData.isNotYours) { total += rd.starDatas.Count; } }
-//          }
-//      }
-//      return total;
-//  }
-//  public static int GetNumSecretStarsInRoomsConnectedToStart (Dictionary<string, RoomData> roomDatas) {
-//      int total = 0;
-//      foreach (RoomData rd in roomDatas.Values) {
-//          if (rd.isConnectedToStart) {
-//              foreach (StarData starData in rd.starDatas) { if (starData.isSecretStar) { total += rd.starDatas.Count; } }
-//          }
-//      }
-//      return total;
-//  }
 }

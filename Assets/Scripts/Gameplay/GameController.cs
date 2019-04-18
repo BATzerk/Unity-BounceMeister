@@ -187,8 +187,8 @@ public class GameController : MonoBehaviour {
 
 	private void OnPlayerEscapeRoomBounds(int sideEscaped) {
         Player.EatEdiblesHolding(); // TEMP solution. Willdo: Bring Edibles between rooms.
-		WorldData currWorldData = room.WorldDataRef;
-		RoomData nextLD = currWorldData.GetRoomAtSide(room.RoomDataRef, Player.PosLocal, sideEscaped);
+		WorldData currWorldData = room.MyWorldData;
+		RoomData nextLD = currWorldData.GetRoomAtSide(room.MyRoomData, Player.PosLocal, sideEscaped);
 		if (nextLD != null) {
             int sideEntering = Sides.GetOpposite(sideEscaped);
             Vector2 posExited = player.PosGlobal;
@@ -212,11 +212,11 @@ public class GameController : MonoBehaviour {
     }
     private void DuplicateCurrRoom() {
         // Add a new room file, yo!
-        RoomData currLD = room.RoomDataRef;
-        string newRoomKey = currLD.WorldDataRef.GetUnusedRoomKey(currLD.RoomKey);
-        RoomSaverLoader.SaveRoomFileAs(currLD, currLD.WorldIndex, newRoomKey);
+        RoomData currRD = room.MyRoomData;
+        string newRoomKey = currRD.MyWorldData.GetUnusedRoomKey(currRD.RoomKey);
+        RoomSaverLoader.SaveRoomFileAs(currRD, currRD.WorldIndex, newRoomKey);
         dm.ReloadWorldDatas();
-        RoomData newLD = dm.GetRoomData(currLD.WorldIndex,newRoomKey, false);
+        RoomData newLD = dm.GetRoomData(currRD.WorldIndex,newRoomKey, false);
         newLD.SetPosGlobal(newLD.posGlobal + new Vector2(15,-15)*GameProperties.UnitSize); // offset its position a bit.
         RoomSaverLoader.UpdateRoomPropertiesInRoomFile(newLD); // update file!
         dm.currRoomData = newLD;
@@ -323,7 +323,7 @@ public class GameController : MonoBehaviour {
         // Save it!
         RoomSaverLoader.SaveRoomFile(room);
         // Update properties that may have changed.
-        room.WorldDataRef.UpdateNumSnacks();
+        room.MyWorldData.UpdateNumSnacks();
     }
 
 

@@ -49,7 +49,7 @@ public class TravelingPlatform : BaseGround {//, ISerializableData<TravelingPlat
     override public PropData SerializeAsData() {//TODO: This, I guess.
     	PlatformData data = new PlatformData();
     	//data.myRect = MyRect;
-    	//data.canEatGems = CanEatGems;
+    	//data.mayPlayerEat = mayPlayerEat;
         data.isPlayerRespawn = IsPlayerRespawn;
     	return data;
     }

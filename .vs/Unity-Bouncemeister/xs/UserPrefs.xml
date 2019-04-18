@@ -1,14 +1,17 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/RoomUtils.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/UI/GameUI.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="102" Column="3" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Snack.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Managers/DataManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Consts/SaveKeys.cs" Line="15" Column="59" />
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Consts/FilePaths.cs" Line="10" Column="60" />
-      <File FileName="Assets/Scripts/Gameplay/RoomUtils.cs" Line="170" Column="3" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="188" Column="30" />
+      <File FileName="Assets/Scripts/Gameplay/RoomUtils.cs" Line="49" Column="36" />
+      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="402" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="342" Column="40" />
+      <File FileName="Assets/Scripts/Gameplay/RoomData.cs" Line="107" Column="44" />
+      <File FileName="Assets/Scripts/Gameplay/Props/CharBarrel.cs" Line="36" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="194" Column="42" />
+      <File FileName="Assets/Scripts/MapEditor/RoomTile.cs" Line="79" Column="21" />
+      <File FileName="Assets/Scripts/Gameplay/Props/BaseGround.cs" Line="4" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/UI/GameUI.cs" Line="9" Column="65" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
