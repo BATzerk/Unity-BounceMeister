@@ -1,4 +1,4 @@
-levelProperties posGlobal:(78.0, 82.0);designerFlag:3
+﻿roomProperties posGlobal:(78.0, 82.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:24.50, y:-14.00, width:5.00, height:8.00);isPlayerRespawn:True
 Ground myRect:(x:23.00, y:7.00, width:8.00, height:26.00)

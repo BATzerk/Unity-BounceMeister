@@ -24,11 +24,11 @@ public class FullScrim : MonoBehaviour {
 	}
 	private void Start () {
 //		// Add event listeners!
-//		GameManagers.Instance.EventManager.GameControllerStartedGameAtLevelEvent += OnStartedGameAtLevel;
+//		GameManagers.Instance.EventManager.GameControllerStartedGameAtRoomEvent += OnStartedGameAtRoom;
 	}
 	private void OnDestroy () {
 //		// Remove event listeners!
-//		GameManagers.Instance.EventManager.GameControllerStartedGameAtLevelEvent -= OnStartedGameAtLevel;
+//		GameManagers.Instance.EventManager.GameControllerStartedGameAtRoomEvent -= OnStartedGameAtRoom;
 	}
 
 
@@ -93,7 +93,7 @@ public class FullScrim : MonoBehaviour {
 	//	Events
 	// ================================================================
 	/*
-	private void OnStartedGameAtLevel (Level _currentLevel) {
+	private void OnStartedGameAtRoom (Room _currentRoom) {
 		// If I'm NOT already fading...
 		if (!IsFading) {
 			// Maybe fade in from black if we've planned that!

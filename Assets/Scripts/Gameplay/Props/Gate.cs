@@ -11,7 +11,7 @@ public class Gate : BaseGround {
 	// Getters (Public)
 	public int ChannelID { get { return channelID; } }
 	// Getters (Private)
-	private GateChannel MyChannel { get { return myLevel.GateChannels[channelID]; } }
+	private GateChannel MyChannel { get { return myRoom.GateChannels[channelID]; } }
 
 
 
@@ -31,8 +31,8 @@ public class Gate : BaseGround {
 	// ----------------------------------------------------------------
 	//  Initialize
 	// ----------------------------------------------------------------
-	public void Initialize(Level _myLevel, GateData data) {
-		base.BaseGroundInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, GateData data) {
+		base.BaseGroundInitialize(_myRoom, data);
 
 		channelID = data.channelID;
 		bodyColor = MyChannel.Color;

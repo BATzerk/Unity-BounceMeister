@@ -17,8 +17,8 @@ public class ProgressGate : BaseGround {
 	// ----------------------------------------------------------------
 	//  Initialize
 	// ----------------------------------------------------------------
-	public void Initialize(Level _myLevel, ProgressGateData data) {
-		base.BaseGroundInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, ProgressGateData data) {
+		base.BaseGroundInitialize(_myRoom, data);
 
         numSnacksReq = data.numSnacksReq;
         UpdateText();

@@ -14,9 +14,9 @@ public class EditModeController : MonoBehaviour {
     private GameController gameController; // set in Awake.
     // Properties
     private bool isGameWindowFocus;
-    private bool isSettingPlayerPos; // TRUE when we right-click to teleport the Player around the Level.
+    private bool isSettingPlayerPos; // TRUE when we right-click to teleport the Player around the Room.
     public bool IsEditMode { get; private set; }
-    private string currWindow; // current Editor window with focus. Used to detect when we give focus to the Scene (aka level-editor) window.
+    private string currWindow; // current Editor window with focus. Used to detect when we give focus to the Scene (aka room-editor) window.
     // References
     private GameObject prevSelectedGO; // for checking when we change our UI selection.
 

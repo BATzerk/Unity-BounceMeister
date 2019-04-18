@@ -11,7 +11,7 @@ public class GameUI : MonoBehaviour {
     [SerializeField] private Text t_coinsCollected=null;
     [SerializeField] private TextMeshProUGUI t_snacksCollected=null;
     // References
-    private Level currLevel;
+    private Room currRoom;
 
     // Getters
     private DataManager dm { get { return GameManagers.Instance.DataManager; } }
@@ -27,22 +27,22 @@ public class GameUI : MonoBehaviour {
         eventManager.CoinsCollectedChangedEvent += OnCoinsCollectedChanged;
         eventManager.SnacksCollectedChangedEvent += OnSnacksCollectedChanged;
         eventManager.SetPausedEvent += OnSetPaused;
-        eventManager.StartLevelEvent += OnStartLevel;
+        eventManager.StartRoomEvent += OnStartRoom;
     }
 	private void OnDestroy() {
 		// Remove event listeners!
 		eventManager.CoinsCollectedChangedEvent -= OnCoinsCollectedChanged;
         eventManager.SnacksCollectedChangedEvent -= OnSnacksCollectedChanged;
         eventManager.SetPausedEvent -= OnSetPaused;
-        eventManager.StartLevelEvent -= OnStartLevel;
+        eventManager.StartRoomEvent -= OnStartRoom;
     }
 
 
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    private void OnStartLevel(Level level) {
-        currLevel = level;
+    private void OnStartRoom(Room room) {
+        currRoom = room;
         UpdateCoinsCollectedText();
         UpdateSnacksCollectedText();
     }
@@ -64,8 +64,8 @@ public class GameUI : MonoBehaviour {
         t_coinsCollected.text = dm.CoinsCollected.ToString();
     }
     private void UpdateSnacksCollectedText() {
-        int numCollected = currLevel.WorldDataRef.NumSnacksCollected;
-        int numTotal = currLevel.WorldDataRef.NumSnacksTotal;
+        int numCollected = currRoom.WorldDataRef.NumSnacksCollected;
+        int numTotal = currRoom.WorldDataRef.NumSnacksTotal;
         // DISABLED snacksCollected text.
         //go_snacksCollected.SetActive(numTotal > 0); // Only show SnacksCollected if there ARE any Snacks in this World.
         //t_snacksCollected.text = numCollected + " / " + numTotal;

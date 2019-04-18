@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,16 +7,16 @@ public class MapEditor : MonoBehaviour {
 	// Constants
 	private readonly float gridSizeX = 1;//GameVisualProperties.OriginalScreenSize.x * 0.25f;
 	private readonly float gridSizeY = 1;//GameVisualProperties.OriginalScreenSize.y * 0.25f;
-	private const string instructionsTextString_enabled = "change world:  [1-8]\ntoggle names:  'n'\ntoggle contents:  'p'\nsearch:  [hold 'SHIFT' and type lvl name; ESC to cancel]\nhide instructions:  'i'";//move/zoom:  [mouse or arrow keys]\nplay level:  [double-click one]\n
+	private const string instructionsTextString_enabled = "change world:  [1-8]\ntoggle names:  'n'\ntoggle contents:  'p'\nsearch:  [hold 'SHIFT' and type room name; ESC to cancel]\nhide instructions:  'i'";//move/zoom:  [mouse or arrow keys]\nplay room:  [double-click one]\n
 	private const string instructionsTextString_disabled = "show instructions:  'i'";
 	// Components
-	[SerializeField] private LevelTileSelectionRect selectionRect=null;
+	[SerializeField] private RoomTileSelectionRect selectionRect=null;
 	private List<GameObject> worldLayerGOs; // purely for hierarchy cleanness, we wanna put all the tiles into their respective world's GameObject.
-	private List<List<LevelTile>> allLevelTiles; // LevelTiles for EVERY LEVEL IN THE GAME!
+	private List<List<RoomTile>> allRoomTiles; // RoomTiles for EVERY LEVEL IN THE GAME!
 	// Properties
-	private bool isSearchingLevel; // When we start typing letters, yeah! Narrow down our options.
+	private bool isSearchingRoom; // When we start typing letters, yeah! Narrow down our options.
 	private int currWorldIndex=-1;
-	private string levelSearchString = "";
+	private string roomSearchString = "";
     public MapEditorSettings MySettings { get; private set; }
 	public Vector2 MousePosScreenOnDown { get; private set; }
 	public Vector2 MousePosWorld { get; private set; }
@@ -24,7 +24,7 @@ public class MapEditor : MonoBehaviour {
 	[SerializeField] private Text currentWorldText=null;
 	[SerializeField] private Text demoText;
 	[SerializeField] private Text instructionsText=null;
-	private List<LevelTile> tilesSelected = new List<LevelTile>();
+	private List<RoomTile> tilesSelected = new List<RoomTile>();
     private MapEditorCamera editorCamera;
 	public WorldData CurrentWorldData { get { return GetWorldData(currWorldIndex); } }
 	private WorldData GetWorldData (int worldIndex) {
@@ -39,18 +39,18 @@ public class MapEditor : MonoBehaviour {
 	private DataManager dataManager { get { return GameManagers.Instance.DataManager; } }
 	private InputController inputController { get { return InputController.Instance; } }
 	private float fTS { get { return TimeController.FrameTimeScaleUnscaled; } } // frame time scale
-	private List<LevelTile> CurrWorldLevelTiles { get { return allLevelTiles==null?null : allLevelTiles [currWorldIndex]; } }
+	private List<RoomTile> CurrWorldRoomTiles { get { return allRoomTiles==null?null : allRoomTiles [currWorldIndex]; } }
 
-	public bool CanSelectALevelTile() {
+	public bool CanSelectARoomTile() {
 		// Otherwise, NO tiles selected and our mouse isn't down? Yeah, return true!
 		if (tilesSelected.Count==0 && !Input.GetMouseButton(0)) { return true; }
 		// Okay, so some might be selected? Can we select multiple ones??
 		if (CanSelectMultipleTiles()) { return true; }
-		// Hmm. No, there's no way we can select a LevelTile right now.
+		// Hmm. No, there's no way we can select a RoomTile right now.
 		return false;
 	}
-	/** We may only move LevelTiles while running in the UNITY EDITOR. Don't allow moving tiles in a BUILD version. */
-	private bool MayMoveLevelTiles () {
+	/** We may only move RoomTiles while running in the UNITY EDITOR. Don't allow moving tiles in a BUILD version. */
+	private bool MayMoveRoomTiles () {
 		bool mayMove = false;
 		#if UNITY_EDITOR
 		mayMove = true;
@@ -61,19 +61,19 @@ public class MapEditor : MonoBehaviour {
 		// Is the right key down?
 		return Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift);
 	}
-	public bool IsDraggingSelectedLevelTiles() {
-		return MayMoveLevelTiles() && !CanSelectMultipleTiles () && Input.GetMouseButton (0);
+	public bool IsDraggingSelectedRoomTiles() {
+		return MayMoveRoomTiles() && !CanSelectMultipleTiles () && Input.GetMouseButton (0);
 	}
-	private LevelTile GetLevelTileByKey (string levelKey) {
-		for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
-			if (CurrWorldLevelTiles[i].LevelKey == levelKey) {
-				return CurrWorldLevelTiles[i];
+	private RoomTile GetRoomTileByKey (string roomKey) {
+		for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
+			if (CurrWorldRoomTiles[i].RoomKey == roomKey) {
+				return CurrWorldRoomTiles[i];
 			}
 		}
 		return null;
 	}
-	private Vector2 GetConnectionPosRelativeToLevelTile(LevelTile levelTile, Vector2 globalPos) {
-		return new Vector2(globalPos.x-levelTile.MyLevelData.PosGlobal.x, globalPos.y-levelTile.MyLevelData.PosGlobal.y);
+	private Vector2 GetConnectionPosRelativeToRoomTile(RoomTile roomTile, Vector2 globalPos) {
+		return new Vector2(globalPos.x-roomTile.MyRoomData.PosGlobal.x, globalPos.y-roomTile.MyRoomData.PosGlobal.y);
     }
 
     public float MapScale { get { return editorCamera.MapScale; } }
@@ -91,12 +91,12 @@ public class MapEditor : MonoBehaviour {
             return MousePosWorldDragging(_mouseClickOffset);
         }
     }
-	private LevelTile GetLevelTileAtPoint(Vector2 point) {
-		if (CurrWorldLevelTiles==null) { return null; } // Safety check for runtime compile.
-		for (int i=CurrWorldLevelTiles.Count-1; i>=0; --i) { // loop thru backwards so we click NEWER tiles before older ones.
-            LevelTile tile = CurrWorldLevelTiles[i];
+	private RoomTile GetRoomTileAtPoint(Vector2 point) {
+		if (CurrWorldRoomTiles==null) { return null; } // Safety check for runtime compile.
+		for (int i=CurrWorldRoomTiles.Count-1; i>=0; --i) { // loop thru backwards so we click NEWER tiles before older ones.
+            RoomTile tile = CurrWorldRoomTiles[i];
 			Rect boundsGlobal = tile.BoundsGlobal;
-			if (boundsGlobal.Contains(point+boundsGlobal.size*0.5f)) { // Note: convert back to center-aligned. SIGH. I would love to just make level's rect corner-aligned. Avoid any ambiguity.
+			if (boundsGlobal.Contains(point+boundsGlobal.size*0.5f)) { // Note: convert back to center-aligned. SIGH. I would love to just make room's rect corner-aligned. Avoid any ambiguity.
 				return tile;
 			}
 		}
@@ -104,15 +104,15 @@ public class MapEditor : MonoBehaviour {
 	}
 	private bool IsMouseOverAnything() {
 		/*
-		// LevelTiles?
-		for (int i=0; i<levelTiles.Count; i++) {
-			if (levelTiles[i].IsDragReadyMouseOverMe) {
+		// RoomTiles?
+		for (int i=0; i<roomTiles.Count; i++) {
+			if (roomTiles[i].IsDragReadyMouseOverMe) {
 				return true;
 			}
 		}
 		return false;
 		*/
-		return GetLevelTileAtPoint (MousePosWorld) != null;
+		return GetRoomTileAtPoint (MousePosWorld) != null;
 	}
 
 
@@ -120,8 +120,8 @@ public class MapEditor : MonoBehaviour {
 		// World Bounds
 		if (CurrentWorldData != null) {
 			Gizmos.color = new Color (0.1f, 0.1f, 0.1f);
-			Rect boundsRectAllLevels = CurrentWorldData.BoundsRectAllLevels;
-			Gizmos.DrawWireCube (new Vector3 (boundsRectAllLevels.center.x, boundsRectAllLevels.center.y, 0), new Vector3 (boundsRectAllLevels.size.x, boundsRectAllLevels.size.y, 10));
+			Rect boundsRectAllRooms = CurrentWorldData.BoundsRectAllRooms;
+			Gizmos.DrawWireCube (new Vector3 (boundsRectAllRooms.center.x, boundsRectAllRooms.center.y, 0), new Vector3 (boundsRectAllRooms.size.x, boundsRectAllRooms.size.y, 10));
 		}
 	}
 //	private void OnGUI () {
@@ -154,9 +154,9 @@ public class MapEditor : MonoBehaviour {
 //		// Set the whole map's scale to be the same as how the game's scale works.
 //		this.transform.localScale = new Vector3 (GameProperties.WORLD_SCALE, GameProperties.WORLD_SCALE, 1);
 
-		// Make the worldLayerGOs and LevelTiles only once.
+		// Make the worldLayerGOs and RoomTiles only once.
 		MakeWorldLayerGOs();
-        LoadAllLevelTiles();
+        LoadAllRoomTiles();
 
         // Reset values
         Time.timeScale = 1f;
@@ -170,14 +170,14 @@ public class MapEditor : MonoBehaviour {
 		if (_worldIndex >= GameProperties.NUM_WORLDS) { return; } // Don't crash da game, bruddah.
 
 		// Deselect any tiles that might be selected!
-		DeselectAllLevelTiles ();
+		DeselectAllRoomTiles ();
 
 		// If we're CHANGING the currentWorld...!!
 		if (currWorldIndex != _worldIndex) {
 			// Tell all the tiles in the world we already were to hide their stuff!
 			if (currWorldIndex != -1) {
-				for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
-					CurrWorldLevelTiles[i].HideContents ();
+				for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
+					CurrWorldRoomTiles[i].HideContents ();
 				}
 			}
 			currWorldIndex = _worldIndex;
@@ -185,8 +185,8 @@ public class MapEditor : MonoBehaviour {
         }
 		
 		// Tell all the tiles in the NEW world to show their stuff!
-		for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
-			CurrWorldLevelTiles[i].ShowContents ();
+		for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
+			CurrWorldRoomTiles[i].ShowContents ();
 		}
 		
 		// Set background colla
@@ -206,22 +206,22 @@ public class MapEditor : MonoBehaviour {
 			worldLayerGOs.Add (worldLayerGO);
 		}
 	}
-	private void LoadAllLevelTiles() {
+	private void LoadAllRoomTiles() {
 		// Destroy 'em first!
-		DestroyAllLevelTiles ();
+		DestroyAllRoomTiles ();
 		// Make 'em hot & fresh!
-		allLevelTiles = new List<List<LevelTile>>();
-		GameObject prefab = ResourcesHandler.Instance.MapEditor_LevelTile;
+		allRoomTiles = new List<List<RoomTile>>();
+		GameObject prefab = ResourcesHandler.Instance.MapEditor_RoomTile;
 		// For every world...
 		for (int worldIndex=0; worldIndex<dataManager.NumWorldDatas; worldIndex++) {
-			allLevelTiles.Add (new List<LevelTile>());
-			// For every level in this world...
+			allRoomTiles.Add (new List<RoomTile>());
+			// For every room in this world...
 			WorldData wd = dataManager.GetWorldData (worldIndex);
             Transform parent = worldLayerGOs[worldIndex].transform;
-            foreach (LevelData levelData in wd.LevelDatas.Values) {
-                LevelTile newLevelTile = Instantiate (prefab).GetComponent<LevelTile>();
-				newLevelTile.Initialize(this, levelData, parent);
-				allLevelTiles[worldIndex].Add(newLevelTile);
+            foreach (RoomData roomData in wd.RoomDatas.Values) {
+                RoomTile newRoomTile = Instantiate (prefab).GetComponent<RoomTile>();
+				newRoomTile.Initialize(this, roomData, parent);
+				allRoomTiles[worldIndex].Add(newRoomTile);
 			}
 		}
 	}
@@ -235,89 +235,89 @@ public class MapEditor : MonoBehaviour {
 
 
     // ================================================================
-    //  Doers: Level Tiles
+    //  Doers: Room Tiles
     // ================================================================
-	private void SelectLevelTile(LevelTile thisLevelTile) {
+	private void SelectRoomTile(RoomTile thisRoomTile) {
 		/*
-		// First, check if we're trying to set ANOTHER, different levelTile as levelTileDragging.
-		if (levelTileDragging != null && thisLevelTile != null && levelTileDragging != thisLevelTile) {
-			Debug.LogWarning("Hey, whoa! We're trying to set levelTileDragging to a LevelTile, but it's not already null!");
+		// First, check if we're trying to set ANOTHER, different roomTile as roomTileDragging.
+		if (roomTileDragging != null && thisRoomTile != null && roomTileDragging != thisRoomTile) {
+			Debug.LogWarning("Hey, whoa! We're trying to set roomTileDragging to a RoomTile, but it's not already null!");
 			return;
 		}
-		// Was dragging a LevelTile? Update its visuals!
-		if (levelTileDragging != null) {
-			levelTileDragging.UpdateBorderLine();
+		// Was dragging a RoomTile? Update its visuals!
+		if (roomTileDragging != null) {
+			roomTileDragging.UpdateBorderLine();
 		}
 		// Set it!
-		levelTileDragging = thisLevelTile;
+		roomTileDragging = thisRoomTile;
 		// Update its visuals!
-		if (levelTileDragging != null) {
-			levelTileDragging.UpdateBorderLine();
+		if (roomTileDragging != null) {
+			roomTileDragging.UpdateBorderLine();
 		}
-		// We DID specifiy a levelTile?
-		if (levelTileDragging != null) {
-			SetMouseClickOffset(levelTileDragging.transform.localPosition);
-//			SetMouseClickOffset(levelTileDragging.Pos);//new PVector(levelTileDragging.pos.x+levelTileDragging.w*0.5, levelTileDragging.pos.y+levelTileDragging.h*0.5));
+		// We DID specifiy a roomTile?
+		if (roomTileDragging != null) {
+			SetMouseClickOffset(roomTileDragging.transform.localPosition);
+//			SetMouseClickOffset(roomTileDragging.Pos);//new PVector(roomTileDragging.pos.x+roomTileDragging.w*0.5, roomTileDragging.pos.y+roomTileDragging.h*0.5));
 		}
 		*/
 		// Add it to my list!
-		tilesSelected.Add (thisLevelTile);
+		tilesSelected.Add (thisRoomTile);
 		// Tell it what's up!
-		thisLevelTile.OnSelected (MousePosWorld);
+		thisRoomTile.OnSelected (MousePosWorld);
 	}
-	private void DeselectLevelTile(LevelTile thisLevelTile) {
-		thisLevelTile.OnDeselected ();
-		tilesSelected.Remove (thisLevelTile);
+	private void DeselectRoomTile(RoomTile thisRoomTile) {
+		thisRoomTile.OnDeselected ();
+		tilesSelected.Remove (thisRoomTile);
 	}
-	private void DeselectAllLevelTiles () {
+	private void DeselectAllRoomTiles () {
 		for (int i=tilesSelected.Count-1; i>=0; --i) {
-			DeselectLevelTile (tilesSelected [i]);
+			DeselectRoomTile (tilesSelected [i]);
 		}
-		tilesSelected = new List<LevelTile> ();
+		tilesSelected = new List<RoomTile> ();
 	}
-	private void ReleaseLevelTilesSelected() {
+	private void ReleaseRoomTilesSelected() {
 		// No tiles selected? No gazpacho!
 		if (tilesSelected.Count == 0) { return; }
 		// Tell all the tiles they've been deselected and clear out the list.
-		foreach (LevelTile levelTile in tilesSelected) {
-			levelTile.OnDeselected ();
+		foreach (RoomTile roomTile in tilesSelected) {
+			roomTile.OnDeselected ();
 		}
 		// Clear out the list, of course.
 		tilesSelected.Clear ();
-		// Brute-force remake all the wallLines for EVERY LevelTile. It's dumb, but easy.
-//		CurrentWorldData.SetAllLevelDatasBounds ();
+		// Brute-force remake all the wallLines for EVERY RoomTile. It's dumb, but easy.
+//		CurrentWorldData.SetAllRoomDatasBounds ();
 
-//		foreach (LevelTile levelTile in CurrentWorldLevelTiles) {
-//			levelTile.RemakeWallLines ();
+//		foreach (RoomTile roomTile in CurrentWorldRoomTiles) {
+//			roomTile.RemakeWallLines ();
 //		}
 	}
-	private void SelectAllLevelTiles() {
-		ReleaseLevelTilesSelected (); // Just in case release any if we're already holding some.
-		foreach (LevelTile levelTile in CurrWorldLevelTiles) {
-			SelectLevelTile(levelTile);
+	private void SelectAllRoomTiles() {
+		ReleaseRoomTilesSelected (); // Just in case release any if we're already holding some.
+		foreach (RoomTile roomTile in CurrWorldRoomTiles) {
+			SelectRoomTile(roomTile);
 		}
 	}
-    private void DuplicateFirstSelectedLevel() {
+    private void DuplicateFirstSelectedRoom() {
         // No tiles selected? No gazpacho!
         if (tilesSelected.Count == 0) { return; }
-        DuplicateLevel(tilesSelected[0].MyLevelData);
+        DuplicateRoom(tilesSelected[0].MyRoomData);
     }
-    private void DuplicateLevel(LevelData originalData) {
-        // Add a new level file, yo!
-        string newLevelKey = originalData.levelKey + " copy";
-        LevelSaverLoader.SaveLevelFileAs(originalData, originalData.WorldIndex, newLevelKey);
+    private void DuplicateRoom(RoomData originalData) {
+        // Add a new room file, yo!
+        string newRoomKey = originalData.roomKey + " copy";
+        RoomSaverLoader.SaveRoomFileAs(originalData, originalData.WorldIndex, newRoomKey);
         // Reload everything.
         ReloadAllWorldDatasAndScene();
     }
 
 	// TODO: This! Convert to StreamingAssets.
-	private void MoveLevelTilesSelectedLevelFilesToTrashFolder() {
+	private void MoveRoomTilesSelectedRoomFilesToTrashFolder() {
 		// No tiles selected? Womp, don't do anything LOL
 		if (tilesSelected.Count == 0) { return; }
 		// Move the files!!
 		for (int i=tilesSelected.Count-1; i>=0; --i) {
-//			DeselectLevelTile (levelTilesSelected[i]);
-			CurrentWorldData.MoveLevelFileToTrashFolder (tilesSelected[i].LevelKey);
+//			DeselectRoomTile (roomTilesSelected[i]);
+			CurrentWorldData.MoveRoomFileToTrashFolder (tilesSelected[i].RoomKey);
 		}
 		
 		// Reload everything right away!! (Otherwise, we'll have to ALT + TAB out of Unity and back in for it to be refreshed.)
@@ -330,36 +330,36 @@ public class MapEditor : MonoBehaviour {
 		ReloadAllWorldDatasAndScene();
 	}
 
-	private void MoveLevelTilesSelectedToWorld (int worldIndexTo) {
+	private void MoveRoomTilesSelectedToWorld (int worldIndexTo) {
 		// No tiles selected? Womp, don't do anything LOL
 		if (tilesSelected.Count == 0) { return; }
-		int worldIndexFrom = tilesSelected[0].WorldIndex; // We can assume all levelTilesSelected are in the same world.
+		int worldIndexFrom = tilesSelected[0].WorldIndex; // We can assume all roomTilesSelected are in the same world.
 		//WorldData worldDataTo = GetWorldData (worldIndexTo);
 		//WorldData worldDataFrom = GetWorldData (worldIndexFrom);
 //		string worldToFolderName = GameProperties.GetWorldName (worldIndexTo); // name of the folda we're moving the files TO.
 		// If we're trying to move these tiles to the world they're ALREADY in, do nothin'!
 		if (worldIndexFrom == worldIndexTo) { return; }
-		// Compile a list of the DATAS of all the levels we're moving.
-		LevelData[] levelDatasMoving = new LevelData [tilesSelected.Count];
-		for (int i=0; i<levelDatasMoving.Length; i++) {
-			levelDatasMoving[i] = tilesSelected[i].MyLevelData;
+		// Compile a list of the DATAS of all the rooms we're moving.
+		RoomData[] roomDatasMoving = new RoomData [tilesSelected.Count];
+		for (int i=0; i<roomDatasMoving.Length; i++) {
+			roomDatasMoving[i] = tilesSelected[i].MyRoomData;
 		}
 		// MOVE LEVELS!
-		for (int i=0; i<levelDatasMoving.Length; i++) {
-			string levelKey = levelDatasMoving[i].LevelKey;
+		for (int i=0; i<roomDatasMoving.Length; i++) {
+			string roomKey = roomDatasMoving[i].RoomKey;
 			// Otherwise, move that glitterbomb!
-//			DeselectLevelTile (levelTilesSelected[i]);
-			CurrentWorldData.MoveLevelFileToWorldFolder (levelKey, worldIndexTo);
+//			DeselectRoomTile (roomTilesSelected[i]);
+			CurrentWorldData.MoveRoomFileToWorldFolder (roomKey, worldIndexTo);
 		}
 		
 		// Reload this map, yo.
 		ReloadAllWorldDatasAndScene();
 	}
 
-    private void AddAndStartNewLevel() {
-        // Make a LevelData with a unique name, put it where the Camera is, and open the level!
-        string levelKey = CurrentWorldData.GetUnusedLevelKey();
-        LevelData newLD = CurrentWorldData.GetLevelData(levelKey, true);
+    private void AddAndStartNewRoom() {
+        // Make a RoomData with a unique name, put it where the Camera is, and open the room!
+        string roomKey = CurrentWorldData.GetUnusedRoomKey();
+        RoomData newLD = CurrentWorldData.GetRoomData(roomKey, true);
         Vector2 pos = SnapToGrid(editorCamera.Pos);
         newLD.SetPosGlobal(pos);
         SceneHelper.OpenGameplayScene(newLD);
@@ -367,18 +367,18 @@ public class MapEditor : MonoBehaviour {
     
     // TODO: Test this, yo. And explain why we even have it.
     private void SnapTilesSelectedToGrid() {
-        foreach (LevelTile tile in tilesSelected) {
-            Vector2 pos = tile.MyLevelData.PosGlobal;
+        foreach (RoomTile tile in tilesSelected) {
+            Vector2 pos = tile.MyRoomData.PosGlobal;
             pos = SnapToGrid(pos);
-            tile.MyLevelData.SetPosGlobal(pos);
+            tile.MyRoomData.SetPosGlobal(pos);
         }
     }
     private void ToggleTilesSelectedIsClustStart() {
         // Toggle and save 'em all.
-        foreach (LevelTile tile in tilesSelected) {
-            LevelData ld = tile.MyLevelData;
-            ld.isClustStart = !ld.isClustStart;
-            LevelSaverLoader.UpdateLevelPropertiesInLevelFile(ld);
+        foreach (RoomTile tile in tilesSelected) {
+            RoomData rd = tile.MyRoomData;
+            rd.isClustStart = !rd.isClustStart;
+            RoomSaverLoader.UpdateRoomPropertiesInRoomFile(rd);
         }
         // Reload the world, as our Clusters may have changed from this.
         ReloadAllWorldDatasAndScene();
@@ -390,33 +390,33 @@ public class MapEditor : MonoBehaviour {
     //  Events
     // ================================================================
     public void OnSetMapScale() {
-        // Update my level tiles' text scales!
-        if (allLevelTiles != null) {
-            foreach (LevelTile levelTile in CurrWorldLevelTiles) {
-                levelTile.OnMapScaleChanged();
+        // Update my room tiles' text scales!
+        if (allRoomTiles != null) {
+            foreach (RoomTile roomTile in CurrWorldRoomTiles) {
+                roomTile.OnMapScaleChanged();
             }
         }
     }
-    public void OnClickLevelTile(LevelTile levelTile) {
+    public void OnClickRoomTile(RoomTile roomTile) {
 		// Conditions are right for selecting the tile!
-//		if (!Input.GetKey(KeyCode.LeftAlt) && newLinkFirstLevelTile==null) {
+//		if (!Input.GetKey(KeyCode.LeftAlt) && newLinkFirstRoomTile==null) {
 		if (!Input.GetKey(KeyCode.LeftAlt)) {
-			// If the COMMAND/CONTROL key ISN'T down, first release all levelTilesSelected!
+			// If the COMMAND/CONTROL key ISN'T down, first release all roomTilesSelected!
 			if (!CanSelectMultipleTiles()) {
-				ReleaseLevelTilesSelected();
+				ReleaseRoomTilesSelected();
 			}
 			// If this guy is IN the list, remove him; if he's NOT in the list, add him!
-			if (tilesSelected.Contains(levelTile)) { DeselectLevelTile(levelTile); }
-			else { SelectLevelTile(levelTile); }
+			if (tilesSelected.Contains(roomTile)) { DeselectRoomTile(roomTile); }
+			else { SelectRoomTile(roomTile); }
 		}
 	}
 
 	private void RefreshAllTileVisuals() {
-		for (int i=0; i<CurrWorldLevelTiles.Count; i++) { CurrWorldLevelTiles[i].RefreshAllVisuals(); }
-//		for (int i=0; i<levelLinkViews.Count; i++) { levelLinkViews[i].UpdateComponentVisibilities(); }
+		for (int i=0; i<CurrWorldRoomTiles.Count; i++) { CurrWorldRoomTiles[i].RefreshAllVisuals(); }
+//		for (int i=0; i<roomLinkViews.Count; i++) { roomLinkViews[i].UpdateComponentVisibilities(); }
 	}
-    private void TogSettings_LevelContentMasks() {
-        MySettings.DoMaskLevelContents = !MySettings.DoMaskLevelContents;
+    private void TogSettings_RoomContentMasks() {
+        MySettings.DoMaskRoomContents = !MySettings.DoMaskRoomContents;
         OnChangeSettings();
     }
     private void TogSettings_DoShowClusters() {
@@ -427,16 +427,16 @@ public class MapEditor : MonoBehaviour {
         MySettings.DoShowDesignerFlags = !MySettings.DoShowDesignerFlags;
         OnChangeSettings();
     }
-    private void TogSettings_DoShowLevelNames() {
-        MySettings.DoShowLevelNames = !MySettings.DoShowLevelNames;
+    private void TogSettings_DoShowRoomNames() {
+        MySettings.DoShowRoomNames = !MySettings.DoShowRoomNames;
         OnChangeSettings();
     }
     private void TogSettings_DoShowEdibles() {
-        MySettings.DoShowLevelEdibles = !MySettings.DoShowLevelEdibles;
+        MySettings.DoShowRoomEdibles = !MySettings.DoShowRoomEdibles;
         OnChangeSettings();
     }
     private void TogSettings_DoShowProps() {
-        MySettings.DoShowLevelProps = !MySettings.DoShowLevelProps;
+        MySettings.DoShowRoomProps = !MySettings.DoShowRoomProps;
         OnChangeSettings();
     }
     private void TogSettings_DoShowInstructions() {
@@ -448,27 +448,27 @@ public class MapEditor : MonoBehaviour {
         MySettings.SaveAll();
     }
 
-    public void OnLevelTileSelectionRectDeactivated () {
-		if (CurrWorldLevelTiles==null) { return; } // Safety check for runtime compile.
+    public void OnRoomTileSelectionRectDeactivated () {
+		if (CurrWorldRoomTiles==null) { return; } // Safety check for runtime compile.
 		// Select all the extra ones selected by the selection rect!
-		for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
-			if (CurrWorldLevelTiles[i].IsWithinLevelTileSelectionRect) {
-				if (!tilesSelected.Contains(CurrWorldLevelTiles[i])) {
-					SelectLevelTile (CurrWorldLevelTiles[i]);
+		for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
+			if (CurrWorldRoomTiles[i].IsWithinRoomTileSelectionRect) {
+				if (!tilesSelected.Contains(CurrWorldRoomTiles[i])) {
+					SelectRoomTile (CurrWorldRoomTiles[i]);
 				}
 			}
 		}
 	}
 
-    private void ClearLevelSearch() {
-        isSearchingLevel = false;
-        levelSearchString = "";
-        UpdateLevelTilesFromSearchString();
+    private void ClearRoomSearch() {
+        isSearchingRoom = false;
+        roomSearchString = "";
+        UpdateRoomTilesFromSearchString();
     }
-    private void UpdateLevelTilesFromSearchString () {
+    private void UpdateRoomTilesFromSearchString () {
 		// Update their visibilities!
-		for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
-			CurrWorldLevelTiles[i].UpdateVisibilityFromSearchCriteria (levelSearchString);
+		for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
+			CurrWorldRoomTiles[i].UpdateVisibilityFromSearchCriteria (roomSearchString);
 		}
 	}
 
@@ -485,7 +485,7 @@ public class MapEditor : MonoBehaviour {
 		UpdateMousePosWorld();
 		RegisterKeyInputs();
 		RegisterMouseInputs();
-		UpdateLevelTileSelectionRectSelection();
+		UpdateRoomTileSelectionRectSelection();
 		UpdateUI();
 	}
 
@@ -511,17 +511,17 @@ public class MapEditor : MonoBehaviour {
 		}
 	}
 
-	private void UpdateLevelTileSelectionRectSelection() {
-		if (CurrWorldLevelTiles==null) { return; } // Safety check for runtime compile.
+	private void UpdateRoomTileSelectionRectSelection() {
+		if (CurrWorldRoomTiles==null) { return; } // Safety check for runtime compile.
 		// Update which tiles are within the rect!
-		for (int i=0; i<CurrWorldLevelTiles.Count; i++) {
-			CurrWorldLevelTiles[i].IsWithinLevelTileSelectionRect =
-                   CurrWorldLevelTiles[i].BodyCollider.IsEnabled
+		for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
+			CurrWorldRoomTiles[i].IsWithinRoomTileSelectionRect =
+                   CurrWorldRoomTiles[i].BodyCollider.IsEnabled
                 && selectionRect.IsActive
-                && selectionRect.SelectionRect.Contains(CurrWorldLevelTiles[i].MyLevelData.PosGlobal);
+                && selectionRect.SelectionRect.Contains(CurrWorldRoomTiles[i].MyRoomData.PosGlobal);
 		}
-//		if (levelTileSelectionRect.IsActive) {
-//			levelTileSelectionRect.levelTilesSelected
+//		if (roomTileSelectionRect.IsActive) {
+//			roomTileSelectionRect.roomTilesSelected
 //		}
 	}
 	
@@ -537,8 +537,8 @@ public class MapEditor : MonoBehaviour {
 	}
 	private void RegisterKeyInputs() {
 		// DELETE/BACKSPACE = move selected files to this world's trash folder
-		if (tilesSelected.Count>0 && !isSearchingLevel && (Input.GetKeyDown (KeyCode.Delete) || Input.GetKeyDown (KeyCode.Backspace))) {
-			MoveLevelTilesSelectedLevelFilesToTrashFolder ();
+		if (tilesSelected.Count>0 && !isSearchingRoom && (Input.GetKeyDown (KeyCode.Delete) || Input.GetKeyDown (KeyCode.Backspace))) {
+			MoveRoomTilesSelectedRoomFilesToTrashFolder ();
 		}
         
         // ENTER = Reload datas and reload scene!
@@ -548,38 +548,38 @@ public class MapEditor : MonoBehaviour {
 		
 		// BACKSPACE
 		else if (Input.GetKeyDown (KeyCode.Backspace)) {//c == "\b"[0]) {
-			if (levelSearchString.Length != 0) {
-				levelSearchString = levelSearchString.Substring(0, levelSearchString.Length - 1);
-				UpdateLevelTilesFromSearchString ();
+			if (roomSearchString.Length != 0) {
+				roomSearchString = roomSearchString.Substring(0, roomSearchString.Length - 1);
+				UpdateRoomTilesFromSearchString ();
 			}
         }
         // ESCAPE = Cancel searching
         if (Input.GetKeyDown(KeyCode.Escape)) {
-            ClearLevelSearch();
+            ClearRoomSearch();
         }
         // SHIFT + Some typeable character = Search string!
         else if (InputController.IsKeyDown_shift && Input.inputString.Length > 0) {
 			char c = Input.inputString[0];
 			// Typeable character
 			if (char.IsLetterOrDigit(c) || char.IsPunctuation(c)) {
-				levelSearchString += c;
-				UpdateLevelTilesFromSearchString ();
+				roomSearchString += c;
+				UpdateRoomTilesFromSearchString ();
 			}
 		}
 
         // CONTROL + ...
         if (InputController.IsKeyDown_control) {
-            // CONTROL + A = Select ALL LevelTiles!
+            // CONTROL + A = Select ALL RoomTiles!
             if (Input.GetKeyDown (KeyCode.A)) {
-			    SelectAllLevelTiles();
+			    SelectAllRoomTiles();
             }
-            // CONTROL + D = Duplicate ONE selected level.
+            // CONTROL + D = Duplicate ONE selected room.
             else if (Input.GetKeyDown(KeyCode.D)) {
-                DuplicateFirstSelectedLevel();
+                DuplicateFirstSelectedRoom();
             }
-            // CONTROL + N = Add and open a new level!
+            // CONTROL + N = Add and open a new room!
             else if (Input.GetKeyDown(KeyCode.N)) {
-                AddAndStartNewLevel();
+                AddAndStartNewRoom();
             }
             // CONTROL + P = Snap tilesSelected to grid!
             else if (Input.GetKeyDown(KeyCode.P)) {
@@ -589,26 +589,26 @@ public class MapEditor : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.U)) {
                 ToggleTilesSelectedIsClustStart();
             }
-            // CONTROL + J = Open LevelJump!
+            // CONTROL + J = Open RoomJump!
             else if (Input.GetKeyDown(KeyCode.J)) {
-                SceneHelper.OpenScene(SceneNames.LevelJump);
+                SceneHelper.OpenScene(SceneNames.RoomJump);
             }
         }
 
 		// ALT + ____
 		else if (InputController.IsKeyDown_alt) {
-			// ALT + [number] = Move all LevelTiles selected to that world!!
-			if (Input.GetKeyDown (KeyCode.Alpha0)) { MoveLevelTilesSelectedToWorld (0); }
-			else if (Input.GetKeyDown (KeyCode.Alpha1)) { MoveLevelTilesSelectedToWorld (1); }
-			else if (Input.GetKeyDown (KeyCode.Alpha2)) { MoveLevelTilesSelectedToWorld (2); }
-			else if (Input.GetKeyDown (KeyCode.Alpha3)) { MoveLevelTilesSelectedToWorld (3); }
-			else if (Input.GetKeyDown (KeyCode.Alpha4)) { MoveLevelTilesSelectedToWorld (4); }
-			else if (Input.GetKeyDown (KeyCode.Alpha5)) { MoveLevelTilesSelectedToWorld (5); }
-			else if (Input.GetKeyDown (KeyCode.Alpha6)) { MoveLevelTilesSelectedToWorld (6); }
-			else if (Input.GetKeyDown (KeyCode.Alpha7)) { MoveLevelTilesSelectedToWorld (7); }
-			else if (Input.GetKeyDown (KeyCode.Alpha8)) { MoveLevelTilesSelectedToWorld (8); }
-			else if (Input.GetKeyDown (KeyCode.Alpha9)) { MoveLevelTilesSelectedToWorld (9); }
-			else if (Input.GetKeyDown (KeyCode.Minus)) { MoveLevelTilesSelectedToWorld (10); }
+			// ALT + [number] = Move all RoomTiles selected to that world!!
+			if (Input.GetKeyDown (KeyCode.Alpha0)) { MoveRoomTilesSelectedToWorld (0); }
+			else if (Input.GetKeyDown (KeyCode.Alpha1)) { MoveRoomTilesSelectedToWorld (1); }
+			else if (Input.GetKeyDown (KeyCode.Alpha2)) { MoveRoomTilesSelectedToWorld (2); }
+			else if (Input.GetKeyDown (KeyCode.Alpha3)) { MoveRoomTilesSelectedToWorld (3); }
+			else if (Input.GetKeyDown (KeyCode.Alpha4)) { MoveRoomTilesSelectedToWorld (4); }
+			else if (Input.GetKeyDown (KeyCode.Alpha5)) { MoveRoomTilesSelectedToWorld (5); }
+			else if (Input.GetKeyDown (KeyCode.Alpha6)) { MoveRoomTilesSelectedToWorld (6); }
+			else if (Input.GetKeyDown (KeyCode.Alpha7)) { MoveRoomTilesSelectedToWorld (7); }
+			else if (Input.GetKeyDown (KeyCode.Alpha8)) { MoveRoomTilesSelectedToWorld (8); }
+			else if (Input.GetKeyDown (KeyCode.Alpha9)) { MoveRoomTilesSelectedToWorld (9); }
+			else if (Input.GetKeyDown (KeyCode.Minus)) { MoveRoomTilesSelectedToWorld (10); }
 		}
 
         // SHIFT + ____
@@ -618,13 +618,13 @@ public class MapEditor : MonoBehaviour {
         // NO alt/control/shift...!
         else {
 		    // Visibility togglin'
-            if (Input.GetKeyDown(KeyCode.U)) { TogSettings_DoShowClusters(); } // U = toggle LevelCluster visuals
+            if (Input.GetKeyDown(KeyCode.U)) { TogSettings_DoShowClusters(); } // U = toggle RoomCluster visuals
 		    else if (Input.GetKeyDown(KeyCode.F)) { TogSettings_DoShowDesignerFlags(); } // F = toggle DesignerFlags
             else if (Input.GetKeyDown(KeyCode.E)) { TogSettings_DoShowEdibles(); } // E = toggle Edibles
-            else if (Input.GetKeyDown(KeyCode.N)) { TogSettings_DoShowLevelNames(); } // N = toggle Level names
+            else if (Input.GetKeyDown(KeyCode.N)) { TogSettings_DoShowRoomNames(); } // N = toggle Room names
             else if (Input.GetKeyDown(KeyCode.I)) { TogSettings_DoShowInstructions(); } // I = toggle instructions
             else if (Input.GetKeyDown(KeyCode.P)) { TogSettings_DoShowProps(); } // P = toggle Props
-            else if (Input.GetKeyDown(KeyCode.M)) { TogSettings_LevelContentMasks(); } // M = toggle LevelTile contents being masked
+            else if (Input.GetKeyDown(KeyCode.M)) { TogSettings_RoomContentMasks(); } // M = toggle RoomTile contents being masked
 		
 		    // LOAD DIFFERENT WORLDS
 		    else if (Input.GetKeyDown(KeyCode.Alpha0)) { SetCurrWorld(0); }
@@ -651,13 +651,13 @@ public class MapEditor : MonoBehaviour {
 //			Debug.Log(Time.frameCount + " timeSinceMouseButtonDown: " + timeSinceMouseButtonDown + "     " + Vector2.Distance (MousePosScreen, mousePosScreenOnDown));
 //			if (timeSinceMouseButtonDown < DOUBLE_CLICK_TIME && Vector2.Distance (MousePosScreen, mousePosScreenOnDown) < 4) {
 			// Tell ALL selected tiles to update their click offset!
-			foreach (LevelTile levelTile in tilesSelected) {
-				levelTile.SetMouseClickOffset (MousePosWorld);
+			foreach (RoomTile roomTile in tilesSelected) {
+				roomTile.SetMouseClickOffset (MousePosWorld);
 			}
 			// Are we NOT over anything? Activate the selectionRect AND release any selected tiles!
 			if (!IsMouseOverAnything ()) {
 				selectionRect.Activate ();
-				ReleaseLevelTilesSelected();
+				ReleaseRoomTilesSelected();
 			}
 		}
 		// Update on-mouse-down vectors!
@@ -668,27 +668,27 @@ public class MapEditor : MonoBehaviour {
 
 		// Dragging a LEVEL TILE(S), released the LEFT mouse button, AND not holding down the multi-selection key??
 		if (tilesSelected.Count>0 && mouseButton==0 && !CanSelectMultipleTiles()) {
-			// Save all dragging tiles' levelData to file (and clear out any snapshot datas)!
-			foreach (LevelTile tile in tilesSelected) {
-				LevelSaverLoader.UpdateLevelPropertiesInLevelFile(tile.MyLevelData);
+			// Save all dragging tiles' roomData to file (and clear out any snapshot datas)!
+			foreach (RoomTile tile in tilesSelected) {
+				RoomSaverLoader.UpdateRoomPropertiesInRoomFile(tile.MyRoomData);
 			}
-			// Update the world-bounds, level neighbors, etc.!
-			CurrentWorldData.SetAllLevelDatasFundamentalProperties();
+			// Update the world-bounds, room neighbors, etc.!
+			CurrentWorldData.SetAllRoomDatasFundamentalProperties();
             // Update ALL Tiles' visuals.
-			foreach (LevelTile tile in CurrWorldLevelTiles) {
+			foreach (RoomTile tile in CurrWorldRoomTiles) {
 				tile.RefreshColors();
 			}
 
-//			// Mouse up = release all levelTilesSelected!
-//			ReleaseLevelTilesSelected();
+//			// Mouse up = release all roomTilesSelected!
+//			ReleaseRoomTilesSelected();
 		}
 	}
 	private void OnMouseDoubleClicked() {
-		// Am I over any level?? Load it!!
-		for (int i=CurrWorldLevelTiles.Count-1; i>=0; --i) {
-			LevelTile tile = CurrWorldLevelTiles[i];
+		// Am I over any room?? Load it!!
+		for (int i=CurrWorldRoomTiles.Count-1; i>=0; --i) {
+			RoomTile tile = CurrWorldRoomTiles[i];
 			if (tile.IsDragReadyMouseOverMe) {
-				SceneHelper.OpenGameplayScene(tile.WorldIndex, tile.LevelKey);
+				SceneHelper.OpenGameplayScene(tile.WorldIndex, tile.RoomKey);
 				break;
 			}
 		}
@@ -700,14 +700,14 @@ public class MapEditor : MonoBehaviour {
 	// ================================================================
 	//  Destroy
 	// ================================================================
-	private void DestroyAllLevelTiles() {
-		if (allLevelTiles != null) {
-			for (int worldIndex=0; worldIndex<allLevelTiles.Count; worldIndex++) {
-				for (int i=0; i<allLevelTiles[worldIndex].Count; i++) {
-					Destroy (allLevelTiles[worldIndex][i].gameObject);
+	private void DestroyAllRoomTiles() {
+		if (allRoomTiles != null) {
+			for (int worldIndex=0; worldIndex<allRoomTiles.Count; worldIndex++) {
+				for (int i=0; i<allRoomTiles[worldIndex].Count; i++) {
+					Destroy (allRoomTiles[worldIndex][i].gameObject);
 				}
 			}
-			allLevelTiles.Clear();
+			allRoomTiles.Clear();
 		}
 	}
 

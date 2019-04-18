@@ -1,4 +1,4 @@
-//namespace DentedPixel{
+﻿//namespace DentedPixel{
 using System;
 using UnityEngine;
 
@@ -1051,7 +1051,7 @@ public class LTDescr
 
 	#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2 && !UNITY_4_3 && !UNITY_4_5
 
-	private static void alphaRecursive( RectTransform rectTransform, float val, int recursiveLevel = 0){
+	private static void alphaRecursive( RectTransform rectTransform, float val, int recursiveRoom = 0){
 		if(rectTransform.childCount>0){
 			foreach (RectTransform child in rectTransform) {
 				UnityEngine.UI.MaskableGraphic uiImage = child.GetComponent<UnityEngine.UI.Image>();
@@ -1064,7 +1064,7 @@ public class LTDescr
 					}
 				}
 
-				alphaRecursive(child, val, recursiveLevel + 1);
+				alphaRecursive(child, val, recursiveRoom + 1);
 			}
 		}
 	}

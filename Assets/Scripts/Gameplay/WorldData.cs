@@ -6,19 +6,19 @@ using System.IO;
 [System.Serializable]
 public class WorldData {
 	// Components
-	public Dictionary<string, LevelData> levelDatas; // ALL level datas in this world! Loaded up when WE'RE loaded up.
-    public List<LevelClusterData> clusters;
+	public Dictionary<string, RoomData> roomDatas; // ALL room datas in this world! Loaded up when WE'RE loaded up.
+    public List<RoomClusterData> clusters;
 	// Properties
 	public bool isWorldUnlocked;
 	public int worldIndex; // starts at 0.
     public int NumSnacksCollected { get; private set; }
     public int NumSnacksTotal { get; private set; }
-    private Rect boundsRectAllLevels; // For the finished game, it doesn't make sense to have TWO rects. But in development, a lot of worlds' levels aren't used. So we have to make the distinction.
-	private Rect boundsRectPlayableLevels; // For determining LevelSelect view and WorldSelect view.
+    private Rect boundsRectAllRooms; // For the finished game, it doesn't make sense to have TWO rects. But in development, a lot of worlds' rooms aren't used. So we have to make the distinction.
+	private Rect boundsRectPlayableRooms; // For determining RoomSelect view and WorldSelect view.
 
 	// Getters
 	/** Though we don't position anything special with this value, this IS used under the hood to keep street poses within a reasonable range to avoid float-point issues. */
-	public Vector2 CenterPos { get { return boundsRectPlayableLevels.center; } } // TODO: Decide if we're using this or not. (I'd say cut it for now unless we know we want it.)
+	public Vector2 CenterPos { get { return boundsRectPlayableRooms.center; } } // TODO: Decide if we're using this or not. (I'd say cut it for now unless we know we want it.)
 
 
 	// ================================================================
@@ -32,103 +32,103 @@ public class WorldData {
 	public void Initialize () {
 		isWorldUnlocked = true;//SaveStorage.GetInt (SaveKeys.IsWorldUnlocked (WorldIndex)) == 1;
 
-		LoadAllLevelDatas();
+		LoadAllRoomDatas();
 
-		SetAllLevelDatasFundamentalProperties();
-//		Debug.Log ("World " + WorldIndex + "  lvls: " + LevelUtils.GetNumLevelsConnectedToStart (levelDatas) + "   stars: " + LevelUtils.GetNumRegularStarsInLevelsConnectedToStart (levelDatas) + "   (" + LevelUtils.GetNumSecretStarsInLevelsConnectedToStart (levelDatas) + " secret stars)");
+		SetAllRoomDatasFundamentalProperties();
+//		Debug.Log ("World " + WorldIndex + "  rooms: " + RoomUtils.GetNumRoomsConnectedToStart (roomDatas) + "   stars: " + RoomUtils.GetNumRegularStarsInRoomsConnectedToStart (roomDatas) + "   (" + RoomUtils.GetNumSecretStarsInRoomsConnectedToStart (roomDatas) + " secret stars)");
 	}
 //	/** Initialize from an existing World; for serialization. */
-//	public void InitializeFromExistingWorld (Dictionary<string, Level> _levels, List<LevelLinkData> _levelLinkDatas) {
-//		// Collect serialized LevelDatas for every level in the provided world.
-//		Dictionary<string, LevelData> serializedLevelDatas = new Dictionary<string, LevelData> (_levels.Count);
-//		foreach (Level l in _levels.Values) {
-//			LevelData serializedLevelData = l.SerializeAsData();
-//			serializedLevelDatas[l.LevelKey] = serializedLevelData;
+//	public void InitializeFromExistingWorld (Dictionary<string, Room> _rooms, List<RoomLinkData> _roomLinkDatas) {
+//		// Collect serialized RoomDatas for every room in the provided world.
+//		Dictionary<string, RoomData> serializedRoomDatas = new Dictionary<string, RoomData> (_rooms.Count);
+//		foreach (Room l in _rooms.Values) {
+//			RoomData serializedRoomData = l.SerializeAsData();
+//			serializedRoomDatas[l.RoomKey] = serializedRoomData;
 //		}
-//		// Assign my LevelDatas and LevelLinkDatas from the ones we've created.
-//		levelDatas = serializedLevelDatas;
-//		levelLinkDatas = _levelLinkDatas;
+//		// Assign my RoomDatas and RoomLinkDatas from the ones we've created.
+//		roomDatas = serializedRoomDatas;
+//		roomLinkDatas = _roomLinkDatas;
 //	}
 
-	/** Call this immediately after we've got our list of LevelDatas. This function is essential: it sets the fundamental properties of all my LevelDatas, as well as my own world bounds rects. */
-	public void SetAllLevelDatasFundamentalProperties() {
-        UpdateAllLevelsOpeningsAndNeighbors();
-        RecalculateLevelClusters();
+	/** Call this immediately after we've got our list of RoomDatas. This function is essential: it sets the fundamental properties of all my RoomDatas, as well as my own world bounds rects. */
+	public void SetAllRoomDatasFundamentalProperties() {
+        UpdateAllRoomsOpeningsAndNeighbors();
+        RecalculateRoomClusters();
 		UpdateWorldBoundsRects();
-//		SetAllLevelDatasPosWorld (); // now that I know MY center position, let's tell all my LevelDatas their posWorld (based on their global position)!
+//		SetAllRoomDatasPosWorld (); // now that I know MY center position, let's tell all my RoomDatas their posWorld (based on their global position)!
     }
 
-    private void UpdateAllLevelsOpeningsAndNeighbors() {
-        foreach (LevelData ld in levelDatas.Values) { ld.CalculateOpenings(); }
-        foreach (LevelData ld in levelDatas.Values) { ld.UpdateNeighbors(); }
+    private void UpdateAllRoomsOpeningsAndNeighbors() {
+        foreach (RoomData rd in roomDatas.Values) { rd.CalculateOpenings(); }
+        foreach (RoomData rd in roomDatas.Values) { rd.UpdateNeighbors(); }
     }
 	private void UpdateWorldBoundsRects () {
-		// Calculate my boundsRectAllLevels so I can know when the camera is lookin' at me!
-		boundsRectAllLevels = new Rect (0,0, 0,0);
-		boundsRectPlayableLevels = new Rect (0,0, 0,0);
-		foreach (LevelData ld in levelDatas.Values) {
-			AddLevelBoundsToWorldBoundsRects (ld);
+		// Calculate my boundsRectAllRooms so I can know when the camera is lookin' at me!
+		boundsRectAllRooms = new Rect (0,0, 0,0);
+		boundsRectPlayableRooms = new Rect (0,0, 0,0);
+		foreach (RoomData rd in roomDatas.Values) {
+			AddRoomBoundsToWorldBoundsRects (rd);
 		}
-		// Hey, politely check if our playableLevels rect is still nothing (which will happen if we DON'T have a starting level of the stipulated name). If so, make playable-lvls rect same as all-lvls rect.
-		if (boundsRectPlayableLevels == new Rect ()) {
-			boundsRectPlayableLevels = new Rect(boundsRectAllLevels);
+		// Hey, politely check if our playableRooms rect is still nothing (which will happen if we DON'T have a starting room of the stipulated name). If so, make playable-rooms rect same as all-rooms rect.
+		if (boundsRectPlayableRooms == new Rect ()) {
+			boundsRectPlayableRooms = new Rect(boundsRectAllRooms);
 		}
 //		// Now round my rects' values to even numbers!
-//		MathUtils.RoundRectValuesToEvenInts (ref boundsRectAllLevels);
-//		MathUtils.RoundRectValuesToEvenInts (ref boundsRectPlayableLevels);
+//		MathUtils.RoundRectValuesToEvenInts (ref boundsRectAllRooms);
+//		MathUtils.RoundRectValuesToEvenInts (ref boundsRectPlayableRooms);
 	}
-	private void AddLevelBoundsToWorldBoundsRects (LevelData ld) {
-		Rect ldBounds = ld.BoundsGlobal;
-		// Add ALL levels to the allLevels list.
-		boundsRectAllLevels = MathUtils.GetCompoundRectangle (boundsRectAllLevels, ldBounds);
-		// Only add levels IN CLUSTERS for the playableLevels list.
-		if (ld.IsInCluster) {
-			boundsRectPlayableLevels = MathUtils.GetCompoundRectangle (boundsRectPlayableLevels, ldBounds);
+	private void AddRoomBoundsToWorldBoundsRects (RoomData rd) {
+		Rect ldBounds = rd.BoundsGlobal;
+		// Add ALL rooms to the allRooms list.
+		boundsRectAllRooms = MathUtils.GetCompoundRectangle (boundsRectAllRooms, ldBounds);
+		// Only add rooms IN CLUSTERS for the playableRooms list.
+		if (rd.IsInCluster) {
+			boundsRectPlayableRooms = MathUtils.GetCompoundRectangle (boundsRectPlayableRooms, ldBounds);
 		}
 	}
-//	/** Once we know where the center of the playable world is, set the posWorld value for all my levels! */
-//	private void SetAllLevelDatasPosWorld () {
-//		foreach (LevelData ld in levelDatas.Values) {
-//			ld.SetPosWorld (new Vector2 (ld.posGlobal.x-CenterPos.x, ld.posGlobal.y-CenterPos.y));
+//	/** Once we know where the center of the playable world is, set the posWorld value for all my rooms! */
+//	private void SetAllRoomDatasPosWorld () {
+//		foreach (RoomData rd in roomDatas.Values) {
+//			rd.SetPosWorld (new Vector2 (rd.posGlobal.x-CenterPos.x, rd.posGlobal.y-CenterPos.y));
 //		}
 //	}
-    private void RecalculateLevelClusters() {
-        // Reset Levels' ClusterIndex.
-        foreach (LevelData ld in levelDatas.Values) {
-            ld.ClusterIndex = -1;
-            ld.WasUsedInSearchAlgorithm = false;
+    private void RecalculateRoomClusters() {
+        // Reset Rooms' ClusterIndex.
+        foreach (RoomData rd in roomDatas.Values) {
+            rd.ClusterIndex = -1;
+            rd.WasUsedInSearchAlgorithm = false;
         }
         
         // Remake Clusters!
-        clusters = new List<LevelClusterData>();
-        foreach (LevelData ld in levelDatas.Values) {
-            if (ld.WasUsedInSearchAlgorithm) { continue; } // Already used this fella? Skip 'em.
-            // If this is a ClusterStart level...!
-            if (ld.isClustStart) {
+        clusters = new List<RoomClusterData>();
+        foreach (RoomData rd in roomDatas.Values) {
+            if (rd.WasUsedInSearchAlgorithm) { continue; } // Already used this fella? Skip 'em.
+            // If this is a ClusterStart room...!
+            if (rd.isClustStart) {
                 // Add a new Cluster, and populate it!
-                LevelClusterData newClust = new LevelClusterData(clusters.Count);
+                RoomClusterData newClust = new RoomClusterData(clusters.Count);
                 clusters.Add(newClust);
-                RecursivelyAddLevelToCluster(ld, newClust);
+                RecursivelyAddRoomToCluster(rd, newClust);
                 // Update the Cluster's values!
                 newClust.UpdateCollectablesCounts();
             }
         }
-        // Reset Levels' WasUsedInSearchAlgorithm.
-        foreach (LevelData ld in levelDatas.Values) {
-            ld.WasUsedInSearchAlgorithm = false;
+        // Reset Rooms' WasUsedInSearchAlgorithm.
+        foreach (RoomData rd in roomDatas.Values) {
+            rd.WasUsedInSearchAlgorithm = false;
         }
         
     }
-    private void RecursivelyAddLevelToCluster(LevelData ld, LevelClusterData cluster) {
-        if (ld.WasUsedInSearchAlgorithm) { return; } // This LevelData was used? Ignore it.
-        // Update Level's values, and add to Cluster's list!
-        ld.ClusterIndex = cluster.ClusterIndex;
-        ld.WasUsedInSearchAlgorithm = true;
-        cluster.levels.Add(ld);
+    private void RecursivelyAddRoomToCluster(RoomData rd, RoomClusterData cluster) {
+        if (rd.WasUsedInSearchAlgorithm) { return; } // This RoomData was used? Ignore it.
+        // Update Room's values, and add to Cluster's list!
+        rd.ClusterIndex = cluster.ClusterIndex;
+        rd.WasUsedInSearchAlgorithm = true;
+        cluster.rooms.Add(rd);
         // Now try for all its neighbors!
-        for (int i=0; i<ld.Neighbors.Count; i++) {
-            if (ld.Neighbors[i].IsLevelTo) {
-                RecursivelyAddLevelToCluster(ld.Neighbors[i].LevelTo, cluster);
+        for (int i=0; i<rd.Neighbors.Count; i++) {
+            if (rd.Neighbors[i].IsRoomTo) {
+                RecursivelyAddRoomToCluster(rd.Neighbors[i].RoomTo, cluster);
             }
         }
     }
@@ -139,43 +139,43 @@ public class WorldData {
 	// ================================================================
 	public bool IsWorldUnlocked { get { return isWorldUnlocked; } }
 	public int WorldIndex { get { return worldIndex; } }
-	public Dictionary<string, LevelData> LevelDatas { get { return levelDatas; } }
-	public Rect BoundsRectAllLevels { get { return boundsRectAllLevels; } }
-	public Rect BoundsRectPlayableLevels { get { return boundsRectPlayableLevels; } }
+	public Dictionary<string, RoomData> RoomDatas { get { return roomDatas; } }
+	public Rect BoundsRectAllRooms { get { return boundsRectAllRooms; } }
+	public Rect BoundsRectPlayableRooms { get { return boundsRectPlayableRooms; } }
 
 
-    public LevelData GetLevelData (string key, bool doMakeOneIfItDoesntExist=false) {
-		if (levelDatas.ContainsKey(key)) {
-			return levelDatas[key];
+    public RoomData GetRoomData (string key, bool doMakeOneIfItDoesntExist=false) {
+		if (roomDatas.ContainsKey(key)) {
+			return roomDatas[key];
 		}
 		if (doMakeOneIfItDoesntExist) {
-            return AddNewLevel(key);
+            return AddNewRoom(key);
 		}
 		else {
 			return null;
 		}
 	}
 
-	private Vector2 GetBrandNewLevelPos() {
+	private Vector2 GetBrandNewRoomPos() {
 		// Return where the MapEditor camera was last looking!!
 		return new Vector2 (SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosX), SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosY));
 	}
 
-	/** Creates and returns a rect that's JUST made up of these levels. */
-	public Rect GetBoundsOfLevels (string[] _levelKeys) {
+	/** Creates and returns a rect that's JUST made up of these rooms. */
+	public Rect GetBoundsOfRooms (string[] _roomKeys) {
 		Rect returnRect = new Rect (0,0, 0,0);
-		for (int i=0; i<_levelKeys.Length; i++) {
-			LevelData ld = GetLevelData (_levelKeys [i]);
-			if (ld == null) { Debug.LogError ("Oops! This level doesn't exist in this world! " + _levelKeys[i] + ", world " + worldIndex); continue; }
-			returnRect = MathUtils.GetCompoundRectangle (returnRect, ld.BoundsGlobal);
+		for (int i=0; i<_roomKeys.Length; i++) {
+			RoomData rd = GetRoomData (_roomKeys [i]);
+			if (rd == null) { Debug.LogError ("Oops! This room doesn't exist in this world! " + _roomKeys[i] + ", world " + worldIndex); continue; }
+			returnRect = MathUtils.GetCompoundRectangle (returnRect, rd.BoundsGlobal);
 		}
 		return returnRect;
 	}
     
 
-    public LevelData GetLevelNeighbor(LevelData originLD, LevelOpening opening) {
+    public RoomData GetRoomNeighbor(RoomData originLD, RoomOpening opening) {
         // Get the neighbor, ignoring ITS openings.
-        LevelData neighbor = GetLevelAtSide(originLD, opening.posCenter, opening.side);
+        RoomData neighbor = GetRoomAtSide(originLD, opening.posCenter, opening.side);
         if (neighbor == null) { return null; } // NOTHing there? Return null!
         // Ok, if this neighbor HAS a corresponding opening, return it!!
         Rect opRect = opening.GetCollRectGlobal(originLD.PosGlobal);
@@ -189,14 +189,14 @@ public class WorldData {
         return null;
     }
     // TODO: Replace this with known neighbors now!!
-	/// Use this for debug level-jumping. Will return level at side, irrespective of Player's position.
-	public LevelData Debug_GetSomeLevelAtSide(LevelData originLD, int side) {
-		// Find where a point in this next level would be. Then return the LevelData with that point in it!
+	/// Use this for debug room-jumping. Will return room at side, irrespective of Player's position.
+	public RoomData Debug_GetSomeRoomAtSide(RoomData originLD, int side) {
+		// Find where a point in this next room would be. Then return the RoomData with that point in it!
 		Vector2Int dir = MathUtils.GetDir(side);
 		Vector2 originSize = originLD.BoundsGlobal.size;
 		Vector2 searchOrigin = originLD.BoundsGlobal.position;//.center;
-		searchOrigin += new Vector2(dir.x*(originSize.x+1f), dir.y*(originSize.y+1f)); // +1 so the levels don't have to be directly touching; we'll allow even a small gap.
-		// Instead of just looking at one point, put out TWO feelers, as levels can be irregularly aligned.
+		searchOrigin += new Vector2(dir.x*(originSize.x+1f), dir.y*(originSize.y+1f)); // +1 so the rooms don't have to be directly touching; we'll allow even a small gap.
+		// Instead of just looking at one point, put out TWO feelers, as rooms can be irregularly aligned.
 		Vector2[] searchPoints = new Vector2[3];
 		if (side==Sides.L || side==Sides.R) {
 			searchPoints[1] = searchOrigin;
@@ -209,52 +209,52 @@ public class WorldData {
 			searchPoints[2] = searchOrigin - new Vector2(originSize.x*0.4f, 0);
 		}
 		foreach (Vector2 point in searchPoints) {
-			LevelData ldHere = GetLevelWithPoint(point);
+			RoomData ldHere = GetRoomWithPoint(point);
 			if (ldHere != null) { return ldHere; }
 		}
 		return null;
 	}
-	/** FOR NOW, our level-traversal system is dead simple. Nothing's precalculated. We search for the next level the moment we exit one. */
-	public LevelData GetLevelAtSide(LevelData originLD, Vector2 searchPos, int side) {
-        // Lock searchPos on the EDGE of the origin level-- we only wanna use its x/y value parallel to the next level.
-        searchPos = LockPosOnLevelEdge(originLD, searchPos, side);
-		// Find where a point in this next level would be. Then return the LevelData with that point in it!
+	/** FOR NOW, our room-traversal system is dead simple. Nothing's precalculated. We search for the next room the moment we exit one. */
+	public RoomData GetRoomAtSide(RoomData originLD, Vector2 searchPos, int side) {
+        // Lock searchPos on the EDGE of the origin room-- we only wanna use its x/y value parallel to the next room.
+        searchPos = LockPosOnRoomEdge(originLD, searchPos, side);
+		// Find where a point in this next room would be. Then return the RoomData with that point in it!
         Vector2Int dir = MathUtils.GetDir(side);
-		Vector2 searchPoint = originLD.posGlobal + searchPos + dir*1f; // look ahead a few feet into the next level area.
-		LevelData ldHere = GetLevelWithPoint(searchPoint);
+		Vector2 searchPoint = originLD.posGlobal + searchPos + dir*1f; // look ahead a few feet into the next room area.
+		RoomData ldHere = GetRoomWithPoint(searchPoint);
 		if (ldHere != null) { return ldHere; }
 		return null;
 	}
-	public LevelData GetLevelWithPoint(Vector2 point) {
-		foreach (LevelData ld in levelDatas.Values) {
+	public RoomData GetRoomWithPoint(Vector2 point) {
+		foreach (RoomData rd in roomDatas.Values) {
 			// HACK Temp conversion business
-			Rect bounds = new Rect(ld.BoundsGlobal);
+			Rect bounds = new Rect(rd.BoundsGlobal);
 			bounds.position -= bounds.size*0.5f;
-			if (bounds.Contains(point)) { return ld; }
+			if (bounds.Contains(point)) { return rd; }
 		}
 		return null; // Nah, nobody here.
     }
-    /// Takes a LOCAL pos, and sets its x or y to the exact provided side of this level. E.g. Level's 500 tall, and pass in (0,0) and side Top: will return (0,250).
-    public Vector2 LockPosOnLevelEdge(LevelData ld, Vector2 pos, int side) {
+    /// Takes a LOCAL pos, and sets its x or y to the exact provided side of this room. E.g. Room's 500 tall, and pass in (0,0) and side Top: will return (0,250).
+    public Vector2 LockPosOnRoomEdge(RoomData rd, Vector2 pos, int side) {
         switch (side) {
-            case Sides.B: return new Vector2(pos.x, ld.BoundsLocal.yMin);
-            case Sides.T: return new Vector2(pos.x, ld.BoundsLocal.yMax);
-            case Sides.L: return new Vector2(ld.BoundsLocal.xMin, pos.y);
-            case Sides.R: return new Vector2(ld.BoundsLocal.xMax, pos.y);
+            case Sides.B: return new Vector2(pos.x, rd.BoundsLocal.yMin);
+            case Sides.T: return new Vector2(pos.x, rd.BoundsLocal.yMax);
+            case Sides.L: return new Vector2(rd.BoundsLocal.xMin, pos.y);
+            case Sides.R: return new Vector2(rd.BoundsLocal.xMax, pos.y);
             default: Debug.LogError("Side not recongized: " + side); return pos; // Hmm.
         }
     }
 
-	public string GetUnusedLevelKey(string prefix="NewLevel") {
+	public string GetUnusedRoomKey(string prefix="NewRoom") {
 		int suffixIndex = 0;
 		int safetyCount = 0;
 		while (safetyCount++ < 99) { // 'Cause I'm feeling cautious. :)
 			string newKey = prefix + suffixIndex;
-			if (!levelDatas.ContainsKey(newKey)) { return newKey; }
+			if (!roomDatas.ContainsKey(newKey)) { return newKey; }
 			suffixIndex ++;
 		}
-		Debug.LogError("Wowza. Somehow got caught in an infinite naming loop. Either you have 99 levels named NewLevel0-99, or bad code.");
-		return "NewLevel";
+		Debug.LogError("Wowza. Somehow got caught in an infinite naming loop. Either you have 99 rooms named NewRoom0-99, or bad code.");
+		return "NewRoom";
     }
 
 
@@ -264,16 +264,16 @@ public class WorldData {
     public void UpdateNumSnacks() {
         NumSnacksTotal = 0;
         NumSnacksCollected = 0;
-        foreach (LevelData ld in levelDatas.Values) {
-            ld.UpdateNumSnacks();
-            NumSnacksTotal += ld.NumSnacksTotal;
-            NumSnacksCollected += ld.NumSnacksCollected;
+        foreach (RoomData rd in roomDatas.Values) {
+            rd.UpdateNumSnacks();
+            NumSnacksTotal += rd.NumSnacksTotal;
+            NumSnacksCollected += rd.NumSnacksCollected;
         }
     }
     //public void UpdateNumSnacksTotal() {
     //    NumSnacksTotal = 0;
-    //    foreach (LevelData ld in levelDatas.Values) {
-    //        foreach (PropData pd in ld.allPropDatas) {
+    //    foreach (RoomData rd in roomDatas.Values) {
+    //        foreach (PropData pd in rd.allPropDatas) {
     //            if (pd is SnackData) { NumSnacksTotal++; }
     //        }
     //    }
@@ -284,18 +284,18 @@ public class WorldData {
     // ================================================================
     public void OnPlayerEatSnack() {
         // Update counts!
-        UpdateNumSnacks(); // CANDO #optimization: Only update the snacks in the level we ate it in.
+        UpdateNumSnacks(); // CANDO #optimization: Only update the snacks in the room we ate it in.
         // Dispatch event!
         GameManagers.Instance.EventManager.OnSnacksCollectedChanged(WorldIndex);
     }
 
 
     // ================================================================
-    //  LevelDatas
+    //  RoomDatas
     // ================================================================
-    /** Makes a LevelData for every level file in our world's levels folder!! */
-    private void LoadAllLevelDatas () {
-		levelDatas = new Dictionary<string, LevelData>();
+    /** Makes a RoomData for every room file in our world's rooms folder!! */
+    private void LoadAllRoomDatas () {
+		roomDatas = new Dictionary<string, RoomData>();
 
 		string worldPath = FilePaths.WorldFileAddress (worldIndex);
 		DirectoryInfo info = new DirectoryInfo(worldPath);
@@ -307,9 +307,9 @@ public class WorldData {
 					continue;
 				}
 				string fileName = file.Name.Substring(0, file.Name.Length-4); // Remove the ".txt".
-				if (fileName == "_LevelLinks") { continue; } // Ignore the _LevelLinks.txt file.
-				string levelKey = fileName;
-				AddLevelFromFile (levelKey);
+				if (fileName == "_RoomLinks") { continue; } // Ignore the _RoomLinks.txt file.
+				string roomKey = fileName;
+				AddRoomFromFile (roomKey);
 			}
 		}
 		else {
@@ -325,74 +325,74 @@ public class WorldData {
         //			return TextUtils.GetStringArrayFromStringWithLineBreaks(wholeFile, StringSplitOptions.None);
         //		}
 
-        //		TextAsset[] levelFiles = Resources.LoadAll<TextAsset> (worldPath);
-        //		foreach (TextAsset t in levelFiles) {
-        //			if (t.name == "_LevelLinks") { continue; } // Ignore the _LevelLinks.txt file.
-        //			string levelKey = t.name;
-        //			AddLevelFromFile (levelKey);
+        //		TextAsset[] roomFiles = Resources.LoadAll<TextAsset> (worldPath);
+        //		foreach (TextAsset t in roomFiles) {
+        //			if (t.name == "_RoomLinks") { continue; } // Ignore the _RoomLinks.txt file.
+        //			string roomKey = t.name;
+        //			AddRoomFromFile (roomKey);
         //		}
     }
-	private LevelData AddLevelFromFile(string levelKey) {
-		LevelData newLevelData = new LevelData(this, levelKey);
-		LevelSaverLoader.LoadLevelDataFromItsFile (newLevelData);
-		levelDatas.Add(levelKey, newLevelData);
-		return newLevelData;
+	private RoomData AddRoomFromFile(string roomKey) {
+		RoomData newRoomData = new RoomData(this, roomKey);
+		RoomSaverLoader.LoadRoomDataFromItsFile (newRoomData);
+		roomDatas.Add(roomKey, newRoomData);
+		return newRoomData;
 	}
-	public void ReloadLevelData(string levelKey) {
+	public void ReloadRoomData(string roomKey) {
         // Safety check.
-        if (!levelDatas.ContainsKey(levelKey)) {
-            Debug.LogWarning("Can't reload LevelData; doesn't exist. World: " + worldIndex + ", LevelKey: " + levelKey);
+        if (!roomDatas.ContainsKey(roomKey)) {
+            Debug.LogWarning("Can't reload RoomData; doesn't exist. World: " + worldIndex + ", RoomKey: " + roomKey);
             return;
         }
-		LevelData levelData = GetLevelData(levelKey);
-		// Reload all of this levelData's contents! (WITHOUT remaking it or anything-- it's important to retain all references to it!)
-		LevelSaverLoader.LoadLevelDataFromItsFile(levelData);
-        // Refresh fundamental world/level properties!
-        SetAllLevelDatasFundamentalProperties();
+		RoomData roomData = GetRoomData(roomKey);
+		// Reload all of this roomData's contents! (WITHOUT remaking it or anything-- it's important to retain all references to it!)
+		RoomSaverLoader.LoadRoomDataFromItsFile(roomData);
+        // Refresh fundamental world/room properties!
+        SetAllRoomDatasFundamentalProperties();
 	}
 
 
-	private LevelData AddNewLevel(string levelKey) {
-        if (GetLevelData(levelKey) != null) { // Safety check.
-            Debug.LogError("Whoa, trying to make a Level with key: " + levelKey + ", but one already exists!");
+	private RoomData AddNewRoom(string roomKey) {
+        if (GetRoomData(roomKey) != null) { // Safety check.
+            Debug.LogError("Whoa, trying to make a Room with key: " + roomKey + ", but one already exists!");
             return null;
         }
 		// Make/populate/add it!
-		LevelData ld = new LevelData(this, levelKey);
-        ld.SetPosGlobal(GetBrandNewLevelPos());
-        LevelSaverLoader.AddEmptyLevelElements(ref ld);
-        levelDatas.Add(levelKey, ld);
-        // Refresh fundamental world/level properties!
-        SetAllLevelDatasFundamentalProperties();
+		RoomData rd = new RoomData(this, roomKey);
+        rd.SetPosGlobal(GetBrandNewRoomPos());
+        RoomSaverLoader.AddEmptyRoomElements(ref rd);
+        roomDatas.Add(roomKey, rd);
+        // Refresh fundamental world/room properties!
+        SetAllRoomDatasFundamentalProperties();
         // Save the file!
-        LevelSaverLoader.SaveLevelFile(ld);
-		return ld;
+        RoomSaverLoader.SaveRoomFile(rd);
+		return rd;
 	}
 
 
 	// ================================================================
-	//	Level Files
+	//	Room Files
 	// ================================================================
-	public void MoveLevelFileToWorldFolder(string levelKey, int worldIndexTo) {
+	public void MoveRoomFileToWorldFolder(string roomKey, int worldIndexTo) {
 		string destDirectory = FilePaths.WorldFileAddress(worldIndexTo);
-		MoveLevelFileToFolder(levelKey, destDirectory);
+		MoveRoomFileToFolder(roomKey, destDirectory);
 	}
-	public void MoveLevelFileToTrashFolder(string levelKey) {
+	public void MoveRoomFileToTrashFolder(string roomKey) {
 		string destDirectory = FilePaths.WorldTrashFileAddress(worldIndex);
-		MoveLevelFileToFolder(levelKey, destDirectory);
+		MoveRoomFileToFolder(roomKey, destDirectory);
 	}
-	private void MoveLevelFileToFolder (string levelKey, string destDirectory) {
-		string sourceNameFull = FilePaths.WorldFileAddress(worldIndex) + levelKey + ".txt";
+	private void MoveRoomFileToFolder (string roomKey, string destDirectory) {
+		string sourceNameFull = FilePaths.WorldFileAddress(worldIndex) + roomKey + ".txt";
         // Directory doesn't exist? Make it!
         if (!Directory.Exists(destDirectory)) {
             Directory.CreateDirectory(destDirectory);
             Debug.LogWarning("Created directory: \"" + destDirectory + "\"");
         }
-        string destNameFull = destDirectory + levelKey + ".txt";
+        string destNameFull = destDirectory + roomKey + ".txt";
 		try {
 			File.Move(sourceNameFull, destNameFull);
 		}
-		catch (System.Exception e) { Debug.LogError ("Error moving level file to world folder: " + sourceNameFull + " to " + destNameFull + ". " + e.ToString ()); }
+		catch (System.Exception e) { Debug.LogError ("Error moving room file to world folder: " + sourceNameFull + " to " + destNameFull + ". " + e.ToString ()); }
 	}
 
 
@@ -401,18 +401,18 @@ public class WorldData {
 
 
 /*
-    private void SetLevelsIsConnectedToStart() {
+    private void SetRoomsIsConnectedToStart() {
         // Tell all of them they're NOT first.
-        foreach (LevelData ld in levelDatas.Values) { ld.isConnectedToStart = false; }
+        foreach (RoomData rd in roomDatas.Values) { rd.isConnectedToStart = false; }
         // Get the special ones that are.
-        LevelData startLevel = GetLevelData (GameProperties.GetFirstLevelName (worldIndex));
-        // Firsht off, if this start level doesn't exist, don't continue doing anything. This whole world is total anarchy.
-        if (startLevel != null) {
-            List<LevelData> levelsConnectedToStart = LevelUtils.GetLevelsConnectedToLevel (this, startLevel);
-            // Tell these levels they're connected to the start dude!
-            startLevel.isConnectedToStart = true;
-            for (int i=0; i<levelsConnectedToStart.Count; i++) {
-                levelsConnectedToStart [i].isConnectedToStart = true;
+        RoomData startRoom = GetRoomData (GameProperties.GetFirstRoomName (worldIndex));
+        // Firsht off, if this start room doesn't exist, don't continue doing anything. This whole world is total anarchy.
+        if (startRoom != null) {
+            List<RoomData> roomsConnectedToStart = RoomUtils.GetRoomsConnectedToRoom (this, startRoom);
+            // Tell these rooms they're connected to the start dude!
+            startRoom.isConnectedToStart = true;
+            for (int i=0; i<roomsConnectedToStart.Count; i++) {
+                roomsConnectedToStart [i].isConnectedToStart = true;
             }
         }
     }

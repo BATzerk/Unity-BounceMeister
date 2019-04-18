@@ -7,11 +7,11 @@ using TMPro;
 public class EditModeUI : MonoBehaviour {
     // Components
     [SerializeField] private Image i_editModeBorder=null;
-    //[SerializeField] private TextMeshProUGUI t_levelName=null;
-    [SerializeField] private TMP_InputField tif_levelName=null;
+    //[SerializeField] private TextMeshProUGUI t_roomName=null;
+    [SerializeField] private TMP_InputField tif_roomName=null;
     // References
     //	[SerializeField] private GameController gameControllerRef;
-    private Level level;
+    private Room room;
 
     // Getters
     private DataManager dataManager { get { return GameManagers.Instance.DataManager; } }
@@ -22,16 +22,16 @@ public class EditModeUI : MonoBehaviour {
     //  Start / Destroy
     // ----------------------------------------------------------------
     private void Start() {
-        tif_levelName.interactable = GameProperties.IsEditModeAvailable;
+        tif_roomName.interactable = GameProperties.IsEditModeAvailable;
 
         // Add event listeners!
         eventManager.SetIsEditModeEvent += OnSetIsEditMode;
-        eventManager.StartLevelEvent += OnStartLevel;
+        eventManager.StartRoomEvent += OnStartRoom;
     }
     private void OnDestroy() {
         // Remove event listeners!
         eventManager.SetIsEditModeEvent -= OnSetIsEditMode;
-        eventManager.StartLevelEvent -= OnStartLevel;
+        eventManager.StartRoomEvent -= OnStartRoom;
     }
 
 
@@ -41,39 +41,39 @@ public class EditModeUI : MonoBehaviour {
     private void OnSetIsEditMode(bool isEditMode) {
         i_editModeBorder.enabled = isEditMode;
     }
-    private void OnStartLevel(Level _level) {
-        level = _level;
-        ResetLevelNameText();
+    private void OnStartRoom(Room _room) {
+        room = _room;
+        ResetRoomNameText();
     }
 
-    public void OnLevelNameTextChanged() {
+    public void OnRoomNameTextChanged() {
         // Change color if there's a naming conflict!
-        string newName = tif_levelName.text;
+        string newName = tif_roomName.text;
         Color color;
-        if (newName == level.LevelKey) { color = Color.black; } // Same name? Black.
-        else if (LevelSaverLoader.MayRenameLevelFile(level,newName)) { color = new Color(130/255f, 160/255f, 40/255f); } // Can rename? Green!
+        if (newName == room.RoomKey) { color = Color.black; } // Same name? Black.
+        else if (RoomSaverLoader.MayRenameRoomFile(room,newName)) { color = new Color(130/255f, 160/255f, 40/255f); } // Can rename? Green!
         else { color = new Color(140/255f, 55/255f, 40/255f); } // CAN'T rename? Red.
         // Apply the color.
-        foreach (TextMeshProUGUI t in tif_levelName.GetComponentsInChildren<TextMeshProUGUI>()) {
+        foreach (TextMeshProUGUI t in tif_roomName.GetComponentsInChildren<TextMeshProUGUI>()) {
             t.color = color;
         }
     }
-    public void OnLevelNameTextEndEdit() {
-        string newName = tif_levelName.text;
+    public void OnRoomNameTextEndEdit() {
+        string newName = tif_roomName.text;
         // MAY rename!
-        if (LevelSaverLoader.MayRenameLevelFile(level, newName)) {
-            // Rename the level file, and reload all LevelDatas!
-            LevelSaverLoader.RenameLevelFile(level, newName);
+        if (RoomSaverLoader.MayRenameRoomFile(room, newName)) {
+            // Rename the room file, and reload all RoomDatas!
+            RoomSaverLoader.RenameRoomFile(room, newName);
             dataManager.ReloadWorldDatas();
-            // Save that this is the most recent level we've been to!
-            SaveStorage.SetString(SaveKeys.LastPlayedLevelKey(level.WorldIndex),newName);
-            dataManager.currLevelData = dataManager.GetLevelData(level.WorldIndex,level.LevelKey, false);
+            // Save that this is the most recent room we've been to!
+            SaveStorage.SetString(SaveKeys.LastPlayedRoomKey(room.WorldIndex),newName);
+            dataManager.currRoomData = dataManager.GetRoomData(room.WorldIndex,room.RoomKey, false);
             // Reload the scene for safety.
             SceneHelper.ReloadScene();
         }
         // May NOT rename.
         else {
-            ResetLevelNameText();
+            ResetRoomNameText();
         }
     }
 
@@ -81,8 +81,8 @@ public class EditModeUI : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
-    private void ResetLevelNameText() {
-        tif_levelName.text = level.LevelKey;
+    private void ResetRoomNameText() {
+        tif_roomName.text = room.RoomKey;
     }
 
 

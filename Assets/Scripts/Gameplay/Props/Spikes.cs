@@ -20,8 +20,8 @@ public class Spikes : Collidable {
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	public void Initialize(Level _myLevel, SpikesData data) {
-		base.BaseInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, SpikesData data) {
+		base.BaseInitialize(_myRoom, data);
 
 		bodySprite.size = data.myRect.size;
 		bodySprite.transform.localPosition = data.myRect.position;

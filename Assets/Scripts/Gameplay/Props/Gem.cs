@@ -10,13 +10,13 @@ public class Gem : Edible {
 	// ----------------------------------------------------------------
 	//  Initialize
 	// ----------------------------------------------------------------
-	public void Initialize(Level _myLevel, GemData data, int myIndex) {
-		base.BaseInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, GemData data, int myIndex) {
+		base.BaseInitialize(_myRoom, data);
         this.myIndex = myIndex;
         this.type = data.type;
 
         // Load wasEverEaten!
-        wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatGem(myLevel, myIndex));
+        wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatGem(myRoom, myIndex));
 
         // Set wasEverEaten visuals.
         if (wasEverEaten) {
@@ -34,7 +34,7 @@ public class Gem : Edible {
 	override public void GetEaten() {
         base.GetEaten();
         // Save the value!
-        SaveStorage.SetBool(SaveKeys.DidEatGem(myLevel, myIndex), true);
+        SaveStorage.SetBool(SaveKeys.DidEatGem(myRoom, myIndex), true);
         // Particle bursttt
         ps_collectedBurst.Emit(16);
 	}
@@ -51,7 +51,7 @@ public class Gem : Edible {
 
 		bodyRotation = Mathf.Sin(Time.time*1.4f) * 20f;
 
-        float oscOffset = myIndex*1.5f; // if multiple Gems in a level, this offsets their floaty animation.
+        float oscOffset = myIndex*1.5f; // if multiple Gems in a room, this offsets their floaty animation.
         Vector2 driftOffset = new Vector2(
 			Mathf.Cos(oscOffset+Time.time*3f) * 0.2f,
 			Mathf.Sin(oscOffset+Time.time*4f) * 0.3f);

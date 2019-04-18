@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/** NOTE: NOT SAVED to Level file! */
+/** NOTE: NOT SAVED to Room file! */
 public sealed class ConditionalGround : BaseGround {
 	// Properties
 	[SerializeField] private bool isOffWhenPlungeSpent = false; // we disappear when the Player spends their bounce, and re-appear when the Player recharges!

@@ -16,15 +16,15 @@ public class GateButton : Prop {
 	public bool IsPressed { get { return isPressed; } }
 	public int ChannelID { get { return channelID; } }
 	// Getters (Private)
-	private GateChannel MyChannel { get { return myLevel.GateChannels[channelID]; } }
+	private GateChannel MyChannel { get { return myRoom.GateChannels[channelID]; } }
 
 
 
 	// ----------------------------------------------------------------
 	//  Initialize
 	// ----------------------------------------------------------------
-	public void Initialize(Level _myLevel, GateButtonData data) {
-		base.BaseInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, GateButtonData data) {
+		base.BaseInitialize(_myRoom, data);
 
 		channelID = data.channelID;
 		bodyColor = MyChannel.Color;

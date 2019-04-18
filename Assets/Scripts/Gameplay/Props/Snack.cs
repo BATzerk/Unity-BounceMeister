@@ -22,13 +22,13 @@ public class Snack : Edible {
         // Remove event listeners!
         GameManagers.Instance.EventManager.PlayerInitEvent -= OnPlayerInit;
     }
-    public void Initialize(Level _myLevel, SnackData data, int myIndex) {
-        base.BaseInitialize(_myLevel, data);
+    public void Initialize(Room _myRoom, SnackData data, int myIndex) {
+        base.BaseInitialize(_myRoom, data);
         this.myIndex = myIndex;
         this.playerType = PlayerTypeHelper.TypeFromString(data.playerType);
 
         // Load wasEverEaten!
-        wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatSnack(myLevel, myIndex));
+        wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatSnack(myRoom, myIndex));
         isEaten = wasEverEaten;
         
         UpdatePresence();
@@ -39,7 +39,7 @@ public class Snack : Edible {
     //  Doers
     // ----------------------------------------------------------------
     private void UpdatePresence() {
-        Player currPlayer = myLevel.Player;
+        Player currPlayer = myRoom.Player;
         bool isMyType = currPlayer!=null && currPlayer.PlayerType()==playerType;
         
         // Update my color by my PlayerType.
@@ -85,12 +85,12 @@ public class Snack : Edible {
     override public void GetEaten() {
         base.GetEaten();
         // Save the value!
-        SaveStorage.SetBool(SaveKeys.DidEatSnack(myLevel, myIndex), true);
+        SaveStorage.SetBool(SaveKeys.DidEatSnack(myRoom, myIndex), true);
         // Particle bursttt and visuals
         sr_aura.enabled = false;
         ps_collectedBurst.Emit(4);
         // Tell my WorldData!
-        myLevel.WorldDataRef.OnPlayerEatSnack();
+        myRoom.WorldDataRef.OnPlayerEatSnack();
     }
 
 
@@ -108,7 +108,7 @@ public class Snack : Edible {
         rotDelta *= rotScale;
         bodyRotation += rotDelta;
 
-        float oscOffset = myIndex*1.5f; // if multiple Snacks in a level, this offsets their floaty animation.
+        float oscOffset = myIndex*1.5f; // if multiple Snacks in a room, this offsets their floaty animation.
         Vector2 driftOffset = new Vector2(
             Mathf.Cos(oscOffset+Time.time*2f) * driftAmp*0.06f,
             Mathf.Sin(oscOffset+Time.time*3.6f) * driftAmp*0.12f);

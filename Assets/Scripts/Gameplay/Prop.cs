@@ -4,16 +4,16 @@ using UnityEngine;
 
 abstract public class Prop : MonoBehaviour {
     // Overrideables
-    virtual public bool DoSaveInLevelFile() { return true; } // by default, ALL Props wanna get saved into the Level text file. But some (e.g. Player) do NOT.
+    virtual public bool DoSaveInRoomFile() { return true; } // by default, ALL Props wanna get saved into the Room text file. But some (e.g. Player) do NOT.
 	// References
-	protected Level myLevel;
+	protected Room myRoom;
 
 	// Getters
 	public Vector2 PosLocal { get { return pos; } }
 	public Vector2 PosGlobal {
 		get {
-			if (myLevel==null) { return PosLocal; } // Safety check.
-			return PosLocal + myLevel.PosGlobal;
+			if (myRoom==null) { return PosLocal; } // Safety check.
+			return PosLocal + myRoom.PosGlobal;
 		}
 	}
 	protected Vector2 pos {
@@ -25,9 +25,9 @@ abstract public class Prop : MonoBehaviour {
 		set { this.transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, value); }
 	}
 
-	virtual protected void BaseInitialize(Level myLevel, PropData data) {
-		this.myLevel = myLevel;
-        GameUtils.ParentAndReset(this.gameObject, myLevel.transform);
+	virtual protected void BaseInitialize(Room myRoom, PropData data) {
+		this.myRoom = myRoom;
+        GameUtils.ParentAndReset(this.gameObject, myRoom.transform);
 
 		this.transform.localPosition = data.pos; // note that this is just a convenience default. Any grounds will set their pos from their rect.
 		rotation = data.rotation;

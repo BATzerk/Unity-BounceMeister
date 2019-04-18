@@ -35,8 +35,8 @@ public class Lift : Prop {
 	// ----------------------------------------------------------------
 	//  Initialize
 	// ----------------------------------------------------------------
-	public void Initialize(Level _myLevel, LiftData data) {
-		base.BaseInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, LiftData data) {
+		base.BaseInitialize(_myRoom, data);
         strength = data.strength;
 
 		sr_body.size = data.myRect.size;

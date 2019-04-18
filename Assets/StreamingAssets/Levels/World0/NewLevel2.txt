@@ -1,8 +1,0 @@
-levelProperties posGlobal:(-146.0, 108.0);designerFlag:0
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(-20.0, -14.0)
-Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00);canEatGems:False
-Ground myRect:(x:-24.00, y:5.00, width:4.00, height:22.00)
-Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-

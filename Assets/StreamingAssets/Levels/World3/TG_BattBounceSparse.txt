@@ -1,4 +1,4 @@
-levelProperties posGlobal:(-396.0, 96.0);designerFlag:3
+﻿roomProperties posGlobal:(-396.0, 96.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Battery pos:(0.0, 3.5)
 Gate myRect:(x:-21.50, y:9.00, width:5.00, height:2.00);channelID:0

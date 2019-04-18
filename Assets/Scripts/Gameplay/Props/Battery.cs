@@ -19,8 +19,8 @@ public class Battery : Prop {
 	private void Start() {
 		SetIsUsed(false);
 	}
-	public void Initialize(Level _myLevel, BatteryData data) {
-		base.BaseInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, BatteryData data) {
+		base.BaseInitialize(_myRoom, data);
 
 		this.transform.localScale = Vector3.one * 1.2f; // Hackyish.
 	}

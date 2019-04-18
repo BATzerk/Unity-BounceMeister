@@ -6,24 +6,24 @@ public class DataManager {
 	// Properties
 	private int coinsCollected; // the total value of all the coins we've collected!
     private List<WorldData> worldDatas;
-//  public int mostRecentlySavedLevel_worldIndex; // an nbd shortcut to highlight the most recently created level in the MapEditor.
-//  public string mostRecentlySavedLevel_levelKey; // an nbd shortcut to highlight the most recently created level in the MapEditor.
-    public LevelData currLevelData = null; // TODO: Remove this. We don't need it (right?). if this is defined when GameController opens, we'll open THAT level!
-    // Entering-Level Properties
-    public string levelToDoorID = null; // defined when use a LevelDoor. When we enter a level, this is the door we'll start at!
-    //public int playerSideEnterNextLevel=-1; // pairs with playerPosGlobalOnExitLevel.
-    //public Vector2 playerPosGlobalOnExitLevel=Vector2Extensions.NaN; // The suuuuper simple way we know how to set the Player's pos on entering the next level.
+//  public int mostRecentlySavedRoom_worldIndex; // an nbd shortcut to highlight the most recently created room in the MapEditor.
+//  public string mostRecentlySavedRoom_roomKey; // an nbd shortcut to highlight the most recently created room in the MapEditor.
+    public RoomData currRoomData = null; // TODO: Remove this. We don't need it (right?). if this is defined when GameController opens, we'll open THAT room!
+    // Entering-Room Properties
+    public string roomToDoorID = null; // defined when use a RoomDoor. When we enter a room, this is the door we'll start at!
+    //public int playerSideEnterNextRoom=-1; // pairs with playerPosGlobalOnExitRoom.
+    //public Vector2 playerPosGlobalOnExitRoom=Vector2Extensions.NaN; // The suuuuper simple way we know how to set the Player's pos on entering the next room.
     public Vector2 playerGroundedRespawnPos=Vector2Extensions.NaN; // I'll respawn at this pos. Set when we leave a Ground that has IsPlayerRespawn.
 
 	// ----------------------------------------------------------------
 	//  Getters
 	// ----------------------------------------------------------------
-    public WorldData CurrWorldData { get { return currLevelData==null ? null : currLevelData.WorldDataRef; } }
-	//public int currentWorldIndex { get { return currLevelData==null ? 0 : currLevelData.WorldIndex; } }
+    public WorldData CurrWorldData { get { return currRoomData==null ? null : currRoomData.WorldDataRef; } }
+	//public int currentWorldIndex { get { return currRoomData==null ? 0 : currRoomData.WorldIndex; } }
 	public int CoinsCollected { get { return coinsCollected; } }
 	public int NumWorldDatas { get { return worldDatas.Count; } }
-	public LevelData GetLevelData(int worldIndex, string levelKey, bool doMakeOneIfItDoesntExist) {
-		return GetWorldData(worldIndex).GetLevelData(levelKey, doMakeOneIfItDoesntExist);
+	public RoomData GetRoomData(int worldIndex, string roomKey, bool doMakeOneIfItDoesntExist) {
+		return GetWorldData(worldIndex).GetRoomData(roomKey, doMakeOneIfItDoesntExist);
 	}
 	public WorldData GetWorldData (int worldIndex) {
 		return worldDatas[worldIndex];
@@ -70,7 +70,7 @@ public class DataManager {
 
 	private void Reset () {
 		coinsCollected = 0;
-//		debug_doShowLevelTileDesignerFlags = SaveStorage.GetInt (SaveKeys.DEBUG_DO_SHOW_LEVEL_TILE_DESIGNER_FLAGS, 0) == 1;
+//		debug_doShowRoomTileDesignerFlags = SaveStorage.GetInt (SaveKeys.DEBUG_DO_SHOW_LEVEL_TILE_DESIGNER_FLAGS, 0) == 1;
 //		highestWorldEndEverReached = SaveStorage.GetInt (SaveKeys.HIGHEST_WORLD_END_EVER_REACHED);
 
 		ReloadWorldDatas();
@@ -97,23 +97,23 @@ public class DataManager {
         Debug.Log ("All SaveStorage CLEARED!");
     }
 
-    public void ClearRoomSaveData(Level level) { ClearRoomSaveData(level.LevelDataRef); }
-    public void ClearRoomSaveData(LevelData ld) {
-        SaveStorage.DeleteKey(SaveKeys.HasPlayerBeenInLevel(ld));
+    public void ClearRoomSaveData(Room room) { ClearRoomSaveData(room.RoomDataRef); }
+    public void ClearRoomSaveData(RoomData rd) {
+        SaveStorage.DeleteKey(SaveKeys.HasPlayerBeenInRoom(rd));
         for (int i=0; i<9; i++) { // Sloppy and inefficient!! But NBD for our purposes.
-            SaveStorage.DeleteKey(SaveKeys.DidEatGem(ld, i));
-            SaveStorage.DeleteKey(SaveKeys.DidEatSnack(ld, i));
-            SaveStorage.DeleteKey(SaveKeys.IsGateUnlocked(ld, i));
-            SaveStorage.DeleteKey(SaveKeys.CharBarrelTypeInMe(ld, i));
+            SaveStorage.DeleteKey(SaveKeys.DidEatGem(rd, i));
+            SaveStorage.DeleteKey(SaveKeys.DidEatSnack(rd, i));
+            SaveStorage.DeleteKey(SaveKeys.IsGateUnlocked(rd, i));
+            SaveStorage.DeleteKey(SaveKeys.CharBarrelTypeInMe(rd, i));
         }
     }
     
-    /// Resets static values that determine where Player will start when reloading a Level (e.g. LevelDoorID, prev-level-exit-pos, grounded-respawn-pos).
-    public void ResetLevelEnterValues() {
-        levelToDoorID = null;
+    /// Resets static values that determine where Player will start when reloading a Room (e.g. RoomDoorID, prev-room-exit-pos, grounded-respawn-pos).
+    public void ResetRoomEnterValues() {
+        roomToDoorID = null;
         playerGroundedRespawnPos = Vector2Extensions.NaN;
-        //playerSideEnterNextLevel = -1;
-        //playerPosGlobalOnExitLevel = Vector2Extensions.NaN;
+        //playerSideEnterNextRoom = -1;
+        //playerPosGlobalOnExitRoom = Vector2Extensions.NaN;
     }
 
 
@@ -134,11 +134,11 @@ public class DataManager {
 //			SaveStorage.DeleteKey (SaveKeys.IsWorldUnlocked (slotIndex, WorldIndex));
 //			SaveStorage.DeleteKey (SaveKeys.SnapshotGameplayData (WorldIndex));
 //			SaveStorage.DeleteKey (SaveKeys.SnapshotPlayerData (WorldIndex));
-//			foreach (LevelData ld in wd.LevelDatas.Values) {
-//				string levelKey = ld.LevelKey;
-//				SaveStorage.DeleteKey (SaveKeys.SerializedLevelDataSnapshot (WorldIndex, levelKey));
-//				for (int s=0; s<ld.starDatas.Count; s++) {
-//					SaveStorage.DeleteKey (SaveKeys.IsStarCollected (slotIndex, WorldIndex, levelKey, s));
+//			foreach (RoomData rd in wd.RoomDatas.Values) {
+//				string roomKey = rd.RoomKey;
+//				SaveStorage.DeleteKey (SaveKeys.SerializedRoomDataSnapshot (WorldIndex, roomKey));
+//				for (int s=0; s<rd.starDatas.Count; s++) {
+//					SaveStorage.DeleteKey (SaveKeys.IsStarCollected (slotIndex, WorldIndex, roomKey, s));
 //				}
 //			}
 //		}
@@ -155,9 +155,9 @@ public class DataManager {
 //		int numTotalStarsSecret = 0;
 //		foreach (WorldData wd in worldDatas) {
 //			if (!wd.IsPlayableWorld) { continue; }
-//			foreach (LevelData ld in wd.levelDatas.Values) {
-//				if (!ld.isConnectedToStart) { continue; }
-//				foreach (StarData sd in ld.starDatas) {
+//			foreach (RoomData rd in wd.roomDatas.Values) {
+//				if (!rd.isConnectedToStart) { continue; }
+//				foreach (StarData sd in rd.starDatas) {
 //					if (sd.isNotYours) { continue; }
 //					if (sd.isSecretStar) { numTotalStarsSecret ++; }
 //					else { numTotalStarsRegular ++; }

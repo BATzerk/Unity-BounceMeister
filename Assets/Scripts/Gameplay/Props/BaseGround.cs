@@ -34,13 +34,13 @@ abstract public class BaseGround : Collidable {
 	//  Start
 	// ----------------------------------------------------------------
 	virtual protected void Start() {
-		// TEMP! For level transitioning.
+		// TEMP! For room transitioning.
 		if (bodySprite==null) {
 			bodySprite = GetComponent<SpriteRenderer>();
 		}
 	}
-	protected void BaseGroundInitialize(Level _myLevel, BaseGroundData data) {
-		base.BaseInitialize(_myLevel, data);
+	protected void BaseGroundInitialize(Room _myRoom, BaseGroundData data) {
+		base.BaseInitialize(_myRoom, data);
 
 		canEatGems = data.canEatGems;
         isPlayerRespawn = data.isPlayerRespawn;

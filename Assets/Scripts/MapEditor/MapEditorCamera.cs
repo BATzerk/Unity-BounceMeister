@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class MapEditorCamera : MonoBehaviour {
@@ -73,13 +73,13 @@ public class MapEditorCamera : MonoBehaviour {
     private void ResetToNeutral() {
         // Reset scale
         SetMapScale(MAP_SCALE_DEFAULT);
-        Vector2 averageLevelPos = new Vector2 (0,0);
+        Vector2 averageRoomPos = new Vector2 (0,0);
         WorldData wd = editor.CurrentWorldData;
-        foreach (LevelData ld in wd.LevelDatas.Values) {
-            averageLevelPos += ld.PosGlobal;
+        foreach (RoomData rd in wd.RoomDatas.Values) {
+            averageRoomPos += rd.PosGlobal;
         }
-        averageLevelPos /= wd.LevelDatas.Count;
-        Pos = averageLevelPos;
+        averageRoomPos /= wd.RoomDatas.Count;
+        Pos = averageRoomPos;
     }
 
     private void SetBackgroundColor(int worldIndex) {

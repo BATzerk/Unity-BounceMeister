@@ -4,7 +4,7 @@ using UnityEngine;
 
 abstract public class Player : PlatformCharacter {
     // Overrides
-    override public bool DoSaveInLevelFile() { return false; }
+    override public bool DoSaveInRoomFile() { return false; }
     abstract public PlayerTypes PlayerType();
 	// Constants
 	override protected int StartingHealth { get { return 1; } }
@@ -49,7 +49,7 @@ abstract public class Player : PlatformCharacter {
 	private int hackTEMP_framesAlive=0;
 	protected Vector2 pvel { get; private set; } // previous velocity.
     // References
-    private Rect camBoundsLocal; // for detecting when we exit the level!
+    private Rect camBoundsLocal; // for detecting when we exit the room!
 	private List<Edible> ediblesHolding = new List<Edible>(); // like in Celeste. I hold Edibles (i.e. Gem, Snack) until I'm standing somewhere safe to "eat" (aka collect) them.
 
 	// Getters (Public)
@@ -107,9 +107,9 @@ abstract public class Player : PlatformCharacter {
 
     // Debug
  //   private void OnDrawGizmos() {
-	//	if (myLevel==null) { return; }
+	//	if (myRoom==null) { return; }
 	//	Gizmos.color = Color.cyan;
-	//	Gizmos.DrawWireCube (myLevel.PosGlobal+camBoundsLocal.center, new Vector3(camBoundsLocal.size.x,camBoundsLocal.size.y, 10));
+	//	Gizmos.DrawWireCube (myRoom.PosGlobal+camBoundsLocal.center, new Vector3(camBoundsLocal.size.x,camBoundsLocal.size.y, 10));
 	//}
 
 	// ----------------------------------------------------------------
@@ -120,15 +120,15 @@ abstract public class Player : PlatformCharacter {
 
 	//	SetSize (new Vector2(1.5f, 1.8f));
 	//}
-	public void Initialize(Level _myLevel, PlayerData data) {
-		base.BaseInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, PlayerData data) {
+		base.BaseInitialize(_myRoom, data);
         
         DirFacing = data.dirFacing;
         SetVel(data.vel);
 
 		// Set camBoundsLocal!
 		const float boundsBloat = 0f; // I have to like *really* be off-screen for this to register.
-		camBoundsLocal = myLevel.GetCameraBoundsLocal();
+		camBoundsLocal = myRoom.GetCameraBoundsLocal();
 		camBoundsLocal.size += new Vector2(boundsBloat,boundsBloat)*2f;
 		camBoundsLocal.position -= new Vector2(boundsBloat,boundsBloat);
         
@@ -147,7 +147,7 @@ abstract public class Player : PlatformCharacter {
 		SetVel(Vector2.zero);
 	}
 	public void SetPosGlobal(Vector2 _posGlobal) {
-		SetPosLocal(_posGlobal - myLevel.PosGlobal);
+		SetPosLocal(_posGlobal - myRoom.PosGlobal);
 	}
 
 
@@ -215,7 +215,7 @@ abstract public class Player : PlatformCharacter {
 		SetVel(pos - ppos);
         pfeetOnGround = feetOnGround();
 
-		UpdateExitedLevel();
+		UpdateExitedRoom();
 	}
 
 	private void UpdateWallSlide() {
@@ -267,12 +267,12 @@ abstract public class Player : PlatformCharacter {
 	virtual protected void UpdateMaxYSinceGround() {
 		maxYSinceGround = Mathf.Max(maxYSinceGround, pos.y);
 	}
-	private void UpdateExitedLevel() {
+	private void UpdateExitedRoom() {
 		if (hackTEMP_framesAlive++ < 10) { return; } // This is a hack.
-		// I'm outside the level!
+		// I'm outside the room!
 		if (!camBoundsLocal.Contains(PosLocal)) {
 			int sideEscaped = MathUtils.GetSidePointIsOn(camBoundsLocal, PosLocal);
-			GameManagers.Instance.EventManager.OnPlayerEscapeLevelBounds(sideEscaped);
+			GameManagers.Instance.EventManager.OnPlayerEscapeRoomBounds(sideEscaped);
 		}
 	}
 	private void DetectJumpApex() {

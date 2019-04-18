@@ -7,7 +7,7 @@ public class CharBarrel : Prop {
     [SerializeField] private SpriteRenderer sr_body=null;
     // Properties
     [SerializeField] private string otherCharName = "Slippa"; // this value DOESN'T change. It's the DEFAULT other guy I've got.
-	private int myIndex; // which CharBarrel I am in Level.
+	private int myIndex; // which CharBarrel I am in Room.
     private float timeWhenCanSensePlayer; // in SCALED seconds. So we don't keep swapping between two Player types.
 	public PlayerTypes CharTypeInMe { get; private set; }
 
@@ -26,8 +26,8 @@ public class CharBarrel : Prop {
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	public void Initialize(Level _myLevel, CharBarrelData data, int myIndex) {
-		base.BaseInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, CharBarrelData data, int myIndex) {
+		base.BaseInitialize(_myRoom, data);
 
         timeWhenCanSensePlayer = Time.time;
 
@@ -35,7 +35,7 @@ public class CharBarrel : Prop {
         this.myIndex = myIndex;
 
         // Load what character's in me!
-        string savedCharType = SaveStorage.GetString(SaveKeys.CharBarrelTypeInMe(myLevel.LevelDataRef, myIndex), otherCharName);
+        string savedCharType = SaveStorage.GetString(SaveKeys.CharBarrelTypeInMe(myRoom.RoomDataRef, myIndex), otherCharName);
         SetCharTypeInMe(PlayerTypeHelper.TypeFromString(savedCharType));
 	}
 
@@ -54,10 +54,10 @@ public class CharBarrel : Prop {
         PlayerTypes playerNewType = CharTypeInMe;
         PlayerTypes myNewType = player.PlayerType();
         // Set Player's type!
-        myLevel.SwapPlayerType(playerNewType);
+        myRoom.SwapPlayerType(playerNewType);
         // Set/save my type!
         SetCharTypeInMe(myNewType);
-        SaveStorage.SetString(SaveKeys.CharBarrelTypeInMe(myLevel.LevelDataRef, myIndex), myNewType.ToString());
+        SaveStorage.SetString(SaveKeys.CharBarrelTypeInMe(myRoom.RoomDataRef, myIndex), myNewType.ToString());
         // Reset timeWhenCanSensePlayer!
         timeWhenCanSensePlayer = Time.time + 0.1f;
 	}

@@ -15,7 +15,7 @@ public static class SceneHelper {
     static public void OpenScene(string sceneName) {
         // Opening NON-Gameplay scene? Reset static values!
         if (sceneName != SceneNames.Gameplay) {
-            GameManagers.Instance.DataManager.ResetLevelEnterValues();
+            GameManagers.Instance.DataManager.ResetRoomEnterValues();
         }
         // Open the scene.
         SceneManager.LoadScene(sceneName);
@@ -23,12 +23,12 @@ public static class SceneHelper {
 
     
 
-	static public void OpenGameplayScene(int worldIndex, string levelKey) {
-//		GameplaySnapshotController.SetWorldAndLevelToLoad (WorldIndex, levelKey);
-        OpenGameplayScene(GameManagers.Instance.DataManager.GetLevelData(worldIndex, levelKey, true));
+	static public void OpenGameplayScene(int worldIndex, string roomKey) {
+//		GameplaySnapshotController.SetWorldAndRoomToLoad (WorldIndex, roomKey);
+        OpenGameplayScene(GameManagers.Instance.DataManager.GetRoomData(worldIndex, roomKey, true));
     }
-    static public void OpenGameplayScene(LevelData ld) {
-        GameManagers.Instance.DataManager.currLevelData = ld;
+    static public void OpenGameplayScene(RoomData rd) {
+        GameManagers.Instance.DataManager.currRoomData = rd;
 		OpenScene(SceneNames.Gameplay);
 	}
 

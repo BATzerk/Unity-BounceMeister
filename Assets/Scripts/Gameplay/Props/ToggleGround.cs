@@ -26,8 +26,8 @@ public sealed class ToggleGround : BaseGround {
 
 		SetIsOn(startsOn);
 	}
-	public void Initialize(Level _myLevel, ToggleGroundData data) {
-		base.BaseGroundInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, ToggleGroundData data) {
+		base.BaseGroundInitialize(_myRoom, data);
 
 		startsOn = data.startsOn;
         togFromPlunge = data.togFromPlunge;
@@ -150,8 +150,8 @@ public sealed class ToggleGround : BaseGround {
 //      GameManagers.Instance.EventManager.PlayerSpendBounceEvent -= OnPlayerDidSomething;
 //      GameManagers.Instance.EventManager.PlayerJumpEvent -= OnPlayerDidSomething;
     }
-    public void Initialize(Level _myLevel, ToggleGroundData data) {
-        base.BaseGroundInitialize(_myLevel, data);
+    public void Initialize(Room _myRoom, ToggleGroundData data) {
+        base.BaseGroundInitialize(_myRoom, data);
 
         startsOn = data.startsOn;
     }
@@ -278,8 +278,8 @@ public sealed class ToggleGround : BaseGround {
 
         SetIsOn(startsOn);
     }
-    public void Initialize(Level _myLevel, ToggleGroundData data) {
-        base.BaseGroundInitialize(_myLevel, data);
+    public void Initialize(Room _myRoom, ToggleGroundData data) {
+        base.BaseGroundInitialize(_myRoom, data);
 
         startsOn = data.startsOn;
     }

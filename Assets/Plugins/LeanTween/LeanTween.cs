@@ -1,4 +1,4 @@
-//namespace DentedPixel{
+﻿//namespace DentedPixel{
 
 // LeanTween version 2.45 - http://dentedpixel.com/developer-diary/
 //
@@ -324,7 +324,7 @@ public class LeanTween : MonoBehaviour {
 			}
 
 			#if UNITY_5_4_OR_NEWER
-			UnityEngine.SceneManagement.SceneManager.sceneLoaded += onLevelWasLoaded54;
+			UnityEngine.SceneManagement.SceneManager.sceneLoaded += onRoomWasLoaded54;
 			#endif
 
 			sequences = new LTSeq[ maxSimultaneousSequences ]; 
@@ -351,12 +351,12 @@ public class LeanTween : MonoBehaviour {
 	}
 
 	#if UNITY_5_4_OR_NEWER
-	private static void onLevelWasLoaded54( UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode ){ internalOnLevelWasLoaded( scene.buildIndex ); }
+	private static void onRoomWasLoaded54( UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode ){ internalOnRoomWasLoaded( scene.buildIndex ); }
 	#else
-	public void OnLevelWasLoaded( int lvl ){ internalOnLevelWasLoaded( lvl ); }
+	public void OnRoomWasLoaded( int lvl ){ internalOnRoomWasLoaded( lvl ); }
 	#endif
 
-	private static void internalOnLevelWasLoaded( int lvl ){
+	private static void internalOnRoomWasLoaded( int lvl ){
 		// Debug.Log("reseting gui");
 		LTGUI.reset();
 	}
@@ -3464,10 +3464,10 @@ public class LTGUI {
 	public static int RECTS_PER_LEVEL = 10;
 	public static int BUTTONS_MAX = 24;
 
-	private static LTRect[] levels;
-	private static int[] levelDepths;
+	private static LTRect[] rooms;
+	private static int[] roomDepths;
 	private static Rect[] buttons;
-	private static int[] buttonLevels;
+	private static int[] buttonRooms;
 	private static int[] buttonLastFrame;
 	private static LTRect r;
 	private static Color color = Color.white;
@@ -3480,19 +3480,19 @@ public class LTGUI {
 	}
 
 	public static void init(){
-		if(levels==null){
-			levels = new LTRect[RECT_LEVELS*RECTS_PER_LEVEL];
-			levelDepths = new int[RECT_LEVELS];
+		if(rooms==null){
+			rooms = new LTRect[RECT_LEVELS*RECTS_PER_LEVEL];
+			roomDepths = new int[RECT_LEVELS];
 		}
 	}
 
 	public static void initRectCheck(){
 		if(buttons==null){
 			buttons = new Rect[BUTTONS_MAX];
-			buttonLevels = new int[BUTTONS_MAX];
+			buttonRooms = new int[BUTTONS_MAX];
 			buttonLastFrame = new int[BUTTONS_MAX];
-			for(int i = 0; i < buttonLevels.Length; i++){
-				buttonLevels[i] = -1;
+			for(int i = 0; i < buttonRooms.Length; i++){
+				buttonRooms[i] = -1;
 			}
 		}
 	}
@@ -3500,26 +3500,26 @@ public class LTGUI {
 	public static void reset(){
 		if(isGUIEnabled){
 			isGUIEnabled = false;
-			for(int i = 0; i < levels.Length; i++){
-				levels[i] = null;
+			for(int i = 0; i < rooms.Length; i++){
+				rooms[i] = null;
 			}
 
-			for(int i = 0; i < levelDepths.Length; i++){
-				levelDepths[i] = 0;
+			for(int i = 0; i < roomDepths.Length; i++){
+				roomDepths[i] = 0;
 			}
 		}
 	}
 
-	public static void update( int updateLevel ){
+	public static void update( int updateRoom ){
 		if(isGUIEnabled){
 			init();
-			if(levelDepths[updateLevel]>0){
+			if(roomDepths[updateRoom]>0){
 				color = GUI.color;
-				int baseI = updateLevel*RECTS_PER_LEVEL;
-				int maxLoop = baseI + levelDepths[updateLevel];// RECTS_PER_LEVEL;//;
+				int baseI = updateRoom*RECTS_PER_LEVEL;
+				int maxLoop = baseI + roomDepths[updateRoom];// RECTS_PER_LEVEL;//;
 
 				for(int i = baseI; i < maxLoop; i++){
-					r = levels[i];
+					r = rooms[i];
 					// Debug.Log("r:"+r+" i:"+i);
 					if(r!=null /*&& checkOnScreen(r.rect)*/){
 						//Debug.Log("label:"+r.labelStr+" textColor:"+r.style.normal.textColor);
@@ -3563,14 +3563,14 @@ public class LTGUI {
 	public static void destroy( int id ){
 		int backId = id & 0xFFFF;
 		int backCounter = id >> 16;
-		if(id>=0 && levels[backId]!=null && levels[backId].hasInitiliazed && levels[backId].counter==backCounter)
-			levels[backId] = null;
+		if(id>=0 && rooms[backId]!=null && rooms[backId].hasInitiliazed && rooms[backId].counter==backCounter)
+			rooms[backId] = null;
 	}
 
 	public static void destroyAll( int depth ){ // clears all gui elements on depth
 		int maxLoop = depth*RECTS_PER_LEVEL + RECTS_PER_LEVEL;
-		for(int i = depth*RECTS_PER_LEVEL; levels!=null && i < maxLoop; i++){
-			levels[i] = null;
+		for(int i = depth*RECTS_PER_LEVEL; rooms!=null && i < maxLoop; i++){
+			rooms[i] = null;
 		}
 	}
 
@@ -3611,16 +3611,16 @@ public class LTGUI {
 			rect.relativeRect = new Rect(0f,0f,Screen.width,Screen.height);
 		}
 		for(int i = depth*RECTS_PER_LEVEL; i < maxLoop; i++){
-			r = levels[i];
+			r = rooms[i];
 			if(r==null){
 				r = rect;
 				r.rotateEnabled = true;
 				r.alphaEnabled = true;
 				r.setId( i, global_counter );
-				levels[i] = r;
-				// Debug.Log("k:"+k+ " maxDepth:"+levelDepths[depth]);
-				if(k>=levelDepths[depth]){
-					levelDepths[depth] = k + 1;
+				rooms[i] = r;
+				// Debug.Log("k:"+k+ " maxDepth:"+roomDepths[depth]);
+				if(k>=roomDepths[depth]){
+					roomDepths[depth] = k + 1;
 				}
 				global_counter++;
 				return r;
@@ -3637,22 +3637,22 @@ public class LTGUI {
 		initRectCheck();
 		bool hasNoOverlap = true;
 		bool wasAddedToList = false;
-		for(int i = 0; i < buttonLevels.Length; i++){
+		for(int i = 0; i < buttonRooms.Length; i++){
 			// Debug.Log("buttonLastFrame["+i+"]:"+buttonLastFrame[i]);
-			//Debug.Log("buttonLevels["+i+"]:"+buttonLevels[i]);
-			if(buttonLevels[i]>=0){
+			//Debug.Log("buttonRooms["+i+"]:"+buttonRooms[i]);
+			if(buttonRooms[i]>=0){
 				//Debug.Log("buttonLastFrame["+i+"]:"+buttonLastFrame[i]+" Time.frameCount:"+Time.frameCount);
 				if( buttonLastFrame[i] + 1 < Time.frameCount ){ // It has to have been visible within the current, or
-					buttonLevels[i] = -1;
+					buttonRooms[i] = -1;
 					// Debug.Log("resetting i:"+i);
 				}else{
-					//if(buttonLevels[i]>=0)
-					//	 Debug.Log("buttonLevels["+i+"]:"+buttonLevels[i]);
-					if(buttonLevels[i]>depth){
+					//if(buttonRooms[i]>=0)
+					//	 Debug.Log("buttonRooms["+i+"]:"+buttonRooms[i]);
+					if(buttonRooms[i]>depth){
 						/*if(firstTouch().x > 0){
 							Debug.Log("buttons["+i+"]:"+buttons[i] + " firstTouch:");
 							Debug.Log(firstTouch());
-							Debug.Log(buttonLevels[i]);
+							Debug.Log(buttonRooms[i]);
 						}*/
 						if(pressedWithinRect( buttons[i] )){
 							hasNoOverlap = false; // there is an overlapping button that is higher
@@ -3661,9 +3661,9 @@ public class LTGUI {
 				}
 			}
 
-			if(wasAddedToList==false && buttonLevels[i]<0){
+			if(wasAddedToList==false && buttonRooms[i]<0){
 				wasAddedToList = true;
-				buttonLevels[i] = depth;
+				buttonRooms[i] = depth;
 				buttons[i] = rect;
 				buttonLastFrame[i] = Time.frameCount;
 			}

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class FilePaths {
 
-    public static string LevelFileAddress(int worldIndex, string levelKey) {
-        return WorldFileAddress(worldIndex) + levelKey + ".txt";
+    public static string RoomFileAddress(int worldIndex, string roomKey) {
+        return WorldFileAddress(worldIndex) + roomKey + ".txt";
     }
     public static string WorldFileAddress(int worldIndex) {
         return Application.streamingAssetsPath + "/Levels/World" + worldIndex + "/";
@@ -13,8 +13,8 @@ public class FilePaths {
     public static string WorldTrashFileAddress(int worldIndex) {
 		return Application.streamingAssetsPath + "/Levels/WorldTrash" + worldIndex + "/";
 	}
-	//public static string LevelLinksFileAddress(int WorldIndex) {
-	//	return WorldFileAddress (WorldIndex) + "_LevelLinks.txt";
+	//public static string RoomLinksFileAddress(int WorldIndex) {
+	//	return WorldFileAddress (WorldIndex) + "_RoomLinks.txt";
 	//}
 
 }

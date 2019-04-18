@@ -6,16 +6,16 @@ public class ResourcesHandler : MonoBehaviour {
 	// References!
 	[SerializeField] public GameObject imageLine;
 
-	[SerializeField] public GameObject LevelJumpLevelButton;
-	[SerializeField] public GameObject MapEditor_LevelTile;
+	[SerializeField] public GameObject RoomJumpRoomButton;
+	[SerializeField] public GameObject MapEditor_RoomTile;
 
 	[SerializeField] public GameObject backgroundTileSprite;
     [SerializeField] public Sprite s_whiteSquare;
     [SerializeField] public Sprite s_gem0;
     [SerializeField] public Sprite s_gem1;
     
-    [SerializeField] public GameObject Level;
-    [SerializeField] public GameObject MiniMapLevelTile;
+    [SerializeField] public GameObject Room;
+    [SerializeField] public GameObject MiniMapRoomTile;
 
     [SerializeField] private GameObject Flatline;
     [SerializeField] private GameObject Jetta;
@@ -32,7 +32,7 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject GateButton;
 	[SerializeField] public GameObject Gem;
 	[SerializeField] public GameObject Ground;
-	[SerializeField] public GameObject LevelDoor;
+	[SerializeField] public GameObject RoomDoor;
 	[SerializeField] public GameObject Lift;
     [SerializeField] public GameObject Platform;
 	[SerializeField] public GameObject PlayerStart;

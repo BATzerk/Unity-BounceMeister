@@ -35,8 +35,8 @@ public class DamageableGround : BaseGround {
     // ----------------------------------------------------------------
     //  Initialize
     // ----------------------------------------------------------------
-    public void Initialize(Level _myLevel, DamageableGroundData data) {
-		base.BaseGroundInitialize(_myLevel, data);
+    public void Initialize(Room _myRoom, DamageableGroundData data) {
+		base.BaseGroundInitialize(_myRoom, data);
 
 		doRegen = data.doRegen;
 		dieFromBounce = data.dieFromBounce;

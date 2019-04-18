@@ -9,8 +9,8 @@ public class PlayerStart : Prop {
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	public void Initialize(Level _myLevel, PlayerStartData data) {
-		base.BaseInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, PlayerStartData data) {
+		base.BaseInitialize(_myRoom, data);
 
 		//this.GetComponent<SpriteRenderer>().enabled = false; // Of course, hide my sprite. It's just for the editor.
 	}

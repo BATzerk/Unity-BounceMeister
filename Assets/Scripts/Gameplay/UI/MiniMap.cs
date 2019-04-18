@@ -7,15 +7,15 @@ public class MiniMap : MonoBehaviour {
     // Components
     [SerializeField] private RectTransform myRectTransform;
     [SerializeField] private RectTransform rt_tiles;
-    private Dictionary<string,MiniMapLevelTile> tiles; // levelKey is key.
+    private Dictionary<string,MiniMapRoomTile> tiles; // roomKey is key.
     // Properties
-    private const float mapScale = 0.5f;//0.8f; // NOTE: Unity units to Screen units automatically makes levels way smaller (1 Unity unit is 1 pixel).
+    private const float mapScale = 0.5f;//0.8f; // NOTE: Unity units to Screen units automatically makes rooms way smaller (1 Unity unit is 1 pixel).
     private Vector2 mapPosTarget;
     // References
-    private Level currLevel;
+    private Room currRoom;
     
     // Getters (Private)
-    private LevelData currLevelData { get { return currLevel.LevelDataRef; } }
+    private RoomData currRoomData { get { return currRoom.RoomDataRef; } }
     // Setters
     private Vector2 MapPos {
         get { return rt_tiles.anchoredPosition; }
@@ -31,18 +31,18 @@ public class MiniMap : MonoBehaviour {
         rt_tiles.localScale = Vector3.one * mapScale;
         
         // Add event listeners!
-        GameManagers.Instance.EventManager.StartLevelEvent += OnStartLevel;
+        GameManagers.Instance.EventManager.StartRoomEvent += OnStartRoom;
         GameManagers.Instance.EventManager.SnacksCollectedChangedEvent += OnSnacksCollectedChanged;
     }
     private void OnDestroy() {
         // Remove event listeners!
-        GameManagers.Instance.EventManager.StartLevelEvent -= OnStartLevel;
+        GameManagers.Instance.EventManager.StartRoomEvent -= OnStartRoom;
         GameManagers.Instance.EventManager.SnacksCollectedChangedEvent -= OnSnacksCollectedChanged;
     }
     
     private void DestroyAllTiles() {
         if (tiles != null) {
-            foreach (MiniMapLevelTile tile in tiles.Values) {
+            foreach (MiniMapRoomTile tile in tiles.Values) {
                 Destroy(tile.gameObject);
             }
             tiles = null;
@@ -52,12 +52,12 @@ public class MiniMap : MonoBehaviour {
         DestroyAllTiles();
         
         // TODO: Just do clusters?
-        tiles = new Dictionary<string, MiniMapLevelTile>();
-        WorldData wd = currLevel.WorldDataRef;
-        foreach (LevelData ld in wd.levelDatas.Values) {
-            MiniMapLevelTile tile = Instantiate(ResourcesHandler.Instance.MiniMapLevelTile).GetComponent<MiniMapLevelTile>();
-            tile.Initialize(rt_tiles, ld);
-            tiles.Add(ld.levelKey, tile);
+        tiles = new Dictionary<string, MiniMapRoomTile>();
+        WorldData wd = currRoom.WorldDataRef;
+        foreach (RoomData rd in wd.roomDatas.Values) {
+            MiniMapRoomTile tile = Instantiate(ResourcesHandler.Instance.MiniMapRoomTile).GetComponent<MiniMapRoomTile>();
+            tile.Initialize(rt_tiles, rd);
+            tiles.Add(rd.roomKey, tile);
         }
     }
     
@@ -82,31 +82,31 @@ public class MiniMap : MonoBehaviour {
     //  Doers
     // ----------------------------------------------------------------
     private void UpdateAllTilesVisuals() {
-        foreach (MiniMapLevelTile tile in tiles.Values) {
-            tile.UpdateVisuals(currLevelData);
+        foreach (MiniMapRoomTile tile in tiles.Values) {
+            tile.UpdateVisuals(currRoomData);
         }
     }
     
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    private void OnStartLevel(Level level) {
+    private void OnStartRoom(Room room) {
         // Update map position!
-        mapPosTarget = level.PosGlobal*mapScale * -1;
+        mapPosTarget = room.PosGlobal*mapScale * -1;
         
         // We changed worlds??
-        int prevWorldIndex = currLevel==null ? -1 : currLevel.WorldIndex;
-        this.currLevel = level;
-        if (prevWorldIndex != level.WorldIndex) {
+        int prevWorldIndex = currRoom==null ? -1 : currRoom.WorldIndex;
+        this.currRoom = room;
+        if (prevWorldIndex != room.WorldIndex) {
             MakeAllTiles();
-            MapPos = mapPosTarget; // start at right level.
+            MapPos = mapPosTarget; // start at right room.
         }
         
         // Update tile visuals!
         UpdateAllTilesVisuals();// TODO: This more efficiently?
     }
     private void OnSnacksCollectedChanged(int worldIndex) {
-        tiles[currLevel.LevelKey].UpdateVisuals(currLevelData); // Update the visuals of the current LevelTile.
+        tiles[currRoom.RoomKey].UpdateVisuals(currRoomData); // Update the visuals of the current RoomTile.
     }
     
     

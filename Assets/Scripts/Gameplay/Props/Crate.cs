@@ -12,8 +12,8 @@ public class Crate : BaseGround {
 	// ----------------------------------------------------------------
 	//  Initialize
 	// ----------------------------------------------------------------
-	public void Initialize(Level _myLevel, CrateData data) {
-		base.BaseGroundInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, CrateData data) {
+		base.BaseGroundInitialize(_myRoom, data);
 
 		hitsUntilBreak = data.hitsUntilBreak;
 		numCoinsInMe = data.numCoinsInMe;

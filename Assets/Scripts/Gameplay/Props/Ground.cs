@@ -40,8 +40,8 @@ public sealed class Ground : BaseGround {
 
 		ApplyBodySpriteColor();
 	}
-	public void Initialize(Level _myLevel, GroundData data) {
-		base.BaseGroundInitialize(_myLevel, data);
+	public void Initialize(Room _myRoom, GroundData data) {
+		base.BaseGroundInitialize(_myRoom, data);
 
 		colorType = data.colorType;
 		canBounce = data.canBounce;

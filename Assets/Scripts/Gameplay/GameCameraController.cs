@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameCameraController : MonoBehaviour {
 	// Camera
 	[SerializeField] private Camera primaryCamera=null;
-//	[SerializeField] private SpriteRenderer sr_bounds=null; // we use a sprite to represent the visual bounds of each level!
+//	[SerializeField] private SpriteRenderer sr_bounds=null; // we use a sprite to represent the visual bounds of each room!
 	// Constants
 	private const float ConstOrthoScale = 0.065f;//HACKy non-pixel-perfect estimation.
 	private const float ZPos = -10; // lock z pos.
@@ -15,7 +15,7 @@ public class GameCameraController : MonoBehaviour {
 	private float screenShakeVolume;
 	private float screenShakeVolumeVel;
 	private Rect viewRect;
-	private Rect viewRectBounds; // set from each Level's CameraBounds sprite. Our viewRect is confined to this rect!
+	private Rect viewRectBounds; // set from each Room's CameraBounds sprite. Our viewRect is confined to this rect!
 	private Rect centerBounds; // this is viewRectBounds, collapsed to just what viewRect's center can be set to.
 	private Vector2 targetCenter;
 	// References
@@ -73,15 +73,15 @@ public class GameCameraController : MonoBehaviour {
 		if (fullScrim==null) { fullScrim = GameObject.FindObjectOfType<FullScrim>(); }
 
 		// Add event listeners!
-		GameManagers.Instance.EventManager.EditorSaveLevelEvent += OnEditorSaveLevel;
+		GameManagers.Instance.EventManager.EditorSaveRoomEvent += OnEditorSaveRoom;
 		GameManagers.Instance.EventManager.PlayerDieEvent += OnPlayerDie;
-		GameManagers.Instance.EventManager.StartLevelEvent += OnStartLevel;
+		GameManagers.Instance.EventManager.StartRoomEvent += OnStartRoom;
 	}
 	private void OnDestroy () {
 		// Remove event listeners!
-		GameManagers.Instance.EventManager.EditorSaveLevelEvent -= OnEditorSaveLevel;
+		GameManagers.Instance.EventManager.EditorSaveRoomEvent -= OnEditorSaveRoom;
 		GameManagers.Instance.EventManager.PlayerDieEvent -= OnPlayerDie;
-		GameManagers.Instance.EventManager.StartLevelEvent -= OnStartLevel;
+		GameManagers.Instance.EventManager.StartRoomEvent -= OnStartRoom;
 	}
 	private void Reset () {
 		UpdateOrthoSizeNeutral ();
@@ -102,13 +102,13 @@ public class GameCameraController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
-	private void OnStartLevel(Level level) {
-		viewRectBounds = level.GetCameraBoundsGlobal();
+	private void OnStartRoom(Room room) {
+		viewRectBounds = room.GetCameraBoundsGlobal();
 
 		// Reset us now! Now that the player and everything is in place. :)
 		Reset();
 	}
-	private void OnEditorSaveLevel() {
+	private void OnEditorSaveRoom() {
 		if (fullScrim!=null) {
 			fullScrim.FadeFromAtoB(new Color(1,1,1, 0.5f), Color.clear, 0.2f, true);
 		}

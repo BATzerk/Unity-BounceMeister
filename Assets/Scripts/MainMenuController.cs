@@ -32,7 +32,7 @@ public class MainMenuController : MonoBehaviour {
 
         // ~~~~ DEBUG ~~~~
         if (Input.GetKeyDown(KeyCode.J)) {
-            SceneHelper.OpenScene(SceneNames.LevelJump); return;
+            SceneHelper.OpenScene(SceneNames.RoomJump); return;
         }
         else if (Input.GetKeyDown(KeyCode.M)) {
             SceneHelper.OpenScene(SceneNames.MapEditor); return;

@@ -39,8 +39,8 @@ public class TravelingPlatform : BaseGround {//, ISerializableData<TravelingPlat
     //// ----------------------------------------------------------------
     ////  Initialize
     //// ----------------------------------------------------------------
-    //public void Initialize(Level _myLevel, PlatformData data) {
-    //	base.BaseGroundInitialize(_myLevel, data);
+    //public void Initialize(Room _myRoom, PlatformData data) {
+    //	base.BaseGroundInitialize(_myRoom, data);
     //}
 
     // ----------------------------------------------------------------

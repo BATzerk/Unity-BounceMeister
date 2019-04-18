@@ -68,16 +68,16 @@ public class DamageableGroundData : BaseGroundData {
 //	public bool isOffWhenBounceRecharged;
 //}
 
-public class LevelDoorData : PropData {
+public class RoomDoorData : PropData {
 	public string myID;
     public int worldToIndex;
-	public string levelToKey;
-	public string levelToDoorID;
-//	public LevelDoorData (Vector2 pos, string myID, string levelToKey, string levelToDoorID) {
+	public string roomToKey;
+	public string roomToDoorID;
+//	public RoomDoorData (Vector2 pos, string myID, string roomToKey, string roomToDoorID) {
 //		this.pos = pos;
 //		this.myID = myID;
-//		this.levelToKey = levelToKey;
-//		this.levelToDoorID = levelToDoorID;
+//		this.roomToKey = roomToKey;
+//		this.roomToDoorID = roomToDoorID;
 //	}
 }
 

@@ -3,43 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapEditorSettings {
-	public bool DoMaskLevelContents;
+	public bool DoMaskRoomContents;
 	public bool DoShowInstructions;
     public bool DoShowClusters;
 	public bool DoShowDesignerFlags;
-    public bool DoShowLevelEdibles;
-    public bool DoShowLevelNames;
-	public bool DoShowLevelProps;
+    public bool DoShowRoomEdibles;
+    public bool DoShowRoomNames;
+	public bool DoShowRoomProps;
 
 
 	public MapEditorSettings() {
-		DoMaskLevelContents = SaveStorage.GetBool (SaveKeys.MapEditor_DoMaskLevelContents, true);
+		DoMaskRoomContents = SaveStorage.GetBool (SaveKeys.MapEditor_DoMaskRoomContents, true);
         DoShowClusters = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowClusters, true);
         DoShowDesignerFlags = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowDesignerFlags, false);
         DoShowInstructions = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowInstructions, true);
-        DoShowLevelEdibles = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowLevelEdibles, true);
-        DoShowLevelNames = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowLevelNames, true);
-		DoShowLevelProps = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowLevelProps, true);
+        DoShowRoomEdibles = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowRoomEdibles, true);
+        DoShowRoomNames = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowRoomNames, true);
+		DoShowRoomProps = SaveStorage.GetBool (SaveKeys.MapEditor_DoShowRoomProps, true);
 	}
 	public void SaveAll () {
-		SaveStorage.SetBool (SaveKeys.MapEditor_DoMaskLevelContents, DoMaskLevelContents);
+		SaveStorage.SetBool (SaveKeys.MapEditor_DoMaskRoomContents, DoMaskRoomContents);
         SaveStorage.SetBool (SaveKeys.MapEditor_DoShowClusters, DoShowClusters);
         SaveStorage.SetBool (SaveKeys.MapEditor_DoShowDesignerFlags, DoShowDesignerFlags);
         SaveStorage.SetBool (SaveKeys.MapEditor_DoShowInstructions, DoShowInstructions);
-        SaveStorage.SetBool (SaveKeys.MapEditor_DoShowLevelEdibles, DoShowLevelEdibles);
-        SaveStorage.SetBool (SaveKeys.MapEditor_DoShowLevelNames, DoShowLevelNames);
-		SaveStorage.SetBool (SaveKeys.MapEditor_DoShowLevelProps, DoShowLevelProps);
+        SaveStorage.SetBool (SaveKeys.MapEditor_DoShowRoomEdibles, DoShowRoomEdibles);
+        SaveStorage.SetBool (SaveKeys.MapEditor_DoShowRoomNames, DoShowRoomNames);
+		SaveStorage.SetBool (SaveKeys.MapEditor_DoShowRoomProps, DoShowRoomProps);
 	}
 
 
 
 
-//	public bool Debug_doShowLevelTileDesignerFlags {
-//		get { return debug_doShowLevelTileDesignerFlags; }
+//	public bool Debug_doShowRoomTileDesignerFlags {
+//		get { return debug_doShowRoomTileDesignerFlags; }
 //		set {
-//			if (debug_doShowLevelTileDesignerFlags != value) {
-//				debug_doShowLevelTileDesignerFlags = value;
-//				SaveStorage.SetInt(SaveKeys.DEBUG_DO_SHOW_LEVEL_TILE_DESIGNER_FLAGS, debug_doShowLevelTileDesignerFlags ? 1 : 0);
+//			if (debug_doShowRoomTileDesignerFlags != value) {
+//				debug_doShowRoomTileDesignerFlags = value;
+//				SaveStorage.SetInt(SaveKeys.DEBUG_DO_SHOW_LEVEL_TILE_DESIGNER_FLAGS, debug_doShowRoomTileDesignerFlags ? 1 : 0);
 //			}
 //		}
 //	}

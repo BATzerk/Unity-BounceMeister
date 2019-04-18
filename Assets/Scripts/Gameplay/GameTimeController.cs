@@ -18,12 +18,12 @@ public class GameTimeController : MonoBehaviour {
     // ----------------------------------------------------------------
     private void Awake() {
         // Add event listeners!
-        GameManagers.Instance.EventManager.StartLevelEvent += OnStartLevel;
+        GameManagers.Instance.EventManager.StartRoomEvent += OnStartRoom;
         GameManagers.Instance.EventManager.SetIsEditModeEvent += OnSetIsEditMode;
     }
     private void OnDestroy() {
         // Remove event listeners!
-        GameManagers.Instance.EventManager.StartLevelEvent -= OnStartLevel;
+        GameManagers.Instance.EventManager.StartRoomEvent -= OnStartRoom;
         GameManagers.Instance.EventManager.SetIsEditModeEvent -= OnSetIsEditMode;
     }
 
@@ -31,7 +31,7 @@ public class GameTimeController : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    private void OnStartLevel(Level level) {
+    private void OnStartRoom(Room room) {
         UpdateTimeScale();
     }
     private void OnSetIsEditMode(bool isEditMode) {

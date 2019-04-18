@@ -7,7 +7,7 @@ public class GateChannel {
     public bool IsUnlocked { get; private set; } // this value's saved/loaded!
     private int channelID=-1;
 	// References
-	private Level myLevel;
+	private Room myRoom;
 	private List<Gate> myGates = new List<Gate>();
 	private List<GateButton> myButtons = new List<GateButton>();
 
@@ -35,10 +35,10 @@ public class GateChannel {
 	// ----------------------------------------------------------------
 	//  Initialize
 	// ----------------------------------------------------------------
-	public GateChannel(Level myLevel, int channelID) {
-		this.myLevel = myLevel;
+	public GateChannel(Room myRoom, int channelID) {
+		this.myRoom = myRoom;
 		this.channelID = channelID;
-        IsUnlocked = SaveStorage.GetBool(SaveKeys.IsGateUnlocked(myLevel, channelID));
+        IsUnlocked = SaveStorage.GetBool(SaveKeys.IsGateUnlocked(myRoom, channelID));
 	}
 
 	//public void Reset() {
@@ -47,7 +47,7 @@ public class GateChannel {
     private void SetIsUnlocked(bool val) {
         if (IsUnlocked != val) {
             IsUnlocked = val;
-            SaveStorage.SetBool(SaveKeys.IsGateUnlocked(myLevel, channelID), IsUnlocked);
+            SaveStorage.SetBool(SaveKeys.IsGateUnlocked(myRoom, channelID), IsUnlocked);
     		foreach (Gate gate in myGates) {
     			if (gate==null || gate.ChannelID!=channelID) { continue; }
     			gate.SetIsOn(!IsUnlocked);

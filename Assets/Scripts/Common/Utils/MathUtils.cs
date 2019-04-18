@@ -264,7 +264,7 @@ public static class MathUtils {
     
     /** 0 top, 1 right, 2 bottom, 3 left. E.g. If the second point is mostly to the RIGHT of the first, this'll return 1. */
     public static int GetSideRectIsOn (Rect rectA, Rect rectB) {
-        // Because levels aren't always perfectly in line, determine WHICH direction they're more different by. Use that.
+        // Because rooms aren't always perfectly in line, determine WHICH direction they're more different by. Use that.
         // Whichever value of these is the GREATEST, that's the side rectB is on.
         float diffL = rectA.xMin - rectB.xMax;
         float diffR = rectB.xMin - rectA.xMax;
@@ -282,7 +282,7 @@ public static class MathUtils {
         return -1; // impossibru!!
     }
     public static int GetSidePointIsOn (Rect rect, Vector2 point) {
-        // Because levels aren't always perfectly in line, determine WHICH direction they're more different by. Use that.
+        // Because rooms aren't always perfectly in line, determine WHICH direction they're more different by. Use that.
         // Whichever value of these is the GREATEST, that's the side rectB is on.
         float diffL = rect.xMin - point.x;
         float diffR = point.x - rect.xMax;
