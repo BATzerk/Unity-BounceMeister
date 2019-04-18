@@ -1,4 +1,4 @@
-﻿roomProperties posGlobal:(-554.0, 204.0);designerFlag:3
+roomProperties posGlobal:(234.0, -260.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-18.1, 2.1)
 Ground myRect:(x:15.00, y:-5.50, width:22.00, height:11.00)
@@ -9,7 +9,7 @@ Ground myRect:(x:-17.00, y:-5.50, width:16.00, height:13.00);isPlayerRespawn:Tru
 Spikes myRect:(x:15.00, y:0.50, width:22.00, height:1.00);rotation:0
 Spikes myRect:(x:18.00, y:5.50, width:8.00, height:1.00);rotation:180
 Ground myRect:(x:18.00, y:11.00, width:8.00, height:10.00)
-Snack pos:(20.5, 3.0)
+Snack pos:(20.5, 3.0);playerType:Flatline
 Ground myRect:(x:3.00, y:-17.00, width:46.00, height:6.00);isPlayerRespawn:True
 Ground myRect:(x:-1.00, y:10.50, width:30.00, height:11.00)
 Spikes myRect:(x:-8.50, y:-3.50, width:17.00, height:1.00);rotation:0
