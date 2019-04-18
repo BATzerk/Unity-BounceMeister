@@ -1,4 +1,4 @@
-﻿roomProperties posGlobal:(-38.0, 166.0);designerFlag:3
+roomProperties posGlobal:(-38.0, 166.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Snack pos:(16.5, 4.5)
 PlayerStart pos:(4.7, -14.7)

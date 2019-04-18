@@ -11,7 +11,7 @@ public class ProgressGate : BaseGround {
     
     // Getters (Private)
     private WorldData currWorldData { get { return GameManagers.Instance.DataManager.CurrWorldData; } }
-    private int NumSnacksColl { get { return currWorldData.NumSnacksCollected; } }
+    private int NumSnacksEaten { get { return GameManagers.Instance.DataManager.NumSnacksEaten; } }
 
 
 	// ----------------------------------------------------------------
@@ -30,18 +30,18 @@ public class ProgressGate : BaseGround {
         myText.GetComponent<Renderer>().sortingOrder = 11;
         
         // Add event listeners!
-        GameManagers.Instance.EventManager.SnacksCollectedChangedEvent += OnSnacksCollectedChanged;
+        GameManagers.Instance.EventManager.NumSnacksEatenChangedEvent += OnNumSnacksEatenChanged;
     }
     private void OnDestroy() {
         // Remove event listeners!
-        GameManagers.Instance.EventManager.SnacksCollectedChangedEvent -= OnSnacksCollectedChanged;
+        GameManagers.Instance.EventManager.NumSnacksEatenChangedEvent -= OnNumSnacksEatenChanged;
     }
     
     
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    private void OnSnacksCollectedChanged(int worldIndex) {
+    private void OnNumSnacksEatenChanged() {
         UpdateText();
         UpdateIsOpen();
     }
@@ -51,10 +51,10 @@ public class ProgressGate : BaseGround {
     //  Doers
     // ----------------------------------------------------------------
     private void UpdateText() {
-        myText.text = NumSnacksColl + " / " + numSnacksReq;
+        myText.text = NumSnacksEaten + " / " + numSnacksReq;
     }
     private void UpdateIsOpen() {
-        bool isOpen = NumSnacksColl >= numSnacksReq;
+        bool isOpen = NumSnacksEaten >= numSnacksReq;
         SetIsOpen(isOpen);
     }
 	private void SetIsOpen(bool isOpen) {

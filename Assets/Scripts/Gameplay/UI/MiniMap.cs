@@ -32,12 +32,12 @@ public class MiniMap : MonoBehaviour {
         
         // Add event listeners!
         GameManagers.Instance.EventManager.StartRoomEvent += OnStartRoom;
-        GameManagers.Instance.EventManager.SnacksCollectedChangedEvent += OnSnacksCollectedChanged;
+        GameManagers.Instance.EventManager.NumSnacksEatenChangedEvent += OnNumSnacksEatenChanged;
     }
     private void OnDestroy() {
         // Remove event listeners!
         GameManagers.Instance.EventManager.StartRoomEvent -= OnStartRoom;
-        GameManagers.Instance.EventManager.SnacksCollectedChangedEvent -= OnSnacksCollectedChanged;
+        GameManagers.Instance.EventManager.NumSnacksEatenChangedEvent -= OnNumSnacksEatenChanged;
     }
     
     private void DestroyAllTiles() {
@@ -105,7 +105,7 @@ public class MiniMap : MonoBehaviour {
         // Update tile visuals!
         UpdateAllTilesVisuals();// TODO: This more efficiently?
     }
-    private void OnSnacksCollectedChanged(int worldIndex) {
+    private void OnNumSnacksEatenChanged() {
         tiles[currRoom.RoomKey].UpdateVisuals(currRoomData); // Update the visuals of the current RoomTile.
     }
     

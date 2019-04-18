@@ -5,14 +5,16 @@ using UnityEngine;
 public class DataManager {
 	// Properties
     private List<WorldData> worldDatas;
-    public int CoinsCollected { get; private set; } // NOTE: Not fully implemented.
     //  public int mostRecentlySavedRoom_worldIndex; // an nbd shortcut to highlight the most recently created room in the MapEditor.
     //  public string mostRecentlySavedRoom_roomKey; // an nbd shortcut to highlight the most recently created room in the MapEditor.
     public RoomData currRoomData = null; // TODO: Remove this. We don't need it (right?). if this is defined when GameController opens, we'll open THAT room!
+    // User Progress Properties
+    public int CoinsCollected { get; private set; } // NOTE: Not fully implemented.
+    public int NumSnacksEaten { get; private set; }
     // Entering-Room Properties
     public string roomToDoorID = null; // defined when use a RoomDoor. When we enter a room, this is the door we'll start at!
     public Vector2 playerGroundedRespawnPos=Vector2Extensions.NaN; // I'll respawn at this pos. Set when we leave a Ground that has IsPlayerRespawn.
-
+    
 	// ----------------------------------------------------------------
 	//  Getters
 	// ----------------------------------------------------------------
@@ -24,12 +26,12 @@ public class DataManager {
 	public WorldData GetWorldData (int worldIndex) {
 		return worldDatas[worldIndex];
     }
-    public int NumSnacksCollected(int worldIndex) {
-        return GetWorldData(worldIndex).NumSnacksCollected;
-    }
-    public int NumSnacksTotal(int worldIndex) {
-        return GetWorldData(worldIndex).NumSnacksTotal;
-    }
+    //public int NumSnacksCollected(int worldIndex) {
+    //    return GetWorldData(worldIndex).NumSnacksCollected;
+    //}
+    //public int NumSnacksTotal(int worldIndex) {
+    //    return GetWorldData(worldIndex).NumSnacksTotal;
+    //}
     public bool IsPlayerTypeUnlocked(PlayerTypes playerType) {
         return SaveStorage.GetBool(SaveKeys.IsPlayerTypeUnlocked(playerType));
     }
@@ -70,21 +72,41 @@ public class DataManager {
 //		highestWorldEndEverReached = SaveStorage.GetInt (SaveKeys.HIGHEST_WORLD_END_EVER_REACHED);
 
 		ReloadWorldDatas();
+        RefreshTotalEdiblesEaten();
 	}
 
 	public void ReloadWorldDatas () {
 		worldDatas = new List<WorldData> ();
 		for (int i=0; i<GameProperties.NUM_WORLDS; i++) {
 			WorldData newWorldData = new WorldData(i);
-			newWorldData.Initialize ();
-			worldDatas.Add (newWorldData);
+			newWorldData.Initialize();
+			worldDatas.Add(newWorldData);
 		}
 	}
 
+    
+    // ----------------------------------------------------------------
+    //  Doers
+    // ----------------------------------------------------------------
+    public void RefreshTotalEdiblesEaten() {
+        NumSnacksEaten = 0;
+        for (int w=0; w<worldDatas.Count; w++) {
+            for (int c=0; c<worldDatas[w].clusters.Count; c++) {
+                NumSnacksEaten += worldDatas[w].clusters[c].NumSnacksEaten;
+            }
+        }
+        if (!GameManagers.IsInitializing) {
+            GameManagers.Instance.EventManager.OnNumSnacksEatenChanged();
+        }
+    }
+    public void IncrementNumSnacksEaten() {
+        NumSnacksEaten ++;
+        GameManagers.Instance.EventManager.OnNumSnacksEatenChanged();
+    }
 
 
     // ----------------------------------------------------------------
-    //  Doers
+    //  Deleting / Resetting
     // ----------------------------------------------------------------
     public void ClearAllSaveData() {
         // NOOK IT

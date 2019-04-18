@@ -5,10 +5,9 @@ using UnityEngine.UI;
 
 public class MiniMapRoomTile : MonoBehaviour {
     // Components
-    [SerializeField] private RectTransform myRectTransform;
-    [SerializeField] private Image i_back;
-    //[SerializeField] private Image i_stroke;
-    [SerializeField] private Image i_snack; // hidden if no snack
+    [SerializeField] private RectTransform myRectTransform=null;
+    [SerializeField] private Image i_back=null;
+    [SerializeField] private Image i_snack=null; // hidden if no snack
     private ImageLine[] i_borders; // index corresponds to side. Null if no border.
     // References
     public RoomData MyRoomData { get; private set; }
@@ -84,8 +83,8 @@ public class MiniMapRoomTile : MonoBehaviour {
             i_back.color = BackColor(currRD);
             // Snack icon.
             i_snack.enabled = MyRoomData.NumSnacksTotal > 0 && MyRoomData.HasPlayerBeenHere;
-            bool areSnacksLeft = MyRoomData.NumSnacksCollected < MyRoomData.NumSnacksTotal;
-            i_snack.color = areSnacksLeft ? Color.white : new Color(0,0,0, 0.14f);
+            bool areSnacksLeft = MyRoomData.NumSnacksEaten < MyRoomData.NumSnacksTotal;
+            i_snack.color = areSnacksLeft ? new Color255(190,230,50).ToColor() : new Color(0,0,0, 0.14f);
         }
         else {
             this.gameObject.SetActive(false);

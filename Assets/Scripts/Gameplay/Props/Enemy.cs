@@ -54,16 +54,6 @@ public class Enemy : PlatformCharacter {
 	}
 
 
-	// ----------------------------------------------------------------
-	//  Doers
-	// ----------------------------------------------------------------
-	private void GetHit() {
-		health --;
-		if (health <= 0) {
-			Die();
-		}
-	}
-
 
 	// ----------------------------------------------------------------
 	//  Events (Physics)
@@ -106,7 +96,7 @@ public class Enemy : PlatformCharacter {
 //	}
 	override public void OnPlayerBounceOnMe(Player player) {
 		if (IsInvincible) { return; } // Invincible? Do nothin'.
-		GetHit();
+		TakeDamage(1);
 	}
 
 

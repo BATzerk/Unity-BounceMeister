@@ -23,8 +23,9 @@ public class PlatformCharacter : Collidable {
 	[SerializeField] protected PlatformCharacterWhiskers myWhiskers=null;
 	// Properties
 	private bool isDead = false;
-	protected int health; // we die when we hit 0. TODO: Make this private, and have Player and Enemy extend MY GetHit() function.
+	protected int health { get; private set; } // we die when we hit 0.
     protected float timeLastTouchedWall=Mathf.NegativeInfinity;
+    protected float timeSinceDamage { get; private set; } // set to Time.time when we take damage.
     // References
     private List<Lift> liftsTouching = new List<Lift>();
 
@@ -93,6 +94,7 @@ public class PlatformCharacter : Collidable {
     //  Start
     // ----------------------------------------------------------------
     virtual protected void Start () {
+        timeSinceDamage = Mathf.NegativeInfinity;
 		health = StartingHealth;
         bodyCollider.size = Size;
 	}
@@ -189,6 +191,14 @@ public class PlatformCharacter : Collidable {
 	private void ChangeVel(Vector2 delta) {
 		vel += delta;
 	}
+    virtual protected void TakeDamage(int damageAmount) {
+        health -= damageAmount;
+        timeSinceDamage = Time.time;
+        // Am I kaput??
+        if (health <= 0) {
+            Die();
+        }
+    }
 	virtual protected void Die() {
 		isDead = true;
 		this.gameObject.SetActive(false); // TEMP super simple for now.

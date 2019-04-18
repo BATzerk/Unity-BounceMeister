@@ -45,7 +45,7 @@ public class Gate : BaseGround {
 	// ----------------------------------------------------------------
 	public void UnlockMe() {
 		SetIsOn(false);
-		//todo: some animation or something, I guess
+		//to do: some animation or something, I guess
 	}
 	public void SetIsOn(bool _isOn) {
 		myCollider.enabled = _isOn;

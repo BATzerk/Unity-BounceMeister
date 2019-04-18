@@ -16,6 +16,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
     public WorldData MyWorldData { get { return MyRoomData.MyWorldData; } }
 	public int WorldIndex { get { return MyRoomData.WorldIndex; } }
 	public string RoomKey { get { return MyRoomData.RoomKey; } }
+    public RoomClusterData MyClusterData { get { return MyRoomData.ClusterIndex<0 ? null : MyWorldData.clusters[MyRoomData.ClusterIndex]; } }
 	public Vector2 PosGlobal { get { return MyRoomData.PosGlobal; } }
     public Player Player { get { return gameControllerRef.Player; } }
 	public GateChannel[] GateChannels { get { return gateChannels; } }

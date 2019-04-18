@@ -5,36 +5,49 @@ using UnityEngine;
 public class RoomClusterData {
     // Properties
     public int ClusterIndex { get; private set; }
-    public int NumGems { get; private set; }
-    public int NumGemsCollected { get; private set; }
+    public int WorldIndex { get; private set; }
+    //public int NumGems { get; private set; }
+    //public int NumGemsCollected { get; private set; }
     public int NumSnacks { get; private set; }
-    public int NumSnacksCollected { get; private set; }
+    public int NumSnacksEaten { get; private set; }
     // References
     public List<RoomData> rooms=new List<RoomData>();
     
     // Initialize
-    public RoomClusterData(int ClusterIndex) {
+    public RoomClusterData(int WorldIndex, int ClusterIndex) {
+        this.WorldIndex = WorldIndex;
         this.ClusterIndex = ClusterIndex;
     }
     
     // Doers
-    public void UpdateCollectablesCounts() {
-        NumGems = 0;
-        NumGemsCollected = 0;
+    public void UpdateEdiblesCounts() {
         NumSnacks = 0;
-        NumSnacksCollected = 0;
-        for (int l=0; l<rooms.Count; l++) {
-            for (int p=0; p<rooms[l].allPropDatas.Count; p++) {
-                //NumGems += rooms[l].gemDatas.Count;
-                if (rooms[l].allPropDatas[p] is GemData) {
-                    NumGems ++;
-                }
-                else if (rooms[l].allPropDatas[p] is SnackData) {
-                    NumSnacks ++;
-                }
-                // TODO: Gems/Snacks collected!
-            }
+        NumSnacksEaten = 0;
+        for (int r=0; r<rooms.Count; r++) {
+            rooms[r].UpdateNumSnacks();
+            NumSnacks += rooms[r].NumSnacksTotal;
+            NumSnacksEaten += rooms[r].NumSnacksEaten;
+            
+            //for (int p=0; p<rooms[r].allPropDatas.Count; p++) {
+            //    if (rooms[r].allPropDatas[p] is GemData) {
+            //        //if ((rooms[r].allPropDatas[p] as GemData).isEaten) {
+            //        if (SaveStorage.GetBool(SaveKeys.DidEatGem(rooms[r], gemIndex))) {
+            //            NumGemsCollected ++;
+            //        }
+            //        gemIndex ++;
+            //        NumGems ++;
+            //    }
+            //    else if (rooms[r].allPropDatas[p] is SnackData) {
+            //        //if ((rooms[r].allPropDatas[p] as SnackData).isEaten) {
+            //        if (SaveStorage.GetBool(SaveKeys.DidEatSnack(rooms[r], snackIndex))) {
+            //            NumSnacksEaten ++;
+            //        }
+            //        snackIndex ++;
+            //        NumSnacks ++;
+            //    }
+            //}
         }
+        //Debug.Log("W"+WorldIndex+" Cluster: " + ClusterIndex + "    gems: " + NumGemsCollected+"/"+NumGems + ", snacks: " + NumSnacksCollected+"/"+NumSnacks);
     }
     
     

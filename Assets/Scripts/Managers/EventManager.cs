@@ -18,11 +18,11 @@ public class EventManager {
 	public event NoParamAction EditorSaveRoomEvent;
 	public event NoParamAction ScreenSizeChangedEvent;
 	public event NoParamAction CoinsCollectedChangedEvent;
+    public event NoParamAction NumSnacksEatenChangedEvent;
     public event BoolAction SetIsEditModeEvent;
-	public event BoolAction SetPausedEvent;
-	public event CoinAction CoinCollectedEvent;
-	public event RoomAction StartRoomEvent;
-    public event IntAction SnacksCollectedChangedEvent;
+    public event BoolAction SetPausedEvent;
+    public event CoinAction CoinCollectedEvent;
+    public event RoomAction StartRoomEvent;
 	public event IntAction PlayerEscapeRoomBoundsEvent;
     public event PlayerAction PlayerDieEvent;
     public event PlayerAction PlayerInitEvent;
@@ -43,7 +43,7 @@ public class EventManager {
 
 	public void OnCoinCollected(Coin coin) { if (CoinCollectedEvent!=null) { CoinCollectedEvent(coin); } }
 	public void OnCoinsCollectedChanged() { if (CoinsCollectedChangedEvent!=null) { CoinsCollectedChangedEvent(); } }
-    public void OnSnacksCollectedChanged(int worldIndex) { if (SnacksCollectedChangedEvent!=null) { SnacksCollectedChangedEvent(worldIndex); } }
+    public void OnNumSnacksEatenChanged() { if (NumSnacksEatenChangedEvent!=null) { NumSnacksEatenChangedEvent(); } }
 
     public void OnPlayerEscapeRoomBounds(int side) { if (PlayerEscapeRoomBoundsEvent!=null) { PlayerEscapeRoomBoundsEvent(side); } }
 	public void OnPlayerDie(Player player) { if (PlayerDieEvent!=null) { PlayerDieEvent(player); } }

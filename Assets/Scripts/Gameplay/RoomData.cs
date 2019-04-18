@@ -15,7 +15,7 @@ public class RoomData {
     public string roomKey; // everything we use to reference this room! Including the room's file name (minus the .txt suffix).
 	public int designerFlag; // for the room designer! We can flag any room to be like "testing" or "good" or etc.
     public int ClusterIndex=-1;
-    public int NumSnacksCollected { get; private set; }
+    public int NumSnacksEaten { get; private set; }
     public int NumSnacksTotal { get; private set; }
 	public bool WasUsedInSearchAlgorithm { get; set; }
 	public Vector2 posGlobal; // my position, global to ALL worlds! These values get big (up to around 70,000)!
@@ -68,14 +68,14 @@ public class RoomData {
         return DefaultPlayerStartPos();
     }
     public bool AreEdiblesLeft() {
-        return NumSnacksCollected < NumSnacksTotal;
+        return NumSnacksEaten < NumSnacksTotal;
     }
     public void UpdateNumSnacks() {
         NumSnacksTotal = 0;
-        NumSnacksCollected = 0;
+        NumSnacksEaten = 0;
         foreach (PropData pd in allPropDatas) {
             if (pd is SnackData) {
-                if (SaveStorage.GetBool(SaveKeys.DidEatSnack(this, NumSnacksTotal))) { NumSnacksCollected++; }
+                if (SaveStorage.GetBool(SaveKeys.DidEatSnack(this, NumSnacksTotal))) { NumSnacksEaten++; }
                 NumSnacksTotal ++;
             }
         }

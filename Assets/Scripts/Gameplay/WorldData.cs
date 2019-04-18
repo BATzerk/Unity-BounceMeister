@@ -11,8 +11,8 @@ public class WorldData {
 	// Properties
 	public bool isWorldUnlocked;
 	public int worldIndex; // starts at 0.
-    public int NumSnacksCollected { get; private set; }
-    public int NumSnacksTotal { get; private set; }
+    //public int NumSnacksCollected { get; private set; }
+    //public int NumSnacksTotal { get; private set; }
     private Rect boundsRectAllRooms; // For the finished game, it doesn't make sense to have TWO rects. But in development, a lot of worlds' rooms aren't used. So we have to make the distinction.
 	private Rect boundsRectPlayableRooms; // For determining RoomSelect view and WorldSelect view.
 
@@ -106,18 +106,17 @@ public class WorldData {
             // If this is a ClusterStart room...!
             if (rd.isClustStart) {
                 // Add a new Cluster, and populate it!
-                RoomClusterData newClust = new RoomClusterData(clusters.Count);
+                RoomClusterData newClust = new RoomClusterData(worldIndex, clusters.Count);
                 clusters.Add(newClust);
                 RecursivelyAddRoomToCluster(rd, newClust);
                 // Update the Cluster's values!
-                newClust.UpdateCollectablesCounts();
+                newClust.UpdateEdiblesCounts();
             }
         }
         // Reset Rooms' WasUsedInSearchAlgorithm.
         foreach (RoomData rd in roomDatas.Values) {
             rd.WasUsedInSearchAlgorithm = false;
         }
-        
     }
     private void RecursivelyAddRoomToCluster(RoomData rd, RoomClusterData cluster) {
         if (rd.WasUsedInSearchAlgorithm) { return; } // This RoomData was used? Ignore it.
@@ -188,32 +187,6 @@ public class WorldData {
         // Ah, NO corresponding opening. Return null.
         return null;
     }
-    // TODO: Replace this with known neighbors now!!
-	/// Use this for debug room-jumping. Will return room at side, irrespective of Player's position.
-	public RoomData Debug_GetSomeRoomAtSide(RoomData originLD, int side) {
-		// Find where a point in this next room would be. Then return the RoomData with that point in it!
-		Vector2Int dir = MathUtils.GetDir(side);
-		Vector2 originSize = originLD.BoundsGlobal.size;
-		Vector2 searchOrigin = originLD.BoundsGlobal.position;//.center;
-		searchOrigin += new Vector2(dir.x*(originSize.x+1f), dir.y*(originSize.y+1f)); // +1 so the rooms don't have to be directly touching; we'll allow even a small gap.
-		// Instead of just looking at one point, put out TWO feelers, as rooms can be irregularly aligned.
-		Vector2[] searchPoints = new Vector2[3];
-		if (side==Sides.L || side==Sides.R) {
-			searchPoints[1] = searchOrigin;
-			searchPoints[0] = searchOrigin + new Vector2(0, originSize.y*0.4f);
-			searchPoints[2] = searchOrigin - new Vector2(0, originSize.y*0.4f);
-		}
-		else {
-			searchPoints[1] = searchOrigin;
-			searchPoints[0] = searchOrigin + new Vector2(originSize.x*0.4f, 0);
-			searchPoints[2] = searchOrigin - new Vector2(originSize.x*0.4f, 0);
-		}
-		foreach (Vector2 point in searchPoints) {
-			RoomData ldHere = GetRoomWithPoint(point);
-			if (ldHere != null) { return ldHere; }
-		}
-		return null;
-	}
 	/** FOR NOW, our room-traversal system is dead simple. Nothing's precalculated. We search for the next room the moment we exit one. */
 	public RoomData GetRoomAtSide(RoomData originLD, Vector2 searchPos, int side) {
         // Lock searchPos on the EDGE of the origin room-- we only wanna use its x/y value parallel to the next room.
@@ -261,15 +234,16 @@ public class WorldData {
     // ================================================================
     //  Doers
     // ================================================================
-    public void UpdateNumSnacks() {
-        NumSnacksTotal = 0;
-        NumSnacksCollected = 0;
-        foreach (RoomData rd in roomDatas.Values) {
-            rd.UpdateNumSnacks();
-            NumSnacksTotal += rd.NumSnacksTotal;
-            NumSnacksCollected += rd.NumSnacksCollected;
-        }
-    }
+    //public void UpdateNumSnacks() {
+    //    // Update by Room.
+    //    NumSnacksTotal = 0;
+    //    NumSnacksCollected = 0;
+    //    foreach (RoomData rd in roomDatas.Values) {
+    //        rd.UpdateNumSnacks();
+    //        NumSnacksTotal += rd.NumSnacksTotal;
+    //        NumSnacksCollected += rd.NumSnacksCollected;
+    //    }
+    //}
     //public void UpdateNumSnacksTotal() {
     //    NumSnacksTotal = 0;
     //    foreach (RoomData rd in roomDatas.Values) {
@@ -282,11 +256,13 @@ public class WorldData {
     // ================================================================
     //  Events
     // ================================================================
-    public void OnPlayerEatSnack() {
+    public void OnPlayerEatSnack(Room room) {
         // Update counts!
-        UpdateNumSnacks(); // CANDO #optimization: Only update the snacks in the room we ate it in.
-        // Dispatch event!
-        GameManagers.Instance.EventManager.OnSnacksCollectedChanged(WorldIndex);
+        RoomClusterData clusterData = room.MyClusterData;
+        if (clusterData != null) {
+            clusterData.UpdateEdiblesCounts();
+            GameManagers.Instance.DataManager.IncrementNumSnacksEaten();
+        }
     }
 
 
@@ -315,8 +291,6 @@ public class WorldData {
 		else {
 			Debug.LogError("World folder not found! " + worldIndex);
         }
-
-        UpdateNumSnacks();
 
         //		if (File.Exists(filePath)) {
         //			StreamReader file = File.OpenText(filePath);

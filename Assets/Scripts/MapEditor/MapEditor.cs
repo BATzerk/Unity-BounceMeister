@@ -310,7 +310,6 @@ public class MapEditor : MonoBehaviour {
         ReloadAllWorldDatasAndScene();
     }
 
-	// TODO: This! Convert to StreamingAssets.
 	private void MoveRoomTilesSelectedRoomFilesToTrashFolder() {
 		// No tiles selected? Womp, don't do anything LOL
 		if (tilesSelected.Count == 0) { return; }
@@ -322,7 +321,6 @@ public class MapEditor : MonoBehaviour {
 		
 		// Reload everything right away!! (Otherwise, we'll have to ALT + TAB out of Unity and back in for it to be refreshed.)
 		#if UNITY_EDITOR
-//		UnityEditor.AssetDatabase.ImportAsset (saveLocation + fileName);
 		UnityEditor.AssetDatabase.Refresh ();
 		#endif
 

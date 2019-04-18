@@ -41,7 +41,6 @@ abstract public class Player : PlatformCharacter {
 	protected bool isPreservingWallKickVel = false; // if TRUE, we don't apply air friction. Set to false when A) Time's past PostWallKickHorzInputLockDur, or B) Non-head touches any collider (so landing on ground, or side-hitting wall).
     private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeLastWallKicked=Mathf.NegativeInfinity;
-	private float timeSinceDamage=Mathf.NegativeInfinity; // invincible until this time! Set to Time.time + PostDamageInvincibleDuration when we're hit.
 	private float timeWhenDelayedJump=Mathf.NegativeInfinity; // for jump AND wall-kick. Set when in air and press Jump. If we touch ground/wall before this time, we'll do a delayed jump or wall-kick!
     public int DirFacing { get; private set; }
     private int numJumpsSinceGround;
@@ -315,7 +314,15 @@ abstract public class Player : PlatformCharacter {
         myBody.OnStopWallSlide();
     }
 
-	private void StartPostDamageImmunity() {
+    override protected void TakeDamage(int damageAmount) {
+        base.TakeDamage(damageAmount);
+        // I've still got juice in me: Start post-damage immunity!
+        if (!IsDead) {
+            StartPostDamageImmunity();
+        }
+    }
+
+    private void StartPostDamageImmunity() {
 		isPostDamageImmunity = true;
 	}
 	private void EndPostDamageImmunity() {
@@ -566,19 +573,6 @@ abstract public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	//  Events (Health)
 	// ----------------------------------------------------------------
-	private void TakeDamage(int damageAmount) {
-		health -= damageAmount;
-		timeSinceDamage = Time.time;
-		// Am I kaput??
-		if (health <= 0) {
-			Die();
-		}
-		// I've still got juice in me!
-		else {
-			StartPostDamageImmunity();
-		}
-	}
-
 	public void OnTouchSpikes(Spikes spikes) {
 		TakeDamage(1);
 	}
