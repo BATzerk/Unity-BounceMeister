@@ -158,26 +158,6 @@ public class GameController : MonoBehaviour {
 		player = null;
 	}
 
-	private void StartNewBlankLevel() {
-		// Keep it in the current world, and give it a unique name.
-		WorldData worldData = dm.GetWorldData(level.WorldIndex);
-		string levelKey = worldData.GetUnusedLevelKey();
-		LevelData emptyLevelData = worldData.GetLevelData(levelKey, true);
-		StartGameAtLevel(emptyLevelData);
-	}
-    private void DuplicateCurrLevel() {
-        // Add a new level file, yo!
-        LevelData currLD = level.LevelDataRef;
-        string newLevelKey = currLD.WorldDataRef.GetUnusedLevelKey(currLD.LevelKey);
-        LevelSaverLoader.SaveLevelFileAs(currLD, currLD.WorldIndex, newLevelKey);
-        dm.ReloadWorldDatas();
-        LevelData newLD = dm.GetLevelData(currLD.WorldIndex,newLevelKey, false);
-        newLD.SetPosGlobal(newLD.posGlobal + new Vector2(15,-15)*GameProperties.UnitSize); // offset its position a bit.
-        LevelSaverLoader.UpdateLevelPropertiesInLevelFile(newLD); // update file!
-        dm.currLevelData = newLD;
-        SceneHelper.ReloadScene();
-    }
-
 
     private Vector2 GetPlayerStartingPosInLevel(LevelData ld) {
         // Respawning from death?
@@ -205,8 +185,8 @@ public class GameController : MonoBehaviour {
         return returnPos;
     }
 
-
 	private void OnPlayerEscapeLevelBounds(int sideEscaped) {
+        Player.EatEdiblesHolding(); // TEMP solution. Willdo: Bring Edibles between rooms.
 		WorldData currWorldData = level.WorldDataRef;
 		LevelData nextLD = currWorldData.GetLevelAtSide(level.LevelDataRef, Player.PosLocal, sideEscaped);
 		if (nextLD != null) {
@@ -221,6 +201,28 @@ public class GameController : MonoBehaviour {
 			Debug.LogWarning("Whoa! No level at this side: " + sideEscaped);
 		}
 	}
+    
+
+    private void StartNewBlankLevel() {
+        // Keep it in the current world, and give it a unique name.
+        WorldData worldData = dm.GetWorldData(level.WorldIndex);
+        string levelKey = worldData.GetUnusedLevelKey();
+        LevelData emptyLevelData = worldData.GetLevelData(levelKey, true);
+        StartGameAtLevel(emptyLevelData);
+    }
+    private void DuplicateCurrLevel() {
+        // Add a new level file, yo!
+        LevelData currLD = level.LevelDataRef;
+        string newLevelKey = currLD.WorldDataRef.GetUnusedLevelKey(currLD.LevelKey);
+        LevelSaverLoader.SaveLevelFileAs(currLD, currLD.WorldIndex, newLevelKey);
+        dm.ReloadWorldDatas();
+        LevelData newLD = dm.GetLevelData(currLD.WorldIndex,newLevelKey, false);
+        newLD.SetPosGlobal(newLD.posGlobal + new Vector2(15,-15)*GameProperties.UnitSize); // offset its position a bit.
+        LevelSaverLoader.UpdateLevelPropertiesInLevelFile(newLD); // update file!
+        dm.currLevelData = newLD;
+        SceneHelper.ReloadScene();
+    }
+    
 
 
 	// ----------------------------------------------------------------
@@ -285,8 +287,14 @@ public class GameController : MonoBehaviour {
         
         // NOTHING + _____
         if (!isKey_alt && !isKey_shift && !isKey_control) {
+            // BACKSPACE = Clear current Room save data.
+            if (Input.GetKeyDown(KeyCode.Backspace)) {
+                dm.ClearRoomSaveData(level);
+                SceneHelper.ReloadScene();
+                return;
+            }
             // Level-Jumping
-            if (Input.GetKeyDown(KeyCode.Equals))            { Debug_JumpToLevelAtSide(Sides.T); return; }
+            else if (Input.GetKeyDown(KeyCode.Equals))       { Debug_JumpToLevelAtSide(Sides.T); return; }
             else if (Input.GetKeyDown(KeyCode.RightBracket)) { Debug_JumpToLevelAtSide(Sides.R); return; }
             else if (Input.GetKeyDown(KeyCode.Quote))        { Debug_JumpToLevelAtSide(Sides.B); return; }
             else if (Input.GetKeyDown(KeyCode.LeftBracket))  { Debug_JumpToLevelAtSide(Sides.L); return; }

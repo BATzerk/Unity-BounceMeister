@@ -38,9 +38,9 @@ abstract public class Edible : Prop {
     }
     public void OnPlayerPickMeUp(Player player) {
         playerHoldingMe = player;
-        // Oh, disable my gridSnap script so it doesn't interfere with our positioning.
-        GridSnapPos snapScript = GetComponent<GridSnapPos>();
-        snapScript.enabled = false;
+        //// Oh, disable my gridSnap script so it doesn't interfere with our positioning.
+        //GridSnapPos snapScript = GetComponent<GridSnapPos>();
+        //snapScript.enabled = false;
     }
     
     

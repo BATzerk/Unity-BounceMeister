@@ -34,6 +34,9 @@ public class DataManager {
     public int NumSnacksTotal(int worldIndex) {
         return GetWorldData(worldIndex).NumSnacksTotal;
     }
+    public bool IsPlayerTypeUnlocked(PlayerTypes playerType) {
+        return SaveStorage.GetBool(SaveKeys.IsPlayerTypeUnlocked(playerType));
+    }
 
 
     // ----------------------------------------------------------------
@@ -47,6 +50,9 @@ public class DataManager {
 		// Dispatch event!
 		GameManagers.Instance.EventManager.OnCoinsCollectedChanged();
 	}
+    public void UnlockPlayerType(PlayerTypes playerType) {
+        SaveStorage.SetBool(SaveKeys.IsPlayerTypeUnlocked(playerType), true);
+    }
 //	public void SetWorldIndexOnLoadGameScene (int WorldIndex) {
 //		worldIndexOnLoadGameScene = WorldIndex;
 //		SaveStorage.SetInt (SaveKeys.LastWorldPlayedIndex, worldIndexOnLoadGameScene);
@@ -90,6 +96,18 @@ public class DataManager {
         Reset ();
         Debug.Log ("All SaveStorage CLEARED!");
     }
+
+    public void ClearRoomSaveData(Level level) { ClearRoomSaveData(level.LevelDataRef); }
+    public void ClearRoomSaveData(LevelData ld) {
+        SaveStorage.DeleteKey(SaveKeys.HasPlayerBeenInLevel(ld));
+        for (int i=0; i<9; i++) { // Sloppy and inefficient!! But NBD for our purposes.
+            SaveStorage.DeleteKey(SaveKeys.DidEatGem(ld, i));
+            SaveStorage.DeleteKey(SaveKeys.DidEatSnack(ld, i));
+            SaveStorage.DeleteKey(SaveKeys.IsGateUnlocked(ld, i));
+            SaveStorage.DeleteKey(SaveKeys.CharBarrelTypeInMe(ld, i));
+        }
+    }
+    
     /// Resets static values that determine where Player will start when reloading a Level (e.g. LevelDoorID, prev-level-exit-pos, grounded-respawn-pos).
     public void ResetLevelEnterValues() {
         levelToDoorID = null;

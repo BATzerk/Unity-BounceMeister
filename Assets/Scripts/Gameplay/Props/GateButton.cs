@@ -38,7 +38,7 @@ public class GateButton : Prop {
 	// ----------------------------------------------------------------
     private void SetIsPressed(bool val) {
         isPressed = val;
-        GameUtils.SetSpriteColorWithCompoundAlpha(sr_body, bodyColor, isPressed ? 0.1f : 1);
+        GameUtils.SetSpriteColor(sr_body, bodyColor, isPressed ? 0.1f : 1);
     }
 	private void GetPressed() {
         SetIsPressed(true);

@@ -132,6 +132,8 @@ abstract public class Player : PlatformCharacter {
 		camBoundsLocal.size += new Vector2(boundsBloat,boundsBloat)*2f;
 		camBoundsLocal.position -= new Vector2(boundsBloat,boundsBloat);
         
+        GameManagers.Instance.DataManager.UnlockPlayerType(PlayerType()); // TEMP: Also unlock this PlayerType here (and only here).
+        
         // Dispatch event!
         GameManagers.Instance.EventManager.OnPlayerInit(this);
     }
@@ -480,7 +482,6 @@ abstract public class Player : PlatformCharacter {
 		float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
 		distToRestore += ExtraBounceDistToRestore(); // Give us __ more height than we started with.
 		float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
-        //yVel += 0.025f; // Hack!! We're not getting all our height back exactly. Fudge it for now.
 		SetVel(new Vector2(vel.x, yVel));
 		// Inform the collidable!!
 		if (collidable != null) {
@@ -552,9 +553,8 @@ abstract public class Player : PlatformCharacter {
 			edible.OnPlayerPickMeUp(this);
 		}
 	}
-	private void EatEdiblesHolding() {
+	public void EatEdiblesHolding() {
 		foreach (Edible obj in ediblesHolding) {
-			obj.transform.SetParent(this.transform.parent); // pop the Edible back onto the Level.
 			obj.GetEaten();
 		}
 		ediblesHolding.Clear();

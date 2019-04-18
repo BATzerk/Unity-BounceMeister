@@ -7,6 +7,8 @@ public class Snack : Edible {
     [SerializeField] private SpriteRenderer sr_aura=null;
     // Properties
     [SerializeField] private PlayerTypes playerType=PlayerTypes.Undefined;
+    private float driftAmp; // body-drifting amplitude. Higher is bigger "floatiness".
+    private float rotScale; // 1 is rotate normal speed. 0.3 will rotate much slower.
 
 
     // ----------------------------------------------------------------
@@ -29,7 +31,6 @@ public class Snack : Edible {
         wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatSnack(myLevel, myIndex));
         isEaten = wasEverEaten;
         
-        
         UpdatePresence();
     }
     
@@ -43,22 +44,34 @@ public class Snack : Edible {
         
         // Update my color by my PlayerType.
         Color playerColor = PlayerBody.GetBodyColorNeutral(playerType);
-        sr_aura.color = playerColor;
-        sr_body.color = playerColor;
         
         sr_aura.enabled = !wasEverEaten;
+        driftAmp = 1f; // default these visual values.
+        rotScale = 1f;
         
+        // Matching type!
         if (isMyType) {
             sr_body.enabled = !wasEverEaten;
             myCollider.enabled = !wasEverEaten;
+            sr_aura.color = playerColor;
+            sr_body.color = playerColor;
         }
+        // Different type.
         else {
             myCollider.enabled = false;
             sr_body.enabled = !wasEverEaten;
-            //sr_body.color = Color.Lerp(playerColor, new Color(0,0,0, 0.15f), 0.7f);
-            //sr_aura.color = new Color(0,0,0, 0.07f);
-            GameUtils.SetSpriteAlpha(sr_aura, 0.1f);
-            GameUtils.SetSpriteAlpha(sr_body, 0.3f);
+            // I'm unlocked! Color me like the PlayerType.
+            if (GameManagers.Instance.DataManager.IsPlayerTypeUnlocked(playerType)) {
+                GameUtils.SetSpriteColor(sr_aura, playerColor, 0.14f);
+                GameUtils.SetSpriteColor(sr_body, playerColor, 0.3f);
+            }
+            // We HAVEN'T unlocked this PlayerType. Make me gray until we do.
+            else {
+                driftAmp = 0.15f;
+                rotScale = 0.1f;
+                sr_aura.color = new Color(0,0,0, 0.1f);
+                sr_body.color = new Color(0,0,0, 0.2f);
+            }
         }
     }
 
@@ -91,12 +104,14 @@ public class Snack : Edible {
         if (isEaten) { return; } // If I'm toast, don't do any position updating.
         
         float rotOffset = myIndex*1.3f;
-        bodyRotation -= 0.8f + Mathf.Sin(rotOffset+Time.time*1.5f) * 0.45f;
+        float rotDelta = -0.8f - Mathf.Sin(rotOffset+Time.time*1.5f) * 0.45f;
+        rotDelta *= rotScale;
+        bodyRotation += rotDelta;
 
         float oscOffset = myIndex*1.5f; // if multiple Snacks in a level, this offsets their floaty animation.
         Vector2 driftOffset = new Vector2(
-            Mathf.Cos(oscOffset+Time.time*2f) * 0.06f,
-            Mathf.Sin(oscOffset+Time.time*3.6f) * 0.12f);
+            Mathf.Cos(oscOffset+Time.time*2f) * driftAmp*0.06f,
+            Mathf.Sin(oscOffset+Time.time*3.6f) * driftAmp*0.12f);
         Vector2 targetPos;
         if (playerHoldingMe != null) {
             targetPos = playerHoldingMe.PosLocal + new Vector2(0, 3.3f);

@@ -56,7 +56,7 @@ public class FlatlineBody : PlayerBody {
             sr_highlight.enabled = false;
         }
         else {
-            GameUtils.SetSpriteColorWithCompoundAlpha(sr_highlight, c_hoverlightEnding, 0.6f);
+            GameUtils.SetSpriteColor(sr_highlight, c_hoverlightEnding, 0.6f);
         }
     }
     public void OnRechargeHover() {

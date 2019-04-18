@@ -89,7 +89,7 @@ public static class GameUtils {
     }
 
     /** The final alpha will be the provided alpha * the color's base alpha. */
-    public static void SetSpriteColorWithCompoundAlpha (SpriteRenderer sprite, Color color, float alpha) {
+    public static void SetSpriteColor (SpriteRenderer sprite, Color color, float alpha=1) {
         sprite.color = new Color (color.r, color.g, color.b, color.a*alpha);
     }
     /** The final alpha will be the provided alpha * the color's base alpha. */
