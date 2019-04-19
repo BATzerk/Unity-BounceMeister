@@ -158,6 +158,10 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
                 ProgressGate newProp = Instantiate(rh.ProgressGate).GetComponent<ProgressGate>();
                 newProp.Initialize (this, propData as ProgressGateData);
             }
+            else if (propData is SignpostData) {
+                Signpost newProp = Instantiate(rh.Signpost).GetComponent<Signpost>();
+                newProp.Initialize (this, propData as SignpostData);
+            }
             else if (propData is SnackData) {
                 Snack newProp = Instantiate(rh.Snack).GetComponent<Snack>();
                 newProp.Initialize (this, propData as SnackData, snacks.Count);

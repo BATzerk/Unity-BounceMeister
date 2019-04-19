@@ -99,6 +99,9 @@ public class ProgressGateData : BaseGroundData {
     public int numSnacksReq;
 }
 
+public class SignpostData : PropData {
+    public string myText="Sign text goes here.";
+}
 public class SnackData : PropData {
     public string playerType="Plunga";
 }

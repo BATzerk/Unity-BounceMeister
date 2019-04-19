@@ -25,6 +25,7 @@ static public class RoomSaverLoader {
     const string PLATFORM = "Platform";
 	const string PLAYER_START = "PlayerStart";
     const string PROGRESS_GATE = "ProgressGate";
+    const string SIGNPOST = "Signpost";
     const string SNACK = "Snack";
     const string SPIKES = "Spikes";
 	const string TOGGLE_GROUND = "ToggleGround";
@@ -103,6 +104,7 @@ static public class RoomSaverLoader {
             else if (type == typeof(RoomDoorData)) { AddAllPropFieldsToFS(propData, "pos", "myID", "worldToIndex", "roomToKey", "roomToDoorID"); }
             else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
 			else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
+            else if (type == typeof(SignpostData)) { AddAllPropFieldsToFS(propData, "pos", "myText"); }
             else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos", "playerType"); }
 			else if (type == typeof(SpikesData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation"); }
 			// Props with optional params
@@ -392,6 +394,7 @@ static public class RoomSaverLoader {
             case PLATFORM: return new PlatformData();
             case PLAYER_START: return new PlayerStartData();
             case PROGRESS_GATE: return new ProgressGateData();
+            case SIGNPOST: return new SignpostData();
             case SNACK: return new SnackData();
             case SPIKES: return new SpikesData();
             case TOGGLE_GROUND: return new ToggleGroundData();

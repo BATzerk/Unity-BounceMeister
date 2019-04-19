@@ -37,6 +37,7 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] public GameObject Platform;
 	[SerializeField] public GameObject PlayerStart;
     [SerializeField] public GameObject ProgressGate;
+    [SerializeField] public GameObject Signpost;
     [SerializeField] public GameObject Snack;
 	[SerializeField] public GameObject Spikes;
 	[SerializeField] public GameObject ToggleGround;
