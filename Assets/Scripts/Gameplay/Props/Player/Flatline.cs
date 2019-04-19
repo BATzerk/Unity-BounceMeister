@@ -39,6 +39,7 @@ public class Flatline : Player {
 	override protected float WallSlideMinYVel { get { return -999f; } }
     override protected Vector2 WallKickVel { get { return new Vector2(Mathf.Abs(vel.y), 0); } }
     override protected float PostWallKickHorzInputLockDur { get { return 999f; } }
+    //override protected float WallKickExtensionWindow { get { return 0.3f; } }
     
     private bool MayStartHover() {
         return !feetOnGround() // FEET touching nothing?
@@ -51,7 +52,6 @@ public class Flatline : Player {
     private bool isButtonHeld_Hover;
     public bool IsHovering { get; private set; }
     public float HoverTimeLeft { get; private set; }
-    private float timeWhenLanded; // time when feet last landed on a collider.
     private Vector2 ppvel; // HACKY workaround for getting vel from hitting a wall. ppvel is ACTUALLY how fast we were going before we hit the wall.
     // References
     private FlatlineBody myFlatlineBody;
@@ -78,8 +78,9 @@ public class Flatline : Player {
     private void StartHover() {
         if (IsHovering) { return; } // Already hovering? Do nothin'.
         IsHovering = true;
-        // No yVel.
-        SetVel(new Vector2(vel.x, 0));
+        // Convert yVel to xVel, and halt yVel.
+        float xVel = vel.magnitude * DirFacing; // assume we wanna travel in the dir we're facing.
+        SetVel(new Vector2(xVel, 0));
         // Tell my body!
         myFlatlineBody.OnStartHover();
         // Dispatch event!
@@ -115,19 +116,15 @@ public class Flatline : Player {
     }
     override protected void LandOnCollidable(Collidable collidable) {
         base.LandOnCollidable(collidable);
-        timeWhenLanded = Time.time;
-        // Are we VERY CLOSE to a wall, and facing away from it?? Convert VERT vel into HORZ vel!
-        if (myWhiskers.SurfaceDistMin(Sides.L) < 0.4f && DirFacing==1) {
-            ConvertVertVelToHorz(1);
-        }
-        else if (myWhiskers.SurfaceDistMin(Sides.R) < 0.4f && DirFacing==-1) {
-            ConvertVertVelToHorz(-1);
-        }
-    }
-    private void ConvertVertVelToHorz(int dir) {
-        float vertSpeed = Mathf.Abs(ppvel.y);
-        if (vertSpeed > 0.1f) { // Add small threshold check, so we can get close into a corner if we want to.
-            vel = new Vector2(vertSpeed*dir, 0);
+        // Have we JUST stopped wall-sliding?
+        if (Time.time < timeStoppedWallSlide+0.2f) {
+            // Are we VERY CLOSE to a wall, facing away from it, and NOT pushing towards it?? Convert VERT vel into HORZ vel!
+            if (myWhiskers.SurfaceDistMin(Sides.L) < 0.4f && DirFacing==1 && inputAxis.x>-0.7f) {
+                ConvertVertVelToHorz(1);
+            }
+            else if (myWhiskers.SurfaceDistMin(Sides.R) < 0.4f && DirFacing==-1 && inputAxis.x<0.7f) {
+                ConvertVertVelToHorz(-1);
+            }
         }
     }
     protected override void OnFeetLeaveCollidable(Collidable collidable) {
@@ -150,12 +147,19 @@ public class Flatline : Player {
                 
             }
             else { // Moving UP? Convert HORZ vel to VERT vel!
-                int dirY = vel.y>-0.2f ? 1 : -1; // NOT moving down? Convert to yVel UP! Moving DOWN? Convert to yVel DOWN!
-                float yVel = Mathf.Abs(ppvel.x) * dirY;
-                yVel = Mathf.Max(vel.y, yVel); // if we're already going up fast, keep dat.
-                vel = new Vector2(0, yVel);
+                ConvertHorzVelToVert();
             }
         }
+    }
+    
+    private void ConvertVertVelToHorz(int dir) {
+        vel = new Vector2(Mathf.Abs(ppvel.y)*dir, 0);
+    }
+    private void ConvertHorzVelToVert() {
+        int dirY = vel.y>-0.2f ? 1 : -1; // NOT moving down? Convert to yVel UP! Moving DOWN? Convert to yVel DOWN!
+        float yVel = Mathf.Abs(ppvel.x) * dirY;
+        yVel = Mathf.Max(vel.y, yVel); // if we're already going up fast, keep dat.
+        vel = new Vector2(0, yVel);
     }
     
     

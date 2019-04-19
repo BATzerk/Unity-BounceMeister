@@ -22,4 +22,3 @@ Spikes myRect:(x:1.00, y:-1.50, width:2.00, height:1.00);rotation:180
 Spikes myRect:(x:-8.50, y:12.50, width:17.00, height:1.00);rotation:180
 Snack pos:(20.5, 10.0);playerType:Plunga
 Snack pos:(9.0, -13.0);playerType:Flatline
-

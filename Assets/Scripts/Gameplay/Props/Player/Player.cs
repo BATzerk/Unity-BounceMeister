@@ -31,7 +31,7 @@ abstract public class Player : PlatformCharacter {
 	private const float DelayedJumpWindow = 0.1f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
 	virtual protected float PostWallKickHorzInputLockDur { get { return 0.22f; } } // affects isPreservingWallKickVel. How long until we can provide horz-input after wall-kicking.
-    private const float WallKickExtensionWindow = 0.08f; // how long after touching a wall when we'll still allow wall-kicking!
+    virtual protected float WallKickExtensionWindow { get { return 0.08f; } } // how long after touching a wall when we'll still allow wall-kicking!
 
 	// Components
 	[SerializeField] protected PlayerBody myBody=null;
@@ -41,6 +41,8 @@ abstract public class Player : PlatformCharacter {
 	protected bool isPreservingWallKickVel = false; // if TRUE, we don't apply air friction. Set to false when A) Time's past PostWallKickHorzInputLockDur, or B) Non-head touches any collider (so landing on ground, or side-hitting wall).
     private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeLastWallKicked=Mathf.NegativeInfinity;
+    protected float timeStoppedWallSlide { get; private set; }
+    protected float timeWhenLanded { get; private set; } // time when feet last landed on a collider.
 	private float timeWhenDelayedJump=Mathf.NegativeInfinity; // for jump AND wall-kick. Set when in air and press Jump. If we touch ground/wall before this time, we'll do a delayed jump or wall-kick!
     public int DirFacing { get; private set; }
     private int numJumpsSinceGround;
@@ -52,7 +54,7 @@ abstract public class Player : PlatformCharacter {
 	private List<Edible> ediblesHolding = new List<Edible>(); // like in Celeste. I hold Edibles (i.e. Gem, Snack) until I'm standing somewhere safe to "eat" (aka collect) them.
 
 	// Getters (Public)
-	virtual public bool CanUseBattery() { return false; }
+	virtual public bool MayUseBattery() { return false; }
 	public bool IsPostDamageImmunity { get { return isPostDamageImmunity; } }
 	// Getters (Protected)
 	protected bool MayJump() {
@@ -124,6 +126,7 @@ abstract public class Player : PlatformCharacter {
         
         DirFacing = data.dirFacing;
         SetVel(data.vel);
+        timeStoppedWallSlide = Mathf.NegativeInfinity;
 
 		// Set camBoundsLocal!
 		const float boundsBloat = 0f; // I have to like *really* be off-screen for this to register.
@@ -310,7 +313,9 @@ abstract public class Player : PlatformCharacter {
         myBody.OnStartWallSlide();
     }
 	protected void StopWallSlide() {
+        if (!isWallSliding()) { return; } // Not wall-sliding? Do nothing.
 		wallSlideDir = 0;
+        timeStoppedWallSlide = Time.time;
         myBody.OnStopWallSlide();
     }
 
@@ -509,6 +514,7 @@ abstract public class Player : PlatformCharacter {
 	virtual protected void LandOnCollidable(Collidable collidable) {
 		// Finally reset maxYSinceGround.
 		maxYSinceGround = pos.y;
+        timeWhenLanded = Time.time;
         StopWallSlide();
         // Do that delayed jump we planned?
         if (Time.time <= timeWhenDelayedJump) {

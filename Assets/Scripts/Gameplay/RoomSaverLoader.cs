@@ -9,7 +9,7 @@ using System.IO;
 
 static public class RoomSaverLoader {
 	// Constants (Properties)
-	const string LEVEL_PROPERTIES = "roomProperties";
+	const string ROOM_PROPERTIES = "roomProperties";
 	// Constants (Objects)
 	const string BATTERY = "Battery";
 	const string CAMERA_BOUNDS = "CameraBounds";
@@ -20,7 +20,7 @@ static public class RoomSaverLoader {
 	const string GATE_BUTTON = "GateButton";
 	const string GEM = "Gem";
 	const string GROUND = "Ground";
-	const string LEVEL_DOOR = "RoomDoor";
+	const string ROOM_DOOR = "RoomDoor";
 	const string LIFT = "Lift";
     const string PLATFORM = "Platform";
 	const string PLAYER_START = "PlayerStart";
@@ -65,8 +65,8 @@ static public class RoomSaverLoader {
 		}
 	}
 
-	private static string GetRoomPropertiesLine (RoomData rd) {
-		string returnString = LEVEL_PROPERTIES + " ";
+	private static string GetRoomPropertiesLine(RoomData rd) {
+		string returnString = ROOM_PROPERTIES + " ";
 		returnString += "posGlobal:" + rd.PosGlobal;
 		returnString += ";designerFlag:" + rd.DesignerFlag;
         if (rd.isClustStart) { returnString += ";isClustStart:" + rd.isClustStart; }
@@ -136,7 +136,6 @@ static public class RoomSaverLoader {
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isBouncy) { fs += ";isBouncy:" + d.isBouncy; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-                if (d.colorType!=0) { fs += ";colorType:" + d.colorType; }
                 if (!d.canBounce) { fs += ";canBounce:" + d.canBounce; }
                 if (!d.doRechargePlayer) { fs += ";doRechargePlayer:" + d.doRechargePlayer; }
                 AddFSLine();
@@ -292,7 +291,7 @@ static public class RoomSaverLoader {
 				sr.WriteLine (lineString);
 			}
 			sr.Close();
-			Debug.Log("SAVED LEVEL " + roomKey);
+			Debug.Log("SAVED ROOM " + roomKey);
 
 			GameManagers.Instance.EventManager.OnEditorSaveRoom();
 
@@ -321,7 +320,7 @@ static public class RoomSaverLoader {
 		for (int i=0; i<roomFileArray.Length; i++) {
 			String lineString = roomFileArray[i];
 			// This is the line!!
-			if (lineString.StartsWith(LEVEL_PROPERTIES, StringComparison.InvariantCulture)) {
+			if (lineString.StartsWith(ROOM_PROPERTIES, StringComparison.InvariantCulture)) {
 				// Replace the properties line!
 				roomFileArray[i] = GetRoomPropertiesLine(rd);
 				break;
@@ -357,7 +356,7 @@ static public class RoomSaverLoader {
 				string affectName = lineString.Substring(0, affectNameEndIndex);
 				string propertiesString = lineString.Substring(affectNameEndIndex+1);
 				// Room Properties
-				if (affectName == LEVEL_PROPERTIES) {
+				if (affectName == ROOM_PROPERTIES) {
 					SetRoomPropertyFieldValuesFromFieldsString (rd, propertiesString);
 				}
 				// Props!
@@ -388,7 +387,7 @@ static public class RoomSaverLoader {
             case GATE_BUTTON: return new GateButtonData();
             case GEM: return new GemData();
             case GROUND: return new GroundData();
-            case LEVEL_DOOR: return new RoomDoorData();
+            case ROOM_DOOR: return new RoomDoorData();
             case LIFT: return new LiftData();
             case PLATFORM: return new PlatformData();
             case PLAYER_START: return new PlayerStartData();

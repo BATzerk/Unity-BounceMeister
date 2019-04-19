@@ -21,7 +21,7 @@ public class RoomTileContents : MonoBehaviour {
 	[SerializeField] private Sprite s_spikes=null;
 	[SerializeField] private TextMesh roomNameText=null; // what's my name, again?
     private List<GroundData> groundDatas = new List<GroundData>();
-    private RoomData myLD;
+    private RoomData myRD;
     private RoomTile myRoomTile;
 
     private MapEditorSettings editorSettings { get { return myRoomTile.MapEditor.MySettings; } }
@@ -32,19 +32,19 @@ public class RoomTileContents : MonoBehaviour {
     // ================================================================
     public void Initialize (RoomTile _roomTile) {
 		myRoomTile = _roomTile;
-        myLD = myRoomTile.MyRoomData;
+        myRD = myRoomTile.MyRoomData;
         roomNameText.GetComponent<Renderer>().sortingOrder = 110; // render RoomNameText over its contents.
 
         designerFlag.UpdateDesignerFlagButtonVisuals();
 	}
 	private void InitializeContent () {
 		// Set the mask's pos/size!
-		propsMask.transform.localPosition = myLD.BoundsLocal.center;
-		GameUtils.SizeSpriteMask (propsMask, myLD.BoundsLocal.size);
+		propsMask.transform.localPosition = myRD.BoundsLocal.center;
+		GameUtils.SizeSpriteMask (propsMask, myRD.BoundsLocal.size);
 
 		// Set text string!
-		roomNameText.text = myLD.RoomKey;
-		roomNameText.transform.localPosition = -myLD.BoundsLocal.size*0.5f; // bottom-left align.
+		roomNameText.text = myRD.RoomKey;
+		roomNameText.transform.localPosition = -myRD.BoundsLocal.size*0.5f; // bottom-left align.
 //		if (GameManagers.Instance.DataManager.mostRecentlySavedRoom_worldIndex == worldDataRef.WorldIndex && GameManagers.Instance.DataManager.mostRecentlySavedRoom_roomKey==roomTileRef.RoomKey) {
 //			roomNameText.color = new Color(1, 0.8f, 0.2f); // If I'm the most recently saved room, make me stand out! :)
 //		}
@@ -58,7 +58,7 @@ public class RoomTileContents : MonoBehaviour {
         hasInitializedContent = true;
     }
     private void AddPropSprites() {
-		foreach (PropData propData in myLD.allPropDatas) {
+		foreach (PropData propData in myRD.allPropDatas) {
 			// -- Grounds --
 			if (propData.GetType() == typeof(GroundData)) {
 				GroundData pd = propData as GroundData;
@@ -122,8 +122,8 @@ public class RoomTileContents : MonoBehaviour {
 	}
     private void AddOpeningsSprites() {
         srs_openings = new List<SpriteRenderer>();
-        for (int i=0; i<myLD.Neighbors.Count; i++) {
-            AddOpeningsSprite(myLD.Neighbors[i]);
+        for (int i=0; i<myRD.Neighbors.Count; i++) {
+            AddOpeningsSprite(myRD.Neighbors[i]);
         }
     }
     private void AddOpeningsSprite(RoomNeighborData ln) {
@@ -186,10 +186,10 @@ public class RoomTileContents : MonoBehaviour {
         if (!hasInitializedContent) { return; } // Haven't initted content? Do nothin'.
         // Grounds
         if (editorSettings.DoShowClusters) { // Color ALL by my CLUSTER!
-            float s = myLD.isClustStart ? 0.6f : 0.34f;
+            float s = myRD.isClustStart ? 0.6f : 0.34f;
             Color groundColor;
-            if (!myLD.IsInCluster) { groundColor = new ColorHSB(0.2f, 0.05f, 0.4f).ToColor(); } // No Cluster? Gray-ish.
-            else { groundColor = new ColorHSB((20 + myLD.ClusterIndex*60)/360f, s, 0.5f).ToColor(); }
+            if (!myRD.IsInCluster) { groundColor = new ColorHSB(0.2f, 0.05f, 0.4f).ToColor(); } // No Cluster? Gray-ish.
+            else { groundColor = new ColorHSB((20 + myRD.ClusterIndex*60)/360f, s, 0.5f).ToColor(); }
             for (int i=0; i<srs_grounds.Count; i++) {
                 srs_grounds[i].color = groundColor;
             }
@@ -197,12 +197,12 @@ public class RoomTileContents : MonoBehaviour {
         else { // Otherwise, color EACH how Ground ACTUALLY looks.
             //Color groundColor = new Color(91/255f,107/255f,67/255f, 0.92f);
             for (int i=0; i<srs_grounds.Count; i++) {
-                srs_grounds[i].color = Ground.GetBodyColor(groundDatas[i]);
+                srs_grounds[i].color = Ground.GetBodyColor(groundDatas[i], myRD.WorldIndex);
             }
         }
         // Openings
         for (int i=0; i<srs_openings.Count; i++) {
-            srs_openings[i].color = GetOpeningColor(myLD.Neighbors[i]);
+            srs_openings[i].color = GetOpeningColor(myRD.Neighbors[i]);
         }
     }
 

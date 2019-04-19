@@ -3,7 +3,78 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameBackground : MonoBehaviour {
-	/*
+    // Components
+    [SerializeField] private SpriteRenderer sr_fill=null;
+    [SerializeField] private SpriteRenderer sr_gradient=null;
+    
+    // Getters (Private)
+    static private List<Color255> GetGradientColors(int worldIndex) {
+        switch (worldIndex) {
+            //case 0:  return new List<Color255>{
+            //    new Color255(242,251,139), new Color255(133,185,255) };
+            //case 1:  return new List<Color255>{
+            //    new Color255(255,174,166), new Color255(205,240,180) };
+            //case 2:  return new List<Color255>{
+            //    new Color255(133,255,176), new Color255(255,114,160) };
+            //case 3:  return new List<Color255>{
+            //    new Color255(255,213,133), new Color255(201,177,255) };
+            //case 4:  return new List<Color255>{
+            //    new Color255(255,166,193), new Color255(220,174,255) };
+            //case 5:  return new List<Color255>{
+                //new Color255( 78, 14, 89), new Color255(138,202,191) };
+            default: return new List<Color255>{
+                new Color255(255,249,246), new Color255(136,190,213) };
+            //case 0:  return new List<Color255>{
+            //    new Color255(242,251,139), new Color255(133,185,255) };
+            //case 1:  return new List<Color255>{
+            //    new Color255(255,174,166), new Color255(205,240,180) };
+            //case 2:  return new List<Color255>{
+            //    new Color255(133,255,176), new Color255(255,114,160) };
+            //case 3:  return new List<Color255>{
+            //    new Color255(255,213,133), new Color255(201,177,255) };
+            //case 4:  return new List<Color255>{
+            //    new Color255(255,166,193), new Color255(220,174,255) };
+            //case 5:  return new List<Color255>{
+            //    new Color255( 78, 14, 89), new Color255(138,202,191) };
+            //default: return new List<Color255>{
+                //new Color255(255,255,255), new Color255(128,128,128) };
+        }
+    }
+
+
+    // ----------------------------------------------------------------
+    //  Awake / Destroy
+    // ----------------------------------------------------------------
+    private void Awake() {
+        // Add event listeners!
+        GameManagers.Instance.EventManager.StartRoomEvent += OnStartRoom;
+    }
+    private void OnDestroy() {
+        // Remove event listeners!
+        GameManagers.Instance.EventManager.StartRoomEvent -= OnStartRoom;
+    }
+    
+    // ----------------------------------------------------------------
+    //  Events
+    // ----------------------------------------------------------------
+    private void OnStartRoom(Room room) {
+        SetGradientColors(room.WorldIndex);
+    }
+    
+    // ----------------------------------------------------------------
+    //  Doers
+    // ----------------------------------------------------------------
+    private void SetGradientColors(int worldIndex) {
+        List<Color255> colors = GetGradientColors(worldIndex);
+        Color colorA = colors[0].ToColor();
+        Color colorB = colors[1].ToColor();
+        sr_fill.color = colorA;
+        sr_gradient.color = colorB;
+    }
+    
+
+
+    /*
 	// Components
 	private SpriteRenderer[,] tileSprites; // col,row.
 	// Properties

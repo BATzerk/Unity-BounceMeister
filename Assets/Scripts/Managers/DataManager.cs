@@ -63,12 +63,11 @@ public class DataManager {
 	// ----------------------------------------------------------------
 	public DataManager() {
 		Reset ();
-//		Developer_CountTotalStarsToManuallyUpdateGamePropertiesValue ();
+//		Developer_CountTotalStarsToManuallyUpdateGamePropertiesValue();
 	}
 
 	private void Reset () {
 		CoinsCollected = 0;
-//		debug_doShowRoomTileDesignerFlags = SaveStorage.GetInt (SaveKeys.DEBUG_DO_SHOW_LEVEL_TILE_DESIGNER_FLAGS, 0) == 1;
 //		highestWorldEndEverReached = SaveStorage.GetInt (SaveKeys.HIGHEST_WORLD_END_EVER_REACHED);
 
 		ReloadWorldDatas();

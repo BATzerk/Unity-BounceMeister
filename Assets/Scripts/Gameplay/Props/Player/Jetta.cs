@@ -34,7 +34,7 @@ public class Jetta : Player {
 
 
 	// Getters (Public)
-	override public bool CanUseBattery() { return !IsFuelFull; }
+	override public bool MayUseBattery() { return !IsFuelFull; }
 	public bool IsFuelEmpty { get { return jetFuelLeft <= 0; } }
 	public bool IsFuelFull { get { return jetFuelLeft >= JetFuelCapacity; } }
 	// Getters (Protected)

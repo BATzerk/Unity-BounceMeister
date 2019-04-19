@@ -47,7 +47,6 @@ public class GroundData : BaseGroundData {
     public bool isBouncy=false;
 	public bool canBounce=true;
 	public bool doRechargePlayer=true;
-	public int colorType;
 }
 public class PlatformData : BaseGroundData {
     public bool canDropThru=true; // if TRUE, Player can fall through me when pressing down!

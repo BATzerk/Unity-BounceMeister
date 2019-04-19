@@ -1,17 +1,17 @@
-roomProperties posGlobal:(636.0, -236.0);designerFlag:3
+﻿roomProperties posGlobal:(636.0, -236.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 DamageableGround myRect:(x:-4.00, y:-3.50, width:4.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False
 DamageableGround myRect:(x:3.00, y:-3.50, width:4.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False
 DamageableGround myRect:(x:-11.00, y:-3.50, width:4.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False
-Ground myRect:(x:-16.50, y:1.00, width:3.00, height:10.00);colorType:0
-Ground myRect:(x:0.00, y:-19.00, width:52.00, height:4.00);colorType:0
-Ground myRect:(x:0.50, y:17.00, width:53.00, height:6.00);colorType:0
-Ground myRect:(x:-21.50, y:1.50, width:11.00, height:37.00);colorType:0
-Ground myRect:(x:17.50, y:-16.00, width:17.00, height:2.00);colorType:0
-Ground myRect:(x:21.50, y:-1.00, width:9.00, height:18.00);colorType:0
-Ground myRect:(x:9.50, y:-10.00, width:5.00, height:14.00);colorType:0
-Ground myRect:(x:2.50, y:-16.50, width:9.00, height:5.00);colorType:0
-Ground myRect:(x:16.50, y:7.00, width:1.00, height:2.00);colorType:0
+Ground myRect:(x:-16.50, y:1.00, width:3.00, height:10.00)
+Ground myRect:(x:0.00, y:-19.00, width:52.00, height:4.00)
+Ground myRect:(x:0.50, y:17.00, width:53.00, height:6.00)
+Ground myRect:(x:-21.50, y:1.50, width:11.00, height:37.00)
+Ground myRect:(x:17.50, y:-16.00, width:17.00, height:2.00)
+Ground myRect:(x:21.50, y:-1.00, width:9.00, height:18.00)
+Ground myRect:(x:9.50, y:-10.00, width:5.00, height:14.00)
+Ground myRect:(x:2.50, y:-16.50, width:9.00, height:5.00)
+Ground myRect:(x:16.50, y:7.00, width:1.00, height:2.00)
 Platform myRect:(x:8.50, y:6.50, width:15.00, height:1.00)
 PlayerStart pos:(11.3, -1.5)
 Spikes myRect:(x:-15.50, y:9.50, width:13.00, height:1.00);rotation:270

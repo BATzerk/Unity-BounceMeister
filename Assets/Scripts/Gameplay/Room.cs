@@ -45,12 +45,13 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 	// ----------------------------------------------------------------
 	//	Serialization
 	// ----------------------------------------------------------------
-	public RoomData SerializeAsData () {
+	public RoomData SerializeAsData() {
 		RoomData rd = new RoomData(MyWorldData, RoomKey);
 
 		// -- General Properties --
 		rd.SetPosGlobal(PosGlobal);
 		rd.SetDesignerFlag(MyRoomData.designerFlag);
+        rd.isClustStart = MyRoomData.isClustStart;
 		//rd.hasPlayerBeenHere = hasPlayerBeenHere;
 
 		// -- Props --

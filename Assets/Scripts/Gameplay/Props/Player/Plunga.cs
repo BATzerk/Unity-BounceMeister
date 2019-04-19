@@ -22,7 +22,7 @@ public class Plunga : Player {
 
 
 	// Getters (Public)
-	override public bool CanUseBattery() { return isPlungeRecharged; }
+	override public bool MayUseBattery() { return isPlungeRecharged; }
     override protected bool MaySetGroundedRespawnPos() {
         if (isPlunging || !isPlungeRecharged) { return false; } // Plunging? Not safe to set GroundedRespawnPos.
         return base.MaySetGroundedRespawnPos();

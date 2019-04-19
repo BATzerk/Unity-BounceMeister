@@ -32,15 +32,4 @@ public class MapEditorSettings {
 	}
 
 
-
-
-//	public bool Debug_doShowRoomTileDesignerFlags {
-//		get { return debug_doShowRoomTileDesignerFlags; }
-//		set {
-//			if (debug_doShowRoomTileDesignerFlags != value) {
-//				debug_doShowRoomTileDesignerFlags = value;
-//				SaveStorage.SetInt(SaveKeys.DEBUG_DO_SHOW_LEVEL_TILE_DESIGNER_FLAGS, debug_doShowRoomTileDesignerFlags ? 1 : 0);
-//			}
-//		}
-//	}
 }

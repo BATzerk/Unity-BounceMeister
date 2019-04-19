@@ -12,7 +12,7 @@ public class MapEditor : MonoBehaviour {
 	// Components
 	[SerializeField] private RoomTileSelectionRect selectionRect=null;
 	private List<GameObject> worldLayerGOs; // purely for hierarchy cleanness, we wanna put all the tiles into their respective world's GameObject.
-	private List<List<RoomTile>> allRoomTiles; // RoomTiles for EVERY LEVEL IN THE GAME!
+	private List<List<RoomTile>> allRoomTiles; // RoomTiles for EVERY ROOM IN THE GAME!
 	// Properties
 	private bool isSearchingRoom; // When we start typing letters, yeah! Narrow down our options.
 	private int currWorldIndex=-1;
@@ -342,7 +342,7 @@ public class MapEditor : MonoBehaviour {
 		for (int i=0; i<roomDatasMoving.Length; i++) {
 			roomDatasMoving[i] = tilesSelected[i].MyRoomData;
 		}
-		// MOVE LEVELS!
+		// MOVE ROOMS!
 		for (int i=0; i<roomDatasMoving.Length; i++) {
 			string roomKey = roomDatasMoving[i].RoomKey;
 			// Otherwise, move that glitterbomb!
@@ -664,7 +664,7 @@ public class MapEditor : MonoBehaviour {
 	private void OnMouseUp() {
 		int mouseButton = InputController.GetMouseButtonUp ();
 
-		// Dragging a LEVEL TILE(S), released the LEFT mouse button, AND not holding down the multi-selection key??
+		// Dragging a ROOM TILE(S), released the LEFT mouse button, AND not holding down the multi-selection key??
 		if (tilesSelected.Count>0 && mouseButton==0 && !CanSelectMultipleTiles()) {
 			// Save all dragging tiles' roomData to file (and clear out any snapshot datas)!
 			foreach (RoomTile tile in tilesSelected) {
