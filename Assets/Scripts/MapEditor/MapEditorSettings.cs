@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace MapEditorNamespace {
 public class MapEditorSettings {
 	public bool DoMaskRoomContents;
 	public bool DoShowInstructions;
@@ -32,4 +33,5 @@ public class MapEditorSettings {
 	}
 
 
+}
 }

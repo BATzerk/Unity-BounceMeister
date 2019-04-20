@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace MapEditorNamespace {
 public class RoomTileSelectionRect : MonoBehaviour {
 	// Components
 	[SerializeField] private SpriteRenderer sr_body=null;
@@ -94,7 +95,7 @@ public class RoomTileSelectionRect : MonoBehaviour {
 
 
 }
-
+}
 
 
 

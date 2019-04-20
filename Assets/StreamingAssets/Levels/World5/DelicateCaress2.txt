@@ -12,4 +12,3 @@ Snack pos:(-18.5, 3.5);playerType:Flatline
 Ground myRect:(x:-15.00, y:10.00, width:2.00, height:16.00)
 Spikes myRect:(x:-16.50, y:7.00, width:10.00, height:1.00);rotation:90
 Ground myRect:(x:24.00, y:11.00, width:4.00, height:14.00)
-

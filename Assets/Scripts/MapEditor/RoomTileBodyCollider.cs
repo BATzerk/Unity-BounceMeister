@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace MapEditorNamespace {
 /** This guy's just so we can have MULTIPLE colliders that serve multiple purposes in a RoomTile. */
 public class RoomTileBodyCollider : MonoBehaviour {
 	// Components
@@ -29,4 +30,5 @@ public class RoomTileBodyCollider : MonoBehaviour {
 	}
 
 
+}
 }

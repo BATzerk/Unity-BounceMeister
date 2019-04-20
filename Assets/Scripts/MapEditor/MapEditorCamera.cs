@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace MapEditorNamespace {
 public class MapEditorCamera : MonoBehaviour {
     // Constants
 	private const float ARROW_KEYS_PAN_SPEED = 20f; // for panning the map with the arrow keys. Scales based on mapScale.
@@ -210,4 +211,5 @@ public class MapEditorCamera : MonoBehaviour {
 
 
 
+}
 }

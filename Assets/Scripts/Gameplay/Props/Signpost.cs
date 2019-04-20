@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Signpost : Prop {
     // Components
-    [SerializeField] private SpriteRenderer sr_body=null;
+    //[SerializeField] private SpriteRenderer sr_body=null;
     // Properties
     [SerializeField] private string myText;
     

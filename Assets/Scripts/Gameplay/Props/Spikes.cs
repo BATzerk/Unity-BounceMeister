@@ -25,6 +25,7 @@ public class Spikes : Collidable {
 
 		bodySprite.size = data.myRect.size;
 		bodySprite.transform.localPosition = data.myRect.position;
+        bodySprite.color = Colors.Spikes(WorldIndex);
 	}
 
 

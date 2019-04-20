@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace MapEditorNamespace {
 public class RoomTileContents : MonoBehaviour {
 	// Constants
     static private readonly Vector2 GemIconSize = new Vector2(3,3);
@@ -87,7 +88,8 @@ public class RoomTileContents : MonoBehaviour {
 			// -- Spikes --
 			else if (propData.GetType() == typeof(SpikesData)) {
 				SpikesData spikesData = propData as SpikesData;
-				SpriteRenderer newSprite = AddSpriteRenderer("Spikes", s_spikes, go_props, spikesData.myRect.position, Vector2.one, 0, new Color(0.7f,0.1f,0f, 0.6f));
+                Color color = Colors.Spikes(myRD.WorldIndex);// new Color(0.7f,0.1f,0f, 0.6f);
+				SpriteRenderer newSprite = AddSpriteRenderer("Spikes", s_spikes, go_props, spikesData.myRect.position, Vector2.one, 0, color);
 				newSprite.drawMode = SpriteDrawMode.Tiled;
 				newSprite.size = spikesData.myRect.size;
 				newSprite.transform.localEulerAngles = new Vector3(0, 0, spikesData.rotation);
@@ -209,6 +211,7 @@ public class RoomTileContents : MonoBehaviour {
 
 
 
+}
 }
 
 

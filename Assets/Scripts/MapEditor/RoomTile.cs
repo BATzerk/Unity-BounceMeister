@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace MapEditorNamespace {
 public class RoomTile : MonoBehaviour {
 	// Properties
 	private bool isDragReadyMouseOverMe; // true if the mouse is over me AND able to click and drag RoomTiles.
@@ -265,7 +266,7 @@ public class RoomTile : MonoBehaviour {
 
 
 }
-
+}
 
 
 

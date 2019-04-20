@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace MapEditorNamespace {
 public class RoomTileDesignerFlag : MonoBehaviour {
 	// Constants
+    private const int NUM_FLAG_TYPES = 5; // Dev, Idea, In Progress, Good, Great!
 	private const float SPRITE_ALPHA_DEFAULT = 0.9f;
 	private const float SPRITE_ALPHA_MOUSE_OVER = 0.4f;
 	// Components
-	[SerializeField] private SpriteRenderer flagSprite;
+	[SerializeField] private SpriteRenderer flagSprite=null;
 	// References
-	[SerializeField] private RoomTile roomTileRef;
-	[SerializeField] private Sprite[] designerFlagSprites;
+	[SerializeField] private RoomTile roomTileRef=null;
+	[SerializeField] private Sprite[] designerFlagSprites=null;
 
 
 	private void Start () {
@@ -42,7 +44,7 @@ public class RoomTileDesignerFlag : MonoBehaviour {
         RoomData rd = roomTileRef.MyRoomData;
 		// Determine the new value of our flag!
 		int newDesignerFlagValue = rd.DesignerFlag + 1;
-		if (newDesignerFlagValue >= DesignerFlags.NumFlags) { newDesignerFlagValue = 0; } // Loop back to 0.
+		if (newDesignerFlagValue >= NUM_FLAG_TYPES) { newDesignerFlagValue = 0; } // Loop back to 0.
 		// Set and save!
 		rd.SetDesignerFlag(newDesignerFlagValue);
 		RoomSaverLoader.UpdateRoomPropertiesInRoomFile(rd);
@@ -52,7 +54,7 @@ public class RoomTileDesignerFlag : MonoBehaviour {
 
 
 }
-
+}
 
 
 

@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
+namespace MapEditorNamespace {
 public class MapEditor : MonoBehaviour {
 	// Constants
 	private readonly float gridSizeX = 1;//GameVisualProperties.OriginalScreenSize.x * 0.25f;
@@ -723,6 +724,7 @@ public class MapEditor : MonoBehaviour {
     }
 #endif
 
+}
 }
 
 

@@ -6,9 +6,11 @@ abstract public class Prop : MonoBehaviour {
     // Overrideables
     virtual public bool DoSaveInRoomFile() { return true; } // by default, ALL Props wanna get saved into the Room text file. But some (e.g. Player) do NOT.
 	// References
-	protected Room myRoom;
+	protected Room myRoom { get; private set; }
 
 	// Getters
+    protected string RoomKey { get { return myRoom.RoomKey; } }
+    protected int WorldIndex { get { return myRoom.WorldIndex; } }
 	public Vector2 PosLocal { get { return pos; } }
 	public Vector2 PosGlobal {
 		get {
