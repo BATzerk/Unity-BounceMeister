@@ -93,7 +93,8 @@ public class PlatformCharacter : Collidable {
     // ----------------------------------------------------------------
     //  Start
     // ----------------------------------------------------------------
-    virtual protected void Start () {
+    override protected void Start() {
+        base.Start();
         timeSinceDamage = Mathf.NegativeInfinity;
 		health = StartingHealth;
         bodyCollider.size = Size;

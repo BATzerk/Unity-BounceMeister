@@ -27,7 +27,8 @@ public class CameraBounds : Prop {
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	private void Start() {
+	override protected void Start() {
+        base.Start();
 		// Of course, hide the sprite! It's just for the editor.
 		bodySprite.enabled = false;
 	}

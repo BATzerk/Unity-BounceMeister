@@ -5,8 +5,10 @@ using UnityEngine;
 abstract public class Prop : MonoBehaviour {
     // Overrideables
     virtual public bool DoSaveInRoomFile() { return true; } // by default, ALL Props wanna get saved into the Room text file. But some (e.g. Player) do NOT.
-	// References
-	protected Room myRoom { get; private set; }
+    // Properties
+    protected bool IsInitialized { get; private set; } // Used to set default values when drag prefab out in Editor.
+    // References
+    protected Room myRoom { get; private set; }
 
 	// Getters
     protected string RoomKey { get { return myRoom.RoomKey; } }
@@ -33,7 +35,26 @@ abstract public class Prop : MonoBehaviour {
 
 		this.transform.localPosition = data.pos; // note that this is just a convenience default. Any grounds will set their pos from their rect.
 		rotation = data.rotation;
+        
+        IsInitialized = true;
 	}
+    virtual protected void Start() {
+        #if UNITY_EDITOR
+        // No Room ref?? We've been pulled out from the Editor!
+        if (myRoom == null) {
+            // Set my Room ref!
+            myRoom = GetComponentInParent<Room>();
+            //if (myRoom != null) { // Safety check.
+            //    PropData data = SerializeAsData();
+            //    BaseInitialize(myRoom, data);
+            //}
+        }
+        #endif
+    }
+    
+    
+    
+    
 
 	virtual public void FlipHorz() {
 		pos = new Vector2(-pos.x, pos.y);

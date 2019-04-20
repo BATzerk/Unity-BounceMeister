@@ -33,7 +33,8 @@ abstract public class BaseGround : Collidable {
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	virtual protected void Start() {
+	override protected void Start() {
+        base.Start();
 		// TEMP! For room transitioning.
 		if (bodySprite==null) {
 			bodySprite = GetComponent<SpriteRenderer>();

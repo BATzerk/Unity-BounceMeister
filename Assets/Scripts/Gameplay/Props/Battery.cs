@@ -16,7 +16,8 @@ public class Battery : Prop {
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	private void Start() {
+    override protected void Start() {
+        base.Start();
 		SetIsUsed(false);
 	}
 	public void Initialize(Room _myRoom, BatteryData data) {

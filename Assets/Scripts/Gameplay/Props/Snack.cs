@@ -14,6 +14,15 @@ public class Snack : Edible {
     // ----------------------------------------------------------------
     //  Initialize
     // ----------------------------------------------------------------
+    override protected void Start() {
+        // Not initialized?? Find a Player in this scene, and default my type to IT!
+        bool wasAddedInEditor = !IsInitialized && playerType==PlayerTypes.Undefined;
+        base.Start();
+        if (wasAddedInEditor) {
+            playerType = myRoom.Player.PlayerType();
+            UpdatePresence();
+        }
+    }
     private void Awake() {
         // Add event listeners!
         GameManagers.Instance.EventManager.PlayerInitEvent += OnPlayerInit;

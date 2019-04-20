@@ -16,9 +16,9 @@ static public class Colors {
     
     static private int GetTheme(int worldIndex) {
         switch (worldIndex) {
+            //case 2: return MauveStorm;
             case 0: return TestingGreen;
             case 1: return BasicGreen;
-            //case 2: return MauveStorm;
             case 2: return MyYachtBlue;
             case 3: return MrKakhi;
             case 4: return Hungaria;
@@ -71,9 +71,9 @@ static public class Colors {
         int theme = GetTheme(worldIndex);
         switch (theme) {
             case TestingGreen:  return new List<Color255>{
-                new Color255(136,190,213), new Color255(255,249,246) };
+                new Color255(136,190,213), new Color255(237,251,255) };
             case BasicGreen:    return new List<Color255>{
-                new Color255(136,190,213), new Color255(255,249,246) };
+                new Color255(136,190,213), new Color255(237,251,255) };
             case MyYachtBlue:   return new List<Color255>{
                 new Color255(130,219,215), new Color255(223,252,237) };
             case MauveStorm:    return new List<Color255>{
@@ -89,7 +89,7 @@ static public class Colors {
             case NoirLight:     return new List<Color255>{
                 new Color255(164,164,164), new Color255(164,164,164) };
             default:            return new List<Color255>{
-                new Color255(136,190,213), new Color255(255,249,246) };
+                new Color255(136,190,213), new Color255(237,251,255) };
             //case 0:  return new List<Color255>{
             //    new Color255(242,251,139), new Color255(133,185,255) };
             //case 1:  return new List<Color255>{

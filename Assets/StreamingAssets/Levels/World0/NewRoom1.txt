@@ -7,7 +7,10 @@ Ground myRect:(x:24.00, y:5.00, width:4.00, height:22.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
 Gem pos:(12.0, -13.5);type:0
 Snack pos:(6.0, -12.5);playerType:Plunga
-ProgressGate myRect:(x:13.00, y:-6.00, width:4.00, height:4.00);numSnacksReq:8
 Platform myRect:(x:-19.00, y:7.50, width:6.00, height:1.00)
 Ground myRect:(x:-4.00, y:-13.00, width:6.00, height:8.00)
 InfoSign pos:(-4.0, -9.0);myText:Yes, this will look nice in the game, yessss.
+Snack pos:(9.5, -8.0);playerType:Plunga
+Snack pos:(0.0, 0.0);playerType:Plunga
+Snack pos:(13.0, -1.0);playerType:Flatline
+

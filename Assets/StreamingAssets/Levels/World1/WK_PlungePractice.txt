@@ -1,4 +1,4 @@
-roomProperties posGlobal:(328.0, 204.0);designerFlag:3
+roomProperties posGlobal:(294.0, 272.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:-12.00, y:11.00, width:2.00, height:12.00)
 Ground myRect:(x:-3.50, y:-1.50, width:5.00, height:1.00)
@@ -26,4 +26,3 @@ Snack pos:(-20.0, 11.0);playerType:Plunga
 Ground myRect:(x:-24.00, y:4.00, width:4.00, height:22.00);isPlayerRespawn:True
 Ground myRect:(x:-18.00, y:0.00, width:2.00, height:20.00);isPlayerRespawn:True
 Snack pos:(13.5, 5.0);playerType:Flatline
-

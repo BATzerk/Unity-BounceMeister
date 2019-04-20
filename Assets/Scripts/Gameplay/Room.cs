@@ -233,13 +233,13 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
         return new Vector2(lo.length, thickness);
     }
     private void AddHardcodedRoomElements() {
-        // CANDO: If this function starts getting big, make new Prop, Decor. Has prefabName, pos, rotation, scale. :)
-        if (RoomKey == "IntroPlunge") {
-            AddDecor("InstructsPlunge", new Vector2(0, 11));
-        }
-        else if (RoomKey == "IntroHover") {
-            AddDecor("InstructsHover", new Vector2(0, 11));
-        }
+        //// CANDO: If this function starts getting big, make new Prop, Decor. Has prefabName, pos, rotation, scale. :)
+        //if (RoomKey == "IntroPlunge") {
+        //    AddDecor("InstructsPlunge", new Vector2(0, 11));
+        //}
+        //else if (RoomKey == "IntroHover") {
+        //    AddDecor("InstructsHover", new Vector2(0, 11));
+        //}
     }
     private void AddDecor(string prefabName, Vector2 _pos) {
         GameObject go = Instantiate(ResourcesHandler.Instance.GetDecor(prefabName));

@@ -1,4 +1,4 @@
-roomProperties posGlobal:(266.0, 396.0);designerFlag:3
+roomProperties posGlobal:(232.0, 464.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Snack pos:(16.5, 5.5);playerType:Plunga
 PlayerStart pos:(4.7, -14.7)
@@ -25,4 +25,3 @@ GateButton pos:(0.0, 11.0);channelID:0
 Snack pos:(-2.0, 3.0);playerType:Flatline
 Lift myRect:(x:-12.00, y:-1.00, width:2.00, height:14.00);rotation:0;strength:0.05
 Platform myRect:(x:-13.00, y:8.50, width:4.00, height:1.00)
-
