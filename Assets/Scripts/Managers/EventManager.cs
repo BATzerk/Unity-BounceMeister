@@ -13,7 +13,7 @@ public class EventManager {
 	public delegate void IntAction (int a);
 	public delegate void RoomAction(Room room);
 	public delegate void PlayerAction (Player player);
-    public delegate void SignpostAction(Signpost signpost);
+    public delegate void InfoSignAction(InfoSign infoSign);
 	public delegate void StringAction (string a);
 
 	public event NoParamAction EditorSaveRoomEvent;
@@ -33,8 +33,8 @@ public class EventManager {
 	public event PlayerAction PlayerStartPlungeEvent;
 	public event PlayerAction PlayerRechargePlungeEvent;
 	public event PlayerAction PlayerWallKickEvent;
-    public event SignpostAction PlayerTouchEnterSignpostEvent;
-    public event SignpostAction PlayerTouchExitSignpostEvent;
+    public event InfoSignAction PlayerTouchEnterInfoSignEvent;
+    public event InfoSignAction PlayerTouchExitInfoSignEvent;
 
 	// Program Events
 	public void OnScreenSizeChanged () { if (ScreenSizeChangedEvent!=null) { ScreenSizeChangedEvent (); } }
@@ -55,8 +55,8 @@ public class EventManager {
     public void OnPlayerStartHover(Player player) { if (PlayerStartHoverEvent!=null) { PlayerStartHoverEvent(player); } }
 //	public void OnPlayerSpendBounce(Player player) { if (PlayerSpendPlungeEvent!=null) { PlayerSpendPlungeEvent(player); } }
 	public void OnPlayerStartPlunge(Player player) { if (PlayerStartPlungeEvent!=null) { PlayerStartPlungeEvent(player); } }
-    public void OnPlayerTouchEnterSignpost(Signpost signpost) { if (PlayerTouchEnterSignpostEvent!=null) { PlayerTouchEnterSignpostEvent(signpost); } }
-    public void OnPlayerTouchExitSignpost(Signpost signpost) { if (PlayerTouchExitSignpostEvent!=null) { PlayerTouchExitSignpostEvent(signpost); } }
+    public void OnPlayerTouchEnterInfoSign(InfoSign infoSign) { if (PlayerTouchEnterInfoSignEvent!=null) { PlayerTouchEnterInfoSignEvent(infoSign); } }
+    public void OnPlayerTouchExitInfoSign(InfoSign infoSign) { if (PlayerTouchExitInfoSignEvent!=null) { PlayerTouchExitInfoSignEvent(infoSign); } }
 	public void OnPlayerRechargePlunge(Player player) { if (PlayerRechargePlungeEvent!=null) { PlayerRechargePlungeEvent(player); } }
 	public void OnPlayerWallKick(Player player) { if (PlayerWallKickEvent!=null) { PlayerWallKickEvent(player); } }
 

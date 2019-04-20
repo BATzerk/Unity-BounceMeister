@@ -1,13 +1,17 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Consts/Colors.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Common/Objects/PersistentHouse.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="330" Column="39" />
       <File FileName="Assets/Scripts/Consts/Colors.cs" Line="26" Column="37" />
       <File FileName="Assets/Scripts/Gameplay/Props/Spikes.cs" Line="28" Column="41" />
       <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="10" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/GameBackground.cs" Line="38" Column="32" />
+      <File FileName="Assets/Scripts/Gameplay/GameBackground.cs" Line="8" Column="62" />
       <File FileName="Assets/Scripts/MapEditor/RoomTileContents.cs" Line="91" Column="64" />
+      <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="25" Column="40" />
+      <File FileName="Assets/Scripts/Consts/GameProperties.cs" Line="13" Column="71" />
+      <File FileName="Assets/Editor/FindMissingScriptsRecursively.cs" Line="3" Column="1" />
+      <File FileName="Assets/Scripts/Common/Objects/PersistentHouse.cs" Line="11" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

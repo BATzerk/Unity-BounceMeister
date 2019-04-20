@@ -7,10 +7,10 @@ using TMPro;
 public class GameUI : MonoBehaviour {
     // Components
     //[SerializeField] private GameObject go_snacksCollected=null;
-    [SerializeField] private GameObject go_signpostText=null;
+    [SerializeField] private GameObject go_infoSignText=null;
     [SerializeField] private Image i_pausedBorder=null;
     [SerializeField] private Text t_coinsCollected=null;
-    [SerializeField] private TextMeshProUGUI t_signpostText=null;
+    [SerializeField] private TextMeshProUGUI t_infoSignText=null;
     //[SerializeField] private TextMeshProUGUI t_snacksCollected=null;
     // References
     //private Room currRoom;
@@ -28,8 +28,8 @@ public class GameUI : MonoBehaviour {
         // Add event listeners!
         eventManager.CoinsCollectedChangedEvent += OnCoinsCollectedChanged;
         eventManager.NumSnacksEatenChangedEvent += OnNumSnacksEatenChanged;
-        eventManager.PlayerTouchEnterSignpostEvent += OnPlayerTouchEnterSignpost;
-        eventManager.PlayerTouchExitSignpostEvent += OnPlayerTouchExitSignpost;
+        eventManager.PlayerTouchEnterInfoSignEvent += OnPlayerTouchEnterInfoSign;
+        eventManager.PlayerTouchExitInfoSignEvent += OnPlayerTouchExitInfoSign;
         eventManager.SetPausedEvent += OnSetPaused;
         eventManager.StartRoomEvent += OnStartRoom;
     }
@@ -37,8 +37,8 @@ public class GameUI : MonoBehaviour {
 		// Remove event listeners!
 		eventManager.CoinsCollectedChangedEvent -= OnCoinsCollectedChanged;
         eventManager.NumSnacksEatenChangedEvent -= OnNumSnacksEatenChanged;
-        eventManager.PlayerTouchEnterSignpostEvent -= OnPlayerTouchEnterSignpost;
-        eventManager.PlayerTouchExitSignpostEvent -= OnPlayerTouchExitSignpost;
+        eventManager.PlayerTouchEnterInfoSignEvent -= OnPlayerTouchEnterInfoSign;
+        eventManager.PlayerTouchExitInfoSignEvent -= OnPlayerTouchExitInfoSign;
         eventManager.SetPausedEvent -= OnSetPaused;
         eventManager.StartRoomEvent -= OnStartRoom;
     }
@@ -61,12 +61,12 @@ public class GameUI : MonoBehaviour {
     private void OnNumSnacksEatenChanged() {
         UpdateSnacksTexts();
     }
-    private void OnPlayerTouchEnterSignpost(Signpost signpost) {
-        go_signpostText.SetActive(true);
-        t_signpostText.text = signpost.MyText;
+    private void OnPlayerTouchEnterInfoSign(InfoSign infoSign) {
+        go_infoSignText.SetActive(true);
+        t_infoSignText.text = infoSign.MyText;
     }
-    private void OnPlayerTouchExitSignpost(Signpost signpost) {
-        go_signpostText.SetActive(false);
+    private void OnPlayerTouchExitInfoSign(InfoSign infoSign) {
+        go_infoSignText.SetActive(false);
     }
 
 
