@@ -1,4 +1,4 @@
-﻿roomProperties posGlobal:(436.0, 246.0);designerFlag:4
+roomProperties posGlobal:(458.0, 734.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Battery pos:(5.0, 7.5)
 Battery pos:(-5.0, 7.5)

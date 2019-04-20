@@ -1,0 +1,14 @@
+roomProperties posGlobal:(352.0, 222.0);designerFlag:3
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+PlayerStart pos:(-21.5, 7.8)
+Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
+Ground myRect:(x:-15.50, y:2.00, width:21.00, height:8.00)
+Ground myRect:(x:-19.00, y:15.50, width:14.00, height:9.00)
+Ground myRect:(x:1.00, y:10.50, width:14.00, height:19.00)
+Ground myRect:(x:-18.50, y:-13.50, width:15.00, height:13.00)
+Ground myRect:(x:20.00, y:6.50, width:12.00, height:27.00)
+Platform myRect:(x:1.00, y:-5.50, width:6.00, height:1.00)
+Snack pos:(1.0, -3.0);playerType:Flatline
+Ground myRect:(x:-4.00, y:-2.50, width:4.00, height:9.00)
+Ground myRect:(x:9.50, y:-6.00, width:11.00, height:2.00)
+Ground myRect:(x:-9.50, y:-12.50, width:7.00, height:3.00)
