@@ -18,6 +18,8 @@ public class DamageableGround : BaseGround {
     private bool isOn;
     private Color bodyColor; // depends on my properties, ya hear?
 	// References
+    [SerializeField] private Sprite s_strokeDashed=null;
+    [SerializeField] private Sprite s_strokeSolid=null;
     private Coroutine c_planTurnOn; // if I regen, this is the coroutine that'll make me turn on again.
 	private Player playerTouchingMe;
 
@@ -26,7 +28,10 @@ public class DamageableGround : BaseGround {
     public SpriteRenderer sr_Stroke { get { return sr_stroke; } }
     static public Color GetBodyColor(DamageableGroundData data) {
         if (data.dieFromBounce) { return ColorUtils.HexToColor("468EBA"); }
-        else if (data.dieFromPlayerLeave) { return ColorUtils.HexToColor("8F6BA4"); }
+        else if (data.dieFromPlayerLeave) {
+            if (data.doRegen) { return ColorUtils.HexToColor("8F6BA4"); }
+            else { return ColorUtils.HexToColor("7884BA"); }
+        }
         else if (data.dieFromVel) { return ColorUtils.HexToColor("886611"); }
         return Color.magenta; // Hmm.
     }
@@ -46,7 +51,7 @@ public class DamageableGround : BaseGround {
         // Color me impressed!
         bodyColor = GetBodyColor(data);
         bodySprite.color = bodyColor;
-        sr_stroke.enabled = doRegen;
+        sr_stroke.sprite = data.doRegen ? s_strokeDashed : s_strokeSolid;
         sr_stroke.color = Color.Lerp(bodyColor, Color.black, 0.7f);
 
         // Init my tiler.
@@ -154,12 +159,31 @@ public class DamageableGround : BaseGround {
         isOn = _isOn;
         // Update collider.
 		if (myCollider!=null) { myCollider.isTrigger = !isOn; }
-        // Update body alpha.
+        // Update body/stroke alphas.
         float bodyAlpha;
-        if (isOn) { bodyAlpha = 1; }
-        else if (doRegen) { bodyAlpha = 0.09f; }
-        else { bodyAlpha = 0; }
-        GameUtils.SetSpriteAlpha(bodySprite,bodyAlpha);
+        float strokeAlpha;
+        if (doRegen) { // I DO regen.
+            if (isOn) {
+                bodyAlpha = 1;
+                strokeAlpha = 1;
+            }
+            else {
+                bodyAlpha = 0;
+                strokeAlpha = 1f;
+            }
+        }
+        else { // I DON'T regen.
+            if (isOn) {
+                bodyAlpha = 1;
+                strokeAlpha = 0.5f;
+            }
+            else {
+                bodyAlpha = 0;
+                strokeAlpha = 0.05f;
+            }
+        }
+        GameUtils.SetSpriteAlpha(bodySprite, bodyAlpha);
+        GameUtils.SetSpriteAlpha(sr_stroke, strokeAlpha);
 	}
 
 

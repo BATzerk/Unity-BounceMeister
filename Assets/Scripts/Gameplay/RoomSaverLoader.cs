@@ -216,6 +216,8 @@ static public class RoomSaverLoader {
 		AddFSLine();
 	}
 	static private string GetPropFieldsAsString(PropData data, params string[] fieldNames) {
+        //// Round rotation (so we don't get like "90.000001").
+        //data.rotation = MathUtils.RoundTo2DPs(data.rotation);
 		// Prepare the string to be added.
 		string returnString = "";
 		Type classType = data.GetType ();
@@ -223,16 +225,7 @@ static public class RoomSaverLoader {
 			FieldInfo fieldInfo = GetFieldInfoFromClass (classType, fieldNames[i]);
 			// Don't proceed if this field doesn't exist.
 			if (fieldInfo == null) {
-//				// HACK! If this is "pos", but our prop doesn't have it as a field (most props DON'T), we know it refers to the prop's localPosition, so use that.
-//				if (fieldNames[i] == "pos") {
-//					returnString += "pos:" + new Vector2(data.transform.localPosition.x,data.transform.localPosition.y).ToString ();
-//					if (i<fieldNames.Length-1) { // If this is NOT the last value, add a semicolon to separate us from the next value!
-//						returnString += ";";
-//					}
-//				}
-//				else {
-					Debug.LogWarning("We're trying to save a prop with a field its class (or superclasses) doesn't have: " + classType.ToString() + ", " + fieldNames[i]);
-//				}
+				Debug.LogWarning("We're trying to save a prop with a field its class (or superclasses) doesn't have: " + classType + ", " + fieldNames[i]);
 				continue;
 			}
 			returnString += fieldNames[i] + ":"; // start it with, like, "startPos:"

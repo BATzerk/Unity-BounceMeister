@@ -44,6 +44,9 @@ abstract public class Prop : MonoBehaviour {
         if (myRoom == null) {
             // Set my Room ref!
             myRoom = GetComponentInParent<Room>();
+            if (myRoom == null) { myRoom = FindObjectOfType<Room>(); } // Also check the whole scene, just in case.
+            //GameUtils.ParentAndReset(this.gameObject, myRoom.transform);
+            this.transform.SetParent(myRoom.transform);
             //if (myRoom != null) { // Safety check.
             //    PropData data = SerializeAsData();
             //    BaseInitialize(myRoom, data);

@@ -41,7 +41,11 @@ public static class MathUtils {
         return 10;
     }
     /// Will turn numbers like 0.00008279 to a nice, fair 0!
-    static public float RoundTo4DPs(float _value) {
+    static public float RoundTo2DPs(float _value) {
+        return Mathf.Round(_value * 100f) / 100f;
+    }
+    /// Will turn numbers like 0.00008279 to a nice, fair 0!
+    static public float RoundTo3DPs(float _value) {
         return Mathf.Round(_value * 1000f) / 1000f;
     }
 

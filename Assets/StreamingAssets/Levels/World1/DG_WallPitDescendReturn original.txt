@@ -1,0 +1,21 @@
+roomProperties posGlobal:(802.0, -276.0);designerFlag:3
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+PlayerStart pos:(13.7, 8.9)
+Ground myRect:(x:13.00, y:5.00, width:6.00, height:2.00)
+Ground myRect:(x:19.00, y:3.00, width:14.00, height:6.00)
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+Ground myRect:(x:-14.00, y:7.00, width:20.00, height:22.00)
+Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00)
+DamageableGround myRect:(x:8.00, y:-9.00, width:4.00, height:6.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:-1.00, y:-9.00, width:4.00, height:6.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:8.00, y:-3.00, width:4.00, height:6.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:-1.00, y:-3.00, width:4.00, height:6.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:-1.00, y:3.00, width:4.00, height:6.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
+DamageableGround myRect:(x:8.00, y:3.00, width:4.00, height:6.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
+Ground myRect:(x:0.00, y:-17.50, width:52.00, height:5.00)
+Ground myRect:(x:-21.50, y:4.50, width:9.00, height:23.00)
+Ground myRect:(x:-14.50, y:-16.50, width:23.00, height:7.00)
+Spikes myRect:(x:5.50, y:-14.50, width:35.00, height:1.00);rotation:0
+Spikes myRect:(x:-3.50, y:3.50, width:15.00, height:1.00);rotation:270
+Ground myRect:(x:-5.00, y:11.50, width:10.00, height:9.00)
+Spikes myRect:(x:0.50, y:12.00, width:10.00, height:1.00);rotation:270

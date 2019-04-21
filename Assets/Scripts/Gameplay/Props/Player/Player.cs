@@ -28,7 +28,7 @@ abstract public class Player : PlatformCharacter {
 	override protected float MaxVelYUp { get { return 3; } }
 	override protected float MaxVelYDown { get { return -3; } }
 
-	private const float DelayedJumpWindow = 0.1f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
+	private const float DelayedJumpWindow = 0.12f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
 	virtual protected float PostWallKickHorzInputLockDur { get { return 0.22f; } } // affects isPreservingWallKickVel. How long until we can provide horz-input after wall-kicking.
     virtual protected float WallKickExtensionWindow { get { return 0.08f; } } // how long after touching a wall when we'll still allow wall-kicking!
@@ -452,7 +452,7 @@ abstract public class Player : PlatformCharacter {
     }
 	virtual protected void OnArmTouchCollidable(int side, Collidable collidable) {
         // Delayed wall-kick? Do it right away!
-        if (isWallSliding() && Time.time <= timeWhenDelayedJump) {
+        if (collidable is BaseGround && Time.time <= timeWhenDelayedJump) {//isWallSliding() && 
             WallKick();
         }
 
