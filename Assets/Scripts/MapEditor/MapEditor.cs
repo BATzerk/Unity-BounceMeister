@@ -6,9 +6,8 @@ using System.Collections.Generic;
 namespace MapEditorNamespace {
 public class MapEditor : MonoBehaviour {
 	// Constants
-	private readonly float gridSizeX = 1;//GameVisualProperties.OriginalScreenSize.x * 0.25f;
-	private readonly float gridSizeY = 1;//GameVisualProperties.OriginalScreenSize.y * 0.25f;
-	private const string instructionsTextString_enabled = "change world:  [1-8]\ntoggle names:  'n'\ntoggle contents:  'p'\nsearch:  [hold 'SHIFT' and type room name; ESC to cancel]\nhide instructions:  'i'";//move/zoom:  [mouse or arrow keys]\nplay room:  [double-click one]\n
+	private readonly Vector2 GridSize = new Vector2(2, 2);
+	private const string instructionsTextString_enabled = "set world:  [1-8]\ntoggle names:  'n'\ntoggle contents:  'p'\nsearch:  [hold 'SHIFT' and type room name; ESC to cancel]\nhide instructions:  'i'";//move/zoom:  [mouse or arrow keys]\nplay room:  [double-click one]\n
 	private const string instructionsTextString_disabled = "show instructions:  'i'";
 	// Components
 	[SerializeField] private RoomTileSelectionRect selectionRect=null;
@@ -73,12 +72,9 @@ public class MapEditor : MonoBehaviour {
 		}
 		return null;
 	}
-	private Vector2 GetConnectionPosRelativeToRoomTile(RoomTile roomTile, Vector2 globalPos) {
-		return new Vector2(globalPos.x-roomTile.MyRoomData.PosGlobal.x, globalPos.y-roomTile.MyRoomData.PosGlobal.y);
-    }
 
     public float MapScale { get { return editorCamera.MapScale; } }
-    private Vector2 SnapToGrid(Vector2 v) { return new Vector2(Mathf.Floor(v.x/gridSizeX)*gridSizeX, Mathf.Floor(v.y/gridSizeY)*gridSizeY); }
+    private Vector2 SnapToGrid(Vector2 v) { return new Vector2(Mathf.Floor(v.x/GridSize.x)*GridSize.x, Mathf.Floor(v.y/GridSize.y)*GridSize.y); }
 	public Vector2 MousePosScreen { get { return inputController.MousePosScreen; } }
     private Vector2 MousePosWorldDragging(Vector2 _mouseClickOffset) {
 		return MousePosWorld + _mouseClickOffset;
@@ -86,7 +82,8 @@ public class MapEditor : MonoBehaviour {
 	public Vector2 MousePosWorldDraggingGrid(Vector2 _mouseClickOffset) { // Return the mouse position, scaled to the screen and snapped to the grid.
         bool doSnap = !Input.GetKey (KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl); // Hold down CONTROL to prevent snapping.
         if (doSnap) {
-            return MousePosWorldDragging(SnapToGrid(_mouseClickOffset));
+            Vector2 clickOffset = SnapToGrid(_mouseClickOffset + GridSize);
+            return SnapToGrid(MousePosWorldDragging(clickOffset));
         }
         else {
             return MousePosWorldDragging(_mouseClickOffset);

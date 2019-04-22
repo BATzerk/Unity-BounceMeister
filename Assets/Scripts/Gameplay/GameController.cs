@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour {
 		if (dm.currRoomData==null && SceneHelper.IsGameplayScene()) {
 			int worldIndex = SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex);
 			string roomKey = SaveStorage.GetString(SaveKeys.LastPlayedRoomKey(worldIndex), GameProperties.GetFirstRoomName(worldIndex));
-			dm.currRoomData = dm.GetRoomData(worldIndex, roomKey, false);
+			dm.currRoomData = dm.GetRoomData(worldIndex, roomKey, true);
 		}
 
 		// We've defined our currentRoomData before this scene! Load up THAT room!!

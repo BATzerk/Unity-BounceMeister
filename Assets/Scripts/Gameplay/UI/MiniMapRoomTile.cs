@@ -24,9 +24,9 @@ public class MiniMapRoomTile : MonoBehaviour {
         return new Color255(135,200,210).ToColor();
     }
     private bool IsBorderLine(int side) {
-        for (int i=0; i<MyRoomData.Neighbors.Count; i++) {
-            if (!MyRoomData.Neighbors[i].IsRoomTo) { continue; } // No neighboring room? No line.
-            if (MyRoomData.Neighbors[i].OpeningFrom.side == side) { return false; } // There's a neighbor at this side!
+        for (int i=0; i<MyRoomData.Openings.Count; i++) {
+            if (!MyRoomData.Openings[i].IsRoomTo) { continue; } // No neighboring room? No line.
+            if (MyRoomData.Openings[i].side == side) { return false; } // There's an opening at this side!
         }
         return true; // No neighbor at this side?? Yes border line!
     }

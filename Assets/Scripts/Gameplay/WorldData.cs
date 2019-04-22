@@ -125,9 +125,9 @@ public class WorldData {
         rd.WasUsedInSearchAlgorithm = true;
         cluster.rooms.Add(rd);
         // Now try for all its neighbors!
-        for (int i=0; i<rd.Neighbors.Count; i++) {
-            if (rd.Neighbors[i].IsRoomTo) {
-                RecursivelyAddRoomToCluster(rd.Neighbors[i].RoomTo, cluster);
+        for (int i=0; i<rd.Openings.Count; i++) {
+            if (rd.Openings[i].IsRoomTo) {
+                RecursivelyAddRoomToCluster(rd.Openings[i].RoomTo, cluster);
             }
         }
     }

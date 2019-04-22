@@ -50,14 +50,13 @@ public class GameCameraController : MonoBehaviour {
 
 	// Debug
 	private void OnDrawGizmos() {
-		Gizmos.color = Color.blue;
-		Gizmos.DrawWireCube (viewRect.center, new Vector3(viewRect.size.x,viewRect.size.y, 10));
+		//Gizmos.color = Color.blue;
+		//Gizmos.DrawWireCube (viewRect.center, new Vector3(viewRect.size.x,viewRect.size.y, 10));
 
-		Gizmos.color = Color.yellow;
+		Gizmos.color = new Color(0.85f,0.7f,0.2f);
 		Gizmos.DrawWireCube (viewRectBounds.center, new Vector3(viewRectBounds.size.x,viewRectBounds.size.y, 10));
-
-		Gizmos.color = Color.yellow;
 		Gizmos.DrawWireCube (centerBounds.center, new Vector3(centerBounds.size.x,centerBounds.size.y, 10));
+        
 //		Gizmos.color = Color.yellow;
 //		Gizmos.DrawWireCube (viewRect.center*GameVisualProperties.WORLD_SCALE, new Vector3(ScreenHandler.RelativeScreenSize.x+11,ScreenHandler.RelativeScreenSize.y+11, 10)*GameVisualProperties.WORLD_SCALE);//+11 for bloat so we can still see it if there's overlap.
 	}

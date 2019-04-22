@@ -124,17 +124,16 @@ public class RoomTileContents : MonoBehaviour {
 	}
     private void AddOpeningsSprites() {
         srs_openings = new List<SpriteRenderer>();
-        for (int i=0; i<myRD.Neighbors.Count; i++) {
-            AddOpeningsSprite(myRD.Neighbors[i]);
+        for (int i=0; i<myRD.Openings.Count; i++) {
+            AddOpeningsSprite(myRD.Openings[i]);
         }
     }
-    private void AddOpeningsSprite(RoomNeighborData ln) {
-        RoomOpening lo = ln.OpeningFrom;
-        string _name = "Opening" + lo.side;
-        Vector2 _pos = lo.posCenter;
-        Vector2 _size = GetOpeningSpriteSize(lo);
+    private void AddOpeningsSprite(RoomOpening ro) {
+        string _name = "Opening" + ro.side;
+        Vector2 _pos = ro.posCenter;
+        Vector2 _size = GetOpeningSpriteSize(ro);
         Sprite _sprite = ResourcesHandler.Instance.s_whiteSquare;
-        SpriteRenderer newSprite = AddSpriteRenderer(_name, _sprite, go_openings, _pos,_size, 120, GetOpeningColor(ln));
+        SpriteRenderer newSprite = AddSpriteRenderer(_name, _sprite, go_openings, _pos,_size, 120, GetOpeningColor(ro));
         srs_openings.Add(newSprite);
     }
 
@@ -143,8 +142,8 @@ public class RoomTileContents : MonoBehaviour {
         if (lo.side==Sides.L || lo.side==Sides.R) { return new Vector2(thickness, lo.length); }
         return new Vector2(lo.length, thickness);
     }
-    public Color GetOpeningColor(RoomNeighborData ln) {
-        return ln.IsRoomTo ? Color.clear : new Color(1,0.3f,0.7f, 0.94f);//new Color(0.4f,1,0, 0.3f)
+    public Color GetOpeningColor(RoomOpening ro) {
+        return ro.IsRoomTo ? Color.clear : new Color(1,0.3f,0.7f, 0.94f);//new Color(0.4f,1,0, 0.3f)
     }
 
 
@@ -204,7 +203,7 @@ public class RoomTileContents : MonoBehaviour {
         }
         // Openings
         for (int i=0; i<srs_openings.Count; i++) {
-            srs_openings[i].color = GetOpeningColor(myRD.Neighbors[i]);
+            srs_openings[i].color = GetOpeningColor(myRD.Openings[i]);
         }
     }
 

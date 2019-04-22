@@ -13,4 +13,3 @@ PlayerStart pos:(-15.1, -14.4)
 Spikes myRect:(x:-28.50, y:5.50, width:3.00, height:1.00);rotation:270
 Snack pos:(-10.5, 10.5);playerType:Plunga
 Platform myRect:(x:-10.50, y:8.50, width:5.00, height:1.00);isPlayerRespawn:True
-

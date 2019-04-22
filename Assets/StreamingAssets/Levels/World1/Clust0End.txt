@@ -20,4 +20,3 @@ Platform myRect:(x:14.00, y:3.50, width:6.00, height:1.00)
 Ground myRect:(x:26.00, y:-8.00, width:18.00, height:8.00)
 ProgressGate myRect:(x:26.00, y:-1.00, width:6.00, height:6.00);numSnacksReq:22
 RoomDoor pos:(32.5, -3.0);myID:3;worldToIndex:-1;roomToKey:Clust3Start;roomToDoorID:0
-

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Room : MonoBehaviour, ISerializableData<RoomData> {
+    // Components
+    [SerializeField] private RoomGizmos roomGizmos=null;
 	// Properties
 	private GateChannel[] gateChannels;
     private List<CharBarrel> charBarrels=new List<CharBarrel>();
@@ -78,9 +80,8 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 		gameControllerRef = _gameControllerRef;
 		MyRoomData = _roomData;
 		this.gameObject.name = MyRoomData.RoomKey;
-
-		this.transform.SetParent (tf_world); // Parent me to my world!
-		this.transform.localScale = Vector3.one; // Make sure my scale is 1 from the very beginning.
+        
+        GameUtils.ParentAndReset(this.gameObject, tf_world);
 		this.transform.localPosition = PosGlobal; // Position me!
 
 		// Initialize channels!
@@ -180,6 +181,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 
         // For development, add bounds so we don't fall out of unconnected rooms!
         AutoAddSilentBoundaries();
+        roomGizmos.Initialize(this);
 	}
 
 	/** Slightly sloppy, whatever-it-takes housekeeping to allow us to start up the game with a novel room and edit/play/save it right off the bat. */
@@ -206,10 +208,10 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 		}
 	}
 	private void AutoAddSilentBoundaries() {
-		for (int i=0; i<MyRoomData.Neighbors.Count; i++) {
+		for (int i=0; i<MyRoomData.Openings.Count; i++) {
 			// No room here?? Protect me with an InvisiBounds!
-            RoomNeighborData lnd = MyRoomData.Neighbors[i];
-            if (!lnd.IsRoomTo) {
+            RoomOpening rod = MyRoomData.Openings[i];
+            if (!rod.IsRoomTo) {
 				BoxCollider2D col = new GameObject().AddComponent<BoxCollider2D>();
 				col.transform.SetParent(this.transform);
 				col.transform.localScale = Vector3.one;
@@ -218,8 +220,8 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 				col.name = "Invisibounds";
                 // Determine the collider's rect, ok?
                 Rect rect = new Rect {
-                    size = GetInvisiboundSize(lnd.OpeningFrom),
-                    center = lnd.OpeningFrom.posCenter
+                    size = GetInvisiboundSize(rod),
+                    center = rod.posCenter
                 };
                 // Make it happen!
                 col.transform.localPosition = rect.center;
@@ -263,11 +265,11 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
     //	Debug
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private void OnDrawGizmos() {
-        Vector2 posGlobal = MyRoomData.posGlobal;
-        foreach (RoomNeighborData lnd in MyRoomData.Neighbors) {
-            Gizmos.color = lnd.RoomTo!=null ? new Color(0.5f,1,0) : new Color(1,0.5f,0);
-            Gizmos.DrawLine(posGlobal+lnd.OpeningFrom.posStart, posGlobal+lnd.OpeningFrom.posEnd);
-        }
+        //Vector2 posGlobal = MyRoomData.posGlobal;
+        //foreach (RoomOpening ro in MyRoomData.Openings) {
+        //    Gizmos.color = ro.RoomTo!=null ? new Color(0.5f,1,0) : new Color(1,0.5f,0);
+        //    Gizmos.DrawLine(posGlobal+ro.posStart, posGlobal+ro.posEnd);
+        //}
     }
 
 

@@ -19,8 +19,10 @@ public class RoomData {
     public int NumSnacksTotal { get; private set; }
 	public bool WasUsedInSearchAlgorithm { get; set; }
 	public Vector2 posGlobal; // my position, global to ALL worlds! These values get big (up to around 70,000)!
-    public List<RoomNeighborData> Neighbors; // EXACTLY like Openings, except contains refs to other rooms (which *can be null* if there's no room at an opening)!
-    public List<RoomOpening> Openings { get; private set; } // JUST the openings. These can be saved.
+    //public List<RoomNeighborData> Neighbors; // EXACTLY like Openings, except contains refs to other rooms (which *can be null* if there's no room at an opening)!
+    //public List<RoomNeighborData>
+    public List<RoomOpening> Openings { get; private set; }
+    public HashSet<RoomData> NeighborRooms { get; private set; } // All RoomDatas I have Openings to.
     // Getters
     public string RoomKey { get { return roomKey; } }
 	public int DesignerFlag { get { return designerFlag; } }
@@ -85,7 +87,7 @@ public class RoomData {
 	// Setters
 	public void SetPosGlobal (Vector2 _posGlobal) {
 		// Round my posGlobal values to even numbers! For snapping rooms together more easily.
-		posGlobal = new Vector2 (Mathf.Round(_posGlobal.x*0.5f)*2f, Mathf.Round (_posGlobal.y*0.5f)*2f);
+		posGlobal = _posGlobal;//new Vector2 (Mathf.Round(_posGlobal.x*0.5f)*2f, Mathf.Round (_posGlobal.y*0.5f)*2f);
 	}
 	public void SetDesignerFlag (int _designerFlag) {
 		designerFlag = _designerFlag;
@@ -209,29 +211,27 @@ public class RoomData {
     }
 
     private void AddRoomOpening(int side, Vector2 startPos, Vector2 endPos) {
-        RoomOpening newObj = new RoomOpening(side, startPos,endPos);
+        RoomOpening newObj = new RoomOpening(this, side, startPos,endPos);
         Openings.Add(newObj);
     }
 
-
     public void UpdateNeighbors() {
-        Neighbors = new List<RoomNeighborData>();
-        // Add a neighbor for EVERY opening! Even ones that DON'T lead anywhere. That way we know where we have null neighbors.
+        NeighborRooms = new HashSet<RoomData>();
         for (int i=0; i<Openings.Count; i++) {
-            RoomData otherLD = MyWorldData.GetRoomNeighbor(this, Openings[i]);
-            Neighbors.Add(new RoomNeighborData(otherLD, Openings[i]));
+            RoomData otherRoom = MyWorldData.GetRoomNeighbor(this, Openings[i]);
+            // If there IS a neighbor...!
+            if (otherRoom != null) {
+                // Add the neighbor.
+                if (!NeighborRooms.Contains(otherRoom)) { NeighborRooms.Add(otherRoom); }
+                // Set the opening's neighbor.
+                Openings[i].SetRoomTo(otherRoom);
+            }
         }
     }
 
 
 
-
-
-
-
 }
-
-
 
 
 

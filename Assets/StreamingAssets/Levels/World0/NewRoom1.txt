@@ -1,4 +1,4 @@
-roomProperties posGlobal:(254.0, 186.0);designerFlag:0;isClustStart:True
+roomProperties posGlobal:(240.0, 220.0);designerFlag:0;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-20.1, 9.4)
 Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
@@ -13,4 +13,3 @@ InfoSign pos:(-4.0, -9.0);myText:Yes, this will look nice in the game, yessss.
 Snack pos:(9.5, -8.0);playerType:Plunga
 Snack pos:(0.0, 0.0);playerType:Plunga
 Snack pos:(13.0, -1.0);playerType:Flatline
-
