@@ -38,7 +38,9 @@ public class GateChannel {
 	public GateChannel(Room myRoom, int channelID) {
 		this.myRoom = myRoom;
 		this.channelID = channelID;
-        IsUnlocked = SaveStorage.GetBool(SaveKeys.IsGateUnlocked(myRoom, channelID));
+        if (this.channelID < 3) { // HACKY: The first 3 channels will save unlocked. After that, those specifically DON'T save.
+            IsUnlocked = SaveStorage.GetBool(SaveKeys.IsGateUnlocked(myRoom, channelID));
+        }
 	}
 
 	//public void Reset() {

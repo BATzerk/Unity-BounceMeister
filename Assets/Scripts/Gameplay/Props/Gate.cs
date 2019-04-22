@@ -5,7 +5,7 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class Gate : BaseGround {
 	// Properties
-	[SerializeField] private int channelID;
+    [SerializeField] private int channelID;
 	private Color bodyColor=Color.red;
 
 	// Getters (Public)

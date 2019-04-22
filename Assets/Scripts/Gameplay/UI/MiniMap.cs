@@ -89,7 +89,9 @@ public class MiniMap : MonoBehaviour {
         }
     }
     private void UpdateSnackCountText() {
-        t_snackCount.text = currRoomData.MyCluster.NumSnacksEaten + " / " + currRoomData.MyCluster.NumSnacks;
+        if (currRoomData.MyCluster != null) {
+            t_snackCount.text = currRoomData.MyCluster.NumSnacksEaten + " / " + currRoomData.MyCluster.NumSnacks;
+        }
     }
     
     
