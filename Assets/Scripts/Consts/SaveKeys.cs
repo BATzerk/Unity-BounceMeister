@@ -24,6 +24,9 @@ public static class SaveKeys {
     
     public static string IsGateUnlocked(Room room, int objIndex) { return IsGateUnlocked(room.MyRoomData, objIndex); }
     public static string IsGateUnlocked(RoomData rd, int objIndex) { return "IsGateUnlocked_" + FullRoomKey(rd) + "_" + objIndex; }
+    
+    public static string IsProgressGateOpen(Room room, int objIndex) { return IsProgressGateOpen(room.MyRoomData, objIndex); }
+    public static string IsProgressGateOpen(RoomData rd, int objIndex) { return "IsProgressGateOpen_" + FullRoomKey(rd) + "_" + objIndex; }
 
     public static string CharBarrelTypeInMe(RoomData rd, int objIndex) { return "CharBarrelTypeInMe_" + FullRoomKey(rd) + "_" + objIndex; }
 

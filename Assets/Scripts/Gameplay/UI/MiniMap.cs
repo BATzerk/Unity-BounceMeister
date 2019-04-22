@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MiniMap : MonoBehaviour {
     // Components
-    [SerializeField] private RectTransform myRectTransform;
-    [SerializeField] private RectTransform rt_tiles;
+    [SerializeField] private TextMeshProUGUI t_snackCount=null;
+    [SerializeField] private RectTransform myRectTransform=null;
+    [SerializeField] private RectTransform rt_tiles=null;
     private Dictionary<string,MiniMapRoomTile> tiles; // roomKey is key.
     // Properties
     private const float mapScale = 0.5f;//0.8f; // NOTE: Unity units to Screen units automatically makes rooms way smaller (1 Unity unit is 1 pixel).
@@ -86,6 +88,10 @@ public class MiniMap : MonoBehaviour {
             tile.UpdateVisuals(currRoomData);
         }
     }
+    private void UpdateSnackCountText() {
+        t_snackCount.text = currRoomData.MyCluster.NumSnacksEaten + " / " + currRoomData.MyCluster.NumSnacks;
+    }
+    
     
     // ----------------------------------------------------------------
     //  Events
@@ -104,9 +110,11 @@ public class MiniMap : MonoBehaviour {
         
         // Update tile visuals!
         UpdateAllTilesVisuals();// TODO: This more efficiently?
+        UpdateSnackCountText();
     }
     private void OnNumSnacksEatenChanged() {
         tiles[currRoom.RoomKey].UpdateVisuals(currRoomData); // Update the visuals of the current RoomTile.
+        UpdateSnackCountText();
     }
     
     

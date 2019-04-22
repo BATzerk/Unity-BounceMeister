@@ -34,6 +34,7 @@ public class RoomData {
 //	public Rect BoundsLocal { get { return boundsLocal; } }
 	public WorldData MyWorldData { get; private set; }
     public bool IsInCluster { get { return ClusterIndex != -1; } }
+    public RoomClusterData MyCluster { get { return ClusterIndex<0 ? null : MyWorldData.clusters[ClusterIndex]; } }
     ///// Returns the closest PlayerStart to the provided pos.
     //public Vector2 ClosestPlayerStartPos(Vector2 playerPos) {
     //    float bestDist = Mathf.Infinity;

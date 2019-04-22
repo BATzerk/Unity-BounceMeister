@@ -121,6 +121,7 @@ public class DataManager {
             SaveStorage.DeleteKey(SaveKeys.DidEatGem(rd, i));
             SaveStorage.DeleteKey(SaveKeys.DidEatSnack(rd, i));
             SaveStorage.DeleteKey(SaveKeys.IsGateUnlocked(rd, i));
+            SaveStorage.DeleteKey(SaveKeys.IsProgressGateOpen(rd, i));
             SaveStorage.DeleteKey(SaveKeys.CharBarrelTypeInMe(rd, i));
         }
     }

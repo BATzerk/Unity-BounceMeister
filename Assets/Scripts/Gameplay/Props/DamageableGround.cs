@@ -134,8 +134,19 @@ public class DamageableGround : BaseGround {
         if (c_planTurnOn != null) { StopCoroutine(c_planTurnOn); }
     }
     private IEnumerator Coroutine_PlanTurnOn() {
-        yield return new WaitForSeconds(RegenTime);
-
+        float timeWhenReady = Time.time + RegenTime;
+        
+        // Flash stroke for last moment before regen!
+        yield return new WaitForSeconds(RegenTime-0.5f);
+        
+        while (Time.time < timeWhenReady) {
+            float timeLeft = timeWhenReady - Time.time;
+            float strokeAlpha = MathUtils.SinRange(1,0.5f, timeLeft*40);
+            GameUtils.SetSpriteAlpha(sr_stroke, strokeAlpha);
+            yield return null;
+        }
+        
+        // ... We're ready to turn on now!
         // There's a character touching me??...
         if (charInMyTrigger != null) {
             // Wait for them to leave.

@@ -91,6 +91,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 		// Instantiate my props!
 		RoomData rd = MyRoomData;
 		ResourcesHandler rh = ResourcesHandler.Instance;
+        int numProgressGates=0; // for deteriming their indexes.
 
 		foreach (PropData propData in rd.allPropDatas) {
 			// Grounds
@@ -157,7 +158,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
             }
             else if (propData is ProgressGateData) {
                 ProgressGate newProp = Instantiate(rh.ProgressGate).GetComponent<ProgressGate>();
-                newProp.Initialize (this, propData as ProgressGateData);
+                newProp.Initialize (this, propData as ProgressGateData, numProgressGates++);
             }
             else if (propData is InfoSignData) {
                 InfoSign newProp = Instantiate(rh.InfoSign).GetComponent<InfoSign>();
