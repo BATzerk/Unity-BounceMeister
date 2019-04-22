@@ -8,6 +8,7 @@ public class ProgressGate : BaseGround {
     [SerializeField] private TextMesh myText=null;
 	// Properties
     [SerializeField] private int numSnacksReq;
+    private bool isOpenable; // true when we've got en TODO: THIS
     
     // Getters (Private)
     private WorldData currWorldData { get { return GameManagers.Instance.DataManager.CurrWorldData; } }

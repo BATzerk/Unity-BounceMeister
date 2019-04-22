@@ -1,5 +1,5 @@
-roomProperties posGlobal:(186.0, -276.0);designerFlag:4
-CameraBounds myRect:(x:-25.00, y:-19.00, width:51.00, height:38.00)
+﻿roomProperties posGlobal:(186.0, -276.0);designerFlag:4
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Gem pos:(17.0, 9.5)
 Ground myRect:(x:23.00, y:7.50, width:8.00, height:17.00)
 Ground myRect:(x:-7.00, y:11.50, width:8.00, height:9.00)
