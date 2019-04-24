@@ -334,6 +334,11 @@ abstract public class Player : PlatformCharacter {
 		isPostDamageImmunity = false;
 		myBody.OnEndPostDamageImmunity();
 	}
+    
+    virtual protected void DropThruPlatform() {
+        pos += new Vector2(0, -0.2f);
+        vel += new Vector2(0, -0.16f);
+    }
 
 
 
@@ -352,10 +357,9 @@ abstract public class Player : PlatformCharacter {
 	abstract protected void OnButtonJump_Down();
 	virtual protected void OnButtonJump_Up() { }
 	virtual protected void OnDown_Held() {
-        // On a Platform? Pass down through it!
+        // On a Platform? Drop down through it!
         if (myWhiskers.AreFeetOnlyOnCanDropThruPlatform()) {
-            pos += new Vector2(0, -0.2f);
-            vel += new Vector2(0, -0.16f);
+            DropThruPlatform();
         }
     }
     

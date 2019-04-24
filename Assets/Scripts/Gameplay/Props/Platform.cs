@@ -8,6 +8,9 @@ public class Platform : BaseGround {
     [SerializeField] private Color c_cannotDropThru=Color.white;
     // Properties
     [SerializeField] bool canDropThru = true;
+    // References
+    [SerializeField] Sprite s_canDropThru=null;
+    [SerializeField] Sprite s_cannotDropThru=null;
     
     // Getters
     public bool CanDropThru { get { return canDropThru; } }
@@ -23,6 +26,7 @@ public class Platform : BaseGround {
         
         // Color me rights.
         bodySprite.color = canDropThru ? c_canDropThru : c_cannotDropThru;
+        bodySprite.sprite = canDropThru ? s_canDropThru : s_cannotDropThru;
 	}
 
 	// ----------------------------------------------------------------

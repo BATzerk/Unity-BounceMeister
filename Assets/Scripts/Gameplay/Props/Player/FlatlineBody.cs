@@ -8,6 +8,7 @@ public class FlatlineBody : PlayerBody {
     // Constants
     [SerializeField] private Color c_hoverlight=Color.white;
     [SerializeField] private Color c_hoverlightEnding=Color.white;
+    [SerializeField] private Color c_hoverlightEmpty=Color.white;
     // Components
     [SerializeField] private GameObject go_eyesNormal=null; // wide open. I can see the world.
     [SerializeField] private GameObject go_eyesSquint=null; // squinting in earnest consternation.
@@ -51,17 +52,21 @@ public class FlatlineBody : PlayerBody {
         SetEyes(EyeTypes.Squint);
     }
     public void OnStopHover() {
-        if (myFlatline.HoverTimeLeft > 0) { // Not out of hover-time? Open my eyes.
+        // Depleted?
+        if (myFlatline.IsHoverEmpty) {
+            GameUtils.SetSpriteColor(sr_highlight, c_hoverlightEmpty, 0.7f);
+        }
+        // NOT depleted? Open my eyes!
+        else {
             SetEyes(EyeTypes.Normal);
             sr_highlight.enabled = false;
         }
-        else {
-            GameUtils.SetSpriteColor(sr_highlight, c_hoverlightEnding, 0.6f);
-        }
     }
     public void OnRechargeHover() {
-        sr_highlight.enabled = false;
-        SetEyes(EyeTypes.Normal);
+        if (!myFlatline.IsHovering) { // If I'm no longer hovering...
+            sr_highlight.enabled = false;
+            SetEyes(EyeTypes.Normal);
+        }
     }
 
 

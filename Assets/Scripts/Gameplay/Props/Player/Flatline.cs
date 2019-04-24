@@ -8,7 +8,7 @@ public class Flatline : Player {
     override public Vector2 Size { get { return new Vector2(1.6f, 1.6f); } }
 	override protected float InputScaleX {
         get {
-            if (IsHovering || HoverTimeLeft<HoverDur) { return 0; } // No horz input while hovering.
+            if (hasHoveredWithoutTouchCollider) { return 0; } // No horz input while hovering (until we touch a collider).
             //if (!feetOnGround()) { return 0.01f; } // In the air? Reduced input scale.
             return 0.018f;
         }
@@ -44,12 +44,19 @@ public class Flatline : Player {
     private bool MayStartHover() {
         return !feetOnGround() // FEET touching nothing?
             && !isTouchingWall() // ARMS touching nothing?
-            && HoverTimeLeft > 0; // not out of hover-time?
+            && !IsHoverEmpty; // not out of hover-time?
     }
-    
+    public override bool MayUseBattery() {
+        if (IsHoverFull) { return false; } // Already recharged? Nah.
+        return base.MayUseBattery();
+    }
+    public bool IsHoverFull { get { return HoverTimeLeft >= HoverDur; } }
+    public bool IsHoverEmpty { get { return HoverTimeLeft <= 0; } }
+
     // Properties
     private const float HoverDur = 2f; // we can only stay hovering for a few seconds.
     private bool isButtonHeld_Hover;
+    private bool hasHoveredWithoutTouchCollider; // 
     public bool IsHovering { get; private set; }
     public float HoverTimeLeft { get; private set; }
     private Vector2 ppvel; // HACKY workaround for getting vel from hitting a wall. ppvel is ACTUALLY how fast we were going before we hit the wall.
@@ -78,6 +85,7 @@ public class Flatline : Player {
     private void StartHover() {
         if (IsHovering) { return; } // Already hovering? Do nothin'.
         IsHovering = true;
+        hasHoveredWithoutTouchCollider = true;
         // Convert yVel to xVel, and halt yVel.
         //float xVel = vel.magnitude * DirFacing; // assume we wanna travel in the dir we're facing.
         float xVel = vel.x;
@@ -95,30 +103,33 @@ public class Flatline : Player {
     }
     private void RechargeHover() {
         HoverTimeLeft = HoverDur;
+        hasHoveredWithoutTouchCollider = false;
         // Tell my body!
         myFlatlineBody.OnRechargeHover();
     }
+    
+    private bool MayConvertVertVelToHorzFromLand() {
+        if (Time.time > timeStoppedWallSlide+0.2f) { return false; } // Nah, been too long since we've wall-slid.
+        if (inputAxis.y < -0.8f) { return false; } // Pushing down? Nah, don't convert.
+        return true; // Sure, convert!
+    }
 
 
-	//// ----------------------------------------------------------------
-	////  Events
-	//// ----------------------------------------------------------------
-	//override protected void StartWallSlide(int dir) {
-		//base.StartWallSlide(dir);
-    //}
 
     // ----------------------------------------------------------------
     //  Events (Physics)
     // ----------------------------------------------------------------
     public override void OnWhiskersTouchCollider(int side, Collider2D col) {
         base.OnWhiskersTouchCollider(side, col);
-        RechargeHover(); // ANY contact recharges our hover!
+        hasHoveredWithoutTouchCollider = false;
         StopHover();
     }
     override protected void LandOnCollidable(Collidable collidable) {
         base.LandOnCollidable(collidable);
-        // Have we JUST stopped wall-sliding?
-        if (Time.time < timeStoppedWallSlide+0.2f) {
+        // Touching floor recharges hover!
+        RechargeHover();
+        // Convert vel??
+        if (MayConvertVertVelToHorzFromLand()) {
             // Are we VERY CLOSE to a wall, facing away from it, and NOT pushing towards it?? Convert VERT vel into HORZ vel!
             if (myWhiskers.SurfaceDistMin(Sides.L) < 0.4f && DirFacing==1 && inputAxis.x>-0.7f) {
                 ConvertVertVelToHorz(1);
@@ -163,6 +174,16 @@ public class Flatline : Player {
         vel = new Vector2(0, yVel);
     }
     
+    public override void OnUseBattery() {
+        base.OnUseBattery();
+        RechargeHover();
+    }
+    
+    //override protected void DropThruPlatform() {
+    //    base.DropThruPlatform();
+    //    SetVel(new Vector2(0, vel.y)); // halt x-vel.
+    //}
+    
     
     
     // ----------------------------------------------------------------
@@ -182,7 +203,7 @@ public class Flatline : Player {
         
             // End hover?
             HoverTimeLeft -= Time.deltaTime;
-            if (HoverTimeLeft <= 0) {
+            if (IsHoverEmpty) {
                 StopHover();
             }
         }

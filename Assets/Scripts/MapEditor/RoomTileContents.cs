@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace MapEditorNamespace {
 public class RoomTileContents : MonoBehaviour {
 	// Constants
+    static private readonly Vector2 BatteryIconSize = new Vector2(2,2);
     static private readonly Vector2 GemIconSize = new Vector2(3,3);
     static private readonly Vector2 SnackIconSize = new Vector2(5,5);
 	// Components
@@ -17,6 +18,7 @@ public class RoomTileContents : MonoBehaviour {
 	// Properties
 	private bool hasInitializedContent = false;
 	// References
+    [SerializeField] private Sprite s_battery=null;
     [SerializeField] private Sprite s_ground=null;
     [SerializeField] private Sprite s_snack=null;
 	[SerializeField] private Sprite s_spikes=null;
@@ -45,7 +47,9 @@ public class RoomTileContents : MonoBehaviour {
 
 		// Set text string!
 		roomNameText.text = myRD.RoomKey;
-		roomNameText.transform.localPosition = -myRD.BoundsLocal.size*0.5f; // bottom-left align.
+        Vector2 textPos = -myRD.BoundsLocal.size*0.5f; // bottom-left align.
+        textPos += myRD.cameraBoundsData.myRect.center; // hacky offset for inconsistent global/local bounds alignment.
+		roomNameText.transform.localPosition = textPos;
 //		if (GameManagers.Instance.DataManager.mostRecentlySavedRoom_worldIndex == worldDataRef.WorldIndex && GameManagers.Instance.DataManager.mostRecentlySavedRoom_roomKey==roomTileRef.RoomKey) {
 //			roomNameText.color = new Color(1, 0.8f, 0.2f); // If I'm the most recently saved room, make me stand out! :)
 //		}
@@ -60,14 +64,19 @@ public class RoomTileContents : MonoBehaviour {
     }
     private void AddPropSprites() {
 		foreach (PropData propData in myRD.allPropDatas) {
+            // -- Batteries --
+            if (propData.GetType() == typeof(BatteryData)) {
+                BatteryData pd = propData as BatteryData;
+                AddSpriteRenderer("Battery",s_battery, go_props, pd.pos, BatteryIconSize, 10, Color.white);
+            }
 			// -- Grounds --
-			if (propData.GetType() == typeof(GroundData)) {
+			else if (propData.GetType() == typeof(GroundData)) {
 				GroundData pd = propData as GroundData;
                 groundDatas.Add(pd); // also add it to my ref list!
 				srs_grounds.Add(AddSpriteRenderer("Ground", s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, Color.white));//WHY POSITION? why not center?
 			}
 			// -- DamageableGrounds --
-			if (propData.GetType() == typeof(DamageableGroundData)) {
+			else if (propData.GetType() == typeof(DamageableGroundData)) {
                 DamageableGroundData pd = propData as DamageableGroundData;
 				Color color = DamageableGround.GetBodyColor(pd);
                 color = new Color(color.r,color.g,color.b, color.a*0.6f); // alpha it out a bit, to taste.

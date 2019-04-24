@@ -1,20 +1,23 @@
-roomProperties posGlobal:(704.0, 186.0);designerFlag:4
+roomProperties posGlobal:(724.0, 292.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-23.8, 9.5)
-Ground myRect:(x:-18.50, y:-15.50, width:15.00, height:9.00);mayPlayerEat:False
+Ground myRect:(x:-19.00, y:-15.50, width:14.00, height:9.00);mayPlayerEat:False
 Ground myRect:(x:-20.50, y:5.00, width:11.00, height:6.00)
 Ground myRect:(x:22.50, y:0.50, width:7.00, height:33.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:0.00, y:5.00, width:4.00, height:26.00);mayPlayerEat:False
-Ground myRect:(x:20.50, y:-15.50, width:11.00, height:9.00);mayPlayerEat:False
+Ground myRect:(x:0.00, y:0.00, width:4.00, height:16.00);mayPlayerEat:False
+Ground myRect:(x:21.00, y:-15.50, width:10.00, height:9.00);mayPlayerEat:False
 Ground myRect:(x:1.00, y:-16.00, width:48.00, height:8.00);mayPlayerEat:False
 Spikes myRect:(x:3.00, y:-11.50, width:32.00, height:1.00);rotation:0
 Ground myRect:(x:-20.50, y:-11.50, width:11.00, height:9.00);mayPlayerEat:False
 Ground myRect:(x:-24.00, y:-0.50, width:4.00, height:17.00)
-Platform myRect:(x:10.50, y:5.50, width:17.00, height:1.00);mayPlayerEat:False
+Platform myRect:(x:17.00, y:11.50, width:4.00, height:1.00);mayPlayerEat:False
 Spikes myRect:(x:-18.50, y:-6.50, width:7.00, height:1.00);rotation:0
 Spikes myRect:(x:-21.50, y:-3.00, width:10.00, height:1.00);rotation:270
 Spikes myRect:(x:2.50, y:-1.50, width:13.00, height:1.00);rotation:270
 Spikes myRect:(x:-2.50, y:-1.50, width:13.00, height:1.00);rotation:90
 Platform myRect:(x:-8.50, y:5.50, width:13.00, height:1.00)
-Snack pos:(17.0, 8.0);playerType:Flatline
+Snack pos:(17.5, 14.0);playerType:Flatline
+Ground myRect:(x:6.50, y:8.50, width:17.00, height:7.00);mayPlayerEat:False
+Ground myRect:(x:-6.50, y:13.50, width:1.00, height:5.00);mayPlayerEat:False
+Ground myRect:(x:-2.00, y:11.50, width:2.00, height:1.00);mayPlayerEat:False

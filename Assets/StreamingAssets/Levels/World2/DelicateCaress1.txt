@@ -1,16 +1,20 @@
-roomProperties posGlobal:(196.0, 176.0);designerFlag:4
+roomProperties posGlobal:(196.0, 252.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(-17.9, 3.2)
-Ground myRect:(x:0.00, y:-17.50, width:52.00, height:5.00)
-Ground myRect:(x:23.00, y:0.00, width:6.00, height:32.00)
-Ground myRect:(x:5.00, y:17.50, width:42.00, height:5.00)
-Ground myRect:(x:-16.00, y:-7.50, width:20.00, height:19.00)
-Spikes myRect:(x:2.50, y:-14.50, width:47.00, height:1.00);rotation:0
-Spikes myRect:(x:18.00, y:11.50, width:8.00, height:1.00);rotation:180
-Ground myRect:(x:18.00, y:17.00, width:8.00, height:10.00)
-Snack pos:(18.5, 8.5);playerType:Flatline
-Ground myRect:(x:15.00, y:7.00, width:2.00, height:24.00)
-Spikes myRect:(x:16.50, y:7.00, width:24.00, height:1.00);rotation:270
-Ground myRect:(x:-11.00, y:1.50, width:16.00, height:1.00)
-Ground myRect:(x:-24.00, y:9.50, width:4.00, height:21.00)
-Ground myRect:(x:-14.00, y:16.50, width:4.00, height:9.00)
+PlayerStart pos:(18.1, -4.4)
+Ground myRect:(x:-4.00, y:-10.50, width:44.00, height:5.00)
+Ground myRect:(x:11.50, y:-9.50, width:13.00, height:5.00);isPlayerRespawn:True
+Ground myRect:(x:-23.00, y:-3.00, width:6.00, height:32.00)
+Ground myRect:(x:0.00, y:14.50, width:52.00, height:11.00)
+Spikes myRect:(x:-20.00, y:-7.50, width:12.00, height:1.00);rotation:0
+Spikes myRect:(x:-18.00, y:3.50, width:8.00, height:1.00);rotation:180
+Ground myRect:(x:-18.00, y:9.00, width:8.00, height:10.00)
+Snack pos:(-18.5, -1.5);playerType:Flatline
+Ground myRect:(x:-15.00, y:5.00, width:2.00, height:16.00)
+Spikes myRect:(x:-16.50, y:2.00, width:10.00, height:1.00);rotation:90
+Ground myRect:(x:24.00, y:6.00, width:4.00, height:14.00)
+Ground myRect:(x:24.00, y:-13.50, width:4.00, height:13.00);isPlayerRespawn:True
+Ground myRect:(x:17.50, y:-18.50, width:9.00, height:3.00)
+Ground myRect:(x:-9.50, y:-16.50, width:33.00, height:7.00)
+Platform myRect:(x:20.00, y:-7.50, width:4.00, height:1.00)
+Platform myRect:(x:10.00, y:-17.50, width:6.00, height:1.00)
+
