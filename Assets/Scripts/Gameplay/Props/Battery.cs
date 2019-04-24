@@ -56,6 +56,7 @@ public class Battery : Prop {
 		player.OnUseBattery();
 		timeWhenRegen = Time.time + RegenDuration;
 		SetIsUsed(true);
+        GameManagers.Instance.EventManager.OnPlayerUseBattery();
 	}
 	private void Regenerate() {
 		SetIsUsed(false);

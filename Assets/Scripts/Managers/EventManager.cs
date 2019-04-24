@@ -19,12 +19,13 @@ public class EventManager {
 	public event NoParamAction EditorSaveRoomEvent;
 	public event NoParamAction ScreenSizeChangedEvent;
 	public event NoParamAction CoinsCollectedChangedEvent;
+    public event NoParamAction PlayerUseBatteryEvent;
     public event NoParamAction NumSnacksEatenChangedEvent;
     public event BoolAction SetIsEditModeEvent;
     public event BoolAction SetPausedEvent;
     public event CoinAction CoinCollectedEvent;
     public event RoomAction StartRoomEvent;
-	public event IntAction PlayerEscapeRoomBoundsEvent;
+    public event IntAction PlayerEscapeRoomBoundsEvent;
     public event PlayerAction PlayerDieEvent;
     public event PlayerAction PlayerInitEvent;
     public event PlayerAction PlayerJumpEvent;
@@ -52,6 +53,7 @@ public class EventManager {
 	public void OnPlayerDie(Player player) { if (PlayerDieEvent!=null) { PlayerDieEvent(player); } }
     public void OnPlayerInit(Player player) { if (PlayerInitEvent!=null) { PlayerInitEvent(player); } }
     public void OnPlayerJump(Player player) { if (PlayerJumpEvent!=null) { PlayerJumpEvent(player); } }
+    public void OnPlayerUseBattery() { if (PlayerUseBatteryEvent!=null) { PlayerUseBatteryEvent(); } }
     public void OnPlayerStartHover(Player player) { if (PlayerStartHoverEvent!=null) { PlayerStartHoverEvent(player); } }
 //	public void OnPlayerSpendBounce(Player player) { if (PlayerSpendPlungeEvent!=null) { PlayerSpendPlungeEvent(player); } }
 	public void OnPlayerStartPlunge(Player player) { if (PlayerStartPlungeEvent!=null) { PlayerStartPlungeEvent(player); } }

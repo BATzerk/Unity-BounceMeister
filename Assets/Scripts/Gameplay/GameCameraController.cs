@@ -3,17 +3,15 @@ using UnityEngine;
 //using UnityStandardAssets.ImageEffects;
 
 public class GameCameraController : MonoBehaviour {
-	// Camera
-	[SerializeField] private Camera primaryCamera=null;
-//	[SerializeField] private SpriteRenderer sr_bounds=null; // we use a sprite to represent the visual bounds of each room!
+	// Components
+    [SerializeField] private Camera primaryCamera=null;
+    [SerializeField] private GameCameraScreenShake screenShake=null;
 	// Constants
 	private const float ConstOrthoScale = 0.065f;//HACKy non-pixel-perfect estimation.
 	private const float ZPos = -10; // lock z pos.
 	// Properties
 	private float orthoSizeNeutral;
 	private float zoomAmount = 1; // UNUSED currently. Stays at 1. It's here for if/when we need it.
-	private float screenShakeVolume;
-	private float screenShakeVolumeVel;
 	private Rect viewRect;
 	private Rect viewRectBounds; // set from each Room's CameraBounds sprite. Our viewRect is confined to this rect!
 	private Rect centerBounds; // this is viewRectBounds, collapsed to just what viewRect's center can be set to.
@@ -67,27 +65,20 @@ public class GameCameraController : MonoBehaviour {
 	//  Start / Destroy
 	// ----------------------------------------------------------------
 	private void Awake () {
-		// Hacks! nbd for now, but let's fix soon.
-		gameController = GameObject.FindObjectOfType<GameController>();
-		if (fullScrim==null) { fullScrim = GameObject.FindObjectOfType<FullScrim>(); }
-
 		// Add event listeners!
 		GameManagers.Instance.EventManager.EditorSaveRoomEvent += OnEditorSaveRoom;
-		GameManagers.Instance.EventManager.PlayerDieEvent += OnPlayerDie;
 		GameManagers.Instance.EventManager.StartRoomEvent += OnStartRoom;
 	}
 	private void OnDestroy () {
 		// Remove event listeners!
 		GameManagers.Instance.EventManager.EditorSaveRoomEvent -= OnEditorSaveRoom;
-		GameManagers.Instance.EventManager.PlayerDieEvent -= OnPlayerDie;
 		GameManagers.Instance.EventManager.StartRoomEvent -= OnStartRoom;
 	}
 	private void Reset () {
 		UpdateOrthoSizeNeutral ();
 
 		// Reset values
-		screenShakeVolume = 0;
-		screenShakeVolumeVel = 0;
+        screenShake.Reset();
 
 		viewRect = new Rect ();
 		viewRect.size = GetViewRectSizeFromZoomAmount (1);
@@ -112,10 +103,6 @@ public class GameCameraController : MonoBehaviour {
 			fullScrim.FadeFromAtoB(new Color(1,1,1, 0.5f), Color.clear, 0.2f, true);
 		}
 	}
-	private void OnPlayerDie(Player player) {
-		screenShakeVolumeVel = 0.7f;
-//		fullScrim.FadeFromAtoB(Color.clear, new Color(1,1,1, 0.2f), 1f, true);
-	}
 
 
 
@@ -127,7 +114,6 @@ public class GameCameraController : MonoBehaviour {
 
 		UpdateTargetCenter();
 		StepTowardTargetCenter();
-		UpdateScreenShake();
 
 		ApplyViewRect();
 	}
@@ -152,25 +138,6 @@ public class GameCameraController : MonoBehaviour {
 	}
 
 
-	private void UpdateScreenShake () {
-		if (screenShakeVolume==0 && screenShakeVolumeVel==0) {
-			return;
-		}
-		screenShakeVolume += screenShakeVolumeVel;
-		screenShakeVolumeVel += (0-screenShakeVolume) / 5f;
-		screenShakeVolumeVel *= 0.9f;
-		if (screenShakeVolume != 0) {
-			if (Mathf.Abs (screenShakeVolume) < 0.001f && Mathf.Abs (screenShakeVolumeVel) < 0.001f) {
-				screenShakeVolume = 0;
-				screenShakeVolumeVel = 0;
-			}
-		}
-
-		float rotation = screenShakeVolume;
-		if (transform.localEulerAngles.z != rotation) {
-			transform.localEulerAngles = new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, rotation);
-		}
-	}
 
 
 	// ----------------------------------------------------------------
@@ -181,8 +148,12 @@ public class GameCameraController : MonoBehaviour {
 	}
 
 	private void ApplyViewRect () {
+        // Base position/zoom.
 		this.transform.localPosition = new Vector3 (viewRect.center.x, viewRect.center.y, ZPos);
-		ApplyZoomAmountToCameraOrthographicSize ();
+        ApplyZoomAmountToCameraOrthographicSize ();
+        // Add screen shake!
+        rotation = screenShake.ShakeRot;
+        this.transform.localPosition += new Vector3(screenShake.ShakePos.x,screenShake.ShakePos.y);
 	}
 	private void ApplyZoomAmountToCameraOrthographicSize () {
 		float zoomAmount = GetZoomAmountForViewRect (viewRect);
@@ -202,9 +173,6 @@ public class GameCameraController : MonoBehaviour {
 	}
 
 
-	// ----------------------------------------------------------------
-	//  Events
-	// ----------------------------------------------------------------
 
 
 }

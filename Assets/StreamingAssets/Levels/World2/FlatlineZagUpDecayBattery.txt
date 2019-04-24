@@ -3,7 +3,7 @@ CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-12.2, -12.5)
 Ground myRect:(x:4.00, y:-17.00, width:44.00, height:6.00)
 Ground myRect:(x:5.00, y:18.00, width:42.00, height:4.00)
-Ground myRect:(x:23.00, y:-2.00, width:6.00, height:36.00)
+Ground myRect:(x:24.50, y:0.00, width:9.00, height:40.00)
 Ground myRect:(x:-18.50, y:0.50, width:15.00, height:17.00)
 Spikes myRect:(x:19.50, y:-2.50, width:1.00, height:1.00);rotation:90
 Spikes myRect:(x:-10.50, y:2.50, width:1.00, height:1.00);rotation:270
@@ -11,5 +11,6 @@ Ground myRect:(x:-23.00, y:6.00, width:6.00, height:28.00)
 Platform myRect:(x:-18.00, y:16.50, width:4.00, height:1.00)
 Platform myRect:(x:-8.00, y:8.50, width:6.00, height:1.00)
 Battery pos:(4.0, 0.5)
-Ground myRect:(x:-24.00, y:-5.50, width:4.00, height:29.00)
+Ground myRect:(x:-25.00, y:0.00, width:6.00, height:40.00)
 Platform myRect:(x:-20.00, y:-18.50, width:4.00, height:1.00)
+
