@@ -79,7 +79,8 @@ public class Flatline : Player {
         if (IsHovering) { return; } // Already hovering? Do nothin'.
         IsHovering = true;
         // Convert yVel to xVel, and halt yVel.
-        float xVel = vel.magnitude * DirFacing; // assume we wanna travel in the dir we're facing.
+        //float xVel = vel.magnitude * DirFacing; // assume we wanna travel in the dir we're facing.
+        float xVel = vel.x;
         SetVel(new Vector2(xVel, 0));
         // Tell my body!
         myFlatlineBody.OnStartHover();

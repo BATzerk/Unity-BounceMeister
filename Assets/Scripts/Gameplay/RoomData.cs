@@ -27,7 +27,8 @@ public class RoomData {
     public string RoomKey { get { return roomKey; } }
 	public int DesignerFlag { get { return designerFlag; } }
 	public int WorldIndex { get { return MyWorldData.WorldIndex; } }
-	public Rect BoundsLocal { get { return new Rect(cameraBoundsData.myRect); } } // Currently, the camera bounds and room bounds are one in the same.
+    public Rect BoundsLocal { get { return new Rect(cameraBoundsData.myRect); } } // TODO: Try not copying the rect. // Currently, the camera bounds and room bounds are one in the same.
+ //   public Rect BoundsLocal { get { return new Rect(cameraBoundsData.myRect.center, cameraBoundsData.myRect.size); } } // Currently, the camera bounds and room bounds are one in the same.
 	public Rect BoundsGlobal { get { return new Rect(cameraBoundsData.myRect.center+posGlobal, cameraBoundsData.myRect.size); } }
     //public Rect BoundsGlobal { get { return new Rect(BoundsLocal.position+posGlobal, BoundsLocal.size); } }
 	public Vector2 PosGlobal { get { return posGlobal; } }

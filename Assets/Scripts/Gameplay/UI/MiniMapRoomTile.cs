@@ -31,7 +31,9 @@ public class MiniMapRoomTile : MonoBehaviour {
         return true; // No neighbor at this side?? Yes border line!
     }
     private Line GetBorderLine(int side) {
-        return MathUtils.GetRectSideLine(MyRoomData.BoundsLocal, side);
+        Rect offsetedRect = MyRoomData.BoundsLocal;
+        offsetedRect.position -= MyRoomData.cameraBoundsData.myRect.center; // hack-y! Just getting to work for now. Works around the rooms' local/global alignment mismatch.
+        return MathUtils.GetRectSideLine(offsetedRect, side);
     }
     
     

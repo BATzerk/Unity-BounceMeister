@@ -5,6 +5,7 @@ using UnityEngine;
 public class GateChannel {
 	// Properties
     public bool IsUnlocked { get; private set; } // this value's saved/loaded!
+    private bool doSaveIsUnlocked; // a bit weird: we don't want all GateChannels to save their locked-ness.
     private int channelID=-1;
 	// References
 	private Room myRoom;
@@ -38,7 +39,9 @@ public class GateChannel {
 	public GateChannel(Room myRoom, int channelID) {
 		this.myRoom = myRoom;
 		this.channelID = channelID;
-        if (this.channelID < 3) { // HACKY: The first 3 channels will save unlocked. After that, those specifically DON'T save.
+        this.doSaveIsUnlocked = channelID < 3; // Hacky: We don't wanna save gate-unlockedness for Channels 3 and up.
+        
+        if (doSaveIsUnlocked) {
             IsUnlocked = SaveStorage.GetBool(SaveKeys.IsGateUnlocked(myRoom, channelID));
         }
 	}
@@ -49,7 +52,9 @@ public class GateChannel {
     private void SetIsUnlocked(bool val) {
         if (IsUnlocked != val) {
             IsUnlocked = val;
-            SaveStorage.SetBool(SaveKeys.IsGateUnlocked(myRoom, channelID), IsUnlocked);
+            if (doSaveIsUnlocked) {
+                SaveStorage.SetBool(SaveKeys.IsGateUnlocked(myRoom, channelID), IsUnlocked);
+            }
     		foreach (Gate gate in myGates) {
     			if (gate==null || gate.ChannelID!=channelID) { continue; }
     			gate.SetIsOn(!IsUnlocked);

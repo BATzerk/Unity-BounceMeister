@@ -1,4 +1,4 @@
-﻿roomProperties posGlobal:(-396.0, 256.0);designerFlag:0
+roomProperties posGlobal:(-396.0, 256.0);designerFlag:0
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:15.00, y:1.50, width:6.00, height:3.00);canBounce:True;doRechargePlayer:True
 Ground myRect:(x:8.00, y:-2.50, width:6.00, height:3.00);canBounce:True;doRechargePlayer:True
