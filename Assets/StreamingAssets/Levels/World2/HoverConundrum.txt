@@ -1,0 +1,16 @@
+roomProperties posGlobal:(544.0, 890.0);designerFlag:4
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+PlayerStart pos:(-19.4, 8.9)
+Ground myRect:(x:-22.00, y:-6.50, width:8.00, height:25.00);isPlayerRespawn:True
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+Ground myRect:(x:11.00, y:-13.00, width:16.00, height:2.00);mayPlayerEat:False;isBouncy:True
+Ground myRect:(x:23.50, y:-1.50, width:5.00, height:37.00);isPlayerRespawn:True
+Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00);isPlayerRespawn:True
+Ground myRect:(x:-22.50, y:13.00, width:7.00, height:6.00);isPlayerRespawn:True
+Spikes myRect:(x:-13.50, y:-5.00, width:20.00, height:1.00);rotation:270
+Ground myRect:(x:-18.50, y:-4.00, width:9.00, height:22.00);isPlayerRespawn:True
+Spikes myRect:(x:-7.00, y:-11.50, width:18.00, height:1.00);rotation:0
+Spikes myRect:(x:20.50, y:1.50, width:29.00, height:1.00);rotation:90
+Ground myRect:(x:-7.00, y:-13.00, width:18.00, height:2.00);isPlayerRespawn:True
+Snack pos:(3.5, 8.5);playerType:Flatline
+Ground myRect:(x:21.50, y:-13.00, width:3.00, height:2.00);isPlayerRespawn:True

@@ -32,6 +32,7 @@ public class Flatline : Player {
 			return gravNeutral;
 		}
 	}
+    override protected float MaxVelXFromInput { get { return 0.8f; } }
 	override protected float MaxVelXAir { get { return 99f; } }
 	override protected float MaxVelXGround { get { return 0.8f; } }
 
@@ -56,7 +57,7 @@ public class Flatline : Player {
     // Properties
     private const float HoverDur = 2f; // we can only stay hovering for a few seconds.
     private bool isButtonHeld_Hover;
-    private bool hasHoveredWithoutTouchCollider; // 
+    private bool hasHoveredWithoutTouchCollider; // when this is true, we can't provide input.
     public bool IsHovering { get; private set; }
     public float HoverTimeLeft { get; private set; }
     // References
@@ -85,6 +86,7 @@ public class Flatline : Player {
         if (IsHovering) { return; } // Already hovering? Do nothin'.
         IsHovering = true;
         hasHoveredWithoutTouchCollider = true;
+        ResetMaxYSinceGround();
         // Convert yVel to xVel, and halt yVel.
         //float xVel = vel.magnitude * DirFacing; // assume we wanna travel in the dir we're facing.
         float xVel = vel.x;
@@ -120,7 +122,9 @@ public class Flatline : Player {
     // ----------------------------------------------------------------
     public override void OnWhiskersTouchCollider(int side, Collider2D col) {
         base.OnWhiskersTouchCollider(side, col);
+        if (timeSinceBounce > 0.05f) {//TEST
         hasHoveredWithoutTouchCollider = false;
+        }
         StopHover();
     }
     override protected void LandOnCollidable(Collidable collidable) {

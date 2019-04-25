@@ -26,7 +26,8 @@ abstract public class Player : PlatformCharacter {
 	override protected float MaxVelXAir { get { return 0.35f; } }
 	override protected float MaxVelXGround { get { return 0.25f; } }
 	override protected float MaxVelYUp { get { return 3; } }
-	override protected float MaxVelYDown { get { return -3; } }
+    override protected float MaxVelYDown { get { return -3; } }
+    virtual protected float MaxVelXFromInput { get { return 0.35f; } } // we can travel faster than this, but NOT by just pushing left/right.
 
 	private const float DelayedJumpWindow = 0.12f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
@@ -86,6 +87,9 @@ abstract public class Player : PlatformCharacter {
 				mult = 0;
 			}
 		}
+        // We're maxed-out vel? Don't accept more input in this dir.
+        if (vel.x >  MaxVelXFromInput && inputAxis.x>0) { mult = 0; }
+        if (vel.x < -MaxVelXFromInput && inputAxis.x<0) { mult = 0; }
 
 		return dirX*InputScaleX * mult;
 	}
@@ -306,7 +310,7 @@ abstract public class Player : PlatformCharacter {
         timeLastWallKicked = Time.time;
 		isPreservingWallKickVel = true;
 		numJumpsSinceGround ++;
-		maxYSinceGround = pos.y; // TEST!!
+		ResetMaxYSinceGround(); // TEST!!
 		GameManagers.Instance.EventManager.OnPlayerWallKick(this);
 	}
 
@@ -342,6 +346,10 @@ abstract public class Player : PlatformCharacter {
     virtual protected void DropThruPlatform() {
         pos += new Vector2(0, -0.2f);
         vel += new Vector2(0, -0.16f);
+    }
+    
+    protected void ResetMaxYSinceGround() {
+        maxYSinceGround = pos.y;
     }
 
 
@@ -440,6 +448,10 @@ abstract public class Player : PlatformCharacter {
         if (DoBounceOffCollidable(collidable)) {
             BounceOffCollidable_Down(collidable);
         }
+        // Land.
+        else {
+            ResetMaxYSinceGround();
+        }
     }
 	virtual protected void OnArmTouchCollidable(int side, Collidable collidable) {
         // Bouncy collidable?
@@ -484,6 +496,7 @@ abstract public class Player : PlatformCharacter {
         distToRestore += ExtraBounceDistToRestore(); // Give us __ more height than we started with.
         float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
         yVel *= 0.982f; // hacky fudge: we're getting too much height back.
+        yVel = Mathf.Max(0.1f, yVel); // have at LEAST this much bounce. (i.e. no teeeeny-tiny bouncing.)
         SetVel(new Vector2(vel.x, yVel));
         // Inform the collidable!!
         if (collidable != null) {
@@ -510,7 +523,7 @@ abstract public class Player : PlatformCharacter {
     /// Called when our feet WEREN'T touching ground, but now they are (and we're NOT bouncing).
 	virtual protected void LandOnCollidable(Collidable collidable) {
 		// Finally reset maxYSinceGround.
-		maxYSinceGround = pos.y;
+		ResetMaxYSinceGround();
         timeWhenLanded = Time.time;
         StopWallSlide();
         // Do that delayed jump we planned?

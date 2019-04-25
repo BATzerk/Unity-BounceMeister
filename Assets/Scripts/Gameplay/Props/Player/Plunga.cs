@@ -175,6 +175,7 @@ public class Plunga : Player {
 
 
 	override public void OnUseBattery() {
+        base.OnUseBattery();
 		RechargePlunge();
 	}
 
