@@ -19,8 +19,8 @@ public sealed class Ground : BaseGround {
 		Color color = Colors.GroundBaseColor(worldIndex);
         if (isBouncy) { // Bouncy? Brighten it much!
             ColorHSB colorHSB = new ColorHSB(color);
-            colorHSB.s = Mathf.Max(1, 0.4f + colorHSB.s*1.5f);
-            colorHSB.b = Mathf.Max(1, colorHSB.b*1.3f);
+            colorHSB.s = Mathf.Min(1, 0.3f + colorHSB.s*1.4f);
+            colorHSB.b = Mathf.Min(1f, 0.3f + colorHSB.b*1.4f);
             color = colorHSB.ToColor();
         }
 		if (!canBounce) {

@@ -59,7 +59,6 @@ public class Flatline : Player {
     private bool hasHoveredWithoutTouchCollider; // 
     public bool IsHovering { get; private set; }
     public float HoverTimeLeft { get; private set; }
-    private Vector2 ppvel; // HACKY workaround for getting vel from hitting a wall. ppvel is ACTUALLY how fast we were going before we hit the wall.
     // References
     private FlatlineBody myFlatlineBody;
 
@@ -150,15 +149,13 @@ public class Flatline : Player {
     }
     override protected void OnArmTouchCollidable(int side, Collidable collidable) {
         base.OnArmTouchCollidable(side, collidable);
+        
         // It's a Ground??
-        if (!isWallSliding() && collidable is BaseGround) {
+        if (timeSinceBounce>0.1f && !isWallSliding() && collidable is BaseGround) {
             int dir = side==Sides.L ? -1 : 1;
             StartWallSlide(dir);
             // Modify our yVel.
-            if (vel.y < -0.2f) { // Moving DOWN? Keep going down.
-                
-            }
-            else { // Moving UP? Convert HORZ vel to VERT vel!
+            if (vel.y > -0.2f) { // Moving UP? Convert HORZ vel to VERT vel!
                 ConvertHorzVelToVert();
             }
         }
@@ -190,8 +187,6 @@ public class Flatline : Player {
     //  FixedUpdate
     // ----------------------------------------------------------------
     protected override void FixedUpdate() {
-        ppvel = pvel;
-        
         base.FixedUpdate();
         
         UpdateHover();

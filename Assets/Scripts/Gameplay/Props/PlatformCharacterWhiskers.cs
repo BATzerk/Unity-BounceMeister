@@ -190,6 +190,8 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 		for (int side=0; side<whiskerDirs.Length; side++) {
 			foreach (Collider2D col in collidersTouching[side]) {
 				if (!pcollidersTouching[side].Contains(col)) {
+                    // We're moving AWAY from this collider? Ignore the collision! (This prevents whiskers-touching-2-things issues, like recharging plunge or cancelling preserving wall-kick vel.) Note: We can possibly bring this check all the way up to Whiskers for consistency.
+                    if (myCharacter.IsMovingAwayFromSide(side)) { continue; }
 					myCharacter.OnWhiskersTouchCollider(side, col);
 				}
 			}

@@ -44,11 +44,13 @@ abstract public class Player : PlatformCharacter {
     protected float timeStoppedWallSlide { get; private set; }
     protected float timeWhenLanded { get; private set; } // time when feet last landed on a collider.
 	private float timeWhenDelayedJump=Mathf.NegativeInfinity; // for jump AND wall-kick. Set when in air and press Jump. If we touch ground/wall before this time, we'll do a delayed jump or wall-kick!
+    private float timeLastBounced=Mathf.NegativeInfinity;
     public int DirFacing { get; private set; }
     private int numJumpsSinceGround;
 	private int wallSlideDir = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
 	private int hackTEMP_framesAlive=0;
 	protected Vector2 pvel { get; private set; } // previous velocity.
+    protected Vector2 ppvel { get; private set; } // HACKY workaround for getting vel from hitting a wall. ppvel is ACTUALLY how fast we were going before we hit the wall.
     // References
     private Rect camBoundsLocal; // for detecting when we exit the room!
 	private List<Edible> ediblesHolding = new List<Edible>(); // like in Celeste. I hold Edibles (i.e. Gem, Snack) until I'm standing somewhere safe to "eat" (aka collect) them.
@@ -73,7 +75,7 @@ abstract public class Player : PlatformCharacter {
     virtual protected bool MaySetGroundedRespawnPos() { return true; } // Override if you don't wanna set GroundedRespawnPos while plunging, etc.
     override protected float HorzMoveInputVelXDelta() {
 		if (InputController.Instance==null) { return 0; } // for building at runtime.
-		if (inputAxis.x == 0) { return 0; }
+		if (Mathf.Abs(inputAxis.x) < 0.05f) { return 0; } // No input? No input.
 		float dirX = MathUtils.Sign(inputAxis.x);
 		// TESTing out controls!
 		float mult = 1;//feetOnGround() ? 1 : 0.65f;
@@ -87,6 +89,7 @@ abstract public class Player : PlatformCharacter {
 
 		return dirX*InputScaleX * mult;
 	}
+    protected float timeSinceBounce { get { return Time.time - timeLastBounced; } }
 	// Getters (Private)
 	protected Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
 	protected bool isWallSliding() { return wallSlideDir!=0; }
@@ -194,6 +197,7 @@ abstract public class Player : PlatformCharacter {
         if (!DoUpdate()) { return; } // Not supposed to Update? No dice.
 
         Vector2 ppos = pos;
+        ppvel = pvel;
 		pvel = vel;
 
         ApplyVelFromFloor();
@@ -372,11 +376,6 @@ abstract public class Player : PlatformCharacter {
 	//  Events (Physics)
 	// ----------------------------------------------------------------
 	override public void OnWhiskersTouchCollider(int side, Collider2D col) {
-        // We're moving AWAY from this collider? Ignore the collision! (This prevents whiskers-touching-2-things issues, like recharging plunge or cancelling preserving wall-kick vel.) Note: We can possibly bring this check all the way up to Whiskers for consistency.
-        if (IsMovingAwayFromSide(side)) {
-            return;
-        }
-        
         base.OnWhiskersTouchCollider(side, col);
         Collidable collidable = col.GetComponent<Collidable>();
         
@@ -384,13 +383,10 @@ abstract public class Player : PlatformCharacter {
         if (side != Sides.T) {
             isPreservingWallKickVel = false;
         }
-        // NOT our feet? Register Enemy.
-        if (side != Sides.B) {
-            // Enemy??
-            Enemy enemy = collidable as Enemy;
-            if (enemy != null && CanTakeDamage()) {
-                OnCollideWithEnemy(enemy);
-            }
+        // Enemy?
+        Enemy enemy = collidable as Enemy;
+        if (enemy != null) {
+            OnCollideWithEnemy(side, enemy);
         }
 
         // Do my own stuff!
@@ -400,19 +396,6 @@ abstract public class Player : PlatformCharacter {
             case Sides.L: case Sides.R: OnArmTouchCollidable(side, collidable); break;
             default: break; // Hmm.
         }
-
-		// We're NOT wall-sliding...
-//		if (!isWallSliding()) {
-		// Should we START wall-sliding??
-//		if (!feetOnGround() && !isPlunging) {
-//			if (side==Sides.L && vel.x<-0.01f) {
-//				StartWallSlide(-1);
-//			}
-//			else if (side==Sides.R && vel.x>0.01f) {
-//				StartWallSlide(1);
-//			}
-//		}
-//		}
 	}
 	override public void OnWhiskersLeaveCollider(int side, Collider2D col) {
 		base.OnWhiskersLeaveCollider(side, col);
@@ -453,20 +436,20 @@ abstract public class Player : PlatformCharacter {
 		}
 	}
     private void OnHeadTouchCollidable(Collidable collidable) {
+        // Bounce!
+        if (DoBounceOffCollidable(collidable)) {
+            BounceOffCollidable_Down(collidable);
+        }
     }
 	virtual protected void OnArmTouchCollidable(int side, Collidable collidable) {
+        // Bouncy collidable?
+        if (DoBounceOffCollidable(collidable)) {
+            BounceOffCollidable_Side(collidable);
+        }
         // Delayed wall-kick? Do it right away!
-        if (collidable is BaseGround && Time.time <= timeWhenDelayedJump) {//isWallSliding() && 
+        else if (collidable is BaseGround && Time.time <= timeWhenDelayedJump) {//isWallSliding() && 
             WallKick();
         }
-
-        //		else {
-        //			// Should I bounce or jump?
-        //			bool doBounce = IsBouncyCollidable(collidable);// && !IsDontBounceButtonHeld()
-        //			if (doBounce) {
-        //				BounceOffCollidable_Side(collidable);
-        //			}
-        //		}
     }
     virtual protected void OnFeetLeaveCollidable(Collidable collidable) {
         // Left Ground?
@@ -492,23 +475,33 @@ abstract public class Player : PlatformCharacter {
     }
 
 
-
+    
     virtual protected void BounceOffCollidable_Up(Collidable collidable) {
-		// Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
-		float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
-		distToRestore += ExtraBounceDistToRestore(); // Give us __ more height than we started with.
-		float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
-		SetVel(new Vector2(vel.x, yVel));
-		// Inform the collidable!!
-		if (collidable != null) {
-			collidable.OnPlayerBounceOnMe(this);
-		}
-	}
-	// TEST! This whole function is a controls experiment.
-	private void BounceOffCollidable_Side(Collidable collidable) { // NOTE: We're probably gonna wanna denote WHICH sides of collidables are bouncy...
-		timeLastWallKicked = Time.time;
-		SetVel(new Vector2(-vel.x, Mathf.Max(vel.y, Mathf.Abs(vel.x)*2f+0.1f)));
-//		SetVel(new Vector2(-vel.x, JumpForce*0.7f));//vel.y+
+        timeLastBounced = Time.time;
+        // Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
+        float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
+        //distToRestore -= 0.4f; // hacky fudge: we're getting too much height back.
+        distToRestore += ExtraBounceDistToRestore(); // Give us __ more height than we started with.
+        float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
+        yVel *= 0.982f; // hacky fudge: we're getting too much height back.
+        SetVel(new Vector2(vel.x, yVel));
+        // Inform the collidable!!
+        if (collidable != null) {
+            collidable.OnPlayerBounceOnMe(this);
+        }
+    }
+    virtual protected void BounceOffCollidable_Down(Collidable collidable) {
+        timeLastBounced = Time.time;
+        SetVel(new Vector2(vel.x, -Mathf.Abs(ppvel.y))); // Hacky with ppvel.
+        // Inform the collidable!!
+        if (collidable != null) {
+            collidable.OnPlayerBounceOnMe(this);
+        }
+    }
+	private void BounceOffCollidable_Side(Collidable collidable) {
+        timeLastBounced = Time.time;
+        timeLastWallKicked = Time.time;
+		SetVel(new Vector2(-ppvel.x, Mathf.Max(vel.y, Mathf.Abs(vel.x)+0.1f))); // Hacky with ppvel.
 		// Inform the collidable!!
 		if (collidable != null) {
 			collidable.OnPlayerBounceOnMe(this);
@@ -526,10 +519,12 @@ abstract public class Player : PlatformCharacter {
 		}
 	}
 
-	private void OnCollideWithEnemy(Enemy enemy) {
-		int dirToEnemy = MathUtils.Sign(enemy.PosGlobal.x-PosGlobal.x, false);
-		SetVel(new Vector2(-dirToEnemy*HitByEnemyVel.x, HitByEnemyVel.y));
-		TakeDamage(1);
+	private void OnCollideWithEnemy(int side, Enemy enemy) {
+        if (side!=Sides.B && CanTakeDamage()) { // It's NOT my feet, and I CAN take damage...
+    		int dirToEnemy = MathUtils.Sign(enemy.PosGlobal.x-PosGlobal.x, false);
+    		SetVel(new Vector2(-dirToEnemy*HitByEnemyVel.x, HitByEnemyVel.y));
+    		TakeDamage(1);
+        }
 	}
     
 //	// We ARE wall-sliding!
