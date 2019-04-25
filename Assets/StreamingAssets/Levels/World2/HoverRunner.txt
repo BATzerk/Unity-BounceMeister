@@ -14,5 +14,6 @@ Ground myRect:(x:-5.50, y:1.50, width:11.00, height:13.00);mayPlayerEat:False
 Ground myRect:(x:15.50, y:5.00, width:19.00, height:6.00)
 Ground myRect:(x:23.50, y:0.00, width:5.00, height:40.00)
 Ground myRect:(x:-3.00, y:6.50, width:6.00, height:17.00)
-Platform myRect:(x:3.00, y:7.50, width:6.00, height:1.00)
+Platform myRect:(x:3.00, y:2.50, width:6.00, height:1.00);isPlayerRespawn:True
 Platform myRect:(x:-14.00, y:7.50, width:6.00, height:1.00);mayPlayerEat:False
+

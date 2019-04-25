@@ -8,4 +8,3 @@ Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
 Ground myRect:(x:-22.00, y:15.50, width:8.00, height:3.00)
 RoomDoor pos:(-1.0, 10.5);myID:0;worldToIndex:-1;roomToKey:Clust1Start;roomToDoorID:1
 Platform myRect:(x:-1.00, y:8.50, width:6.00, height:1.00)
-
