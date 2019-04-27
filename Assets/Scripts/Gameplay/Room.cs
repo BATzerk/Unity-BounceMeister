@@ -191,7 +191,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 
 		// TEMP totes hacky, yo.
 		string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-		MyRoomData = new RoomData(MyWorldData, sceneName); // NOTE! Be careful; we can easily overwrite rooms like this.
+		MyRoomData = new RoomData(dataManager.CurrWorldData, sceneName); // NOTE! Be careful; we can easily overwrite rooms like this.
 		MyRoomData = SerializeAsData();
 
 		// Initialize things!

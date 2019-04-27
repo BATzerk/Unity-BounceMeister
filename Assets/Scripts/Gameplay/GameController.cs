@@ -37,6 +37,7 @@ public class GameController : MonoBehaviour {
 		}
 		// We have NOT provided any currentRoomData!...
 		else {
+            dm.currRoomData = dm.GetRoomData(0, "PremadeRoom", false);
 			// Initialize the existing room as a premade room! So we can start editing/playing/saving it right outta the scene.
 			// TEMP! For converting scenes into room text files.
 			room = FindObjectOfType<Room>();
@@ -47,6 +48,7 @@ public class GameController : MonoBehaviour {
 					roomGO.transform.localPosition = Vector3.zero;
 					roomGO.transform.localScale = Vector3.one;
 				}
+				roomGO.AddComponent<RoomGizmos>();
 				room = roomGO.AddComponent<Room>();
 			}
 			if (tf_world == null) {

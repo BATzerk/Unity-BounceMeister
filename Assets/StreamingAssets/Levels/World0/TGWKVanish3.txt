@@ -1,0 +1,23 @@
+roomProperties posGlobal:(332.0, -50.0);designerFlag:0
+CameraBounds myRect:(x:-18.00, y:-17.00, width:50.00, height:38.00)
+PlayerStart pos:(-20.0, -14.0)
+Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
+Ground myRect:(x:-24.00, y:0.00, width:4.00, height:32.00)
+Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00)
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+Spikes myRect:(x:19.00, y:-14.50, width:26.00, height:1.00);rotation:0
+Battery pos:(-3.5, 5.5)
+RoomDoor pos:(-13.5, -12.5);myID:0;worldToIndex:-1;roomToKey:;roomToDoorID:
+Platform myRect:(x:8.00, y:5.50, width:4.00, height:1.00)
+ToggleGround myRect:(x:-3.00, y:-5.50, width:6.00, height:1.00);startsOn:True;togFromContact:False;togFromAction:True
+ToggleGround myRect:(x:-3.00, y:7.50, width:6.00, height:1.00);startsOn:True;togFromContact:False;togFromAction:True
+RoomDoor pos:(-15.0, 13.5);myID:1;worldToIndex:-1;roomToKey:;roomToDoorID:
+ToggleGround myRect:(x:0.50, y:1.00, width:1.00, height:14.00);startsOn:False;togFromContact:False;togFromAction:True
+Ground myRect:(x:-16.50, y:1.00, width:21.00, height:22.00)
+Ground myRect:(x:-19.50, y:2.00, width:5.00, height:36.00)
+Ground myRect:(x:-18.00, y:-12.00, width:6.00, height:6.00)
+Ground myRect:(x:-6.50, y:-14.50, width:25.00, height:1.00)
+Ground myRect:(x:6.50, y:-17.00, width:59.00, height:4.00)
+Ground myRect:(x:0.50, y:14.50, width:1.00, height:13.00)
+Ground myRect:(x:6.50, y:21.50, width:59.00, height:3.00)
+Ground myRect:(x:33.50, y:2.00, width:5.00, height:36.00)
