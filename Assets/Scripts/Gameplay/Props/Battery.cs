@@ -6,6 +6,7 @@ public class Battery : Prop {
 	// Constants
 	private float RegenDuration = 0.5f; // how many SECONDS until I regenerate.
 	// Components
+	[SerializeField] private ParticleSystem ps_usedBurst=null;
 	[SerializeField] private SpriteRenderer sr_body=null;
 	// Properties
 	private bool isUsed;
@@ -22,8 +23,6 @@ public class Battery : Prop {
 	}
 	public void Initialize(Room _myRoom, BatteryData data) {
 		base.BaseInitialize(_myRoom, data);
-
-		this.transform.localScale = Vector3.one * 1.2f; // Hackyish.
 	}
 
 
@@ -55,6 +54,7 @@ public class Battery : Prop {
 	private void PlayerUseMe(Player player) {
 		player.OnUseBattery();
 		timeWhenRegen = Time.time + RegenDuration;
+        ps_usedBurst.Emit(6);
 		SetIsUsed(true);
         GameManagers.Instance.EventManager.OnPlayerUseBattery();
 	}
@@ -73,6 +73,7 @@ public class Battery : Prop {
 		OnTriggerEnterOrStay2D(col);
 	}
 	private void OnTriggerEnterOrStay2D(Collider2D col) {
+        if (isUsed) { return; } // Used? Ignore collision.
 		if (LayerMask.LayerToName(col.gameObject.layer) != Layers.Player) { // Ignore anything that's NOT the Player.
 			return;
 		}

@@ -17,3 +17,5 @@ Spikes myRect:(x:-8.50, y:-2.50, width:5.00, height:1.00);rotation:90
 Spikes myRect:(x:-7.00, y:-5.50, width:2.00, height:1.00);rotation:180
 Ground myRect:(x:15.50, y:6.00, width:21.00, height:18.00)
 Spikes myRect:(x:0.00, y:-4.50, width:12.00, height:1.00);rotation:180
+Ground myRect:(x:23.50, y:1.50, width:5.00, height:11.00);isPlayerRespawn:True
+

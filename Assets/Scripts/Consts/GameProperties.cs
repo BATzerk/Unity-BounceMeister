@@ -10,7 +10,7 @@ static public class GameProperties {
     }
     
     // Gameplay
-    public const int NUM_WORLDS = 8; // including World 0 for testing.
+    public const int NUM_WORLDS = 6; // including World 0 for testing.
     public const float UnitSize = 1f; // Grid-snap units! In Unity units.
 
     public static string GetFirstRoomName(int worldIndex) {

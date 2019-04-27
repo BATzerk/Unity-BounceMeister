@@ -7,7 +7,7 @@ using TMPro;
 public class MiniMap : MonoBehaviour {
     // Components
     [SerializeField] private TextMeshProUGUI t_snackCount=null;
-    [SerializeField] private RectTransform myRectTransform=null;
+    //[SerializeField] private RectTransform myRectTransform=null;
     [SerializeField] private RectTransform rt_tiles=null;
     private Dictionary<string,MiniMapRoomTile> tiles; // roomKey is key.
     // Properties

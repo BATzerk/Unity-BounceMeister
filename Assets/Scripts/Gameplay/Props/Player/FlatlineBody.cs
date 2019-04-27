@@ -20,9 +20,9 @@ public class FlatlineBody : PlayerBody {
     // ----------------------------------------------------------------
     //  Start
     // ----------------------------------------------------------------
-    override protected void Start() {
+    override protected void Awake() {
+        base.Awake();
         myFlatline = myBasePlayer as Flatline;
-        base.Start();
     }
     protected override void SetVisualScale(Vector2 _scale) {
         base.SetVisualScale(_scale);
@@ -49,6 +49,7 @@ public class FlatlineBody : PlayerBody {
     // ----------------------------------------------------------------
     public void OnStartHover() {
         sr_highlight.enabled = true;
+        UpdateHoverHighlight();
         SetEyes(EyeTypes.Squint);
     }
     public void OnStopHover() {
@@ -56,10 +57,18 @@ public class FlatlineBody : PlayerBody {
         if (myFlatline.IsHoverEmpty) {
             GameUtils.SetSpriteColor(sr_highlight, c_hoverlightEmpty, 0.7f);
         }
-        // NOT depleted? Open my eyes!
+        // NOT depleted?
         else {
             SetEyes(EyeTypes.Normal);
-            sr_highlight.enabled = false;
+            // We still can't control, though?? Keep some highlight.
+            if (myFlatline.HasHoveredWithoutTouchCollider) {
+                sr_highlight.enabled = true;
+                GameUtils.SetSpriteAlpha(sr_highlight, 0.44f);
+            }
+            // We CAN control again!
+            else {
+                sr_highlight.enabled = false;
+            }
         }
     }
     public void OnRechargeHover() {

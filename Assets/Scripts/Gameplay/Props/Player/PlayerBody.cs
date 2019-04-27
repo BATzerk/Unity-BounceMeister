@@ -28,7 +28,7 @@ abstract public class PlayerBody : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Start
     // ----------------------------------------------------------------
-    private void Awake() {
+    virtual protected void Awake() {
         myBasePlayer = GetComponentInParent<Player>();
     }
     virtual protected void Start() {

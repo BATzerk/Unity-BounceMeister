@@ -238,7 +238,7 @@ public static class GameUtils {
         if (UnityEditor.SceneView.lastActiveSceneView != null) {
             UnityEditor.SceneView.lastActiveSceneView.LookAt(new Vector3(pos.x,pos.y, -10));
         }
-        else { Debug.LogWarning("Can't set editor camera position: UnityEditor.SceneView.lastActiveSceneView is null."); }
+        //else { Debug.LogWarning("Can't set editor camera position: UnityEditor.SceneView.lastActiveSceneView is null."); }
         #endif
     }
 

@@ -8,7 +8,7 @@ public class Flatline : Player {
     override public Vector2 Size { get { return new Vector2(1.6f, 1.6f); } }
 	override protected float InputScaleX {
         get {
-            if (hasHoveredWithoutTouchCollider) { return 0; } // No horz input while hovering (until we touch a collider).
+            if (HasHoveredWithoutTouchCollider) { return 0; } // No horz input while hovering (until we touch a collider).
             //if (!feetOnGround()) { return 0.01f; } // In the air? Reduced input scale.
             return 0.018f;
         }
@@ -57,7 +57,7 @@ public class Flatline : Player {
     // Properties
     private const float HoverDur = 2f; // we can only stay hovering for a few seconds.
     private bool isButtonHeld_Hover;
-    private bool hasHoveredWithoutTouchCollider; // when this is true, we can't provide input.
+    public bool HasHoveredWithoutTouchCollider { get; private set; } // when this is true, we can't provide input.
     public bool IsHovering { get; private set; }
     public float HoverTimeLeft { get; private set; }
     // References
@@ -85,7 +85,7 @@ public class Flatline : Player {
     private void StartHover() {
         if (IsHovering) { return; } // Already hovering? Do nothin'.
         IsHovering = true;
-        hasHoveredWithoutTouchCollider = true;
+        HasHoveredWithoutTouchCollider = true;
         ResetMaxYSinceGround();
         // Convert yVel to xVel, and halt yVel.
         //float xVel = vel.magnitude * DirFacing; // assume we wanna travel in the dir we're facing.
@@ -104,7 +104,6 @@ public class Flatline : Player {
     }
     private void RechargeHover() {
         HoverTimeLeft = HoverDur;
-        hasHoveredWithoutTouchCollider = false;
         // Tell my body!
         myFlatlineBody.OnRechargeHover();
     }
@@ -123,7 +122,7 @@ public class Flatline : Player {
     public override void OnWhiskersTouchCollider(int side, Collider2D col) {
         base.OnWhiskersTouchCollider(side, col);
         if (timeSinceBounce > 0.05f) {//TEST
-        hasHoveredWithoutTouchCollider = false;
+        HasHoveredWithoutTouchCollider = false;
         }
         StopHover();
     }
