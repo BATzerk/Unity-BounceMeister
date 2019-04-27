@@ -100,7 +100,7 @@ abstract public class Player : PlatformCharacter {
 	private bool CanTakeDamage() {
 		return !isPostDamageImmunity;
 	}
-	virtual protected bool DoBounceOffCollidable(Collidable collidable) {
+	virtual protected bool DoBounceOffCollidable(int mySide, Collidable collidable) {
 		return IsBouncyCollidable(collidable);
 	}
     virtual protected float ExtraBounceDistToRestore() { return 0; }
@@ -432,7 +432,7 @@ abstract public class Player : PlatformCharacter {
 		}
         
 		// Bounce!
-		if (DoBounceOffCollidable(collidable)) {
+		if (DoBounceOffCollidable(Sides.B, collidable)) {
 			BounceOffCollidable_Up(collidable);
 		}
 		// Otherwise...
@@ -445,7 +445,7 @@ abstract public class Player : PlatformCharacter {
 	}
     private void OnHeadTouchCollidable(Collidable collidable) {
         // Bounce!
-        if (DoBounceOffCollidable(collidable)) {
+        if (DoBounceOffCollidable(Sides.T, collidable)) {
             BounceOffCollidable_Down(collidable);
         }
         // Land.
@@ -455,11 +455,11 @@ abstract public class Player : PlatformCharacter {
     }
 	virtual protected void OnArmTouchCollidable(int side, Collidable collidable) {
         // Bouncy collidable?
-        if (DoBounceOffCollidable(collidable)) {
+        if (DoBounceOffCollidable(side, collidable)) {
             BounceOffCollidable_Side(collidable);
         }
         // Delayed wall-kick? Do it right away!
-        else if (collidable is BaseGround && Time.time <= timeWhenDelayedJump) {//isWallSliding() && 
+        else if (MayWallKick() && collidable is BaseGround && Time.time <= timeWhenDelayedJump) {//isWallSliding() && 
             WallKick();
         }
     }

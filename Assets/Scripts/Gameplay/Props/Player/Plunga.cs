@@ -36,10 +36,10 @@ public class Plunga : Player {
 	override protected bool MayWallSlide() {
 		return base.MayWallSlide() && !isPlunging;
 	}
-	override protected bool DoBounceOffCollidable(Collidable collidable) {
+	override protected bool DoBounceOffCollidable(int mySide, Collidable collidable) {
 		if (collidable!=null && !collidable.CanBounce) { return false; }
-		if (isPlunging) { return true; }
-		return base.DoBounceOffCollidable(collidable);
+		if (isPlunging && mySide==Sides.B) { return true; } // Non-bouncy, BUT I'm plunging and it's my feet? Yes!
+		return base.DoBounceOffCollidable(mySide, collidable);
 	}
     override protected float ExtraBounceDistToRestore() {
         if (isPlunging) { return 3.0f; } // Give us MORE than we started with!
