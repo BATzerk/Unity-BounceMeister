@@ -101,6 +101,7 @@ abstract public class Player : PlatformCharacter {
 		return !isPostDamageImmunity;
 	}
 	virtual protected bool DoBounceOffCollidable(int mySide, Collidable collidable) {
+        if (mySide == Sides.B && inputAxis.y<-0.7f) { return false; } // Pushing down? No bounce up.
 		return IsBouncyCollidable(collidable);
 	}
     virtual protected float ExtraBounceDistToRestore() { return 0; }
@@ -489,15 +490,23 @@ abstract public class Player : PlatformCharacter {
 
     
     virtual protected void BounceOffCollidable_Up(Collidable collidable) {
+        // We WERE grounded? Do special Portal-2-bouncy-gel-like bounce!
+        if (pfeetOnGround) {
+            float yVel = Mathf.Abs(vel.x) * 1.4f;
+            SetVel(new Vector2(vel.x, yVel));
+        }
+        // We WEREN'T grounded before? Do normal bounce!
+        else {
+            // Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
+            float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
+            //distToRestore -= 0.4f; // hacky fudge: we're getting too much height back.
+            distToRestore += ExtraBounceDistToRestore(); // Give us __ more height than we started with.
+            float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
+            yVel *= 0.982f; // hacky fudge: we're getting too much height back.
+            yVel = Mathf.Max(0.2f, yVel); // have at LEAST this much bounce. (i.e. no teeeeny-tiny bouncing.)
+            SetVel(new Vector2(vel.x, yVel));
+        }
         timeLastBounced = Time.time;
-        // Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
-        float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
-        //distToRestore -= 0.4f; // hacky fudge: we're getting too much height back.
-        distToRestore += ExtraBounceDistToRestore(); // Give us __ more height than we started with.
-        float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
-        yVel *= 0.982f; // hacky fudge: we're getting too much height back.
-        yVel = Mathf.Max(0.1f, yVel); // have at LEAST this much bounce. (i.e. no teeeeny-tiny bouncing.)
-        SetVel(new Vector2(vel.x, yVel));
         // Inform the collidable!!
         if (collidable != null) {
             collidable.OnPlayerBounceOnMe(this);

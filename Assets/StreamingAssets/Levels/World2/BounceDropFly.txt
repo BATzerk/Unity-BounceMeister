@@ -1,4 +1,4 @@
-roomProperties posGlobal:(552.0, 850.0);designerFlag:4
+roomProperties posGlobal:(728.0, 898.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:108.00, height:38.00)
 PlayerStart pos:(-19.4, 8.9)
 Ground myRect:(x:-22.00, y:-6.50, width:8.00, height:25.00);isPlayerRespawn:True
@@ -7,8 +7,9 @@ Ground myRect:(x:-15.00, y:-13.00, width:6.00, height:2.00);mayPlayerEat:False;i
 Spikes myRect:(x:-18.50, y:13.00, width:6.00, height:1.00);rotation:270
 Ground myRect:(x:71.50, y:-10.50, width:21.00, height:19.00);isPlayerRespawn:True
 Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00);isPlayerRespawn:True
-Ground myRect:(x:27.00, y:-16.50, width:78.00, height:7.00);isPlayerRespawn:True
-Spikes myRect:(x:27.00, y:-12.50, width:78.00, height:1.00);rotation:0
+Ground myRect:(x:27.00, y:-10.00, width:78.00, height:20.00);isPlayerRespawn:True
+Spikes myRect:(x:27.00, y:2.50, width:78.00, height:1.00);rotation:0
 Ground myRect:(x:-19.00, y:-5.50, width:2.00, height:27.00);isPlayerRespawn:True
 Ground myRect:(x:-22.50, y:13.00, width:7.00, height:6.00);isPlayerRespawn:True
 Ground myRect:(x:78.50, y:11.00, width:7.00, height:10.00);isPlayerRespawn:True
+

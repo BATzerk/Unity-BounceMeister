@@ -158,7 +158,7 @@ public class Flatline : Player {
             int dir = side==Sides.L ? -1 : 1;
             StartWallSlide(dir);
             // Modify our yVel.
-            if (vel.y > -0.2f) { // Moving UP? Convert HORZ vel to VERT vel!
+            if (vel.y > -0.2f && Mathf.Abs(ppvel.x) > 0.1f) { // Moving UP and SIDEWAYS a little? Convert HORZ vel to VERT vel!
                 ConvertHorzVelToVert();
             }
         }

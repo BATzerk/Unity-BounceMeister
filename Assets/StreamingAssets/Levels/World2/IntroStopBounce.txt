@@ -1,0 +1,16 @@
+roomProperties posGlobal:(176.0, 902.0);designerFlag:3
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+PlayerStart pos:(-15.2, 10.5)
+Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+Ground myRect:(x:-18.00, y:-4.00, width:16.00, height:26.00)
+Ground myRect:(x:23.00, y:-4.00, width:6.00, height:26.00)
+Ground myRect:(x:5.00, y:-1.00, width:14.00, height:20.00)
+Ground myRect:(x:5.00, y:-15.00, width:28.00, height:2.00);mayPlayerEat:False;isBouncy:True
+Spikes myRect:(x:5.00, y:-11.50, width:14.00, height:1.00);rotation:180
+InfoSign pos:(-12.0, 9.0);myText:Don't wanna bounce? Too bad.
+Ground myRect:(x:11.00, y:10.50, width:2.00, height:11.00)
+InfoSign pos:(7.5, 9.0);myText:Just kidding. Hold DOWN.
+Ground myRect:(x:6.50, y:15.00, width:7.00, height:4.00)
+Spikes myRect:(x:-2.50, y:-6.50, width:9.00, height:1.00);rotation:90
+Spikes myRect:(x:-9.50, y:-9.00, width:14.00, height:1.00);rotation:270
