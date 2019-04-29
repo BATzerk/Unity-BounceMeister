@@ -9,9 +9,10 @@ Spikes myRect:(x:-4.50, y:-13.50, width:45.00, height:1.00);rotation:0
 Ground myRect:(x:20.50, y:13.00, width:11.00, height:10.00)
 Snack pos:(7.5, -8.5);playerType:Flatline
 Ground myRect:(x:7.00, y:-12.50, width:10.00, height:5.00);mayPlayerEat:False
-Ground myRect:(x:5.00, y:-0.50, width:6.00, height:1.00)
-Spikes myRect:(x:5.00, y:0.50, width:6.00, height:1.00);rotation:0
-Ground myRect:(x:9.50, y:0.50, width:5.00, height:1.00)
+Ground myRect:(x:1.00, y:-0.50, width:6.00, height:1.00)
+Spikes myRect:(x:1.50, y:0.50, width:7.00, height:1.00);rotation:0
+Ground myRect:(x:7.50, y:0.50, width:9.00, height:1.00)
 Ground myRect:(x:24.50, y:0.50, width:3.00, height:3.00)
 Ground myRect:(x:17.50, y:12.00, width:5.00, height:12.00)
+Spikes myRect:(x:-2.50, y:-0.50, width:1.00, height:1.00);rotation:90
 

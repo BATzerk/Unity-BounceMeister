@@ -3,16 +3,17 @@ CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-14.6, -8.5)
 Ground myRect:(x:7.00, y:-15.00, width:38.00, height:10.00)
 Ground myRect:(x:22.50, y:7.00, width:7.00, height:18.00)
-Ground myRect:(x:-22.00, y:9.00, width:8.00, height:22.00)
+Ground myRect:(x:-22.00, y:8.50, width:8.00, height:23.00)
 Ground myRect:(x:2.00, y:18.00, width:48.00, height:4.00)
 Ground myRect:(x:17.50, y:-9.50, width:17.00, height:5.00)
 Ground myRect:(x:-1.50, y:2.00, width:9.00, height:10.00)
-Ground myRect:(x:17.50, y:3.00, width:17.00, height:10.00)
-Platform myRect:(x:6.00, y:-1.50, width:6.00, height:1.00)
-Snack pos:(-15.0, 1.0);playerType:Flatline
+Ground myRect:(x:17.50, y:2.50, width:17.00, height:11.00)
+Platform myRect:(x:6.00, y:-2.50, width:6.00, height:1.00)
+Snack pos:(-15.0, 0.0);playerType:Flatline
 Spikes myRect:(x:-1.50, y:7.50, width:9.00, height:1.00);rotation:0
-Platform myRect:(x:-15.00, y:-1.50, width:6.00, height:1.00)
+Platform myRect:(x:-15.00, y:-2.50, width:6.00, height:1.00)
 Ground myRect:(x:-15.00, y:-16.00, width:22.00, height:8.00)
 Spikes myRect:(x:-7.50, y:5.50, width:9.00, height:1.00);rotation:0
 Ground myRect:(x:-7.50, y:1.00, width:9.00, height:8.00)
 Ground myRect:(x:-24.50, y:0.00, width:3.00, height:8.00)
+

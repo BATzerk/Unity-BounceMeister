@@ -8,8 +8,9 @@ public class Flatline : Player {
     override public Vector2 Size { get { return new Vector2(1.6f, 1.6f); } }
 	override protected float InputScaleX {
         get {
-            if (HasHoveredWithoutTouchCollider) { return 0; } // No horz input while hovering (until we touch a collider).
-            //if (!feetOnGround()) { return 0.01f; } // In the air? Reduced input scale.
+            if (IsHovering || IsHoverEmpty) { return 0; }
+            //if (HasHoveredWithoutTouchCollider) { return 0; } // No horz input while hovering (until we touch a collider).QQQ TEST
+            if (!feetOnGround()) { return 0.01f; } // In the air? Reduced input scale.
             return 0.018f;
         }
     }
@@ -90,6 +91,7 @@ public class Flatline : Player {
         // Convert yVel to xVel, and halt yVel.
         //float xVel = vel.magnitude * DirFacing; // assume we wanna travel in the dir we're facing.
         float xVel = vel.x;
+        //float xVel = Mathf.Abs(vel.y) * DirFacing;//TEST
         SetVel(new Vector2(xVel, 0));
         // Tell my body!
         myFlatlineBody.OnStartHover();
@@ -110,7 +112,7 @@ public class Flatline : Player {
     
     private bool MayConvertVertVelToHorzFromLand() {
         if (Time.time > timeStoppedWallSlide+0.2f) { return false; } // Nah, been too long since we've wall-slid.
-        if (inputAxis.y < -0.8f) { return false; } // Pushing down? Nah, don't convert.
+        if (IsInput_D()) { return false; } // Pushing down? Nah, don't convert.
         return true; // Sure, convert!
     }
 
@@ -121,9 +123,9 @@ public class Flatline : Player {
     // ----------------------------------------------------------------
     public override void OnWhiskersTouchCollider(int side, Collider2D col) {
         base.OnWhiskersTouchCollider(side, col);
-        if (timeSinceBounce > 0.05f) {//TEST
+        //if (timeSinceBounce > 0.05f) {//TEST
         HasHoveredWithoutTouchCollider = false;
-        }
+        //}
         StopHover();
     }
     override protected void LandOnCollidable(Collidable collidable) {
@@ -133,11 +135,11 @@ public class Flatline : Player {
         // Convert vel??
         if (MayConvertVertVelToHorzFromLand()) {
             // Are we VERY CLOSE to a wall, facing away from it, and NOT pushing towards it?? Convert VERT vel into HORZ vel!
-            if (myWhiskers.SurfaceDistMin(Sides.L) < 0.4f && DirFacing==1 && inputAxis.x>-0.7f) {
-                ConvertVertVelToHorz(1);
+            if (myWhiskers.SurfaceDistMin(Sides.L) < 0.4f && DirFacing==1 && !IsInput_L()) {
+                ConvertVelYToX(1);
             }
-            else if (myWhiskers.SurfaceDistMin(Sides.R) < 0.4f && DirFacing==-1 && inputAxis.x<0.7f) {
-                ConvertVertVelToHorz(-1);
+            else if (myWhiskers.SurfaceDistMin(Sides.R) < 0.4f && DirFacing==-1 && !IsInput_R()) {
+                ConvertVelYToX(-1);
             }
         }
     }
@@ -157,17 +159,17 @@ public class Flatline : Player {
         if (timeSinceBounce>0.1f && !isWallSliding() && collidable is BaseGround) {
             int dir = side==Sides.L ? -1 : 1;
             StartWallSlide(dir);
-            // Modify our yVel.
-            if (vel.y > -0.2f && Mathf.Abs(ppvel.x) > 0.1f) { // Moving UP and SIDEWAYS a little? Convert HORZ vel to VERT vel!
-                ConvertHorzVelToVert();
+            // Moving SIDEWAYS a little? Convert HORZ vel to VERT vel!
+            if (Mathf.Abs(ppvel.x) > 0.1f) {
+                ConvertVelXToY();
             }
         }
     }
     
-    private void ConvertVertVelToHorz(int dir) {
+    private void ConvertVelYToX(int dir) {
         vel = new Vector2(Mathf.Abs(ppvel.y)*dir, 0);
     }
-    private void ConvertHorzVelToVert() {
+    private void ConvertVelXToY() {
         int dirY = vel.y>-0.2f ? 1 : -1; // NOT moving down? Convert to yVel UP! Moving DOWN? Convert to yVel DOWN!
         float yVel = Mathf.Abs(ppvel.x) * dirY;
         yVel = Mathf.Max(vel.y, yVel); // if we're already going up fast, keep dat.

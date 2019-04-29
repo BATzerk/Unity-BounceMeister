@@ -1,8 +1,8 @@
-roomProperties posGlobal:(592.0, 870.0);designerFlag:2
+roomProperties posGlobal:(1078.0, -276.0);designerFlag:2
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(24.1, -10.8)
 Ground myRect:(x:0.00, y:-16.50, width:52.00, height:7.00)
-Ground myRect:(x:-18.50, y:1.00, width:1.00, height:16.00)
+Ground myRect:(x:-15.50, y:1.00, width:1.00, height:16.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
 Ground myRect:(x:-16.50, y:-14.00, width:19.00, height:4.00)
 Ground myRect:(x:-1.50, y:-12.50, width:9.00, height:1.00);isBouncy:True
@@ -11,15 +11,17 @@ Ground myRect:(x:24.50, y:-0.50, width:3.00, height:13.00)
 Spikes myRect:(x:6.50, y:-8.50, width:5.00, height:1.00);rotation:180
 Ground myRect:(x:6.50, y:-7.50, width:5.00, height:1.00)
 Ground myRect:(x:6.50, y:-6.50, width:5.00, height:1.00);isBouncy:True
-Spikes myRect:(x:-16.00, y:7.50, width:6.00, height:1.00);rotation:180
-Ground myRect:(x:-16.00, y:8.50, width:6.00, height:1.00)
-GateButton pos:(-14.0, 4.0);channelID:3
+Spikes myRect:(x:-13.00, y:7.50, width:6.00, height:1.00);rotation:180
+Ground myRect:(x:-13.00, y:8.50, width:6.00, height:1.00)
+GateButton pos:(-11.0, 4.0);channelID:3
 Gate myRect:(x:-23.00, y:-9.00, width:2.00, height:6.00);channelID:3
 Ground myRect:(x:16.50, y:2.00, width:1.00, height:6.00);isBouncy:True
 Ground myRect:(x:21.50, y:4.00, width:9.00, height:12.00)
-DamageableGround myRect:(x:-16.50, y:0.00, width:1.00, height:14.00);doRegen:True;dieFromPlayerLeave:True
-Spikes myRect:(x:-17.50, y:1.00, width:16.00, height:1.00);rotation:270
+DamageableGround myRect:(x:-13.50, y:0.00, width:1.00, height:14.00);doRegen:True;dieFromPlayerLeave:True
+Spikes myRect:(x:-14.50, y:1.00, width:16.00, height:1.00);rotation:270
 Ground myRect:(x:-24.00, y:5.00, width:4.00, height:22.00)
 GateButton pos:(14.0, 13.5);channelID:3
 Ground myRect:(x:21.00, y:11.50, width:10.00, height:11.00)
-Spikes myRect:(x:-16.00, y:9.50, width:6.00, height:1.00);rotation:0
+Spikes myRect:(x:-13.00, y:9.50, width:6.00, height:1.00);rotation:0
+Spikes myRect:(x:14.50, y:9.50, width:3.00, height:1.00);rotation:0
+Ground myRect:(x:14.50, y:8.50, width:3.00, height:1.00)

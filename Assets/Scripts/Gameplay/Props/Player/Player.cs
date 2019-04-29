@@ -60,6 +60,10 @@ abstract public class Player : PlatformCharacter {
 	virtual public bool MayUseBattery() { return false; }
 	public bool IsPostDamageImmunity { get { return isPostDamageImmunity; } }
 	// Getters (Protected)
+    protected bool IsInput_D() { return inputAxis.y < -0.7f; }
+    protected bool IsInput_U() { return inputAxis.y >  0.7f; }
+    protected bool IsInput_L() { return inputAxis.x < -0.7f; }
+    protected bool IsInput_R() { return inputAxis.x >  0.7f; }
 	protected bool MayJump() {
 		return feetOnGround();//numJumpsSinceGround<MaxJumps && Time.time>=timeWhenCanJump
 	}
@@ -101,7 +105,7 @@ abstract public class Player : PlatformCharacter {
 		return !isPostDamageImmunity;
 	}
 	virtual protected bool DoBounceOffCollidable(int mySide, Collidable collidable) {
-        if (mySide == Sides.B && inputAxis.y<-0.7f) { return false; } // Pushing down? No bounce up.
+        if (mySide == Sides.B && IsInput_D()) { return false; } // Pushing down? No bounce up.
 		return IsBouncyCollidable(collidable);
 	}
     virtual protected float ExtraBounceDistToRestore() { return 0; }
@@ -523,7 +527,7 @@ abstract public class Player : PlatformCharacter {
 	private void BounceOffCollidable_Side(Collidable collidable) {
         timeLastBounced = Time.time;
         timeLastWallKicked = Time.time;
-		SetVel(new Vector2(-ppvel.x, Mathf.Max(vel.y, Mathf.Abs(vel.x)+0.1f))); // Hacky with ppvel.
+		SetVel(new Vector2(-ppvel.x, Mathf.Max(ppvel.y, Mathf.Abs(ppvel.x)+0.1f))); // Hacky with ppvel.
 		// Inform the collidable!!
 		if (collidable != null) {
 			collidable.OnPlayerBounceOnMe(this);

@@ -15,4 +15,3 @@ Ground myRect:(x:14.50, y:7.50, width:23.00, height:5.00)
 RoomDoor pos:(14.5, 0.0);myID:1;worldToIndex:-1;roomToKey:Clust2Start;roomToDoorID:0
 Ground myRect:(x:-22.50, y:13.50, width:7.00, height:7.00)
 Platform myRect:(x:0.00, y:9.50, width:6.00, height:1.00)
-

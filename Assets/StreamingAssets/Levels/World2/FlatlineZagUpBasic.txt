@@ -7,4 +7,5 @@ Ground myRect:(x:20.50, y:-7.50, width:15.00, height:25.00)
 Ground myRect:(x:-17.50, y:6.00, width:17.00, height:28.00)
 Spikes myRect:(x:12.50, y:-1.50, width:3.00, height:1.00);rotation:90
 Ground myRect:(x:-23.00, y:-7.50, width:6.00, height:3.00)
+Platform myRect:(x:11.50, y:4.50, width:3.00, height:1.00)
 

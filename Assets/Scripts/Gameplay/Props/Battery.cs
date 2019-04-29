@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Battery : Prop {
 	// Constants
-	private float RegenDuration = 0.5f; // how many SECONDS until I regenerate.
+	private float RegenDuration = 1f; // how many SECONDS until I regenerate.
 	// Components
 	[SerializeField] private ParticleSystem ps_usedBurst=null;
 	[SerializeField] private SpriteRenderer sr_body=null;
