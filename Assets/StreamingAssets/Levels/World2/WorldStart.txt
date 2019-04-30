@@ -1,4 +1,4 @@
-roomProperties posGlobal:(40.0, 54.0);designerFlag:3;isClustStart:True
+roomProperties posGlobal:(44.0, 90.0);designerFlag:3;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:94.00, height:38.00)
 PlayerStart pos:(-17.0, 14.6)
 Ground myRect:(x:21.00, y:-16.50, width:94.00, height:7.00);isPlayerRespawn:True
@@ -17,4 +17,3 @@ CharBarrel pos:(-16.5, 10.5);otherCharName:Flatline
 Ground myRect:(x:-16.00, y:18.50, width:10.00, height:3.00)
 Spikes myRect:(x:-20.50, y:13.00, width:10.00, height:1.00);rotation:270
 Spikes myRect:(x:-12.50, y:14.50, width:7.00, height:1.00);rotation:90
-

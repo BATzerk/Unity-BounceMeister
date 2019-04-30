@@ -1,4 +1,4 @@
-roomProperties posGlobal:(352.0, 222.0);designerFlag:3
+roomProperties posGlobal:(364.0, 310.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-21.5, 7.8)
 Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
@@ -17,4 +17,3 @@ GateButton pos:(-8.0, -5.5);channelID:1
 Platform myRect:(x:-8.00, y:-7.50, width:6.00, height:1.00)
 Ground myRect:(x:-19.00, y:12.00, width:14.00, height:2.00)
 Ground myRect:(x:-7.00, y:18.50, width:14.00, height:3.00)
-

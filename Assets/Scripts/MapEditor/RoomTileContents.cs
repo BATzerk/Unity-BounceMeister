@@ -199,7 +199,7 @@ public class RoomTileContents : MonoBehaviour {
             float s = myRD.isClustStart ? 0.6f : 0.34f;
             Color groundColor;
             if (!myRD.IsInCluster) { groundColor = new ColorHSB(0.2f, 0.05f, 0.4f).ToColor(); } // No Cluster? Gray-ish.
-            else { groundColor = new ColorHSB((20 + myRD.ClusterIndex*60)/360f, s, 0.5f).ToColor(); }
+            else { groundColor = new ColorHSB(((20 + myRD.ClusterIndex*40)/360f)%1, s, 0.5f).ToColor(); }
             for (int i=0; i<srs_grounds.Count; i++) {
                 srs_grounds[i].color = groundColor;
             }

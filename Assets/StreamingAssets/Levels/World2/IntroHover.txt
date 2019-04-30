@@ -1,4 +1,4 @@
-roomProperties posGlobal:(186.0, 68.0);designerFlag:3
+roomProperties posGlobal:(190.0, 104.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-17.9, 3.1)
 Ground myRect:(x:0.00, y:-16.50, width:52.00, height:7.00)
@@ -11,4 +11,3 @@ Spikes myRect:(x:-8.50, y:-8.50, width:19.00, height:1.00);rotation:270
 Ground myRect:(x:-21.50, y:15.50, width:9.00, height:9.00)
 Ground myRect:(x:21.50, y:15.50, width:9.00, height:9.00)
 InfoSign pos:(-15.0, 2.0);myText:SPACE to Hover
-

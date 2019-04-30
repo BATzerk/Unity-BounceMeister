@@ -10,11 +10,18 @@ public class Flatline : Player {
         get {
             if (IsHovering || IsHoverEmpty) { return 0; }
             //if (HasHoveredWithoutTouchCollider) { return 0; } // No horz input while hovering (until we touch a collider).QQQ TEST
-            if (!feetOnGround()) { return 0.01f; } // In the air? Reduced input scale.
+            if (!feetOnGround()) { return 0.009f; } // In the air? Reduced input scale.
             return 0.018f;
         }
     }
-	override protected float FrictionAir { get { return 1; } }
+	override protected float FrictionAir {
+        get {
+            if (IsInLift() && Mathf.Abs(inputAxis.x) < 0.1f) { // In Lift and NOT providing input? Friction!
+                return 0.76f;
+            }
+            return 1;
+        }
+    }
 	override protected float FrictionGround {
 		get {
 			if (Mathf.Abs(inputAxis.x) > 0.1f // Providing input?
