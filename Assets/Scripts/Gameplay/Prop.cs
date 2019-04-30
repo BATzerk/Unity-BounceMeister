@@ -7,6 +7,7 @@ abstract public class Prop : MonoBehaviour {
     virtual public bool DoSaveInRoomFile() { return true; } // by default, ALL Props wanna get saved into the Room text file. But some (e.g. Player) do NOT.
     // Properties
     protected bool IsInitialized { get; private set; } // Used to set default values when drag prefab out in Editor.
+    protected int FrameCountWhenBorn { get; private set; }
     // References
     protected Room myRoom { get; private set; }
 
@@ -37,6 +38,7 @@ abstract public class Prop : MonoBehaviour {
 		rotation = data.rotation;
         
         IsInitialized = true;
+        FrameCountWhenBorn = Time.frameCount;
 	}
     virtual protected void Start() {
         #if UNITY_EDITOR

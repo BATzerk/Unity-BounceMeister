@@ -35,7 +35,7 @@ public class Flatline : Player {
 	}
     override protected float MaxVelXFromInput { get { return 0.8f; } }
 	override protected float MaxVelXAir { get { return 99f; } }
-	override protected float MaxVelXGround { get { return 0.8f; } }
+	override protected float MaxVelXGround { get { return 2f; } }
 
 	override protected float JumpForce { get { return 0; } }
 	override protected float WallSlideMinYVel { get { return -999f; } }
@@ -44,13 +44,19 @@ public class Flatline : Player {
     //override protected float WallKickExtensionWindow { get { return 0.3f; } }
     
     private bool MayStartHover() {
-        return !feetOnGround() // FEET touching nothing?
-            && !isTouchingWall() // ARMS touching nothing?
+        return !IsHovering // I'm not ALREADY hovering?
+            && Time.frameCount > FrameCountWhenBorn+3 // Don't allow hovering for the first few frames of my life.
+            && !feetOnGround() // FEET touching nothing?
+            //&& !isTouchingWall() // ARMS touching nothing?
             && !IsHoverEmpty; // not out of hover-time?
     }
     public override bool MayUseBattery() {
         if (IsHoverFull) { return false; } // Already recharged? Nah.
         return base.MayUseBattery();
+    }
+    protected override bool DoBounceOffCollidable(int mySide, Collidable collidable) {
+        if (mySide == Sides.T) { return true; } // My head is ALWAYS bouncy!
+        return base.DoBounceOffCollidable(mySide, collidable);
     }
     public bool IsHoverFull { get { return HoverTimeLeft >= HoverDur; } }
     public bool IsHoverEmpty { get { return HoverTimeLeft <= 0; } }
@@ -81,10 +87,11 @@ public class Flatline : Player {
     override protected void Jump() { } // Flatline can't jump.
 	override protected void WallKick() {
 		base.WallKick();
-        StartHover();
+        if (MayStartHover()) {
+            StartHover();
+        }
     }
     private void StartHover() {
-        if (IsHovering) { return; } // Already hovering? Do nothin'.
         IsHovering = true;
         HasHoveredWithoutTouchCollider = true;
         ResetMaxYSinceGround();
@@ -147,7 +154,7 @@ public class Flatline : Player {
         base.OnFeetLeaveCollidable(collidable);
         // We're not touching ANYthing?!
         if (!myWhiskers.IsTouchingAnySurface()) {
-            if (isButtonHeld_Hover) {
+            if (isButtonHeld_Hover && MayStartHover()) {
                 StartHover();
             }
         }

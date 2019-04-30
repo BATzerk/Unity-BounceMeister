@@ -6,6 +6,7 @@ using TMPro;
 
 public class MiniMap : MonoBehaviour {
     // Components
+    [SerializeField] private GameObject go_snackCount=null;
     [SerializeField] private TextMeshProUGUI t_snackCount=null;
     //[SerializeField] private RectTransform myRectTransform=null;
     [SerializeField] private RectTransform rt_tiles=null;
@@ -90,7 +91,11 @@ public class MiniMap : MonoBehaviour {
     }
     private void UpdateSnackCountText() {
         if (currRoomData.MyCluster != null) {
+            go_snackCount.SetActive(true);
             t_snackCount.text = currRoomData.MyCluster.NumSnacksEaten + " / " + currRoomData.MyCluster.NumSnacks;
+        }
+        else {
+            go_snackCount.SetActive(false); // No cluster ('cause I'm developing levels)? Hide snackCount.
         }
     }
     
