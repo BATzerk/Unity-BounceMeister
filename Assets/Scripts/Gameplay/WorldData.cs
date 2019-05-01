@@ -369,6 +369,47 @@ public class WorldData {
 		catch (System.Exception e) { Debug.LogError ("Error moving room file to world folder: " + sourceNameFull + " to " + destNameFull + ". " + e.ToString ()); }
 	}
 
+    
+    
+    // Debug
+    public void Debug_PrintIncompleteRoomLinks() {
+        // Loop through every RoomDoor in every Room, and make sure it has a matching RoomDoor in another Room!
+        int numIncompleteLinks = 0;
+        string str = "";
+        foreach (RoomData roomFrom in roomDatas.Values) {
+            foreach (RoomDoorData doorFrom in roomFrom.roomDoorDatas) {
+                int worldToIndex = doorFrom.worldToIndex;
+                if (worldToIndex == -1) { worldToIndex = WorldIndex; } // Haven't defined worldToIndex? Stay in my world.
+                WorldData worldTo = GameManagers.Instance.DataManager.GetWorldData(worldToIndex);
+                RoomData roomTo = worldTo.GetRoomData(doorFrom.roomToKey);
+                if (roomTo == null) {
+                    numIncompleteLinks ++;
+                    str += "\n    No RoomTo: " + roomFrom.RoomKey + " to room " + doorFrom.roomToKey;
+                    continue;
+                }
+                RoomDoorData doorTo = roomTo.GetRoomDoor(doorFrom.roomToDoorID);
+                if (doorTo == null) {
+                    numIncompleteLinks ++;
+                    str += "\n    No DoorTo: " + roomFrom.RoomKey + " to door " + doorFrom.roomToKey;
+                    continue;
+                }
+                // Ok, the room AND door exist! Now check that they match up.
+                if (doorTo.roomToKey != roomFrom.RoomKey) {
+                    numIncompleteLinks ++;
+                    str += "\n    Door room mismatch: " + roomFrom.RoomKey + " to room " + roomTo.RoomKey;
+                    continue;
+                }
+                if (doorTo.myID != doorFrom.roomToDoorID) {
+                    numIncompleteLinks ++;
+                    str += "\n    Door door mismatch: " + roomFrom.RoomKey + " to room " + roomTo.RoomKey;
+                    continue;
+                }
+            }
+        }
+        if (numIncompleteLinks > 0) {
+            Debug.Log("W" + WorldIndex + ": " + numIncompleteLinks + " Incomplete Room Links..." + str + "\n\n");
+        }
+    }
 
 
 }

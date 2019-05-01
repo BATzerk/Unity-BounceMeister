@@ -7,12 +7,15 @@ public class RoomData {
 //	// Constants
 //	public static readonly RoomData undefined = new RoomData(0, "undefined");
 	// Components!
-	public CameraBoundsData cameraBoundsData;
-	public List<PropData> allPropDatas;
+    public  List<PropData> allPropDatas { get; private set; }
+    public  CameraBoundsData cameraBoundsData;
+    private List<GroundData> groundDatas;
+    public  List<RoomDoorData> roomDoorDatas { get; private set; }
+    private List<SnackData> snackDatas;
 	// Properties
     public bool HasPlayerBeenHere { get; private set; } // false until the player enters me for the first time!
     public bool isClustStart;// { get; private set; }
-    public string roomKey; // everything we use to reference this room! Including the room's file name (minus the .txt suffix).
+    public string RoomKey { get; private set; } // everything we use to reference this room! Including the room's file name (minus the .txt suffix).
 	public int designerFlag; // for the room designer! We can flag any room to be like "testing" or "good" or etc.
     public int ClusterIndex=-1; // -1 is no Cluster.
     public int NumSnacksEaten { get; private set; }
@@ -24,7 +27,6 @@ public class RoomData {
     public List<RoomOpening> Openings { get; private set; }
     public HashSet<RoomData> NeighborRooms { get; private set; } // All RoomDatas I have Openings to.
     // Getters
-    public string RoomKey { get { return roomKey; } }
 	public int DesignerFlag { get { return designerFlag; } }
 	public int WorldIndex { get { return MyWorldData.WorldIndex; } }
     public Rect BoundsLocal { get { return new Rect(cameraBoundsData.myRect); } } // TODO: Try not copying the rect. // Currently, the camera bounds and room bounds are one in the same.
@@ -60,16 +62,19 @@ public class RoomData {
         }
         return Vector2.zero; // Oops.
     }
-    public Vector2 GetRoomDoorPos(string doorID) {
-        foreach (PropData pd in allPropDatas) {
-            if (pd is RoomDoorData) {
-                if ((pd as RoomDoorData).myID == doorID) {
-                    return pd.pos;
-                }
-            }
+    public RoomDoorData GetRoomDoor(string doorID) {
+        foreach (RoomDoorData rdd in roomDoorDatas) {
+            if (rdd.myID == doorID) { return rdd; }
         }
+        return null;
+    }
+    public Vector2 GetRoomDoorPos(string doorID, bool doPrintWarning=true) {
+        RoomDoorData rdd = GetRoomDoor(doorID);
+        if (rdd != null) { return rdd.pos; }
         // Oops, no door with this ID.
-        Debug.LogWarning("Oops! No RoomDoor with doorID. Room: " + roomKey + ", doorID: " + doorID);
+        if (doPrintWarning) {
+            Debug.LogWarning("Oops, GetRoomDoorPos! No RoomDoor with doorID. Room: W" + WorldIndex + " " + RoomKey + ", doorID: " + doorID);
+        }
         return DefaultPlayerStartPos();
     }
     public bool AreEdiblesLeft() {
@@ -78,11 +83,9 @@ public class RoomData {
     public void UpdateNumSnacks() {
         NumSnacksTotal = 0;
         NumSnacksEaten = 0;
-        foreach (PropData pd in allPropDatas) {
-            if (pd is SnackData) {
-                if (SaveStorage.GetBool(SaveKeys.DidEatSnack(this, NumSnacksTotal))) { NumSnacksEaten++; }
-                NumSnacksTotal ++;
-            }
+        foreach (SnackData sd in snackDatas) {
+            if (SaveStorage.GetBool(SaveKeys.DidEatSnack(this, NumSnacksTotal))) { NumSnacksEaten++; }
+            NumSnacksTotal ++;
         }
     }
 
@@ -104,7 +107,7 @@ public class RoomData {
 	// ================================================================
 	public RoomData(WorldData _worldData, string _key) { //, Vector2 defaultAbsolutePos) {
 		MyWorldData = _worldData;
-		roomKey = _key;
+		RoomKey = _key;
         HasPlayerBeenHere = SaveStorage.GetBool(SaveKeys.HasPlayerBeenInRoom(this), false);
         
 		// Initialize all my PropData lists.
@@ -113,7 +116,10 @@ public class RoomData {
 	}
 	public void ClearAllPropDataLists () {
 		allPropDatas = new List<PropData>();
-		cameraBoundsData = new CameraBoundsData();
+        cameraBoundsData = new CameraBoundsData();
+        groundDatas = new List<GroundData>();
+        roomDoorDatas = new List<RoomDoorData>();
+        snackDatas = new List<SnackData>();
 	}
     
     public void OnPlayerEnterMe() {
@@ -128,25 +134,26 @@ public class RoomData {
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
+    public void AddPropData(PropData propData) {
+        allPropDatas.Add(propData);
+        //switch (propData.GetType()) {
+            
+        //}
+        // TODO: Can we use a switch statement?
+        if (propData is CameraBoundsData) { cameraBoundsData = propData as CameraBoundsData; }
+        else if (propData is GroundData) { groundDatas.Add(propData as GroundData); }
+        else if (propData is RoomDoorData) { roomDoorDatas.Add(propData as RoomDoorData); }
+        else if (propData is SnackData) { snackDatas.Add(propData as SnackData); }
+    }
     public void CalculateOpenings() {
-        // First, make list of just my GroundDatas.
-        List<GroundData> groundDatas = GetGroundDatas();
         // Calculate 'em!
         Openings = new List<RoomOpening>();
-        for (int side = 0; side<4; side++) {
-            AddRoomOpeningsAtSide(side,groundDatas);
+        for (int side=0; side<4; side++) {
+            AddRoomOpeningsAtSide(side);
         }
     }
-    private List<GroundData> GetGroundDatas() { // CANDO: #optimization. ONLY add Grounds that are on the sides.
-        List<GroundData> groundDatas = new List<GroundData>();
-        for (int i=0; i<allPropDatas.Count; i++) {
-            if (allPropDatas[i] is GroundData) {
-                groundDatas.Add(allPropDatas[i] as GroundData);
-            }
-        }
-        return groundDatas;
-    }
-    private void AddRoomOpeningsAtSide(int side, List<GroundData> groundDatas) {
+    private void AddRoomOpeningsAtSide(int side) {
+        // CANDO: #optimization. ONLY add Grounds that are on the sides.
         float searchUnit = 1; // how granular our searches are. The smaller this value, the more steps we take along sides of the room.
         Rect bl = BoundsLocal;
         // Determine where we start search, and what dir to go.
@@ -184,7 +191,7 @@ public class RoomData {
         for (int i=0; i<numSteps; i++) {
             // Update the pos of the search-rect.
             searchRect.position = cornerPos + dir*i;
-            bool isGround = IsGround(groundDatas, searchRect);
+            bool isGround = IsGround(searchRect);
             // We're NOT yet making an opening...
             if (Vector2Extensions.IsNaN(openingStartPos)) {
                 // There's NO ground...!
@@ -203,7 +210,7 @@ public class RoomData {
         }
     }
     
-    private bool IsGround(List<GroundData> groundDatas, Rect searchRect) {
+    private bool IsGround(Rect searchRect) {
         for (int i=0; i<groundDatas.Count; i++) {
             // Use top-left aligned ground rect.
             Rect groundRect = groundDatas[i].MyRectTLAligned();
@@ -230,7 +237,6 @@ public class RoomData {
             }
         }
     }
-
 
 
 }

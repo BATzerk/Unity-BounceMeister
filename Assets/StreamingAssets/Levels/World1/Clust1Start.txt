@@ -22,4 +22,3 @@ Ground myRect:(x:19.50, y:-16.50, width:13.00, height:7.00)
 Ground myRect:(x:10.50, y:-10.50, width:13.00, height:11.00)
 Snack pos:(-9.5, 11.5);playerType:Flatline
 Ground myRect:(x:7.00, y:18.50, width:2.00, height:3.00)
-

@@ -71,7 +71,7 @@ public class RoomDoorData : PropData {
 	public string myID;
     public int worldToIndex;
 	public string roomToKey;
-	public string roomToDoorID;
+	public string roomToDoorID; // TODO: Rename to "doorToID" everywhere.
 //	public RoomDoorData (Vector2 pos, string myID, string roomToKey, string roomToDoorID) {
 //		this.pos = pos;
 //		this.myID = myID;

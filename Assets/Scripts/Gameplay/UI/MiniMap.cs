@@ -60,7 +60,7 @@ public class MiniMap : MonoBehaviour {
         foreach (RoomData rd in wd.roomDatas.Values) {
             MiniMapRoomTile tile = Instantiate(ResourcesHandler.Instance.MiniMapRoomTile).GetComponent<MiniMapRoomTile>();
             tile.Initialize(rt_tiles, rd);
-            tiles.Add(rd.roomKey, tile);
+            tiles.Add(rd.RoomKey, tile);
         }
     }
     

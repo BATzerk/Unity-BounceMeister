@@ -362,11 +362,7 @@ static public class RoomSaverLoader {
 						continue;
 					}
 					SetPropDataFieldValuesFromFieldsString (propData, propertiesString);
-					rd.allPropDatas.Add(propData);
-					// hacky?
-					if (propData is CameraBoundsData) {
-						rd.cameraBoundsData = propData as CameraBoundsData;
-					}
+					rd.AddPropData(propData);
 				}
 			}
 		}
@@ -399,11 +395,11 @@ static public class RoomSaverLoader {
 		cameraBoundsData.myRect = new Rect(-26,-19, 52,38);
 		cameraBoundsData.pos = cameraBoundsData.myRect.center;
         rd.cameraBoundsData = cameraBoundsData;
-		rd.allPropDatas.Add(cameraBoundsData);
+        rd.AddPropData(cameraBoundsData);
 
 		PlayerStartData playerStartData = new PlayerStartData();
 		playerStartData.pos = new Vector2(-20, -14);
-		rd.allPropDatas.Add(playerStartData);
+        rd.AddPropData(playerStartData);
 
 		Rect[] groundRects = {
 			new Rect(0,-18, 52,4),
@@ -415,7 +411,7 @@ static public class RoomSaverLoader {
 			GroundData newGroundData = new GroundData();
 			newGroundData.myRect = rect;
 			newGroundData.pos = rect.center;
-			rd.allPropDatas.Add (newGroundData);
+            rd.AddPropData(newGroundData);
 		}
 	}
 
@@ -495,7 +491,7 @@ static public class RoomSaverLoader {
     static public bool MayRenameRoomFile(Room room, string newName) { return MayRenameRoomFile(room.MyRoomData, newName); }
     static public bool MayRenameRoomFile(RoomData rd, string newName) {
         if (string.IsNullOrEmpty(newName)) { return false; } // Empty name? Nah.
-        if (rd.roomKey == newName) { return false; } // Same name? Nah.
+        if (rd.RoomKey == newName) { return false; } // Same name? Nah.
         string newPath = FilePaths.RoomFileAddress(rd.WorldIndex, newName);
         if (File.Exists(newPath)) { return false; } // File already here? Nah.
         // Looks good!

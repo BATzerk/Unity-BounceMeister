@@ -26,6 +26,7 @@ public class EventManager {
     public event CoinAction CoinCollectedEvent;
     public event RoomAction StartRoomEvent;
     public event IntAction PlayerEscapeRoomBoundsEvent;
+    public event IntAction MapEditorSetCurrWorldEvent;
     public event PlayerAction PlayerDieEvent;
     public event PlayerAction PlayerInitEvent;
     public event PlayerAction PlayerJumpEvent;
@@ -40,6 +41,9 @@ public class EventManager {
 	// Program Events
 	public void OnScreenSizeChanged () { if (ScreenSizeChangedEvent!=null) { ScreenSizeChangedEvent (); } }
 	// Game Events
+    public void OnMapEditorSetCurrWorld(int worldIndex) { if (MapEditorSetCurrWorldEvent!=null) { MapEditorSetCurrWorldEvent(worldIndex); } }
+    //public void OnMapEditorSetCurrWorldIndex(int worldIndex) { MapEditorSetCurrWorldIndexEvent?.Invoke(worldIndex); }
+    
 	public void OnEditorSaveRoom() { if (EditorSaveRoomEvent!=null) { EditorSaveRoomEvent(); } }
     public void OnSetIsEditMode(bool isEditMode) { if (SetIsEditModeEvent!=null) { SetIsEditModeEvent(isEditMode); } }
     public void OnSetPaused(bool isPaused) { if (SetPausedEvent!=null) { SetPausedEvent(isPaused); } }

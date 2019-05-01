@@ -26,7 +26,7 @@ public class MapEditor : MonoBehaviour {
 	[SerializeField] private Text instructionsText=null;
 	private List<RoomTile> tilesSelected = new List<RoomTile>();
     private MapEditorCamera editorCamera;
-	public WorldData CurrentWorldData { get { return GetWorldData(currWorldIndex); } }
+	public WorldData CurrWorldData { get { return GetWorldData(currWorldIndex); } }
 	private WorldData GetWorldData (int worldIndex) {
 		if (worldIndex<0 || dataManager.NumWorldDatas == 0) { return null; }
 		return dataManager.GetWorldData (worldIndex);
@@ -113,15 +113,6 @@ public class MapEditor : MonoBehaviour {
 		return GetRoomTileAtPoint (MousePosWorld) != null;
 	}
 
-
-	private void OnDrawGizmos () {
-		// World Bounds
-		if (CurrentWorldData != null) {
-			Gizmos.color = new Color (0.1f, 0.1f, 0.1f);
-			Rect boundsRectAllRooms = CurrentWorldData.BoundsRectAllRooms;
-			Gizmos.DrawWireCube (new Vector3 (boundsRectAllRooms.center.x, boundsRectAllRooms.center.y, 0), new Vector3 (boundsRectAllRooms.size.x, boundsRectAllRooms.size.y, 10));
-		}
-	}
 //	private void OnGUI () {
 //		// Map-Editor instructions!
 //		Rect textRect = new Rect (-Screen.width*0.5f, Screen.height*0.5f, Screen.width,Screen.height);
@@ -143,6 +134,7 @@ public class MapEditor : MonoBehaviour {
 		// Find references
 		editorCamera = FindObjectOfType<MapEditorCamera>();
         MySettings = new MapEditorSettings();
+        this.gameObject.AddComponent<MapEditorGizmos>(); // add my Gizmos script.
 		
 		// Reload everything right away!! (Otherwise, we'll have to ALT + TAB out of Unity and back in for it to be refreshed.)
 		#if UNITY_EDITOR
@@ -168,7 +160,7 @@ public class MapEditor : MonoBehaviour {
 		if (_worldIndex >= GameProperties.NUM_WORLDS) { return; } // Don't crash da game, bruddah.
 
 		// Deselect any tiles that might be selected!
-		DeselectAllRoomTiles ();
+		DeselectAllRoomTiles();
 
 		// If we're CHANGING the currentWorld...!!
 		if (currWorldIndex != _worldIndex) {
@@ -181,14 +173,14 @@ public class MapEditor : MonoBehaviour {
 			currWorldIndex = _worldIndex;
             SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, currWorldIndex);
         }
-		
-		// Tell all the tiles in the NEW world to show their stuff!
-		for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
-			CurrWorldRoomTiles[i].ShowContents ();
-		}
-		
-		// Set background colla
-		editorCamera.OnSetCurrentWorld(currWorldIndex);
+        
+        // Tell all the tiles in the NEW world to show their stuff!
+        for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
+            CurrWorldRoomTiles[i].ShowContents ();
+        }
+        
+        // Dispatch hevent!
+        GameManagers.Instance.EventManager.OnMapEditorSetCurrWorld(currWorldIndex);
 	}
     
 
@@ -283,7 +275,7 @@ public class MapEditor : MonoBehaviour {
 		// Clear out the list, of course.
 		tilesSelected.Clear ();
 		// Brute-force remake all the wallLines for EVERY RoomTile. It's dumb, but easy.
-//		CurrentWorldData.SetAllRoomDatasBounds ();
+//		CurrWorldData.SetAllRoomDatasBounds ();
 
 //		foreach (RoomTile roomTile in CurrentWorldRoomTiles) {
 //			roomTile.RemakeWallLines ();
@@ -302,7 +294,7 @@ public class MapEditor : MonoBehaviour {
     }
     private void DuplicateRoom(RoomData originalData) {
         // Add a new room file, yo!
-        string newRoomKey = originalData.roomKey + " copy";
+        string newRoomKey = originalData.RoomKey + " copy";
         RoomSaverLoader.SaveRoomFileAs(originalData, originalData.WorldIndex, newRoomKey);
         // Reload everything.
         ReloadAllWorldDatasAndScene();
@@ -314,7 +306,7 @@ public class MapEditor : MonoBehaviour {
 		// Move the files!!
 		for (int i=tilesSelected.Count-1; i>=0; --i) {
 //			DeselectRoomTile (roomTilesSelected[i]);
-			CurrentWorldData.MoveRoomFileToTrashFolder (tilesSelected[i].RoomKey);
+			CurrWorldData.MoveRoomFileToTrashFolder (tilesSelected[i].RoomKey);
 		}
 		
 		// Reload everything right away!! (Otherwise, we'll have to ALT + TAB out of Unity and back in for it to be refreshed.)
@@ -345,7 +337,7 @@ public class MapEditor : MonoBehaviour {
 			string roomKey = roomDatasMoving[i].RoomKey;
 			// Otherwise, move that glitterbomb!
 //			DeselectRoomTile (roomTilesSelected[i]);
-			CurrentWorldData.MoveRoomFileToWorldFolder (roomKey, worldIndexTo);
+			CurrWorldData.MoveRoomFileToWorldFolder (roomKey, worldIndexTo);
 		}
 		
 		// Reload this map, yo.
@@ -354,8 +346,8 @@ public class MapEditor : MonoBehaviour {
 
     private void AddAndStartNewRoom() {
         // Make a RoomData with a unique name, put it where the Camera is, and open the room!
-        string roomKey = CurrentWorldData.GetUnusedRoomKey();
-        RoomData newLD = CurrentWorldData.GetRoomData(roomKey, true);
+        string roomKey = CurrWorldData.GetUnusedRoomKey();
+        RoomData newLD = CurrWorldData.GetRoomData(roomKey, true);
         Vector2 pos = SnapToGrid(editorCamera.Pos);
         newLD.SetPosGlobal(pos);
         SceneHelper.OpenGameplayScene(newLD);
@@ -613,8 +605,10 @@ public class MapEditor : MonoBehaviour {
 		
         // NO alt/control/shift...!
         else {
+            // R = Print incomplete room links!
+            if (Input.GetKeyDown(KeyCode.R)) { Debug_PrintIncompleteRoomLinks(); }
 		    // Visibility togglin'
-            if (Input.GetKeyDown(KeyCode.U)) { TogSettings_DoShowClusters(); } // U = toggle RoomCluster visuals
+            else if (Input.GetKeyDown(KeyCode.U)) { TogSettings_DoShowClusters(); } // U = toggle RoomCluster visuals
 		    else if (Input.GetKeyDown(KeyCode.F)) { TogSettings_DoShowDesignerFlags(); } // F = toggle DesignerFlags
             else if (Input.GetKeyDown(KeyCode.E)) { TogSettings_DoShowEdibles(); } // E = toggle Edibles
             else if (Input.GetKeyDown(KeyCode.N)) { TogSettings_DoShowRoomNames(); } // N = toggle Room names
@@ -642,7 +636,6 @@ public class MapEditor : MonoBehaviour {
 		int mouseButton = InputController.GetMouseButtonDown();
 		// LEFT click?
 		if (mouseButton == 0) {
-			Debug.Log ("mousePosWorld: " + MousePosWorld);
 			// Double-click?!
 //			Debug.Log(Time.frameCount + " timeSinceMouseButtonDown: " + timeSinceMouseButtonDown + "     " + Vector2.Distance (MousePosScreen, mousePosScreenOnDown));
 //			if (timeSinceMouseButtonDown < DOUBLE_CLICK_TIME && Vector2.Distance (MousePosScreen, mousePosScreenOnDown) < 4) {
@@ -656,6 +649,10 @@ public class MapEditor : MonoBehaviour {
 				ReleaseRoomTilesSelected();
 			}
 		}
+        // RIGHT click?
+        else if (mouseButton == 1) {
+            Debug.Log ("mousePosWorld: " + MousePosWorld);
+        }
 		// Update on-mouse-down vectors!
 		MousePosScreenOnDown = MousePosScreen;
 	}
@@ -669,7 +666,7 @@ public class MapEditor : MonoBehaviour {
 				RoomSaverLoader.UpdateRoomPropertiesInRoomFile(tile.MyRoomData);
 			}
 			// Update the world-bounds, room neighbors, etc.!
-			CurrentWorldData.SetAllRoomDatasFundamentalProperties();
+			CurrWorldData.SetAllRoomDatasFundamentalProperties();
             // Update ALL Tiles' visuals.
 			foreach (RoomTile tile in CurrWorldRoomTiles) {
 				tile.RefreshColors();
@@ -720,6 +717,10 @@ public class MapEditor : MonoBehaviour {
         }
     }
 #endif
+    private void Debug_PrintIncompleteRoomLinks() {
+        //for (int i=0; i<dataManager.NumWorldDatas; i
+        CurrWorldData.Debug_PrintIncompleteRoomLinks();
+    }
 
 }
 }

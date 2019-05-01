@@ -79,7 +79,7 @@ public class RoomTile : MonoBehaviour {
 		MapEditor = _mapEditorRef;
 		MyRoomData = _myRoomData;
         GameUtils.ParentAndReset(this.gameObject, tf_parent);
-		this.gameObject.name = "RoomTile " + MyRoomData.roomKey;
+		this.gameObject.name = "RoomTile " + MyRoomData.RoomKey;
 //		SetPosAndSizeValues ();
 
 		contents.Initialize (this);

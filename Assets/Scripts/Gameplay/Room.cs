@@ -60,14 +60,14 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
         Prop[] allProps = FindObjectsOfType<Prop>();
         foreach (Prop prop in allProps) {
             if (!prop.DoSaveInRoomFile()) { continue; } // This type of Prop doesn't save to Room file? Skip it.
-            rd.allPropDatas.Add(prop.SerializeAsData());
+            rd.AddPropData(prop.SerializeAsData());
         }
+        // Reverse the propDatas list so it's saved in the same order each time. (Kinda weird, but this is the easy solution.)
+        rd.allPropDatas.Reverse();
+        
         // HACK TEMP TODO: clean this up
         CameraBounds cameraBounds = FindObjectOfType<CameraBounds>();
         if (cameraBounds != null) { rd.cameraBoundsData = cameraBounds.SerializeAsData() as CameraBoundsData; }
-        
-        // Reverse the propDatas list so it's saved in the same order each time. (Kinda weird, but this is the easy solution.)
-        rd.allPropDatas.Reverse();
 
 		return rd;
 	}

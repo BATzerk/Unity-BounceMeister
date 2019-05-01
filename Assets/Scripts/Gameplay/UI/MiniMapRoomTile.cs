@@ -45,7 +45,7 @@ public class MiniMapRoomTile : MonoBehaviour {
         
         // Parent jazz!
         GameUtils.ParentAndReset(this.gameObject, parentTF);
-        gameObject.name = "MapTile " + myRoomData.roomKey;
+        gameObject.name = "MapTile " + myRoomData.RoomKey;
         
         // Size/position!
         myRectTransform.sizeDelta = myRoomData.BoundsGlobal.size;// - new Vector2(5,5); // TEST shrink 'em all a little

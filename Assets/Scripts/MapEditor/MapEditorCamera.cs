@@ -37,7 +37,7 @@ public class MapEditorCamera : MonoBehaviour {
 
 
     // ----------------------------------------------------------------
-    //  Awake
+    //  Awake / Destroy
     // ----------------------------------------------------------------
     private void Awake() {
 		camera = this.GetComponent<Camera>();
@@ -46,6 +46,12 @@ public class MapEditorCamera : MonoBehaviour {
         // Move the camera to where we remember it was last time we was here!
         LoadPos();
         LoadScale();
+        // Add event listeners.
+        GameManagers.Instance.EventManager.MapEditorSetCurrWorldEvent += OnSetCurrWorld;
+    }
+    private void OnDestroy() {
+        // Remove event listeners.
+        GameManagers.Instance.EventManager.MapEditorSetCurrWorldEvent -= OnSetCurrWorld;
     }
 
 
@@ -75,7 +81,7 @@ public class MapEditorCamera : MonoBehaviour {
         // Reset scale
         SetMapScale(MAP_SCALE_DEFAULT);
         Vector2 averageRoomPos = new Vector2 (0,0);
-        WorldData wd = editor.CurrentWorldData;
+        WorldData wd = editor.CurrWorldData;
         foreach (RoomData rd in wd.RoomDatas.Values) {
             averageRoomPos += rd.PosGlobal;
         }
@@ -128,8 +134,8 @@ public class MapEditorCamera : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    public void OnSetCurrentWorld(int worldIndex) {
-        SetBackgroundColor(worldIndex);
+    private void OnSetCurrWorld(int worldIndex) {
+        SetBackgroundColor(worldIndex); // Set background colla
     }
 
 
