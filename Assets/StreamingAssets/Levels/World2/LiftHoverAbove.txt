@@ -1,0 +1,21 @@
+roomProperties posGlobal:(318.0, 1248.0);designerFlag:4
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+PlayerStart pos:(-21.5, 0.5)
+Ground myRect:(x:0.00, y:-11.00, width:52.00, height:18.00)
+Ground myRect:(x:-21.00, y:12.00, width:10.00, height:16.00)
+Ground myRect:(x:3.00, y:15.50, width:18.00, height:11.00)
+Lift myRect:(x:0.00, y:3.00, width:24.00, height:8.00);rotation:0;strength:0.08
+Spikes myRect:(x:3.00, y:9.50, width:18.00, height:1.00);rotation:180
+Ground myRect:(x:13.50, y:4.50, width:3.00, height:1.00)
+Spikes myRect:(x:0.50, y:-1.50, width:29.00, height:1.00);rotation:0
+Ground myRect:(x:-20.00, y:-6.50, width:12.00, height:11.00)
+Ground myRect:(x:19.50, y:-5.00, width:13.00, height:18.00)
+Spikes myRect:(x:13.00, y:-2.50, width:15.00, height:2.00);rotation:90
+Ground myRect:(x:-15.00, y:-6.00, width:6.00, height:12.00)
+Ground myRect:(x:18.50, y:15.50, width:15.00, height:9.00)
+Ground myRect:(x:24.00, y:7.50, width:4.00, height:11.00)
+Ground myRect:(x:-17.50, y:14.50, width:7.00, height:11.00)
+Gate myRect:(x:-11.00, y:11.00, width:6.00, height:2.00);channelID:3
+Ground myRect:(x:-6.50, y:15.00, width:3.00, height:12.00)
+GateButton pos:(20.0, 5.5);channelID:3
+Lift myRect:(x:-10.00, y:14.00, width:4.00, height:8.00);rotation:0;strength:0.08

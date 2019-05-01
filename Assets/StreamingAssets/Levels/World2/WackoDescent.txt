@@ -1,22 +1,22 @@
-roomProperties posGlobal:(168.0, 1780.0);designerFlag:4
+roomProperties posGlobal:(182.0, 1478.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(-23.0, 2.3)
-Ground myRect:(x:-11.00, y:9.00, width:10.00, height:2.00)
+PlayerStart pos:(23.0, 2.5)
+Ground myRect:(x:11.00, y:9.00, width:10.00, height:2.00)
 Ground myRect:(x:0.00, y:18.50, width:48.00, height:3.00)
-Ground myRect:(x:-23.00, y:-9.50, width:6.00, height:21.00)
-Ground myRect:(x:-0.50, y:-17.50, width:47.00, height:5.00)
-Platform myRect:(x:-18.00, y:9.50, width:4.00, height:1.00)
-Lift myRect:(x:-19.00, y:3.00, width:2.00, height:12.00);rotation:0;strength:0.05
-Ground myRect:(x:23.50, y:0.00, width:5.00, height:40.00)
-Ground myRect:(x:-14.00, y:3.00, width:2.00, height:14.00)
-Ground myRect:(x:17.50, y:0.00, width:7.00, height:2.00)
-Platform myRect:(x:-16.50, y:-3.50, width:3.00, height:1.00);canDropThru:False
-Spikes myRect:(x:0.50, y:-14.50, width:45.00, height:1.00);rotation:0
-Spikes myRect:(x:18.00, y:1.50, width:8.00, height:1.00);rotation:0
-Snack pos:(-16.5, -11.0);playerType:Flatline
-Battery pos:(19.5, 15.0)
-Battery pos:(-11.5, 6.5)
-Battery pos:(19.5, -2.5)
-Ground myRect:(x:-23.00, y:12.50, width:6.00, height:15.00)
-Ground myRect:(x:-19.00, y:-9.00, width:2.00, height:12.00)
-Spikes myRect:(x:-10.00, y:10.50, width:8.00, height:1.00);rotation:0
+Ground myRect:(x:23.00, y:-9.50, width:6.00, height:21.00)
+Ground myRect:(x:0.50, y:-17.50, width:47.00, height:5.00)
+Platform myRect:(x:18.00, y:9.50, width:4.00, height:1.00)
+Lift myRect:(x:19.00, y:3.00, width:2.00, height:12.00);rotation:0;strength:0.05
+Ground myRect:(x:-23.50, y:0.00, width:5.00, height:40.00)
+Ground myRect:(x:14.00, y:3.00, width:2.00, height:14.00)
+Ground myRect:(x:-17.50, y:0.00, width:7.00, height:2.00)
+Platform myRect:(x:16.50, y:-3.50, width:3.00, height:1.00);canDropThru:False
+Spikes myRect:(x:-0.50, y:-14.50, width:45.00, height:1.00);rotation:0
+Spikes myRect:(x:-18.00, y:1.50, width:8.00, height:1.00);rotation:0
+Snack pos:(16.5, -11.0);playerType:Flatline
+Battery pos:(-19.5, 15.0)
+Battery pos:(11.5, 6.5)
+Battery pos:(-19.5, -2.5)
+Ground myRect:(x:23.00, y:12.50, width:6.00, height:15.00)
+Ground myRect:(x:19.00, y:-9.00, width:2.00, height:12.00)
+Spikes myRect:(x:10.00, y:10.50, width:8.00, height:1.00);rotation:0
