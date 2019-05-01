@@ -30,7 +30,7 @@ public class PlatformCharacter : Collidable {
     private List<Lift> liftsTouching = new List<Lift>();
 
     // Getters
-    protected bool IsInLift() { return liftsTouching.Count > 0; }
+    protected bool IsInLift { get; private set; }
 //	virtual public bool IsAffectedByLift() { return true; }
 	public bool IsDead { get { return isDead; } }
 	public bool feetOnGround() { return myWhiskers.OnSurface(Sides.B) && vel.y<0.001f; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
@@ -98,6 +98,7 @@ public class PlatformCharacter : Collidable {
         timeSinceDamage = Mathf.NegativeInfinity;
 		health = StartingHealth;
         bodyCollider.size = Size;
+        IsInLift = false;
 	}
 	//virtual protected void SetSize(Vector2 _size) {
 	//	this.Size = _size;
@@ -126,7 +127,7 @@ public class PlatformCharacter : Collidable {
 	}
     virtual protected void ApplyInternalForces() {} // For Plunga's plunge-force, Jetta's jetting, etc.
 	protected void ApplyFriction() {
-        if (IsInLift()) {
+        if (IsInLift) {
 			SetVel(new Vector2(vel.x*FrictionAir, vel.y));
         }
 		else if (feetOnGround()) {
@@ -210,10 +211,18 @@ public class PlatformCharacter : Collidable {
 	// ----------------------------------------------------------------
 	virtual public void OnEnterLift(Lift lift) {
 		liftsTouching.Add(lift);
+        if (liftsTouching.Count == 1) { OnStartIsInLift(); } // This is the first Lift? Call event!
 	}
 	virtual public void OnExitLift(Lift lift) {
 		liftsTouching.Remove(lift);
+        if (liftsTouching.Count == 0) { OnEndIsInLift(); } // This was the last Lift? Call event!
 	}
+    virtual protected void OnStartIsInLift() {
+        IsInLift = true;
+    }
+    virtual protected void OnEndIsInLift() {
+        IsInLift = false;
+    }
 
 
     // ----------------------------------------------------------------

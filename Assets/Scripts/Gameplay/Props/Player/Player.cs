@@ -72,7 +72,7 @@ abstract public class Player : PlatformCharacter {
 		return isTouchingWall() || Time.time < timeLastTouchedWall+WallKickExtensionWindow;
 	}
 	virtual protected bool MayWallSlide() {
-		return !feetOnGround() && !IsInLift(); // TODO: Fix this Lift check not working.
+		return !feetOnGround() && !IsInLift; // TODO: Fix this Lift check not working.
 	}
     virtual protected bool MayEatEdibles() {
 		return myWhiskers.AreFeetOnEatEdiblesGround();

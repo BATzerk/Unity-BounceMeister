@@ -48,7 +48,7 @@ public class Plunga : Player {
 	// Getters (Private)
 	private bool CanStartPlunge() {
 		if (feetOnGround()) { return false; } // I can't plunge if I'm on the ground.
-		if (IsInLift()) { return false; }
+		if (IsInLift) { return false; }
 		return isPlungeRecharged;
 	}
 

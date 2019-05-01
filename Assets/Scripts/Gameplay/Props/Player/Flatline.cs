@@ -8,7 +8,7 @@ public class Flatline : Player {
     override public Vector2 Size { get { return new Vector2(1.6f, 1.6f); } }
 	override protected float InputScaleX {
         get {
-            if (IsHovering || IsHoverEmpty) { return 0; }
+            if (IsHovering) { return 0; }// || IsHoverEmpty
             //if (HasHoveredWithoutTouchCollider) { return 0; } // No horz input while hovering (until we touch a collider).QQQ TEST
             if (!feetOnGround()) { return 0.009f; } // In the air? Reduced input scale.
             return 0.018f;
@@ -16,9 +16,9 @@ public class Flatline : Player {
     }
 	override protected float FrictionAir {
         get {
-            if (IsInLift() && Mathf.Abs(inputAxis.x) < 0.1f) { // In Lift and NOT providing input? Friction!
-                return 0.76f;
-            }
+            //if (IsInLift && Mathf.Abs(inputAxis.x) < 0.1f) { // In Lift and NOT providing input? Friction!
+            //    return 0.76f;
+            //}
             return 1;
         }
     }
@@ -48,13 +48,14 @@ public class Flatline : Player {
 	override protected float WallSlideMinYVel { get { return -999f; } }
     override protected Vector2 WallKickVel { get { return new Vector2(Mathf.Abs(vel.y), 0); } }
     override protected float PostWallKickHorzInputLockDur { get { return 999f; } }
-    //override protected float WallKickExtensionWindow { get { return 0.3f; } }
+    override protected float WallKickExtensionWindow { get { return 0.2f; } }
     
     private bool MayStartHover() {
         return !IsHovering // I'm not ALREADY hovering?
             && Time.frameCount > FrameCountWhenBorn+3 // Don't allow hovering for the first few frames of my life.
             && !feetOnGround() // FEET touching nothing?
             //&& !isTouchingWall() // ARMS touching nothing?
+            && !IsInLift // NOT in a Lift?
             && !IsHoverEmpty; // not out of hover-time?
     }
     public override bool MayUseBattery() {
@@ -160,11 +161,11 @@ public class Flatline : Player {
     protected override void OnFeetLeaveCollidable(Collidable collidable) {
         base.OnFeetLeaveCollidable(collidable);
         // We're not touching ANYthing?!
-        if (!myWhiskers.IsTouchingAnySurface()) {
+        //if (!myWhiskers.IsTouchingAnySurface()) { TEST! TODO: Test this
             if (isButtonHeld_Hover && MayStartHover()) {
                 StartHover();
             }
-        }
+        //}
     }
     override protected void OnArmTouchCollidable(int side, Collidable collidable) {
         base.OnArmTouchCollidable(side, collidable);
@@ -186,7 +187,8 @@ public class Flatline : Player {
     private void ConvertVelXToY() {
         int dirY = vel.y>-0.2f ? 1 : -1; // NOT moving down? Convert to yVel UP! Moving DOWN? Convert to yVel DOWN!
         float yVel = Mathf.Abs(ppvel.x) * dirY;
-        yVel = Mathf.Max(vel.y, yVel); // if we're already going up fast, keep dat.
+        // Don't *lose* speed if our yVel is faster than what we'd make it.
+        yVel = dirY>0 ? Mathf.Max(vel.y, yVel) : Mathf.Min(vel.y, yVel);
         vel = new Vector2(0, yVel);
     }
     
@@ -194,14 +196,25 @@ public class Flatline : Player {
         base.OnUseBattery();
         RechargeHover();
     }
-    
+
+    protected override void OnStartIsInLift() {
+        base.OnStartIsInLift();
+        StopHover();
+    }
+    protected override void OnEndIsInLift() {
+        base.OnEndIsInLift();
+        if (isButtonHeld_Hover && MayStartHover()) {
+            StartHover();
+        }
+    }
+
     //override protected void DropThruPlatform() {
     //    base.DropThruPlatform();
     //    SetVel(new Vector2(0, vel.y)); // halt x-vel.
     //}
-    
-    
-    
+
+
+
     // ----------------------------------------------------------------
     //  FixedUpdate
     // ----------------------------------------------------------------
@@ -222,6 +235,7 @@ public class Flatline : Player {
             }
         }
     }
+    
 
 
     // ----------------------------------------------------------------

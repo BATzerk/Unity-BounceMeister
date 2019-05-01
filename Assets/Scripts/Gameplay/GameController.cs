@@ -168,7 +168,7 @@ public class GameController : MonoBehaviour {
         }
         // Starting at RoomDoor?
         else if (!string.IsNullOrEmpty(dm.roomToDoorID)) {
-            return rd.GetRoomDoorPos(dm.roomToDoorID);
+            return rd.GetRoomDoorPos(dm.roomToDoorID);// + new Vector2(0, -playerHeight*0.5f);
         }
         // Totally undefined? Default to PlayerStart.
         else {
