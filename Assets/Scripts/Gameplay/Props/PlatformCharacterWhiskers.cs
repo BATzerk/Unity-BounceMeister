@@ -74,7 +74,8 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 
     public bool OnSurface(int side) { return onSurfaces[side]; }
     public bool IsTouchingAnySurface() { return onSurfaces[Sides.L] || onSurfaces[Sides.R] || onSurfaces[Sides.B] || onSurfaces[Sides.T]; }
-	public float SurfaceDistMin(int side) {
+    /// Returns SMALLEST surfaceDist value on this side.
+	public float DistToSurface(int side) {
 		if (surfaceDists==null) { return 0; } // Safety check for runtime compile.
 		if (minDistsIndexes[side] == -1) { return Mathf.Infinity; } // No closest whisker (none collide)? They're all infinity, then.
 		return surfaceDists[side, minDistsIndexes[side]];
@@ -101,6 +102,11 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
             }
         }
         return isOnOkPlatform; // We didn't run into any non-ok platforms! Return if we're on an ok one too.
+    }
+    public float DistToSideLastTouchedWall() {
+        if (DirLastTouchedWall == 0) { return Mathf.Infinity; } // Safety check.
+        int sideLastTouchedWall = DirLastTouchedWall<0 ? Sides.L : Sides.R;
+        return DistToSurface(sideLastTouchedWall);
     }
 
 
@@ -203,7 +209,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 		for (int index=0; index<NumWhiskersPerSide; index++) {
 			UpdateWhiskerRaycast(side, index); // update the distances and colliders.
 			float dist = surfaceDists[side,index]; // use the dist we just updated.
-			if (SurfaceDistMin(side) > dist) { // Update the min distance, too.
+			if (DistToSurface(side) > dist) { // Update the min distance, too.
 				minDistsIndexes[side] = index;
 			}
 		}

@@ -45,10 +45,10 @@ public class PlatformCharacter : Collidable {
 	}
 	protected Vector2 GetAppliedVel() {
 		Vector2 av = vel;
-		float distL = myWhiskers.SurfaceDistMin(Sides.L);
-		float distR = myWhiskers.SurfaceDistMin(Sides.R);
-		float distB = myWhiskers.SurfaceDistMin(Sides.B);
-		float distT = myWhiskers.SurfaceDistMin(Sides.T);
+		float distL = myWhiskers.DistToSurface(Sides.L);
+		float distR = myWhiskers.DistToSurface(Sides.R);
+		float distB = myWhiskers.DistToSurface(Sides.B);
+		float distT = myWhiskers.DistToSurface(Sides.T);
 		// Clamp our vel so we don't intersect anything.
 		if (vel.x<0 && vel.x<-distL) {
 			av = new Vector2(-distL, av.y);

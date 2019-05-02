@@ -47,8 +47,8 @@ public class Flatline : Player {
 	override protected float JumpForce { get { return 0; } }
 	override protected float WallSlideMinYVel { get { return -999f; } }
     override protected Vector2 WallKickVel { get { return new Vector2(Mathf.Abs(vel.y), 0); } }
-    override protected float PostWallKickHorzInputLockDur { get { return 999f; } }
-    override protected float WallKickExtensionWindow { get { return 0.2f; } }
+    override protected float PostWallKickHorzInputLockDur { get { return -1; } }
+    override protected float WallKickExtensionWindow { get { return 0.25f; } }
     
     private bool MayStartHover() {
         return !IsHovering // I'm not ALREADY hovering?
@@ -63,7 +63,7 @@ public class Flatline : Player {
         return base.MayUseBattery();
     }
     protected override bool DoBounceOffCollidable(int mySide, Collidable collidable) {
-        if (mySide == Sides.T) { return true; } // My head is ALWAYS bouncy!
+        if (mySide == Sides.T && !IsHovering) { return true; } // My head's ALWAYS bouncy when I'm NOT hovering.
         return base.DoBounceOffCollidable(mySide, collidable);
     }
     public bool IsHoverFull { get { return HoverTimeLeft >= HoverDur; } }
@@ -141,7 +141,9 @@ public class Flatline : Player {
         //if (timeSinceBounce > 0.05f) {//TEST
         HasHoveredWithoutTouchCollider = false;
         //}
-        StopHover();
+        if (side != Sides.T) { // Touched arms or feet? Stop hover. (Our head getting touched shouldn't stop us from hovering.)
+            StopHover();
+        }
     }
     override protected void LandOnCollidable(Collidable collidable) {
         base.LandOnCollidable(collidable);
@@ -150,22 +152,22 @@ public class Flatline : Player {
         // Convert vel??
         if (MayConvertVertVelToHorzFromLand()) {
             // Are we VERY CLOSE to a wall, facing away from it, and NOT pushing towards it?? Convert VERT vel into HORZ vel!
-            if (myWhiskers.SurfaceDistMin(Sides.L) < 0.4f && DirFacing==1 && !IsInput_L()) {
+            if (myWhiskers.DistToSurface(Sides.L) < 0.4f && DirFacing==1 && !IsInput_L()) {
                 ConvertVelYToX(1);
             }
-            else if (myWhiskers.SurfaceDistMin(Sides.R) < 0.4f && DirFacing==-1 && !IsInput_R()) {
+            else if (myWhiskers.DistToSurface(Sides.R) < 0.4f && DirFacing==-1 && !IsInput_R()) {
                 ConvertVelYToX(-1);
             }
         }
     }
     protected override void OnFeetLeaveCollidable(Collidable collidable) {
         base.OnFeetLeaveCollidable(collidable);
-        // We're not touching ANYthing?!
-        //if (!myWhiskers.IsTouchingAnySurface()) { TEST! TODO: Test this
-            if (isButtonHeld_Hover && MayStartHover()) {
+        // We wanna start to hover, and MAY?
+        if (isButtonHeld_Hover && MayStartHover()) {
+            if (!myWhiskers.IsTouchingAnySurface()) { // Make sure we're not touching ANYthing (we don't wanna hover if just left ground to slide up wall).
                 StartHover();
             }
-        //}
+        }
     }
     override protected void OnArmTouchCollidable(int side, Collidable collidable) {
         base.OnArmTouchCollidable(side, collidable);

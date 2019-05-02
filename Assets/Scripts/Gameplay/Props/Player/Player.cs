@@ -32,7 +32,7 @@ abstract public class Player : PlatformCharacter {
 	private const float DelayedJumpWindow = 0.12f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
 	virtual protected float PostWallKickHorzInputLockDur { get { return 0.22f; } } // affects isPreservingWallKickVel. How long until we can provide horz-input after wall-kicking.
-    virtual protected float WallKickExtensionWindow { get { return 0.08f; } } // how long after touching a wall when we'll still allow wall-kicking!
+    virtual protected float WallKickExtensionWindow { get { return 0.15f; } } // how long after touching a wall when we'll still allow wall-kicking!
 
 	// Components
 	[SerializeField] protected PlayerBody myBody=null;
@@ -69,7 +69,10 @@ abstract public class Player : PlatformCharacter {
 	}
 	protected bool MayWallKick() {
 		if (feetOnGround()) { return false; } // Obviously no.
-		return isTouchingWall() || Time.time < timeLastTouchedWall+WallKickExtensionWindow;
+        if (isTouchingWall()) { return true; } // Touching a wall? Sure!
+		if (Time.time < timeLastTouchedWall+WallKickExtensionWindow // Not touching wall, BUT recently was, AND I'm still very close to it??
+            && myWhiskers.DistToSideLastTouchedWall() < 0.5f) { return true; }
+        return false;
 	}
 	virtual protected bool MayWallSlide() {
 		return !feetOnGround() && !IsInLift; // TODO: Fix this Lift check not working.
