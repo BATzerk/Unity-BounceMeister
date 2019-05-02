@@ -18,6 +18,7 @@ public class MiniMap : MonoBehaviour {
     private Room currRoom;
     
     // Getters (Private)
+    private PlayerTypes currPlayerType { get { return currRoom.Player.PlayerType(); } }
     private RoomData currRoomData { get { return currRoom.MyRoomData; } }
     // Setters
     private Vector2 MapPos {
@@ -34,13 +35,15 @@ public class MiniMap : MonoBehaviour {
         rt_tiles.localScale = Vector3.one * mapScale;
         
         // Add event listeners!
+        GameManagers.Instance.EventManager.SnackCountGameChangedEvent += OnSnackCountGameChanged;
+        GameManagers.Instance.EventManager.SwapPlayerTypeEvent += OnSwapPlayerType;
         GameManagers.Instance.EventManager.StartRoomEvent += OnStartRoom;
-        GameManagers.Instance.EventManager.NumSnacksEatenChangedEvent += OnNumSnacksEatenChanged;
     }
     private void OnDestroy() {
         // Remove event listeners!
+        GameManagers.Instance.EventManager.SnackCountGameChangedEvent -= OnSnackCountGameChanged;
+        GameManagers.Instance.EventManager.SwapPlayerTypeEvent -= OnSwapPlayerType;
         GameManagers.Instance.EventManager.StartRoomEvent -= OnStartRoom;
-        GameManagers.Instance.EventManager.NumSnacksEatenChangedEvent -= OnNumSnacksEatenChanged;
     }
     
     private void DestroyAllTiles() {
@@ -86,13 +89,14 @@ public class MiniMap : MonoBehaviour {
     // ----------------------------------------------------------------
     private void UpdateAllTilesVisuals() {
         foreach (MiniMapRoomTile tile in tiles.Values) {
-            tile.UpdateVisuals(currRoomData);
+            tile.UpdateVisuals(currRoomData, currPlayerType);
         }
     }
     private void UpdateSnackCountText() {
         if (currRoomData.MyCluster != null) {
             go_snackCount.SetActive(true);
-            t_snackCount.text = currRoomData.MyCluster.NumSnacksEaten + " / " + currRoomData.MyCluster.NumSnacks;
+            SnackCount sc = currRoomData.MyCluster.SnackCount;
+            t_snackCount.text = sc.eaten[currPlayerType] + " / " + sc.total[currPlayerType];
         }
         else {
             go_snackCount.SetActive(false); // No cluster ('cause I'm developing levels)? Hide snackCount.
@@ -119,8 +123,12 @@ public class MiniMap : MonoBehaviour {
         UpdateAllTilesVisuals();// TODO: This more efficiently?
         UpdateSnackCountText();
     }
-    private void OnNumSnacksEatenChanged() {
-        tiles[currRoom.RoomKey].UpdateVisuals(currRoomData); // Update the visuals of the current RoomTile.
+    private void OnSwapPlayerType() {
+        UpdateAllTilesVisuals();
+        UpdateSnackCountText();
+    }
+    private void OnSnackCountGameChanged() {
+        tiles[currRoom.RoomKey].UpdateVisuals(currRoomData, currPlayerType); // Update the visuals of the current RoomTile.
         UpdateSnackCountText();
     }
     

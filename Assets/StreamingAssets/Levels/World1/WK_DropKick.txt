@@ -1,6 +1,6 @@
 roomProperties posGlobal:(678.0, 438.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(-6.8, -14.3)
+PlayerStart pos:(-7.0, -14.5)
 Ground myRect:(x:-14.00, y:-18.00, width:24.00, height:4.00);isPlayerRespawn:True
 Ground myRect:(x:0.00, y:18.50, width:52.00, height:3.00)
 Spikes myRect:(x:-7.50, y:-6.50, width:1.00, height:1.00);rotation:270
@@ -11,7 +11,7 @@ Spikes myRect:(x:-2.50, y:1.50, width:5.00, height:1.00);rotation:90
 Spikes myRect:(x:-2.50, y:-4.50, width:1.00, height:1.00);rotation:90
 Spikes myRect:(x:6.50, y:4.50, width:1.00, height:1.00);rotation:90
 Ground myRect:(x:-17.00, y:3.50, width:18.00, height:31.00)
-Ground myRect:(x:10.50, y:-10.50, width:25.00, height:13.00)
+Ground myRect:(x:10.50, y:-10.50, width:25.00, height:13.00);isPlayerRespawn:True
 Ground myRect:(x:16.50, y:-4.00, width:19.00, height:30.00)
 Ground myRect:(x:-0.50, y:4.00, width:3.00, height:10.00)
 Spikes myRect:(x:1.50, y:0.00, width:2.00, height:1.00);rotation:270
@@ -20,3 +20,4 @@ Ground myRect:(x:-4.00, y:11.00, width:10.00, height:14.00)
 Ground myRect:(x:12.00, y:-18.00, width:28.00, height:4.00)
 Spikes myRect:(x:6.50, y:10.00, width:2.00, height:1.00);rotation:90
 Spikes myRect:(x:1.50, y:13.50, width:9.00, height:1.00);rotation:270
+

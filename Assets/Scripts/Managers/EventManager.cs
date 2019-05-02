@@ -20,7 +20,8 @@ public class EventManager {
 	public event NoParamAction ScreenSizeChangedEvent;
 	public event NoParamAction CoinsCollectedChangedEvent;
     public event NoParamAction PlayerUseBatteryEvent;
-    public event NoParamAction NumSnacksEatenChangedEvent;
+    public event NoParamAction SnackCountGameChangedEvent;
+    public event NoParamAction SwapPlayerTypeEvent;
     public event BoolAction SetIsEditModeEvent;
     public event BoolAction SetPausedEvent;
     public event CoinAction CoinCollectedEvent;
@@ -51,8 +52,8 @@ public class EventManager {
 
 	public void OnCoinCollected(Coin coin) { if (CoinCollectedEvent!=null) { CoinCollectedEvent(coin); } }
 	public void OnCoinsCollectedChanged() { if (CoinsCollectedChangedEvent!=null) { CoinsCollectedChangedEvent(); } }
-    public void OnNumSnacksEatenChanged() { if (NumSnacksEatenChangedEvent!=null) { NumSnacksEatenChangedEvent(); } }
-
+    public void OnSnackCountGameChanged() { if (SnackCountGameChangedEvent!=null) { SnackCountGameChangedEvent(); } }
+    
     public void OnPlayerEscapeRoomBounds(int side) { if (PlayerEscapeRoomBoundsEvent!=null) { PlayerEscapeRoomBoundsEvent(side); } }
 	public void OnPlayerDie(Player player) { if (PlayerDieEvent!=null) { PlayerDieEvent(player); } }
     public void OnPlayerInit(Player player) { if (PlayerInitEvent!=null) { PlayerInitEvent(player); } }
@@ -65,6 +66,7 @@ public class EventManager {
     public void OnPlayerTouchExitInfoSign(InfoSign infoSign) { if (PlayerTouchExitInfoSignEvent!=null) { PlayerTouchExitInfoSignEvent(infoSign); } }
 	public void OnPlayerRechargePlunge(Player player) { if (PlayerRechargePlungeEvent!=null) { PlayerRechargePlungeEvent(player); } }
 	public void OnPlayerWallKick(Player player) { if (PlayerWallKickEvent!=null) { PlayerWallKickEvent(player); } }
+    public void OnSwapPlayerType() { if (SwapPlayerTypeEvent!=null) { SwapPlayerTypeEvent(); } }
 
 
 }

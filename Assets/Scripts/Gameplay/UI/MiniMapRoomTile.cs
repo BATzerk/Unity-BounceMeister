@@ -76,7 +76,7 @@ public class MiniMapRoomTile : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
-    public void UpdateVisuals(RoomData currRD) {
+    public void UpdateVisuals(RoomData currRD, PlayerTypes currPlayerType) {
         // Not my cluster? Hide.
         bool isMyCluster = currRD.ClusterIndex == MyRoomData.ClusterIndex;
         if (isMyCluster) {
@@ -84,8 +84,8 @@ public class MiniMapRoomTile : MonoBehaviour {
             // Back color.
             i_back.color = BackColor(currRD);
             // Snack icon.
-            i_snack.enabled = MyRoomData.NumSnacksTotal > 0 && MyRoomData.HasPlayerBeenHere;
-            bool areSnacksLeft = MyRoomData.NumSnacksEaten < MyRoomData.NumSnacksTotal;
+            i_snack.enabled = MyRoomData.SnackCount.AreSnacks(currPlayerType) && MyRoomData.HasPlayerBeenHere;
+            bool areSnacksLeft = MyRoomData.SnackCount.AreUneatenSnacks(currPlayerType);
             i_snack.color = areSnacksLeft ? new Color255(190,230,50).ToColor() : new Color(0,0,0, 0.14f);
         }
         else {

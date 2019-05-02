@@ -110,7 +110,7 @@ public class WorldData {
                 clusters.Add(newClust);
                 RecursivelyAddRoomToCluster(rd, newClust);
                 // Update the Cluster's values!
-                newClust.UpdateEdiblesCounts();
+                newClust.RefreshSnackCount();
             }
         }
         // Reset Rooms' WasUsedInSearchAlgorithm.
@@ -258,10 +258,11 @@ public class WorldData {
     // ================================================================
     public void OnPlayerEatSnack(Room room) {
         // Update counts!
+        //room.MyRoomData.RefreshSnackCount();
         RoomClusterData clusterData = room.MyClusterData;
         if (clusterData != null) {
-            clusterData.UpdateEdiblesCounts();
-            GameManagers.Instance.DataManager.IncrementNumSnacksEaten();
+            clusterData.RefreshSnackCount();
+            GameManagers.Instance.DataManager.RefreshSnackCountGame();
         }
     }
 

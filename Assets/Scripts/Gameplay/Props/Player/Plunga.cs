@@ -42,7 +42,7 @@ public class Plunga : Player {
 		return base.DoBounceOffCollidable(mySide, collidable);
 	}
     override protected float ExtraBounceDistToRestore() {
-        if (isPlunging) { return 3.0f; } // Give us MORE than we started with!
+        if (isPlunging) { return 4.0f; } // Give us MORE than we started with!//QQQ TEST
         return base.ExtraBounceDistToRestore();
     }
 	// Getters (Private)

@@ -11,15 +11,14 @@ public class RoomData {
     public  CameraBoundsData cameraBoundsData;
     private List<GroundData> groundDatas;
     public  List<RoomDoorData> roomDoorDatas { get; private set; }
-    private List<SnackData> snackDatas;
+    public  List<SnackData> snackDatas { get; private set; }
 	// Properties
     public bool HasPlayerBeenHere { get; private set; } // false until the player enters me for the first time!
     public bool isClustStart;// { get; private set; }
     public string RoomKey { get; private set; } // everything we use to reference this room! Including the room's file name (minus the .txt suffix).
 	public int designerFlag; // for the room designer! We can flag any room to be like "testing" or "good" or etc.
     public int ClusterIndex=-1; // -1 is no Cluster.
-    public int NumSnacksEaten { get; private set; }
-    public int NumSnacksTotal { get; private set; }
+    public SnackCount SnackCount = new SnackCount();
 	public bool WasUsedInSearchAlgorithm { get; set; }
 	public Vector2 posGlobal; // my position, global to ALL worlds! These values get big (up to around 70,000)!
     //public List<RoomNeighborData> Neighbors; // EXACTLY like Openings, except contains refs to other rooms (which *can be null* if there's no room at an opening)!
@@ -77,17 +76,27 @@ public class RoomData {
         }
         return DefaultPlayerStartPos();
     }
-    public bool AreEdiblesLeft() {
-        return NumSnacksEaten < NumSnacksTotal;
+    //public bool AreEdiblesLeft() {
+    //    return NumSnacksEaten < NumSnacksTotal;
+    //}
+    public void RefreshSnackCount() {
+        SnackCount.Refresh(this);
     }
-    public void UpdateNumSnacks() {
-        NumSnacksTotal = 0;
-        NumSnacksEaten = 0;
-        foreach (SnackData sd in snackDatas) {
-            if (SaveStorage.GetBool(SaveKeys.DidEatSnack(this, NumSnacksTotal))) { NumSnacksEaten++; }
-            NumSnacksTotal ++;
-        }
-    }
+    ///// NOTE: This is inefficient!! Placeholder method for now.
+    //public bool AreSnacksLeftForPlayer(PlayerTypes playerType) {
+    //    int numTotal = 0;
+    //    int numEaten = 0;
+    //    int snackIndex = 0;
+    //    string playerTypeStr = playerType.ToString();
+    //    foreach (SnackData sd in snackDatas) {
+    //        if (sd.playerType == playerTypeStr) { // This snack's for this player...!
+    //            numTotal ++;
+    //            if (SaveStorage.GetBool(SaveKeys.DidEatSnack(this, snackIndex))) { numEaten++; }
+    //        }
+    //        snackIndex ++;
+    //    }
+    //    return numEaten >= numTotal;
+    //}
 
 	// Setters
 	public void SetPosGlobal (Vector2 _posGlobal) {

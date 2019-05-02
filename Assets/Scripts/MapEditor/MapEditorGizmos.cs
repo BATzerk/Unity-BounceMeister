@@ -36,6 +36,7 @@ namespace MapEditorNamespace {
             // Remake roomLinkLines!
             roomLinkLines = new List<Line>();
             foreach (RoomData roomFrom in CurrWorldData.roomDatas.Values) {
+                if (!roomFrom.IsInCluster) { continue; } // Not in a Cluster? Skip it.
                 // For each RoomDoor...
                 foreach (RoomDoorData doorFrom in roomFrom.roomDoorDatas) {
                     RoomData roomTo = CurrWorldData.GetRoomData(doorFrom.roomToKey);

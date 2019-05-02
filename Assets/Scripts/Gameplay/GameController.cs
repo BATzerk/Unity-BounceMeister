@@ -148,6 +148,7 @@ public class GameController : MonoBehaviour {
         PlayerData playerData = player.SerializeAsData() as PlayerData;
         playerData.type = _type;
         MakePlayer(playerData);
+        GameManagers.Instance.EventManager.OnSwapPlayerType();
     }
 
 
@@ -326,10 +327,10 @@ public class GameController : MonoBehaviour {
         RoomSaverLoader.SaveRoomFile(room);
         // Update properties that may have changed.
         if (room.MyClusterData != null) {
-            room.MyClusterData.UpdateEdiblesCounts();
+            room.MyClusterData.RefreshSnackCount();
         }
         // Update total edibles counts!
-        dm.RefreshTotalEdiblesEaten();
+        dm.RefreshSnackCountGame();
     }
 
 

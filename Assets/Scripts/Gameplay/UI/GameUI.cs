@@ -27,7 +27,7 @@ public class GameUI : MonoBehaviour {
     private void Awake () {
         // Add event listeners!
         eventManager.CoinsCollectedChangedEvent += OnCoinsCollectedChanged;
-        eventManager.NumSnacksEatenChangedEvent += OnNumSnacksEatenChanged;
+        eventManager.SnackCountGameChangedEvent += OnSnackCountGameChanged;
         eventManager.PlayerTouchEnterInfoSignEvent += OnPlayerTouchEnterInfoSign;
         eventManager.PlayerTouchExitInfoSignEvent += OnPlayerTouchExitInfoSign;
         eventManager.SetPausedEvent += OnSetPaused;
@@ -36,7 +36,7 @@ public class GameUI : MonoBehaviour {
 	private void OnDestroy() {
 		// Remove event listeners!
 		eventManager.CoinsCollectedChangedEvent -= OnCoinsCollectedChanged;
-        eventManager.NumSnacksEatenChangedEvent -= OnNumSnacksEatenChanged;
+        eventManager.SnackCountGameChangedEvent -= OnSnackCountGameChanged;
         eventManager.PlayerTouchEnterInfoSignEvent -= OnPlayerTouchEnterInfoSign;
         eventManager.PlayerTouchExitInfoSignEvent -= OnPlayerTouchExitInfoSign;
         eventManager.SetPausedEvent -= OnSetPaused;
@@ -58,7 +58,7 @@ public class GameUI : MonoBehaviour {
     private void OnCoinsCollectedChanged() {
         UpdateCoinsCollectedText();
     }
-    private void OnNumSnacksEatenChanged() {
+    private void OnSnackCountGameChanged() {
         UpdateSnacksTexts();
     }
     private void OnPlayerTouchEnterInfoSign(InfoSign infoSign) {

@@ -10,7 +10,7 @@ public class DataManager {
     public RoomData currRoomData = null; // TODO: Remove this. We don't need it (right?). if this is defined when GameController opens, we'll open THAT room!
     // User Progress Properties
     public int CoinsCollected { get; private set; } // NOTE: Not fully implemented.
-    public int NumSnacksEaten { get; private set; }
+    public SnackCount SnackCountGame = new SnackCount(); // ALL snack counts totaled together!
     // Entering-Room Properties
     public string roomToDoorID = null; // defined when use a RoomDoor. When we enter a room, this is the door we'll start at!
     public Vector2 playerGroundedRespawnPos=Vector2Extensions.NaN; // I'll respawn at this pos. Set when we leave a Ground that has IsPlayerRespawn.
@@ -62,7 +62,7 @@ public class DataManager {
 	//  Initialize
 	// ----------------------------------------------------------------
 	public DataManager() {
-		Reset ();
+		Reset();
 //		Developer_CountTotalStarsToManuallyUpdateGamePropertiesValue();
 	}
 
@@ -71,7 +71,7 @@ public class DataManager {
 //		highestWorldEndEverReached = SaveStorage.GetInt (SaveKeys.HIGHEST_WORLD_END_EVER_REACHED);
 
 		ReloadWorldDatas();
-        RefreshTotalEdiblesEaten();
+        RefreshSnackCountGame();
 	}
 
 	public void ReloadWorldDatas () {
@@ -87,21 +87,34 @@ public class DataManager {
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
-    public void RefreshTotalEdiblesEaten() {
-        NumSnacksEaten = 0;
+    public void RefreshSnackCountGame() {
+        // Zero my count.
+        SnackCountGame.ZeroCounts();
+        // Add SnackCounts from every cluster in every world!
         for (int w=0; w<worldDatas.Count; w++) {
             for (int c=0; c<worldDatas[w].clusters.Count; c++) {
-                NumSnacksEaten += worldDatas[w].clusters[c].NumSnacksEaten;
+                SnackCountGame.Add(worldDatas[w].clusters[c].SnackCount);
             }
         }
         if (!GameManagers.IsInitializing) {
-            GameManagers.Instance.EventManager.OnNumSnacksEatenChanged();
+            GameManagers.Instance.EventManager.OnSnackCountGameChanged();
         }
     }
-    public void IncrementNumSnacksEaten() {
-        NumSnacksEaten ++;
-        GameManagers.Instance.EventManager.OnNumSnacksEatenChanged();
-    }
+    //public void RefreshTotalEdiblesEaten() {
+    //    NumSnacksEaten = 0;
+    //    for (int w=0; w<worldDatas.Count; w++) {
+    //        for (int c=0; c<worldDatas[w].clusters.Count; c++) {
+    //            NumSnacksEaten += worldDatas[w].clusters[c].NumSnacksEaten;
+    //        }
+    //    }
+    //    if (!GameManagers.IsInitializing) {
+    //        GameManagers.Instance.EventManager.OnNumSnacksEatenChanged();
+    //    }
+    //}
+    //public void IncrementNumSnacksEaten() {
+    //    NumSnacksEaten ++;
+    //    GameManagers.Instance.EventManager.OnNumSnacksEatenChanged();
+    //}
 
 
     // ----------------------------------------------------------------
@@ -116,6 +129,7 @@ public class DataManager {
 
     public void ClearRoomSaveData(Room room) { ClearRoomSaveData(room.MyRoomData); }
     public void ClearRoomSaveData(RoomData rd) {
+        // Delete saved values!
         SaveStorage.DeleteKey(SaveKeys.HasPlayerBeenInRoom(rd));
         for (int i=0; i<9; i++) { // Sloppy and inefficient!! But NBD for our purposes.
             SaveStorage.DeleteKey(SaveKeys.DidEatGem(rd, i));
@@ -124,6 +138,9 @@ public class DataManager {
             SaveStorage.DeleteKey(SaveKeys.IsProgressGateOpen(rd, i));
             SaveStorage.DeleteKey(SaveKeys.CharBarrelTypeInMe(rd, i));
         }
+        // Recalculate SnackCountGame!
+        if (rd.IsInCluster) { rd.MyCluster.RefreshSnackCount(); }
+        RefreshSnackCountGame();
     }
     
     /// Resets static values that determine where Player will start when reloading a Room (e.g. RoomDoorID, prev-room-exit-pos, grounded-respawn-pos).

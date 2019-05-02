@@ -1,6 +1,6 @@
 roomProperties posGlobal:(328.0, 964.0);designerFlag:3;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(-6.1, -2.3)
+PlayerStart pos:(-6.0, -2.5)
 Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
 Ground myRect:(x:-19.50, y:-4.50, width:13.00, height:21.00)
 Ground myRect:(x:19.00, y:-6.00, width:14.00, height:4.00)
@@ -12,5 +12,6 @@ Ground myRect:(x:-19.50, y:14.50, width:13.00, height:3.00)
 Ground myRect:(x:0.50, y:12.50, width:3.00, height:9.00)
 Ground myRect:(x:24.50, y:6.00, width:3.00, height:28.00)
 Ground myRect:(x:19.00, y:11.00, width:14.00, height:18.00)
-RoomDoor pos:(21.5, 0.5);myID:0;worldToIndex:-1;roomToKey:ClustBouncy0End;roomToDoorID:0
-ProgressGate myRect:(x:15.00, y:-1.00, width:6.00, height:6.00);numSnacksReq:22
+RoomDoor pos:(21.5, -3.0);myID:0;worldToIndex:-1;roomToKey:ClustLift0Start;roomToDoorID:0
+ProgressGate myRect:(x:15.00, y:-1.00, width:6.00, height:6.00);numSnacksReq:30
+

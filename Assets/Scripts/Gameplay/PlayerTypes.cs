@@ -1,6 +1,8 @@
 ﻿public enum PlayerTypes {
     Undefined,
     
+    Any,
+    
     Flatline,
     Jetta,
     Plunga,
@@ -9,6 +11,12 @@
 
 
 static public class PlayerTypeHelper {
+    static public readonly PlayerTypes[] AllTypes = {
+        PlayerTypes.Flatline,
+        PlayerTypes.Jetta,
+        PlayerTypes.Plunga,
+        PlayerTypes.Slippa,
+    };
 
     static public PlayerTypes LoadLastPlayedType() {
         string typeStr = SaveStorage.GetString(SaveKeys.LastPlayedPlayerType, PlayerTypes.Plunga.ToString());
@@ -20,6 +28,7 @@ static public class PlayerTypeHelper {
     
     public static PlayerTypes TypeFromString(string str) {
         switch (str) {
+            case "Any":      return PlayerTypes.Any;
             case "Flatline": return PlayerTypes.Flatline;
             case "Jetta":    return PlayerTypes.Jetta;
             case "Plunga":   return PlayerTypes.Plunga;

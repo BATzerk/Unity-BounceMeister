@@ -1,24 +1,25 @@
 roomProperties posGlobal:(218.0, 214.0);designerFlag:3;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(-12.5, -3.6)
+PlayerStart pos:(-12.5, -3.5)
 Ground myRect:(x:-23.00, y:-4.00, width:6.00, height:10.00)
 Ground myRect:(x:-24.00, y:8.50, width:4.00, height:15.00)
 Ground myRect:(x:24.00, y:6.50, width:4.00, height:27.00)
 Ground myRect:(x:-14.00, y:18.00, width:24.00, height:4.00)
-RoomDoor pos:(-8.0, -14.0);myID:0;worldToIndex:-1;roomToKey:Clust0End;roomToDoorID:1
+RoomDoor pos:(3.0, -14.0);myID:0;worldToIndex:-1;roomToKey:Clust0End;roomToDoorID:0
 Ground myRect:(x:-20.50, y:1.00, width:11.00, height:2.00)
 Ground myRect:(x:-3.00, y:11.50, width:4.00, height:15.00)
 Ground myRect:(x:0.00, y:-17.50, width:52.00, height:5.00)
-Ground myRect:(x:-4.50, y:-8.50, width:11.00, height:7.00)
-Ground myRect:(x:-12.50, y:-10.00, width:7.00, height:10.00)
-Platform myRect:(x:2.50, y:-5.50, width:3.00, height:1.00)
-Ground myRect:(x:9.00, y:8.00, width:10.00, height:10.00)
+Ground myRect:(x:-0.50, y:-8.50, width:19.00, height:7.00)
+Ground myRect:(x:-7.00, y:-10.00, width:18.00, height:10.00)
+Platform myRect:(x:10.50, y:-5.50, width:3.00, height:1.00)
+Ground myRect:(x:9.00, y:7.50, width:10.00, height:11.00)
 Ground myRect:(x:21.00, y:18.00, width:10.00, height:4.00)
 Snack pos:(-7.0, 11.5);playerType:Plunga
 Ground myRect:(x:17.50, y:12.50, width:9.00, height:17.00)
 Ground myRect:(x:2.50, y:19.00, width:11.00, height:2.00)
 Platform myRect:(x:-13.50, y:1.50, width:3.00, height:1.00)
-Ground myRect:(x:19.50, y:-16.50, width:13.00, height:7.00)
-Ground myRect:(x:10.50, y:-10.50, width:13.00, height:11.00)
+Ground myRect:(x:18.50, y:-16.50, width:15.00, height:7.00)
 Snack pos:(-9.5, 11.5);playerType:Flatline
 Ground myRect:(x:7.00, y:18.50, width:2.00, height:3.00)
+ProgressGate myRect:(x:1.50, y:7.50, width:5.00, height:5.00);numSnacksReq:6
+

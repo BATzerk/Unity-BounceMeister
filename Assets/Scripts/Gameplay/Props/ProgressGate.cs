@@ -18,7 +18,7 @@ public class ProgressGate : BaseGround {
     
     // Getters (Private)
     private WorldData currWorldData { get { return GameManagers.Instance.DataManager.CurrWorldData; } }
-    private int NumSnacksEaten { get { return GameManagers.Instance.DataManager.NumSnacksEaten; } }
+    private int TotalSnacksEatenGame { get { return GameManagers.Instance.DataManager.SnackCountGame.eaten[PlayerTypes.Any]; } }
 
 
 	// ----------------------------------------------------------------
@@ -41,18 +41,18 @@ public class ProgressGate : BaseGround {
         myText.GetComponent<Renderer>().sortingOrder = 11;
         
         // Add event listeners!
-        GameManagers.Instance.EventManager.NumSnacksEatenChangedEvent += OnNumSnacksEatenChanged;
+        GameManagers.Instance.EventManager.SnackCountGameChangedEvent += OnSnackCountGameChanged;
     }
     private void OnDestroy() {
         // Remove event listeners!
-        GameManagers.Instance.EventManager.NumSnacksEatenChangedEvent -= OnNumSnacksEatenChanged;
+        GameManagers.Instance.EventManager.SnackCountGameChangedEvent -= OnSnackCountGameChanged;
     }
     
     
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    private void OnNumSnacksEatenChanged() {
+    private void OnSnackCountGameChanged() {
         UpdateText();
         UpdateIsReadyToOpen();
     }
@@ -62,11 +62,11 @@ public class ProgressGate : BaseGround {
     //  Doers
     // ----------------------------------------------------------------
     private void UpdateText() {
-        myText.text = NumSnacksEaten + " / " + numSnacksReq;
+        myText.text = TotalSnacksEatenGame + " / " + numSnacksReq;
     }
     
     private void UpdateIsReadyToOpen() {
-        isReadyToOpen = !isOpen && NumSnacksEaten >= numSnacksReq;
+        isReadyToOpen = !isOpen && TotalSnacksEatenGame >= numSnacksReq;
     }
     //private void UpdateIsOpen() {
     //    bool isOpen = 
