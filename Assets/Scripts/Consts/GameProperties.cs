@@ -15,7 +15,8 @@ static public class GameProperties {
 
     public static string GetFirstRoomName(int worldIndex) {
         switch (worldIndex) {
-            default: return "WorldStart";
+            case 1: return "IntroGame1";
+            default: return "Clust0Start";//WorldStart";
         }
     }
     public static string GetLastRoomName(int worldIndex) {
