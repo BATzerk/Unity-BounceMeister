@@ -18,4 +18,3 @@ Ground myRect:(x:-16.00, y:18.50, width:10.00, height:3.00)
 Spikes myRect:(x:-20.50, y:13.00, width:10.00, height:1.00);rotation:270
 Spikes myRect:(x:-12.50, y:14.50, width:7.00, height:1.00);rotation:90
 InfoSign pos:(0.5, -11.0);myText:You are Flatline. Hi, Flatline!
-
