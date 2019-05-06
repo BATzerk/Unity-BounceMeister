@@ -37,29 +37,16 @@ static public class RoomSaverLoader {
 	//  Getters
 	// ================================================================
 	static private bool IsStringAnAffectName(string str) {
-		return str.IndexOf (":") == -1; // If the line DOESN'T feature a colon (the characteristic of property lines), it's an "affect"!
+		return str.IndexOf(":", StringComparison.InvariantCulture) == -1; // If the line DOESN'T feature a colon (the characteristic of property lines), it's an "affect"!
 	}
 	static private string[] GetRoomFileAsStringArray(int worldIndex, string roomKey) {
 		string filePath = FilePaths.WorldFileAddress (worldIndex) + roomKey + ".txt";
-//		TextAsset textAsset = (Resources.Load (filePath) as TextAsset);
-//		return TextUtils.GetStringArrayFromTextAsset (textAsset);
-
 		if (File.Exists(filePath)) {
 			StreamReader file = File.OpenText(filePath);
 			string wholeFile = file.ReadToEnd();
 			file.Close();
 			return TextUtils.GetStringArrayFromStringWithLineBreaks(wholeFile, StringSplitOptions.None);
 		}
-//		string finalPath = "file://" + absoluteImagePath;
-//		WWW localFile = new WWW(localFile);
-//
-//		texture = localFile.texture;
-//		sprite = Sprite.Create(texture as Texture2D, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
-//
-//		System.IO.FileStream stream = System.IO.File.OpenRead (filePath);
-//		string[] stringArray = stream.
-//		stream.Close();
-//		}
 		else {
 			Debug.LogError("Room file not found! World " + worldIndex + ", roomKey " + roomKey + "\nfilePath: \"" + filePath + "\"");
 			return null;
@@ -71,6 +58,7 @@ static public class RoomSaverLoader {
 		returnString += "posGlobal:" + rd.PosGlobal;
 		returnString += ";designerFlag:" + rd.DesignerFlag;
         if (rd.isClustStart) { returnString += ";isClustStart:" + rd.isClustStart; }
+        if (rd.IsSecret) { returnString += ";isSecret:" + rd.IsSecret; }
 		return returnString;
 	}
 
@@ -78,7 +66,6 @@ static public class RoomSaverLoader {
 	// ================================================================
 	//  Saving
 	// ================================================================
-	/** I couldn't decide where this function belonged. It's here in RoomData (instead of in Room, or in WorldData) so it can be right by the loading function. */
 	static private string fs; // Messy. I don't like how this is out here. This could be avoided if we were able to use anonymous functions.
     static public void SaveRoomFile (Room r) { SaveRoomFile (r.SerializeAsData()); }
     static public void SaveRoomFile (RoomData rd) { SaveRoomFileAs (rd, rd.WorldIndex, rd.RoomKey); }
@@ -87,9 +74,11 @@ static public class RoomSaverLoader {
  //       //// Update ALL WorldData room stuff (actually just for openings/neighbors atm).
  //       //GameManagers.Instance.DataManager.GetWorldData(worldIndex).SetAllRoomDatasFundamentalProperties();
 	//}
-
 	static public void SaveRoomFileAs(RoomData rd, int worldIndex,string roomKey) {
 		fs = ""; // fileString. this guy will be packed with \n line-breaks, then at the very end split by \n. It's less code to look at.
+        
+        // Alphabetize the props list, so all Grounds are clumped together, then Platforms, etc.
+        rd.allPropDatas.Sort( (a,b) => string.Compare(a.GetType().FullName, b.GetType().FullName, StringComparison.Ordinal));
 
 		// Room Properties
 		AddFSLine (GetRoomPropertiesLine(rd));
@@ -432,6 +421,9 @@ static public class RoomSaverLoader {
 				}
                 else if (name == "isClustStart") {
                     rd.isClustStart = TextUtils.ParseBool(value);
+                }
+                else if (name == "isSecret") {
+                    rd.SetIsSecret(TextUtils.ParseBool(value));
                 }
 			}
 			catch (Exception e) {

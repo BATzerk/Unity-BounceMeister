@@ -35,4 +35,5 @@ Spikes myRect:(x:-9.50, y:-9.50, width:17.00, height:1.00);rotation:270
 Spikes myRect:(x:19.50, y:-9.50, width:7.00, height:1.00);rotation:0
 Spikes myRect:(x:-1.00, y:16.50, width:10.00, height:1.00);rotation:180
 Snack pos:(13.5, 14.5);playerType:Plunga
+InfoSign pos:(-19.5, 1.0);myText:TIP: Avoid the Spikes
 

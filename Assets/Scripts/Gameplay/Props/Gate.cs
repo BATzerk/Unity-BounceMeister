@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class Gate : BaseGround {
 	// Properties
     [SerializeField] private int channelID;
@@ -15,23 +15,23 @@ public class Gate : BaseGround {
 
 
 
-	// ----------------------------------------------------------------
-	//  Gizmos
-	// ----------------------------------------------------------------
-//	private void OnDrawGizmos() {
-//		if (myButtons==null) { return; }
-//		Gizmos.color = Color.Lerp(Color.white, bodyColor, 0.5f);
-//		foreach (GateButton button in myButtons) {
-//			if (button==null) { continue; }
-//			Gizmos.DrawLine(this.transform.position, button.transform.position);
-//		}
-//	}
+    // ----------------------------------------------------------------
+    //  Gizmos
+    // ----------------------------------------------------------------
+    //	private void OnDrawGizmos() {
+    //		if (myButtons==null) { return; }
+    //		Gizmos.color = Color.Lerp(Color.white, bodyColor, 0.5f);
+    //		foreach (GateButton button in myButtons) {
+    //			if (button==null) { continue; }
+    //			Gizmos.DrawLine(this.transform.position, button.transform.position);
+    //		}
+    //	}
 
 
-	// ----------------------------------------------------------------
-	//  Initialize
-	// ----------------------------------------------------------------
-	public void Initialize(Room _myRoom, GateData data) {
+    // ----------------------------------------------------------------
+    //  Initialize
+    // ----------------------------------------------------------------
+    public void Initialize(Room _myRoom, GateData data) {
 		base.BaseGroundInitialize(_myRoom, data);
 
 		channelID = data.channelID;

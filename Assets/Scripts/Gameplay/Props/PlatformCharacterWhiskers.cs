@@ -10,12 +10,13 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	private const float TouchDistThreshold = 0.02f;//0 // if we're this close to a surface, we count it as touching. This COULD be 0 and still work, but I like the grace for slightly-more-generous wall-detection.
 	private const int NumSides = PlatformCharacter.NumSides;
 	private const int NumWhiskersPerSide = 3; // this MUST match SideOffsetLocs! Just made its own variable for easy/readable access.
-	private float[] SideOffsetLocs = new float[]{-0.45f, 0f, 0.45f}; // 3 whiskers per side: left, center, right.
-	// References
-	[SerializeField] private PlatformCharacter myCharacter=null;
-	// Properties
-	LayerMask lm_LRTB; // The LMs that care about every side (L, R, T, B). E.g. Ground.
-	LayerMask lm_B;    // The LMs that care about the bottom side. E.g. Platforms.
+	private readonly float[] SideOffsetLocs = new float[]{-0.45f, 0f, 0.45f}; // 3 whiskers per side: left, center, right.
+    // References
+    [SerializeField] private PlatformCharacter myCharacter=null;
+    // Properties
+    LayerMask lm_LRTB; // The LMs that care about every side (L, R, T, B). E.g. Ground.
+    LayerMask lm_B;    // The LMs that care about the bottom side. E.g. Platforms.
+    private LayerMask lm_triggerColls; // triggers I will treat as colliders. Useful for Platforms, which we don't want Rigidbody collisions, but DO want *my* manual whisker collisions.
 	private Collider2D[,] collidersAroundMe; // by side, index.
 	private HashSet<Collider2D>[] collidersTouching;
 	private HashSet<Collider2D>[] pcollidersTouching;
@@ -71,6 +72,11 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 //		if (side == Sides.B) { return lm_ground | lm_platform; } // Bottom side? Return ground AND platforms!
 //		return lm_ground; // All other sides only care about ground.
 	}
+    private bool DoCollideWithColl(Collider2D col) {
+        if (!col.isTrigger) { return true; } // NOT a trigger? Yeah, we collide!
+        if (LayerUtils.IsLayerInLayermask(col.gameObject.layer, lm_triggerColls)) { return true; } // It's a trigger, BUT its layer is in my triggers-I-collide-with mask!
+        return false; // Nah, don't collide.
+    }
 
     public bool OnSurface(int side) { return onSurfaces[side]; }
     public bool IsTouchingAnySurface() { return onSurfaces[Sides.L] || onSurfaces[Sides.R] || onSurfaces[Sides.B] || onSurfaces[Sides.T]; }
@@ -136,20 +142,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	private void Awake() {
 		lm_B = LayerMask.GetMask(GetLayerMaskNames_B());
 		lm_LRTB = LayerMask.GetMask(GetLayerMaskNames_LRTB());
-//		// Combine our bitmask arrays into single ones for easy access.
-//		lm_B = 0;
-//		lm_LRTB = 0;
-//		string[] names_B = GetLayerMaskNames_B();
-//		string[] names_LRTB = GetLayerMaskNames_LRTB();
-//		foreach (string name in names_B) {
-//			LayerMask mask = LayerMask.NameToLayer(name);
-//			lm_B = lm_B | mask; // Add each one from the bottom-masks array to the single bottom-bitmask.
-//		}
-//		foreach (string name in names_LRTB) {
-//			LayerMask mask = LayerMask.NameToLayer(name);
-//			lm_LRTB = lm_LRTB | mask; // Add each one from the all-sides-masks array to the single all-sides-bitmask.
-//			lm_B = lm_B | mask; // ALSO add this all-sides-mask to the bottom-masks array, too! (In case we make a mistake and forget to specify this mask in both arrays in the editor.)
-//		}
+        lm_triggerColls = LayerMask.GetMask(Layers.Platform);
 
 		surfaceDists = new float[NumSides,NumWhiskersPerSide];
 		collidersAroundMe = new Collider2D[NumSides,NumWhiskersPerSide];
@@ -225,10 +218,12 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
         // Find the relevant collider we're touching.
 		hits = Physics2D.RaycastAll(pos, dir, raycastSearchDist, mask);
         RaycastHit2D h = new RaycastHit2D();
-        for (int i=0; i<hits.Length; i++) { // Check every collision for a non-trigger.
-            if (hits[i].collider != null && !hits[i].collider.isTrigger) { // This one's a non-trigger: It's the one!
-                h = hits[i];
-                break;
+        for (int i=0; i<hits.Length; i++) { // Check every collision for ones we interact with...
+            if (hits[i].collider != null) {
+                if (DoCollideWithColl(hits[i].collider)) {
+                    h = hits[i];
+                    break;
+                }
             }
         }
 

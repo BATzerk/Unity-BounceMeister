@@ -1,23 +1,13 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Consts/GameProperties.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Room.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="517" Column="35" />
-      <File FileName="Assets/Scripts/Gameplay/UI/MiniMapRoomTile.cs" Line="88" Column="64" />
-      <File FileName="Assets/Scripts/Gameplay/RoomData.cs" Line="82" Column="17" />
-      <File FileName="Assets/Scripts/Gameplay/UI/MiniMap.cs" Line="115" Column="58" />
-      <File FileName="Assets/Scripts/Gameplay/RoomClusterData.cs" Line="7" Column="50" />
-      <File FileName="Assets/Scripts/Gameplay/Props/SnackCount.cs" Line="10" Column="5" />
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="295" Column="34" />
-      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="252" Column="16" />
-      <File FileName="Assets/Scripts/Managers/DataManager.cs" Line="132" Column="31" />
-      <File FileName="Assets/Scripts/Gameplay/Props/ProgressGate.cs" Line="56" Column="22" />
-      <File FileName="Assets/Scripts/Gameplay/GameTimeController.cs" Line="21" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/GameBackground.cs" Line="17" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Snack.cs" Line="102" Column="42" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Edible.cs" Line="48" Column="25" />
-      <File FileName="Assets/Scripts/MapEditor/MapEditorGizmos.cs" Line="39" Column="22" />
-      <File FileName="Assets/Scripts/Consts/GameProperties.cs" Line="21" Column="6" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="92" Column="24" />
+      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="300" Column="77" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Plunga.cs" Line="45" Column="43" />
+      <File FileName="Assets/Scripts/Managers/DataManager.cs" Line="147" Column="27" />
+      <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="70" Column="68" />
+      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="67" Column="35" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -163,13 +163,13 @@ public class GameController : MonoBehaviour {
 
 
     private Vector2 GetPlayerStartingPosInRoom(RoomData rd) {
-        // Respawning from death?
-        if (!dm.playerGroundedRespawnPos.Equals(Vector2Extensions.NaN)) {
-            return dm.playerGroundedRespawnPos;
-        }
         // Starting at RoomDoor?
-        else if (!string.IsNullOrEmpty(dm.roomToDoorID)) {
+        if (!string.IsNullOrEmpty(dm.roomToDoorID)) {
             return rd.GetRoomDoorPos(dm.roomToDoorID);// + new Vector2(0, -playerHeight*0.5f);
+        }
+        // Respawning from death?
+        else if (!dm.playerGroundedRespawnPos.Equals(Vector2Extensions.NaN)) {
+            return dm.playerGroundedRespawnPos;
         }
         // Totally undefined? Default to PlayerStart.
         else {

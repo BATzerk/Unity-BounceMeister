@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class RoomData {
-//	// Constants
-//	public static readonly RoomData undefined = new RoomData(0, "undefined");
 	// Components!
     public  List<PropData> allPropDatas { get; private set; }
     public  CameraBoundsData cameraBoundsData;
@@ -15,6 +13,7 @@ public class RoomData {
 	// Properties
     public bool HasPlayerBeenHere { get; private set; } // false until the player enters me for the first time!
     public bool isClustStart;// { get; private set; }
+    public bool IsSecret { get; private set; } // TODO: Make editable in MapEditor. and show color in RoomTile.// if TRUE, I won't show up in the MiniMap until Player's been here.
     public string RoomKey { get; private set; } // everything we use to reference this room! Including the room's file name (minus the .txt suffix).
 	public int designerFlag; // for the room designer! We can flag any room to be like "testing" or "good" or etc.
     public int ClusterIndex=-1; // -1 is no Cluster.
@@ -22,7 +21,6 @@ public class RoomData {
 	public bool WasUsedInSearchAlgorithm { get; set; }
 	public Vector2 posGlobal; // my position, global to ALL worlds! These values get big (up to around 70,000)!
     //public List<RoomNeighborData> Neighbors; // EXACTLY like Openings, except contains refs to other rooms (which *can be null* if there's no room at an opening)!
-    //public List<RoomNeighborData>
     public List<RoomOpening> Openings { get; private set; }
     public HashSet<RoomData> NeighborRooms { get; private set; } // All RoomDatas I have Openings to.
     // Getters
@@ -33,7 +31,6 @@ public class RoomData {
 	public Rect BoundsGlobal { get { return new Rect(cameraBoundsData.myRect.center+posGlobal, cameraBoundsData.myRect.size); } }
     //public Rect BoundsGlobal { get { return new Rect(BoundsLocal.position+posGlobal, BoundsLocal.size); } }
 	public Vector2 PosGlobal { get { return posGlobal; } }
-//	public Rect BoundsLocal { get { return boundsLocal; } }
 	public WorldData MyWorldData { get; private set; }
     public bool IsInCluster { get { return ClusterIndex != -1; } }
     public RoomClusterData MyCluster { get { return ClusterIndex<0 ? null : MyWorldData.clusters[ClusterIndex]; } }
@@ -82,48 +79,34 @@ public class RoomData {
     public void RefreshSnackCount() {
         SnackCount.Refresh(this);
     }
-    ///// NOTE: This is inefficient!! Placeholder method for now.
-    //public bool AreSnacksLeftForPlayer(PlayerTypes playerType) {
-    //    int numTotal = 0;
-    //    int numEaten = 0;
-    //    int snackIndex = 0;
-    //    string playerTypeStr = playerType.ToString();
-    //    foreach (SnackData sd in snackDatas) {
-    //        if (sd.playerType == playerTypeStr) { // This snack's for this player...!
-    //            numTotal ++;
-    //            if (SaveStorage.GetBool(SaveKeys.DidEatSnack(this, snackIndex))) { numEaten++; }
-    //        }
-    //        snackIndex ++;
-    //    }
-    //    return numEaten >= numTotal;
-    //}
 
 	// Setters
 	public void SetPosGlobal (Vector2 _posGlobal) {
 		// Round my posGlobal values to even numbers! For snapping rooms together more easily.
 		posGlobal = _posGlobal;//new Vector2 (Mathf.Round(_posGlobal.x*0.5f)*2f, Mathf.Round (_posGlobal.y*0.5f)*2f);
 	}
-	public void SetDesignerFlag (int _designerFlag) {
-		designerFlag = _designerFlag;
-	}
-//	public void SetPosWorld (Vector2 _posWorld) {
-//		posWorld = _posWorld;
-//	}
+    public void SetDesignerFlag (int _designerFlag) {
+        designerFlag = _designerFlag;
+    }
+    public void SetIsSecret(bool val) {
+        IsSecret = val;
+    }
 
 
 	// ================================================================
 	//  Initialize
 	// ================================================================
-	public RoomData(WorldData _worldData, string _key) { //, Vector2 defaultAbsolutePos) {
+	public RoomData(WorldData _worldData, string _key) {
 		MyWorldData = _worldData;
 		RoomKey = _key;
+        IsSecret = false;
         HasPlayerBeenHere = SaveStorage.GetBool(SaveKeys.HasPlayerBeenInRoom(this), false);
         
 		// Initialize all my PropData lists.
-		ClearAllPropDataLists ();
+		ClearAllPropDataLists();
         Openings = new List<RoomOpening>();
 	}
-	public void ClearAllPropDataLists () {
+	public void ClearAllPropDataLists() {
 		allPropDatas = new List<PropData>();
         cameraBoundsData = new CameraBoundsData();
         groundDatas = new List<GroundData>();

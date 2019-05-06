@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Layers {
+public static class Layers {
 	public const string Default = "Default";
     
 	public const string Enemy = "Enemy";

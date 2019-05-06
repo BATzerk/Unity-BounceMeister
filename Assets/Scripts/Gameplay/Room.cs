@@ -52,7 +52,8 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 
 		// -- General Properties --
 		rd.SetPosGlobal(PosGlobal);
-		rd.SetDesignerFlag(MyRoomData.designerFlag);
+        rd.SetDesignerFlag(MyRoomData.designerFlag);
+        rd.SetIsSecret(MyRoomData.IsSecret);
         rd.isClustStart = MyRoomData.isClustStart;
 		//rd.hasPlayerBeenHere = hasPlayerBeenHere;
 
