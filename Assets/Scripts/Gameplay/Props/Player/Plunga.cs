@@ -70,7 +70,7 @@ public class Plunga : Player {
     // ----------------------------------------------------------------
     override protected void AcceptButtonInput() {
         base.AcceptButtonInput();
-        if (Input.GetButtonDown("Plunge")) {
+        if (InputController.Instance.IsAction_Press) {
             OnPlunge_Down();
         }
     }
@@ -94,7 +94,7 @@ public class Plunga : Player {
 	// ----------------------------------------------------------------
 	//  Input
 	// ----------------------------------------------------------------
-	override protected void OnButtonJump_Down() {
+	override protected void OnButtonJump_Press() {
 		if (MayWallKick()) {
 			WallKick();
 		}

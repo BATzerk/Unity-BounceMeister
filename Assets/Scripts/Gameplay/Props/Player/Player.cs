@@ -182,13 +182,13 @@ abstract public class Player : PlatformCharacter {
 //		if (Input.GetKeyDown(KeyCode.UpArrow)) {
 //			OnJumpPressed();
 //		}
-		if (Input.GetButtonDown("Jump")) {
-			OnButtonJump_Down();
+		if (InputController.Instance.IsJump_Press) {
+			OnButtonJump_Press();
 		}
-		else if (Input.GetButtonUp("Jump")) {
-			OnButtonJump_Up();
+		else if (InputController.Instance.IsJump_Release) {
+			OnButtonJump_Release();
 		}
-		else if (InputController.Instance.IsButtonDown_Held) {
+		else if (InputController.Instance.PlayerInput.y < -0.7f) {
 			OnDown_Held();
 		}
 	}
@@ -374,8 +374,8 @@ abstract public class Player : PlatformCharacter {
 //			timeWhenDelayedJump = Time.time + DelayedJumpWindow;
 //		}
 //	}
-	abstract protected void OnButtonJump_Down();
-	virtual protected void OnButtonJump_Up() { }
+	abstract protected void OnButtonJump_Press();
+	virtual protected void OnButtonJump_Release() { }
 	virtual protected void OnDown_Held() {
         // On a Platform? Drop down through it!
         if (myWhiskers.AreFeetOnlyOnCanDropThruPlatform()) {

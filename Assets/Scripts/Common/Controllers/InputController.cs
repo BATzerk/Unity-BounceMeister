@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using InControl;
 
 public class InputController : MonoBehaviour {
 	// Constants
@@ -10,6 +11,10 @@ public class InputController : MonoBehaviour {
 	private int numQuickClicks=0; // for double-clicks (or maybe even more).
 	private bool isDoubleClick; // reset every frame.
 	private float timeWhenNullifyDoubleClick;
+    public bool IsAction_Press { get; private set; }
+    public bool IsAction_Release { get; private set; }
+    public bool IsJump_Press { get; private set; }
+    public bool IsJump_Release { get; private set; }
     public Vector2 PlayerInput { get; private set; }
     //public static bool IsButtonDown_Down { get; private set; }
     //public static bool IsButtonDown_Held { get; private set; }
@@ -22,7 +27,7 @@ public class InputController : MonoBehaviour {
 			return instance;
 		}
 	}
-    public bool IsButtonDown_Held { get { return PlayerInput.y < -0.7f; } }
+    //public bool IsButtonDown_Held { get { return PlayerInput.y < -0.7f; } }
 	public bool IsDoubleClick { get { return isDoubleClick; } }
 	public Vector3 MousePosScreen { get { return (Input.mousePosition - new Vector3(Screen.width,Screen.height,0)*0.5f) / ScreenHandler.ScreenScale; } }
     public Vector2 MousePosWorld { get { return Camera.main.ScreenToWorldPoint(Input.mousePosition); } }
@@ -70,13 +75,20 @@ public class InputController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void Update () {
 		if (instance == null) { instance = this; } // Safety check (for runtime compile).
-		RegisterButtonInputs ();
-		RegisterMouseInputs ();
+		RegisterButtonInputs();
+		RegisterMouseInputs();
 	}
 
 	private void RegisterButtonInputs () {
-		PlayerInput = new Vector2(Input.GetAxis("Player0_Horz"), Input.GetAxis("Player0_Vert"));
+        InputDevice ad = InputManager.ActiveDevice;
+        PlayerInput = new Vector2(ad.LeftStickX, ad.LeftStickY);
+        PlayerInput += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         //print(Time.frameCount + " PlayerInput: " + PlayerInput);
+        
+        IsJump_Press = ad.Action1.WasPressed || Input.GetButtonDown("Jump");
+        IsJump_Release = ad.Action1.WasReleased || Input.GetButtonUp("Jump");
+        IsAction_Press = ad.Action3.WasPressed || Input.GetButtonDown("Action");
+        IsAction_Release = ad.Action3.WasReleased || Input.GetButtonUp("Action");
         
         //// Update IsButtonDown_Down/Held.
         //if (IsButtonDown_Held) {

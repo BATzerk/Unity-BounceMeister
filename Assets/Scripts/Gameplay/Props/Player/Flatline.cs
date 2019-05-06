@@ -243,7 +243,7 @@ public class Flatline : Player {
     // ----------------------------------------------------------------
     //  Input
     // ----------------------------------------------------------------
-    override protected void OnButtonJump_Down() {
+    override protected void OnButtonJump_Press() {
 		if (MayWallKick()) {
 			WallKick();
 		}
@@ -255,7 +255,7 @@ public class Flatline : Player {
             StartHover();
         }
 	}
-	override protected void OnButtonJump_Up() {
+	override protected void OnButtonJump_Release() {
         isButtonHeld_Hover = false;
         StopHover();
     }

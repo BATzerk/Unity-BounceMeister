@@ -91,7 +91,7 @@ public class Jetta : Player {
 	// ----------------------------------------------------------------
 	//  Input
 	// ----------------------------------------------------------------
-	override protected void OnButtonJump_Down() {
+	override protected void OnButtonJump_Press() {
 		if (MayWallKick()) {
 			WallKick();
 		}
@@ -105,7 +105,7 @@ public class Jetta : Player {
 			ScheduleDelayedJump();
 		}
 	}
-	override protected void OnButtonJump_Up() {
+	override protected void OnButtonJump_Release() {
 		if (isJetting) {
 			StopJet();
 		}

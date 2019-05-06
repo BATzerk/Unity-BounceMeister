@@ -75,7 +75,7 @@ public class Slippa : Player {
     // ----------------------------------------------------------------
     //  Input
     // ----------------------------------------------------------------
-    override protected void OnButtonJump_Down() {
+    override protected void OnButtonJump_Press() {
         if (MayWallKick()) {
             WallKick();
         }
@@ -86,7 +86,7 @@ public class Slippa : Player {
             ScheduleDelayedJump();
         }
     }
-    override protected void OnButtonJump_Up() {
+    override protected void OnButtonJump_Release() {
         isReducedJumpGravity = false; // Not anymore, boss!
     }
 
