@@ -5,8 +5,9 @@ using UnityEngine;
 abstract public class PlayerBody : MonoBehaviour {
     // Components
     [SerializeField] private GameObject go_wallSliding=null;
-    [SerializeField] private SpriteRenderer sr_body=null;
     [SerializeField] private ParticleSystem ps_dieBurst=null;
+    [SerializeField] protected PlayerBodyEyes eyes=null;
+    [SerializeField] private SpriteRenderer sr_body=null;
 	// Properties
 	protected Color bodyColor_neutral = Color.magenta;
 	private Color bodyColor;
@@ -68,6 +69,15 @@ abstract public class PlayerBody : MonoBehaviour {
 		alpha = 1f;
 		ApplyBodyColor();
 	}
+    public void OnDropThruPlatform() {
+        LeanTween.cancel(this.gameObject);
+        Vector2 _scale = new Vector2(0.5f, 1.2f);
+        SetVisualScale(_scale);
+        LeanTween.value(this.gameObject, SetVisualScale, _scale,Vector2.one, 0.2f).setDelay(0.1f).setEaseOutQuart();
+    }
+    public void OnEatEdiblesHolding() {
+        eyes.OnEatEdiblesHolding();
+    }
 
 	public void OnDie() {
 		// Cheap way to get a particle burst: Just chuck my ParticleSystem onto my Player's parent transform the moment before we're destroyed!

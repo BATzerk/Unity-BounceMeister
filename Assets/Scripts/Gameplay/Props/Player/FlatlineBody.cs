@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FlatlineBody : PlayerBody {
-    // Enums
-    private enum EyeTypes { Undefined, Normal, Squint }
     // Constants
     [SerializeField] private Color c_hoverlight=Color.white;
     [SerializeField] private Color c_hoverlightEnding=Color.white;
     [SerializeField] private Color c_hoverlightEmpty=Color.white;
     // Components
-    [SerializeField] private GameObject go_eyesNormal=null; // wide open. I can see the world.
-    [SerializeField] private GameObject go_eyesSquint=null; // squinting in earnest consternation.
     [SerializeField] private SpriteRenderer sr_highlight=null;
     // References
     private Flatline myFlatline;
@@ -31,26 +27,12 @@ public class FlatlineBody : PlayerBody {
 
 
     // ----------------------------------------------------------------
-    //  Doers
-    // ----------------------------------------------------------------
-    private void SetEyes(EyeTypes eyeType) {
-        go_eyesNormal.SetActive(false);
-        go_eyesSquint.SetActive(false);
-        switch (eyeType) {
-            case EyeTypes.Normal: go_eyesNormal.SetActive(true); break;
-            case EyeTypes.Squint: go_eyesSquint.SetActive(true); break;
-            default: Debug.LogWarning("FlatlineBody EyeType not recognized: " + eyeType); break;
-        }
-    }
-
-
-    // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
     public void OnStartHover() {
         sr_highlight.enabled = true;
         UpdateHoverHighlight();
-        SetEyes(EyeTypes.Squint);
+        eyes.Set(EyeTypes.Squint);
     }
     public void OnStopHover() {
         // Depleted?
@@ -59,7 +41,7 @@ public class FlatlineBody : PlayerBody {
         }
         // NOT depleted?
         else {
-            SetEyes(EyeTypes.Normal);
+            eyes.Set(EyeTypes.Normal);
             // We still can't control, though?? Keep some highlight.
             if (myFlatline.HasHoveredWithoutTouchCollider) {
                 sr_highlight.enabled = true;
@@ -74,7 +56,7 @@ public class FlatlineBody : PlayerBody {
     public void OnRechargeHover() {
         if (!myFlatline.IsHovering) { // If I'm no longer hovering...
             sr_highlight.enabled = false;
-            SetEyes(EyeTypes.Normal);
+            eyes.Set(EyeTypes.Normal);
         }
     }
 

@@ -26,4 +26,3 @@ Ground myRect:(x:-2.50, y:2.50, width:5.00, height:1.00)
 Snack pos:(0.0, 14.5);playerType:Plunga
 Snack pos:(4.5, 14.0);playerType:Flatline
 Ground myRect:(x:14.50, y:7.00, width:3.00, height:8.00);isPlayerRespawn:True
-

@@ -83,12 +83,21 @@ public class InputController : MonoBehaviour {
         InputDevice ad = InputManager.ActiveDevice;
         PlayerInput = new Vector2(ad.LeftStickX, ad.LeftStickY);
         PlayerInput += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        if (Mathf.Abs(PlayerInput.x) < 0.4f) { PlayerInput = new Vector2(0, PlayerInput.y); } // TEST! Add dead zone.
         //print(Time.frameCount + " PlayerInput: " + PlayerInput);
         
         IsJump_Press = ad.Action1.WasPressed || Input.GetButtonDown("Jump");
         IsJump_Release = ad.Action1.WasReleased || Input.GetButtonUp("Jump");
-        IsAction_Press = ad.Action3.WasPressed || Input.GetButtonDown("Action");
-        IsAction_Release = ad.Action3.WasReleased || Input.GetButtonUp("Action");
+        IsAction_Press =
+               //ad.Action3.WasPressed
+               ad.LeftTrigger.WasPressed
+            || ad.RightTrigger.WasPressed
+            || Input.GetButtonDown("Action");
+        IsAction_Release =
+               //ad.Action3.WasReleased
+               ad.LeftTrigger.WasReleased
+            || ad.RightTrigger.WasReleased
+            || Input.GetButtonUp("Action");
         
         //// Update IsButtonDown_Down/Held.
         //if (IsButtonDown_Held) {

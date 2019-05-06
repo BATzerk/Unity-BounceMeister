@@ -143,7 +143,7 @@ public class DamageableGround : BaseGround {
         
         while (Time.time < timeWhenReady) {
             float timeLeft = timeWhenReady - Time.time;
-            float strokeAlpha = MathUtils.SinRange(1,0.5f, timeLeft*40);
+            float strokeAlpha = MathUtils.SinRange(1,0.35f, timeLeft*40);
             GameUtils.SetSpriteAlpha(sr_stroke, strokeAlpha);
             yield return null;
         }

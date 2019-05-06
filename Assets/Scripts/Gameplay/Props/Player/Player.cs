@@ -18,7 +18,7 @@ abstract public class Player : PlatformCharacter {
 	//protected Vector2 GravityNeutral = new Vector2(0, -0.042f);
 	virtual protected float InputScaleX { get { return 0.1f; } }
 
-	virtual protected float JumpForce { get { return 0.61f; } }
+	virtual protected float JumpForce { get { return 0.64f; } }
 	virtual protected float WallSlideMinYVel { get { return -0.13f; } }
 	virtual protected Vector2 WallKickVel { get { return new Vector2(0.5f,0.52f); } }
 	private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);
@@ -44,7 +44,8 @@ abstract public class Player : PlatformCharacter {
 	private float timeLastWallKicked=Mathf.NegativeInfinity;
     protected float timeStoppedWallSlide { get; private set; }
     protected float timeWhenLanded { get; private set; } // time when feet last landed on a collider.
-	private float timeWhenDelayedJump=Mathf.NegativeInfinity; // for jump AND wall-kick. Set when in air and press Jump. If we touch ground/wall before this time, we'll do a delayed jump or wall-kick!
+    private float timeWhenAteEdible=Mathf.NegativeInfinity;
+    private float timeWhenDelayedJump=Mathf.NegativeInfinity; // for jump AND wall-kick. Set when in air and press Jump. If we touch ground/wall before this time, we'll do a delayed jump or wall-kick!
     private float timeLastBounced=Mathf.NegativeInfinity;
     public int DirFacing { get; private set; }
     private int numJumpsSinceGround;
@@ -354,6 +355,7 @@ abstract public class Player : PlatformCharacter {
     virtual protected void DropThruPlatform() {
         pos += new Vector2(0, -0.2f);
         vel += new Vector2(0, -0.16f);
+        myBody.OnDropThruPlatform();
     }
     
     protected void ResetMaxYSinceGround() {
@@ -546,6 +548,9 @@ abstract public class Player : PlatformCharacter {
         if (Time.time <= timeWhenDelayedJump) {
 			Jump();
 		}
+        else if (Time.time <= timeWhenAteEdible+0.8f) {
+            SetVel(new Vector2(vel.x, Mathf.Max(vel.y, 0.22f))); // Hop happily if we just ate a Snack!
+        }
 	}
 
 	private void OnCollideWithEnemy(int side, Enemy enemy) {
@@ -586,19 +591,23 @@ abstract public class Player : PlatformCharacter {
 //	}
 
 	public void OnTouchEdible(Edible edible) {
+        ediblesHolding.Add(edible);
+        edible.OnPlayerPickMeUp(this);
 		if (MayEatEdibles()) {
-			edible.GetEaten();
-		}
-		else {
-			ediblesHolding.Add(edible);
-			edible.OnPlayerPickMeUp(this);
+            EatEdiblesHolding();
 		}
 	}
 	public void EatEdiblesHolding() {
+        if (ediblesHolding.Count == 0) { return; } // No edibles? Do nothin'.
 		foreach (Edible obj in ediblesHolding) {
 			obj.GetEaten();
 		}
 		ediblesHolding.Clear();
+        timeWhenAteEdible = Time.time;
+        myBody.OnEatEdiblesHolding();
+        if (feetOnGround()) {
+            SetVel(new Vector2(vel.x, Mathf.Max(vel.y, 0.22f))); // Hop happily if we just ate a Snack!
+        }
 	}
 
 
