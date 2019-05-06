@@ -131,11 +131,12 @@ public class DataManager {
     public void ClearRoomSaveData(RoomData rd) {
         // Delete saved values!
         SaveStorage.DeleteKey(SaveKeys.HasPlayerBeenInRoom(rd));
-        for (int i=0; i<9; i++) { // Sloppy and inefficient!! But NBD for our purposes.
+        for (int i=0; i<99; i++) { // Sloppy and inefficient!! But NBD for our purposes.
             SaveStorage.DeleteKey(SaveKeys.DidEatGem(rd, i));
             SaveStorage.DeleteKey(SaveKeys.DidEatSnack(rd, i));
             SaveStorage.DeleteKey(SaveKeys.IsGateUnlocked(rd, i));
             SaveStorage.DeleteKey(SaveKeys.IsProgressGateOpen(rd, i));
+            SaveStorage.DeleteKey(SaveKeys.IsVeilUnveiled(rd, i));
             SaveStorage.DeleteKey(SaveKeys.CharBarrelTypeInMe(rd, i));
         }
         // Recalculate SnackCountGame!

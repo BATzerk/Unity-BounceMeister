@@ -28,7 +28,8 @@ static public class RoomSaverLoader {
     const string INFOSIGN = "InfoSign";
     const string SNACK = "Snack";
     const string SPIKES = "Spikes";
-	const string TOGGLE_GROUND = "ToggleGround";
+    const string TOGGLE_GROUND = "ToggleGround";
+    const string VEIL = "Veil";
 	// Properties
 	private static string debug_roomDataLoadingRoomKey; // purely for printing to the console without having to pass this parameter through a chain of functions
 
@@ -95,7 +96,8 @@ static public class RoomSaverLoader {
 			else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
             else if (type == typeof(InfoSignData)) { AddAllPropFieldsToFS(propData, "pos", "myText"); }
             else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos", "playerType"); }
-			else if (type == typeof(SpikesData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation"); }
+            else if (type == typeof(SpikesData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation"); }
+            else if (type == typeof(VeilData)) { AddAllPropFieldsToFS(propData, "myRect"); }
 			// Props with optional params
 			else if (type == typeof(CrateData)) {
 				CrateData d = propData as CrateData;
@@ -109,6 +111,7 @@ static public class RoomSaverLoader {
 				AddSomePropFieldsToFS(propData, "myRect", "doRegen");
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
+                if (d.regenTime!=DamageableGround.RegenTimeDefault) { fs += ";regenTime:" + d.regenTime; }
                 if (d.dieFromBounce) { fs += ";dieFromBounce:" + d.dieFromBounce; }
                 if (d.dieFromPlayerLeave) { fs += ";dieFromPlayerLeave:" + d.dieFromPlayerLeave; }
                 if (d.dieFromVel) { fs += ";dieFromVel:" + d.dieFromVel; }
@@ -376,6 +379,7 @@ static public class RoomSaverLoader {
             case SNACK: return new SnackData();
             case SPIKES: return new SpikesData();
             case TOGGLE_GROUND: return new ToggleGroundData();
+            case VEIL: return new VeilData();
             default: return null;
         }
     }

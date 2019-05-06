@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DamageableGround : BaseGround {
     // Constants
-    const float RegenTime = 2.2f; // how long it takes for me to reappear after I've disappeared.
+    public const float RegenTimeDefault = 2.2f;
     const float BreakVel = 0.6f; // how hard Player must hit me for me to break.
     // Components
     [SerializeField] public BoxCollider2D MyCollider=null;
@@ -15,6 +15,7 @@ public class DamageableGround : BaseGround {
     [SerializeField] private bool dieFromBounce = false;
     [SerializeField] private bool dieFromPlayerLeave = true;
     [SerializeField] private bool dieFromVel = true; // NOTE: Not used in gameplay much.
+    [SerializeField] private float regenTime = RegenTimeDefault; // how long it takes for me to regen after I've disappeared.
     private bool isOn;
     private Color bodyColor; // depends on my properties, ya hear?
 	// References
@@ -44,6 +45,7 @@ public class DamageableGround : BaseGround {
 		base.BaseGroundInitialize(_myRoom, data);
 
 		doRegen = data.doRegen;
+        regenTime = data.regenTime;
 		dieFromBounce = data.dieFromBounce;
 		dieFromPlayerLeave = data.dieFromPlayerLeave;
         dieFromVel = data.dieFromVel;
@@ -134,10 +136,10 @@ public class DamageableGround : BaseGround {
         if (c_planTurnOn != null) { StopCoroutine(c_planTurnOn); }
     }
     private IEnumerator Coroutine_PlanTurnOn() {
-        float timeWhenReady = Time.time + RegenTime;
+        float timeWhenReady = Time.time + regenTime;
         
         // Flash stroke for last moment before regen!
-        yield return new WaitForSeconds(RegenTime-0.5f);
+        yield return new WaitForSeconds(regenTime-0.5f);
         
         while (Time.time < timeWhenReady) {
             float timeLeft = timeWhenReady - Time.time;
@@ -220,6 +222,7 @@ public class DamageableGround : BaseGround {
             mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
             doRegen = doRegen,
+            regenTime = regenTime,
             dieFromBounce = dieFromBounce,
             dieFromPlayerLeave = dieFromPlayerLeave,
             dieFromVel = dieFromVel

@@ -61,6 +61,7 @@ public class DamageableGroundData : BaseGroundData {
 	public bool dieFromBounce;
 	public bool dieFromPlayerLeave;
     public bool dieFromVel;
+    public float regenTime = DamageableGround.RegenTimeDefault;
 }
 //public class ConditionalGroundData : BaseGroundData {
 //	public bool isOffWhenPlungeSpent;
@@ -108,6 +109,10 @@ public class SnackData : PropData {
 
 public class SpikesData : PropData {
 	public Rect myRect=new Rect();
+}
+
+public class VeilData : PropData {
+    public Rect myRect=new Rect();
 }
 
 

@@ -12,4 +12,3 @@ Ground myRect:(x:17.00, y:5.00, width:18.00, height:8.00)
 RoomDoor pos:(20.5, -4.0);myID:1;worldToIndex:-1;roomToKey:ClustLift0Start;roomToDoorID:0
 ProgressGate myRect:(x:13.00, y:-2.00, width:6.00, height:6.00);numSnacksReq:22
 Ground myRect:(x:-4.50, y:-12.00, width:13.00, height:4.00)
-

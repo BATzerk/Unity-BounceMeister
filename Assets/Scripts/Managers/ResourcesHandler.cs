@@ -41,6 +41,7 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] public GameObject Snack;
 	[SerializeField] public GameObject Spikes;
 	[SerializeField] public GameObject ToggleGround;
+    [SerializeField] public GameObject Veil;
 
 
     // Getters

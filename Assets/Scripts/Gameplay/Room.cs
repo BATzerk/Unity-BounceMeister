@@ -93,6 +93,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 		RoomData rd = MyRoomData;
 		ResourcesHandler rh = ResourcesHandler.Instance;
         int numProgressGates=0; // for deteriming their indexes.
+        int numVeils=0; // for determining their indexes.
 
 		foreach (PropData propData in rd.allPropDatas) {
 			// Grounds
@@ -170,10 +171,14 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
                 newProp.Initialize (this, propData as SnackData, snacks.Count);
                 snacks.Add(newProp);
             }
-			else if (propData is SpikesData) {
-				Spikes newProp = Instantiate(rh.Spikes).GetComponent<Spikes>();
-				newProp.Initialize (this, propData as SpikesData);
-			}
+            else if (propData is SpikesData) {
+                Spikes newProp = Instantiate(rh.Spikes).GetComponent<Spikes>();
+                newProp.Initialize (this, propData as SpikesData);
+            }
+            else if (propData is VeilData) {
+                Veil newProp = Instantiate(rh.Veil).GetComponent<Veil>();
+                newProp.Initialize (this, propData as VeilData, numVeils++);
+            }
 			else {
 				Debug.LogWarning("PropData not recognized: " + propData);
 			}

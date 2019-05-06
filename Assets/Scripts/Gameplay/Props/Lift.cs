@@ -15,9 +15,9 @@ public class Lift : Prop {
 	private float angle { get { return transform.localEulerAngles.z * Mathf.Deg2Rad; } }
 	private Rect MyRect {
 		get {
-			Vector2 center = sr_body.transform.localPosition;
+			Vector2 _pos = sr_body.transform.localPosition;
 			Vector2 size = sr_body.size;
-			return new Rect(center, size);
+			return new Rect(_pos, size);
 		}
 	}
 //	protected bool IsCharacter(Collision2D col) {

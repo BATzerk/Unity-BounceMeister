@@ -104,9 +104,11 @@ public class GameController : MonoBehaviour {
 		// Save what's up!
 		SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, rd.WorldIndex);
 		SaveStorage.SetString(SaveKeys.LastPlayedRoomKey(rd.WorldIndex), rd.RoomKey);
+        SaveStorage.SetFloat(SaveKeys.MapEditor_CameraPosX, rd.posGlobal.x);
+        SaveStorage.SetFloat(SaveKeys.MapEditor_CameraPosY, rd.posGlobal.y);
 
-		// Use this opportunity to call SAVE with SaveStorage, yo! (This causes a brief stutter, so I'm opting to call it when the game is already loading.)
-		SaveStorage.Save();
+		//// Use this opportunity to call SAVE with SaveStorage, yo! (This causes a brief stutter, so I'm opting to call it when the game is already loading.)
+		//SaveStorage.Save();
 		// Dispatch the post-function event!
 		eventManager.OnStartRoom(room);
 
