@@ -4,19 +4,51 @@ using UnityEngine;
 
 public class RoomClusterData {
     // Properties
-    public int ClusterIndex { get; private set; }
-    public int WorldIndex { get; private set; }
+    public bool IsUnlocked { get; private set; }
+    public int NumSnacksReq { get; private set; } // how many global snacks we need to unlock me!
+    public Rect BoundsGlobal { get; private set; }
+    public RoomAddress MyAddress { get; private set; }
     public SnackCount SnackCount = new SnackCount();
     // References
     public List<RoomData> rooms=new List<RoomData>();
     
-    // Initialize
+    // Getters
+    public int ClustIndex { get { return MyAddress.clust; } }
+    public int WorldIndex { get { return MyAddress.world; } }
+    
+    
+    // ----------------------------------------------------------------
+    //  Initialize
+    // ----------------------------------------------------------------
     public RoomClusterData(int WorldIndex, int ClusterIndex) {
-        this.WorldIndex = WorldIndex;
-        this.ClusterIndex = ClusterIndex;
+        this.MyAddress = new RoomAddress(WorldIndex,ClusterIndex);
+        this.IsUnlocked = SaveStorage.GetBool(SaveKeys.ClustIsUnlocked(MyAddress), false);
+        if (GameProperties.IsFirstCluster(MyAddress)) { this.IsUnlocked = true; } // First cluster is ALWAYS unlocked.
+        
+        // Set NumSnacksReq
+        NumSnacksReq = GameProperties.ClustNumSnacksReq(MyAddress);
     }
     
-    // Doers
+    
+    // ----------------------------------------------------------------
+    //  Doers (Setters)
+    // ----------------------------------------------------------------
+    public void SetIsUnlocked(bool val) {
+        IsUnlocked = val;
+        SaveStorage.SetBool(SaveKeys.ClustIsUnlocked(MyAddress), IsUnlocked);
+    }
+    
+    
+    // ----------------------------------------------------------------
+    //  Doers (Refreshers)
+    // ----------------------------------------------------------------
+    public void RefreshBounds() {
+        BoundsGlobal = Rect.zero;
+        foreach (RoomData rd in rooms) {
+            Rect roomBounds = new Rect(rd.BoundsGlobal.position-rd.BoundsGlobal.size*0.5f, rd.BoundsGlobal.size); // AWKWARD offset for centered-ness.
+            BoundsGlobal = MathUtils.GetCompoundRect(BoundsGlobal, roomBounds);
+        }
+    }
     public void RefreshSnackCount() {
         // Clear my own count.
         SnackCount.ZeroCounts();
@@ -25,7 +57,11 @@ public class RoomClusterData {
             rooms[r].RefreshSnackCount();
             SnackCount.Add(rooms[r].SnackCount);
         }
-        
+    }
+    
+    
+}
+
         
         //NumSnacks = 0;
         //NumSnacksEaten = 0;
@@ -54,7 +90,3 @@ public class RoomClusterData {
         //    //}
         //}
         //Debug.Log("W"+WorldIndex+" Cluster: " + ClusterIndex + "    gems: " + NumGemsCollected+"/"+NumGems + ", snacks: " + NumSnacksCollected+"/"+NumSnacks);
-    }
-    
-    
-}

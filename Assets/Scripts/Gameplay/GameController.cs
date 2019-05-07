@@ -104,8 +104,8 @@ public class GameController : MonoBehaviour {
 		// Save what's up!
 		SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, rd.WorldIndex);
 		SaveStorage.SetString(SaveKeys.LastPlayedRoomKey(rd.WorldIndex), rd.RoomKey);
-        SaveStorage.SetFloat(SaveKeys.MapEditor_CameraPosX, rd.posGlobal.x);
-        SaveStorage.SetFloat(SaveKeys.MapEditor_CameraPosY, rd.posGlobal.y);
+        SaveStorage.SetFloat(SaveKeys.MapEditor_CameraPosX, rd.PosGlobal.x);
+        SaveStorage.SetFloat(SaveKeys.MapEditor_CameraPosY, rd.PosGlobal.y);
 
 		//// Use this opportunity to call SAVE with SaveStorage, yo! (This causes a brief stutter, so I'm opting to call it when the game is already loading.)
 		//SaveStorage.Save();
@@ -114,7 +114,7 @@ public class GameController : MonoBehaviour {
 
         // Expand the hierarchy for easier Room-editing!
         ExpandRoomHierarchy();
-        GameUtils.SetEditorCameraPos(rd.posGlobal); // conveniently move the Unity Editor camera, too!
+        GameUtils.SetEditorCameraPos(rd.PosGlobal); // conveniently move the Unity Editor camera, too!
     }
 
     private void ExpandRoomHierarchy() {
@@ -184,7 +184,7 @@ public class GameController : MonoBehaviour {
         //const float extraEnterDistX = 0; // How much extra step do I wanna take in to really feel at "home"?
         //const float extraEnterDistY = 3; // How much extra step do I wanna take in to really feel at "home"?
         //return posRelative + new Vector2(offsetDir.x*extraEnterDistX, offsetDir.y*extraEnterDistY);
-        Vector2 posRelative = posExited - rd.posGlobal; // Convert the last known coordinates to this room's coordinates.
+        Vector2 posRelative = posExited - rd.PosGlobal; // Convert the last known coordinates to this room's coordinates.
         Vector2 returnPos = posRelative;
         if (sideEntering == Sides.B) { returnPos += new Vector2(0, 3); } // Coming up from below? Start a few steps farther up into the room!
         return returnPos;
@@ -222,14 +222,14 @@ public class GameController : MonoBehaviour {
         RoomSaverLoader.SaveRoomFileAs(currRD, currRD.WorldIndex, newRoomKey);
         dm.ReloadWorldDatas();
         RoomData newLD = dm.GetRoomData(currRD.WorldIndex,newRoomKey, false);
-        newLD.SetPosGlobal(newLD.posGlobal + new Vector2(15,-15)*GameProperties.UnitSize); // offset its position a bit.
+        newLD.SetPosGlobal(newLD.PosGlobal + new Vector2(15,-15)*GameProperties.UnitSize); // offset its position a bit.
         RoomSaverLoader.UpdateRoomPropertiesInRoomFile(newLD); // update file!
         dm.currRoomData = newLD;
         SceneHelper.ReloadScene();
     }
     
 
-
+    
 	// ----------------------------------------------------------------
 	//  Update
 	// ----------------------------------------------------------------
@@ -312,6 +312,9 @@ public class GameController : MonoBehaviour {
             }
             else if (Input.GetKeyDown(KeyCode.M)) {
                 SceneHelper.OpenScene(SceneNames.MapEditor); return;
+            }
+            else if (Input.GetKeyDown(KeyCode.C)) {
+                SceneHelper.OpenScene(SceneNames.ClustSel); return;
             }
             // T = Toggle Slow-mo
             else if (Input.GetKeyDown(KeyCode.T)) {

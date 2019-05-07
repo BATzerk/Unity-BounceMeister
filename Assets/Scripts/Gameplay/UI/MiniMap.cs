@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+namespace MiniMapNamespace {
 public class MiniMap : MonoBehaviour {
     // Components
     [SerializeField] private GameObject go_snackCount=null;
@@ -134,4 +135,5 @@ public class MiniMap : MonoBehaviour {
     
     
     
+}
 }

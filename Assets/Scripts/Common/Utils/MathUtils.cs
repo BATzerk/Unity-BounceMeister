@@ -251,7 +251,7 @@ public static class MathUtils {
 			rect.yMax = point.y;
 		}
 	}
-	public static Rect GetCompoundRectangle (Rect rectA, Rect rectB) {
+	public static Rect GetCompoundRect (Rect rectA, Rect rectB) {
 		// FIRST, check if either of these rectangles are total 0's. If one IS, we want to NOT include it in the return value, so simply return the OTHER rectangle. So we don't include the origin (0,0) accidentally.
 		if (rectA == Rect.zero) {
 			return rectB;

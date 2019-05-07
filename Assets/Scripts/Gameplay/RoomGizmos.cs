@@ -44,7 +44,7 @@ public class RoomGizmos : MonoBehaviour {
         
         Gizmos.color = new Color(0.7f, 0.95f, 0f);
         foreach (RoomOpening ro in NeighborOpenings) {
-            Vector2 offset = ro.RoomFrom.posGlobal;
+            Vector2 offset = ro.RoomFrom.PosGlobal;
             offset -= MathUtils.GetDir(ro.side) * 0.25f; // offset the Gizmos line TOWARDS other Room so we can see it better.
             Gizmos.DrawLine(offset+ro.posStart, offset+ro.posEnd);
         }

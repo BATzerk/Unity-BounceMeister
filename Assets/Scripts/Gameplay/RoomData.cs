@@ -14,41 +14,26 @@ public class RoomData {
     public bool HasPlayerBeenHere { get; private set; } // false until the player enters me for the first time!
     public bool isClustStart;// { get; private set; }
     public bool IsSecret { get; private set; } // TODO: Make editable in MapEditor. and show color in RoomTile.// if TRUE, I won't show up in the MiniMap until Player's been here.
-    public string RoomKey { get; private set; } // everything we use to reference this room! Including the room's file name (minus the .txt suffix).
-	public int designerFlag; // for the room designer! We can flag any room to be like "testing" or "good" or etc.
-    public int ClusterIndex=-1; // -1 is no Cluster.
+    public bool WasUsedInSearchAlgorithm { get; set; }
+    public int DesignerFlag { get; private set; } // for the room designer! We can flag any room to be like "testing" or "good" or etc.
+    public RoomAddress MyAddress { get; private set; }
     public SnackCount SnackCount = new SnackCount();
-	public bool WasUsedInSearchAlgorithm { get; set; }
-	public Vector2 posGlobal; // my position, global to ALL worlds! These values get big (up to around 70,000)!
+    public Vector2 PosGlobal { get; private set; } // my position, global to ALL worlds! These values get big (up to around 70,000)!
     //public List<RoomNeighborData> Neighbors; // EXACTLY like Openings, except contains refs to other rooms (which *can be null* if there's no room at an opening)!
     public List<RoomOpening> Openings { get; private set; }
     public HashSet<RoomData> NeighborRooms { get; private set; } // All RoomDatas I have Openings to.
+    
     // Getters
-	public int DesignerFlag { get { return designerFlag; } }
-	public int WorldIndex { get { return MyWorldData.WorldIndex; } }
     public Rect BoundsLocal { get { return new Rect(cameraBoundsData.myRect); } } // TODO: Try not copying the rect. // Currently, the camera bounds and room bounds are one in the same.
  //   public Rect BoundsLocal { get { return new Rect(cameraBoundsData.myRect.center, cameraBoundsData.myRect.size); } } // Currently, the camera bounds and room bounds are one in the same.
-	public Rect BoundsGlobal { get { return new Rect(cameraBoundsData.myRect.center+posGlobal, cameraBoundsData.myRect.size); } }
+	public Rect BoundsGlobal { get { return new Rect(cameraBoundsData.myRect.center+PosGlobal, cameraBoundsData.myRect.size); } }
     //public Rect BoundsGlobal { get { return new Rect(BoundsLocal.position+posGlobal, BoundsLocal.size); } }
-	public Vector2 PosGlobal { get { return posGlobal; } }
 	public WorldData MyWorldData { get; private set; }
-    public bool IsInCluster { get { return ClusterIndex != -1; } }
-    public RoomClusterData MyCluster { get { return ClusterIndex<0 ? null : MyWorldData.clusters[ClusterIndex]; } }
-    ///// Returns the closest PlayerStart to the provided pos.
-    //public Vector2 ClosestPlayerStartPos(Vector2 playerPos) {
-    //    float bestDist = Mathf.Infinity;
-    //    Vector2 bestPos = Vector2.zero;
-    //    foreach (PropData pd in allPropDatas) {
-    //        if (pd is PlayerStartData) {
-    //            float dist = Vector2.Distance(playerPos, pd.pos);
-    //            if (bestDist > dist) {
-    //                bestDist = dist;
-    //                bestPos = pd.pos;
-    //            }
-    //        }
-    //    }
-    //    return bestPos;
-    //}
+    public int WorldIndex { get { return MyAddress.world; } }
+    public int ClustIndex { get { return MyAddress.clust; } }
+    public string RoomKey { get { return MyAddress.room; } }
+    public bool IsInCluster { get { return ClustIndex != -1; } }
+    public RoomClusterData MyCluster { get { return ClustIndex<0 ? null : MyWorldData.clusters[ClustIndex]; } }
     /// Returns the first PlayerStart in our list.
     public Vector2 DefaultPlayerStartPos() {
         foreach (PropData pd in allPropDatas) {
@@ -81,12 +66,15 @@ public class RoomData {
     }
 
 	// Setters
+    public void SetClustIndex(int _clustIndex) {
+        MyAddress = new RoomAddress(MyAddress.world, _clustIndex, MyAddress.room);
+    }
 	public void SetPosGlobal (Vector2 _posGlobal) {
 		// Round my posGlobal values to even numbers! For snapping rooms together more easily.
-		posGlobal = _posGlobal;//new Vector2 (Mathf.Round(_posGlobal.x*0.5f)*2f, Mathf.Round (_posGlobal.y*0.5f)*2f);
+		PosGlobal = _posGlobal;//new Vector2 (Mathf.Round(_posGlobal.x*0.5f)*2f, Mathf.Round (_posGlobal.y*0.5f)*2f);
 	}
     public void SetDesignerFlag (int _designerFlag) {
-        designerFlag = _designerFlag;
+        DesignerFlag = _designerFlag;
     }
     public void SetIsSecret(bool val) {
         IsSecret = val;
@@ -98,7 +86,7 @@ public class RoomData {
 	// ================================================================
 	public RoomData(WorldData _worldData, string _key) {
 		MyWorldData = _worldData;
-		RoomKey = _key;
+		MyAddress = new RoomAddress(MyWorldData.worldIndex, -1, _key);
         IsSecret = false;
         HasPlayerBeenHere = SaveStorage.GetBool(SaveKeys.HasPlayerBeenInRoom(this), false);
         
@@ -236,3 +224,19 @@ public class RoomData {
 
 
 
+
+    ///// Returns the closest PlayerStart to the provided pos.
+    //public Vector2 ClosestPlayerStartPos(Vector2 playerPos) {
+    //    float bestDist = Mathf.Infinity;
+    //    Vector2 bestPos = Vector2.zero;
+    //    foreach (PropData pd in allPropDatas) {
+    //        if (pd is PlayerStartData) {
+    //            float dist = Vector2.Distance(playerPos, pd.pos);
+    //            if (bestDist > dist) {
+    //                bestDist = dist;
+    //                bestPos = pd.pos;
+    //            }
+    //        }
+    //    }
+    //    return bestPos;
+    //}

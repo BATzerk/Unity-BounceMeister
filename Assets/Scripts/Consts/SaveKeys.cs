@@ -15,6 +15,8 @@ public static class SaveKeys {
     private static string FullRoomKey(Room r) { return FullRoomKey(r.MyRoomData); }
     private static string FullRoomKey(RoomData rd) { return "w" + rd.WorldIndex + "_" + rd.RoomKey; } // e.g. returns "w2_JumpPit".
     
+    public static string ClustIsUnlocked(RoomAddress address) { return "ClustIsUnlocked_" + address.ToStringClust(); }
+    
     public static string HasPlayerBeenInRoom(RoomData rd) { return "HasPlayerBeenInRoom_" + FullRoomKey(rd); }
     
     public static string DidEatGem(Room room, int objIndex) { return DidEatGem(room.MyRoomData, objIndex); }

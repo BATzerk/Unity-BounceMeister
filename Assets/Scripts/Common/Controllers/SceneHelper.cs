@@ -22,7 +22,11 @@ public static class SceneHelper {
     }
 
     
-
+    static public void OpenGameplayScene(RoomClusterData clust) {
+        // TODO: This.
+        RoomData room = clust.rooms[0];
+        OpenGameplayScene(room);
+    }
 	static public void OpenGameplayScene(int worldIndex, string roomKey) {
 //		GameplaySnapshotController.SetWorldAndRoomToLoad (WorldIndex, roomKey);
         OpenGameplayScene(GameManagers.Instance.DataManager.GetRoomData(worldIndex, roomKey, true));

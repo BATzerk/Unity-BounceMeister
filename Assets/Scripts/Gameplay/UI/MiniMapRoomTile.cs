@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+namespace MiniMapNamespace {
 public class MiniMapRoomTile : MonoBehaviour {
     // Components
     [SerializeField] private RectTransform myRectTransform=null;
@@ -78,7 +79,7 @@ public class MiniMapRoomTile : MonoBehaviour {
     // ----------------------------------------------------------------
     public void UpdateVisuals(RoomData currRD, PlayerTypes currPlayerType) {
         // Not my cluster? Hide.
-        bool isMyCluster = currRD.ClusterIndex == MyRoomData.ClusterIndex;
+        bool isMyCluster = currRD.ClustIndex == MyRoomData.ClustIndex;
         bool doShow = isMyCluster && (!currRD.IsSecret || currRD.HasPlayerBeenHere);
         if (doShow) {
             this.gameObject.SetActive(true);
@@ -96,4 +97,5 @@ public class MiniMapRoomTile : MonoBehaviour {
     
     
     
+}
 }

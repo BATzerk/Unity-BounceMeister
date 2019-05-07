@@ -43,8 +43,8 @@ namespace MapEditorNamespace {
                     if (roomTo == null) { continue; } // No room? No line. TO DO: Show like an X or something?
                     Vector2 doorToPos = roomTo.GetRoomDoorPos(doorFrom.roomToDoorID, false);
                     Line line = new Line {
-                        start = roomFrom.posGlobal + doorFrom.pos,
-                        end = roomTo.posGlobal + doorToPos
+                        start = roomFrom.PosGlobal + doorFrom.pos,
+                        end = roomTo.PosGlobal + doorToPos
                     };
                     roomLinkLines.Add(line);
                 }
@@ -67,6 +67,14 @@ namespace MapEditorNamespace {
                 Gizmos.color = Color.blue;
                 foreach (Line line in roomLinkLines) {
                     Gizmos.DrawLine(line.start, line.end);
+                }
+            }
+            // Clusters!
+            if (CurrWorldData != null) {
+                Gizmos.color = new Color (0.3f, 0.2f, 0.1f);
+                foreach (RoomClusterData clustData in CurrWorldData.clusters) {
+                    Rect r = clustData.BoundsGlobal;
+                    Gizmos.DrawWireCube(new Vector3(r.center.x,r.center.y, 0), new Vector3(r.size.x,r.size.y, 10));
                 }
             }
         }

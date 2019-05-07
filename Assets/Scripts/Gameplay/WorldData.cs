@@ -11,14 +11,101 @@ public class WorldData {
 	// Properties
 	public bool isWorldUnlocked;
 	public int worldIndex; // starts at 0.
-    //public int NumSnacksCollected { get; private set; }
-    //public int NumSnacksTotal { get; private set; }
-    private Rect boundsRectAllRooms; // For the finished game, it doesn't make sense to have TWO rects. But in development, a lot of worlds' rooms aren't used. So we have to make the distinction.
-	private Rect boundsRectPlayableRooms; // For determining RoomSelect view and WorldSelect view.
+    public Rect BoundsRectAllRooms { get; private set; } // NOTE: Unused! For the finished game, it doesn't make sense to have TWO rects. But in development, a lot of worlds' rooms aren't used. So we have to make the distinction.
+    public Rect BoundsRectPlayableRooms { get; private set; } // NOTE: Unused! For determining RoomSelect view and WorldSelect view.
 
-	// Getters
-	/** Though we don't position anything special with this value, this IS used under the hood to keep street poses within a reasonable range to avoid float-point issues. */
-	public Vector2 CenterPos { get { return boundsRectPlayableRooms.center; } } // TODO: Decide if we're using this or not. (I'd say cut it for now unless we know we want it.)
+    // Getters
+    /** Though we don't position anything special with this value, this IS used under the hood to keep street poses within a reasonable range to avoid float-point issues. */
+    public Vector2 CenterPos { get { return BoundsRectPlayableRooms.center; } } // TODO: Decide if we're using this or not. (I'd say cut it for now unless we know we want it.)
+    public bool IsWorldUnlocked { get { return isWorldUnlocked; } }
+    public int WorldIndex { get { return worldIndex; } }
+    public Dictionary<string, RoomData> RoomDatas { get { return roomDatas; } }
+
+    public RoomData GetRoomData (string key, bool doMakeOneIfItDoesntExist=false) {
+        if (roomDatas.ContainsKey(key)) {
+            return roomDatas[key];
+        }
+        if (doMakeOneIfItDoesntExist) {
+            return AddNewRoom(key);
+        }
+        else {
+            return null;
+        }
+    }
+    private Vector2 GetBrandNewRoomPos() {
+        // Return where the MapEditor camera was last looking!!
+        return new Vector2 (SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosX), SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosY));
+    }
+
+    /** Creates and returns a rect that's JUST made up of these rooms. */
+    public Rect GetBoundsOfRooms (string[] _roomKeys) {
+        Rect returnRect = new Rect (0,0, 0,0);
+        for (int i=0; i<_roomKeys.Length; i++) {
+            RoomData rd = GetRoomData (_roomKeys [i]);
+            if (rd == null) { Debug.LogError ("Oops! This room doesn't exist in this world! " + _roomKeys[i] + ", world " + worldIndex); continue; }
+            returnRect = MathUtils.GetCompoundRect (returnRect, rd.BoundsGlobal);
+        }
+        return returnRect;
+    }
+    
+
+    public RoomData GetRoomNeighbor(RoomData originLD, RoomOpening opening) {
+        // Get the neighbor, ignoring ITS openings.
+        RoomData neighbor = GetRoomAtSide(originLD, opening.posCenter, opening.side);
+        if (neighbor == null) { return null; } // NOTHing there? Return null!
+        // Ok, if this neighbor HAS a corresponding opening, return it!!
+        Rect opRect = opening.GetCollRectGlobal(originLD.PosGlobal);
+        for (int i=0; i<neighbor.Openings.Count; i++) {
+            Rect otherOpRect = neighbor.Openings[i].GetCollRectGlobal(neighbor.PosGlobal);
+            if (opRect.Overlaps(otherOpRect)) {
+                return neighbor;
+            }
+        }
+        // Ah, NO corresponding opening. Return null.
+        return null;
+    }
+    /** FOR NOW, our room-traversal system is dead simple. Nothing's precalculated. We search for the next room the moment we exit one. */
+    public RoomData GetRoomAtSide(RoomData originLD, Vector2 searchPos, int side) {
+        // Lock searchPos on the EDGE of the origin room-- we only wanna use its x/y value parallel to the next room.
+        searchPos = LockPosOnRoomEdge(originLD, searchPos, side);
+        // Find where a point in this next room would be. Then return the RoomData with that point in it!
+        Vector2Int dir = MathUtils.GetDir(side);
+        Vector2 searchPoint = originLD.PosGlobal + searchPos + dir*1f; // look ahead a few feet into the next room area.
+        RoomData ldHere = GetRoomWithPoint(searchPoint);
+        if (ldHere != null) { return ldHere; }
+        return null;
+    }
+    public RoomData GetRoomWithPoint(Vector2 point) {
+        foreach (RoomData rd in roomDatas.Values) {
+            // HACK Temp conversion business
+            Rect bounds = new Rect(rd.BoundsGlobal);
+            bounds.position -= bounds.size*0.5f;
+            if (bounds.Contains(point)) { return rd; }
+        }
+        return null; // Nah, nobody here.
+    }
+    /// Takes a LOCAL pos, and sets its x or y to the exact provided side of this room. E.g. Room's 500 tall, and pass in (0,0) and side Top: will return (0,250).
+    public Vector2 LockPosOnRoomEdge(RoomData rd, Vector2 pos, int side) {
+        switch (side) {
+            case Sides.B: return new Vector2(pos.x, rd.BoundsLocal.yMin);
+            case Sides.T: return new Vector2(pos.x, rd.BoundsLocal.yMax);
+            case Sides.L: return new Vector2(rd.BoundsLocal.xMin, pos.y);
+            case Sides.R: return new Vector2(rd.BoundsLocal.xMax, pos.y);
+            default: Debug.LogError("Side not recongized: " + side); return pos; // Hmm.
+        }
+    }
+
+    public string GetUnusedRoomKey(string prefix="NewRoom") {
+        int suffixIndex = 0;
+        int safetyCount = 0;
+        while (safetyCount++ < 99) { // 'Cause I'm feeling cautious. :)
+            string newKey = prefix + suffixIndex;
+            if (!roomDatas.ContainsKey(newKey)) { return newKey; }
+            suffixIndex ++;
+        }
+        Debug.LogError("Wowza. Somehow got caught in an infinite naming loop. Either you have 99 rooms named NewRoom0-99, or bad code.");
+        return "NewRoom";
+    }
 
 
 	// ================================================================
@@ -64,14 +151,14 @@ public class WorldData {
     }
 	private void UpdateWorldBoundsRects () {
 		// Calculate my boundsRectAllRooms so I can know when the camera is lookin' at me!
-		boundsRectAllRooms = new Rect (0,0, 0,0);
-		boundsRectPlayableRooms = new Rect (0,0, 0,0);
+		BoundsRectAllRooms = new Rect (0,0, 0,0);
+		BoundsRectPlayableRooms = new Rect (0,0, 0,0);
 		foreach (RoomData rd in roomDatas.Values) {
 			AddRoomBoundsToWorldBoundsRects (rd);
 		}
 		// Hey, politely check if our playableRooms rect is still nothing (which will happen if we DON'T have a starting room of the stipulated name). If so, make playable-rooms rect same as all-rooms rect.
-		if (boundsRectPlayableRooms == new Rect ()) {
-			boundsRectPlayableRooms = new Rect(boundsRectAllRooms);
+		if (BoundsRectPlayableRooms == new Rect ()) {
+			BoundsRectPlayableRooms = new Rect(BoundsRectAllRooms);
 		}
 //		// Now round my rects' values to even numbers!
 //		MathUtils.RoundRectValuesToEvenInts (ref boundsRectAllRooms);
@@ -80,10 +167,10 @@ public class WorldData {
 	private void AddRoomBoundsToWorldBoundsRects (RoomData rd) {
 		Rect ldBounds = rd.BoundsGlobal;
 		// Add ALL rooms to the allRooms list.
-		boundsRectAllRooms = MathUtils.GetCompoundRectangle (boundsRectAllRooms, ldBounds);
+		BoundsRectAllRooms = MathUtils.GetCompoundRect (BoundsRectAllRooms, ldBounds);
 		// Only add rooms IN CLUSTERS for the playableRooms list.
 		if (rd.IsInCluster) {
-			boundsRectPlayableRooms = MathUtils.GetCompoundRectangle (boundsRectPlayableRooms, ldBounds);
+			BoundsRectPlayableRooms = MathUtils.GetCompoundRect (BoundsRectPlayableRooms, ldBounds);
 		}
 	}
 //	/** Once we know where the center of the playable world is, set the posWorld value for all my rooms! */
@@ -93,9 +180,9 @@ public class WorldData {
 //		}
 //	}
     private void RecalculateRoomClusters() {
-        // Reset Rooms' ClusterIndex.
+        // Reset Rooms' ClustIndex.
         foreach (RoomData rd in roomDatas.Values) {
-            rd.ClusterIndex = -1;
+            rd.SetClustIndex(-1);
             rd.WasUsedInSearchAlgorithm = false;
         }
         
@@ -113,6 +200,10 @@ public class WorldData {
                 newClust.RefreshSnackCount();
             }
         }
+        // Update Clusters' bounds!
+        foreach (RoomClusterData clust in clusters) {
+            clust.RefreshBounds();
+        }
         // Reset Rooms' WasUsedInSearchAlgorithm.
         foreach (RoomData rd in roomDatas.Values) {
             rd.WasUsedInSearchAlgorithm = false;
@@ -121,7 +212,7 @@ public class WorldData {
     private void RecursivelyAddRoomToCluster(RoomData rd, RoomClusterData cluster) {
         if (rd.WasUsedInSearchAlgorithm) { return; } // This RoomData was used? Ignore it.
         // Update Room's values, and add to Cluster's list!
-        rd.ClusterIndex = cluster.ClusterIndex;
+        rd.SetClustIndex(cluster.ClustIndex);
         rd.WasUsedInSearchAlgorithm = true;
         cluster.rooms.Add(rd);
         // Now try for all its neighbors!
@@ -132,104 +223,6 @@ public class WorldData {
         }
     }
     
-
-	// ================================================================
-	//  Getters
-	// ================================================================
-	public bool IsWorldUnlocked { get { return isWorldUnlocked; } }
-	public int WorldIndex { get { return worldIndex; } }
-	public Dictionary<string, RoomData> RoomDatas { get { return roomDatas; } }
-	public Rect BoundsRectAllRooms { get { return boundsRectAllRooms; } }
-	public Rect BoundsRectPlayableRooms { get { return boundsRectPlayableRooms; } }
-
-
-    public RoomData GetRoomData (string key, bool doMakeOneIfItDoesntExist=false) {
-		if (roomDatas.ContainsKey(key)) {
-			return roomDatas[key];
-		}
-		if (doMakeOneIfItDoesntExist) {
-            return AddNewRoom(key);
-		}
-		else {
-			return null;
-		}
-	}
-
-	private Vector2 GetBrandNewRoomPos() {
-		// Return where the MapEditor camera was last looking!!
-		return new Vector2 (SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosX), SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosY));
-	}
-
-	/** Creates and returns a rect that's JUST made up of these rooms. */
-	public Rect GetBoundsOfRooms (string[] _roomKeys) {
-		Rect returnRect = new Rect (0,0, 0,0);
-		for (int i=0; i<_roomKeys.Length; i++) {
-			RoomData rd = GetRoomData (_roomKeys [i]);
-			if (rd == null) { Debug.LogError ("Oops! This room doesn't exist in this world! " + _roomKeys[i] + ", world " + worldIndex); continue; }
-			returnRect = MathUtils.GetCompoundRectangle (returnRect, rd.BoundsGlobal);
-		}
-		return returnRect;
-	}
-    
-
-    public RoomData GetRoomNeighbor(RoomData originLD, RoomOpening opening) {
-        // Get the neighbor, ignoring ITS openings.
-        RoomData neighbor = GetRoomAtSide(originLD, opening.posCenter, opening.side);
-        if (neighbor == null) { return null; } // NOTHing there? Return null!
-        // Ok, if this neighbor HAS a corresponding opening, return it!!
-        Rect opRect = opening.GetCollRectGlobal(originLD.PosGlobal);
-        for (int i=0; i<neighbor.Openings.Count; i++) {
-            Rect otherOpRect = neighbor.Openings[i].GetCollRectGlobal(neighbor.PosGlobal);
-            if (opRect.Overlaps(otherOpRect)) {
-                return neighbor;
-            }
-        }
-        // Ah, NO corresponding opening. Return null.
-        return null;
-    }
-	/** FOR NOW, our room-traversal system is dead simple. Nothing's precalculated. We search for the next room the moment we exit one. */
-	public RoomData GetRoomAtSide(RoomData originLD, Vector2 searchPos, int side) {
-        // Lock searchPos on the EDGE of the origin room-- we only wanna use its x/y value parallel to the next room.
-        searchPos = LockPosOnRoomEdge(originLD, searchPos, side);
-		// Find where a point in this next room would be. Then return the RoomData with that point in it!
-        Vector2Int dir = MathUtils.GetDir(side);
-		Vector2 searchPoint = originLD.posGlobal + searchPos + dir*1f; // look ahead a few feet into the next room area.
-		RoomData ldHere = GetRoomWithPoint(searchPoint);
-		if (ldHere != null) { return ldHere; }
-		return null;
-	}
-	public RoomData GetRoomWithPoint(Vector2 point) {
-		foreach (RoomData rd in roomDatas.Values) {
-			// HACK Temp conversion business
-			Rect bounds = new Rect(rd.BoundsGlobal);
-			bounds.position -= bounds.size*0.5f;
-			if (bounds.Contains(point)) { return rd; }
-		}
-		return null; // Nah, nobody here.
-    }
-    /// Takes a LOCAL pos, and sets its x or y to the exact provided side of this room. E.g. Room's 500 tall, and pass in (0,0) and side Top: will return (0,250).
-    public Vector2 LockPosOnRoomEdge(RoomData rd, Vector2 pos, int side) {
-        switch (side) {
-            case Sides.B: return new Vector2(pos.x, rd.BoundsLocal.yMin);
-            case Sides.T: return new Vector2(pos.x, rd.BoundsLocal.yMax);
-            case Sides.L: return new Vector2(rd.BoundsLocal.xMin, pos.y);
-            case Sides.R: return new Vector2(rd.BoundsLocal.xMax, pos.y);
-            default: Debug.LogError("Side not recongized: " + side); return pos; // Hmm.
-        }
-    }
-
-	public string GetUnusedRoomKey(string prefix="NewRoom") {
-		int suffixIndex = 0;
-		int safetyCount = 0;
-		while (safetyCount++ < 99) { // 'Cause I'm feeling cautious. :)
-			string newKey = prefix + suffixIndex;
-			if (!roomDatas.ContainsKey(newKey)) { return newKey; }
-			suffixIndex ++;
-		}
-		Debug.LogError("Wowza. Somehow got caught in an infinite naming loop. Either you have 99 rooms named NewRoom0-99, or bad code.");
-		return "NewRoom";
-    }
-
 
     // ================================================================
     //  Doers
