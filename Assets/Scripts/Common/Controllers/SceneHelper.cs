@@ -23,8 +23,16 @@ public static class SceneHelper {
 
     
     static public void OpenGameplayScene(RoomClusterData clust) {
-        // TODO: This.
+        // Default to the first Room in the cluster.
         RoomData room = clust.rooms[0];
+        // Did we last play this cluster? Start in the last room we were in!
+        string lastPlayedRoomKey = SaveStorage.GetString(SaveKeys.LastPlayedRoomKey(clust.WorldIndex));
+        for (int i=0; i<clust.rooms.Count; i++) {
+            if (lastPlayedRoomKey == clust.rooms[i].RoomKey) {
+                room = clust.rooms[i];
+                break;
+            }
+        }
         OpenGameplayScene(room);
     }
 	static public void OpenGameplayScene(int worldIndex, string roomKey) {

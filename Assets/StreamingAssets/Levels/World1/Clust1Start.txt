@@ -22,4 +22,3 @@ ProgressGate myRect:(x:1.50, y:7.50, width:5.00, height:5.00);numSnacksReq:6
 RoomDoor pos:(3.0, -14.0);myID:0;worldToIndex:-1;roomToKey:Clust0End;roomToDoorID:0
 Snack pos:(-7.0, 11.5);playerType:Plunga
 Snack pos:(-9.5, 11.5);playerType:Flatline
-

@@ -49,6 +49,9 @@ public class RoomDoor : Prop {
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
+    private void OpenClustSel() {
+        SceneHelper.OpenScene(SceneNames.ClustSelect);
+    }
 	private void GoToMyRoom() {
         if (myRoom==null) { return; } // Safety check.
 		// Set the door we're gonna start at!
@@ -97,7 +100,8 @@ public class RoomDoor : Prop {
         
         bool isPlayer = LayerMask.LayerToName(col.gameObject.layer) == Layers.Player;
         if (isPlayer) {
-            GoToMyRoom();
+            //GoToMyRoom();TEMP TEST DISABLED RoomDoor functionality! Just opens ClustSel for now!
+            OpenClustSel();
         }
     }
 

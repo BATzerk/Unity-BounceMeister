@@ -19,7 +19,6 @@ public class RoomData {
     public RoomAddress MyAddress { get; private set; }
     public SnackCount SnackCount = new SnackCount();
     public Vector2 PosGlobal { get; private set; } // my position, global to ALL worlds! These values get big (up to around 70,000)!
-    //public List<RoomNeighborData> Neighbors; // EXACTLY like Openings, except contains refs to other rooms (which *can be null* if there's no room at an opening)!
     public List<RoomOpening> Openings { get; private set; }
     public HashSet<RoomData> NeighborRooms { get; private set; } // All RoomDatas I have Openings to.
     
@@ -30,10 +29,12 @@ public class RoomData {
     //public Rect BoundsGlobal { get { return new Rect(BoundsLocal.position+posGlobal, BoundsLocal.size); } }
 	public WorldData MyWorldData { get; private set; }
     public int WorldIndex { get { return MyAddress.world; } }
-    public int ClustIndex { get { return MyAddress.clust; } }
+    //public int ClustIndex { get { return MyAddress.clust; } }TODO: Clarify this!
     public string RoomKey { get { return MyAddress.room; } }
-    public bool IsInCluster { get { return ClustIndex != -1; } }
-    public RoomClusterData MyCluster { get { return ClustIndex<0 ? null : MyWorldData.clusters[ClustIndex]; } }
+    public bool IsInCluster { get { return MyCluster != null; } }
+    //public bool IsInCluster { get { return ClustIndex != -1; } }
+    //public RoomClusterData MyCluster { get { return ClustIndex<0 ? null : MyWorldData.clusters[ClustIndex]; } }
+    public RoomClusterData MyCluster { get; private set; }
     /// Returns the first PlayerStart in our list.
     public Vector2 DefaultPlayerStartPos() {
         foreach (PropData pd in allPropDatas) {
@@ -66,8 +67,11 @@ public class RoomData {
     }
 
 	// Setters
-    public void SetClustIndex(int _clustIndex) {
-        MyAddress = new RoomAddress(MyAddress.world, _clustIndex, MyAddress.room);
+    //public void SetClustIndex(int _clustIndex) {
+    //    MyAddress = new RoomAddress(MyAddress.world, _clustIndex, MyAddress.room);
+    //}
+    public void SetMyCluster(RoomClusterData cluster) {
+        MyCluster = cluster;
     }
 	public void SetPosGlobal (Vector2 _posGlobal) {
 		// Round my posGlobal values to even numbers! For snapping rooms together more easily.

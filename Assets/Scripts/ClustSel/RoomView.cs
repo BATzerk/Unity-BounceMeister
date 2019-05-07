@@ -25,6 +25,7 @@ namespace ClustSelNamespace {
             myRectTransform.sizeDelta = myRoomData.BoundsLocal.size;
             
             Vector2 pos = myRoomData.PosGlobal - myClustData.BoundsGlobal.center;
+            pos += myRoomData.cameraBoundsData.myRect.center; // hack-y! Just getting to work for now. Works around the rooms' local/global alignment mismatch.
             myRectTransform.anchoredPosition = pos;
         }
         
@@ -37,7 +38,8 @@ namespace ClustSelNamespace {
                 i_back.color = roomColorVisited;
             }
             else {
-                i_back.color = new Color(0,0,0, 0.12f);
+                float alpha = myRoomData.MyCluster.IsUnlocked ? 0.4f : 0.05f;
+                i_back.color = new Color(0,0,0, alpha);
             }
         }
     }

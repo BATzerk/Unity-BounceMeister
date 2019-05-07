@@ -23,18 +23,33 @@ static public class GameProperties {
             case 1:
                 switch(address.clust) {
                     case 0: return 0;
-                    case 1: return 3;
-                    case 2: return 10;
-                    case 3: return 20;
-                    default: return 0;
+                    case 1: return 2;
+                    case 2: return 6;
+                    case 3: return 14;
+                    case 4: return 16;
+                    case 5: return 22;
+                    case 6: return 40;
+                    default: return 30;
                 }
             // World 2
             case 2:
                 switch(address.clust) {
-                    case 0: return 20;
-                    case 1: return 30;
-                    case 2: return 40;
+                    case 0: return 14;
+                    case 1: return 20;
+                    case 2: return 28;
+                    case 3: return 32;
+                    case 4: return 40;
+                    case 5: return 50;
+                    case 6: return 60;
                     default: return 0;
+                }
+            // World 3
+            case 3:
+                switch(address.clust) {
+                    case 0: return 30;
+                    case 1: return 50;
+                    case 2: return 70;
+                    default: return 80;
                 }
             default: return 0;
         }

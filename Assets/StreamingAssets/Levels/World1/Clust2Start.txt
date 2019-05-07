@@ -14,4 +14,3 @@ RoomDoor pos:(-16.0, 12.0);myID:0;worldToIndex:-1;roomToKey:Clust1End;roomToDoor
 Ground myRect:(x:11.50, y:11.00, width:21.00, height:10.00)
 RoomDoor pos:(16.5, 0.0);myID:1;worldToIndex:-1;roomToKey:Clust3Start;roomToDoorID:0
 ProgressGate myRect:(x:9.50, y:2.50, width:7.00, height:7.00);numSnacksReq:14
-

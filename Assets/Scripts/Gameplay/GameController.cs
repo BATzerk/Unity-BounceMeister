@@ -314,7 +314,7 @@ public class GameController : MonoBehaviour {
                 SceneHelper.OpenScene(SceneNames.MapEditor); return;
             }
             else if (Input.GetKeyDown(KeyCode.C)) {
-                SceneHelper.OpenScene(SceneNames.ClustSel); return;
+                SceneHelper.OpenScene(SceneNames.ClustSelect); return;
             }
             // T = Toggle Slow-mo
             else if (Input.GetKeyDown(KeyCode.T)) {

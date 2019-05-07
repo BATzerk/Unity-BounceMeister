@@ -11,6 +11,7 @@ namespace ClustSelNamespace {
         [SerializeField] private Button myButton=null;
         [SerializeField] private GameObject go_snacksReq=null;
         [SerializeField] private Image i_back=null;
+        [SerializeField] private Image i_checkmark=null;
         [SerializeField] private TextMeshProUGUI t_snacksReq=null;
         [SerializeField] private Transform tf_rooms=null;
         // References
@@ -46,17 +47,17 @@ namespace ClustSelNamespace {
         
         private void AddRoomViews() {
             // Scale rooms to fit!
-            Vector2 availableSize = myRectTransform.rect.size;
+            Vector2 padding = new Vector2(20,20);
+            Vector2 availableSize = myRectTransform.rect.size - padding;
             Vector2 clustBoundsSize = myClustData.BoundsGlobal.size;
             float scale = Mathf.Min(
                 availableSize.x/clustBoundsSize.x,
                 availableSize.y/clustBoundsSize.y);
-            // Size myRectTransform!
-            myRectTransform.sizeDelta = clustBoundsSize * scale;
             
-            //scale *= 0.8f; // scale 'em down extra, for bloat purposes.
             scale = Mathf.Min(0.4f, scale); // Keep RoomViews small.
-            tf_rooms.localScale = Vector3.one * scale * 0.72f; // scale 'em down extra, for bloat purposes.
+            tf_rooms.localScale = Vector3.one * scale;// * 0.72f; // scale 'em down extra, for bloat purposes.
+            // Size myRectTransform!
+            myRectTransform.sizeDelta = clustBoundsSize*scale + padding;
             
             // Add views!
             int NumRooms = myClustData.rooms.Count;
@@ -88,6 +89,10 @@ namespace ClustSelNamespace {
             foreach (RoomView roomView in roomViews) {
                 roomView.UpdateColor(roomColorVisited);
             }
+            
+            // Completion-ness!
+            bool didCompleteClust = myClustData.IsUnlocked && !myClustData.SnackCount.AreUneatenSnacks(PlayerTypes.Any);// && myClustData.HasPlayerBeenInEveryRoom();
+            i_checkmark.color = didCompleteClust ? new Color(0.3f,1f,0f) : new Color(0,0,0, 0.1f);
         }
         private void UnlockMe() {
             myClustData.SetIsUnlocked(true);

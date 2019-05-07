@@ -12,4 +12,3 @@ Snack pos:(-5.0, 6.5);playerType:Plunga
 Ground myRect:(x:19.50, y:-2.50, width:13.00, height:17.00)
 Platform myRect:(x:10.00, y:-3.50, width:6.00, height:1.00)
 RoomDoor pos:(8.0, -1.5);myID:0;worldToIndex:-1;roomToKey:WorldEnd;roomToDoorID:0
-

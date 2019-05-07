@@ -182,7 +182,7 @@ public class WorldData {
     private void RecalculateRoomClusters() {
         // Reset Rooms' ClustIndex.
         foreach (RoomData rd in roomDatas.Values) {
-            rd.SetClustIndex(-1);
+            rd.SetMyCluster(null);
             rd.WasUsedInSearchAlgorithm = false;
         }
         
@@ -193,16 +193,19 @@ public class WorldData {
             // If this is a ClusterStart room...!
             if (rd.isClustStart) {
                 // Add a new Cluster, and populate it!
-                RoomClusterData newClust = new RoomClusterData(worldIndex, clusters.Count);
+                RoomClusterData newClust = new RoomClusterData(worldIndex);
                 clusters.Add(newClust);
                 RecursivelyAddRoomToCluster(rd, newClust);
-                // Update the Cluster's values!
-                newClust.RefreshSnackCount();
+                // Update its bounds!
+                newClust.RefreshBounds();
             }
         }
-        // Update Clusters' bounds!
-        foreach (RoomClusterData clust in clusters) {
-            clust.RefreshBounds();
+        // Order Clusters by y-pos!
+        clusters.Sort( ( c1, c2 ) => c1.BoundsGlobal.position.y.CompareTo( c2.BoundsGlobal.position.y ) );
+        // NOW set Clusters' ClustIndex!
+        for (int i=0; i<clusters.Count; i++) {
+            clusters[i].SetClustIndex(i);
+            clusters[i].RefreshSnackCount();
         }
         // Reset Rooms' WasUsedInSearchAlgorithm.
         foreach (RoomData rd in roomDatas.Values) {
@@ -212,7 +215,7 @@ public class WorldData {
     private void RecursivelyAddRoomToCluster(RoomData rd, RoomClusterData cluster) {
         if (rd.WasUsedInSearchAlgorithm) { return; } // This RoomData was used? Ignore it.
         // Update Room's values, and add to Cluster's list!
-        rd.SetClustIndex(cluster.ClustIndex);
+        rd.SetMyCluster(cluster);
         rd.WasUsedInSearchAlgorithm = true;
         cluster.rooms.Add(rd);
         // Now try for all its neighbors!

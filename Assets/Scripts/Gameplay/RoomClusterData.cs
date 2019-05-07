@@ -20,13 +20,19 @@ public class RoomClusterData {
     // ----------------------------------------------------------------
     //  Initialize
     // ----------------------------------------------------------------
-    public RoomClusterData(int WorldIndex, int ClusterIndex) {
-        this.MyAddress = new RoomAddress(WorldIndex,ClusterIndex);
+    public RoomClusterData(int WorldIndex) {
+        this.MyAddress = new RoomAddress(WorldIndex, -1);
+    }
+    public void SetClustIndex(int clustIndex) {
+        this.MyAddress = new RoomAddress(WorldIndex,clustIndex);
         this.IsUnlocked = SaveStorage.GetBool(SaveKeys.ClustIsUnlocked(MyAddress), false);
         if (GameProperties.IsFirstCluster(MyAddress)) { this.IsUnlocked = true; } // First cluster is ALWAYS unlocked.
         
         // Set NumSnacksReq
         NumSnacksReq = GameProperties.ClustNumSnacksReq(MyAddress);
+        
+        // Update Rooms, yo
+        // TODO: This?
     }
     
     
