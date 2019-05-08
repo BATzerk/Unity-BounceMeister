@@ -9,24 +9,24 @@ namespace ClustSelNamespace {
         [SerializeField] private RectTransform myRectTransform=null;
         [SerializeField] private Image i_back=null;
         // Properties
-        private RoomData myRoomData;
+        public RoomData MyRoomData { get; private set; }
         
         
         // ----------------------------------------------------------------
         //  Initialize
         // ----------------------------------------------------------------
-        public void Initialize(Transform tf_parent, RoomClusterData myClustData, RoomData myRoomData) {
-            this.myRoomData = myRoomData;
+        public void Initialize(Transform tf_parent, RoomClusterData myClustData, RoomData myRoomData, float scale) {
+            this.MyRoomData = myRoomData;
             
             // Parent jazz!
             GameUtils.ParentAndReset(this.gameObject, tf_parent);
             this.gameObject.name = "RoomView " + myRoomData.RoomKey;
             
-            myRectTransform.sizeDelta = myRoomData.BoundsLocal.size;
+            myRectTransform.sizeDelta = myRoomData.BoundsLocal.size * scale;
             
             Vector2 pos = myRoomData.PosGlobal - myClustData.BoundsGlobal.center;
             pos += myRoomData.cameraBoundsData.myRect.center; // hack-y! Just getting to work for now. Works around the rooms' local/global alignment mismatch.
-            myRectTransform.anchoredPosition = pos;
+            myRectTransform.anchoredPosition = pos * scale;
         }
         
         
@@ -34,11 +34,11 @@ namespace ClustSelNamespace {
         //  Doers
         // ----------------------------------------------------------------
         public void UpdateColor(Color roomColorVisited) {
-            if (myRoomData.HasPlayerBeenHere) {
+            if (MyRoomData.HasPlayerBeenHere) {
                 i_back.color = roomColorVisited;
             }
             else {
-                float alpha = myRoomData.MyCluster.IsUnlocked ? 0.4f : 0.05f;
+                float alpha = MyRoomData.MyCluster.IsUnlocked ? 0.4f : 0.05f;
                 i_back.color = new Color(0,0,0, alpha);
             }
         }

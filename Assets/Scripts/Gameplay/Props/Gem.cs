@@ -16,7 +16,7 @@ public class Gem : Edible {
         this.type = data.type;
 
         // Load wasEverEaten!
-        wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatGem(myRoom, myIndex));
+        wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatGem(MyRoom, myIndex));
 
         // Set wasEverEaten visuals.
         if (wasEverEaten) {
@@ -34,7 +34,7 @@ public class Gem : Edible {
 	override public void GetEaten() {
         base.GetEaten();
         // Save the value!
-        SaveStorage.SetBool(SaveKeys.DidEatGem(myRoom, myIndex), true);
+        SaveStorage.SetBool(SaveKeys.DidEatGem(MyRoom, myIndex), true);
         // Particle bursttt
         ps_collectedBurst.Emit(16);
 	}

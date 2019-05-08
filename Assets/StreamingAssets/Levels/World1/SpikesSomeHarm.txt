@@ -1,25 +1,24 @@
 roomProperties posGlobal:(298.0, 418.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Spikes myRect:(x:0.50, y:-2.00, width:14.00, height:1.00);rotation:270
-Spikes myRect:(x:16.50, y:-5.50, width:17.00, height:1.00);rotation:270
-Spikes myRect:(x:21.50, y:-5.50, width:17.00, height:1.00);rotation:90
-Spikes myRect:(x:19.00, y:-12.50, width:8.00, height:1.00);rotation:0
-Snack pos:(19.0, -9.5);playerType:Plunga
-Snack pos:(-13.5, 7.0);playerType:Plunga
-PlayerStart pos:(-4.7, -14.7)
-Ground myRect:(x:-7.50, y:18.00, width:37.00, height:4.00)
-Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00)
-Ground myRect:(x:-23.00, y:3.50, width:6.00, height:29.00)
+DamageableGround myRect:(x:12.00, y:-11.50, width:4.00, height:1.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
+Ground myRect:(x:20.50, y:0.00, width:11.00, height:32.00)
+Ground myRect:(x:-7.00, y:6.00, width:2.00, height:2.00)
+Ground myRect:(x:-7.00, y:-2.00, width:2.00, height:2.00)
+Ground myRect:(x:-22.50, y:4.50, width:7.00, height:31.00)
 Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00);isPlayerRespawn:True
-Ground myRect:(x:11.00, y:-5.50, width:10.00, height:25.00);isPlayerRespawn:True
-Ground myRect:(x:0.00, y:-10.00, width:2.00, height:2.00)
-Ground myRect:(x:-3.50, y:-2.00, width:7.00, height:18.00)
-Ground myRect:(x:0.00, y:-6.00, width:2.00, height:2.00)
-Ground myRect:(x:0.00, y:2.00, width:2.00, height:2.00)
-Ground myRect:(x:0.00, y:-2.00, width:2.00, height:2.00)
-Ground myRect:(x:0.00, y:6.00, width:2.00, height:2.00)
-Ground myRect:(x:21.00, y:17.50, width:10.00, height:5.00)
-Ground myRect:(x:19.00, y:-16.00, width:10.00, height:6.00)
-Ground myRect:(x:10.50, y:15.00, width:1.00, height:10.00)
-DamageableGround myRect:(x:19.00, y:-11.50, width:4.00, height:1.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
-Snack pos:(7.5, 14.0);playerType:Flatline
+Ground myRect:(x:6.50, y:18.00, width:39.00, height:4.00)
+Ground myRect:(x:-12.50, y:15.50, width:1.00, height:9.00)
+Ground myRect:(x:4.00, y:-5.50, width:10.00, height:25.00);isPlayerRespawn:True
+Ground myRect:(x:-7.00, y:-6.00, width:2.00, height:2.00)
+Ground myRect:(x:-15.00, y:-2.00, width:16.00, height:18.00)
+Ground myRect:(x:12.00, y:-16.00, width:10.00, height:6.00)
+Ground myRect:(x:-7.00, y:2.00, width:2.00, height:2.00)
+Ground myRect:(x:-7.00, y:-10.00, width:2.00, height:2.00)
+PlayerStart pos:(-11.5, -14.5)
+Snack pos:(12.0, -9.5);playerType:Plunga
+Snack pos:(-10.5, 14.0);playerType:Flatline
+Spikes myRect:(x:12.00, y:-12.50, width:8.00, height:1.00);rotation:0
+Spikes myRect:(x:14.50, y:-5.50, width:17.00, height:1.00);rotation:90
+Spikes myRect:(x:-6.50, y:-2.00, width:14.00, height:1.00);rotation:270
+Spikes myRect:(x:9.50, y:-5.50, width:17.00, height:1.00);rotation:270
+

@@ -20,6 +20,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
     public string RoomKey { get { return MyRoomData.RoomKey; } }
     public RoomClusterData MyClusterData { get { return MyRoomData.MyCluster; } }
     public Vector2 PosGlobal { get { return MyRoomData.PosGlobal; } }
+    public GameController GameController { get { return gameControllerRef; } }
     public Player Player { get { return gameControllerRef.Player; } }
     public GateChannel[] GateChannels { get { return gateChannels; } }
     public Rect GetCameraBoundsLocal() {
@@ -263,6 +264,15 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
     // ----------------------------------------------------------------
     public void SwapPlayerType(PlayerTypes _type) {
         gameControllerRef.SwapPlayerType(_type);
+    }
+
+
+    // ----------------------------------------------------------------
+    //  Events
+    // ----------------------------------------------------------------
+    public void OnPlayerExitMe() {
+        // Tell all GateChannels!
+        for (int i=0; i<gateChannels.Length; i++) { gateChannels[i].OnPlayerExitMyRoom(); }
     }
 
 

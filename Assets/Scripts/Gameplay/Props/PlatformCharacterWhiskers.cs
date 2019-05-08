@@ -177,7 +177,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
         if (DirTouchingWall() != 0) {
             DirLastTouchedWall = DirTouchingWall();
         }
-
+        
         // Now that EVERY side's been updated, check: Have we STOPPED or STARTED touching an old/new collider?
         for (int side=0; side<whiskerDirs.Length; side++) {
 			foreach (Collider2D col in pcollidersTouching[side]) {

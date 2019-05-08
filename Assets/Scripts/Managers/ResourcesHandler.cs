@@ -21,10 +21,10 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] public GameObject Room;
     [SerializeField] public GameObject MiniMapRoomTile;
 
-    [SerializeField] private GameObject Flatline;
-    [SerializeField] private GameObject Jetta;
-    [SerializeField] private GameObject Plunga;
-    [SerializeField] private GameObject Slippa;
+    [SerializeField] private GameObject Flatline=null;
+    [SerializeField] private GameObject Jetta=null;
+    [SerializeField] private GameObject Plunga=null;
+    [SerializeField] private GameObject Slippa=null;
 
 	[SerializeField] public GameObject Battery;
 	[SerializeField] public GameObject CameraBounds;

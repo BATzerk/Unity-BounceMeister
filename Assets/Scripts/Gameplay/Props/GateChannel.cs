@@ -52,15 +52,18 @@ public class GateChannel {
     private void SetIsUnlocked(bool val) {
         if (IsUnlocked != val) {
             IsUnlocked = val;
-            if (doSaveIsUnlocked) {
-                SaveStorage.SetBool(SaveKeys.IsGateUnlocked(myRoom, channelID), IsUnlocked);
-            }
     		foreach (Gate gate in myGates) {
     			if (gate==null || gate.ChannelID!=channelID) { continue; }
     			gate.SetIsOn(!IsUnlocked);
     		}
         }
 	}
+    public void OnPlayerExitMyRoom() {
+        // Save when the Player EXITS this Room.
+        if (doSaveIsUnlocked) {
+            SaveStorage.SetBool(SaveKeys.IsGateUnlocked(myRoom, channelID), IsUnlocked);
+        }
+    }
     
     // ----------------------------------------------------------------
     //  Doers

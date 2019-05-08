@@ -20,9 +20,12 @@ public class DataManager {
 	// ----------------------------------------------------------------
     public WorldData CurrWorldData { get { return currRoomData==null ? null : currRoomData.MyWorldData; } }
     public int NumWorldDatas { get { return worldDatas.Count; } }
-	public RoomData GetRoomData(int worldIndex, string roomKey, bool doMakeOneIfItDoesntExist) {
-		return GetWorldData(worldIndex).GetRoomData(roomKey, doMakeOneIfItDoesntExist);
-	}
+    public RoomData GetRoomData(RoomAddress addr, bool doMakeOneIfItDoesntExist) {
+        return GetRoomData(addr.world, addr.room, doMakeOneIfItDoesntExist);
+    }
+    public RoomData GetRoomData(int worldIndex, string roomKey, bool doMakeOneIfItDoesntExist) {
+        return GetWorldData(worldIndex).GetRoomData(roomKey, doMakeOneIfItDoesntExist);
+    }
 	public WorldData GetWorldData (int worldIndex) {
 		return worldDatas[worldIndex];
     }
@@ -34,6 +37,18 @@ public class DataManager {
     //}
     public bool IsPlayerTypeUnlocked(PlayerTypes playerType) {
         return SaveStorage.GetBool(SaveKeys.IsPlayerTypeUnlocked(playerType));
+    }
+    public RoomAddress LastPlayedRoomAddress() {
+        int worldIndex = SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex);
+        return LastPlayedRoomAddress(worldIndex);
+    }
+    public RoomAddress LastPlayedRoomAddress(int worldIndex) {
+        string roomKey = SaveStorage.GetString(SaveKeys.LastPlayedRoomKey(worldIndex), GameProperties.GetFirstRoomName(worldIndex));
+        return new RoomAddress(worldIndex, -1, roomKey);
+    }
+    public RoomData LastPlayedRoomData(int worldIndex) {
+        RoomAddress address = LastPlayedRoomAddress(worldIndex);
+        return GetRoomData(address, false);
     }
 
 

@@ -19,7 +19,7 @@ public class Snack : Edible {
         bool wasAddedInEditor = !IsInitialized && playerType==PlayerTypes.Undefined;
         base.Start();
         if (wasAddedInEditor) {
-            playerType = myRoom.Player.PlayerType();
+            playerType = MyRoom.Player.PlayerType();
             UpdatePresence();
         }
     }
@@ -37,7 +37,7 @@ public class Snack : Edible {
         this.playerType = PlayerTypeHelper.TypeFromString(data.playerType);
 
         // Load wasEverEaten!
-        wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatSnack(myRoom, myIndex));
+        wasEverEaten = SaveStorage.GetBool(SaveKeys.DidEatSnack(MyRoom, myIndex));
         isEaten = wasEverEaten;
         
         UpdatePresence();
@@ -48,7 +48,7 @@ public class Snack : Edible {
     //  Doers
     // ----------------------------------------------------------------
     private void UpdatePresence() {
-        Player currPlayer = myRoom.Player;
+        Player currPlayer = MyRoom.Player;
         bool isMyType = currPlayer!=null && currPlayer.PlayerType()==playerType;
         
         // Update my color by my PlayerType.
@@ -94,12 +94,12 @@ public class Snack : Edible {
     override public void GetEaten() {
         base.GetEaten();
         // Save the value!
-        SaveStorage.SetBool(SaveKeys.DidEatSnack(myRoom, myIndex), true);
+        SaveStorage.SetBool(SaveKeys.DidEatSnack(MyRoom, myIndex), true);
         // Particle bursttt and visuals
         sr_aura.enabled = false;
         ps_collectedBurst.Emit(4);
         // Tell my WorldData!
-        myRoom.MyWorldData.OnPlayerEatSnack(myRoom);
+        MyRoom.MyWorldData.OnPlayerEatSnack(MyRoom);
     }
 
 

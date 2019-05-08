@@ -13,7 +13,7 @@ public sealed class Ground : BaseGround {
 
 
     static public Color GetBodyColor(Ground g) {
-        return GetBodyColor(g.myRoom.WorldIndex, g.isBouncy, g.canBounce, g.doRechargePlayer); }
+        return GetBodyColor(g.MyRoom.WorldIndex, g.isBouncy, g.canBounce, g.doRechargePlayer); }
     static public Color GetBodyColor(GroundData g, int worldIndex) { return GetBodyColor(worldIndex, g.isBouncy, g.canBounce, g.doRechargePlayer); }
     static public Color GetBodyColor(int worldIndex, bool isBouncy, bool canBounce, bool doRechargePlayer) {
 		Color color = Colors.GroundBaseColor(worldIndex);

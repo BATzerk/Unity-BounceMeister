@@ -16,7 +16,7 @@ public class GateButton : Prop {
 	public bool IsPressed { get { return isPressed; } }
 	public int ChannelID { get { return channelID; } }
 	// Getters (Private)
-	private GateChannel MyChannel { get { return myRoom.GateChannels[channelID]; } }
+	private GateChannel MyChannel { get { return MyRoom.GateChannels[channelID]; } }
 
 
 

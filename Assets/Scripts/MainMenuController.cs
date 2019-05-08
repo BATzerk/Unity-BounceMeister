@@ -12,7 +12,9 @@ public class MainMenuController : MonoBehaviour {
         SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, worldIndex);
         SceneHelper.OpenScene(SceneNames.Gameplay);
     }
-
+    public void OnClick_ClustSel() {
+        SceneHelper.OpenScene(SceneNames.ClustSelect);
+    }
     public void OnClick_Quit() {
         Application.Quit();
     }
@@ -31,12 +33,12 @@ public class MainMenuController : MonoBehaviour {
         bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
         // ~~~~ DEBUG ~~~~
-        if (Input.GetKeyDown(KeyCode.J)) {
-            SceneHelper.OpenScene(SceneNames.RoomJump); return;
-        }
-        else if (Input.GetKeyDown(KeyCode.M)) {
-            SceneHelper.OpenScene(SceneNames.MapEditor); return;
-        }
+        // Scene Changing
+        if (Input.GetKeyDown(KeyCode.Return)) { SceneHelper.ReloadScene(); return; }
+        else if (Input.GetKeyDown(KeyCode.C)) { SceneHelper.OpenScene(SceneNames.Gameplay); return; }
+        else if (Input.GetKeyDown(KeyCode.C)) { SceneHelper.OpenScene(SceneNames.ClustSelect); return; }
+        else if (Input.GetKeyDown(KeyCode.M)) { SceneHelper.OpenScene(SceneNames.MapEditor); return; }
+        else if (Input.GetKeyDown(KeyCode.J)) { SceneHelper.OpenScene(SceneNames.RoomJump); return; }
 
 
         // ALT + ___

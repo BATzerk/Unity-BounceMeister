@@ -68,7 +68,7 @@ abstract public class Player : PlatformCharacter {
 	protected bool MayJump() {
 		return feetOnGround();//numJumpsSinceGround<MaxJumps && Time.time>=timeWhenCanJump
 	}
-	protected bool MayWallKick() {
+	virtual protected bool MayWallKick() {
 		if (feetOnGround()) { return false; } // Obviously no.
         if (isTouchingWall()) { return true; } // Touching a wall? Sure!
 		if (Time.time < timeLastTouchedWall+WallKickExtensionWindow // Not touching wall, BUT recently was, AND I'm still very close to it??
@@ -146,7 +146,7 @@ abstract public class Player : PlatformCharacter {
 
 		// Set camBoundsLocal!
 		const float boundsBloat = 0f; // I have to like *really* be off-screen for this to register.
-		camBoundsLocal = myRoom.GetCameraBoundsLocal();
+		camBoundsLocal = MyRoom.GetCameraBoundsLocal();
 		camBoundsLocal.size += new Vector2(boundsBloat,boundsBloat)*2f;
 		camBoundsLocal.position -= new Vector2(boundsBloat,boundsBloat);
         
@@ -165,7 +165,7 @@ abstract public class Player : PlatformCharacter {
 		SetVel(Vector2.zero);
 	}
 	public void SetPosGlobal(Vector2 _posGlobal) {
-		SetPosLocal(_posGlobal - myRoom.PosGlobal);
+		SetPosLocal(_posGlobal - MyRoom.PosGlobal);
 	}
 
 

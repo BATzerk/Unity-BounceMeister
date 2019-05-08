@@ -1,0 +1,20 @@
+roomProperties posGlobal:(486.0, -60.0);designerFlag:4
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+GateButton pos:(10.5, -10.5);channelID:0
+Gate myRect:(x:17.00, y:9.00, width:4.00, height:4.00);channelID:0
+Ground myRect:(x:20.50, y:15.00, width:11.00, height:8.00)
+Ground myRect:(x:-24.00, y:-4.50, width:4.00, height:13.00)
+Ground myRect:(x:-22.00, y:8.50, width:8.00, height:17.00)
+Ground myRect:(x:19.50, y:-4.50, width:13.00, height:23.00)
+Ground myRect:(x:3.00, y:-4.50, width:10.00, height:23.00)
+Ground myRect:(x:-19.50, y:-1.50, width:13.00, height:11.00)
+Ground myRect:(x:-14.00, y:-18.00, width:24.00, height:4.00);isPlayerRespawn:True
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+Ground myRect:(x:-17.00, y:-4.00, width:18.00, height:12.00)
+Ground myRect:(x:12.00, y:-16.50, width:28.00, height:7.00)
+Platform myRect:(x:-3.50, y:6.50, width:3.00, height:1.00)
+Platform myRect:(x:10.50, y:6.50, width:5.00, height:1.00)
+PlayerStart pos:(-10.5, -15.0)
+Snack pos:(-16.0, 5.5);playerType:Plunga
+Spikes myRect:(x:-2.50, y:-5.00, width:2.00, height:1.00);rotation:90
+Spikes myRect:(x:10.00, y:-12.50, width:6.00, height:1.00);rotation:0

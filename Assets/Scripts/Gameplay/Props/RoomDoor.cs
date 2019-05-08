@@ -9,12 +9,15 @@ public class RoomDoor : Prop {
 	[SerializeField] private string myID;
     [SerializeField] private int worldToIndex=-1; // if this is -1, we'll stay in THIS world.
 	[SerializeField] private string roomToKey;
-	[SerializeField] private string roomToDoorID; // NOTE: UNUSED right now!
+	[SerializeField] private string roomToDoorID;
 	//private bool isTouchingPlayer;
     private float timeWhenBorn; // in SCALED seconds. Ignore Player touching me for first second of my existence, so we don't flip-flop between two rooms in a loop.
 
 	// Getters
-	public string MyID { get { return myID; } }
+    public string MyID { get { return myID; } }
+    public int WorldToIndex { get { return worldToIndex; } }
+    public string RoomToKey { get { return roomToKey; } }
+    public string RoomToDoorID { get { return roomToDoorID; } }
 
 
     // ----------------------------------------------------------------
@@ -43,30 +46,6 @@ public class RoomDoor : Prop {
 		roomToDoorID = data.roomToDoorID;
         timeWhenBorn = Time.time;
 	}
-
-
-
-	// ----------------------------------------------------------------
-	//  Doers
-	// ----------------------------------------------------------------
-    private void OpenClustSel() {
-        SceneHelper.OpenScene(SceneNames.ClustSelect);
-    }
-	private void GoToMyRoom() {
-        if (myRoom==null) { return; } // Safety check.
-		// Set the door we're gonna start at!
-		GameManagers.Instance.DataManager.roomToDoorID = roomToDoorID;
-		// Load the room!
-        int _worldIndex = worldToIndex==-1 ? myRoom.WorldIndex : worldToIndex; // Haven't defined worldToIndex? Stay in my world.
-        RoomData ldTo = GameManagers.Instance.DataManager.GetRoomData(_worldIndex, roomToKey, false);
-        if (ldTo == null) { // Safety check.
-            Debug.LogWarning("RoomDoor can't go to RoomData; doesn't exist. World: " + _worldIndex + ", RoomKey: " + roomToKey);
-        }
-        else { // There IS a room to go to! Go!
-            SceneHelper.OpenGameplayScene(ldTo);
-        }
-	}
-
 
 
 	// ----------------------------------------------------------------
@@ -100,8 +79,7 @@ public class RoomDoor : Prop {
         
         bool isPlayer = LayerMask.LayerToName(col.gameObject.layer) == Layers.Player;
         if (isPlayer) {
-            //GoToMyRoom();TEMP TEST DISABLED RoomDoor functionality! Just opens ClustSel for now!
-            OpenClustSel();
+            MyRoom.GameController.OnPlayerTouchRoomDoor(this);
         }
     }
 

@@ -33,7 +33,7 @@ public class Veil : Prop {
         sr_body.color = Colors.GroundBaseColor(WorldIndex);
 
         // Start opaque.
-        bool isUnveiled = SaveStorage.GetBool(SaveKeys.IsVeilUnveiled(myRoom.MyRoomData, myIndex), false);
+        bool isUnveiled = SaveStorage.GetBool(SaveKeys.IsVeilUnveiled(MyRoom.MyRoomData, myIndex), false);
         SetIsUnveiled(isUnveiled, false);
     }
 
@@ -49,7 +49,7 @@ public class Veil : Prop {
     }
     private void OnPlayerEnterMe() {
         // Save that I've been unveiled!
-        SaveStorage.SetBool(SaveKeys.IsVeilUnveiled(myRoom.MyRoomData, myIndex), true);
+        SaveStorage.SetBool(SaveKeys.IsVeilUnveiled(MyRoom.MyRoomData, myIndex), true);
         SetIsUnveiled(true); // the jig is up! Make me transparent now!
     }
 

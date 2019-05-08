@@ -10,9 +10,11 @@ public class SnackCount {
     
     // Getters (Public)
     public bool AreSnacks(PlayerTypes pt) { return total[pt] > 0; }
-    public bool AreUneatenSnacks(PlayerTypes pt) { return eaten[pt] < total[pt]; }
+    public bool AreUneatenSnacks(PlayerTypes pt) { return Uneaten(pt) > 0; }
+    public int Uneaten(PlayerTypes pt) { return total[pt] - eaten[pt]; }
     
     
+    // Initialize
     public SnackCount() {
         ZeroCounts();
     }

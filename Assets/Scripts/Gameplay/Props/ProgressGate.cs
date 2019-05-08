@@ -31,7 +31,7 @@ public class ProgressGate : BaseGround {
         numSnacksReq = data.numSnacksReq;
         UpdateText();
         // Load openness!
-        isOpen = SaveStorage.GetBool(SaveKeys.IsProgressGateOpen(myRoom, myIndex));
+        isOpen = SaveStorage.GetBool(SaveKeys.IsProgressGateOpen(MyRoom, myIndex));
 		UpdateIsReadyToOpen();
         UpdateOpennessVisuals();
 	}
@@ -74,13 +74,13 @@ public class ProgressGate : BaseGround {
     //}
 	private void SetIsOpen(bool _isOpen) {
         isOpen = _isOpen;
-        SaveStorage.SetBool(SaveKeys.IsProgressGateOpen(myRoom, myIndex), isOpen);
+        SaveStorage.SetBool(SaveKeys.IsProgressGateOpen(MyRoom, myIndex), isOpen);
         UpdateIsReadyToOpen();
         UpdateOpennessVisuals();
     }
     
     private void UpdateOpennessVisuals() {
-		myCollider.enabled = !isOpen;
+		//myCollider.enabled = !isOpen;NOTE: DISABLED ProgressGates!!
 		if (isOpen) {
             GameUtils.SetSpriteAlpha(sr_snackAura, 0.1f);
             GameUtils.SetSpriteAlpha(sr_snackIcon, 0.1f);

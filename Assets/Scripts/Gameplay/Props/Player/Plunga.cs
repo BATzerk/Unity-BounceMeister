@@ -33,9 +33,13 @@ public class Plunga : Player {
     override protected bool MayEatEdibles() {
         return base.MayEatEdibles() && !isPlunging;
     }
+    override protected bool MayWallKick() {
+        return base.MayWallKick() && !isPlunging;
+    }
 	override protected bool MayWallSlide() {
 		return base.MayWallSlide() && !isPlunging;
 	}
+    
 	override protected bool DoBounceOffCollidable(int mySide, Collidable collidable) {
 		if (collidable!=null && !collidable.CanBounce) { return false; }
 		if (isPlunging && mySide==Sides.B) { return true; } // Non-bouncy, BUT I'm plunging and it's my feet? Yes!

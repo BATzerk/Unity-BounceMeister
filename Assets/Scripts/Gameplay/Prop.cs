@@ -9,16 +9,16 @@ abstract public class Prop : MonoBehaviour {
     protected bool IsInitialized { get; private set; } // Used to set default values when drag prefab out in Editor.
     protected int FrameCountWhenBorn { get; private set; }
     // References
-    protected Room myRoom { get; private set; }
+    public Room MyRoom { get; private set; }
 
 	// Getters
-    protected string RoomKey { get { return myRoom.RoomKey; } }
-    protected int WorldIndex { get { return myRoom.WorldIndex; } }
+    protected string RoomKey { get { return MyRoom.RoomKey; } }
+    protected int WorldIndex { get { return MyRoom.WorldIndex; } }
 	public Vector2 PosLocal { get { return pos; } }
 	public Vector2 PosGlobal {
 		get {
-			if (myRoom==null) { return PosLocal; } // Safety check.
-			return PosLocal + myRoom.PosGlobal;
+			if (MyRoom==null) { return PosLocal; } // Safety check.
+			return PosLocal + MyRoom.PosGlobal;
 		}
 	}
 	protected Vector2 pos {
@@ -31,7 +31,7 @@ abstract public class Prop : MonoBehaviour {
 	}
 
 	virtual protected void BaseInitialize(Room myRoom, PropData data) {
-		this.myRoom = myRoom;
+		this.MyRoom = myRoom;
         GameUtils.ParentAndReset(this.gameObject, myRoom.transform);
 
 		this.transform.localPosition = data.pos; // note that this is just a convenience default. Any grounds will set their pos from their rect.
@@ -43,12 +43,12 @@ abstract public class Prop : MonoBehaviour {
     virtual protected void Start() {
         #if UNITY_EDITOR
         // No Room ref?? We've been pulled out from the Editor!
-        if (myRoom == null) {
+        if (MyRoom == null) {
             // Set my Room ref!
-            myRoom = GetComponentInParent<Room>();
-            if (myRoom == null) { myRoom = FindObjectOfType<Room>(); } // Also check the whole scene, just in case.
+            MyRoom = GetComponentInParent<Room>();
+            if (MyRoom == null) { MyRoom = FindObjectOfType<Room>(); } // Also check the whole scene, just in case.
             //GameUtils.ParentAndReset(this.gameObject, myRoom.transform);
-            this.transform.SetParent(myRoom.transform);
+            this.transform.SetParent(MyRoom.transform);
             //if (myRoom != null) { // Safety check.
             //    PropData data = SerializeAsData();
             //    BaseInitialize(myRoom, data);
