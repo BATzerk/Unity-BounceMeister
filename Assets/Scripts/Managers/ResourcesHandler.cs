@@ -35,6 +35,7 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject Coin;
 	[SerializeField] public GameObject Crate;
 	[SerializeField] public GameObject DamageableGround;
+    [SerializeField] public GameObject Enemy;
 	[SerializeField] public GameObject Gate;
 	[SerializeField] public GameObject GateButton;
 	[SerializeField] public GameObject Gem;

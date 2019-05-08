@@ -18,8 +18,8 @@ public class CameraBoundsData : PropData {
 public class CharBarrelData : PropData {
     public string otherCharName;
 }
-//public class EnemyData : PropData {
-//}
+public class EnemyData : PropData {
+}
 public class GateData : BaseGroundData {
 	public int channelID;
 }

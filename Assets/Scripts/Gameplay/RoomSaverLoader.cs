@@ -16,7 +16,8 @@ static public class RoomSaverLoader {
 	const string CHAR_BARREL = "CharBarrel";
 	const string CRATE = "Crate";
 	const string DAMAGEABLE_GROUND = "DamageableGround";
-	const string GATE = "Gate";
+    const string ENEMY = "Enemy";
+    const string GATE = "Gate";
 	const string GATE_BUTTON = "GateButton";
 	const string GEM = "Gem";
 	const string GROUND = "Ground";
@@ -89,7 +90,8 @@ static public class RoomSaverLoader {
 			Type type = propData.GetType();
 			if (type == typeof(BatteryData)) { AddAllPropFieldsToFS(propData, "pos"); }
 			else if (type == typeof(CharBarrelData)) { AddAllPropFieldsToFS(propData, "pos", "otherCharName"); }
-			else if (type == typeof(GateButtonData)) { AddAllPropFieldsToFS(propData, "pos", "channelID"); }
+            else if (type == typeof(EnemyData)) { AddAllPropFieldsToFS(propData, "pos"); }
+            else if (type == typeof(GateButtonData)) { AddAllPropFieldsToFS(propData, "pos", "channelID"); }
 			else if (type == typeof(GemData)) { AddAllPropFieldsToFS(propData, "pos", "type"); }
             else if (type == typeof(RoomDoorData)) { AddAllPropFieldsToFS(propData, "pos", "myID", "worldToIndex", "roomToKey", "roomToDoorID"); }
             else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
@@ -366,6 +368,7 @@ static public class RoomSaverLoader {
             case CHAR_BARREL: return new CharBarrelData();
             case CRATE: return new CrateData();
             case DAMAGEABLE_GROUND: return new DamageableGroundData();
+            case ENEMY: return new EnemyData();
             case GATE: return new GateData();
             case GATE_BUTTON: return new GateButtonData();
             case GEM: return new GemData();
@@ -508,10 +511,5 @@ static public class RoomSaverLoader {
 
 
 }
-
-
-
-
-
 
 

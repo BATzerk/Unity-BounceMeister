@@ -5,13 +5,13 @@ using UnityEngine;
 public class Enemy : PlatformCharacter {
 	// Constants
 	override protected int StartingHealth { get { return 1; } }
-    override public Vector2 Size { get { return new Vector2(2.5f, 2.5f); } }
+    override public Vector2 Size { get { return new Vector2(2f, 1.5f); } }
 
 	override protected float FrictionAir { get { return 0.6f; } }
 	override protected float FrictionGround { get { return 0.6f; } }
 	override protected Vector2 Gravity { get { return new Vector2(0, -0.05f); } }
 
-	private const float MovementSpeedX = 0.08f;
+	private const float MovementSpeedX = 0.06f;
 	// Properties
 	[SerializeField] private float dirMoving = 1; // -1 or 1. I like to pace.
 
@@ -31,6 +31,9 @@ public class Enemy : PlatformCharacter {
 	//	// Size me, queen!
 	//	SetSize(new Vector2(2.5f, 2.5f));
 	//}
+    public void Initialize(Room _myRoom, EnemyData data) {
+        base.BaseInitialize(_myRoom, data);
+    }
 
 
 	// ----------------------------------------------------------------
@@ -98,6 +101,16 @@ public class Enemy : PlatformCharacter {
 		if (IsInvincible) { return; } // Invincible? Do nothin'.
 		TakeDamage(1);
 	}
+
+
+    // ----------------------------------------------------------------
+    //  Serializing
+    // ----------------------------------------------------------------
+    override public PropData SerializeAsData() {
+        return new EnemyData {
+            pos = pos
+        };
+    }
 
 
 

@@ -106,6 +106,10 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
                 DamageableGround newProp = Instantiate(rh.DamageableGround).GetComponent<DamageableGround>();
                 newProp.Initialize(this, propData as DamageableGroundData);
             }
+            else if (propData is EnemyData) {
+                Enemy newProp = Instantiate(rh.Enemy).GetComponent<Enemy>();
+                newProp.Initialize(this, propData as EnemyData);
+            }
             else if (propData is GateData) {
                 Gate newProp = Instantiate(rh.Gate).GetComponent<Gate>();
                 newProp.Initialize(this, propData as GateData);
