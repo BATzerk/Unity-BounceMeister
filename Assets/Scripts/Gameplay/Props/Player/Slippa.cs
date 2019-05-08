@@ -52,8 +52,8 @@ public class Slippa : Player {
     override protected void OnHitJumpApex() {
         isReducedJumpGravity = false; // the moment we start descending, stop giving us reduced gravity.
     }
-    override protected void StartWallSlide(int side) {
-        base.StartWallSlide(side);
+    override protected void StartWallSlide(int dir) {
+        base.StartWallSlide(dir);
         // Convert our horizontal speed to vertical speed!
         float newYVel = Mathf.Abs(vel.x)*0.5f + Mathf.Max(0, vel.y);
         SetVel(new Vector2(vel.x, newYVel));

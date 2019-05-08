@@ -66,18 +66,6 @@ public class Plunga : Player {
 
 		base.Start();
 	}
-    
-    
-    
-    // ----------------------------------------------------------------
-    //  Update
-    // ----------------------------------------------------------------
-    override protected void AcceptButtonInput() {
-        base.AcceptButtonInput();
-        if (InputController.Instance.IsAction_Press) {
-            OnPlunge_Down();
-        }
-    }
 
 
     // ----------------------------------------------------------------
@@ -115,7 +103,7 @@ public class Plunga : Player {
 	//		StartPlunge();
 	//	}
 	//}
-    private void OnPlunge_Down() {
+    override protected void OnButtonAction_Press() {
         if (CanStartPlunge()) {
             StartPlunge();
         }

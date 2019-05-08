@@ -22,4 +22,3 @@ Spikes myRect:(x:4.00, y:15.50, width:20.00, height:1.00);rotation:180
 Spikes myRect:(x:10.50, y:12.00, width:14.00, height:1.00);rotation:90
 Spikes myRect:(x:10.50, y:6.50, width:7.00, height:1.00);rotation:0
 Veil myRect:(x:-10.50, y:-2.50, width:15.00, height:7.00)
-

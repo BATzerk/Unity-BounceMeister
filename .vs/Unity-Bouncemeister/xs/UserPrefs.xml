@@ -1,19 +1,14 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ClustSel/ClustTile.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/GameController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="152" Column="1" />
-      <File FileName="Assets/Scripts/ClustSel/ClustSelController.cs" Line="13" Column="1" />
-      <File FileName="Assets/Scripts/ClustSel/WorldView.cs" Line="36" Column="23" />
-      <File FileName="Assets/Scripts/ClustSel/ClustTile.cs" Line="95" Column="13" />
-      <File FileName="Assets/Scripts/ClustSel/RoomView.cs" Line="24" Column="13" />
-      <File FileName="Assets/Scripts/Managers/DataManager.cs" Line="40" Column="6" />
-      <File FileName="Assets/Scripts/Gameplay/Props/RoomDoor.cs" Line="17" Column="48" />
-      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="22" Column="70" />
-      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="11" Column="18" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="75" Column="61" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Plunga.cs" Line="37" Column="24" />
-      <File FileName="Assets/Scripts/Consts/GameProperties.cs" Line="25" Column="38" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="247" Column="43" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="439" Column="46" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="234" Column="45" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Slippa.cs" Line="49" Column="61" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" Line="13" Column="26" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Jumpa.cs" Line="20" Column="21" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/JumpaBody.cs" Line="39" Column="36" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

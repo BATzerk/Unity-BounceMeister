@@ -48,7 +48,6 @@ abstract public class Player : PlatformCharacter {
     private float timeWhenDelayedJump=Mathf.NegativeInfinity; // for jump AND wall-kick. Set when in air and press Jump. If we touch ground/wall before this time, we'll do a delayed jump or wall-kick!
     private float timeLastBounced=Mathf.NegativeInfinity;
     public int DirFacing { get; private set; }
-    private int numJumpsSinceGround;
 	private int wallSlideDir = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
 	private int hackTEMP_framesAlive=0;
 	protected Vector2 pvel { get; private set; } // previous velocity.
@@ -65,7 +64,7 @@ abstract public class Player : PlatformCharacter {
     protected bool IsInput_U() { return inputAxis.y >  0.7f; }
     protected bool IsInput_L() { return inputAxis.x < -0.7f; }
     protected bool IsInput_R() { return inputAxis.x >  0.7f; }
-	protected bool MayJump() {
+	virtual protected bool MayJump() {
 		return feetOnGround();//numJumpsSinceGround<MaxJumps && Time.time>=timeWhenCanJump
 	}
 	virtual protected bool MayWallKick() {
@@ -173,7 +172,7 @@ abstract public class Player : PlatformCharacter {
     // ----------------------------------------------------------------
     //  Update
     // ----------------------------------------------------------------
-	private void Update () {
+	virtual protected void Update() {
 		if (!DoUpdate()) { return; } // Not supposed to Update? No dice.
 
 		AcceptButtonInput();
@@ -189,6 +188,9 @@ abstract public class Player : PlatformCharacter {
 		else if (InputController.Instance.IsJump_Release) {
 			OnButtonJump_Release();
 		}
+        else if (InputController.Instance.IsAction_Press) {
+            OnButtonAction_Press();
+        }
 		else if (InputController.Instance.PlayerInput.y < -0.7f) {
 			OnDown_Held();
 		}
@@ -309,7 +311,6 @@ abstract public class Player : PlatformCharacter {
         StopWallSlide();
 		SetVel(new Vector2(vel.x, JumpForce));
 		timeWhenDelayedJump = -1; // reset this just in case.
-		numJumpsSinceGround ++;
         GameManagers.Instance.EventManager.OnPlayerJump(this);
 	}
 	virtual protected void WallKick() {
@@ -318,7 +319,6 @@ abstract public class Player : PlatformCharacter {
         timeWhenDelayedJump = -1; // reset this just in case.
         timeLastWallKicked = Time.time;
 		isPreservingWallKickVel = true;
-		numJumpsSinceGround ++;
 		ResetMaxYSinceGround(); // TEST!!
 		GameManagers.Instance.EventManager.OnPlayerWallKick(this);
 	}
@@ -376,7 +376,8 @@ abstract public class Player : PlatformCharacter {
 //			timeWhenDelayedJump = Time.time + DelayedJumpWindow;
 //		}
 //	}
-	abstract protected void OnButtonJump_Press();
+    virtual protected void OnButtonAction_Press() {}
+    abstract protected void OnButtonJump_Press();
 	virtual protected void OnButtonJump_Release() { }
 	virtual protected void OnDown_Held() {
         // On a Platform? Drop down through it!
@@ -435,8 +436,7 @@ abstract public class Player : PlatformCharacter {
 			}
 		}
 	}
-	private void OnFeetTouchCollidable(Collidable collidable) {
-        numJumpsSinceGround = 0;
+	virtual protected void OnFeetTouchCollidable(Collidable collidable) {
 		if (MayEatEdibles()) {
 			EatEdiblesHolding();
 		}
