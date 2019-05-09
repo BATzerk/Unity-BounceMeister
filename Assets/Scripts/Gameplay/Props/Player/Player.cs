@@ -31,14 +31,17 @@ abstract public class Player : PlatformCharacter {
 
 	private const float DelayedJumpWindow = 0.12f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
-	virtual protected float PostWallKickHorzInputLockDur { get { return 0.22f; } } // affects isPreservingWallKickVel. How long until we can provide horz-input after wall-kicking.
+    //virtual protected float PostWallKickHorzHaltTime { get { return 99f; } } // how many SECONDS after wall-kick when we auto-halt our xVel.
+    virtual protected float PostWallKickHorzInputLockDur { get { return 0.22f; } } // affects isPreservingWallKickVel. How long until we can provide horz-input after wall-kicking.
     virtual protected float WallKickExtensionWindow { get { return 0.15f; } } // how long after touching a wall when we'll still allow wall-kicking!
-
+    virtual protected bool DoesFarFallHop { get { return true; } } // Say FALSE if we don't want to bounce lightly when landing on Ground from a tall height.
+    
 	// Components
 	[SerializeField] protected PlayerBody myBody=null;
 	// Properties
 	private bool isPostDamageImmunity = false;
     private bool pfeetOnGround; // last frame's feetOnGround truthiness.
+    //private bool isPostWallKickInputLock = false; // if TRUE, we're horz locked out of input.
 	protected bool isPreservingWallKickVel = false; // if TRUE, we don't apply air friction. Set to false when A) Time's past PostWallKickHorzInputLockDur, or B) Non-head touches any collider (so landing on ground, or side-hitting wall).
     private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeLastWallKicked=Mathf.NegativeInfinity;
@@ -64,9 +67,9 @@ abstract public class Player : PlatformCharacter {
     protected bool IsInput_U() { return inputAxis.y >  0.7f; }
     protected bool IsInput_L() { return inputAxis.x < -0.7f; }
     protected bool IsInput_R() { return inputAxis.x >  0.7f; }
-	virtual protected bool MayJump() {
-		return feetOnGround();//numJumpsSinceGround<MaxJumps && Time.time>=timeWhenCanJump
-	}
+    protected Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
+    protected bool isWallSliding() { return wallSlideDir!=0; }
+	virtual protected bool MayJump() { return feetOnGround(); }
 	virtual protected bool MayWallKick() {
 		if (feetOnGround()) { return false; } // Obviously no.
         if (isTouchingWall()) { return true; } // Touching a wall? Sure!
@@ -102,8 +105,6 @@ abstract public class Player : PlatformCharacter {
 	}
     protected float timeSinceBounce { get { return Time.time - timeLastBounced; } }
 	// Getters (Private)
-	protected Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
-	protected bool isWallSliding() { return wallSlideDir!=0; }
 	private bool CanTakeDamage() {
 		return !isPostDamageImmunity;
 	}
@@ -179,9 +180,6 @@ abstract public class Player : PlatformCharacter {
 		UpdatePostDamageImmunity();
 	}
 	virtual protected void AcceptButtonInput() {
-//		if (Input.GetKeyDown(KeyCode.UpArrow)) {
-//			OnJumpPressed();
-//		}
 		if (InputController.Instance.IsJump_Press) {
 			OnButtonJump_Press();
 		}
@@ -352,30 +350,22 @@ abstract public class Player : PlatformCharacter {
 		myBody.OnEndPostDamageImmunity();
 	}
     
+    protected void ResetMaxYSinceGround() {
+        maxYSinceGround = pos.y;
+    }
+    
     virtual protected void DropThruPlatform() {
         pos += new Vector2(0, -0.2f);
         vel += new Vector2(0, -0.16f);
         myBody.OnDropThruPlatform();
     }
     
-    protected void ResetMaxYSinceGround() {
-        maxYSinceGround = pos.y;
-    }
 
 
 
 	// ----------------------------------------------------------------
 	//  Events (Input)
 	// ----------------------------------------------------------------
-//	private void OnJumpPressed() {
-//		// We're on the ground and NOT timed out of jumping! Go!
-//		if (feetOnGround && Time.time>=timeWhenCanJump) {//numJumpsSinceGround<MaxJumps
-//			Jump();
-//		}
-//		else {
-//			timeWhenDelayedJump = Time.time + DelayedJumpWindow;
-//		}
-//	}
     virtual protected void OnButtonAction_Press() {}
     abstract protected void OnButtonJump_Press();
 	virtual protected void OnButtonJump_Release() { }
@@ -551,7 +541,23 @@ abstract public class Player : PlatformCharacter {
         else if (Time.time <= timeWhenAteEdible+0.8f) {
             SetVel(new Vector2(vel.x, Mathf.Max(vel.y, 0.22f))); // Hop happily if we just ate a Snack!
         }
+        // Do FarFallHop?
+        else if (DoesFarFallHop) {
+            FarFallHop(collidable);
+        }
 	}
+    
+    /// When we land from great height, it feels nice to thump on the ground. This does that.
+    private void FarFallHop(Collidable collidable) {
+        if (!(collidable is DamageableGround) && ppvel.y < -1.05f) {
+            if (ppvel.y < -1.22f) {
+                SetVel(new Vector2(vel.x, Mathf.Abs(ppvel.y)*0.22f));
+            }
+            else {
+                SetVel(new Vector2(vel.x, Mathf.Abs(ppvel.y)*0.16f));
+            }
+        }
+    }
 
 	private void OnCollideWithEnemy(int side, Enemy enemy) {
         if (side!=Sides.B && CanTakeDamage()) { // It's NOT my feet, and I CAN take damage...

@@ -1,16 +1,11 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/Player.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/GameController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="296" Column="51" />
-      <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="456" Column="68" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Enemy.cs" Line="28" Column="38" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Gem.cs" Line="78" Column="31" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="226" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/PropDatas.cs" Line="14" Column="2" />
-      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="102" Column="77" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Battery.cs" Line="23" Column="3" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="406" Column="42" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="290" Column="21" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="39" Column="15" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Plunga.cs" Line="114" Column="22" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="52" Column="69" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

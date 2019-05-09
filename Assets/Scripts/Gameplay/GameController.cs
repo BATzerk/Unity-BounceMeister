@@ -78,6 +78,9 @@ public class GameController : MonoBehaviour {
             pos = GetPlayerStartingPosInRoom(rd),
             type = PlayerTypeHelper.LoadLastPlayedType(),
         };
+        // HACK TEMP: Only Plunga for W1 and Flatline for W2.
+        if (rd.WorldIndex==1) { playerData.type = PlayerTypes.Plunga; }
+        else if (rd.WorldIndex==2) { playerData.type = PlayerTypes.Flatline; }
         StartGameAtRoom(rd, playerData);
     }
     public void StartGameAtRoom(RoomData rd, PlayerData playerData) {
@@ -275,10 +278,14 @@ public class GameController : MonoBehaviour {
 		bool isKey_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 		bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
-        // ESCAPE = Toggle Pause!
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        // P = Toggle Pause!
+        if (Input.GetKeyDown(KeyCode.P)) {
             gameTimeController.TogglePause();
-		}
+        }
+        // ESCAPE = Open ClustSelect!
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            SceneHelper.OpenScene(SceneNames.ClustSelect); return;
+        }
 
 		// ~~~~ DEBUG ~~~~
 		// ALT + ___
