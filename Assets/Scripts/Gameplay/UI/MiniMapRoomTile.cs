@@ -88,7 +88,7 @@ public class MiniMapRoomTile : MonoBehaviour {
             // Snack icon.
             i_snack.enabled = MyRoomData.SnackCount.AreSnacks(currPlayerType) && MyRoomData.HasPlayerBeenHere;
             bool areSnacksLeft = MyRoomData.SnackCount.AreUneatenSnacks(currPlayerType);
-            i_snack.color = areSnacksLeft ? new Color255(190,230,50).ToColor() : new Color(0,0,0, 0.14f);
+            i_snack.color = areSnacksLeft ? new Color255(190,230,50).ToColor() : new Color(0,0,0, 0.04f);
         }
         else {
             this.gameObject.SetActive(false);

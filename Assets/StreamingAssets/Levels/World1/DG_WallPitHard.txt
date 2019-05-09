@@ -22,4 +22,3 @@ Snack pos:(-3.5, -5.5);playerType:Plunga
 DamageableGround myRect:(x:0.50, y:-7.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
 DamageableGround myRect:(x:-7.50, y:-7.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
 Platform myRect:(x:-3.50, y:6.50, width:13.00, height:1.00)
-

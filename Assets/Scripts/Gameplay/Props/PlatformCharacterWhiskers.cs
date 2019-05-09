@@ -77,8 +77,9 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
         if (LayerUtils.IsLayerInLayermask(col.gameObject.layer, lm_triggerColls)) { return true; } // It's a trigger, BUT its layer is in my triggers-I-collide-with mask!
         return false; // Nah, don't collide.
     }
-
+    
     public bool OnSurface(int side) { return onSurfaces[side]; }
+    public bool AreArmsOnSurface() { return OnSurface(Sides.L) || OnSurface(Sides.R); }
     public bool IsTouchingAnySurface() { return onSurfaces[Sides.L] || onSurfaces[Sides.R] || onSurfaces[Sides.B] || onSurfaces[Sides.T]; }
     /// Returns SMALLEST surfaceDist value on this side.
 	public float DistToSurface(int side) {

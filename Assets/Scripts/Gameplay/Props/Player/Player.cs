@@ -31,7 +31,7 @@ abstract public class Player : PlatformCharacter {
 
 	private const float DelayedJumpWindow = 0.12f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
-    //virtual protected float PostWallKickHorzHaltTime { get { return 99f; } } // how many SECONDS after wall-kick when we auto-halt our xVel.
+    virtual protected float PostWallKickHorzHaltTime { get { return 99f; } } // how many SECONDS after wall-kick when we auto-halt our xVel.
     virtual protected float PostWallKickHorzInputLockDur { get { return 0.22f; } } // affects isPreservingWallKickVel. How long until we can provide horz-input after wall-kicking.
     virtual protected float WallKickExtensionWindow { get { return 0.15f; } } // how long after touching a wall when we'll still allow wall-kicking!
     virtual protected bool DoesFarFallHop { get { return true; } } // Say FALSE if we don't want to bounce lightly when landing on Ground from a tall height.
@@ -41,7 +41,7 @@ abstract public class Player : PlatformCharacter {
 	// Properties
 	private bool isPostDamageImmunity = false;
     private bool pfeetOnGround; // last frame's feetOnGround truthiness.
-    //private bool isPostWallKickInputLock = false; // if TRUE, we're horz locked out of input.
+    private bool isPostWallKickInputLock = false; // if TRUE, we're horz locked out of input.
 	protected bool isPreservingWallKickVel = false; // if TRUE, we don't apply air friction. Set to false when A) Time's past PostWallKickHorzInputLockDur, or B) Non-head touches any collider (so landing on ground, or side-hitting wall).
     private float maxYSinceGround=Mathf.NegativeInfinity; // the highest we got since we last made ground contact. Used to determine bounce vel!
 	private float timeLastWallKicked=Mathf.NegativeInfinity;
@@ -51,7 +51,7 @@ abstract public class Player : PlatformCharacter {
     private float timeWhenDelayedJump=Mathf.NegativeInfinity; // for jump AND wall-kick. Set when in air and press Jump. If we touch ground/wall before this time, we'll do a delayed jump or wall-kick!
     private float timeLastBounced=Mathf.NegativeInfinity;
     public int DirFacing { get; private set; }
-	private int wallSlideDir = 0; // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
+	protected int wallSlideDir { get; private set; } // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
 	private int hackTEMP_framesAlive=0;
 	protected Vector2 pvel { get; private set; } // previous velocity.
     protected Vector2 ppvel { get; private set; } // HACKY workaround for getting vel from hitting a wall. ppvel is ACTUALLY how fast we were going before we hit the wall.
@@ -63,10 +63,10 @@ abstract public class Player : PlatformCharacter {
 	virtual public bool MayUseBattery() { return false; }
 	public bool IsPostDamageImmunity { get { return isPostDamageImmunity; } }
 	// Getters (Protected)
-    protected bool IsInput_D() { return inputAxis.y < -0.7f; }
-    protected bool IsInput_U() { return inputAxis.y >  0.7f; }
-    protected bool IsInput_L() { return inputAxis.x < -0.7f; }
-    protected bool IsInput_R() { return inputAxis.x >  0.7f; }
+    protected bool IsInput_D() { return inputAxis.y < -0.5f; }
+    protected bool IsInput_U() { return inputAxis.y >  0.5f; }
+    protected bool IsInput_L() { return inputAxis.x < -0.5f; }
+    protected bool IsInput_R() { return inputAxis.x >  0.5f; }
     protected Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
     protected bool isWallSliding() { return wallSlideDir!=0; }
 	virtual protected bool MayJump() { return feetOnGround(); }
@@ -93,7 +93,7 @@ abstract public class Player : PlatformCharacter {
 		if (!MathUtils.IsSameSign(dirX, vel.x)) { // Pushing the other way? Make us go WAY the other way, ok?
 			mult = 3;
 			// If we're pushing AGAINST our velocity AND we just kicked off a wall, don't allow the input, ok?
-			if (isPreservingWallKickVel) {//Time.time < timeLastWallKicked+PostWallKickHorzInputLockDur) {
+			if (isPostWallKickInputLock) {//Time.time < timeLastWallKicked+PostWallKickHorzInputLockDur) {
 				mult = 0;
 			}
 		}
@@ -228,7 +228,7 @@ abstract public class Player : PlatformCharacter {
 		UpdateTimeLastTouchedWall();
 		DetectJumpApex();
 		UpdateMaxYSinceGround();
-		UpdateIsPreservingWallKickVel();
+		UpdatePostWallKickVelValues();
 
 		// Update vel to be the distance we ended up moving this frame.
 		SetVel(pos - ppos);
@@ -276,11 +276,20 @@ abstract public class Player : PlatformCharacter {
         }
     }
 
-    private void UpdateIsPreservingWallKickVel() {
+    private void UpdatePostWallKickVelValues() {
+        if (isPostWallKickInputLock) {
+            if (Time.time >= timeLastWallKicked+PostWallKickHorzInputLockDur) { // If our lock-input window is over...
+                isPostWallKickInputLock = false;
+            }
+        }
 		if (isPreservingWallKickVel) {
-			if (Time.time >= timeLastWallKicked+PostWallKickHorzInputLockDur) { // If our preserve-wall-kick-vel window is over...
+			if (Time.time >= timeLastWallKicked+PostWallKickHorzHaltTime) { // If our preserve-wall-kick-vel window is over...
 				isPreservingWallKickVel = false;
 			}
+            // If we're pushing AGAINST our vel, CANCEL preserving wall-kick vel.
+            if (!isPostWallKickInputLock && inputAxis.x*MathUtils.Sign(vel.x) < -0.5f) {
+                isPreservingWallKickVel = false;
+            }
 		}
 	}
 	virtual protected void UpdateMaxYSinceGround() {
@@ -317,7 +326,7 @@ abstract public class Player : PlatformCharacter {
         timeWhenDelayedJump = -1; // reset this just in case.
         timeLastWallKicked = Time.time;
 		isPreservingWallKickVel = true;
-		ResetMaxYSinceGround(); // TEST!!
+        isPostWallKickInputLock = true;
 		GameManagers.Instance.EventManager.OnPlayerWallKick(this);
 	}
 
@@ -391,6 +400,7 @@ abstract public class Player : PlatformCharacter {
         // Touching any side EXCEPT my head immediately stops our wall-kick-vel preservation. (Exception is so that we don't halt x-vel just by bumping our head.)
         if (side != Sides.T) {
             isPreservingWallKickVel = false;
+            isPostWallKickInputLock = false;
         }
         // Enemy?
         Enemy enemy = collidable as Enemy;
@@ -405,10 +415,14 @@ abstract public class Player : PlatformCharacter {
             case Sides.L: case Sides.R: OnArmTouchCollidable(side, collidable); break;
             default: break; // Hmm.
         }
+        
+        ResetMaxYSinceGround(); // Reset maxYSinceGround when touch any collider.
 	}
 	override public void OnWhiskersLeaveCollider(int side, Collider2D col) {
 		base.OnWhiskersLeaveCollider(side, col);
         Collidable collidable = col.GetComponent<Collidable>();
+        
+        ResetMaxYSinceGround(); // Reset maxYSinceGround when leave any collider.
 
         // Feet?
         if (side == Sides.B) {

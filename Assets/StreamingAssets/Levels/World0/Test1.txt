@@ -8,4 +8,3 @@ Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
 Platform myRect:(x:-19.00, y:5.50, width:6.00, height:1.00)
 PlayerStart pos:(11.0, -1.5)
 RoomDoor pos:(-20.5, 11.0);myID:0;worldToIndex:-1;roomToKey:Test2;roomToDoorID:
-
