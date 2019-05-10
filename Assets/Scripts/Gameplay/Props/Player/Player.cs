@@ -78,7 +78,7 @@ abstract public class Player : PlatformCharacter {
         return false;
 	}
 	virtual protected bool MayWallSlide() {
-		return !IsGrounded() && !IsInLift; // TODO: Fix this Lift check not working.
+		return !IsGrounded() && !IsInLift;
 	}
     virtual protected bool MayEatEdibles() {
 		return myWhiskers.AreFeetOnEatEdiblesGround();

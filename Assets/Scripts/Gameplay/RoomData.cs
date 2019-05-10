@@ -13,7 +13,7 @@ public class RoomData {
 	// Properties
     public bool HasPlayerBeenHere { get; private set; } // false until the player enters me for the first time!
     public bool isClustStart;// { get; private set; }
-    public bool IsSecret { get; private set; } // TODO: Make editable in MapEditor. and show color in RoomTile.// if TRUE, I won't show up in the MiniMap until Player's been here.
+    public bool IsSecret { get; private set; } // if TRUE, I won't show up in the MiniMap until Player's been here.
     public bool WasUsedInSearchAlgorithm { get; set; }
     public int DesignerFlag { get; private set; } // for the room designer! We can flag any room to be like "testing" or "good" or etc.
     public RoomAddress MyAddress { get; private set; }

@@ -80,7 +80,7 @@ public class MiniMapRoomTile : MonoBehaviour {
     public void UpdateVisuals(RoomData currRD, PlayerTypes currPlayerType) {
         // Not my cluster? Hide.
         bool isMyCluster = currRD.MyCluster == MyRoomData.MyCluster;
-        bool doShow = isMyCluster && (!currRD.IsSecret || currRD.HasPlayerBeenHere);
+        bool doShow = isMyCluster && (!MyRoomData.IsSecret || MyRoomData.HasPlayerBeenHere);
         if (doShow) {
             this.gameObject.SetActive(true);
             // Back color.

@@ -22,7 +22,7 @@ public class RoomTileContents : MonoBehaviour {
     [SerializeField] private Sprite s_ground=null;
     [SerializeField] private Sprite s_snack=null;
 	[SerializeField] private Sprite s_spikes=null;
-	[SerializeField] private TextMesh roomNameText=null; // what's my name, again?
+	[SerializeField] private TextMesh t_roomName=null; // what's my name, again?
     private List<GroundData> groundDatas = new List<GroundData>();
     private RoomData myRD;
     private RoomTile myRoomTile;
@@ -36,7 +36,7 @@ public class RoomTileContents : MonoBehaviour {
     public void Initialize (RoomTile _roomTile) {
 		myRoomTile = _roomTile;
         myRD = myRoomTile.MyRoomData;
-        roomNameText.GetComponent<Renderer>().sortingOrder = 110; // render RoomNameText over its contents.
+        t_roomName.GetComponent<Renderer>().sortingOrder = 110; // render roomName over its contents.
 
         designerFlag.UpdateDesignerFlagButtonVisuals();
 	}
@@ -46,10 +46,10 @@ public class RoomTileContents : MonoBehaviour {
 		GameUtils.SizeSpriteMask (propsMask, myRD.BoundsLocal.size);
 
 		// Set text string!
-		roomNameText.text = myRD.RoomKey;
+		t_roomName.text = myRD.RoomKey;
         Vector2 textPos = -myRD.BoundsLocal.size*0.5f; // bottom-left align.
         textPos += myRD.cameraBoundsData.myRect.center; // hacky offset for inconsistent global/local bounds alignment.
-		roomNameText.transform.localPosition = textPos;
+		t_roomName.transform.localPosition = textPos;
 //		if (GameManagers.Instance.DataManager.mostRecentlySavedRoom_worldIndex == worldDataRef.WorldIndex && GameManagers.Instance.DataManager.mostRecentlySavedRoom_roomKey==roomTileRef.RoomKey) {
 //			roomNameText.color = new Color(1, 0.8f, 0.2f); // If I'm the most recently saved room, make me stand out! :)
 //		}
@@ -121,15 +121,15 @@ public class RoomTileContents : MonoBehaviour {
 
     public void RefreshAllVisuals() {
         designerFlag.gameObject.SetActive (editorSettings.DoShowDesignerFlags);
-		roomNameText.gameObject.SetActive (editorSettings.DoShowRoomNames);
+		t_roomName.gameObject.SetActive (editorSettings.DoShowRoomNames);
 		go_props.SetActive (editorSettings.DoShowRoomProps);
         RefreshColors();
 		SetMaskEnabled(editorSettings.DoMaskRoomContents);
 	}
 
-	public void SetTextPosY(float yPos) {
-		roomNameText.transform.localPosition = new Vector3 (roomNameText.transform.localPosition.x, yPos, roomNameText.transform.localPosition.z);
-	}
+	//public void SetTextPosY(float yPos) {
+	//	t_roomName.transform.localPosition = new Vector3 (t_roomName.transform.localPosition.x, yPos, t_roomName.transform.localPosition.z);
+	//}
     private void AddOpeningsSprites() {
         srs_openings = new List<SpriteRenderer>();
         for (int i=0; i<myRD.Openings.Count; i++) {
@@ -157,14 +157,14 @@ public class RoomTileContents : MonoBehaviour {
 
 
 
-	public void Hide () {
-		this.gameObject.SetActive (false);
-	}
-	public void Show () {
+	//public void Hide () {
+	//	this.gameObject.SetActive (false);
+	//}
+	public void MaybeInitContent(float mapScale) {
 		if (!hasInitializedContent) {
-			InitializeContent ();
+			InitializeContent();
+            OnMapScaleChanged(mapScale);
 		}
-	    this.gameObject.SetActive (true);
 	}
 
 	public void SetMaskEnabled(bool isEnabled) {
@@ -177,13 +177,13 @@ public class RoomTileContents : MonoBehaviour {
 
 
 	public void OnMapScaleChanged (float mapScale) {
-		roomNameText.fontSize = 40 + (int)(34f/mapScale);
+		t_roomName.fontSize = 40 + (int)(34f/mapScale);
 		// If our text is too small to read, don't even show it! (NOTE: Our text will be hardest to read when it's HUGEST, because our RoomTile will be so small on the screen.)
 		if (mapScale < 0.8f) {//roomNameText.fontSize > 800) {
-			roomNameText.gameObject.SetActive (false);
+			t_roomName.gameObject.SetActive (false);
 		}
 		else {
-			roomNameText.gameObject.SetActive (editorSettings.DoShowRoomNames);
+			t_roomName.gameObject.SetActive (editorSettings.DoShowRoomNames);
 		}
 	}
 	
@@ -199,6 +199,7 @@ public class RoomTileContents : MonoBehaviour {
             Color groundColor;
             if (!myRD.IsInCluster) { groundColor = new ColorHSB(0.2f, 0.05f, 0.4f).ToColor(); } // No Cluster? Gray-ish.
             else { groundColor = new ColorHSB(((20 + myRD.MyCluster.ClustIndex*40)/360f)%1, s, 0.5f).ToColor(); }
+            if (myRD.IsSecret) { groundColor = Color.Lerp(groundColor, Color.black, 0.3f); } // Secret? Darker grounds!
             for (int i=0; i<srs_grounds.Count; i++) {
                 srs_grounds[i].color = groundColor;
             }

@@ -93,7 +93,7 @@ public class RoomTile : MonoBehaviour {
 		IsDragReadyMouseOverMe = false;
 
 		// Hide by default
-		HideContents ();
+		Hide();
 	}
 
 //	private void SetPosAndSizeValues () {
@@ -126,23 +126,18 @@ public class RoomTile : MonoBehaviour {
 	// ================================================================
 	//  Update Components
 	// ================================================================
-	public void HideContents () {
-		this.gameObject.SetActive(false);// TEMP!! TOtally hiding.
-		contents.Hide ();
-		IsDragReadyMouseOverMe = false; // Deselect me from mouse-over just in case.
+	public void Hide() {
+        this.gameObject.SetActive(false);
+        IsDragReadyMouseOverMe = false; // Deselect me from mouse-over just in case.
+        //contents.Hide ();
 
-		Color backingColor = new Color(0.3f,0.3f,0.3f);//Colors.GetBGColor_ViewGameplay (Colors.GetBGTheme (roomDataRef.WorldIndex));
-		backingColor = new Color (backingColor.r*0.5f, backingColor.g*0.5f, backingColor.b*0.5f, 0.5f);
-		sr_backing.color = backingColor;
+		//Color backingColor = new Color(0.3f,0.3f,0.3f);//Colors.GetBGColor_ViewGameplay (Colors.GetBGTheme (roomDataRef.WorldIndex));
+		//backingColor = new Color (backingColor.r*0.5f, backingColor.g*0.5f, backingColor.b*0.5f, 0.5f);
+		//sr_backing.color = backingColor;
 	}
-	public void ShowContents() {
-		this.gameObject.SetActive(true);// TEMP!! TOtally hiding.
-		contents.Show();
-		contents.OnMapScaleChanged(MapEditor.MapScale);
-		
-		Color backingColor = new Color(0.3f,0.3f,0.3f);//Colors.GetBGColor_ViewGameplay (Colors.GetBGTheme (roomDataRef.WorldIndex));
-		backingColor = new Color (backingColor.r*1.4f, backingColor.g*1.4f, backingColor.b*1.4f, 0.2f);
-		sr_backing.color = backingColor;
+	public void Show() {
+        this.gameObject.SetActive(true);
+        contents.MaybeInitContent(MapEditor.MapScale);
 
 		RefreshAllVisuals ();
 	}
@@ -160,7 +155,7 @@ public class RoomTile : MonoBehaviour {
 		}
 		// Update visuals!
         bodyCollider.SetIsEnabled(isInSearch);
-        contents.gameObject.SetActive(isInSearch);//TEMP TEST
+        contents.gameObject.SetActive(isInSearch);
 	}
 //	public void RemakeWallLines() {
 //		contents.CreateWallLines (); // Go ahead and pass this baton on to my content.
@@ -178,12 +173,18 @@ public class RoomTile : MonoBehaviour {
 		bodyCollider.UpdatePosAndSize (BoundsLocal);
 		// Contents may be hot
 		contents.ApplyPosAndSize (BoundsLocal);
-		// roomNameText
-		contents.SetTextPosY (0);//MyRect.size.y*0.5f);
+		//// roomNameText
+		//contents.SetTextPosY (0);//MyRect.size.y*0.5f);
 	}
 	
 	
 	public void RefreshAllVisuals() {
+        // Backing
+        Color backingColor = new Color(0.3f,0.3f,0.3f);//Colors.GetBGColor_ViewGameplay (Colors.GetBGTheme (roomDataRef.WorldIndex));
+        backingColor = new Color (backingColor.r*1.4f, backingColor.g*1.4f, backingColor.b*1.4f, 0.2f);
+        if (MyRoomData.IsSecret) { backingColor = new Color(0,0,0, 0.4f); } // Secret? Darker back!
+        sr_backing.color = backingColor;
+        // Contents
 		contents.RefreshAllVisuals();
 	}
     public void RefreshColors() {

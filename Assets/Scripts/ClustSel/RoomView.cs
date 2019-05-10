@@ -27,6 +27,11 @@ namespace ClustSelNamespace {
             Vector2 pos = myRoomData.PosGlobal - myClustData.BoundsGlobal.center;
             pos += myRoomData.cameraBoundsData.myRect.center; // hack-y! Just getting to work for now. Works around the rooms' local/global alignment mismatch.
             myRectTransform.anchoredPosition = pos * scale;
+            
+            // Secret and unvisited? Hide me!
+            if (myRoomData.IsSecret && !myRoomData.HasPlayerBeenHere) {
+                this.gameObject.SetActive(false);
+            }
         }
         
         

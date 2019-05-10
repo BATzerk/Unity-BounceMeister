@@ -167,7 +167,7 @@ public class MapEditor : MonoBehaviour {
 			// Tell all the tiles in the world we already were to hide their stuff!
 			if (currWorldIndex != -1) {
 				for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
-					CurrWorldRoomTiles[i].HideContents ();
+					CurrWorldRoomTiles[i].Hide();
 				}
 			}
 			currWorldIndex = _worldIndex;
@@ -176,7 +176,7 @@ public class MapEditor : MonoBehaviour {
         
         // Tell all the tiles in the NEW world to show their stuff!
         for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
-            CurrWorldRoomTiles[i].ShowContents ();
+            CurrWorldRoomTiles[i].Show();
         }
         
         // Dispatch hevent!
@@ -353,12 +353,20 @@ public class MapEditor : MonoBehaviour {
         SceneHelper.OpenGameplayScene(newLD);
     }
     
-    // TODO: Test this, yo. And explain why we even have it.
-    private void SnapTilesSelectedToGrid() {
+    //private void SnapTilesSelectedToGrid() {
+    //    foreach (RoomTile tile in tilesSelected) {
+    //        Vector2 pos = tile.MyRoomData.PosGlobal;
+    //        pos = SnapToGrid(pos);
+    //        tile.MyRoomData.SetPosGlobal(pos);
+    //    }
+    //}
+    private void ToggleTilesSelectedIsSecret() {
+        // Toggle and save 'em all.
         foreach (RoomTile tile in tilesSelected) {
-            Vector2 pos = tile.MyRoomData.PosGlobal;
-            pos = SnapToGrid(pos);
-            tile.MyRoomData.SetPosGlobal(pos);
+            RoomData rd = tile.MyRoomData;
+            rd.SetIsSecret(!rd.IsSecret);
+            RoomSaverLoader.UpdateRoomPropertiesInRoomFile(rd);
+            tile.RefreshAllVisuals();
         }
     }
     private void ToggleTilesSelectedIsClustStart() {
@@ -569,17 +577,13 @@ public class MapEditor : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.N)) {
                 AddAndStartNewRoom();
             }
-            // CONTROL + P = Snap tilesSelected to grid!
-            else if (Input.GetKeyDown(KeyCode.P)) {
-                SnapTilesSelectedToGrid();
-            }
             // CONTROL + U = Toggle tilesSelected isClustStart!
             else if (Input.GetKeyDown(KeyCode.U)) {
                 ToggleTilesSelectedIsClustStart();
             }
-            // CONTROL + J = Open RoomJump!
-            else if (Input.GetKeyDown(KeyCode.J)) {
-                SceneHelper.OpenScene(SceneNames.RoomJump);
+            // CONTROL + S = Toggle tilesSelected IsSecret!
+            else if (Input.GetKeyDown(KeyCode.S)) {
+                ToggleTilesSelectedIsSecret();
             }
         }
 
