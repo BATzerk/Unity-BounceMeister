@@ -7,12 +7,12 @@ public class DataManager {
     private List<WorldData> worldDatas;
     //  public int mostRecentlySavedRoom_worldIndex; // an nbd shortcut to highlight the most recently created room in the MapEditor.
     //  public string mostRecentlySavedRoom_roomKey; // an nbd shortcut to highlight the most recently created room in the MapEditor.
-    public RoomData currRoomData = null; // TODO: Remove this. We don't need it (right?). if this is defined when GameController opens, we'll open THAT room!
+    public RoomData currRoomData = null; // if this is defined when GameController opens, we'll open THAT room!
     // User Progress Properties
     public int CoinsCollected { get; private set; } // NOTE: Not fully implemented.
     public SnackCount SnackCountGame = new SnackCount(); // ALL snack counts totaled together!
     // Entering-Room Properties
-    public string roomToDoorID = null; // defined when use a RoomDoor. When we enter a room, this is the door we'll start at!
+    public string doorToID = null; // defined when use a RoomDoor. When we enter a room, this is the door we'll start at!
     public Vector2 playerGroundedRespawnPos=Vector2Extensions.NaN; // I'll respawn at this pos. Set when we leave a Ground that has IsPlayerRespawn.
     
 	// ----------------------------------------------------------------
@@ -39,11 +39,11 @@ public class DataManager {
         return SaveStorage.GetBool(SaveKeys.IsPlayerTypeUnlocked(playerType));
     }
     public RoomAddress LastPlayedRoomAddress() {
-        int worldIndex = SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex);
+        int worldIndex = SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex, GameProperties.FirstWorld);
         return LastPlayedRoomAddress(worldIndex);
     }
     public RoomAddress LastPlayedRoomAddress(int worldIndex) {
-        string roomKey = SaveStorage.GetString(SaveKeys.LastPlayedRoomKey(worldIndex), GameProperties.GetFirstRoomName(worldIndex));
+        string roomKey = SaveStorage.GetString(SaveKeys.LastPlayedRoomKey(worldIndex));//, GameProperties.FirstClust(worldIndex));
         return new RoomAddress(worldIndex, -1, roomKey);
     }
     public RoomData LastPlayedRoomData(int worldIndex) {
@@ -161,7 +161,7 @@ public class DataManager {
     
     /// Resets static values that determine where Player will start when reloading a Room (e.g. RoomDoorID, prev-room-exit-pos, grounded-respawn-pos).
     public void ResetRoomEnterValues() {
-        roomToDoorID = null;
+        doorToID = null;
         playerGroundedRespawnPos = Vector2Extensions.NaN;
     }
 

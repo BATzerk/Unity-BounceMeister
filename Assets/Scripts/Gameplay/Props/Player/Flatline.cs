@@ -10,7 +10,7 @@ public class Flatline : Player {
         get {
             if (IsHovering) { return 0; }// || IsHoverEmpty
             //if (HasHoveredWithoutTouchCollider) { return 0; } // No horz input while hovering (until we touch a collider). TEST DISABLED.
-            if (!feetOnGround() && !IsInLift) { return 0.009f; } // In the air and NOT a Lift? Reduced input scale.
+            if (!IsGrounded() && !IsInLift) { return 0.009f; } // In the air and NOT a Lift? Reduced input scale.
             return 0.018f;
         }
     }
@@ -35,7 +35,7 @@ public class Flatline : Player {
     override protected Vector2 Gravity {
         get {
             Vector2 gravNeutral = new Vector2(0, -0.042f);
-            if (isTouchingWall()) { return gravNeutral * 0.2f; } // On a wall? Reduce gravity!
+            if (IsAgainstWall()) { return gravNeutral * 0.2f; } // On a wall? Reduce gravity!
             if (IsHovering) { return Vector2.zero; } // Hovering? No gravity!
             return gravNeutral;
         }
@@ -54,7 +54,7 @@ public class Flatline : Player {
     private bool MayStartHover() {
         return !IsHovering // I'm not ALREADY hovering?
             && Time.frameCount > FrameCountWhenBorn+3 // Don't allow hovering for the first few frames of my life.
-            && !feetOnGround() // FEET touching nothing?
+            && !IsGrounded() // FEET touching nothing?
             //&& !isTouchingWall() // ARMS touching nothing?
             && !IsInLift // NOT in a Lift?
             && !IsHoverEmpty; // not out of hover-time?

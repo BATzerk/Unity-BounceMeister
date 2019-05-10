@@ -17,6 +17,7 @@ public class PlatformCharacter : Collidable {
 	virtual protected float MaxVelXGround { get { return 0.25f; } }
 	virtual protected float MaxVelYUp { get { return 3; } }
 	virtual protected float MaxVelYDown { get { return -3; } }
+//  virtual public bool IsAffectedByLift() { return true; }
 
 	// Components
 	[SerializeField] private BoxCollider2D bodyCollider=null;
@@ -31,20 +32,18 @@ public class PlatformCharacter : Collidable {
 
     // Getters
     protected bool IsInLift { get; private set; }
-//	virtual public bool IsAffectedByLift() { return true; }
 	public bool IsDead { get { return isDead; } }
-	public bool feetOnGround() { return myWhiskers.OnSurface(Sides.B) && vel.y<0.001f; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
-	// Getters (Protected)
+	public bool IsGrounded() { return myWhiskers.OnSurface(Sides.B) && vel.y<0.001f; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
+    protected bool IsAgainstWall() { return myWhiskers.IsAgainstWall(); }
     protected bool IsInvincible { get { return StartingHealth < 0; } }
     public bool DoUpdate() { // If this is FALSE, I won't do Update nor FixedUpdate.
         return Time.timeScale > 0; // No time? No dice.
     }
-	protected bool isTouchingWall() { return myWhiskers.DirTouchingWall() != 0; }
 	virtual protected float HorzMoveInputVelXDelta() {
 		return 0;
 	}
 	protected Vector2 GetAppliedVel() {
-		Vector2 av = vel;
+		Vector2 av = vel; // appliedVel
 		float distL = myWhiskers.DistToSurface(Sides.L);
 		float distR = myWhiskers.DistToSurface(Sides.R);
 		float distB = myWhiskers.DistToSurface(Sides.B);
@@ -115,7 +114,7 @@ public class PlatformCharacter : Collidable {
 		}
 	}
     protected void ApplyVelFromFloor() {
-        if (feetOnGround()) {
+        if (IsGrounded()) {
             Collidable c = myWhiskers.TEMP_GetFloorCollidable();
             if (c != null) {
                 pos += c.vel*0.5f;//*0.5f is HACK! TEMP! TODO: If we like TravelingPlatforms, then improve. Find a way to move Character on a Platform appropriately (it's a neat little challenge).
@@ -130,7 +129,7 @@ public class PlatformCharacter : Collidable {
         if (IsInLift) {
 			SetVel(new Vector2(vel.x*FrictionAir, vel.y));
         }
-		else if (feetOnGround()) {
+		else if (IsGrounded()) {
 			SetVel(new Vector2(vel.x*FrictionGround, vel.y));
 		}
 		else {
@@ -142,13 +141,13 @@ public class PlatformCharacter : Collidable {
 	}
 	protected void ApplyTerminalVel() {
         //if (IsInLift) { return; } // TEST
-		float maxXVel = feetOnGround() ? MaxVelXGround : MaxVelXAir;
+		float maxXVel = IsGrounded() ? MaxVelXGround : MaxVelXAir;
 		float xVel = Mathf.Clamp(vel.x, -maxXVel,maxXVel);
 		float yVel = Mathf.Clamp(vel.y, MaxVelYDown,MaxVelYUp);
 		SetVel(new Vector2(xVel, yVel));
 	}
 	protected void UpdateTimeLastTouchedWall() {
-		if (isTouchingWall()) {
+		if (IsAgainstWall()) {
 			timeLastTouchedWall = Time.time;
 		}
 	}

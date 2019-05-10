@@ -30,9 +30,7 @@ public class RoomButton : MonoBehaviour {
 	//  Events
 	// ----------------------------------------------------------------
 	public void OnClick() {
-		GameManagers.Instance.DataManager.currRoomData = myRoomData;
-
-		UnityEngine.SceneManagement.SceneManager.LoadScene(SceneNames.Gameplay);
+        SceneHelper.OpenGameplayScene(myRoomData);
 	}
 
 

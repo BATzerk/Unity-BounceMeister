@@ -120,10 +120,7 @@ public class RoomData {
 	// ----------------------------------------------------------------
     public void AddPropData(PropData propData) {
         allPropDatas.Add(propData);
-        //switch (propData.GetType()) {
-            
-        //}
-        // TODO: Can we use a switch statement?
+        // Add to sub-lists! (Note: No easy way to use switch statement instead.)
         if (propData is CameraBoundsData) { cameraBoundsData = propData as CameraBoundsData; }
         else if (propData is GroundData) { groundDatas.Add(propData as GroundData); }
         else if (propData is RoomDoorData) { roomDoorDatas.Add(propData as RoomDoorData); }

@@ -1,4 +1,4 @@
-roomProperties posGlobal:(246.0, 418.0);designerFlag:3
+﻿roomProperties posGlobal:(246.0, 418.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 GateButton pos:(19.5, 4.0);channelID:0
 Gate myRect:(x:5.50, y:-0.50, width:5.00, height:5.00);channelID:0
@@ -19,6 +19,6 @@ Platform myRect:(x:0.50, y:-16.50, width:5.00, height:1.00)
 Platform myRect:(x:5.00, y:11.50, width:4.00, height:1.00)
 Platform myRect:(x:-6.00, y:-8.50, width:4.00, height:1.00)
 PlayerStart pos:(4.5, -14.5)
-RoomDoor pos:(-12.0, -7.0);myID:0;worldToIndex:-1;roomToKey:;roomToDoorID:
+RoomDoor pos:(-12.0, -7.0);myID:0;worldToIndex:-1;roomToKey:;doorToID:
 Snack pos:(-2.0, 6.5);playerType:Plunga
 Snack pos:(20.0, 9.5);playerType:Flatline

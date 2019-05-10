@@ -65,6 +65,9 @@ abstract public class Prop : MonoBehaviour {
 		pos = new Vector2(-pos.x, pos.y);
 		rotation = -rotation;
 	}
+    public void Move(Vector2 delta) {
+        pos += delta;
+    }
     
     abstract public PropData SerializeAsData();
 

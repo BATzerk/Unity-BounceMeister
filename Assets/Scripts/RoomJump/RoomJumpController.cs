@@ -18,8 +18,8 @@ public class RoomJumpController : MonoBehaviour {
 	private void Start() {
 		t_version.text = Application.version;
 
-		RoomData currentLD = GameManagers.Instance.DataManager.currRoomData;
-		int worldIndex = currentLD == null ? 0 : currentLD.WorldIndex;
+		RoomData currRD = GameManagers.Instance.DataManager.currRoomData;
+		int worldIndex = currRD == null ? 0 : currRD.WorldIndex;
 		SetSelectedWorld(worldIndex);
 	}
 

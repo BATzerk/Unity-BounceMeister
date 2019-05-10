@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
     // References
     [SerializeField] private Transform tf_world;
 	private Player player=null;
-	private Room currRoom=null;
+	public Room CurrRoom { get; private set; }
 
     // Getters
     public Player Player { get { return player; } }
@@ -32,31 +32,6 @@ public class GameController : MonoBehaviour {
 		if (dm.currRoomData != null) {
 			StartGameAtRoom(dm.currRoomData);
 		}
-		// We have NOT provided any currentRoomData!...
-		else {
-            dm.currRoomData = dm.GetRoomData(0, "PremadeRoom", false);
-			// Initialize the existing room as a premade room! So we can start editing/playing/saving it right outta the scene.
-			// TEMP! For converting scenes into room text files.
-			currRoom = FindObjectOfType<Room>();
-			if (currRoom == null) {
-				GameObject roomGO = GameObject.Find("Structure");
-				if (roomGO==null) {
-					roomGO = new GameObject();
-					roomGO.transform.localPosition = Vector3.zero;
-					roomGO.transform.localScale = Vector3.one;
-				}
-				roomGO.AddComponent<RoomGizmos>();
-				currRoom = roomGO.AddComponent<Room>();
-			}
-			if (tf_world == null) {
-				tf_world = GameObject.Find("GameWorld").transform;
-			}
-//			player = GameObject.FindObjectOfType<Player>(); // Again, this is only for editing.
-			MakePlayer(new PlayerData{type=PlayerTypes.Plunga});
-			currRoom.InitializeAsPremadeRoom(this);
-			dm.SetCoinsCollected (0);
-			eventManager.OnStartRoom(currRoom);
-		}
 
 		// Add event listeners!
 		eventManager.PlayerDieEvent += OnPlayerDie;
@@ -73,7 +48,7 @@ public class GameController : MonoBehaviour {
     //  Doers - Loading Room
     // ----------------------------------------------------------------
     //public void StartGameAtRoom (int worldIndex, string roomKey) { StartGameAtRoom(dm.GetRoomData(worldIndex, roomKey, true)); }
-    private void StartGameAtRoom(RoomData rd) {
+    public void StartGameAtRoom(RoomData rd) {
         PlayerData playerData = new PlayerData {
             pos = GetPlayerStartingPosInRoom(rd),
             type = PlayerTypeHelper.LoadLastPlayedType(),
@@ -91,8 +66,8 @@ public class GameController : MonoBehaviour {
 		dm.currRoomData = rd;
 
 		// Make Room and Player!
-		currRoom = Instantiate(ResourcesHandler.Instance.Room).GetComponent<Room>();
-		currRoom.Initialize(this, tf_world, rd);
+		CurrRoom = Instantiate(ResourcesHandler.Instance.Room).GetComponent<Room>();
+		CurrRoom.Initialize(this, tf_world, rd);
         MakePlayer(playerData);
         // Tell the RoomData it's on!
         rd.OnPlayerEnterMe();
@@ -110,24 +85,7 @@ public class GameController : MonoBehaviour {
 		//// Use this opportunity to call SAVE with SaveStorage, yo! (This causes a brief stutter, so I'm opting to call it when the game is already loading.)
 		//SaveStorage.Save();
 		// Dispatch the post-function event!
-		eventManager.OnStartRoom(currRoom);
-
-        // Expand the hierarchy for easier Room-editing!
-        ExpandRoomHierarchy();
-        GameUtils.SetEditorCameraPos(rd.PosGlobal); // conveniently move the Unity Editor camera, too!
-    }
-
-    private void ExpandRoomHierarchy() {
-        if (!GameUtils.IsEditorWindowMaximized()) { // If we're maximized, do nothing (we don't want to open up the Hierarchy if it's not already open).
-            GameUtils.SetExpandedRecursive(currRoom.gameObject, true); // Open up Room all the way down.
-            for (int i=0; i<currRoom.transform.childCount; i++) { // Ok, now (messily) close all its children.
-                GameUtils.SetExpandedRecursive(currRoom.transform.GetChild(i).gameObject, false);
-            }
-            GameUtils.FocusOnWindow("Game"); // focus back on Game window.
-            //GameUtils.SetGOCollapsed(transform.parent, false);
-            //GameUtils.SetGOCollapsed(tf_world, false);
-            //GameUtils.SetGOCollapsed(room.transform, false);
-        }
+		eventManager.OnStartRoom(CurrRoom);
     }
     
     private void MakePlayer(PlayerTypes type, RoomData roomData) {
@@ -142,7 +100,7 @@ public class GameController : MonoBehaviour {
 		if (player != null) { DestroyPlayer(); } // Just in case.
         // Make 'em!
         player = Instantiate(ResourcesHandler.Instance.Player(playerData.type)).GetComponent<Player>();
-		player.Initialize(currRoom, playerData);
+		player.Initialize(CurrRoom, playerData);
         // Save lastPlayedType!
         PlayerTypeHelper.SaveLastPlayedType(player.PlayerType());
 	}
@@ -155,8 +113,8 @@ public class GameController : MonoBehaviour {
 
 
 	private void DestroyRoom() {
-		if (currRoom != null) { Destroy(currRoom.gameObject); }
-		currRoom = null;
+		if (CurrRoom != null) { Destroy(CurrRoom.gameObject); }
+		CurrRoom = null;
 	}
 	private void DestroyPlayer() {
 		if (player != null) { Destroy(player.gameObject); }
@@ -166,8 +124,8 @@ public class GameController : MonoBehaviour {
 
     private Vector2 GetPlayerStartingPosInRoom(RoomData rd) {
         // Starting at RoomDoor?
-        if (!string.IsNullOrEmpty(dm.roomToDoorID)) {
-            return rd.GetRoomDoorPos(dm.roomToDoorID);// + new Vector2(0, -playerHeight*0.5f);
+        if (!string.IsNullOrEmpty(dm.doorToID)) {
+            return rd.GetRoomDoorPos(dm.doorToID);// + new Vector2(0, -playerHeight*0.5f);
         }
         // Respawning from death?
         else if (!dm.playerGroundedRespawnPos.Equals(Vector2Extensions.NaN)) {
@@ -192,10 +150,10 @@ public class GameController : MonoBehaviour {
 
 	private void OnPlayerEscapeRoomBounds(int sideEscaped) {
         // Exit current Room.
-        OnPlayerExitRoom(currRoom);
+        OnPlayerExitRoom(CurrRoom);
         // Enter next Room.
-		WorldData currWorldData = currRoom.MyWorldData;
-		RoomData nextLD = currWorldData.GetRoomAtSide(currRoom.MyRoomData, Player.PosLocal, sideEscaped);
+		WorldData currWorldData = CurrRoom.MyWorldData;
+		RoomData nextLD = currWorldData.GetRoomAtSide(CurrRoom.MyRoomData, Player.PosLocal, sideEscaped);
 		if (nextLD != null) {
             int sideEntering = Sides.GetOpposite(sideEscaped);
             Vector2 posExited = player.PosGlobal;
@@ -217,25 +175,6 @@ public class GameController : MonoBehaviour {
     }
     
 
-    private void StartNewBlankRoom() {
-        // Keep it in the current world, and give it a unique name.
-        WorldData worldData = dm.GetWorldData(currRoom.WorldIndex);
-        string roomKey = worldData.GetUnusedRoomKey();
-        RoomData emptyRoomData = worldData.GetRoomData(roomKey, true);
-        StartGameAtRoom(emptyRoomData);
-    }
-    private void DuplicateCurrRoom() {
-        // Add a new room file, yo!
-        RoomData currRD = currRoom.MyRoomData;
-        string newRoomKey = currRD.MyWorldData.GetUnusedRoomKey(currRD.RoomKey);
-        RoomSaverLoader.SaveRoomFileAs(currRD, currRD.WorldIndex, newRoomKey);
-        dm.ReloadWorldDatas();
-        RoomData newLD = dm.GetRoomData(currRD.WorldIndex,newRoomKey, false);
-        newLD.SetPosGlobal(newLD.PosGlobal + new Vector2(15,-15)*GameProperties.UnitSize); // offset its position a bit.
-        RoomSaverLoader.UpdateRoomPropertiesInRoomFile(newLD); // update file!
-        dm.currRoomData = newLD;
-        SceneHelper.ReloadScene();
-    }
     
     public void OnPlayerTouchRoomDoor(RoomDoor rd) {
         //GoToMyRoom();TEMP TEST DISABLED RoomDoor functionality! Just open ClustSel for now!
@@ -247,7 +186,7 @@ public class GameController : MonoBehaviour {
         // Register exiting the Room!
         OnPlayerExitRoom(rd.MyRoom);
         // Set the door we're gonna start at!
-        dm.roomToDoorID = rd.RoomToDoorID;
+        dm.doorToID = rd.DoorToID;
         // Load the room!
         int _worldIndex = rd.WorldToIndex==-1 ? rd.MyRoom.WorldIndex : rd.WorldToIndex; // Haven't defined worldToIndex? Stay in my world.
         RoomData rdTo = dm.GetRoomData(_worldIndex, rd.RoomToKey, false);
@@ -300,38 +239,22 @@ public class GameController : MonoBehaviour {
         }
         // SHIFT + ___
         if (isKey_shift) {
-            // SHIFT + S = Save room as text file!
-            if (Input.GetKeyDown(KeyCode.S)) {
-                SaveRoomFile();
-            }
         }
         // CONTROL + ___
         if (isKey_control) {
-            // CONTROL + DELETE = Clear all save data!
+            // CONTROL + DELETE = Clear ALL save data!
             if (Input.GetKeyDown(KeyCode.Delete)) {
                 GameManagers.Instance.DataManager.ClearAllSaveData();
                 SceneHelper.ReloadScene();
                 return;
             }
-            // CONTROL + N = Create/Start new room!
-            else if (Input.GetKeyDown(KeyCode.N)) {
-                StartNewBlankRoom();
-            }
-            // CONTROL + D = Duplicate/Start new room!
-            else if (Input.GetKeyDown(KeyCode.D)) {
-                DuplicateCurrRoom();
-            }
-            // CONTROL + SHIFT + X = Flip Horizontal!
-            else if (isKey_shift && Input.GetKeyDown(KeyCode.X)) {
-				if (currRoom != null) { currRoom.FlipHorz(); }
-			}
 		}
         
         // NOTHING + _____
         if (!isKey_alt && !isKey_shift && !isKey_control) {
             // BACKSPACE = Clear current Room save data.
             if (Input.GetKeyDown(KeyCode.Backspace)) {
-                dm.ClearRoomSaveData(currRoom);
+                dm.ClearRoomSaveData(CurrRoom);
                 SceneHelper.ReloadScene();
                 return;
             }
@@ -355,17 +278,6 @@ public class GameController : MonoBehaviour {
             }
         }
 	}
-
-    private void SaveRoomFile() {
-        // Save it!
-        RoomSaverLoader.SaveRoomFile(currRoom);
-        // Update properties that may have changed.
-        if (currRoom.MyClusterData != null) {
-            currRoom.MyClusterData.RefreshSnackCount();
-        }
-        // Update total edibles counts!
-        dm.RefreshSnackCountGame();
-    }
 
 
 
@@ -396,7 +308,7 @@ public class GameController : MonoBehaviour {
 #endif
     private void Debug_JumpToRoomAtSide(int side) {
         OnPlayerEscapeRoomBounds(side); // Pretend the player just exited in this direction.
-        player.SetPosLocal(currRoom.Debug_PlayerStartPosLocal()); // just put the player at the PlayerStart.
+        player.SetPosLocal(CurrRoom.Debug_PlayerStartPosLocal()); // just put the player at the PlayerStart.
     }
 
 
@@ -405,6 +317,31 @@ public class GameController : MonoBehaviour {
 
 }
 
+//        // We have NOT provided any currentRoomData!...
+//        else {
+//            dm.currRoomData = dm.GetRoomData(0, "PremadeRoom", false);
+//            // Initialize the existing room as a premade room! So we can start editing/playing/saving it right outta the scene.
+//            // TEMP! For converting scenes into room text files.
+//            currRoom = FindObjectOfType<Room>();
+//            if (currRoom == null) {
+//                GameObject roomGO = GameObject.Find("Structure");
+//                if (roomGO==null) {
+//                    roomGO = new GameObject();
+//                    roomGO.transform.localPosition = Vector3.zero;
+//                    roomGO.transform.localScale = Vector3.one;
+//                }
+//                roomGO.AddComponent<RoomGizmos>();
+//                currRoom = roomGO.AddComponent<Room>();
+//            }
+//            if (tf_world == null) {
+//                tf_world = GameObject.Find("GameWorld").transform;
+//            }
+////          player = GameObject.FindObjectOfType<Player>(); // Again, this is only for editing.
+        //    MakePlayer(new PlayerData{type=PlayerTypes.Plunga});
+        //    currRoom.InitializeAsPremadeRoom(this);
+        //    dm.SetCoinsCollected (0);
+        //    eventManager.OnStartRoom(currRoom);
+        //}
 
 
 

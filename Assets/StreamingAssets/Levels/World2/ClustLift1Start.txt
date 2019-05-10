@@ -1,4 +1,4 @@
-roomProperties posGlobal:(250.0, 1480.0);designerFlag:2
+﻿roomProperties posGlobal:(250.0, 1480.0);designerFlag:2
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-19.5, -9.5)
 Ground myRect:(x:0.00, y:-15.50, width:52.00, height:9.00)
@@ -7,5 +7,5 @@ Ground myRect:(x:19.50, y:5.50, width:13.00, height:21.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
 InfoSign pos:(-8.5, -11.0);myText:This is the end of the demo! It's made official by this Official Sign.
 Ground myRect:(x:21.00, y:-8.50, width:10.00, height:11.00)
-RoomDoor pos:(-20.5, -9.5);myID:0;worldToIndex:-1;roomToKey:ClustLift0End;roomToDoorID:0
+RoomDoor pos:(-20.5, -9.5);myID:0;worldToIndex:-1;roomToKey:ClustLift0End;doorToID:0
 InfoSign pos:(13.5, -11.0);myText:Also, you look so good today. I've been meaning to say that but wasn't sure how.

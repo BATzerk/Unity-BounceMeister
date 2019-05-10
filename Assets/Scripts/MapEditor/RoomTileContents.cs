@@ -127,8 +127,7 @@ public class RoomTileContents : MonoBehaviour {
 		SetMaskEnabled(editorSettings.DoMaskRoomContents);
 	}
 
-    // TODO: Fix this positioning.
-	public void SetTextPosY (float yPos) {
+	public void SetTextPosY(float yPos) {
 		roomNameText.transform.localPosition = new Vector3 (roomNameText.transform.localPosition.x, yPos, roomNameText.transform.localPosition.z);
 	}
     private void AddOpeningsSprites() {

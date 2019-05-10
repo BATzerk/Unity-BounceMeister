@@ -43,7 +43,7 @@ public class Jetta : Player {
 	}
 	// Getters (Private)
 	private bool CanStartJetting() {
-		if (feetOnGround()) { return false; } // I can't jet if I'm on the ground.
+		if (IsGrounded()) { return false; } // I can't jet if I'm on the ground.
 //		if (IsInLift) { return false; }
 		return !IsFuelEmpty;
 	}

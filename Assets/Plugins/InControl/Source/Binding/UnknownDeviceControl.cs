@@ -11,7 +11,7 @@
 		public InputControlType Control;
 		public InputRangeType SourceRange;
 
-		// TODO: This meaningless distinction should probably be removed entirely.
+		// TO DO: This meaningless distinction should probably be removed entirely.
 		public bool IsButton;
 		public bool IsAnalog;
 

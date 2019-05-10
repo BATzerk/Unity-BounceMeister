@@ -20,6 +20,8 @@ static public class RoomUtils {
 	/** Give me a room we're STARTING at, give me a room to start LOOKING towards, and I'll look towards that room and recursively tally up how many rooms in this world branch out from there.
 	 If I reach the worldStart or worldEnd rooms, I'll count that as +99 rooms! (Hacky, because I'm not ACTUALLY counting the rooms from previous/next worlds. But I don't think I need to.) */
 	public static int GetNumSubsequentRooms (WorldData worldData, string roomSourceKey, string roomToKey, bool doIncludeSecretRooms=false) {
+    return 99;// DISABLED for now.
+    /*
 		Dictionary<string, RoomData> allRoomDatas = worldData.RoomDatas;
 
 		RoomData roomSourceData = allRoomDatas [roomSourceKey];
@@ -47,6 +49,7 @@ static public class RoomUtils {
 		}
 		// Now just return the length of the list. :)
 		return roomDatasFromRoomTo.Count;
+        */
 	}
 	private static void RecursivelyAddRoomDatasConnectedToRoomData (WorldData worldData, ref List<RoomData> roomDatas, RoomData startingRoomData) {
 		// If this startingRoomData has ALREADY been used, OR it's a VIRGIN SECRET room, get outta here!

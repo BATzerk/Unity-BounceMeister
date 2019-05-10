@@ -63,7 +63,7 @@ namespace InControl
 		}
 
 
-		// TODO: Is there a better way to handle this? Maybe calculate deltaTime internally.
+		// TO DO: Is there a better way to handle this? Maybe calculate deltaTime internally.
 		public void Filter( TwoAxisInputControl twoAxisInputControl, float deltaTime )
 		{
 			UpdateWithAxes( twoAxisInputControl.X, twoAxisInputControl.Y, InputManager.CurrentTick, deltaTime );

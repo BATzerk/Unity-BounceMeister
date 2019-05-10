@@ -304,6 +304,16 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
             prop.FlipHorz();
         }
     }
+    public void MoveAllProps(Vector2Int dir) {
+        MoveAllProps(dir * GameProperties.UnitSize);
+    }
+    public void MoveAllProps(Vector2 delta) {
+        Prop[] allProps = FindObjectsOfType<Prop>();
+        foreach (Prop prop in allProps) {
+            if (prop is CameraBounds) { continue; } // Note: Don't move CameraBounds.
+            prop.Move(delta);
+        }
+    }
 
 
 

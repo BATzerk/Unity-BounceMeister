@@ -11,12 +11,15 @@ static public class GameProperties {
     
     // Gameplay
     public const float UnitSize = 1f; // Grid-snap units! In Unity units.
-    public const int NUM_WORLDS = 6; // including World 0 for testing.
-    public const int FirstWorld = 1;
-    public const int LastWorld = 4;
     
     
     // Rooms!
+    public const int NUM_WORLDS = 6; // including World 0 for testing.
+    public const int FirstWorld = 1;
+    public const int LastWorld = 4;
+    public static bool IsFirstCluster(RoomAddress address) {
+        return address.world==FirstWorld && address.clust==0;
+    }
     public static int ClustNumSnacksReq(RoomAddress address) {
         switch (address.world) {
             // World 1
@@ -52,23 +55,6 @@ static public class GameProperties {
                     default: return 80;
                 }
             default: return 0;
-        }
-    }
-    
-    public static bool IsFirstCluster(RoomAddress address) {
-        return address.world==1 && address.clust==0;
-    }
-    
-    // TODO: Remove these! Replace with cluster knowledge!
-    public static string GetFirstRoomName(int worldIndex) {
-        switch (worldIndex) {
-            case 1: return "IntroGame1";
-            default: return "Clust0Start";//WorldStart";
-        }
-    }
-    public static string GetLastRoomName(int worldIndex) {
-        switch (worldIndex) {
-            default: return "WorldEnd";
         }
     }
 

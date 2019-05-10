@@ -4,7 +4,7 @@ namespace InControl
 	[AutoDiscover]
 	public class PlayStation4SteamLinkMacProfile : UnityInputDeviceProfile
 	{
-		// TODO: Seems like this could be any controller, not just PS4?
+		// TO DO: Seems like this could be any controller, not just PS4?
 		public PlayStation4SteamLinkMacProfile()
 		{
 			Name = "PlayStation 4 Controller via Steam Link";

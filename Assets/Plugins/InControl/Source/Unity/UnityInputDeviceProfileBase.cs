@@ -1,6 +1,6 @@
 ﻿namespace InControl
 {
-	// TODO: This class should be folded right into UnityInputDeviceProfile once
+	// TO DO: This class should be folded right into UnityInputDeviceProfile once
 	// CustomInputDeviceProfile is finally removed.
 	//
 	public abstract class UnityInputDeviceProfileBase : InputDeviceProfile

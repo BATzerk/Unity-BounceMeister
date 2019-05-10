@@ -1,4 +1,4 @@
-roomProperties posGlobal:(196.0, 1476.0);designerFlag:0
+﻿roomProperties posGlobal:(196.0, 1476.0);designerFlag:0
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
 Ground myRect:(x:21.00, y:0.00, width:10.00, height:32.00)
@@ -6,8 +6,8 @@ Ground myRect:(x:-24.00, y:0.00, width:4.00, height:32.00)
 Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
 PlayerStart pos:(-13.0, -14.5)
 InfoSign pos:(-11.0, -16.0);myText:You've completed World 1! Niiiice.
-RoomDoor pos:(-20.5, -15.0);myID:0;worldToIndex:-1;roomToKey:ControlledLift;roomToDoorID:0
-RoomDoor pos:(15.0, -11.0);myID:0;worldToIndex:2;roomToKey:Clust0Start;roomToDoorID:0
+RoomDoor pos:(-20.5, -15.0);myID:0;worldToIndex:-1;roomToKey:ControlledLift;doorToID:0
+RoomDoor pos:(15.0, -11.0);myID:0;worldToIndex:2;roomToKey:Clust0Start;doorToID:0
 Ground myRect:(x:16.00, y:-16.00, width:20.00, height:8.00)
 InfoSign pos:(0.0, -16.0);myText:World 2 >>>
 

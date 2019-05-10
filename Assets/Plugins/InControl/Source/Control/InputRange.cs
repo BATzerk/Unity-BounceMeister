@@ -16,7 +16,7 @@
 		public static readonly InputRange OneToZero = new InputRange( 1.0f, 0.0f, InputRangeType.OneToZero );
 		public static readonly InputRange MinusOneToZero = new InputRange( -1.0f, 0.0f, InputRangeType.MinusOneToZero );
 
-		// TODO: These should be deprecated when custom profiles are.
+		// TO DO: These should be deprecated when custom profiles are.
 		public static readonly InputRange ZeroToNegativeInfinity = new InputRange( 0.0f, float.NegativeInfinity, InputRangeType.ZeroToNegativeInfinity );
 		public static readonly InputRange ZeroToPositiveInfinity = new InputRange( 0.0f, float.PositiveInfinity, InputRangeType.ZeroToPositiveInfinity );
 		public static readonly InputRange Everything = new InputRange( float.NegativeInfinity, float.PositiveInfinity, InputRangeType.Everything );
@@ -31,7 +31,7 @@
 			OneToZero,
 			MinusOneToZero,
 
-			// TODO: These should be deprecated when custom profiles are.
+			// TO DO: These should be deprecated when custom profiles are.
 			ZeroToNegativeInfinity,
 			ZeroToPositiveInfinity,
 			Everything

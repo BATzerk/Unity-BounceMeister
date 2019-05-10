@@ -123,7 +123,7 @@ namespace InControl
 					}
 				}
 
-				// TODO: This is weird... what uses this condition? Only UnknownUnityDeviceProfile?
+				// TO DO: This is weird... what uses this condition? Only UnknownUnityDeviceProfile?
 				if (IncludePlatforms == null || IncludePlatforms.Length == 0)
 				{
 					return true;

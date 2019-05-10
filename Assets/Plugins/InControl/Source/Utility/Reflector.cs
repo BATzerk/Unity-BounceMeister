@@ -46,7 +46,7 @@ namespace InControl
 		}
 
 
-		// TODO: Overall this is much better but see if it can be optimized further so
+		// TO DO: Overall this is much better but see if it can be optimized further so
 		// this doesn't cause a lot of GC and unnecessary work particularly in large
 		// projects. Profile the Unity editor on script reloads.
 		static IEnumerable<Type> GetAllAssemblyTypes()
@@ -60,7 +60,7 @@ namespace InControl
 
 				// Debug.Log( "GetAllAssemblyTypes() considering: " + name );
 
-				// Ugly hack to handle misversioned DLLs.
+				// Ugly ha ck to handle misversioned DLLs.
 				Type[] innerTypes = null;
 				try
 				{

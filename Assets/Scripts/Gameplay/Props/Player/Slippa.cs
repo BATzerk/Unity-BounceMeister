@@ -16,7 +16,7 @@ public class Slippa : Player {
     override protected Vector2 Gravity {
         get {
             Vector2 gravNeutral = new Vector2(0, -0.042f);
-            if (isTouchingWall()) { return gravNeutral * 0.2f; } // On a wall? Reduce gravity!
+            if (IsAgainstWall()) { return gravNeutral * 0.2f; } // On a wall? Reduce gravity!
             if (isReducedJumpGravity) { return gravNeutral * 0.7f; } // We're still holding down the jump button? Reduce gravity!
             return gravNeutral * 1.6f;
         }

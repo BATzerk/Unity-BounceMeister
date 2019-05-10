@@ -1,11 +1,11 @@
-roomProperties posGlobal:(222.0, 550.0);designerFlag:3;isClustStart:True
+﻿roomProperties posGlobal:(222.0, 550.0);designerFlag:3;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-11.4, 1.2)
 Ground myRect:(x:-22.00, y:-5.50, width:8.00, height:29.00)
 Ground myRect:(x:22.50, y:-6.00, width:7.00, height:28.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
 Ground myRect:(x:-22.00, y:15.50, width:8.00, height:3.00)
-RoomDoor pos:(-16.5, 1.0);myID:0;worldToIndex:-1;roomToKey:Clust1Start;roomToDoorID:1
+RoomDoor pos:(-16.5, 1.0);myID:0;worldToIndex:-1;roomToKey:Clust1Start;doorToID:1
 Platform myRect:(x:-4.00, y:8.50, width:6.00, height:1.00)
 Ground myRect:(x:-12.50, y:8.00, width:11.00, height:2.00)
 Ground myRect:(x:0.50, y:3.00, width:3.00, height:12.00)
@@ -13,4 +13,4 @@ Platform myRect:(x:5.00, y:7.50, width:6.00, height:1.00)
 Ground myRect:(x:13.50, y:7.00, width:11.00, height:2.00)
 ProgressGate myRect:(x:12.00, y:3.00, width:8.00, height:6.00);numSnacksReq:18
 Ground myRect:(x:2.50, y:-10.00, width:47.00, height:20.00)
-RoomDoor pos:(18.0, 1.0);myID:1;worldToIndex:-1;roomToKey:IntroBouncyFloor;roomToDoorID:0
+RoomDoor pos:(18.0, 1.0);myID:1;worldToIndex:-1;roomToKey:IntroBouncyFloor;doorToID:0

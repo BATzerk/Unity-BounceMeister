@@ -15,7 +15,7 @@ namespace InControl
 		/// </summary>
 		public bool Passive;
 
-		// TODO: This meaningless distinction should probably be removed entirely.
+		// TO DO: This meaningless distinction should probably be removed entirely.
 		public bool IsButton { get; protected set; }
 		public bool IsAnalog { get; protected set; }
 

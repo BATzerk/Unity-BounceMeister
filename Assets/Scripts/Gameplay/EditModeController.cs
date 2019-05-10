@@ -19,10 +19,14 @@ public class EditModeController : MonoBehaviour {
     private string currWindow; // current Editor window with focus. Used to detect when we give focus to the Scene (aka room-editor) window.
     // References
     private GameObject prevSelectedGO; // for checking when we change our UI selection.
+    
+    // Getters
+    private DataManager dm { get { return GameManagers.Instance.DataManager; } }
+    private Room CurrRoom { get { return gameController.CurrRoom; } }
 
 
     // ----------------------------------------------------------------
-    //  Awake
+    //  Awake / Destroy
     // ----------------------------------------------------------------
     private void Awake() {
         // Not in EditMode? Destroy this script!
@@ -33,11 +37,35 @@ public class EditModeController : MonoBehaviour {
 
         // Set references.
         gameController = GetComponent<GameController>();
+        
+        // Add event listeners!
+        GameManagers.Instance.EventManager.StartRoomEvent += OnStartRoom;
+    }
+    private void OnDestroy() {
+        // Remove event listeners!
+        GameManagers.Instance.EventManager.StartRoomEvent -= OnStartRoom;
     }
 
 
 
 #if UNITY_EDITOR
+    // ----------------------------------------------------------------
+    //  Events
+    // ----------------------------------------------------------------
+    private void OnApplicationFocus(bool focus) {
+        UpdateIsEditMode();
+    }
+    private void OnGameWindowFocus(bool isFocus) {
+        isGameWindowFocus = isFocus;
+        UpdateIsEditMode();
+    }
+    private void OnStartRoom(Room room) {
+        // Expand the hierarchy for easier Room-editing!
+        ExpandRoomHierarchy();
+        GameUtils.SetEditorCameraPos(room.PosGlobal); // conveniently move the Unity Editor camera, too!
+    }
+
+
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
@@ -49,20 +77,48 @@ public class EditModeController : MonoBehaviour {
                   || GameUtils.CurrSelectedGO()!=null; // D) Selecting any UI!
         GameManagers.Instance.EventManager.OnSetIsEditMode(IsEditMode);
     }
-
-
-    // ----------------------------------------------------------------
-    //  Events
-    // ----------------------------------------------------------------
-    private void OnApplicationFocus(bool focus) {
-        UpdateIsEditMode();
+    private void ExpandRoomHierarchy() {
+        if (!GameUtils.IsEditorWindowMaximized()) { // If we're maximized, do nothing (we don't want to open up the Hierarchy if it's not already open).
+            GameUtils.SetExpandedRecursive(CurrRoom.gameObject, true); // Open up Room all the way down.
+            for (int i=0; i<CurrRoom.transform.childCount; i++) { // Ok, now (messily) close all its children.
+                GameUtils.SetExpandedRecursive(CurrRoom.transform.GetChild(i).gameObject, false);
+            }
+            GameUtils.FocusOnWindow("Game"); // focus back on Game window.
+            //GameUtils.SetGOCollapsed(transform.parent, false);
+            //GameUtils.SetGOCollapsed(tf_world, false);
+            //GameUtils.SetGOCollapsed(room.transform, false);
+        }
     }
-    private void OnGameWindowFocus(bool isFocus) {
-        isGameWindowFocus = isFocus;
-        UpdateIsEditMode();
+    public void SaveRoomFile() {
+        // Save it!
+        RoomSaverLoader.SaveRoomFile(CurrRoom);
+        // Update properties that may have changed.
+        if (CurrRoom.MyClusterData != null) {
+            CurrRoom.MyClusterData.RefreshSnackCount();
+        }
+        // Update total edibles counts!
+        dm.RefreshSnackCountGame();
     }
-
-
+    private void StartNewBlankRoom() {
+        // Keep it in the current world, and give it a unique name.
+        WorldData wd = dm.GetWorldData(CurrRoom.WorldIndex);
+        string roomKey = wd.GetUnusedRoomKey();
+        RoomData emptyRD = wd.GetRoomData(roomKey, true);
+        gameController.StartGameAtRoom(emptyRD);
+    }
+    private void DuplicateCurrRoom() {
+        // Add a new room file, yo!
+        RoomData currRD = CurrRoom.MyRoomData;
+        string newRoomKey = currRD.MyWorldData.GetUnusedRoomKey(currRD.RoomKey);
+        RoomSaverLoader.SaveRoomFileAs(currRD, currRD.WorldIndex, newRoomKey);
+        dm.ReloadWorldDatas();
+        RoomData newLD = dm.GetRoomData(currRD.WorldIndex,newRoomKey, false);
+        newLD.SetPosGlobal(newLD.PosGlobal + new Vector2(15,-15)*GameProperties.UnitSize); // offset its position a bit.
+        RoomSaverLoader.UpdateRoomPropertiesInRoomFile(newLD); // update file!
+        dm.currRoomData = newLD;
+        SceneHelper.ReloadScene();
+    }
+    
 
     // ----------------------------------------------------------------
     //  Update
@@ -71,6 +127,7 @@ public class EditModeController : MonoBehaviour {
         UpdateCurrWindow();
         UpdateSettingPlayerPos();
         UpdateCurrSelectedGO();
+        RegisterButtonInput();
     }
 
     private void UpdateCurrWindow() {
@@ -106,6 +163,45 @@ public class EditModeController : MonoBehaviour {
         if (prevSelectedGO != currSelectedGO) {
             prevSelectedGO = currSelectedGO;
             UpdateIsEditMode();
+        }
+    }
+    
+    private void RegisterButtonInput() {
+        // Canvas has a selected element? Ignore ALL button input.
+        if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != null) {
+            return;
+        }
+
+        bool isKey_alt = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
+        bool isKey_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+        bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+
+        // SHIFT + ___
+        if (isKey_shift) {
+            // SHIFT + S = Save room as text file!
+            if (Input.GetKeyDown(KeyCode.S)) {
+                SaveRoomFile();
+            }
+        }
+        // CONTROL + ___
+        if (isKey_control) {
+            // CONTROL + N = Create/Start new room!
+            if (Input.GetKeyDown(KeyCode.N)) { StartNewBlankRoom(); }
+            // CONTROL + D = Duplicate/Start new room!
+            else if (Input.GetKeyDown(KeyCode.D)) { DuplicateCurrRoom(); }
+            // CONTROL + SHIFT + ____...
+            else if (isKey_shift) {
+                if (CurrRoom != null) {
+                    // CONTROL + SHIFT + X = Flip Horizontal!
+                    if (Input.GetKeyDown(KeyCode.X)) { CurrRoom.FlipHorz(); }
+                    // CONTROL + SHIFT + [ARROW KEYS] = Move all Props!
+                    else if (Input.GetKeyDown(KeyCode.LeftArrow))  { CurrRoom.MoveAllProps(Vector2Int.L); }
+                    else if (Input.GetKeyDown(KeyCode.RightArrow)) { CurrRoom.MoveAllProps(Vector2Int.R); }
+                    else if (Input.GetKeyDown(KeyCode.DownArrow))  { CurrRoom.MoveAllProps(Vector2Int.B); }
+                    else if (Input.GetKeyDown(KeyCode.UpArrow))    { CurrRoom.MoveAllProps(Vector2Int.T); }
+                }
+            }
         }
     }
 

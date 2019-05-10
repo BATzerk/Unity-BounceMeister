@@ -69,16 +69,16 @@ abstract public class Player : PlatformCharacter {
     protected bool IsInput_R() { return inputAxis.x >  0.5f; }
     protected Vector2 inputAxis { get { return InputController.Instance.LeftStick; } }
     protected bool isWallSliding() { return wallSlideDir!=0; }
-	virtual protected bool MayJump() { return feetOnGround(); }
+	virtual protected bool MayJump() { return IsGrounded(); }
 	virtual protected bool MayWallKick() {
-		if (feetOnGround()) { return false; } // Obviously no.
-        if (isTouchingWall()) { return true; } // Touching a wall? Sure!
+		if (IsGrounded()) { return false; } // Obviously no.
+        if (IsAgainstWall()) { return true; } // Touching a wall? Sure!
 		if (Time.time < timeLastTouchedWall+WallKickExtensionWindow // Not touching wall, BUT recently was, AND I'm still very close to it??
             && myWhiskers.DistToSideLastTouchedWall() < 0.5f) { return true; }
         return false;
 	}
 	virtual protected bool MayWallSlide() {
-		return !feetOnGround() && !IsInLift; // TODO: Fix this Lift check not working.
+		return !IsGrounded() && !IsInLift; // TODO: Fix this Lift check not working.
 	}
     virtual protected bool MayEatEdibles() {
 		return myWhiskers.AreFeetOnEatEdiblesGround();
@@ -232,7 +232,7 @@ abstract public class Player : PlatformCharacter {
 
 		// Update vel to be the distance we ended up moving this frame.
 		SetVel(pos - ppos);
-        pfeetOnGround = feetOnGround();
+        pfeetOnGround = IsGrounded();
 
 		UpdateExitedRoom();
 	}
@@ -625,7 +625,7 @@ abstract public class Player : PlatformCharacter {
 		ediblesHolding.Clear();
         timeWhenAteEdible = Time.time;
         myBody.OnEatEdiblesHolding();
-        if (feetOnGround()) {
+        if (IsGrounded()) {
             SetVel(new Vector2(vel.x, Mathf.Max(vel.y, 0.22f))); // Hop happily if we just ate a Snack!
         }
 	}

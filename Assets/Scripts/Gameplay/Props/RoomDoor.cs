@@ -9,7 +9,7 @@ public class RoomDoor : Prop {
 	[SerializeField] private string myID;
     [SerializeField] private int worldToIndex=-1; // if this is -1, we'll stay in THIS world.
 	[SerializeField] private string roomToKey;
-	[SerializeField] private string roomToDoorID;
+	[SerializeField] private string doorToID;
 	//private bool isTouchingPlayer;
     private float timeWhenBorn; // in SCALED seconds. Ignore Player touching me for first second of my existence, so we don't flip-flop between two rooms in a loop.
 
@@ -17,7 +17,7 @@ public class RoomDoor : Prop {
     public string MyID { get { return myID; } }
     public int WorldToIndex { get { return worldToIndex; } }
     public string RoomToKey { get { return roomToKey; } }
-    public string RoomToDoorID { get { return roomToDoorID; } }
+    public string DoorToID { get { return doorToID; } }
 
 
     // ----------------------------------------------------------------
@@ -29,7 +29,7 @@ public class RoomDoor : Prop {
             myID = myID,
             worldToIndex = worldToIndex,
             roomToKey = roomToKey,
-            roomToDoorID = roomToDoorID
+            doorToID = doorToID
         };
         return data;
     }
@@ -43,7 +43,7 @@ public class RoomDoor : Prop {
 		myID = data.myID;
         worldToIndex = data.worldToIndex;
 		roomToKey = data.roomToKey;
-		roomToDoorID = data.roomToDoorID;
+		doorToID = data.doorToID;
         timeWhenBorn = Time.time;
 	}
 

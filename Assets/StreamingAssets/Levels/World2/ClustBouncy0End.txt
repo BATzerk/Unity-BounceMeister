@@ -1,8 +1,8 @@
-roomProperties posGlobal:(498.0, 788.0);designerFlag:3
+﻿roomProperties posGlobal:(498.0, 788.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-19.8, 10.0)
 Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
 Ground myRect:(x:-1.50, y:-3.50, width:49.00, height:25.00)
 Ground myRect:(x:14.50, y:0.00, width:23.00, height:32.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-RoomDoor pos:(1.5, 10.0);myID:0;worldToIndex:-1;roomToKey:ClustBouncy1Start;roomToDoorID:0
+RoomDoor pos:(1.5, 10.0);myID:0;worldToIndex:-1;roomToKey:ClustBouncy1Start;doorToID:0

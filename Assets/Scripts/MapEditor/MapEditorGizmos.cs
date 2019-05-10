@@ -41,7 +41,7 @@ namespace MapEditorNamespace {
                 foreach (RoomDoorData doorFrom in roomFrom.roomDoorDatas) {
                     RoomData roomTo = CurrWorldData.GetRoomData(doorFrom.roomToKey);
                     if (roomTo == null) { continue; } // No room? No line. TO DO: Show like an X or something?
-                    Vector2 doorToPos = roomTo.GetRoomDoorPos(doorFrom.roomToDoorID, false);
+                    Vector2 doorToPos = roomTo.GetRoomDoorPos(doorFrom.doorToID, false);
                     Line line = new Line {
                         start = roomFrom.PosGlobal + doorFrom.pos,
                         end = roomTo.PosGlobal + doorToPos

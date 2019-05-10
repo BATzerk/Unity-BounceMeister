@@ -384,7 +384,7 @@ public class WorldData {
                     str += "\n    No RoomTo: " + roomFrom.RoomKey + " to room " + doorFrom.roomToKey;
                     continue;
                 }
-                RoomDoorData doorTo = roomTo.GetRoomDoor(doorFrom.roomToDoorID);
+                RoomDoorData doorTo = roomTo.GetRoomDoor(doorFrom.doorToID);
                 if (doorTo == null) {
                     numIncompleteLinks ++;
                     str += "\n    No DoorTo: " + roomFrom.RoomKey + " to door " + doorFrom.roomToKey;
@@ -396,7 +396,7 @@ public class WorldData {
                     str += "\n    Door room mismatch: " + roomFrom.RoomKey + " to room " + roomTo.RoomKey;
                     continue;
                 }
-                if (doorTo.myID != doorFrom.roomToDoorID) {
+                if (doorTo.myID != doorFrom.doorToID) {
                     numIncompleteLinks ++;
                     str += "\n    Door door mismatch: " + roomFrom.RoomKey + " to room " + roomTo.RoomKey;
                     continue;

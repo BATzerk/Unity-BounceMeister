@@ -10,7 +10,7 @@
 		OneToZero,
 		MinusOneToZero,
 
-		// TODO: These should be deprecated when custom profiles are.
+		// TO DO: These should be deprecated when custom profiles are.
 		ZeroToNegativeInfinity,
 		ZeroToPositiveInfinity,
 		Everything

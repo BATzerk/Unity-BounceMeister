@@ -50,11 +50,6 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 		}
 		return pos;
     }
-    public int DirTouchingWall() {
-        if (OnSurface(Sides.L)) { return -1; }
-        if (OnSurface(Sides.R)) { return  1; }
-        return 0;
-    }
     /** It's most efficient only to search as far as the Player is going to move this frame. */
     private float GetRaycastSearchDist(int side) {
 		const float bloat = 5f; //0.2f NOTE: Increased this lots so we can ALSO know what else is around us! // how much farther than the player's exact velocity to look. For safety.
@@ -79,8 +74,13 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     }
     
     public bool OnSurface(int side) { return onSurfaces[side]; }
-    public bool AreArmsOnSurface() { return OnSurface(Sides.L) || OnSurface(Sides.R); }
+    public bool IsAgainstWall() { return DirTouchingWall() != 0; }
     public bool IsTouchingAnySurface() { return onSurfaces[Sides.L] || onSurfaces[Sides.R] || onSurfaces[Sides.B] || onSurfaces[Sides.T]; }
+    public int DirTouchingWall() {
+        if (OnSurface(Sides.L)) { return -1; }
+        if (OnSurface(Sides.R)) { return  1; }
+        return 0;
+    }
     /// Returns SMALLEST surfaceDist value on this side.
 	public float DistToSurface(int side) {
 		if (surfaceDists==null) { return 0; } // Safety check for runtime compile.

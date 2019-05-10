@@ -13,8 +13,8 @@ Ground myRect:(x:48.00, y:15.50, width:21.00, height:11.00)
 Ground myRect:(x:-12.00, y:-0.50, width:2.00, height:1.00)
 Ground myRect:(x:-12.50, y:-12.00, width:31.00, height:10.00)
 Ground myRect:(x:-4.00, y:-8.00, width:14.00, height:16.00)
-RoomDoor pos:(-24.0, -6.0);myID:0;roomToKey:;roomToDoorID:1
-RoomDoor pos:(40.0, -15.0);myID:1;roomToKey:;roomToDoorID:
+RoomDoor pos:(-24.0, -6.0);myID:0;roomToKey:;doorToID:1
+RoomDoor pos:(40.0, -15.0);myID:1;roomToKey:;doorToID:
 Platform myRect:(x:-18.00, y:-0.50, width:10.00, height:1.00)
 Platform myRect:(x:4.00, y:-0.50, width:2.00, height:1.00)
 Platform myRect:(x:14.00, y:4.50, width:2.00, height:1.00)
