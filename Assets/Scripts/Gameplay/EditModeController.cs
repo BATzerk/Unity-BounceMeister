@@ -123,11 +123,14 @@ public class EditModeController : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Update
     // ----------------------------------------------------------------
+    private Vector2 pmousePosWorld;
     private void Update() {
         UpdateCurrWindow();
         UpdateSettingPlayerPos();
         UpdateCurrSelectedGO();
         RegisterButtonInput();
+        
+        pmousePosWorld = InputController.Instance.MousePosWorld;
     }
 
     private void UpdateCurrWindow() {
@@ -155,6 +158,7 @@ public class EditModeController : MonoBehaviour {
             // We are setting Player pos??
             if (isSettingPlayerPos) {
                 gameController.Player.SetPosGlobal(InputController.Instance.MousePosWorld);
+                gameController.Player.SetVel(InputController.Instance.MousePosWorld - pmousePosWorld);
             }
         }
     }

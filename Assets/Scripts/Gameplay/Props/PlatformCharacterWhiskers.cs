@@ -146,6 +146,11 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
         lm_triggerColls = LayerMask.GetMask(Layers.Platform);
 
 		surfaceDists = new float[NumSides,NumWhiskersPerSide];
+        for (int side=0; side<NumSides; side++) {
+            for (int w=0; w<NumWhiskersPerSide; w++) {
+                surfaceDists[side,w] = Mathf.Infinity; // default dists to surfaces to infinity first.
+            }
+        }
 		collidersAroundMe = new Collider2D[NumSides,NumWhiskersPerSide];
 		collidersTouching = new HashSet<Collider2D>[4];
 		pcollidersTouching = new HashSet<Collider2D>[4];

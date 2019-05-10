@@ -68,6 +68,12 @@ public class Flatline : Player {
         if (IsHoverFull) { return false; } // Already recharged? Nah.
         return base.MayUseBattery();
     }
+    protected override bool MayWallKick() {
+        if (myWhiskers.DistToSurface(Sides.B) < 2.5f && vel.y<-0.4f) { // About to land on Ground? Don't allow wall-kick! We prob wanna convert our vel instead and pushed away too early.
+            return false;
+        }
+        return base.MayWallKick();
+    }
     protected override bool DoBounceOffCollidable(int mySide, Collidable collidable) {
         if (mySide == Sides.T && !IsHovering) { return true; } // My head's ALWAYS bouncy when I'm NOT hovering.
         return base.DoBounceOffCollidable(mySide, collidable);

@@ -162,7 +162,6 @@ abstract public class Player : PlatformCharacter {
 	//}
 	public void SetPosLocal(Vector2 _posLocal) {
 		pos = _posLocal;
-		SetVel(Vector2.zero);
 	}
 	public void SetPosGlobal(Vector2 _posGlobal) {
 		SetPosLocal(_posGlobal - MyRoom.PosGlobal);
@@ -239,7 +238,7 @@ abstract public class Player : PlatformCharacter {
 
 	private void UpdateWallSlide() {
 		if (isWallSliding()) {
-			SetVel(new Vector2(vel.x, Mathf.Max(vel.y, WallSlideMinYVel))); // Give us a minimum yVel!
+			SetVel(new Vector2(0, Mathf.Max(vel.y, WallSlideMinYVel))); // Halt x-vel and give us a minimum yVel!
 		}
 		// Note: We want to do this check constantly, as we may want to start wall sliding while we're already against a wall.
 		// We're NOT wall-sliding...

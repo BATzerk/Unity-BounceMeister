@@ -309,6 +309,7 @@ public class GameController : MonoBehaviour {
     private void Debug_JumpToRoomAtSide(int side) {
         OnPlayerEscapeRoomBounds(side); // Pretend the player just exited in this direction.
         player.SetPosLocal(CurrRoom.Debug_PlayerStartPosLocal()); // just put the player at the PlayerStart.
+        player.SetVel(Vector2.zero);
     }
 
 
