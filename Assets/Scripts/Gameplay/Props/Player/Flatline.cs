@@ -74,6 +74,10 @@ public class Flatline : Player {
     }
     public bool IsHoverFull { get { return HoverTimeLeft >= HoverDur; } }
     public bool IsHoverEmpty { get { return HoverTimeLeft <= 0; } }
+    private bool IsInputToHover() {
+        return (vel.x<0 && inputAxis.x<-0.1f) // moving left and pushing left?
+            || (vel.x>0 && inputAxis.x> 0.1f); // moving right and pushing right?
+    }
 
     // Properties
     private const float HoverDur = 2f; // we can only stay hovering for a few seconds.
@@ -162,9 +166,10 @@ public class Flatline : Player {
     }
     protected override void OnFeetLeaveCollidable(Collidable collidable) {
         base.OnFeetLeaveCollidable(collidable);
-        // We MAY start hover, AND we're not touching ANYthing (we don't wanna hover if just left ground to slide up wall).
-        if (MayStartHover() && !myWhiskers.IsTouchingAnySurface()) {
-            if ((vel.x<0 && inputAxis.x<-0.1f) || (vel.x>0 && inputAxis.x>0.1f)) { // TEST!
+        // User wants to hover??
+        if (IsInputToHover()) {
+            // We MAY hover, AND we're not touching ANYthing (we don't wanna hover if just left ground to slide up wall)...
+            if (MayStartHover() && !myWhiskers.IsTouchingAnySurface()) {
                 StartHover();
             }
         }
@@ -205,9 +210,9 @@ public class Flatline : Player {
     }
     protected override void OnEndIsInLift() {
         base.OnEndIsInLift();
-        //if (isButtonHeld_Hover && MayStartHover()) {TODO: This. If it's better without hover button, clean it all up.
-        //    StartHover();
-        //}
+        if (IsInputToHover() && MayStartHover()) {
+            StartHover();
+        }
     }
 
     //override protected void DropThruPlatform() {
@@ -221,13 +226,10 @@ public class Flatline : Player {
     //  FixedUpdate
     // ----------------------------------------------------------------
     protected override void FixedUpdate() {
-        if (inputAxis.x < -0.1f && pinputAxis.x >= -0.1f) { Test_OnLPress(); } // TODO: Clean this up!
-        else if (inputAxis.x >= -0.1f && pinputAxis.x < -0.1f) { Test_OnLRelease(); }
-        if (inputAxis.x > 0.1f && pinputAxis.x <= 0.1f) { Test_OnRPress(); }
-        else if (inputAxis.x < 0.1f && pinputAxis.x >= 0.1f) { Test_OnRRelease(); }
-        
-        pinputAxis = inputAxis;
-        
+        if (InputController.Instance.IsLPush) { OnLPush(); }
+        if (InputController.Instance.IsRPush) { OnRPush(); }
+        if (InputController.Instance.IsLRelease) { OnLRelease(); }
+        if (InputController.Instance.IsRRelease) { OnRRelease(); }
         
         base.FixedUpdate();
         
@@ -266,24 +268,35 @@ public class Flatline : Player {
     // ----------------------------------------------------------------
     //  Input
     // ----------------------------------------------------------------
-    // TEST
-    private Vector2 pinputAxis;
-    private void Test_OnLPress() {
-        if (wallSlideDir == 1 && MayWallKick()) { WallKick(); }
-        else if (!feetOnGround() && MayStartHover() && vel.x<0) { StartHover(); }
+    override protected void OnButtonJump_Press() { }
+    
+    private void OnLPush() {
+        if (wallSlideDir == 1 && MayWallKick()) {
+            WallKick();
+        }
+        else if (IsInputToHover() && MayStartHover()) {
+            StartHover();
+        }
     }
-    private void Test_OnLRelease() {
-        if (IsHovering && vel.x < 0) { StopHover(); }
+    private void OnRPush() {
+        if (wallSlideDir == -1 && MayWallKick()) {
+            WallKick();
+        }
+        else if (IsInputToHover() && MayStartHover()) {
+            StartHover();
+        }
     }
-    private void Test_OnRPress() {
-        if (wallSlideDir == -1 && MayWallKick()) { WallKick(); }
-        else if (!feetOnGround() && MayStartHover() && vel.x>0) { StartHover(); }
+    private void OnLRelease() {
+        if (IsHovering && vel.x < 0) {
+            StopHover();
+        }
     }
-    private void Test_OnRRelease() {
-        if (IsHovering && vel.x > 0) { StopHover(); }
+    private void OnRRelease() {
+        if (IsHovering && vel.x > 0) {
+            StopHover();
+        }
     }
     
-    override protected void OnButtonJump_Press() { }
 
 
 }

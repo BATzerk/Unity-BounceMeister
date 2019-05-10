@@ -15,10 +15,17 @@ public class InputController : MonoBehaviour {
     public bool IsAction_Release { get; private set; }
     public bool IsJump_Press { get; private set; }
     public bool IsJump_Release { get; private set; }
-    public Vector2 PlayerInput { get; private set; }
+    public bool IsLPush { get; private set; } // NOTE: Updated every FIXEDUPDATE!
+    public bool IsRPush { get; private set; }
+    public bool IsLRelease { get; private set; }
+    public bool IsRRelease { get; private set; }
+    public Vector2 LeftStick { get; private set; }
+    private Vector2 pLeftStick;
     //public static bool IsButtonDown_Down { get; private set; }
     //public static bool IsButtonDown_Held { get; private set; }
 	private Vector2 mousePosDown;
+    // References
+    private InputDevice ad; // activeDevice. Updated at start of every Update.
 
     // Getters
     static public InputController Instance {
@@ -75,17 +82,32 @@ public class InputController : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void Update () {
 		if (instance == null) { instance = this; } // Safety check (for runtime compile).
-		RegisterButtonInputs();
-		RegisterMouseInputs();
+        ad = InputManager.ActiveDevice;
+        
+        RegisterMouse();
+        RegisterButtons();
+        RegisterJoystick();
 	}
 
-	private void RegisterButtonInputs () {
-        InputDevice ad = InputManager.ActiveDevice;
-        PlayerInput = new Vector2(ad.LeftStickX, ad.LeftStickY);
-        PlayerInput += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        if (Mathf.Abs(PlayerInput.x) < 0.4f) { PlayerInput = new Vector2(0, PlayerInput.y); } // TEST! Add dead zone.
-        //print(Time.frameCount + " PlayerInput: " + PlayerInput);
-        
+    private void RegisterMouse() {
+        isDoubleClick = false; // I'll say otherwise in a moment.
+
+        if (Input.GetMouseButtonDown(0)) {
+            // Up how many clicks we got.
+            numQuickClicks ++;
+            // This is the SECOND click??
+            if (numQuickClicks == 2) { // to-do: Discount if mouse pos is too far from first down pos.
+                isDoubleClick = true;
+            }
+            // Reset the timer to count another quick-click!
+            timeWhenNullifyDoubleClick = Time.time + QUICK_CLICK_TIME_WINDOW;
+        }
+        // Have we nullified our double-click by waiting too long?
+        if (Time.time >= timeWhenNullifyDoubleClick) {
+            numQuickClicks = 0;
+        }
+    }
+	private void RegisterButtons() {
         IsJump_Press = ad.Action1.WasPressed || Input.GetButtonDown("Jump");
         IsJump_Release = ad.Action1.WasReleased || Input.GetButtonUp("Jump");
         IsAction_Press =
@@ -107,25 +129,24 @@ public class InputController : MonoBehaviour {
         //    IsButtonDown_Down |= PlayerInput.y < -0.7f; // YES pushing down? Make true!
         //}
     }
-
-	private void RegisterMouseInputs () {
-		isDoubleClick = false; // I'll say otherwise in a moment.
-
-		if (Input.GetMouseButtonDown(0)) {
-			// Up how many clicks we got.
-			numQuickClicks ++;
-			// This is the SECOND click??
-			if (numQuickClicks == 2) { // to-do: Discount if mouse pos is too far from first down pos.
-				isDoubleClick = true;
-			}
-			// Reset the timer to count another quick-click!
-			timeWhenNullifyDoubleClick = Time.time + QUICK_CLICK_TIME_WINDOW;
-		}
-		// Have we nullified our double-click by waiting too long?
-		if (Time.time >= timeWhenNullifyDoubleClick) {
-			numQuickClicks = 0;
-		}
-	}
+    private void RegisterJoystick() {
+        LeftStick = new Vector2(ad.LeftStickX, ad.LeftStickY);
+        LeftStick += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        if (Mathf.Abs(LeftStick.x) < 0.2f) { LeftStick = new Vector2(0, LeftStick.y); } // TEST! Add dead zone.
+        //print(Time.frameCount + " PlayerInput: " + PlayerInput);
+        
+        IsLPush = false;
+        IsRPush = false;
+        IsLRelease = false;
+        IsRRelease = false;
+        if (LeftStick.x < -0.1f && pLeftStick.x >= -0.1f) { IsLPush = true; }
+        if (LeftStick.x >  0.1f && pLeftStick.x <=  0.1f) { IsRPush = true; }
+        if (LeftStick.x >= -0.1f && pLeftStick.x < -0.1f) { IsLRelease = true; }
+        if (LeftStick.x  <  0.1f && pLeftStick.x >= 0.1f) { IsRRelease = true; }
+        
+        pLeftStick = LeftStick;
+    }
+    
 
 }
 

@@ -67,7 +67,7 @@ abstract public class Player : PlatformCharacter {
     protected bool IsInput_U() { return inputAxis.y >  0.5f; }
     protected bool IsInput_L() { return inputAxis.x < -0.5f; }
     protected bool IsInput_R() { return inputAxis.x >  0.5f; }
-    protected Vector2 inputAxis { get { return InputController.Instance.PlayerInput; } }
+    protected Vector2 inputAxis { get { return InputController.Instance.LeftStick; } }
     protected bool isWallSliding() { return wallSlideDir!=0; }
 	virtual protected bool MayJump() { return feetOnGround(); }
 	virtual protected bool MayWallKick() {
@@ -189,7 +189,7 @@ abstract public class Player : PlatformCharacter {
         else if (InputController.Instance.IsAction_Press) {
             OnButtonAction_Press();
         }
-		else if (InputController.Instance.PlayerInput.y < -0.7f) {
+		else if (InputController.Instance.LeftStick.y < -0.7f) {
 			OnDown_Held();
 		}
 	}

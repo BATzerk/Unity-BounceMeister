@@ -193,7 +193,7 @@ public class MapEditorCamera : MonoBehaviour {
             //      else if (Input.GetKey(KeyCode.RightArrow)) { MoveCamera(ARROW_KEYS_PAN_SPEED/mapScale*fTS,0); }
             //      else if (Input.GetKey(KeyCode.DownArrow)) { MoveCamera(0,-ARROW_KEYS_PAN_SPEED/mapScale*fTS); }
             //      else if (Input.GetKey(KeyCode.UpArrow)) { MoveCamera(0,ARROW_KEYS_PAN_SPEED/mapScale*fTS); }
-            Vector2 inputAxis = InputController.Instance.PlayerInput;
+            Vector2 inputAxis = InputController.Instance.LeftStick;
             if (inputAxis.magnitude > 0.1f) {
                 Pos += inputAxis * (ARROW_KEYS_PAN_SPEED/MapScale*fts);
             }
