@@ -4,13 +4,13 @@ using UnityEngine;
 
 abstract public class Collidable : Prop {
 	// Properties
-	[SerializeField] protected bool canBounce = true; // if FALSE, Plunga cannot bounce off of me! They'll just land.
+	[SerializeField] protected bool canBounce = true; // if FALSE, NOBODY may bounce off of me! They'll just land.
 	[SerializeField] protected bool doRechargePlayer = true; // if TRUE, we recharge Plunga's plunge when their feet touch me.
 	[SerializeField] protected bool isBouncy = false; // if TRUE, PlatformCharacter will bounce on me instead of land.
     public Vector2 vel { get; protected set; }
 
 	// Getters (Public)
-	public bool CanBounce { get { return canBounce; } }
+	public bool CanBounce { get { return canBounce; } }//TODO: Rename to MayBounce everywhere!.
 	public bool DoRechargePlayer { get { return doRechargePlayer; } }
 	public bool IsBouncy { get { return isBouncy; } }
 	// Getters (Protected)

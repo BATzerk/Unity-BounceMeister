@@ -9,7 +9,7 @@ public class Dilata : Player {
     override protected float FrictionAir { get { return 1; } }
     override protected float FrictionGround {
         get {
-            if (Mathf.Abs(inputAxis.x) > 0.1f) { return 0.95f; } // Providing input? Less friction!
+            if (Mathf.Abs(LeftStick.x) > 0.1f) { return 0.95f; } // Providing input? Less friction!
             return 0.76f;
         }
     }

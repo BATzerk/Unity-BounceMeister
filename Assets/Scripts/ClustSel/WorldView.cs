@@ -25,7 +25,7 @@ namespace ClustSelNamespace {
             return clustTiles[clustIndex];
         }
         private RoomView GetRoomView(RoomData roomData) {
-            if (roomData == null) { return null; } // Safety check.
+            if (roomData == null || roomData.MyCluster==null) { return null; } // Safety check.
             ClustTile clustTile = GetClustTile(roomData.MyCluster.ClustIndex);
             if (clustTile == null) { return null; } // Safety check.
             return clustTile.GetRoomView(roomData);
@@ -69,10 +69,10 @@ namespace ClustSelNamespace {
         }
         private void UpdateYouAreHereIconPos() {
             RoomData roomData = GameManagers.Instance.DataManager.LastPlayedRoomData(WorldIndex);//GameManagers.Instance.DataManager.currRoomData;
-            RoomView roomView = GetRoomView(roomData);
-            bool doShowIcon = roomData!=null && roomData.MyCluster.IsUnlocked;
+            bool doShowIcon = roomData!=null && roomData.MyCluster!=null && roomData.MyCluster.IsUnlocked;
             i_youAreHereIcon.enabled = doShowIcon;
             if (doShowIcon) {
+                RoomView roomView = GetRoomView(roomData);
                 i_youAreHereIcon.transform.position = roomView.transform.position;
             }
         }

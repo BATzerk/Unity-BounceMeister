@@ -145,7 +145,7 @@ public class RoomTile : MonoBehaviour {
 	public void UpdateVisibilityFromSearchCriteria (string searchString) {
 		bool isInSearch = false;
 		// If there is no search, consider me in "the search!"
-		if (searchString == "" || searchString == null) {
+		if (string.IsNullOrEmpty(searchString)) {
 			isInSearch = true;
 		}
 		// If my name's got this search string in it, then yeah!

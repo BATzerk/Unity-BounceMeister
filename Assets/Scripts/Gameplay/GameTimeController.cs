@@ -99,7 +99,7 @@ public class GameTimeController : MonoBehaviour {
     //  Update
     // ----------------------------------------------------------------
     public void UpdateFromFlatline(Flatline flatline) {
-        tsFromPlayer = 0.5f/flatline.vel.magnitude;
+        tsFromPlayer = 0.6f/flatline.vel.magnitude;
         tsFromPlayer = Mathf.Clamp(tsFromPlayer, 0.2f,1f);
         UpdateTimeScale();
         //print(Time.frameCount + "  tsFromPlayer: " + tsFromPlayer);

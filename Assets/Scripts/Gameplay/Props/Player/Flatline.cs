@@ -24,7 +24,7 @@ public class Flatline : Player {
     }
     override protected float FrictionGround {
         get {
-            if (Mathf.Abs(inputAxis.x) > 0.1f // Providing input?
+            if (Mathf.Abs(LeftStick.x) > 0.1f // Providing input?
              || Time.time < timeWhenLanded+0.25f // Recently landed?
             ) {
                 return 0.98f; // Less friction!
@@ -74,15 +74,16 @@ public class Flatline : Player {
         }
         return base.MayWallKick();
     }
-    protected override bool DoBounceOffCollidable(int mySide, Collidable collidable) {
+    protected override bool DoBounceOffColl(int mySide, Collidable coll) {
+        if (!MayBounceOffColl(coll)) { return false; }
         if (mySide == Sides.T && !IsHovering) { return true; } // My head's ALWAYS bouncy when I'm NOT hovering.
-        return base.DoBounceOffCollidable(mySide, collidable);
+        return base.DoBounceOffColl(mySide, coll);
     }
     public bool IsHoverFull { get { return HoverTimeLeft >= HoverDur; } }
     public bool IsHoverEmpty { get { return HoverTimeLeft <= 0; } }
     private bool IsInputToHover() {
-        return (vel.x<0 && inputAxis.x<-0.1f) // moving left and pushing left?
-            || (vel.x>0 && inputAxis.x> 0.1f); // moving right and pushing right?
+        return (vel.x<0 && LeftStick.x<-0.1f) // moving left and pushing left?
+            || (vel.x>0 && LeftStick.x> 0.1f); // moving right and pushing right?
     }
 
     // Properties
@@ -91,6 +92,7 @@ public class Flatline : Player {
     public bool HasHoveredWithoutTouchCollider { get; private set; } // when this is true, we can't provide input.
     public bool IsHovering { get; private set; }
     public float HoverTimeLeft { get; private set; }
+    private Vector2 pLeftStick; // previous InputController LeftStick.
     // References
     private FlatlineBody myFlatlineBody;
     private GameTimeController gameTimeController;
@@ -178,7 +180,10 @@ public class Flatline : Player {
         if (IsInputToHover()) {
             // We MAY hover, AND we're not touching ANYthing (we don't wanna hover if just left ground to slide up wall)...
             if (MayStartHover() && !myWhiskers.IsTouchingAnySurface()) {
-                StartHover();
+                // We DIDN'T just bounce?
+                if (timeSinceBounce > 0.1f) {
+                    StartHover();
+                }
             }
         }
     }
@@ -244,16 +249,26 @@ public class Flatline : Player {
     //  FixedUpdate
     // ----------------------------------------------------------------
     protected override void FixedUpdate() {
-        if (InputController.Instance.IsLPush) { OnLPush(); }
-        if (InputController.Instance.IsRPush) { OnRPush(); }
-        if (InputController.Instance.IsLRelease) { OnLRelease(); }
-        if (InputController.Instance.IsRRelease) { OnRRelease(); }
-        if (Mathf.Abs(inputAxis.x)<0.1f && IsHovering) { StopHover(); } // HACK TEMP HACK.
+        RegisterJoystickPushReleases();
         
         base.FixedUpdate();
         
         UpdateHover();
         ApplyWallSuck();
+    }
+    private void RegisterJoystickPushReleases() {
+        if (LeftStick.x < -0.1f && pLeftStick.x >= -0.1f) { OnLPush(); }
+        if (LeftStick.x >  0.1f && pLeftStick.x <=  0.1f) { OnRPush(); }
+        if (LeftStick.x >= -0.1f && pLeftStick.x < -0.1f) { OnLRelease(); }
+        if (LeftStick.x  <  0.1f && pLeftStick.x >= 0.1f) { OnRRelease(); }
+        
+        pLeftStick = LeftStick;
+        
+        //if (InputController.Instance.IsLPush) { OnLPush(); }
+        //if (InputController.Instance.IsRPush) { OnRPush(); }
+        //if (InputController.Instance.IsLRelease) { OnLRelease(); }
+        //if (InputController.Instance.IsRRelease) { OnRRelease(); }
+        //if (Mathf.Abs(inputAxis.x)<0.1f && IsHovering) { StopHover(); } // HA CK
     }
     private void UpdateHover() {
         if (IsHovering) {
@@ -298,7 +313,6 @@ public class Flatline : Player {
         }
     }
     private void OnRPush() {
-        print(Time.frameCount + " OnRPush. " + wallSlideDir + "   " + MayWallKick());
         if (wallSlideDir == -1 && MayWallKick()) {
             WallKick();
         }

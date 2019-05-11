@@ -15,12 +15,12 @@ public class InputController : MonoBehaviour {
     public bool IsAction_Release { get; private set; }
     public bool IsJump_Press { get; private set; }
     public bool IsJump_Release { get; private set; }
-    public bool IsLPush { get; private set; } // NOTE: Updated every FIXEDUPDATE!
-    public bool IsRPush { get; private set; }
-    public bool IsLRelease { get; private set; }
-    public bool IsRRelease { get; private set; }
+    //public bool IsLPush { get; private set; } // NOTE: Updated every FIXEDUPDATE! NOTE NOTE: *NOT* reliable for others to use. Registers for Player like 97% of the time. :P
+    //public bool IsRPush { get; private set; }
+    //public bool IsLRelease { get; private set; }
+    //public bool IsRRelease { get; private set; }
     public Vector2 LeftStick { get; private set; }
-    private Vector2 pLeftStick;
+    //private Vector2 pLeftStick;
     //public static bool IsButtonDown_Down { get; private set; }
     //public static bool IsButtonDown_Held { get; private set; }
 	private Vector2 mousePosDown;
@@ -132,19 +132,19 @@ public class InputController : MonoBehaviour {
     private void RegisterJoystick() {
         LeftStick = new Vector2(ad.LeftStickX, ad.LeftStickY);
         LeftStick += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        if (Mathf.Abs(LeftStick.x) < 0.2f) { LeftStick = new Vector2(0, LeftStick.y); } // TEST! Add dead zone.
+        if (Mathf.Abs(LeftStick.x) < 0.1f) { LeftStick = new Vector2(0, LeftStick.y); } // TEST! Add dead zone.
         //print(Time.frameCount + " PlayerInput: " + PlayerInput);
         
-        IsLPush = false;
-        IsRPush = false;
-        IsLRelease = false;
-        IsRRelease = false;
-        if (LeftStick.x < -0.1f && pLeftStick.x >= -0.1f) { IsLPush = true; }
-        if (LeftStick.x >  0.1f && pLeftStick.x <=  0.1f) { IsRPush = true; }
-        if (LeftStick.x >= -0.1f && pLeftStick.x < -0.1f) { IsLRelease = true; }
-        if (LeftStick.x  <  0.1f && pLeftStick.x >= 0.1f) { IsRRelease = true; }
+        //IsLPush = false;
+        //IsRPush = false;
+        //IsLRelease = false;
+        //IsRRelease = false;
+        //if (LeftStick.x < -0.1f && pLeftStick.x >= -0.1f) { IsLPush = true; }
+        //if (LeftStick.x >  0.1f && pLeftStick.x <=  0.1f) { IsRPush = true; }
+        //if (LeftStick.x >= -0.1f && pLeftStick.x < -0.1f) { IsLRelease = true; }
+        //if (LeftStick.x  <  0.1f && pLeftStick.x >= 0.1f) { IsRRelease = true; }
         
-        pLeftStick = LeftStick;
+        //pLeftStick = LeftStick;
     }
     
 

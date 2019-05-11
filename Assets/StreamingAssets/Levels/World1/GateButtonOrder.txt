@@ -16,4 +16,3 @@ Snack pos:(19.5, 1.5);playerType:Plunga
 Spikes myRect:(x:-7.50, y:-9.00, width:16.00, height:1.00);rotation:270
 Spikes myRect:(x:3.00, y:-15.50, width:24.00, height:1.00);rotation:0
 Spikes myRect:(x:3.50, y:-9.00, width:16.00, height:1.00);rotation:90
-

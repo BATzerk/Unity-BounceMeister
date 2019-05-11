@@ -11,7 +11,7 @@ abstract public class Player : PlatformCharacter {
 	override protected float FrictionAir { get { return isPreservingWallKickVel ? 1f : FrictionGround; } } // No air friction while we're preserving our precious wall-kick vel.
 	override protected float FrictionGround {
 		get {
-            if (Mathf.Abs(inputAxis.x) > 0.1f) { return 0.7f; } // Providing input? Less friction!
+            if (Mathf.Abs(LeftStick.x) > 0.1f) { return 0.7f; } // Providing input? Less friction!
             return 0.5f; // No input? Basically halt.
         }
 	}
@@ -34,6 +34,7 @@ abstract public class Player : PlatformCharacter {
     virtual protected float PostWallKickHorzHaltTime { get { return 99f; } } // how many SECONDS after wall-kick when we auto-halt our xVel.
     virtual protected float PostWallKickHorzInputLockDur { get { return 0.22f; } } // affects isPreservingWallKickVel. How long until we can provide horz-input after wall-kicking.
     virtual protected float WallKickExtensionWindow { get { return 0.15f; } } // how long after touching a wall when we'll still allow wall-kicking!
+    virtual protected float ExtraBounceDistToRestore() { return 0; }
     virtual protected bool DoesFarFallHop { get { return true; } } // Say FALSE if we don't want to bounce lightly when landing on Ground from a tall height.
     
 	// Components
@@ -63,11 +64,11 @@ abstract public class Player : PlatformCharacter {
 	virtual public bool MayUseBattery() { return false; }
 	public bool IsPostDamageImmunity { get { return isPostDamageImmunity; } }
 	// Getters (Protected)
-    protected bool IsInput_D() { return inputAxis.y < -0.5f; }
-    protected bool IsInput_U() { return inputAxis.y >  0.5f; }
-    protected bool IsInput_L() { return inputAxis.x < -0.5f; }
-    protected bool IsInput_R() { return inputAxis.x >  0.5f; }
-    protected Vector2 inputAxis { get { return InputController.Instance.LeftStick; } }
+    protected bool IsInput_D() { return LeftStick.y < -0.5f; }
+    protected bool IsInput_U() { return LeftStick.y >  0.5f; }
+    protected bool IsInput_L() { return LeftStick.x < -0.5f; }
+    protected bool IsInput_R() { return LeftStick.x >  0.5f; }
+    protected Vector2 LeftStick { get { return InputController.Instance.LeftStick; } }
     protected bool isWallSliding() { return wallSlideDir!=0; }
 	virtual protected bool MayJump() { return IsGrounded(); }
 	virtual protected bool MayWallKick() {
@@ -86,8 +87,8 @@ abstract public class Player : PlatformCharacter {
     virtual protected bool MaySetGroundedRespawnPos() { return true; } // Override if you don't wanna set GroundedRespawnPos while plunging, etc.
     override protected float HorzMoveInputVelXDelta() {
 		if (InputController.Instance==null) { return 0; } // for building at runtime.
-		if (Mathf.Abs(inputAxis.x) < 0.05f) { return 0; } // No input? No input.
-		float dirX = MathUtils.Sign(inputAxis.x);
+		if (Mathf.Abs(LeftStick.x) < 0.05f) { return 0; } // No input? No input.
+		float dirX = MathUtils.Sign(LeftStick.x);
 		// TESTing out controls!
 		float mult = 1;//feetOnGround() ? 1 : 0.65f;
 		if (!MathUtils.IsSameSign(dirX, vel.x)) { // Pushing the other way? Make us go WAY the other way, ok?
@@ -98,8 +99,8 @@ abstract public class Player : PlatformCharacter {
 			}
 		}
         // We're maxed-out vel? Don't accept more input in this dir.
-        if (vel.x >  MaxVelXFromInput && inputAxis.x>0) { mult = 0; }
-        if (vel.x < -MaxVelXFromInput && inputAxis.x<0) { mult = 0; }
+        if (vel.x >  MaxVelXFromInput && LeftStick.x>0) { mult = 0; }
+        if (vel.x < -MaxVelXFromInput && LeftStick.x<0) { mult = 0; }
 
 		return dirX*InputScaleX * mult;
 	}
@@ -108,15 +109,15 @@ abstract public class Player : PlatformCharacter {
 	private bool CanTakeDamage() {
 		return !isPostDamageImmunity;
 	}
-	virtual protected bool DoBounceOffCollidable(int mySide, Collidable collidable) {
-        if (mySide == Sides.B && IsInput_D()) { return false; } // Pushing down? No bounce up.
-		return IsBouncyCollidable(collidable);
+    private bool IsBouncyCollidable(Collidable collidable) { return collidable != null && collidable.IsBouncy; }
+	virtual protected bool DoBounceOffColl(int mySide, Collidable coll) {
+        if (mySide==Sides.B && IsInput_D()) { return false; } // Pushing down? No bounce up.
+        if (!MayBounceOffColl(coll)) { return false; } // We explicitly may NOT bounce off this.
+        return IsBouncyCollidable(coll); // Ok, I'll bounce only if this fella's bouncy.
 	}
-    virtual protected float ExtraBounceDistToRestore() { return 0; }
-	private bool IsBouncyCollidable(Collidable collidable) {
-		if (collidable == null) { return false; } // The collidable is undefined? Default to NOT bouncy.
-		return collidable.IsBouncy;
-	}
+    protected bool MayBounceOffColl(Collidable coll) {
+        return coll!=null && coll.CanBounce;
+    }
     // Setters
     public void SetDirFacing(int _dir) {
         DirFacing = _dir;
@@ -268,7 +269,7 @@ abstract public class Player : PlatformCharacter {
     private void UpdateDirFacing() {
         // If I'm NOT wall-sliding, then make my DirFacing be what dir input is pushing.
         if (!isWallSliding()) {
-            float inputX = inputAxis.x;//HorzMoveInputVelXDelta();
+            float inputX = LeftStick.x;//HorzMoveInputVelXDelta();
             if (Mathf.Abs(inputX) > 0.001f) {
                 DirFacing = MathUtils.Sign(inputX);
             }
@@ -286,7 +287,7 @@ abstract public class Player : PlatformCharacter {
 				isPreservingWallKickVel = false;
 			}
             // If we're pushing AGAINST our vel, CANCEL preserving wall-kick vel.
-            if (!isPostWallKickInputLock && inputAxis.x*MathUtils.Sign(vel.x) < -0.5f) {
+            if (!isPostWallKickInputLock && LeftStick.x*MathUtils.Sign(vel.x) < -0.5f) {
                 isPreservingWallKickVel = false;
             }
 		}
@@ -445,7 +446,7 @@ abstract public class Player : PlatformCharacter {
 		}
         
 		// Bounce!
-		if (DoBounceOffCollidable(Sides.B, collidable)) {
+		if (DoBounceOffColl(Sides.B, collidable)) {
 			BounceOffCollidable_Up(collidable);
 		}
 		// Otherwise...
@@ -458,7 +459,7 @@ abstract public class Player : PlatformCharacter {
 	}
     private void OnHeadTouchCollidable(Collidable collidable) {
         // Bounce!
-        if (DoBounceOffCollidable(Sides.T, collidable)) {
+        if (DoBounceOffColl(Sides.T, collidable)) {
             BounceOffCollidable_Down(collidable);
         }
         // Land.
@@ -468,7 +469,7 @@ abstract public class Player : PlatformCharacter {
     }
 	virtual protected void OnArmTouchCollidable(int side, Collidable collidable) {
         // Bouncy collidable?
-        if (DoBounceOffCollidable(side, collidable)) {
+        if (DoBounceOffColl(side, collidable)) {
             BounceOffCollidable_Side(collidable);
         }
         // Delayed wall-kick? Do it right away!

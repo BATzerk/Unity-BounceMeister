@@ -311,6 +311,11 @@ public class GameController : MonoBehaviour {
         Player.SetVel(Vector2.zero);
     }
 
+    private void OnGUI() {
+        GUI.color = Color.black;
+        GUI.Label(new Rect(8,0, 200,100), "timeScale: " + Time.timeScale);
+    }
+
 
 
 
