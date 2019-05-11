@@ -93,6 +93,7 @@ public class Flatline : Player {
     public float HoverTimeLeft { get; private set; }
     // References
     private FlatlineBody myFlatlineBody;
+    private GameTimeController gameTimeController;
 
 
     // ----------------------------------------------------------------
@@ -100,6 +101,7 @@ public class Flatline : Player {
     // ----------------------------------------------------------------
     override protected void Start() {
         myFlatlineBody = myBody as FlatlineBody;
+        gameTimeController = MyRoom.GameController.GameTimeController;
         HoverTimeLeft = HoverDur; // start out with fuel.
         base.Start();
     }
@@ -228,6 +230,16 @@ public class Flatline : Player {
 
 
 
+    
+    // ----------------------------------------------------------------
+    //  Update
+    // ----------------------------------------------------------------
+    override protected void Update() {
+        base.Update();
+        if (!DoUpdate()) { return; } // Not supposed to Update? No dice.
+        gameTimeController.UpdateFromFlatline(this);
+    }
+    
     // ----------------------------------------------------------------
     //  FixedUpdate
     // ----------------------------------------------------------------
@@ -236,6 +248,7 @@ public class Flatline : Player {
         if (InputController.Instance.IsRPush) { OnRPush(); }
         if (InputController.Instance.IsLRelease) { OnLRelease(); }
         if (InputController.Instance.IsRRelease) { OnRRelease(); }
+        if (Mathf.Abs(inputAxis.x)<0.1f && IsHovering) { StopHover(); } // HACK TEMP HACK.
         
         base.FixedUpdate();
         
@@ -285,6 +298,7 @@ public class Flatline : Player {
         }
     }
     private void OnRPush() {
+        print(Time.frameCount + " OnRPush. " + wallSlideDir + "   " + MayWallKick());
         if (wallSlideDir == -1 && MayWallKick()) {
             WallKick();
         }

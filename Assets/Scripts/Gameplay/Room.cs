@@ -248,18 +248,19 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
     }
     private void AddHardcodedRoomElements() {
         //// CANDO: If this function starts getting big, make new Prop, Decor. Has prefabName, pos, rotation, scale. :)
-        //if (RoomKey == "IntroPlunge") {
-        //    AddDecor("InstructsPlunge", new Vector2(0, 11));
-        //}
+        if (RoomKey == "IntroPlunge") {
+            AddDecor("PlungeImplicationGhost", new Vector2(3.7f, -0.9f), new Vector2(8,8));
+        }
         //else if (RoomKey == "IntroHover") {
         //    AddDecor("InstructsHover", new Vector2(0, 11));
         //}
     }
-    private void AddDecor(string prefabName, Vector2 _pos) {
+    private void AddDecor(string prefabName, Vector2 _pos, Vector2 _scale) {
         GameObject go = Instantiate(ResourcesHandler.Instance.GetDecor(prefabName));
         if (go == null) { Debug.LogError("Can't find Decor prefab: " + prefabName); return; }
         GameUtils.ParentAndReset(go, this.transform);
         go.transform.localPosition = _pos;
+        go.transform.localScale = _scale;
     }
 
 

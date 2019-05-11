@@ -6,12 +6,12 @@ public class GameController : MonoBehaviour {
     // Components
     [SerializeField] private GameTimeController gameTimeController=null;
     // References
-    [SerializeField] private Transform tf_world;
-	private Player player=null;
+    [SerializeField] private Transform tf_world=null;
+	public Player Player { get; private set; }
 	public Room CurrRoom { get; private set; }
 
     // Getters
-    public Player Player { get { return player; } }
+    public GameTimeController GameTimeController { get { return gameTimeController; } }
 
 	private DataManager dm { get { return GameManagers.Instance.DataManager; } }
 	private EventManager eventManager { get { return GameManagers.Instance.EventManager; } }
@@ -97,15 +97,15 @@ public class GameController : MonoBehaviour {
 		MakePlayer(playerData);
 	}
 	private void MakePlayer(PlayerData playerData) {
-		if (player != null) { DestroyPlayer(); } // Just in case.
+		if (Player != null) { DestroyPlayer(); } // Just in case.
         // Make 'em!
-        player = Instantiate(ResourcesHandler.Instance.Player(playerData.type)).GetComponent<Player>();
-		player.Initialize(CurrRoom, playerData);
+        Player = Instantiate(ResourcesHandler.Instance.Player(playerData.type)).GetComponent<Player>();
+		Player.Initialize(CurrRoom, playerData);
         // Save lastPlayedType!
-        PlayerTypeHelper.SaveLastPlayedType(player.PlayerType());
+        PlayerTypeHelper.SaveLastPlayedType(Player.PlayerType());
 	}
     public void SwapPlayerType(PlayerTypes _type) {
-        PlayerData playerData = player.SerializeAsData() as PlayerData;
+        PlayerData playerData = Player.SerializeAsData() as PlayerData;
         playerData.type = _type;
         MakePlayer(playerData);
         GameManagers.Instance.EventManager.OnSwapPlayerType();
@@ -117,8 +117,8 @@ public class GameController : MonoBehaviour {
 		CurrRoom = null;
 	}
 	private void DestroyPlayer() {
-		if (player != null) { Destroy(player.gameObject); }
-		player = null;
+		if (Player != null) { Destroy(Player.gameObject); }
+		Player = null;
 	}
 
 
@@ -156,9 +156,9 @@ public class GameController : MonoBehaviour {
 		RoomData nextLD = currWorldData.GetRoomAtSide(CurrRoom.MyRoomData, Player.PosLocal, sideEscaped);
 		if (nextLD != null) {
             int sideEntering = Sides.GetOpposite(sideEscaped);
-            Vector2 posExited = player.PosGlobal;
+            Vector2 posExited = Player.PosGlobal;
             
-            PlayerData pd = player.SerializeAsData() as PlayerData; // Remember Player's physical properties (e.g. vel) so we can preserve 'em.
+            PlayerData pd = Player.SerializeAsData() as PlayerData; // Remember Player's physical properties (e.g. vel) so we can preserve 'em.
             pd.pos = GetPlayerStartingPosFromPrevExitPos(nextLD, sideEntering, posExited);
             if (sideEntering == Sides.B) { // Entering from bottom?? Give min y-vel to boost us into the room!
                 pd.vel = new Vector2(pd.vel.x, Mathf.Max(pd.vel.y, 0.6f));
@@ -268,14 +268,13 @@ public class GameController : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.C)) { SceneHelper.OpenScene(SceneNames.ClustSelect); return; }
             else if (Input.GetKeyDown(KeyCode.M)) { SceneHelper.OpenScene(SceneNames.MapEditor); return; }
             else if (Input.GetKeyDown(KeyCode.J)) { SceneHelper.OpenScene(SceneNames.RoomJump); return; }
+            // F = Start/Stop Fast-mo
+            else if (Input.GetKeyDown(KeyCode.F)) { gameTimeController.SetIsFastMo(true); }
+            else if (Input.GetKeyUp  (KeyCode.F)) { gameTimeController.SetIsFastMo(false); }
             // T = Toggle Slow-mo
-            else if (Input.GetKeyDown(KeyCode.T)) {
-                gameTimeController.ToggleSlowMo();
-            }
+            else if (Input.GetKeyDown(KeyCode.T)) { gameTimeController.ToggleSlowMo(); }
             // Y = Execute one FixedUpdate step
-            else if (Input.GetKeyDown(KeyCode.Y)) {
-                gameTimeController.ExecuteApproximatelyOneFUStep();
-            }
+            else if (Input.GetKeyDown(KeyCode.Y)) { gameTimeController.ExecuteApproximatelyOneFUStep(); }
         }
 	}
 
@@ -308,8 +307,8 @@ public class GameController : MonoBehaviour {
 #endif
     private void Debug_JumpToRoomAtSide(int side) {
         OnPlayerEscapeRoomBounds(side); // Pretend the player just exited in this direction.
-        player.SetPosLocal(CurrRoom.Debug_PlayerStartPosLocal()); // just put the player at the PlayerStart.
-        player.SetVel(Vector2.zero);
+        Player.SetPosLocal(CurrRoom.Debug_PlayerStartPosLocal()); // just put the player at the PlayerStart.
+        Player.SetVel(Vector2.zero);
     }
 
 

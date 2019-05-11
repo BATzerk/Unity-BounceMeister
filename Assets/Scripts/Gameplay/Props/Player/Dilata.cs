@@ -30,9 +30,20 @@ public class Dilata : Player {
     override protected float PostWallKickHorzInputLockDur { get { return 0.1f; } }
 
     // Properties
-    private bool IsDilatingTime = true;
+    public bool IsDilatingTime { get; private set; }
     private bool isReducedJumpGravity; // true when we jump. False when A) We release the jump button, or B) We hit our jump apex.
+    // References
+    private GameTimeController gameTimeController;
 
+
+    // ----------------------------------------------------------------
+    //  Start
+    // ----------------------------------------------------------------
+    override protected void Start() {
+        gameTimeController = MyRoom.GameController.GameTimeController;
+        SetIsDilatingTime(true);
+        base.Start();
+    }
 
     // ----------------------------------------------------------------
     //  Doers
@@ -45,9 +56,10 @@ public class Dilata : Player {
         base.WallKick();
         isReducedJumpGravity = true;
     }
-    private void ToggleIsDilatingTime() {
-        IsDilatingTime = !IsDilatingTime;
-        if (Time.timeScale > 0.1f) { Time.timeScale = 1; } // Reset timeScale.
+    private void ToggleIsDilatingTime() { SetIsDilatingTime(!IsDilatingTime); }
+    private void SetIsDilatingTime(bool val) {
+        IsDilatingTime = val;
+        gameTimeController.OnDilataSetIsDilatingTime(IsDilatingTime);
     }
 
 
@@ -93,15 +105,7 @@ public class Dilata : Player {
     override protected void Update() {
         base.Update();
         if (!DoUpdate()) { return; } // Not supposed to Update? No dice.
-        UpdateTimeScale();
-    }
-    private void UpdateTimeScale() {
-        if (Time.timeScale >= 0.1f && IsDilatingTime) {
-            float timeScale = 0.4f/vel.magnitude;
-            timeScale = Mathf.Clamp(timeScale, 0.2f,5f);
-            Time.timeScale = timeScale;
-            print(Time.frameCount + "  timeScale: " + timeScale);
-        }
+        gameTimeController.UpdateFromDilata(this);
     }
 
 
