@@ -209,11 +209,12 @@ abstract public class Player : PlatformCharacter {
 		if (InputController.Instance == null) { return; } // Safety check for runtime compile.
         if (!DoUpdate()) { return; } // Not supposed to Update? No dice.
 
+        ApplyVelFromFloor();
+        
         Vector2 ppos = pos;
         ppvel = pvel;
-		pvel = vel;
+        pvel = vel;
 
-        ApplyVelFromFloor();
 		ApplyFriction();
 		ApplyGravity();
         ApplyInternalForces();

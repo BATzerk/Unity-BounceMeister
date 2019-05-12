@@ -115,9 +115,9 @@ public class PlatformCharacter : Collidable {
 	}
     protected void ApplyVelFromFloor() {
         if (IsGrounded()) {
-            Collidable c = myWhiskers.TEMP_GetFloorCollidable();
-            if (c != null) {
-                pos += c.vel*0.5f;//*0.5f is HACK! TEMP! TODO: If we like TravelingPlatforms, then improve. Find a way to move Character on a Platform appropriately (it's a neat little challenge).
+            TravelingPlatform obj = myWhiskers.TEMP_GetTravelingPlatformOn();
+            if (obj != null) {
+                pos += obj.vel;// TODO: If we like TravelingPlatforms, then improve. Confirm this is a sensible way to move Character on a Platform appropriately (it's a neat little challenge).
             }
         }
     }

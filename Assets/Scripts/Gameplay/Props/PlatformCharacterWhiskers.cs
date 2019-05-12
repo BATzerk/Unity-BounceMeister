@@ -30,10 +30,18 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     // Getters
     public Collidable TEMP_GetFloorCollidable() {
         for (int i=0; i<NumWhiskersPerSide; i++) {
-            Collider2D collider2D = collidersAroundMe[Sides.B,i];
-            if (collider2D == null) { continue; }
-            Collidable collidable = collider2D.GetComponent<Collidable>();
+            Collider2D coll = collidersAroundMe[Sides.B,i];
+            if (coll == null) { continue; }
+            Collidable collidable = coll.GetComponent<Collidable>();
             if (collidable != null) { return collidable; }
+        }
+        return null;
+    }
+    public TravelingPlatform TEMP_GetTravelingPlatformOn() {
+        for (int i=0; i<NumWhiskersPerSide; i++) {
+            Collider2D coll = collidersAroundMe[Sides.B,i];
+            if (coll == null) { continue; }
+            if (LayerUtils.IsLayer(coll.gameObject, Layers.Platform)) { return coll.GetComponentInParent<TravelingPlatform>(); }
         }
         return null;
     }
