@@ -1,11 +1,17 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Collidable.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/GridSnapScale.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="301" Column="45" />
-      <File FileName="Assets/Scripts/MapEditor/RoomTile.cs" Line="156" Column="21" />
-      <File FileName="Assets/Scripts/ClustSel/WorldView.cs" Line="65" Column="45" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Collidable.cs" Line="9" Column="50" />
+      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="127" Column="60" />
+      <File FileName="Assets/Scripts/Gameplay/Props/MovingPlatform.cs" Line="4" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Platform.cs" Line="10" Column="29" />
+      <File FileName="Assets/Scripts/Gameplay/Props/TravelingPlatform.cs" Line="38" Column="48" />
+      <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="90" Column="51" />
+      <File FileName="Assets/Scripts/Managers/ResourcesHandler.cs" Line="52" Column="58" />
+      <File FileName="Assets/Scripts/Gameplay/RoomData.cs" Line="121" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/Props/GridSnapPosScale.cs" Line="10" Column="83" />
+      <File FileName="Assets/Scripts/Gameplay/Props/GridSnapScale.cs" Line="8" Column="43" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

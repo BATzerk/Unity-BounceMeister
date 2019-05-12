@@ -97,90 +97,95 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
         int numVeils = 0; // for determining their indexes.
 
         foreach (PropData propData in rd.allPropDatas) {
+            System.Type pt = propData.GetType();
             // Grounds
-            if (propData is CrateData) {
+            if (pt == typeof(CrateData)) {
                 Crate newProp = Instantiate(rh.Crate).GetComponent<Crate>();
                 newProp.Initialize(this, propData as CrateData);
             }
-            else if (propData is DamageableGroundData) {
+            else if (pt == typeof(DamageableGroundData)) {
                 DamageableGround newProp = Instantiate(rh.DamageableGround).GetComponent<DamageableGround>();
                 newProp.Initialize(this, propData as DamageableGroundData);
             }
-            else if (propData is EnemyData) {
+            else if (pt == typeof(EnemyData)) {
                 Enemy newProp = Instantiate(rh.Enemy).GetComponent<Enemy>();
                 newProp.Initialize(this, propData as EnemyData);
             }
-            else if (propData is GateData) {
+            else if (pt == typeof(GateData)) {
                 Gate newProp = Instantiate(rh.Gate).GetComponent<Gate>();
                 newProp.Initialize(this, propData as GateData);
                 gateChannels[newProp.ChannelID].AddGate(newProp);
             }
-            else if (propData is ToggleGroundData) {
+            else if (pt == typeof(ToggleGroundData)) {
                 ToggleGround newProp = Instantiate(rh.ToggleGround).GetComponent<ToggleGround>();
                 newProp.Initialize(this, propData as ToggleGroundData);
             }
-            else if (propData is PlatformData) {
+            else if (pt == typeof(PlatformData)) {
                 Platform newProp = Instantiate(rh.Platform).GetComponent<Platform>();
                 newProp.Initialize(this, propData as PlatformData);
             }
-            else if (propData is GroundData) {
+            else if (pt == typeof(TravelingPlatformData)) {
+                TravelingPlatform newProp = Instantiate(rh.TravelingPlatform).GetComponent<TravelingPlatform>();
+                newProp.Initialize(this, propData as TravelingPlatformData);
+            }
+            else if (pt == typeof(GroundData)) {
                 Ground newProp = Instantiate(rh.Ground).GetComponent<Ground>();
                 newProp.Initialize(this, propData as GroundData);
             }
             // Everything else!
-            else if (propData is BatteryData) {
+            else if (pt == typeof(BatteryData)) {
                 Battery newProp = Instantiate(rh.Battery).GetComponent<Battery>();
                 newProp.Initialize(this, propData as BatteryData);
             }
-            else if (propData is CharBarrelData) {
+            else if (pt == typeof(CharBarrelData)) {
                 CharBarrel newProp = Instantiate(rh.CharBarrel).GetComponent<CharBarrel>();
                 newProp.Initialize(this, propData as CharBarrelData, charBarrels.Count);
                 charBarrels.Add(newProp);
             }
-            else if (propData is CameraBoundsData) {
+            else if (pt == typeof(CameraBoundsData)) {
                 CameraBounds newProp = Instantiate(rh.CameraBounds).GetComponent<CameraBounds>();
                 newProp.Initialize(this, propData as CameraBoundsData);
             }
-            else if (propData is GateButtonData) {
+            else if (pt == typeof(GateButtonData)) {
                 GateButton newProp = Instantiate(rh.GateButton).GetComponent<GateButton>();
                 newProp.Initialize(this, propData as GateButtonData);
                 gateChannels[newProp.ChannelID].AddButton(newProp);
             }
-            else if (propData is GemData) {
+            else if (pt == typeof(GemData)) {
                 Gem newProp = Instantiate(rh.Gem).GetComponent<Gem>();
                 newProp.Initialize(this, propData as GemData, gems.Count);
                 gems.Add(newProp);
             }
-            else if (propData is RoomDoorData) {
+            else if (pt == typeof(RoomDoorData)) {
                 RoomDoor newProp = Instantiate(rh.RoomDoor).GetComponent<RoomDoor>();
                 newProp.Initialize(this, propData as RoomDoorData);
             }
-            else if (propData is LiftData) {
+            else if (pt == typeof(LiftData)) {
                 Lift newProp = Instantiate(rh.Lift).GetComponent<Lift>();
                 newProp.Initialize(this, propData as LiftData);
             }
-            else if (propData is PlayerStartData) {
+            else if (pt == typeof(PlayerStartData)) {
                 PlayerStart newProp = Instantiate(rh.PlayerStart).GetComponent<PlayerStart>();
                 newProp.Initialize(this, propData as PlayerStartData);
             }
-            else if (propData is ProgressGateData) {
+            else if (pt == typeof(ProgressGateData)) {
                 ProgressGate newProp = Instantiate(rh.ProgressGate).GetComponent<ProgressGate>();
                 newProp.Initialize(this, propData as ProgressGateData, numProgressGates++);
             }
-            else if (propData is InfoSignData) {
+            else if (pt == typeof(InfoSignData)) {
                 InfoSign newProp = Instantiate(rh.InfoSign).GetComponent<InfoSign>();
                 newProp.Initialize(this, propData as InfoSignData);
             }
-            else if (propData is SnackData) {
+            else if (pt == typeof(SnackData)) {
                 Snack newProp = Instantiate(rh.Snack).GetComponent<Snack>();
                 newProp.Initialize(this, propData as SnackData, snacks.Count);
                 snacks.Add(newProp);
             }
-            else if (propData is SpikesData) {
+            else if (pt == typeof(SpikesData)) {
                 Spikes newProp = Instantiate(rh.Spikes).GetComponent<Spikes>();
                 newProp.Initialize(this, propData as SpikesData);
             }
-            else if (propData is VeilData) {
+            else if (pt == typeof(VeilData)) {
                 Veil newProp = Instantiate(rh.Veil).GetComponent<Veil>();
                 newProp.Initialize(this, propData as VeilData, numVeils++);
             }

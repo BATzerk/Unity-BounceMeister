@@ -7,7 +7,7 @@ public class Platform : BaseGround {
     [SerializeField] private Color c_canDropThru=Color.white;
     [SerializeField] private Color c_cannotDropThru=Color.white;
     // Properties
-    [SerializeField] bool canDropThru = true;
+    [SerializeField] private bool canDropThru = true;
     // References
     [SerializeField] Sprite s_canDropThru=null;
     [SerializeField] Sprite s_cannotDropThru=null;
@@ -20,7 +20,7 @@ public class Platform : BaseGround {
 	// ----------------------------------------------------------------
 	//  Initialize
 	// ----------------------------------------------------------------
-	public void Initialize(Room _myRoom, PlatformData data) {
+	virtual public void Initialize(Room _myRoom, PlatformData data) {
 		base.BaseGroundInitialize(_myRoom, data);
         canDropThru = data.canDropThru;
         

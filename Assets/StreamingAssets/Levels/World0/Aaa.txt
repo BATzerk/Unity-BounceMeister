@@ -1,0 +1,5 @@
+roomProperties posGlobal:(136.0, 1754.0);designerFlag:0
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
+TravelingPlatform myRect:(x:10.28, y:0.50, width:6.00, height:1.00);locOffset:0;speed:1;posA:(0.5, 0.5);posB:(10.5, 0.5)
+

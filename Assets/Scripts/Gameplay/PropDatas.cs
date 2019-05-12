@@ -51,6 +51,12 @@ public class GroundData : BaseGroundData {
 public class PlatformData : BaseGroundData {
     public bool canDropThru=true; // if TRUE, Player can fall through me when pressing down!
 }
+public class TravelingPlatformData : PlatformData {
+    public float locOffset = 0;
+    public float speed = 1;
+    public Vector2 posA = new Vector2(0, 0);
+    public Vector2 posB = new Vector2(10, 0);
+}
 public class ToggleGroundData : BaseGroundData {
 	public bool startsOn;
     public bool togFromContact=false;

@@ -30,6 +30,7 @@ static public class RoomSaverLoader {
     const string SNACK = "Snack";
     const string SPIKES = "Spikes";
     const string TOGGLE_GROUND = "ToggleGround";
+    const string TRAVELING_PLATFORM = "TravelingPlatform";
     const string VEIL = "Veil";
 	// Properties
 	private static string debug_roomDataLoadingRoomKey; // purely for printing to the console without having to pass this parameter through a chain of functions
@@ -151,13 +152,21 @@ static public class RoomSaverLoader {
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 AddFSLine();
             }
-			else if (type == typeof(ToggleGroundData)) {
-				ToggleGroundData d = propData as ToggleGroundData;
-				AddSomePropFieldsToFS(propData, "myRect", "startsOn", "togFromContact", "togFromAction");
-				if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
+            else if (type == typeof(ToggleGroundData)) {
+                ToggleGroundData d = propData as ToggleGroundData;
+                AddSomePropFieldsToFS(propData, "myRect", "startsOn", "togFromContact", "togFromAction");
+                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 AddFSLine();
-			}
+            }
+            else if (type == typeof(TravelingPlatformData)) {
+                TravelingPlatformData d = propData as TravelingPlatformData;
+                AddSomePropFieldsToFS(propData, "myRect", "locOffset", "speed", "posA", "posB");
+                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
+                if (!d.canDropThru) { fs += ";canDropThru:" + d.canDropThru; }
+                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
+                AddFSLine();
+            }
             else {
                 Debug.LogWarning("Prop in Room not recognized for serialization: " + type);
             }
@@ -382,6 +391,7 @@ static public class RoomSaverLoader {
             case SNACK: return new SnackData();
             case SPIKES: return new SpikesData();
             case TOGGLE_GROUND: return new ToggleGroundData();
+            case TRAVELING_PLATFORM: return new TravelingPlatformData();
             case VEIL: return new VeilData();
             default: return null;
         }

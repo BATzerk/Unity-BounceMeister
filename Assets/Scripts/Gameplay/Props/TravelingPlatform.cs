@@ -2,21 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TravelingPlatform : BaseGround {//, ISerializableData<TravelingPlatformData> {
+public class TravelingPlatform : Platform {
     // Components
     [SerializeField] private Transform tf_a=null;
     [SerializeField] private Transform tf_b=null;
     [SerializeField] private Transform tf_body=null;
     // Properties
-    //[SerializeField] private float oscOffset=0;
-    [SerializeField] private float oscSpeed=1;
+    [SerializeField] private float locOffset=0;
+    [SerializeField] private float speed=1;
+    private float oscLoc;
 
     // Getters / Setters
     private Vector2 bodyPos {
         get { return tf_body.localPosition; }
         set { tf_body.localPosition = value; }
     }
+    private Vector2 posA {
+        get { return tf_a.localPosition; }
+        set { tf_a.localPosition = value; }
+    }
+    private Vector2 posB {
+        get { return tf_b.localPosition; }
+        set { tf_b.localPosition = value; }
+    }
 
+
+
+    // ----------------------------------------------------------------
+    //  Initialize
+    // ----------------------------------------------------------------
+    override public void Initialize(Room _myRoom, PlatformData data) {
+        base.Initialize(_myRoom, data);
+        
+        // Force MY core pos to be 0,0. We don't want to move ME, just my components.
+        transform.localPosition = Vector2.zero;
+        
+        TravelingPlatformData tpd = data as TravelingPlatformData;
+        locOffset = tpd.locOffset;
+        speed = tpd.speed;
+        posA = tpd.posA;
+        posB = tpd.posB;
+        
+        oscLoc = locOffset; // start with my desired offset!
+    }
 
 
     // ----------------------------------------------------------------
@@ -30,27 +58,25 @@ public class TravelingPlatform : BaseGround {//, ISerializableData<TravelingPlat
         vel = bodyPos - prevPos;
     }
     private void UpdatePos() {
-        float loc = MathUtils.Sin01(Time.time*oscSpeed);
-        bodyPos = Vector2.Lerp(tf_a.localPosition, tf_b.localPosition, loc);
+        oscLoc += Time.deltaTime * speed;
+        float loc = MathUtils.Sin01(oscLoc);
+        bodyPos = Vector2.Lerp(tf_a.localPosition,tf_b.localPosition, loc);
     }
 
-
-
-    //// ----------------------------------------------------------------
-    ////  Initialize
-    //// ----------------------------------------------------------------
-    //public void Initialize(Room _myRoom, PlatformData data) {
-    //	base.BaseGroundInitialize(_myRoom, data);
-    //}
 
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {//TODO: This, I guess.
-    	PlatformData data = new PlatformData();
-    	//data.myRect = MyRect;
-    	//data.mayPlayerEat = mayPlayerEat;
-        data.isPlayerRespawn = IsPlayerRespawn;
-    	return data;
+    override public PropData SerializeAsData() {
+    	return new TravelingPlatformData {
+            myRect = MyRect(),
+            mayPlayerEat = MayPlayerEatHere,
+            isPlayerRespawn = IsPlayerRespawn,
+            canDropThru = CanDropThru,
+            locOffset = locOffset,
+            speed = speed,
+            posA = posA,
+            posB = posB,
+        };
     }
 }
