@@ -83,11 +83,6 @@ public class PlatformCharacter : Collidable {
         }
     }
 
-    // Setters
-    public void SetVel(Vector2 _vel) {
-        vel = _vel;
-    }
-
 
     // ----------------------------------------------------------------
     //  Start
@@ -115,7 +110,7 @@ public class PlatformCharacter : Collidable {
 	}
     protected void ApplyVelFromFloor() {
         if (IsGrounded()) {
-            TravelingPlatform obj = myWhiskers.TEMP_GetTravelingPlatformOn();
+            Collidable obj = myWhiskers.TEMP_GetFloorCollidable();
             if (obj != null) {
                 pos += obj.vel;// TODO: If we like TravelingPlatforms, then improve. Confirm this is a sensible way to move Character on a Platform appropriately (it's a neat little challenge).
             }
@@ -182,14 +177,19 @@ public class PlatformCharacter : Collidable {
 		Collidable collidable = col.GetComponent<Collidable>();
 		if (collidable != null) {
 			collidable.OnCharacterLeaveMe(side, this);
-		}
+            // Traveling collidable? Add its vel to OUR vel!
+            ChangeVel(collidable.vel);
+        }
 	}
 
 
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
-	private void ChangeVel(Vector2 delta) {
+    public void SetVel(Vector2 _vel) {
+        vel = _vel;
+    }
+	protected void ChangeVel(Vector2 delta) {
 		vel += delta;
 	}
     virtual protected void TakeDamage(int damageAmount) {

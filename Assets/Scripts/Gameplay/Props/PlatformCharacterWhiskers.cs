@@ -37,14 +37,15 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
         }
         return null;
     }
-    public TravelingPlatform TEMP_GetTravelingPlatformOn() {
-        for (int i=0; i<NumWhiskersPerSide; i++) {
-            Collider2D coll = collidersAroundMe[Sides.B,i];
-            if (coll == null) { continue; }
-            if (LayerUtils.IsLayer(coll.gameObject, Layers.Platform)) { return coll.GetComponentInParent<TravelingPlatform>(); }
-        }
-        return null;
-    }
+    //public TravelingPlatform TEMP_GetTravelingPlatformOn() {
+    //    for (int i=0; i<NumWhiskersPerSide; i++) {
+    //        Collider2D coll = collidersAroundMe[Sides.B,i];
+    //        if (coll == null) { continue; }
+    //        //if (LayerUtils.IsLayer(coll.gameObject, Layers.Platform)) { return coll.GetComponentInParent<TravelingPlatform>(); }
+    //        if (LayerUtils.IsLayer(coll.gameObject, Layers.Platform)) { return coll.GetComponent<TravelingPlatform>(); }
+    //    }
+    //    return null;
+    //}
 
     private Vector2 charSize { get { return myCharacter.Size; } }
 	private Vector2 WhiskerPos(int side, int index) {

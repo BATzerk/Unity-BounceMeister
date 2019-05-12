@@ -288,11 +288,11 @@ public class Flatline : Player {
         // Are we close to a wall??
         const float SuckDist = 0.4f;
         if (myWhiskers.DistToSurface(Sides.L) < SuckDist && !IsInput_R()) {
-            SetVel(vel + new Vector2(-0.1f, 0));
+            ChangeVel(new Vector2(-0.1f, 0));
             //pos += new Vector2(-0.1f, 0);
         }
         else if (myWhiskers.DistToSurface(Sides.R) < SuckDist && !IsInput_L()) {
-            SetVel(vel + new Vector2( 0.1f, 0));
+            ChangeVel(new Vector2( 0.1f, 0));
             //pos += new Vector2( 0.1f, 0);
         }
     }
