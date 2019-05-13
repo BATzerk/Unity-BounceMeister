@@ -193,7 +193,7 @@ static public class RoomSaverLoader {
 //		l.WorldDataRef.ResaveRoomLinksFile();
 
 		// We're done saving! Now that we've got the updated saved text file, reload the corresponding RoomData.
-		rd.MyWorldData.ReloadRoomData (roomKey);
+		rd.MyWorldData.ReloadRoomData(roomKey);
 
 //		// Update who the most recently created room is!
 //		GameManagers.Instance.DataManager.mostRecentlySavedRoom_worldIndex = WorldIndex;
@@ -293,10 +293,10 @@ static public class RoomSaverLoader {
 
 			GameManagers.Instance.EventManager.OnEditorSaveRoom();
 
-//			// Reload the text file right away!! (Otherwise, we'll have to ALT + TAB out of Unity and back in for it to be refreshed.)
-//			#if UNITY_EDITOR
-//			UnityEditor.AssetDatabase.ImportAsset (filePath);
-//			#endif
+			//// Reload the text file right away!! (Otherwise, we'll have to ALT + TAB out of Unity and back in for it to be refreshed.)
+			//#if UNITY_EDITOR
+			//UnityEditor.AssetDatabase.ImportAsset(filePath);
+			//#endif
 		}
 		catch (Exception e) {
 			Debug.LogError ("Error saving a room to a text file: " + roomKey + ". Save location: " + filePath + ". Error string: " + e.ToString ());

@@ -38,4 +38,3 @@ Spikes myRect:(x:-8.50, y:6.50, width:3.00, height:1.00);rotation:180
 Spikes myRect:(x:21.00, y:-12.50, width:26.00, height:1.00);rotation:0
 Spikes myRect:(x:19.50, y:-9.50, width:7.00, height:1.00);rotation:0
 Spikes myRect:(x:-1.00, y:16.50, width:10.00, height:1.00);rotation:180
-

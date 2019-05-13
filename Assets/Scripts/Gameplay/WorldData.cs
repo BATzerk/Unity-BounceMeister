@@ -312,8 +312,9 @@ public class WorldData {
 	public void ReloadRoomData(string roomKey) {
         // Safety check.
         if (!roomDatas.ContainsKey(roomKey)) {
-            Debug.LogWarning("Can't reload RoomData; doesn't exist. World: " + worldIndex + ", RoomKey: " + roomKey);
-            return;
+            //Debug.LogWarning("Can't reload RoomData; doesn't exist. World: " + worldIndex + ", RoomKey: " + roomKey);
+            //return;
+            AddRoomFromFile(roomKey);
         }
 		RoomData roomData = GetRoomData(roomKey);
 		// Reload all of this roomData's contents! (WITHOUT remaking it or anything-- it's important to retain all references to it!)

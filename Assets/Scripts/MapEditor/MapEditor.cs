@@ -163,7 +163,7 @@ public class MapEditor : MonoBehaviour {
 		DeselectAllRoomTiles();
 
 		// If we're CHANGING the currentWorld...!!
-		if (currWorldIndex != _worldIndex) {
+		//if (currWorldIndex != _worldIndex) {
 			// Tell all the tiles in the world we already were to hide their stuff!
 			if (currWorldIndex != -1) {
 				for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
@@ -172,7 +172,7 @@ public class MapEditor : MonoBehaviour {
 			}
 			currWorldIndex = _worldIndex;
             SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, currWorldIndex);
-        }
+        //}
         
         // Tell all the tiles in the NEW world to show their stuff!
         for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
@@ -198,7 +198,7 @@ public class MapEditor : MonoBehaviour {
 	}
 	private void LoadAllRoomTiles() {
 		// Destroy 'em first!
-		DestroyAllRoomTiles ();
+		DestroyAllRoomTiles();
 		// Make 'em hot & fresh!
 		allRoomTiles = new List<List<RoomTile>>();
 		GameObject prefab = ResourcesHandler.Instance.MapEditor_RoomTile;
@@ -214,8 +214,14 @@ public class MapEditor : MonoBehaviour {
 				allRoomTiles[worldIndex].Add(newRoomTile);
 			}
 		}
+        //currWorldIndex = -1; // reset this! 'cause there's no world selected right now.
 	}
-
+    
+    private void ReloadAllTiles() {
+        dataManager.ReloadWorldDatas();
+        LoadAllRoomTiles();
+        SetCurrWorld(currWorldIndex);
+    }
 	private void ReloadAllWorldDatasAndScene() {
         dataManager.ReloadWorldDatas();
         SceneHelper.ReloadScene();
@@ -227,7 +233,7 @@ public class MapEditor : MonoBehaviour {
     // ================================================================
     //  Doers: Room Tiles
     // ================================================================
-	private void SelectRoomTile(RoomTile thisRoomTile) {
+	private void SelectTile(RoomTile tile) {
 		/*
 		// First, check if we're trying to set ANOTHER, different roomTile as roomTileDragging.
 		if (roomTileDragging != null && thisRoomTile != null && roomTileDragging != thisRoomTile) {
@@ -251,20 +257,26 @@ public class MapEditor : MonoBehaviour {
 		}
 		*/
 		// Add it to my list!
-		tilesSelected.Add (thisRoomTile);
+		tilesSelected.Add(tile);
 		// Tell it what's up!
-		thisRoomTile.OnSelected (MousePosWorld);
+		tile.OnSelected(MousePosWorld);
 	}
-	private void DeselectRoomTile(RoomTile thisRoomTile) {
-		thisRoomTile.OnDeselected ();
-		tilesSelected.Remove (thisRoomTile);
+	private void DeselectTile(RoomTile tile) {
+		tile.OnDeselected ();
+		tilesSelected.Remove (tile);
 	}
-	private void DeselectAllRoomTiles () {
+	private void DeselectAllRoomTiles() {
 		for (int i=tilesSelected.Count-1; i>=0; --i) {
-			DeselectRoomTile (tilesSelected [i]);
+			DeselectTile (tilesSelected [i]);
 		}
 		tilesSelected = new List<RoomTile> ();
 	}
+    private void SelectTiles(List<string> roomKeys) {
+        foreach (string roomKey in roomKeys) {
+            RoomTile tile = GetRoomTileByKey(roomKey);
+            SelectTile(tile);
+        }
+    }
 	private void ReleaseRoomTilesSelected() {
 		// No tiles selected? No gazpacho!
 		if (tilesSelected.Count == 0) { return; }
@@ -282,22 +294,28 @@ public class MapEditor : MonoBehaviour {
 //		}
 	}
 	private void SelectAllRoomTiles() {
-		ReleaseRoomTilesSelected (); // Just in case release any if we're already holding some.
+		ReleaseRoomTilesSelected(); // Just in case release any if we're already holding some.
 		foreach (RoomTile roomTile in CurrWorldRoomTiles) {
-			SelectRoomTile(roomTile);
+			SelectTile(roomTile);
 		}
 	}
-    private void DuplicateFirstSelectedRoom() {
-        // No tiles selected? No gazpacho!
-        if (tilesSelected.Count == 0) { return; }
-        DuplicateRoom(tilesSelected[0].MyRoomData);
+    private void DuplicateSelectedRooms() {
+        List<string> newRoomKeys = new List<string>();
+        foreach (RoomTile rt in tilesSelected) {
+            newRoomKeys.Add(DuplicateRoom(rt.MyRoomData));
+        }
+        // Reload the tiles.
+        //dataManager.ReloadWorldDatas();
+        LoadAllRoomTiles();
+        SetCurrWorld(currWorldIndex);
+        // Select duplicated tiles.
+        SelectTiles(newRoomKeys);
     }
-    private void DuplicateRoom(RoomData originalData) {
+    private string DuplicateRoom(RoomData originalData) {
         // Add a new room file, yo!
-        string newRoomKey = originalData.RoomKey + " copy";
+        string newRoomKey = originalData.MyWorldData.GetUnusedRoomKey(originalData.RoomKey);
         RoomSaverLoader.SaveRoomFileAs(originalData, originalData.WorldIndex, newRoomKey);
-        // Reload everything.
-        ReloadAllWorldDatasAndScene();
+        return newRoomKey;
     }
 
 	private void MoveRoomTilesSelectedRoomFilesToTrashFolder() {
@@ -311,11 +329,11 @@ public class MapEditor : MonoBehaviour {
 		
 		// Reload everything right away!! (Otherwise, we'll have to ALT + TAB out of Unity and back in for it to be refreshed.)
 		#if UNITY_EDITOR
-		UnityEditor.AssetDatabase.Refresh ();
+		UnityEditor.AssetDatabase.Refresh();
 		#endif
 
 		// Reload this map, yo.
-		ReloadAllWorldDatasAndScene();
+		ReloadAllTiles();
 	}
 
 	private void MoveRoomTilesSelectedToWorld (int worldIndexTo) {
@@ -341,7 +359,7 @@ public class MapEditor : MonoBehaviour {
 		}
 		
 		// Reload this map, yo.
-		ReloadAllWorldDatasAndScene();
+		ReloadAllTiles();
 	}
 
     private void AddAndStartNewRoom() {
@@ -377,7 +395,7 @@ public class MapEditor : MonoBehaviour {
             RoomSaverLoader.UpdateRoomPropertiesInRoomFile(rd);
         }
         // Reload the world, as our Clusters may have changed from this.
-        ReloadAllWorldDatasAndScene();
+        ReloadAllTiles();
     }
 
 
@@ -402,8 +420,8 @@ public class MapEditor : MonoBehaviour {
 				ReleaseRoomTilesSelected();
 			}
 			// If this guy is IN the list, remove him; if he's NOT in the list, add him!
-			if (tilesSelected.Contains(roomTile)) { DeselectRoomTile(roomTile); }
-			else { SelectRoomTile(roomTile); }
+			if (tilesSelected.Contains(roomTile)) { DeselectTile(roomTile); }
+			else { SelectTile(roomTile); }
 		}
 	}
 
@@ -450,7 +468,7 @@ public class MapEditor : MonoBehaviour {
 		for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
 			if (CurrWorldRoomTiles[i].IsWithinRoomTileSelectionRect) {
 				if (!tilesSelected.Contains(CurrWorldRoomTiles[i])) {
-					SelectRoomTile (CurrWorldRoomTiles[i]);
+					SelectTile (CurrWorldRoomTiles[i]);
 				}
 			}
 		}
@@ -571,7 +589,7 @@ public class MapEditor : MonoBehaviour {
             }
             // CONTROL + D = Duplicate ONE selected room.
             else if (Input.GetKeyDown(KeyCode.D)) {
-                DuplicateFirstSelectedRoom();
+                DuplicateSelectedRooms();
             }
             // CONTROL + N = Add and open a new room!
             else if (Input.GetKeyDown(KeyCode.N)) {
@@ -705,6 +723,7 @@ public class MapEditor : MonoBehaviour {
 				}
 			}
 			allRoomTiles.Clear();
+            tilesSelected.Clear(); // also clear out tilesSelected list!
 		}
 	}
 
