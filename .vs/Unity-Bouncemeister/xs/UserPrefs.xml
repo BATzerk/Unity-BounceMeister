@@ -4,10 +4,11 @@
     <Files>
       <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="301" Column="45" />
       <File FileName="Assets/Scripts/Gameplay/Props/Platform.cs" Line="10" Column="29" />
-      <File FileName="Assets/Scripts/Gameplay/Props/TravelingPlatform.cs" Line="55" Column="39" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="189" Column="20" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="384" Column="42" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="295" Column="23" />
+      <File FileName="Assets/Scripts/Gameplay/Props/TravelingPlatform.cs" Line="50" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="104" Column="41" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="177" Column="56" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" Line="76" Column="64" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="290" Column="69" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
