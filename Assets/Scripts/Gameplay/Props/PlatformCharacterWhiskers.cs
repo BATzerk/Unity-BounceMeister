@@ -70,7 +70,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     }
     /** It's more efficient only to search as far as the Player is going to move this frame. */
     private float GetRaycastSearchDist(int side) {
-		const float bloat = 0.2f;//QQQ 5f; //0.2f NOTE: Increased this lots so we can ALSO know what else is around us! // how much farther than the player's exact velocity to look. For safety.
+		const float bloat = 5f; //0.2f NOTE: Increased this lots so we can ALSO know what else is around us! // how much farther than the player's exact velocity to look. For safety.
 		switch (side) {
     		case Sides.L: return Mathf.Max(0, -myCharacter.vel.x) + bloat;
     		case Sides.R: return Mathf.Max(0,  myCharacter.vel.x) + bloat;
@@ -225,6 +225,45 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  DEPENDENT Updates
 	// ----------------------------------------------------------------
+    //public void UpdateSurfaceDists() {
+    //    for (int side=0; side<NumSides; side ++) {
+    //        UpdateSurfaceDist(side);
+    //    }
+    //}
+    //private void UpdateSurfaceDist(int side) {
+    //    minDistsIndexes[side] = -1; // Default this to -1: There is no closest, because they're all infinity.
+    //    collSpeedsRel[side] = Mathf.NegativeInfinity; // nothing's moving towards me.
+    //    for (int index=0; index<NumWhiskersPerSide; index++) {
+    //        UpdateWhiskerRaycast(side, index); // update the distances and colliders.
+    //        float dist = surfaceDists[side,index]; // use the dist we just updated.
+    //        if (DistToSurface(side) > dist) { // Update the min distance, too.
+    //            minDistsIndexes[side] = index;
+    //        }
+    //    }
+    //    onSurfaces[side] = collsTouching[side].Count > 0; // Update onSurfaces!
+    //}
+    ///// wi: WhiskerIndex
+    //private void UpdateWhiskerRaycast(int side, int wi) {
+    //    // Find the closest collider.
+    //    hits = GetRaycast(side, wi);
+    //    h = new RaycastHit2D();
+    //    Collider2D coll = null;
+    //    for (int i=0; i<hits.Length; i++) { // Check every collision for ones we interact with...
+    //        if (DoCollideWithColl(hits[i].collider)) {
+    //            h = hits[i];
+    //            coll = h.collider;
+    //            break;
+    //        }
+    //    }
+
+    //    // Update my knowledge!
+    //    float dist = DistToColl(h, WhiskerPos(side, wi));
+    //    surfaceDists[side,wi] = dist;
+    //    collsAroundMe[side,wi] = coll;
+    //    UpdateCollSpeedsRel(side, coll);
+    //}
+    
+    
 	public void UpdateSurfaces() {
 		for (int side=0; side<NumSides; side ++) {
 			// Remember the previous colliders, and clear out the new list!
@@ -250,7 +289,8 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 			foreach (Collider2D col in collsTouching[side]) {
 				if (!pcollsTouching[side].Contains(col)) {
                     // We're moving AWAY from this collider? Ignore the collision! (This prevents whiskers-touching-2-things issues, like recharging plunge or cancelling preserving wall-kick vel.) Note: We can possibly bring this check all the way up to Whiskers for consistency.
-                    if (myCharacter.IsMovingAwayFrom(side)) { continue; }
+                    //if (myCharacter.IsMovingAwayFrom(side)) { continue; }
+                    if (myCharacter.IsMovingAwayFromColl(side, col)) { continue; }
 					myCharacter.OnWhiskersTouchCollider(side, col);
 				}
 			}
@@ -294,7 +334,8 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
             // If we're (just about) touching this collider...!
             if (dist <= TouchDistThreshold) {
                 // If we're NOT moving away from this side...! (This prevents registering any contact when passing up thru a Platform.)
-                if (!myCharacter.IsMovingAwayFrom(side)) {
+                //if (!myCharacter.IsMovingAwayFrom(side)) {
+                if (!myCharacter.IsMovingAwayFromColl(side, coll)) {
         			if (!collsTouching[side].Contains(coll)) {
         				collsTouching[side].Add(coll);
         			}

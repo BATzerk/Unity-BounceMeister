@@ -221,13 +221,15 @@ abstract public class Player : PlatformCharacter {
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
         ApplyLiftForces(); // Note: This happens AFTER TerminalVel.
+        
+        myWhiskers.UpdateSurfaces(); // Update surfaces BEFORE wall-slide and applying vel.
         UpdateWallSlide();
         ApplyVel();
         // Update vel to be the distance we ended up moving this frame.
         SetVel(pos - ppos);
         
-        myWhiskers.UpdateSurfaces();
-
+        myWhiskers.UpdateSurfaces(); // TEST update surfaces AGAIN.
+        
         UpdateDirFacing();
 		UpdateTimeLastTouchedWall();
 		DetectJumpApex();

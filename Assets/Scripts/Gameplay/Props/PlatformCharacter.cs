@@ -42,43 +42,42 @@ public class PlatformCharacter : Collidable {
 	virtual protected float HorzMoveInputVelXDelta() {
 		return 0;
 	}
-	/** Returns the relative speed we're traveling in at this side. */
-	private float GetSideSpeed(int side) {
-		switch (side) {
-		case Sides.L: return -vel.x;
-		case Sides.R: return  vel.x;
-		case Sides.B: return -vel.y;
-		case Sides.T: return  vel.y;
-		default: Debug.LogError("Side not recognized: " + side); return 0;
-		}
-	}
-    //private Vector2 GetRelativeVel(Collider2D coll2D) {
-    //    //if (coll2D != null) {
-    //    //    Collidable collidable = coll2D.GetComponent<Collidable>();
-    //    //    if (collidable!=null) { return vel - collidable.vel; } // Return my vel, relative to this collidable!
-    //    //}
-    //    return vel; // no collidable. Just return my vel.
-    //}
-    //public bool IsMovingAwayFromCollider(int side, Collider2D coll2D) {
-    //    Vector2 velRel = GetRelativeVel(coll2D);
-    //    switch (side) {
-    //        case Sides.L: return velRel.x >  0.01f;
-    //        case Sides.R: return velRel.x < -0.01f;
-    //        case Sides.B: return velRel.y >  0.01f;
-    //        case Sides.T: return velRel.y < -0.01f;
-    //        default: return false; // Hmm.
-    //    }
-    //}
-    public bool IsMovingAwayFrom(int side) {
-        return false;//QQQ
-        //switch (side) {
-        //    case Sides.L: return vel.x >  0.01f;
-        //    case Sides.R: return vel.x < -0.01f;
-        //    case Sides.B: return vel.y >  0.01f;
-        //    case Sides.T: return vel.y < -0.01f;
-        //    default: return false; // Hmm.
-        //}
+	///** Returns the relative speed we're traveling in at this side. */
+	//private float GetSideSpeed(int side) {
+	//	switch (side) {
+	//	case Sides.L: return -vel.x;
+	//	case Sides.R: return  vel.x;
+	//	case Sides.B: return -vel.y;
+	//	case Sides.T: return  vel.y;
+	//	default: Debug.LogError("Side not recognized: " + side); return 0;
+	//	}
+	//}
+    private Vector2 GetRelativeVel(Collider2D coll2D) {
+        if (coll2D != null) {
+            Collidable collidable = coll2D.GetComponent<Collidable>();
+            if (collidable!=null) { return vel - collidable.vel; } // Return my vel, relative to this collidable!
+        }
+        return vel; // no collidable. Just return my vel.
     }
+    public bool IsMovingAwayFromColl(int side, Collider2D coll2D) {
+        Vector2 velRel = GetRelativeVel(coll2D);
+        switch (side) {
+            case Sides.L: return velRel.x >  0.01f;
+            case Sides.R: return velRel.x < -0.01f;
+            case Sides.B: return velRel.y >  0.01f;
+            case Sides.T: return velRel.y < -0.01f;
+            default: return false; // Hmm.
+        }
+    }
+    //public bool IsMovingAwayFrom(int side) {
+    //    //switch (side) {
+    //    //    case Sides.L: return vel.x >  0.01f;
+    //    //    case Sides.R: return vel.x < -0.01f;
+    //    //    case Sides.B: return vel.y >  0.01f;
+    //    //    case Sides.T: return vel.y < -0.01f;
+    //    //    default: return false; // Hmm.
+    //    //}
+    //}
 
 
     // ----------------------------------------------------------------
@@ -103,7 +102,7 @@ public class PlatformCharacter : Collidable {
 		if (vel != Vector2.zero) {
 			Vector2 appliedVel = myWhiskers.GetAppliedVel();
 			pos += appliedVel;
-            print("vel: " + vel.y + "    applied: " + appliedVel.y);//QQQ
+            //print("vel: " + vel.y + "    applied: " + appliedVel.y);
 		}
 	}
     protected void ApplyVelFromFloor() {
@@ -175,8 +174,8 @@ public class PlatformCharacter : Collidable {
 		Collidable collidable = col.GetComponent<Collidable>();
 		if (collidable != null) {
 			collidable.OnCharacterLeaveMe(side, this);
-            //// Traveling collidable? Add its vel to OUR vel!
-            //ChangeVel(collidable.vel);QQQ
+            // Traveling collidable? Add its vel to OUR vel!
+            ChangeVel(collidable.vel);
         }
 	}
 
