@@ -17,6 +17,7 @@ abstract public class PlayerBody : MonoBehaviour {
 
     static public Color GetBodyColorNeutral(PlayerTypes playerType) {
         switch (playerType) {
+            case PlayerTypes.Any: return new ColorHSB(60/360f, 0.67f, 1f).ToColor();
             case PlayerTypes.Dilata: return new ColorHSB(190/360f, 0.67f, 0.87f).ToColor();
             case PlayerTypes.Flatline: return new ColorHSB(160/360f, 0.67f, 0.87f).ToColor();
             case PlayerTypes.Jetta: return new ColorHSB(290/360f, 0.7f, 0.7f).ToColor();

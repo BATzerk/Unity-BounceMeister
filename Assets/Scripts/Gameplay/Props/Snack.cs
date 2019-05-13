@@ -49,7 +49,8 @@ public class Snack : Edible {
     // ----------------------------------------------------------------
     private void UpdatePresence() {
         Player currPlayer = MyRoom.Player;
-        bool isMyType = currPlayer!=null && currPlayer.PlayerType()==playerType;
+        bool isMyType = playerType==PlayerTypes.Any
+            || (currPlayer!=null && currPlayer.PlayerType()==playerType);
         
         // Update my color by my PlayerType.
         Color playerColor = PlayerBody.GetBodyColorNeutral(playerType);
