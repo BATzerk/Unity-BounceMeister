@@ -52,7 +52,7 @@ public class TravelingPlatform : Platform {
         vel = pos - prevPos;
         //float locNext = MathUtils.Sin01(oscLoc + Time.deltaTime * speed);
         //Vector2 bodyPosNext = Vector2.Lerp(tf_a.localPosition,tf_b.localPosition, locNext);
-        //vel = bodyPosNext - bodyPos;
+        //vel = bodyPosNext - pos;
     }
     private void UpdatePos() {
         oscLoc += Time.deltaTime * speed;

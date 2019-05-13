@@ -7,7 +7,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	abstract protected string[] GetLayerMaskNames_LRTB();
 	abstract protected string[] GetLayerMaskNames_B();
 	// Constants
-	private const float TouchDistThreshold = 0.02f;//0 // if we're this close to a surface, we count it as touching. This COULD be 0 and still work, but I like the grace for slightly-more-generous wall-detection.
+	private const float TouchDistThreshold = 0.02f; // if we're this close to a surface, we count it as touching. This COULD be 0 and still work, but I like the grace for slightly-more-generous wall-detection.
 	private const int NumSides = PlatformCharacter.NumSides;
 	private const int NumWhiskersPerSide = 3; // this MUST match SideOffsetLocs! Just made its own variable for easy/readable access.
 	private readonly float[] SideOffsetLocs = new float[]{-0.45f, 0f, 0.45f}; // 3 whiskers per side: left, center, right.
@@ -17,20 +17,22 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     LayerMask lm_LRTB; // The LMs that care about every side (L, R, T, B). E.g. Ground.
     LayerMask lm_B;    // The LMs that care about the bottom side. E.g. Platforms.
     private LayerMask lm_triggerColls; // triggers I will treat as colliders. Useful for Platforms, which we don't want Rigidbody collisions, but DO want *my* manual whisker collisions.
-	private Collider2D[,] collidersAroundMe; // by side, index.
-	private HashSet<Collider2D>[] collidersTouching;
-	private HashSet<Collider2D>[] pcollidersTouching;
+	private Collider2D[,] collsAroundMe; // by side, index.
+	private HashSet<Collider2D>[] collsTouching;
+	private HashSet<Collider2D>[] pcollsTouching;
     public int DirLastTouchedWall { get; private set; } // for wall-kicking perhaps pixels away from a wall.
     private bool[] onSurfaces; // index is side.
 	private float[,] surfaceDists; // by side,index. This is *all* whisker data.
 	private int[] minDistsIndexes; // by side. WHICH whisker at this side is the closest!
-	private RaycastHit2D[] hits; // only out here so we don't have to make a ton every frame.
+    private float[] collSpeedsRel; // by side. The (highest) speed a collidable's moving TOWARDS me. Usually 0's, except for TravelingPlatforms.
+    private RaycastHit2D h; // out here so we don't make a ton every frame.
+    private RaycastHit2D[] hits; // out here so we don't make a ton every frame.
 	private Vector2[] whiskerDirs;
 
     // Getters
     public Collidable TEMP_GetFloorCollidable() {
         for (int i=0; i<NumWhiskersPerSide; i++) {
-            Collider2D coll = collidersAroundMe[Sides.B,i];
+            Collider2D coll = collsAroundMe[Sides.B,i];
             if (coll == null) { continue; }
             Collidable collidable = coll.GetComponent<Collidable>();
             if (collidable != null) { return collidable; }
@@ -48,6 +50,13 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     //}
 
     private Vector2 charSize { get { return myCharacter.Size; } }
+    private RaycastHit2D[] GetRaycast(int side, int wi) {
+        return Physics2D.RaycastAll(
+            WhiskerPos(side, wi),
+            whiskerDirs[side],
+            GetRaycastSearchDist(side),
+            GetLayerMask(side));
+    }
 	private Vector2 WhiskerPos(int side, int index) {
 		Vector2 pos = myCharacter.PosGlobal;
 		float sideOffsetLoc = SideOffsetLocs[index];
@@ -59,9 +68,9 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 		}
 		return pos;
     }
-    /** It's most efficient only to search as far as the Player is going to move this frame. */
+    /** It's more efficient only to search as far as the Player is going to move this frame. */
     private float GetRaycastSearchDist(int side) {
-		const float bloat = 5f; //0.2f NOTE: Increased this lots so we can ALSO know what else is around us! // how much farther than the player's exact velocity to look. For safety.
+		const float bloat = 0.2f;//QQQ 5f; //0.2f NOTE: Increased this lots so we can ALSO know what else is around us! // how much farther than the player's exact velocity to look. For safety.
 		switch (side) {
     		case Sides.L: return Mathf.Max(0, -myCharacter.vel.x) + bloat;
     		case Sides.R: return Mathf.Max(0,  myCharacter.vel.x) + bloat;
@@ -77,9 +86,14 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 //		return lm_ground; // All other sides only care about ground.
 	}
     private bool DoCollideWithColl(Collider2D col) {
+        if (col == null) { return false; } // Check the obvious.
         if (!col.isTrigger) { return true; } // NOT a trigger? Yeah, we collide!
         if (LayerUtils.IsLayerInLayermask(col.gameObject.layer, lm_triggerColls)) { return true; } // It's a trigger, BUT its layer is in my triggers-I-collide-with mask!
         return false; // Nah, don't collide.
+    }
+    private float DistToColl(RaycastHit2D hit, Vector2 whiskPos) {
+        if (hit.collider == null) { return Mathf.Infinity; } // Hit nothing? Default to infinity.
+        return Vector2.Distance(hit.point, whiskPos);
     }
     
     public bool OnSurface(int side) { return onSurfaces[side]; }
@@ -92,13 +106,44 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     }
     /// Returns SMALLEST surfaceDist value on this side.
 	public float DistToSurface(int side) {
-		if (surfaceDists==null) { return 0; } // Safety check for runtime compile.
 		if (minDistsIndexes[side] == -1) { return Mathf.Infinity; } // No closest whisker (none collide)? They're all infinity, then.
 		return surfaceDists[side, minDistsIndexes[side]];
 	}
+    /// Returns speed this Collidable is traveling towards this side of mine. (E.g. coll's vel is (-2,0) and side is R, I'll return 2.)
+    private float GetCollSpeedRel(int side, Collidable collidable) {
+        switch (side) {
+            case Sides.L: return  collidable.vel.x;
+            case Sides.R: return -collidable.vel.x;
+            case Sides.B: return  collidable.vel.y;
+            case Sides.T: return -collidable.vel.y;
+        }
+        return Mathf.NegativeInfinity;
+    }
+    public Vector2 GetAppliedVel() {
+        Vector2 vel = myCharacter.vel;
+        Vector2 av = vel;
+        float distL = DistToSurface(Sides.L) - collSpeedsRel[Sides.L]; // we can only go as far as the DIST to the coll, MINUS its SPEED towards me.
+        float distR = DistToSurface(Sides.R) - collSpeedsRel[Sides.R];
+        float distB = DistToSurface(Sides.B) - collSpeedsRel[Sides.B];
+        float distT = DistToSurface(Sides.T) - collSpeedsRel[Sides.T];
+        // Clamp our vel so we don't intersect anything.
+        if (vel.x<0 && vel.x<-distL) {
+            av = new Vector2(-distL, av.y);
+        }
+        else if (vel.x>0 && vel.x>distR) {
+            av = new Vector2(distR, av.y);
+        }
+        if (vel.y<0 && vel.y<-distB) {
+            av = new Vector2(av.x, -distB);
+        }
+        else if (vel.y>0 && vel.y>distT) {
+            av = new Vector2(av.x, distT);
+        }
+        return av;
+    }
 
     public bool AreFeetOnEatEdiblesGround() {
-        foreach (Collider2D col in collidersTouching[Sides.B]) {
+        foreach (Collider2D col in collsTouching[Sides.B]) {
             BaseGround baseGround = col.GetComponent<BaseGround>();
             if (baseGround != null && baseGround.MayPlayerEatHere) {
                 return true; // This one's good!
@@ -108,7 +153,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     }
     public bool AreFeetOnlyOnCanDropThruPlatform() {
         bool isOnOkPlatform = false; // will say otherwise next.
-        foreach (Collider2D col in collidersTouching[Sides.B]) { // For every collider our feet are touching...
+        foreach (Collider2D col in collsTouching[Sides.B]) { // For every collider our feet are touching...
             Platform platform = col.GetComponent<Platform>();
             if (platform!=null && platform.CanDropThru) { // This one works!
                 isOnOkPlatform = true; // Yes, we are!
@@ -132,7 +177,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	void OnDrawGizmos() {
 		if (whiskerDirs==null || surfaceDists==null) { return; } // Safety check.
 
-		for (int side=0; side<whiskerDirs.Length; side++) {
+		for (int side=0; side<NumSides; side++) {
 			float length = GetRaycastSearchDist(side);
 			Vector2 dir = whiskerDirs[side];
 			for (int index=0; index<NumWhiskersPerSide; index++) {
@@ -160,14 +205,15 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
                 surfaceDists[side,w] = Mathf.Infinity; // default dists to surfaces to infinity first.
             }
         }
-		collidersAroundMe = new Collider2D[NumSides,NumWhiskersPerSide];
-		collidersTouching = new HashSet<Collider2D>[4];
-		pcollidersTouching = new HashSet<Collider2D>[4];
-		for (int side=0; side<collidersTouching.Length; side++) {
-			collidersTouching[side] = new HashSet<Collider2D>();
+		collsAroundMe = new Collider2D[NumSides,NumWhiskersPerSide];
+		collsTouching = new HashSet<Collider2D>[4];
+		pcollsTouching = new HashSet<Collider2D>[4];
+		for (int side=0; side<collsTouching.Length; side++) {
+			collsTouching[side] = new HashSet<Collider2D>();
 		}
 		onSurfaces = new bool[NumSides];
 		minDistsIndexes = new int[NumSides];
+        collSpeedsRel = new float[NumSides];
 		whiskerDirs = new Vector2[NumSides];
 		whiskerDirs[Sides.L] = Vector2Int.L.ToVector2();
 		whiskerDirs[Sides.R] = Vector2Int.R.ToVector2();
@@ -180,11 +226,10 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	//  DEPENDENT Updates
 	// ----------------------------------------------------------------
 	public void UpdateSurfaces() {
-		if (pcollidersTouching==null) { return; } // Safety check for runtime compile.
-		for (int side=0; side<whiskerDirs.Length; side ++) {
+		for (int side=0; side<NumSides; side ++) {
 			// Remember the previous colliders, and clear out the new list!
-			pcollidersTouching[side] = new HashSet<Collider2D>(collidersTouching[side]);
-			collidersTouching[side].Clear();
+			pcollsTouching[side] = new HashSet<Collider2D>(collsTouching[side]);
+			collsTouching[side].Clear();
 
 			UpdateSurface(side);
         }
@@ -194,26 +239,26 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
         }
         
         // Now that EVERY side's been updated, check: Have we STOPPED or STARTED touching an old/new collider?
-        for (int side=0; side<whiskerDirs.Length; side++) {
-			foreach (Collider2D col in pcollidersTouching[side]) {
-				if (!collidersTouching[side].Contains(col)) {
+        for (int side=0; side<NumSides; side++) {
+			foreach (Collider2D col in pcollsTouching[side]) {
+				if (!collsTouching[side].Contains(col)) {
 					myCharacter.OnWhiskersLeaveCollider(side, col);
 				}
 			}
 		}
-		for (int side=0; side<whiskerDirs.Length; side++) {
-			foreach (Collider2D col in collidersTouching[side]) {
-				if (!pcollidersTouching[side].Contains(col)) {
+		for (int side=0; side<NumSides; side++) {
+			foreach (Collider2D col in collsTouching[side]) {
+				if (!pcollsTouching[side].Contains(col)) {
                     // We're moving AWAY from this collider? Ignore the collision! (This prevents whiskers-touching-2-things issues, like recharging plunge or cancelling preserving wall-kick vel.) Note: We can possibly bring this check all the way up to Whiskers for consistency.
-                    if (myCharacter.IsMovingAwayFromSide(side)) { continue; }
+                    if (myCharacter.IsMovingAwayFrom(side)) { continue; }
 					myCharacter.OnWhiskersTouchCollider(side, col);
 				}
 			}
-		}
+        }
     }
 	private void UpdateSurface(int side) {
-		if (surfaceDists==null) { return; } // Safety check (for runtime compile).
 		minDistsIndexes[side] = -1; // Default this to -1: There is no closest, because they're all infinity.
+        collSpeedsRel[side] = Mathf.NegativeInfinity; // nothing's moving towards me.
 		for (int index=0; index<NumWhiskersPerSide; index++) {
 			UpdateWhiskerRaycast(side, index); // update the distances and colliders.
 			float dist = surfaceDists[side,index]; // use the dist we just updated.
@@ -222,53 +267,52 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 			}
 		}
 		// Update onSurfaces!
-		onSurfaces[side] = collidersTouching[side].Count > 0;
+		onSurfaces[side] = collsTouching[side].Count > 0;
 	}
-	private void UpdateWhiskerRaycast(int side, int index) {
-		Vector2 dir = whiskerDirs[side];
-		Vector2 pos = WhiskerPos(side, index);
-		float raycastSearchDist = GetRaycastSearchDist(side);
-		LayerMask mask = GetLayerMask(side);
-
-        // Find the relevant collider we're touching.
-		hits = Physics2D.RaycastAll(pos, dir, raycastSearchDist, mask);
-        RaycastHit2D h = new RaycastHit2D();
+    /// wi: WhiskerIndex
+	private void UpdateWhiskerRaycast(int side, int wi) {
+        // Find the closest collider.
+		hits = GetRaycast(side, wi);
+        h = new RaycastHit2D();
+        Collider2D coll = null;
         for (int i=0; i<hits.Length; i++) { // Check every collision for ones we interact with...
-            if (hits[i].collider != null) {
-                if (DoCollideWithColl(hits[i].collider)) {
-                    h = hits[i];
-                    break;
-                }
+            if (DoCollideWithColl(hits[i].collider)) {
+                h = hits[i];
+                coll = h.collider;
+                break;
             }
         }
 
         // Update my knowledge!
-        float dist = Mathf.Infinity; // default to infinity in case we don't hit any ground.
-        if (h.collider != null) { // If we hit a non-trigger...!
-            dist = Vector2.Distance(h.point, pos);
-        }
-		surfaceDists[side,index] = dist;
-		collidersAroundMe[side,index] = h.collider;
-        // If we're NOT moving away from this side...! (This prevents registering any contact when passing up thru a Platform.)
-        if (!myCharacter.IsMovingAwayFromSide(side)) {
+        float dist = DistToColl(h, WhiskerPos(side, wi));
+		surfaceDists[side,wi] = dist;
+		collsAroundMe[side,wi] = coll;
+        UpdateCollSpeedsRel(side, coll);
+        
+        // If we HIT a collider...!
+        if (coll != null) {
             // If we're (just about) touching this collider...!
-    		if (dist <= TouchDistThreshold) {
-    			if (h.collider != null && !collidersTouching[side].Contains(h.collider)) {
-    				collidersTouching[side].Add(h.collider);
-    			}
-    		}
+            if (dist <= TouchDistThreshold) {
+                // If we're NOT moving away from this side...! (This prevents registering any contact when passing up thru a Platform.)
+                if (!myCharacter.IsMovingAwayFrom(side)) {
+        			if (!collsTouching[side].Contains(coll)) {
+        				collsTouching[side].Add(coll);
+        			}
+        		}
+            }
         }
-//		// Is the collider for this raycast DIFFERENT?? Tell my character we've touched/left surfaces!!
-//		if (pCollider != hit.collider) {
-//			if (pCollider != null) {
-//				myCharacter.OnWhiskersLeaveCollider(side, pCollider);
-//			}
-//			if (hit.collider != null) {
-//				myCharacter.OnWhiskersTouchCollider(side, hit.collider);
-//			}
-//		}
 	}
-
+    
+    
+    private void UpdateCollSpeedsRel(int side, Collider2D coll2D) {
+        if (coll2D != null) {
+            Collidable collidable = coll2D.gameObject.GetComponent<Collidable>();
+            if (collidable != null) {
+                float collSpeed = GetCollSpeedRel(side, collidable);
+                collSpeedsRel[side] = Mathf.Max(collSpeed, collSpeedsRel[side]);
+            }
+        }
+    }
 
 
 }

@@ -221,9 +221,12 @@ abstract public class Player : PlatformCharacter {
 		AcceptHorzMoveInput();
 		ApplyTerminalVel();
         ApplyLiftForces(); // Note: This happens AFTER TerminalVel.
-		myWhiskers.UpdateSurfaces(); // update these dependently now, so we guarantee most up-to-date info.
-		UpdateWallSlide();
-		ApplyVel();
+        UpdateWallSlide();
+        ApplyVel();
+        // Update vel to be the distance we ended up moving this frame.
+        SetVel(pos - ppos);
+        
+        myWhiskers.UpdateSurfaces();
 
         UpdateDirFacing();
 		UpdateTimeLastTouchedWall();
@@ -231,8 +234,6 @@ abstract public class Player : PlatformCharacter {
 		UpdateMaxYSinceGround();
 		UpdatePostWallKickVelValues();
 
-		// Update vel to be the distance we ended up moving this frame.
-		SetVel(pos - ppos);
         pfeetOnGround = IsGrounded();
 
 		UpdateExitedRoom();
