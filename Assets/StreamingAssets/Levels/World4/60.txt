@@ -1,27 +1,27 @@
 roomProperties posGlobal:(746.0, 306.0);designerFlag:2
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-DamageableGround myRect:(x:-9.00, y:8.00, width:22.00, height:2.00);doRegen:True;dieFromPlayerLeave:True
-DamageableGround myRect:(x:16.50, y:-6.00, width:11.00, height:2.00);doRegen:True;dieFromPlayerLeave:True
 DamageableGround myRect:(x:18.50, y:4.00, width:7.00, height:2.00);doRegen:True;dieFromPlayerLeave:True
-Ground myRect:(x:-24.00, y:3.00, width:4.00, height:26.00)
-Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
-Ground myRect:(x:0.00, y:-1.50, width:8.00, height:1.00)
-Ground myRect:(x:21.00, y:15.50, width:10.00, height:9.00)
-Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00)
-Ground myRect:(x:14.50, y:-16.50, width:23.00, height:7.00)
-Ground myRect:(x:0.00, y:4.50, width:8.00, height:1.00)
-Ground myRect:(x:11.00, y:14.50, width:2.00, height:5.00)
+DamageableGround myRect:(x:16.50, y:-6.00, width:11.00, height:2.00);doRegen:True;dieFromPlayerLeave:True
+DamageableGround myRect:(x:-9.00, y:8.00, width:22.00, height:2.00);doRegen:True;dieFromPlayerLeave:True
 Ground myRect:(x:-3.50, y:1.50, width:1.00, height:7.00)
-Ground myRect:(x:-7.50, y:18.00, width:37.00, height:4.00)
-Ground myRect:(x:-22.50, y:11.50, width:5.00, height:9.00)
+Ground myRect:(x:11.00, y:14.50, width:2.00, height:5.00)
+Ground myRect:(x:0.00, y:4.50, width:8.00, height:1.00)
 Ground myRect:(x:-18.50, y:-7.00, width:7.00, height:2.00)
+Ground myRect:(x:-22.50, y:11.50, width:5.00, height:9.00)
+Ground myRect:(x:-7.50, y:18.00, width:37.00, height:4.00)
+Ground myRect:(x:0.00, y:-1.50, width:8.00, height:1.00)
+Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
+Ground myRect:(x:-24.00, y:3.00, width:4.00, height:26.00)
+Ground myRect:(x:14.50, y:-16.50, width:23.00, height:7.00)
+Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00)
+Ground myRect:(x:21.00, y:15.50, width:10.00, height:9.00)
 Platform myRect:(x:14.00, y:12.50, width:4.00, height:1.00);isPlayerRespawn:True
 PlayerStart pos:(-20.0, -14.0)
-Snack pos:(-20.0, 0.0);playerType:Plunga
-Spikes myRect:(x:-18.50, y:-5.50, width:7.00, height:1.00);rotation:0
-Spikes myRect:(x:5.00, y:-12.50, width:4.00, height:1.00);rotation:0
-Spikes myRect:(x:0.00, y:-2.50, width:8.00, height:1.00);rotation:180
+Snack pos:(-20.0, 0.0);playerType:Any
 Spikes myRect:(x:2.50, y:-15.00, width:4.00, height:1.00);rotation:90
 Spikes myRect:(x:0.00, y:5.50, width:8.00, height:1.00);rotation:0
 Spikes myRect:(x:-4.50, y:1.50, width:7.00, height:1.00);rotation:90
+Spikes myRect:(x:-18.50, y:-5.50, width:7.00, height:1.00);rotation:0
+Spikes myRect:(x:5.00, y:-12.50, width:4.00, height:1.00);rotation:0
+Spikes myRect:(x:0.00, y:-2.50, width:8.00, height:1.00);rotation:180
 

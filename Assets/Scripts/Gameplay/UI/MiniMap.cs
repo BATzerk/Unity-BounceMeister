@@ -97,7 +97,7 @@ public class MiniMap : MonoBehaviour {
         if (currRoomData.MyCluster != null) {
             go_snackCount.SetActive(true);
             SnackCount sc = currRoomData.MyCluster.SnackCount;
-            t_snackCount.text = sc.eaten[currPlayerType] + " / " + sc.total[currPlayerType];
+            t_snackCount.text = sc.Eaten(currPlayerType) + " / " + sc.Total(currPlayerType);
         }
         else {
             go_snackCount.SetActive(false); // No cluster ('cause I'm developing levels)? Hide snackCount.

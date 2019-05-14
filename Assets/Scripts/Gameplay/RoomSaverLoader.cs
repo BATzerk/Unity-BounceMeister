@@ -97,7 +97,6 @@ static public class RoomSaverLoader {
             else if (type == typeof(RoomDoorData)) { AddAllPropFieldsToFS(propData, "pos", "myID", "worldToIndex", "roomToKey", "doorToID"); }
             else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
 			else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
-            else if (type == typeof(InfoSignData)) { AddAllPropFieldsToFS(propData, "pos", "myText"); }
             else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos", "playerType"); }
             else if (type == typeof(SpikesData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation"); }
             else if (type == typeof(VeilData)) { AddAllPropFieldsToFS(propData, "myRect"); }
@@ -137,6 +136,12 @@ static public class RoomSaverLoader {
                 if (!d.doRechargePlayer) { fs += ";doRechargePlayer:" + d.doRechargePlayer; }
                 AddFSLine();
 			}
+            else if (type == typeof(InfoSignData)) {
+                InfoSignData d = propData as InfoSignData;
+                AddSomePropFieldsToFS(propData, "pos", "myText");
+                if (!Mathf.Approximately(d.rotation, 0)) { fs += ";rotation:" + Mathf.Round(d.rotation); }
+                AddFSLine();
+            }
             else if (type == typeof(PlatformData)) {
                 PlatformData d = propData as PlatformData;
                 AddSomePropFieldsToFS(propData, "myRect");
@@ -282,7 +287,7 @@ static public class RoomSaverLoader {
 
 	static private void SaveRoomFileFromStringArray(int worldIndex, string roomKey, string[] roomFileArray) {
 		// Otherwise, SAVE! :D
-		string filePath = FilePaths.RoomFileAddress(worldIndex, roomKey);
+		string filePath = FilePaths.RoomFile(worldIndex, roomKey);
 		try {
 			StreamWriter sr = File.CreateText (filePath);
 			foreach (string lineString in roomFileArray) {
@@ -501,15 +506,15 @@ static public class RoomSaverLoader {
     static public bool MayRenameRoomFile(RoomData rd, string newName) {
         if (string.IsNullOrEmpty(newName)) { return false; } // Empty name? Nah.
         if (rd.RoomKey == newName) { return false; } // Same name? Nah.
-        string newPath = FilePaths.RoomFileAddress(rd.WorldIndex, newName);
+        string newPath = FilePaths.RoomFile(rd.WorldIndex, newName);
         if (File.Exists(newPath)) { return false; } // File already here? Nah.
         // Looks good!
         return true;
     }
     static public void RenameRoomFile(Room room, string newName) { RenameRoomFile(room.MyRoomData, newName); }
     static public void RenameRoomFile(RoomData rd, string newName) {
-        string oldPath = FilePaths.RoomFileAddress(rd.WorldIndex, rd.RoomKey);
-        string newPath = FilePaths.RoomFileAddress(rd.WorldIndex, newName);
+        string oldPath = FilePaths.RoomFile(rd.WorldIndex, rd.RoomKey);
+        string newPath = FilePaths.RoomFile(rd.WorldIndex, newName);
         // File already here with this name?
         if (File.Exists(newPath)) {
             Debug.LogWarning("Can't rename room. Already a file here: \"" + newPath + "\"");

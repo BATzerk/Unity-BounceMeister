@@ -64,6 +64,9 @@ public class GameUI : MonoBehaviour {
     private void OnPlayerTouchEnterInfoSign(InfoSign infoSign) {
         go_infoSignText.SetActive(true);
         t_infoSignText.text = infoSign.MyText;
+        // TEST funny haha
+        float textRot = infoSign.rotation;
+        t_infoSignText.transform.localEulerAngles = new Vector3(0,0,textRot);
     }
     private void OnPlayerTouchExitInfoSign(InfoSign infoSign) {
         go_infoSignText.SetActive(false);

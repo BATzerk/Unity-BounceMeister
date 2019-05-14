@@ -51,6 +51,7 @@ public class InfoSign : Prop {
     override public PropData SerializeAsData() {
         InfoSignData data = new InfoSignData {
             pos = pos,
+            rotation = rotation,
             myText = myText,
         };
         return data;

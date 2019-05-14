@@ -18,7 +18,7 @@ public class ProgressGate : BaseGround {
     
     // Getters (Private)
     private WorldData currWorldData { get { return GameManagers.Instance.DataManager.CurrWorldData; } }
-    private int TotalSnacksEatenGame { get { return GameManagers.Instance.DataManager.SnackCountGame.eaten[PlayerTypes.Any]; } }
+    private int TotalSnacksEatenGame { get { return GameManagers.Instance.DataManager.SnackCountGame.Eaten_All; } }
 
 
 	// ----------------------------------------------------------------

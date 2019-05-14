@@ -62,6 +62,7 @@ public class GameTimeController : MonoBehaviour {
     public void ToggleSlowMo() {
         IsSlowMo = !IsSlowMo;
         UpdateTimeScale();
+        SetIsPaused(false); // AUTOMATically unpause when we set slow-mo-ness.
     }
     public void SetIsFastMo(bool val) {
         IsFastMo = val;

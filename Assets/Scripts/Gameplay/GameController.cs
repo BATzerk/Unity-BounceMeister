@@ -12,9 +12,20 @@ public class GameController : MonoBehaviour {
 
     // Getters
     public GameTimeController GameTimeController { get { return gameTimeController; } }
-
 	private DataManager dm { get { return GameManagers.Instance.DataManager; } }
 	private EventManager eventManager { get { return GameManagers.Instance.EventManager; } }
+    private bool CanCyclePlayerType() {
+        if (!CurrRoom.Player.IsGrounded()) { return false; } // Not grounded? Can't cycle.
+        return true; // Sure, why not!
+    }
+    private static PlayerTypes GetNextPlayerTypeInCycle(PlayerTypes currType) {
+        switch (currType) {
+            case PlayerTypes.Plunga: return PlayerTypes.Flatline;
+            case PlayerTypes.Flatline: return PlayerTypes.Jetta;
+            case PlayerTypes.Jetta: return PlayerTypes.Plunga;
+            default: return PlayerTypes.Plunga; // Hmm.
+        }
+    }
 
 
 
@@ -109,6 +120,12 @@ public class GameController : MonoBehaviour {
         playerData.type = _type;
         MakePlayer(playerData);
         GameManagers.Instance.EventManager.OnSwapPlayerType();
+    }
+    private void MaybeCyclePlayerType() {
+        if (CanCyclePlayerType()) { // If we can...!
+            PlayerTypes nextType = GetNextPlayerTypeInCycle(CurrRoom.Player.PlayerType());
+            SwapPlayerType(nextType);
+        }
     }
 
 
@@ -217,13 +234,14 @@ public class GameController : MonoBehaviour {
 		bool isKey_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 		bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
-        // P = Toggle Pause!
-        if (Input.GetKeyDown(KeyCode.P)) {
+        // ESCAPE or P = Toggle Pause!
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) {
             gameTimeController.TogglePause();
         }
-        // ESCAPE = Open ClustSelect!
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            SceneHelper.OpenScene(SceneNames.ClustSelect); return;
+        
+        // Cycle PlayerType!
+        if (InputController.Instance.IsCycleChar_Press) {
+            MaybeCyclePlayerType();
         }
 
 		// ~~~~ DEBUG ~~~~

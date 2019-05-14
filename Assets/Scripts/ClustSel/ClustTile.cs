@@ -89,7 +89,7 @@ namespace ClustSelNamespace {
             else if (myClustData.WorldIndex==2) { tempPlayerType = PlayerTypes.Flatline; }
         
             // Values.
-            int totalSnacksEaten = GameManagers.Instance.DataManager.SnackCountGame.eaten[PlayerTypes.Any];
+            int totalSnacksEaten = GameManagers.Instance.DataManager.SnackCountGame.Eaten_All;
             canUnlockMe = !myClustData.IsUnlocked && totalSnacksEaten>=myClustData.NumSnacksReq;
             
             // Texts and back!

@@ -118,6 +118,10 @@ public class EditModeController : MonoBehaviour {
         dm.currRoomData = newLD;
         SceneHelper.ReloadScene();
     }
+    private void OpenRoomTextFile() {
+        string path = FilePaths.RoomFile(CurrRoom.WorldIndex, CurrRoom.RoomKey);
+        Application.OpenURL("File:" + path);
+    }
     
 
     // ----------------------------------------------------------------
@@ -194,6 +198,8 @@ public class EditModeController : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.N)) { StartNewBlankRoom(); }
             // CONTROL + D = Duplicate/Start new room!
             else if (Input.GetKeyDown(KeyCode.D)) { DuplicateCurrRoom(); }
+            // CONTROL + K = Open room text file!
+            else if (Input.GetKeyDown(KeyCode.K)) { OpenRoomTextFile(); }
             // CONTROL + SHIFT + ____...
             else if (isKey_shift) {
                 if (CurrRoom != null) {

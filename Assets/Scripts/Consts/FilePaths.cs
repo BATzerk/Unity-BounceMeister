@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FilePaths {
 
-    public static string RoomFileAddress(int worldIndex, string roomKey) {
+    public static string RoomFile(int worldIndex, string roomKey) {
         return WorldFileAddress(worldIndex) + roomKey + ".txt";
     }
     public static string WorldFileAddress(int worldIndex) {

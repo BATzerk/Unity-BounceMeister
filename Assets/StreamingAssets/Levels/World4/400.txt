@@ -1,0 +1,25 @@
+roomProperties posGlobal:(814.0, 238.0);designerFlag:2
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+DamageableGround myRect:(x:19.00, y:5.50, width:6.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
+Ground myRect:(x:8.50, y:-18.00, width:35.00, height:4.00);isPlayerRespawn:True
+Ground myRect:(x:22.50, y:-16.00, width:7.00, height:12.00)
+Ground myRect:(x:-24.00, y:3.50, width:4.00, height:25.00)
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+Ground myRect:(x:-20.50, y:-18.00, width:11.00, height:4.00);isPlayerRespawn:True
+Ground myRect:(x:21.00, y:0.50, width:10.00, height:7.00)
+Ground myRect:(x:-12.50, y:16.00, width:23.00, height:2.00)
+Ground myRect:(x:-8.00, y:3.00, width:14.00, height:2.00)
+Ground myRect:(x:14.50, y:3.00, width:11.00, height:2.00)
+Ground myRect:(x:16.50, y:16.00, width:15.00, height:2.00)
+Ground myRect:(x:24.50, y:7.50, width:3.00, height:21.00)
+InfoSign pos:(19.0, 6.0);myText:Did you know? Most people WANT to be approached! Everyone loves compliments.
+Lift myRect:(x:4.00, y:-6.00, width:8.00, height:12.00);rotation:0;strength:0.08
+Lift myRect:(x:-8.00, y:9.00, width:10.00, height:4.00);rotation:0;strength:0.08
+Platform myRect:(x:-12.00, y:-17.50, width:6.00, height:1.00);isPlayerRespawn:True
+Platform myRect:(x:312.00, y:148.50, width:6.00, height:1.00)
+PlayerStart pos:(14.0, -14.0)
+Snack pos:(-18.0, 10.5);playerType:Plunga
+Spikes myRect:(x:16.50, y:4.50, width:15.00, height:1.00);rotation:0
+Spikes myRect:(x:-12.50, y:14.50, width:23.00, height:1.00);rotation:180
+Spikes myRect:(x:-8.00, y:4.50, width:14.00, height:1.00);rotation:0
+Spikes myRect:(x:16.50, y:14.50, width:15.00, height:1.00);rotation:180

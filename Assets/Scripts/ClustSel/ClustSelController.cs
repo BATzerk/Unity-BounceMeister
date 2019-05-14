@@ -18,7 +18,7 @@ namespace ClustSelNamespace {
             Time.timeScale = 1;
             
             // Update text.
-            t_snacksCollected.text = GameManagers.Instance.DataManager.SnackCountGame.eaten[PlayerTypes.Any].ToString();
+            t_snacksCollected.text = GameManagers.Instance.DataManager.SnackCountGame.Eaten_All.ToString();
             
             // Make worldViews!
             worldViews = new Dictionary<int, WorldView>();

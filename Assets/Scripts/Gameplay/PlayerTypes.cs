@@ -1,7 +1,8 @@
 ﻿public enum PlayerTypes {
     Undefined,
     
-    Any,
+    Any, // special type: Wild card. Any player can collect Snack like this.
+    //Every, // special type: EVERY 
     
     Dilata,
     Flatline,
@@ -15,6 +16,7 @@
 
 static public class PlayerTypeHelper {
     static public readonly PlayerTypes[] AllTypes = {
+        PlayerTypes.Any,
         PlayerTypes.Dilata,
         PlayerTypes.Flatline,
         PlayerTypes.Jetta,

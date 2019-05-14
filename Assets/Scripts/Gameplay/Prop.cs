@@ -25,9 +25,9 @@ abstract public class Prop : MonoBehaviour {
 		get { return this.transform.localPosition; }
 		set { this.transform.localPosition = value; }
 	}
-	protected float rotation {
+	public float rotation {
 		get { return this.transform.localEulerAngles.z; }
-		set { this.transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, value); }
+		protected set { this.transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, value); }
 	}
 
 	virtual protected void BaseInitialize(Room myRoom, PropData data) {

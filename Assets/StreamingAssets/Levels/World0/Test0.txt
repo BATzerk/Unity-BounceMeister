@@ -5,3 +5,6 @@ Ground myRect:(x:0.00, y:17.00, width:52.00, height:6.00)
 Ground myRect:(x:-4.00, y:-8.50, width:8.00, height:9.00)
 Ground myRect:(x:-20.50, y:0.00, width:11.00, height:32.00)
 PlayerStart pos:(11.5, -11.0)
+Snack pos:(13.0, 6.5);playerType:Any
+Snack pos:(3.5, 7.0);playerType:Jetta
+

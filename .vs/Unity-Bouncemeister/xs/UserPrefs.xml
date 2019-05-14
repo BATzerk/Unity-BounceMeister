@@ -1,12 +1,15 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/ProgressGate.cs">
     <Files>
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="121" Column="32" />
       <File FileName="Assets/Scripts/MapEditor/MapEditor.cs" Line="199" Column="35" />
-      <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="298" Column="54" />
-      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="312" Column="20" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Snack.cs" Line="56" Column="54" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" Line="20" Column="58" />
+      <File FileName="Assets/Scripts/Gameplay/UI/MiniMap.cs" Line="98" Column="43" />
+      <File FileName="Assets/Scripts/Gameplay/Props/SnackCount.cs" Line="9" Column="74" />
+      <File FileName="Assets/Scripts/Gameplay/PlayerTypes.cs" Line="19" Column="25" />
+      <File FileName="Assets/Scripts/ClustSel/ClustSelController.cs" Line="18" Column="32" />
+      <File FileName="Assets/Scripts/ClustSel/ClustTile.cs" Line="92" Column="90" />
+      <File FileName="Assets/Scripts/Gameplay/Props/ProgressGate.cs" Line="21" Column="128" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
