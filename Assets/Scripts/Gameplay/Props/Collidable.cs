@@ -25,5 +25,7 @@ abstract public class Collidable : Prop {
 
 	virtual public void OnCharacterTouchMe(int charSide, PlatformCharacter character) { }
 	virtual public void OnCharacterLeaveMe(int charSide, PlatformCharacter character) { }
+    //virtual public void OnTriggerEnter2D(Collider2D col) { }
+    //virtual public void OnTriggerExit2D(Collider2D col) { }
 
 }

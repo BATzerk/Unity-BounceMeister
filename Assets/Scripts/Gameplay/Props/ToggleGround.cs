@@ -50,13 +50,13 @@ public sealed class ToggleGround : BaseGround {
     override public void OnCharacterLeaveMe(int charSide, PlatformCharacter character) {
         togBehavior.OnCharacterLeaveMe(charSide, character);
     }
-    private void OnTriggerEnter2D(Collider2D otherCol) {
-        if (LayerMask.LayerToName(otherCol.gameObject.layer) == Layers.Player) {
+    private void OnTriggerEnter2D(Collider2D col) {
+        if (LayerMask.LayerToName(col.gameObject.layer) == Layers.Player) {
             isPlayerInMe = true;
         }
     }
-    private void OnTriggerExit2D(Collider2D otherCol) {
-        if (LayerMask.LayerToName(otherCol.gameObject.layer) == Layers.Player) {
+    private void OnTriggerExit2D(Collider2D col) {
+        if (LayerMask.LayerToName(col.gameObject.layer) == Layers.Player) {
             isPlayerInMe = false;
             if (isWaitingToTurnOn) { // I'm waiting to turn on? Do!
                 ApplyIsOn();
@@ -103,14 +103,15 @@ public sealed class ToggleGround : BaseGround {
 	//  Serializing
 	// ----------------------------------------------------------------
     override public PropData SerializeAsData() {
-		ToggleGroundData data = new ToggleGroundData();
-		data.myRect = MyRect();
-		data.mayPlayerEat = MayPlayerEatHere;
-        data.isPlayerRespawn = IsPlayerRespawn;
-        data.startsOn = startsOn;
-        data.togFromContact = togFromContact;//togBehavior is TogGroundBehavior_Contact;
-        data.togFromAction = togFromAction;//togBehavior is TogGroundBehavior_Plunge;
-		return data;
+        ToggleGroundData data = new ToggleGroundData {
+            myRect = MyRect(),
+            mayPlayerEat = MayPlayerEatHere,
+            isPlayerRespawn = IsPlayerRespawn,
+            startsOn = startsOn,
+            togFromContact = togFromContact,//togBehavior is TogGroundBehavior_Contact;
+            togFromAction = togFromAction//togBehavior is TogGroundBehavior_Plunge;
+        };
+        return data;
 	}
 
 

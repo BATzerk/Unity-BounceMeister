@@ -32,18 +32,11 @@ public class Spikes : Collidable {
 	// ----------------------------------------------------------------
 	//  Events
 	// ----------------------------------------------------------------
-	private void OnTriggerEnter2D(Collider2D col) {
-		Player player = col.gameObject.GetComponent<Player>();
-		if (player != null) {
-			player.OnTouchSpikes(this);
-		}
-	}
-
-
+    // TODO: Clean this up! Clean up how player touching harm is handled.
 	override public void OnCharacterTouchMe(int charSide, PlatformCharacter character) {
 		Player player = character as Player;
 		if (player != null) {
-			player.OnTouchSpikes(this);
+			player.OnTouchHarm();
 		}
 	}
 
@@ -53,9 +46,10 @@ public class Spikes : Collidable {
 	//  Serializing
 	// ----------------------------------------------------------------
     override public PropData SerializeAsData() {
-		SpikesData data = new SpikesData();
-		data.myRect = MyRect;
-		data.rotation = rotation;
-		return data;
+        SpikesData data = new SpikesData {
+            myRect = MyRect,
+            rotation = rotation
+        };
+        return data;
 	}
 }

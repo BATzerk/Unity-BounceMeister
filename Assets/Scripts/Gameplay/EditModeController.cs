@@ -71,11 +71,15 @@ public class EditModeController : MonoBehaviour {
     // ----------------------------------------------------------------
     private void UpdateIsEditMode() {
         // It's EditMode if we're...
-        IsEditMode = !Application.isFocused // A) NOT focused on the application, or...
+        bool _isEditMode = !Application.isFocused // A) NOT focused on the application, or...
                   || !isGameWindowFocus // B) NOT focused on the Game scene window, or...
                   || isSettingPlayerPos // C) Setting the Player's pos (via right-click), or...
                   || GameUtils.CurrSelectedGO()!=null; // D) Selecting any UI!
-        GameManagers.Instance.EventManager.OnSetIsEditMode(IsEditMode);
+        // If it's changed...!
+        if (IsEditMode != _isEditMode) {
+            IsEditMode = _isEditMode;
+            GameManagers.Instance.EventManager.OnSetIsEditMode(IsEditMode);
+        }
     }
     private void ExpandRoomHierarchy() {
         if (!GameUtils.IsEditorWindowMaximized()) { // If we're maximized, do nothing (we don't want to open up the Hierarchy if it's not already open).
@@ -180,7 +184,7 @@ public class EditModeController : MonoBehaviour {
             return;
         }
 
-        bool isKey_alt = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
+        //bool isKey_alt = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
         bool isKey_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
         bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 

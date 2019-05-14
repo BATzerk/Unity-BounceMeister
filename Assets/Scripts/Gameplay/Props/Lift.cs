@@ -111,11 +111,11 @@ public class Lift : Prop {
 	//  Serializing
 	// ----------------------------------------------------------------
     override public PropData SerializeAsData() {
-		LiftData data = new LiftData();
-		data.myRect = MyRect;
-		data.rotation = rotation;
-		data.strength = strength;
-		return data;
+        return new LiftData {
+            myRect = MyRect,
+            rotation = rotation,
+            strength = strength
+        };
 	}
 
 

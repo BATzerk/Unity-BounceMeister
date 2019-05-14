@@ -310,7 +310,7 @@ public class GameController : MonoBehaviour {
         StartCoroutine(Coroutine_ReloadSceneDelayed());
 	}
     private IEnumerator Coroutine_ReloadSceneDelayed() {
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSeconds(1f);//Realtime
         SceneHelper.ReloadScene();
     }
 

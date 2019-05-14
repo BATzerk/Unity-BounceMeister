@@ -12,6 +12,7 @@ static public class RoomSaverLoader {
 	const string ROOM_PROPERTIES = "roomProperties";
 	// Constants (Objects)
 	const string BATTERY = "Battery";
+    const string BUZZSAW = "Buzzsaw";
 	const string CAMERA_BOUNDS = "CameraBounds";
 	const string CHAR_BARREL = "CharBarrel";
 	const string CRATE = "Crate";
@@ -22,7 +23,8 @@ static public class RoomSaverLoader {
 	const string GEM = "Gem";
 	const string GROUND = "Ground";
 	const string ROOM_DOOR = "RoomDoor";
-	const string LIFT = "Lift";
+    const string LASER = "Laser";
+    const string LIFT = "Lift";
     const string PLATFORM = "Platform";
 	const string PLAYER_START = "PlayerStart";
     const string PROGRESS_GATE = "ProgressGate";
@@ -90,11 +92,13 @@ static public class RoomSaverLoader {
 		foreach (PropData propData in rd.allPropDatas) {
 			Type type = propData.GetType();
 			if (type == typeof(BatteryData)) { AddAllPropFieldsToFS(propData, "pos"); }
-			else if (type == typeof(CharBarrelData)) { AddAllPropFieldsToFS(propData, "pos", "otherCharName"); }
+            else if (type == typeof(BuzzsawData)) { AddAllPropFieldsToFS(propData, "size", "locOffset", "speed", "posA", "posB"); }
+            else if (type == typeof(CharBarrelData)) { AddAllPropFieldsToFS(propData, "pos", "otherCharName"); }
             else if (type == typeof(EnemyData)) { AddAllPropFieldsToFS(propData, "pos"); }
             else if (type == typeof(GateButtonData)) { AddAllPropFieldsToFS(propData, "pos", "channelID"); }
 			else if (type == typeof(GemData)) { AddAllPropFieldsToFS(propData, "pos", "type"); }
             else if (type == typeof(RoomDoorData)) { AddAllPropFieldsToFS(propData, "pos", "myID", "worldToIndex", "roomToKey", "doorToID"); }
+            else if (type == typeof(LaserData)) { AddAllPropFieldsToFS(propData, "pos", "rotation"); }
             else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
 			else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
             else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos", "playerType"); }
@@ -378,6 +382,7 @@ static public class RoomSaverLoader {
     static private PropData GetNewPropDataFromAffectName(string affectName) {
         switch (affectName) {
             case BATTERY: return new BatteryData();
+            case BUZZSAW: return new BuzzsawData();
             case CAMERA_BOUNDS: return new CameraBoundsData();
             case CHAR_BARREL: return new CharBarrelData();
             case CRATE: return new CrateData();
@@ -388,6 +393,7 @@ static public class RoomSaverLoader {
             case GEM: return new GemData();
             case GROUND: return new GroundData();
             case ROOM_DOOR: return new RoomDoorData();
+            case LASER: return new LaserData();
             case LIFT: return new LiftData();
             case PLATFORM: return new PlatformData();
             case PLAYER_START: return new PlayerStartData();

@@ -12,6 +12,13 @@ public class PropData {
 
 public class BatteryData : PropData {
 }
+public class BuzzsawData : PropData {
+    public Vector2 size;
+    public float locOffset = 0;
+    public float speed = 1;
+    public Vector2 posA = new Vector2(0, 0);
+    public Vector2 posB = new Vector2(10, 0);
+}
 public class CameraBoundsData : PropData {
 	public Rect myRect=new Rect();
 }
@@ -87,9 +94,13 @@ public class RoomDoorData : PropData {
 //	}
 }
 
+public class LaserData : PropData {
+    public Rect myRect=new Rect();
+}
+
 public class LiftData : PropData {
-	public float strength;
-	public Rect myRect=new Rect();
+    public float strength;
+    public Rect myRect=new Rect();
 }
 
 public class PlayerData : PropData {

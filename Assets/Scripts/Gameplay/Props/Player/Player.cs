@@ -640,7 +640,7 @@ abstract public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	//  Events (Health)
 	// ----------------------------------------------------------------
-	public void OnTouchSpikes(Spikes spikes) {
+	public void OnTouchHarm() {
 		TakeDamage(1);
 	}
 

@@ -52,6 +52,11 @@ public class PlatformCharacter : Collidable {
 	//	default: Debug.LogError("Side not recognized: " + side); return 0;
 	//	}
 	//}
+    private Collidable GetCollidable(Collider2D col) {
+        //CollidableLiaison collLiaison = col.GetComponent<CollidableLiaison>();
+        //return collLiaison==null ? null : collLiaison.MyCollidable;
+        return col==null ? null : col.GetComponent<Collidable>();
+    }
     private Vector2 GetRelativeVel(Collider2D coll2D) {
         if (coll2D != null) {
             Collidable collidable = coll2D.GetComponent<Collidable>();
@@ -165,13 +170,13 @@ public class PlatformCharacter : Collidable {
 //	}
 
 	virtual public void OnWhiskersTouchCollider(int side, Collider2D col) {
-		Collidable collidable = col.GetComponent<Collidable>();
+		Collidable collidable = GetCollidable(col);
 		if (collidable != null) {
 			collidable.OnCharacterTouchMe(side, this);
 		}
 	}
 	virtual public void OnWhiskersLeaveCollider(int side, Collider2D col) {
-		Collidable collidable = col.GetComponent<Collidable>();
+        Collidable collidable = GetCollidable(col);
 		if (collidable != null) {
 			collidable.OnCharacterLeaveMe(side, this);
             // Traveling collidable? Add its vel to OUR vel!

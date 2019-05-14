@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class DamageableGroundTiler : MonoBehaviour {
     // Components
     [SerializeField] private DamageableGround myGround=null;

@@ -137,6 +137,10 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
                 Battery newProp = Instantiate(rh.Battery).GetComponent<Battery>();
                 newProp.Initialize(this, propData as BatteryData);
             }
+            else if (pt == typeof(BuzzsawData)) {
+                Buzzsaw newProp = Instantiate(rh.Buzzsaw).GetComponent<Buzzsaw>();
+                newProp.Initialize(this, propData as BuzzsawData);
+            }
             else if (pt == typeof(CharBarrelData)) {
                 CharBarrel newProp = Instantiate(rh.CharBarrel).GetComponent<CharBarrel>();
                 newProp.Initialize(this, propData as CharBarrelData, charBarrels.Count);
@@ -159,6 +163,10 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
             else if (pt == typeof(RoomDoorData)) {
                 RoomDoor newProp = Instantiate(rh.RoomDoor).GetComponent<RoomDoor>();
                 newProp.Initialize(this, propData as RoomDoorData);
+            }
+            else if (pt == typeof(LaserData)) {
+                Laser newProp = Instantiate(rh.Laser).GetComponent<Laser>();
+                newProp.Initialize(this, propData as LaserData);
             }
             else if (pt == typeof(LiftData)) {
                 Lift newProp = Instantiate(rh.Lift).GetComponent<Lift>();
