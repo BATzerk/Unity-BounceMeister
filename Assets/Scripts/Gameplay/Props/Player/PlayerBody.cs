@@ -20,11 +20,13 @@ abstract public class PlayerBody : MonoBehaviour {
             case PlayerTypes.Any: return new ColorHSB(60/360f, 0.67f, 1f).ToColor();
             case PlayerTypes.Dilata: return new ColorHSB(190/360f, 0.67f, 0.87f).ToColor();
             case PlayerTypes.Flatline: return new ColorHSB(160/360f, 0.67f, 0.87f).ToColor();
+            case PlayerTypes.Flippa: return new ColorHSB(330/360f, 0.8f, 0.82f).ToColor();
             case PlayerTypes.Jetta: return new ColorHSB(290/360f, 0.7f, 0.7f).ToColor();
             case PlayerTypes.Jumpa: return new ColorHSB(100/360f, 0.6f, 0.7f).ToColor();
             case PlayerTypes.Limo: return new ColorHSB(140/360f, 0.05f, 0.5f).ToColor();
             case PlayerTypes.Plunga: return new Color255(25, 175, 181).ToColor();
             case PlayerTypes.Slippa: return new Color255(220, 160, 40).ToColor();
+            case PlayerTypes.Warpa: return new ColorHSB(250/360f, 0.5f, 0.9f).ToColor();
             default: Debug.LogWarning("PlayerBody color not defined: " + playerType + "."); return Color.magenta; // Oops.
         }
     }

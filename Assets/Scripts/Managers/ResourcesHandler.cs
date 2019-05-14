@@ -23,13 +23,16 @@ public class ResourcesHandler : MonoBehaviour {
 
     [SerializeField] private GameObject Dilata=null;
     [SerializeField] private GameObject Flatline=null;
+    [SerializeField] private GameObject Flippa=null;
     [SerializeField] private GameObject Jetta=null;
     [SerializeField] private GameObject Jumpa=null;
     [SerializeField] private GameObject Limo=null;
     [SerializeField] private GameObject Plunga=null;
     [SerializeField] private GameObject Slippa=null;
+    [SerializeField] private GameObject Warpa=null;
 
-	[SerializeField] public GameObject Battery;
+    [SerializeField] public GameObject Battery;
+    [SerializeField] public GameObject Buzzsaw;
 	[SerializeField] public GameObject CameraBounds;
     [SerializeField] public GameObject CharBarrel;
 	[SerializeField] public GameObject Coin;
@@ -41,7 +44,8 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject Gem;
 	[SerializeField] public GameObject Ground;
 	[SerializeField] public GameObject RoomDoor;
-	[SerializeField] public GameObject Lift;
+    [SerializeField] public GameObject Laser;
+    [SerializeField] public GameObject Lift;
     [SerializeField] public GameObject Platform;
 	[SerializeField] public GameObject PlayerStart;
     [SerializeField] public GameObject ProgressGate;
@@ -58,11 +62,13 @@ public class ResourcesHandler : MonoBehaviour {
         switch (type) {
             case PlayerTypes.Dilata: return Dilata;
             case PlayerTypes.Flatline: return Flatline;
+            case PlayerTypes.Flippa: return Flippa;
             case PlayerTypes.Jetta: return Jetta;
             case PlayerTypes.Jumpa: return Jumpa;
             case PlayerTypes.Limo: return Limo;
             case PlayerTypes.Plunga: return Plunga;
             case PlayerTypes.Slippa: return Slippa;
+            case PlayerTypes.Warpa: return Warpa;
             default:
                 Debug.LogError("Whoa! Player type totally not recognized: " + type);
                 return null;

@@ -18,13 +18,18 @@ public class GameController : MonoBehaviour {
         if (!CurrRoom.Player.IsGrounded()) { return false; } // Not grounded? Can't cycle.
         return true; // Sure, why not!
     }
-    private static PlayerTypes GetNextPlayerTypeInCycle(PlayerTypes currType) {
-        switch (currType) {
-            case PlayerTypes.Plunga: return PlayerTypes.Flatline;
-            case PlayerTypes.Flatline: return PlayerTypes.Jetta;
-            case PlayerTypes.Jetta: return PlayerTypes.Plunga;
-            default: return PlayerTypes.Plunga; // Hmm.
-        }
+    // NOTE: Hacked in for now! Can tidy up if we like it.
+    private readonly PlayerTypes[] PlayerTypesAvailable = {
+        PlayerTypes.Plunga,
+        PlayerTypes.Jetta,
+        PlayerTypes.Flippa,
+        PlayerTypes.Warpa,
+    };
+    int currPlayerTypeIndex = 0; // type in PlayerTypesAvailable.
+    private PlayerTypes GetNextPlayerTypeInCycle(PlayerTypes currType) {
+        currPlayerTypeIndex ++;
+        if (currPlayerTypeIndex >= PlayerTypesAvailable.Length) { currPlayerTypeIndex = 0; }
+        return PlayerTypesAvailable[currPlayerTypeIndex];
     }
 
 

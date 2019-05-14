@@ -19,8 +19,13 @@ public class Jetta : Player {
 			return new Vector2(0, -0.042f);
 		}
 	}
-	// Constants
-	private const float JetCapacityDuration = 1f; // in SECONDS, how long we have to jet until recharging.
+    protected override float JumpForce {
+        get {
+            return 0.47f;
+        }
+    }
+    // Constants
+    private const float JetCapacityDuration = 1f; // in SECONDS, how long we have to jet until recharging.
 	private const float JetFuelCapacity = 100f; // this number doesn't matter at *all*. Just has to be something.
 	private const float JetSpendRate = JetFuelCapacity/JetCapacityDuration; // how much fuel we spend PER SECOND.
 	private const float JetTargetYVel = 0.25f; // TEST
