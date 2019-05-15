@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerWhiskers : PlatformCharacterWhiskers {
 	//Layers.Default, 
 	override protected string[] GetLayerMaskNames_LRTB() {
-		return new string[]{Layers.Ground, Layers.Enemy};
+		return new string[]{Layers.Ground, Layers.Obstacle, Layers.Enemy};
 	}
 	override protected string[] GetLayerMaskNames_B() {
-		return new string[]{Layers.Ground, Layers.Enemy, Layers.Platform};
+		return new string[]{Layers.Ground, Layers.Obstacle, Layers.Enemy, Layers.Platform};
 	}
 }

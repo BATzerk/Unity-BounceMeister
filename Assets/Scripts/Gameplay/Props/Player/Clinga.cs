@@ -43,8 +43,9 @@ public class Clinga : Player {
     private bool IsClingSyde(Syde syde) { return (ClingSydes & syde) != Syde.none; }
     private bool IsClingHorz { get { return IsClingSyde(Syde.B) || IsClingSyde(Syde.T); } }
     private bool IsClingVert { get { return IsClingSyde(Syde.L) || IsClingSyde(Syde.R); } }
-    private bool MayCling(Collider2D coll) {
-        return true; // Currently, all Colliders are ok to cling to!
+    private bool MayCling(Collider2D col) {
+        // We may only cling to Ground.
+        return LayerUtils.IsLayer(col.gameObject, Layers.Ground);
     }
 
 
@@ -63,7 +64,13 @@ public class Clinga : Player {
     override protected void AcceptJoystickMoveInput() {
         // Clinging? Register 360 input!
         if (IsClinging) {
-            ChangeVel(ClingMoveInputScale * LeftStick);
+            Vector2 v = ClingMoveInputScale * LeftStick;
+            // Ignore input pushing into surfaces.
+            if (myWhiskers.OnSurface(Sides.L) && v.x<0) { v = new Vector2(0, v.y); }
+            if (myWhiskers.OnSurface(Sides.R) && v.x>0) { v = new Vector2(0, v.y); }
+            if (myWhiskers.OnSurface(Sides.B) && v.y<0) { v = new Vector2(v.x, 0); }
+            if (myWhiskers.OnSurface(Sides.T) && v.y>0) { v = new Vector2(v.x, 0); }
+            ChangeVel(v);
         }
         // NOT clinging. Do normal Player stuff.
         else {
@@ -119,8 +126,8 @@ public class Clinga : Player {
     // ----------------------------------------------------------------
     public override void OnWhiskersTouchCollider(int side, Collider2D col) {
         base.OnWhiskersTouchCollider(side, col);
-        // NON-feet side touch collider...!
-        if (side != Sides.B) {
+        // NON-feet side touch collider, AND may cling to it...!
+        if (side != Sides.B && MayCling(col)) {
             if (!IsClingSyde(side)) { // NOT already clinging here?...
                 AddClingSyde(side);
             }

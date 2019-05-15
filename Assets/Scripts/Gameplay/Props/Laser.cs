@@ -38,7 +38,7 @@ public class Laser : Prop {
         base.BaseInitialize(_myRoom, data);
         
         onOffer = this.gameObject.AddComponent<LaserOnOffer>();
-        onOffer.Initialize(this);
+        onOffer.Initialize(this, data);
         
         //tf_sourceBox.size = data.myRect.size;
         //sr_body.transform.localPosition = data.myRect.position;
@@ -95,6 +95,9 @@ public class Laser : Prop {
         return new LaserData {
             pos = pos,
             rotation = rotation,
+            durOn = onOffer.DurOn,
+            durOff = onOffer.DurOff,
+            startOffset = onOffer.StartOffset,
         };
     }
 

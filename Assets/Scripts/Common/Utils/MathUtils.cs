@@ -91,8 +91,11 @@ public static class MathUtils {
     public static bool IsVector2NaN(Vector2 vector) {
         return float.IsNaN(vector.x);
     }
-    public static Vector2 AbsVector2(Vector2 v) {
-        return new Vector2(Mathf.Abs(v.x),Mathf.Abs(v.y));
+    public static Vector2 Abs(Vector2 v) {
+        return new Vector2(Mathf.Abs(v.x), Mathf.Abs(v.y));
+    }
+    public static Vector2 Round(Vector2 v) {
+        return new Vector2(Mathf.Round(v.x), Mathf.Round(v.y));
     }
 
     static public float GetAngleRad(Vector2 vector) { return Mathf.Atan2(-vector.x, vector.y); }

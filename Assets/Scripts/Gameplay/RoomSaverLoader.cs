@@ -98,7 +98,7 @@ static public class RoomSaverLoader {
             else if (type == typeof(GateButtonData)) { AddAllPropFieldsToFS(propData, "pos", "channelID"); }
 			else if (type == typeof(GemData)) { AddAllPropFieldsToFS(propData, "pos", "type"); }
             else if (type == typeof(RoomDoorData)) { AddAllPropFieldsToFS(propData, "pos", "myID", "worldToIndex", "roomToKey", "doorToID"); }
-            else if (type == typeof(LaserData)) { AddAllPropFieldsToFS(propData, "pos", "rotation"); }
+            else if (type == typeof(LaserData)) { AddAllPropFieldsToFS(propData, "pos", "rotation", "durOn","durOff", "startOffset"); }
             else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
 			else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
             else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos", "playerType"); }

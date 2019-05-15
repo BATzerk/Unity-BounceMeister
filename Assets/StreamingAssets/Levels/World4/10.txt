@@ -1,25 +1,33 @@
 roomProperties posGlobal:(642.0, 420.0);designerFlag:0
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-14.50, y:-18.00, width:23.00, height:4.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:16.00, y:-18.00, width:20.00, height:4.00)
-Ground myRect:(x:-10.00, y:-16.00, width:10.00, height:4.00)
-Ground myRect:(x:-9.50, y:-6.50, width:13.00, height:1.00)
-Ground myRect:(x:15.00, y:8.00, width:22.00, height:2.00);isPlayerRespawn:True
+Buzzsaw size:(4.5, 4.4);locOffset:0;speed:1.7;posA:(7.0, 7.0);posB:(20.0, 7.0)
+Buzzsaw size:(4.5, 4.4);locOffset:0;speed:1;posA:(21.0, 6.0);posB:(21.0, -15.0)
 Ground myRect:(x:-24.00, y:0.00, width:4.00, height:32.00)
-Ground myRect:(x:14.00, y:-10.00, width:6.00, height:6.00)
+Ground myRect:(x:-9.50, y:-6.50, width:13.00, height:1.00)
+Ground myRect:(x:-10.00, y:-16.00, width:10.00, height:4.00)
+Ground myRect:(x:15.00, y:8.00, width:22.00, height:2.00);isPlayerRespawn:True
+Ground myRect:(x:14.00, y:0.00, width:6.00, height:4.00)
+Ground myRect:(x:-3.00, y:8.00, width:2.00, height:8.00)
+Ground myRect:(x:-15.00, y:7.00, width:2.00, height:8.00)
+Ground myRect:(x:12.00, y:-3.00, width:2.00, height:10.00)
+Ground myRect:(x:-1.50, y:-6.00, width:9.00, height:2.00)
 Ground myRect:(x:-4.50, y:-10.50, width:3.00, height:11.00)
-Ground myRect:(x:23.50, y:-3.50, width:5.00, height:25.00)
-Ground myRect:(x:-9.00, y:8.50, width:14.00, height:7.00)
+Ground myRect:(x:16.00, y:-18.00, width:20.00, height:4.00)
+Ground myRect:(x:-0.50, y:-5.50, width:11.00, height:1.00)
+Ground myRect:(x:14.00, y:-10.00, width:6.00, height:6.00)
 Ground myRect:(x:5.00, y:4.00, width:2.00, height:8.00)
+Ground myRect:(x:23.50, y:-3.50, width:5.00, height:25.00)
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+Ground myRect:(x:-14.50, y:-18.00, width:23.00, height:4.00)
+Ground myRect:(x:-9.00, y:9.00, width:14.00, height:6.00)
 InfoSign pos:(-4.0, 12.0);myText:Did you know? Your character is completely naked behind this text.
-InfoSign pos:(14.0, 2.0);myText:Did you know? This sign is inconvenient.
-Platform myRect:(x:1.00, y:5.50, width:6.00, height:1.00)
-Platform myRect:(x:1.50, y:-16.50, width:9.00, height:1.00);isPlayerRespawn:True
-Platform myRect:(x:8.00, y:-7.50, width:6.00, height:1.00)
+Platform myRect:(x:1.00, y:4.50, width:6.00, height:1.00)
 Platform myRect:(x:-19.00, y:-6.50, width:6.00, height:1.00)
+Platform myRect:(x:8.00, y:-5.50, width:6.00, height:1.00)
+Platform myRect:(x:1.50, y:-16.50, width:9.00, height:1.00);isPlayerRespawn:True
 PlayerStart pos:(7.0, -14.5)
 Snack pos:(-10.0, -12.0);playerType:Any
-Spikes myRect:(x:-6.50, y:-12.00, width:10.00, height:1.00);rotation:90
 Spikes myRect:(x:-11.00, y:-5.50, width:10.00, height:1.00);rotation:0
+Spikes myRect:(x:-6.50, y:-12.00, width:10.00, height:1.00);rotation:90
+Spikes myRect:(x:10.50, y:-9.50, width:7.00, height:1.00);rotation:90
 

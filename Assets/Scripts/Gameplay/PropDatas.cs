@@ -95,7 +95,10 @@ public class RoomDoorData : PropData {
 }
 
 public class LaserData : PropData {
-    public Rect myRect=new Rect();
+    //public Rect myRect=new Rect();
+    public float durOn = 1;
+    public float durOff = 1;
+    public float startOffset = 0;
 }
 
 public class LiftData : PropData {

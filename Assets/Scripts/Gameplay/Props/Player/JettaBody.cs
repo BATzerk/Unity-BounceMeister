@@ -23,7 +23,8 @@ public class JettaBody : PlayerBody {
         
         FillWidth = myJetta.Size.x;
         FillHeightFull = myJetta.Size.y;
-        GameUtils.SizeSpriteRenderer(sr_jetFill, myJetta.Size);
+        //GameUtils.SizeSpriteRenderer(sr_jetFill, myJetta.Size);
+        UpdateFillSprite();
 	}
     
 

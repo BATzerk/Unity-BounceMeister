@@ -80,6 +80,12 @@ public class Buzzsaw : Collidable {
         posA += delta;
         posB += delta;
     }
+    public void Debug_SetPosA() {
+        posA = MathUtils.Round(pos);
+    }
+    public void Debug_SetPosB() {
+        posB = MathUtils.Round(pos);
+    }
 
 
     // ----------------------------------------------------------------
