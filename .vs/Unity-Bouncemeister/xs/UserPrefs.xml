@@ -1,15 +1,17 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/ClingaBody.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/Jetta.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="49" Column="13" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="11" Column="99" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Clinga.cs" Line="151" Column="70" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/ClingaBody.cs" Line="13" Column="72" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="255" Column="6" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Clinga.cs" Line="120" Column="76" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/ClingaBody.cs" Line="19" Column="48" />
       <File FileName="Assets/Scripts/Gameplay/Props/Player/Plunga.cs" Line="40" Column="6" />
       <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="193" Column="80" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" Line="59" Column="28" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" Line="123" Column="79" />
       <File FileName="Assets/Scripts/Gameplay/Props/Player/FlatlineBody.cs" Line="11" Column="63" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Jetta.cs" Line="84" Column="41" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/JettaBody.cs" Line="39" Column="37" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

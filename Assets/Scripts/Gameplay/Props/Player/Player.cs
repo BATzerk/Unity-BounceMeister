@@ -64,11 +64,12 @@ abstract public class Player : PlatformCharacter {
 	virtual public bool MayUseBattery() { return false; }
 	public bool IsPostDamageImmunity { get { return isPostDamageImmunity; } }
 	// Getters (Protected)
+    protected InputController inputController { get { return InputController.Instance; } }
     protected bool IsInput_D() { return LeftStick.y < -0.5f; }
     protected bool IsInput_U() { return LeftStick.y >  0.5f; }
     protected bool IsInput_L() { return LeftStick.x < -0.5f; }
     protected bool IsInput_R() { return LeftStick.x >  0.5f; }
-    protected Vector2 LeftStick { get { return InputController.Instance.LeftStick; } }
+    protected Vector2 LeftStick { get { return inputController.LeftStick; } }
     protected bool isWallSliding() { return wallSlideDir!=0; }
 	virtual protected bool MayJump() { return IsGrounded(); }
 	virtual protected bool MayWallKick() {
@@ -86,7 +87,6 @@ abstract public class Player : PlatformCharacter {
     }
     virtual protected bool MaySetGroundedRespawnPos() { return true; } // Override if you don't wanna set GroundedRespawnPos while plunging, etc.
     override protected float HorzMoveInputVelXDelta() {
-		if (InputController.Instance==null) { return 0; } // for building at runtime.
 		if (Mathf.Abs(LeftStick.x) < 0.05f) { return 0; } // No input? No input.
 		float dirX = MathUtils.Sign(LeftStick.x);
 		// TESTing out controls!
@@ -180,16 +180,16 @@ abstract public class Player : PlatformCharacter {
 		UpdatePostDamageImmunity();
 	}
 	virtual protected void AcceptButtonInput() {
-		if (InputController.Instance.IsJump_Press) {
+		if (inputController.IsJump_Press) {
 			OnButtonJump_Press();
 		}
-		else if (InputController.Instance.IsJump_Release) {
+		else if (inputController.IsJump_Release) {
 			OnButtonJump_Release();
 		}
-        else if (InputController.Instance.IsAction_Press) {
+        else if (inputController.IsAction_Press) {
             OnButtonAction_Press();
         }
-		else if (InputController.Instance.LeftStick.y < -0.7f) {
+		else if (inputController.LeftStick.y < -0.7f) {
 			OnDown_Held();
 		}
 	}
@@ -206,7 +206,7 @@ abstract public class Player : PlatformCharacter {
 	//  FixedUpdate
 	// ----------------------------------------------------------------
 	virtual protected void FixedUpdate () {
-		if (InputController.Instance == null) { return; } // Safety check for runtime compile.
+		//if (inputController == null) { return; } // Safety check for runtime compile.
         if (!DoUpdate()) { return; } // Not supposed to Update? No dice.
 
         ApplyVelFromFloor();

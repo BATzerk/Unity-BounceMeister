@@ -12,39 +12,34 @@ public class Jetta : Player {
 //			return GravityNeutral;
 //		}
 //	}
-	private Vector2 GravityJetting = new Vector2(0, 0); // TEST
-	override protected Vector2 Gravity { // TODO: Put this into ApplyInternalForces!
+	override protected Vector2 Gravity {
 		get {
-			if (isJetting) { return GravityJetting; }
-			return new Vector2(0, -0.042f);
+			if (IsJetting) { return Vector2.zero; }
+			return base.Gravity;
 		}
 	}
-    protected override float JumpForce {
-        get {
-            return 0.47f;
-        }
-    }
+    //protected override float JumpForce { get { return 0.55f; } }
     // Constants
-    private const float JetCapacityDuration = 1f; // in SECONDS, how long we have to jet until recharging.
-	private const float JetFuelCapacity = 100f; // this number doesn't matter at *all*. Just has to be something.
-	private const float JetSpendRate = JetFuelCapacity/JetCapacityDuration; // how much fuel we spend PER SECOND.
-	private const float JetTargetYVel = 0.25f; // TEST
+    private const float JetDuration = 1.2f; // in SECONDS, how long we may jet until recharging.
+	public  const float FuelCapacity = 100f; // this number doesn't matter at *all*. Just has to be something.
+	private const float FuelSpendRate = FuelCapacity/JetDuration; // how much fuel we spend PER SECOND.
+	private const float JetTargetYVel = 0.11f; // TEST
 //	private readonly Vector2 JetForce = new Vector2(0, 0.05f);
 	// Properties
-	private bool isJetting = false;
+	public bool IsJetting { get; private set; }
 	private bool groundedSinceJet; // TEST for interactions with Batteries.
-	private float jetFuelLeft;
+	public float FuelLeft { get; private set; }
 	// References
 	private JettaBody myJettaBody;
 
 
 	// Getters (Public)
 	override public bool MayUseBattery() { return !IsFuelFull; }
-	public bool IsFuelEmpty { get { return jetFuelLeft <= 0; } }
-	public bool IsFuelFull { get { return jetFuelLeft >= JetFuelCapacity; } }
+	public bool IsFuelEmpty { get { return FuelLeft <= 0; } }
+	public bool IsFuelFull { get { return FuelLeft >= FuelCapacity; } }
 	// Getters (Protected)
 	override protected bool MayWallSlide() {
-		return base.MayWallSlide() && !isJetting;
+		return base.MayWallSlide() && !IsJetting;
 	}
 	// Getters (Private)
 	private bool CanStartJetting() {
@@ -61,7 +56,7 @@ public class Jetta : Player {
 	override protected void Start() {
 		myJettaBody = myBody as JettaBody;
 
-		SetJetFuelLeft(JetFuelCapacity);
+		SetJetFuelLeft(FuelCapacity);
 
 		base.Start();
 	}
@@ -80,18 +75,26 @@ public class Jetta : Player {
 		base.UpdateMaxYSinceGround();
 	}
 	private void UpdateJetting() {
-		if (isJetting) {
+		if (IsJetting) {
 			// Apply jet force!
 //			vel += JetForce;
-			vel += new Vector2(0, (JetTargetYVel-vel.y)/8f);
+			vel += new Vector2(0, (JetTargetYVel-vel.y)/4f);
 			// Spend that fuel!
-			jetFuelLeft -= Time.deltaTime * JetSpendRate;
+			FuelLeft -= Time.deltaTime * FuelSpendRate;
+            myJettaBody.UpdateFillSprite();
 			// Are we OUT of fuel?! Stop jetting!
 			if (IsFuelEmpty) {
 				StopJet();
 			}
 		}
 	}
+    override protected void OnHitJumpApex() {
+        base.OnHitJumpApex();
+        // Pushing up, not jetting and we MAY start? Do!
+        if (inputController.IsJump_Held && !IsJetting && CanStartJetting()) {
+            StartJet();
+        }
+    }
 
 	// ----------------------------------------------------------------
 	//  Input
@@ -111,7 +114,7 @@ public class Jetta : Player {
 		}
 	}
 	override protected void OnButtonJump_Release() {
-		if (isJetting) {
+		if (IsJetting) {
 			StopJet();
 		}
 	}
@@ -127,27 +130,27 @@ public class Jetta : Player {
 	//  Jet!
 	// ----------------------------------------------------------------
 	private void StartJet() {
-		if (isJetting) { return; } // Already jetting? Do nothing.
+		if (IsJetting) { return; } // Already jetting? Do nothing.
 		StopWallSlide(); // can't both jet AND wall-slide.
-		isJetting = true;
+		IsJetting = true;
 		groundedSinceJet = false;
 		isPreservingWallKickVel = false; // When we jet, forget about retaining my wall-kick vel!
 		myJettaBody.OnStartJet();
 //		GameManagers.Instance.EventManager.OnPlayerStartJet(this);
 	}
 	private void StopJet() {
-		if (!isJetting) { return; } // Not jetting? Do nothing.
-		isJetting = false;
+		if (!IsJetting) { return; } // Not jetting? Do nothing.
+		IsJetting = false;
 		myJettaBody.OnStopJet();
 	}
 	private void RechargeJet() {
-		SetJetFuelLeft(JetFuelCapacity); // fill 'er up regular.
+		SetJetFuelLeft(FuelCapacity); // fill 'er up regular.
 		myJettaBody.OnRechargeJet();
 //		GameManagers.Instance.EventManager.OnPlayerRechargeJet(this);
 	}
 
 	private void SetJetFuelLeft(float _fuelLeft) {
-		jetFuelLeft = _fuelLeft;
+		FuelLeft = _fuelLeft;
 	}
 
 

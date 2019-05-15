@@ -14,6 +14,7 @@ public class InputController : MonoBehaviour {
     public bool IsAction_Press { get; private set; }
     public bool IsAction_Release { get; private set; }
     public bool IsCycleChar_Press { get; private set; }
+    public bool IsJump_Held { get; private set; }
     public bool IsJump_Press { get; private set; }
     public bool IsJump_Release { get; private set; }
     //public bool IsLPush { get; private set; } // NOTE: Updated every FIXEDUPDATE! NOTE NOTE: *NOT* reliable for others to use. Registers for Player like 97% of the time. :P
@@ -110,6 +111,7 @@ public class InputController : MonoBehaviour {
     }
 	private void RegisterButtons() {
         IsCycleChar_Press = ad.Action3.WasPressed || Input.GetKeyDown(KeyCode.Tab);
+        IsJump_Held = ad.Action1.IsPressed || Input.GetButton("Jump");
         IsJump_Press = ad.Action1.WasPressed || Input.GetButtonDown("Jump");
         IsJump_Release = ad.Action1.WasReleased || Input.GetButtonUp("Jump");
         IsAction_Press =
