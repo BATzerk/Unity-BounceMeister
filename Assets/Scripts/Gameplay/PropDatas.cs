@@ -52,7 +52,7 @@ public class CrateData : BaseGroundData {
 }
 public class GroundData : BaseGroundData {
     public bool isBouncy=false;
-	public bool canBounce=true;
+	public bool mayBounce=true;
 	public bool doRechargePlayer=true;
 }
 public class PlatformData : BaseGroundData {

@@ -136,7 +136,7 @@ static public class RoomSaverLoader {
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isBouncy) { fs += ";isBouncy:" + d.isBouncy; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-                if (!d.canBounce) { fs += ";canBounce:" + d.canBounce; }
+                if (!d.mayBounce) { fs += ";mayBounce:" + d.mayBounce; }
                 if (!d.doRechargePlayer) { fs += ";doRechargePlayer:" + d.doRechargePlayer; }
                 AddFSLine();
 			}

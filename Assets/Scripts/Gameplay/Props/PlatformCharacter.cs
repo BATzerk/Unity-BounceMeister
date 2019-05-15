@@ -122,7 +122,7 @@ public class PlatformCharacter : Collidable {
 		vel += Gravity;
 	}
     virtual protected void ApplyInternalForces() {} // For Plunga's plunge-force, Jetta's jetting, etc.
-	protected void ApplyFriction() {
+	virtual protected void ApplyFriction() {
         if (IsInLift) {
 			SetVel(new Vector2(vel.x*FrictionAir, vel.y));
         }
@@ -133,7 +133,7 @@ public class PlatformCharacter : Collidable {
 			SetVel(new Vector2(vel.x*FrictionAir, vel.y));
 		}
 	}
-	protected void AcceptHorzMoveInput() {
+	virtual protected void AcceptJoystickMoveInput() {
 		vel += new Vector2(HorzMoveInputVelXDelta(), 0);
 	}
 	protected void ApplyTerminalVel() {
@@ -188,12 +188,10 @@ public class PlatformCharacter : Collidable {
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
-    public void SetVel(Vector2 _vel) {
-        vel = _vel;
-    }
-	protected void ChangeVel(Vector2 delta) {
-		vel += delta;
-	}
+    public void SetVel(Vector2 _vel) { vel = _vel; }
+	protected void ChangeVel(Vector2 delta) { vel += delta; }
+    protected void ChangeVel(float _x,float _y) { ChangeVel(new Vector2(_x,_y)); }
+    
     virtual protected void TakeDamage(int damageAmount) {
         health -= damageAmount;
         timeSinceDamage = Time.time;

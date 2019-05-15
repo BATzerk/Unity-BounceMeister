@@ -1,11 +1,11 @@
-roomProperties posGlobal:(-396.0, 256.0);designerFlag:0
+﻿roomProperties posGlobal:(-396.0, 256.0);designerFlag:0
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:15.00, y:1.50, width:6.00, height:3.00);canBounce:True;doRechargePlayer:True
-Ground myRect:(x:8.00, y:-2.50, width:6.00, height:3.00);canBounce:True;doRechargePlayer:True
-Ground myRect:(x:0.00, y:-2.50, width:6.00, height:3.00);canBounce:True;doRechargePlayer:True
-Ground myRect:(x:-24.00, y:0.00, width:4.00, height:32.00);canBounce:True;doRechargePlayer:True
-Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00);canBounce:True;doRechargePlayer:True
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00);canBounce:True;doRechargePlayer:True
+Ground myRect:(x:15.00, y:1.50, width:6.00, height:3.00);mayBounce:True;doRechargePlayer:True
+Ground myRect:(x:8.00, y:-2.50, width:6.00, height:3.00);mayBounce:True;doRechargePlayer:True
+Ground myRect:(x:0.00, y:-2.50, width:6.00, height:3.00);mayBounce:True;doRechargePlayer:True
+Ground myRect:(x:-24.00, y:0.00, width:4.00, height:32.00);mayBounce:True;doRechargePlayer:True
+Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00);mayBounce:True;doRechargePlayer:True
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00);mayBounce:True;doRechargePlayer:True
 PlayerStart pos:(2.8, 8.3)
 Spikes myRect:(x:15.00, y:3.50, width:6.00, height:1.00);rotation:0
 Spikes myRect:(x:-6.00, y:-1.50, width:6.00, height:1.00);rotation:0

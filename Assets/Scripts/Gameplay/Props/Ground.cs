@@ -13,9 +13,9 @@ public sealed class Ground : BaseGround {
 
 
     static public Color GetBodyColor(Ground g) {
-        return GetBodyColor(g.MyRoom.WorldIndex, g.isBouncy, g.canBounce, g.doRechargePlayer); }
-    static public Color GetBodyColor(GroundData g, int worldIndex) { return GetBodyColor(worldIndex, g.isBouncy, g.canBounce, g.doRechargePlayer); }
-    static public Color GetBodyColor(int worldIndex, bool isBouncy, bool canBounce, bool doRechargePlayer) {
+        return GetBodyColor(g.MyRoom.WorldIndex, g.isBouncy, g.mayBounce, g.doRechargePlayer); }
+    static public Color GetBodyColor(GroundData g, int worldIndex) { return GetBodyColor(worldIndex, g.isBouncy, g.mayBounce, g.doRechargePlayer); }
+    static public Color GetBodyColor(int worldIndex, bool isBouncy, bool mayBounce, bool doRechargePlayer) {
 		Color color = Colors.GroundBaseColor(worldIndex);
         if (isBouncy) { // Bouncy? Brighten it much!
             ColorHSB colorHSB = new ColorHSB(color);
@@ -23,7 +23,7 @@ public sealed class Ground : BaseGround {
             colorHSB.b = Mathf.Min(1f, 0.3f + colorHSB.b*1.4f);
             color = colorHSB.ToColor();
         }
-		if (!canBounce) {
+		if (!mayBounce) {
 			color = Color.Lerp(color, Color.black, 0.7f);
 		}
 		if (!doRechargePlayer) {
@@ -39,7 +39,7 @@ public sealed class Ground : BaseGround {
 	public void Initialize(Room _myRoom, GroundData data) {
 		base.BaseGroundInitialize(_myRoom, data);
 
-		canBounce = data.canBounce;
+		mayBounce = data.mayBounce;
 		doRechargePlayer = data.doRechargePlayer;
         isBouncy = data.isBouncy;
 		ApplyBodySpriteColor();
@@ -60,7 +60,7 @@ public sealed class Ground : BaseGround {
             mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
             isBouncy = isBouncy,
-            canBounce = canBounce,
+            mayBounce = mayBounce,
             doRechargePlayer = doRechargePlayer,
         };
         return data;

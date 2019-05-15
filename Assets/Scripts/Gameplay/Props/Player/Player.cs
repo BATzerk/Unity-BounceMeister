@@ -116,7 +116,7 @@ abstract public class Player : PlatformCharacter {
         return IsBouncyCollidable(coll); // Ok, I'll bounce only if this fella's bouncy.
 	}
     protected bool MayBounceOffColl(Collidable coll) {
-        return coll!=null && coll.CanBounce;
+        return coll!=null && coll.MayBounce;
     }
     // Setters
     public void SetDirFacing(int _dir) {
@@ -218,7 +218,7 @@ abstract public class Player : PlatformCharacter {
 		ApplyFriction();
 		ApplyGravity();
         ApplyInternalForces();
-		AcceptHorzMoveInput();
+		AcceptJoystickMoveInput();
 		ApplyTerminalVel();
         ApplyLiftForces(); // Note: This happens AFTER TerminalVel.
         

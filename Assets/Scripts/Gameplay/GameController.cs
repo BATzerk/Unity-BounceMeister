@@ -339,10 +339,12 @@ public class GameController : MonoBehaviour {
 
     private void OnGUI() {
         GUI.color = Color.black;
-        string str = "";
-        str += Player.PlayerType() + "   ";
-        str += "timeScale: " + Time.timeScale;
-        GUI.Label(new Rect(8,0, 800,100), str);
+        GUIStyle style = new GUIStyle();
+        style.fontSize = 12;
+        GUI.Label(new Rect(8,0, 400,100), "timeScale: " + Time.timeScale, style);
+        style.fontSize = 24;
+        style.fontStyle = FontStyle.Bold;
+        GUI.Label(new Rect(14,Screen.height-40, 400,80), Player.PlayerType().ToString(), style);
     }
 
 
