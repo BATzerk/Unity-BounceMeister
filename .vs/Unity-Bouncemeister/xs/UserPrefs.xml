@@ -1,11 +1,16 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Laser.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Buzzsaw.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="49" Column="13" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Laser.cs" Line="97" Column="16" />
-      <File FileName="Assets/Scripts/Gameplay/Props/LaserOnOffer.cs" Line="22" Column="39" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Laser.cs" Line="29" Column="62" />
+      <File FileName="Assets/Scripts/Gameplay/Props/LaserOnOffer.cs" Line="41" Column="5" />
       <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="101" Column="132" />
+      <File FileName="Assets/Scripts/Gameplay/Props/SpikesEditor.cs" Line="16" Column="39" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Spikes.cs" Line="25" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="46" Column="30" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Jetta.cs" Line="22" Column="17" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Buzzsaw.cs" Line="17" Column="21" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class LaserOnOffer : MonoBehaviour {
     // Properties
-    [SerializeField] public float DurOn = 1;
-    [SerializeField] public float DurOff = 1;
+    [SerializeField] public float DurOn = 0.3f;
+    [SerializeField] public float DurOff = 1.7f;
     [SerializeField] public float StartOffset = 0;
     private float timeUntilToggle;
     // References
@@ -45,9 +45,12 @@ public class LaserOnOffer : MonoBehaviour {
     //  Update
     // ----------------------------------------------------------------
     private void Update() {
+        // Safety check for edit-mode.
+        if (myLaser == null) { myLaser = GetComponent<Laser>(); }
+        
         timeUntilToggle -= Time.deltaTime;
         // ALMOST back ON?
-        if (!myLaser.IsOn && timeUntilToggle < 0.4f) {
+        if (!myLaser.IsOn && timeUntilToggle < 0.25f) {
             myLaser.UpdateAlmostOn(timeUntilToggle);
         }
         // Time to toggle?

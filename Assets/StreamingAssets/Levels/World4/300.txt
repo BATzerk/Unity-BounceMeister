@@ -11,9 +11,17 @@ Ground myRect:(x:0.50, y:-16.50, width:5.00, height:5.00)
 Ground myRect:(x:-3.50, y:2.50, width:3.00, height:15.00)
 Ground myRect:(x:4.50, y:2.50, width:3.00, height:15.00)
 Ground myRect:(x:-13.50, y:1.00, width:3.00, height:12.00)
+Laser pos:(22.5, 9.5);rotation:90;durOn:0.3;durOff:1.7;startOffset:0
+Laser pos:(-21.5, 9.5);rotation:270;durOn:0.3;durOff:1.7;startOffset:0
+Laser pos:(22.5, -15.5);rotation:90;durOn:0.3;durOff:1.7;startOffset:0
 PlayerStart pos:(-20.0, -14.0)
 Snack pos:(-0.5, -0.5);playerType:Any
-Spikes myRect:(x:2.50, y:0.00, width:8.00, height:1.00);rotation:90
 Spikes myRect:(x:0.50, y:-3.50, width:5.00, height:1.00);rotation:0
 Spikes myRect:(x:0.50, y:-13.50, width:5.00, height:1.00);rotation:0
+Spikes myRect:(x:2.50, y:0.00, width:8.00, height:1.00);rotation:90
+Spikes myRect:(x:-11.50, y:-15.50, width:1.00, height:1.00);rotation:0
+Spikes myRect:(x:16.50, y:-3.50, width:1.00, height:1.00);rotation:270
+Spikes myRect:(x:12.50, y:-4.50, width:1.00, height:1.00);rotation:90
+Spikes myRect:(x:-15.50, y:1.50, width:1.00, height:1.00);rotation:90
+Spikes myRect:(x:-11.50, y:0.50, width:1.00, height:1.00);rotation:270
 

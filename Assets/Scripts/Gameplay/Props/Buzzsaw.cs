@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Buzzsaw : Collidable {
     // Components
+    [SerializeField] private CircleCollider2D circleCollider=null;
     [SerializeField] private SpriteRenderer bodySprite=null;
-    [SerializeField] private Transform tf_body=null;
+    //[SerializeField] private Transform tf_body=null;
     [SerializeField] private Vector2 posA;
     [SerializeField] private Vector2 posB;
     // Properties
@@ -25,6 +26,7 @@ public class Buzzsaw : Collidable {
         base.BaseInitialize(_myRoom, data);
 
         bodySprite.size = data.size;
+        circleCollider.radius = (data.size.x/2) * 0.75f; // Note: Shrink collider; be a lil' generous.
         //bodySprite.transform.localPosition = data.myRect.position;
         //bodySprite.color = Colors.Spikes(WorldIndex);
         

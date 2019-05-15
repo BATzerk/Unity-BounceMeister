@@ -1,14 +1,23 @@
-roomProperties posGlobal:(1024.0, 432.0);designerFlag:0
+roomProperties posGlobal:(1270.0, 466.0);designerFlag:1
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-21.00, y:-17.00, width:10.00, height:6.00)
-Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00)
-Ground myRect:(x:8.00, y:-9.00, width:2.00, height:10.00)
-Ground myRect:(x:-3.00, y:-5.00, width:38.00, height:2.00)
-Ground myRect:(x:22.50, y:-16.00, width:7.00, height:4.00)
-Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
-Ground myRect:(x:-24.00, y:0.00, width:4.00, height:32.00)
+GateButton pos:(-10.0, -1.5);channelID:0
+GateButton pos:(6.0, -4.0);channelID:0
+Ground myRect:(x:-24.00, y:4.00, width:4.00, height:24.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:-5.00, y:-9.00, width:2.00, height:10.00)
-Laser pos:(18.5, -15.5);rotation:90;durOn:1;durOff:1;startOffset:0
-PlayerStart pos:(-20.0, -13.0)
-
+Ground myRect:(x:10.00, y:-1.00, width:4.00, height:2.00);isPlayerRespawn:True
+Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
+Ground myRect:(x:-21.00, y:-17.00, width:10.00, height:6.00)
+Ground myRect:(x:23.50, y:0.00, width:5.00, height:32.00)
+Ground myRect:(x:-4.50, y:1.00, width:7.00, height:2.00)
+Ground myRect:(x:13.00, y:-7.00, width:2.00, height:14.00)
+Ground myRect:(x:0.50, y:-1.00, width:7.00, height:2.00)
+Ground myRect:(x:-2.00, y:-8.00, width:2.00, height:12.00)
+Ground myRect:(x:-17.00, y:1.00, width:10.00, height:2.00)
+Ground myRect:(x:-21.00, y:-4.00, width:2.00, height:8.00)
+Laser pos:(21.5, -15.5);rotation:90;durOn:0.9;durOff:1.4;startOffset:0
+Platform myRect:(x:17.50, y:-13.50, width:7.00, height:1.00)
+PlayerStart pos:(-17.0, -13.0)
+Spikes myRect:(x:1.50, y:-2.50, width:5.00, height:1.00);rotation:180
+Spikes myRect:(x:-5.50, y:-0.50, width:5.00, height:1.00);rotation:180
+Spikes myRect:(x:-16.50, y:-0.50, width:9.00, height:1.00);rotation:180
+Spikes myRect:(x:10.50, y:-2.50, width:5.00, height:1.00);rotation:180

@@ -1,41 +1,54 @@
 roomProperties posGlobal:(746.0, 344.0);designerFlag:0
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:76.00)
+Buzzsaw size:(3.0, 3.0);locOffset:0;speed:2;posA:(6.0, 33.0);posB:(6.0, 23.0)
+Buzzsaw size:(3.0, 3.0);locOffset:0;speed:2;posA:(2.0, 23.0);posB:(2.0, 33.0)
 DamageableGround myRect:(x:7.00, y:7.00, width:4.00, height:6.00);doRegen:True;dieFromPlayerLeave:True
-Ground myRect:(x:10.50, y:-2.00, width:29.00, height:4.00);isPlayerRespawn:True
 Ground myRect:(x:24.00, y:41.50, width:4.00, height:29.00)
-Ground myRect:(x:-14.50, y:43.50, width:23.00, height:7.00);isPlayerRespawn:True
-Ground myRect:(x:-2.50, y:20.00, width:9.00, height:4.00)
-Ground myRect:(x:-9.50, y:-7.00, width:3.00, height:14.00)
-Ground myRect:(x:5.00, y:55.00, width:42.00, height:4.00)
-Ground myRect:(x:-12.00, y:17.00, width:2.00, height:4.00)
-Ground myRect:(x:19.00, y:7.00, width:8.00, height:14.00)
+Ground myRect:(x:12.00, y:55.00, width:28.00, height:4.00)
+Ground myRect:(x:4.00, y:28.50, width:4.00, height:13.00)
+Ground myRect:(x:-16.50, y:51.50, width:19.00, height:11.00)
+Ground myRect:(x:-15.00, y:43.50, width:18.00, height:7.00);isPlayerRespawn:True
+Ground myRect:(x:10.50, y:-2.00, width:29.00, height:4.00);isPlayerRespawn:True
 Ground myRect:(x:12.00, y:0.00, width:8.00, height:2.00)
-Ground myRect:(x:-23.50, y:51.50, width:5.00, height:11.00)
-Ground myRect:(x:-3.00, y:25.50, width:4.00, height:9.00)
-Ground myRect:(x:9.50, y:37.50, width:13.00, height:19.00);isPlayerRespawn:True
-Ground myRect:(x:-7.50, y:-18.00, width:37.00, height:4.00)
-Ground myRect:(x:-24.00, y:42.50, width:4.00, height:29.00)
+Ground myRect:(x:-3.00, y:23.50, width:8.00, height:5.00)
+Ground myRect:(x:13.00, y:43.00, width:6.00, height:22.00);isPlayerRespawn:True
+Ground myRect:(x:11.00, y:23.50, width:8.00, height:5.00)
+Ground myRect:(x:4.50, y:21.00, width:23.00, height:2.00)
+Ground myRect:(x:19.00, y:7.00, width:8.00, height:14.00)
+Ground myRect:(x:-24.00, y:43.00, width:4.00, height:28.00)
 Ground myRect:(x:-22.00, y:9.50, width:8.00, height:25.00)
+Ground myRect:(x:-12.00, y:17.00, width:2.00, height:4.00)
 Ground myRect:(x:24.00, y:3.00, width:4.00, height:38.00)
+Ground myRect:(x:-18.50, y:19.50, width:15.00, height:7.00);isPlayerRespawn:True
 Ground myRect:(x:21.00, y:-18.00, width:10.00, height:4.00)
-Ground myRect:(x:-18.50, y:19.00, width:15.00, height:6.00);isPlayerRespawn:True
+Ground myRect:(x:7.00, y:1.50, width:4.00, height:5.00)
+Ground myRect:(x:-10.00, y:-7.00, width:4.00, height:14.00)
+Ground myRect:(x:-7.50, y:-18.00, width:37.00, height:4.00)
+Ground myRect:(x:-4.00, y:20.00, width:6.00, height:4.00)
+Ground myRect:(x:7.00, y:12.00, width:4.00, height:4.00)
 Ground myRect:(x:-21.00, y:-14.00, width:10.00, height:8.00);isPlayerRespawn:True
 Ground myRect:(x:24.00, y:10.50, width:4.00, height:23.00)
-Ground myRect:(x:7.00, y:12.00, width:4.00, height:4.00)
-Ground myRect:(x:4.50, y:21.00, width:23.00, height:2.00)
-Ground myRect:(x:7.00, y:1.50, width:4.00, height:5.00)
-InfoSign pos:(10.0, 47.0);myText:Did you know? sin(<color=#AAAAAA>sign</color>) = <color=#FF0000>ERROR
+Ground myRect:(x:16.50, y:47.00, width:13.00, height:14.00);isPlayerRespawn:True
+Ground myRect:(x:5.00, y:46.50, width:10.00, height:1.00);isPlayerRespawn:True
+Ground myRect:(x:4.00, y:43.00, width:4.00, height:8.00);isPlayerRespawn:True
+Ground myRect:(x:6.50, y:49.00, width:7.00, height:12.00);isPlayerRespawn:True
+Ground myRect:(x:-5.50, y:36.50, width:3.00, height:11.00);isPlayerRespawn:True
+Ground myRect:(x:-18.00, y:0.00, width:2.00, height:10.00)
+Ground myRect:(x:-15.00, y:21.00, width:8.00, height:10.00);isPlayerRespawn:True
+InfoSign pos:(19.0, 33.0);myText:Did you know? sin(sign) = <color=#FF0000>ERROR
+Laser pos:(-17.5, 0.5);rotation:270;durOn:0.3;durOff:1.7;startOffset:0
 Lift myRect:(x:6.00, y:-10.00, width:4.00, height:12.00);rotation:90;strength:0.08
+Lift myRect:(x:-9.00, y:19.00, width:4.00, height:14.00);rotation:0;strength:0.08
 Lift myRect:(x:6.00, y:-15.00, width:2.00, height:12.00);rotation:270;strength:0.08
-Lift myRect:(x:-9.00, y:16.00, width:4.00, height:12.00);rotation:0;strength:0.08
-Platform myRect:(x:19.00, y:21.50, width:6.00, height:1.00);isPlayerRespawn:True
+Platform myRect:(x:-1.00, y:34.50, width:6.00, height:1.00);isPlayerRespawn:True
+Platform myRect:(x:-3.00, y:46.50, width:6.00, height:1.00);isPlayerRespawn:True
+Platform myRect:(x:19.00, y:32.50, width:6.00, height:1.00);isPlayerRespawn:True
 Platform myRect:(x:13.50, y:-16.50, width:5.00, height:1.00)
-Platform myRect:(x:0.00, y:46.50, width:6.00, height:1.00);isPlayerRespawn:True
-Platform myRect:(x:19.00, y:46.50, width:6.00, height:1.00);isPlayerRespawn:True
-PlayerStart pos:(-17.0, 23.0)
-Spikes myRect:(x:9.50, y:2.00, width:4.00, height:1.00);rotation:270
-Spikes myRect:(x:-16.00, y:15.50, width:6.00, height:1.00);rotation:180
-Spikes myRect:(x:12.50, y:1.50, width:7.00, height:1.00);rotation:0
-Spikes myRect:(x:-17.50, y:11.00, width:12.00, height:1.00);rotation:270
+Platform myRect:(x:19.00, y:21.50, width:6.00, height:1.00);isPlayerRespawn:True
+PlayerStart pos:(-18.0, 27.5)
 Spikes myRect:(x:14.50, y:2.00, width:4.00, height:1.00);rotation:90
+Spikes myRect:(x:12.50, y:1.50, width:7.00, height:1.00);rotation:0
+Spikes myRect:(x:9.50, y:2.00, width:4.00, height:1.00);rotation:270
+Spikes myRect:(x:-17.50, y:11.00, width:12.00, height:1.00);rotation:270
+Spikes myRect:(x:-16.00, y:15.50, width:6.00, height:1.00);rotation:180
 

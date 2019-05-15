@@ -39,7 +39,14 @@ public class Spikes : Collidable {
 			player.OnTouchHarm();
 		}
 	}
+    
 
+    // ----------------------------------------------------------------
+    //  Debug
+    // ----------------------------------------------------------------
+    public void Debug_Rotate(float delta) {
+        rotation = Mathf.Round(rotation + delta);
+    }
 
 
 	// ----------------------------------------------------------------

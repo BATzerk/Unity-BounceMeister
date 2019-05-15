@@ -6,4 +6,3 @@ Ground myRect:(x:-24.00, y:0.00, width:4.00, height:32.00)
 Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
 InfoSign pos:(-0.5, -16.0);myText:Press TAB to cycle character!
 PlayerStart pos:(-20.0, -14.0)
-

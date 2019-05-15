@@ -10,7 +10,7 @@ DamageableGround myRect:(x:55.50, y:-13.50, width:5.00, height:5.00);doRegen:Tru
 DamageableGround myRect:(x:-12.50, y:-4.50, width:5.00, height:5.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
 DamageableGround myRect:(x:-19.50, y:6.50, width:5.00, height:5.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
 DamageableGround myRect:(x:-3.50, y:-12.50, width:5.00, height:5.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
-DamageableGround myRect:(x:67.50, y:-5.50, width:5.00, height:5.00);doRegen:True;dieFromPlayerLeave:True
+DamageableGround myRect:(x:66.50, y:-5.50, width:5.00, height:5.00);doRegen:True;dieFromPlayerLeave:True
 DamageableGround myRect:(x:-5.50, y:13.50, width:5.00, height:5.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
 DamageableGround myRect:(x:0.50, y:0.50, width:5.00, height:5.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
 DamageableGround myRect:(x:44.50, y:-13.50, width:7.00, height:3.00);doRegen:True;dieFromPlayerLeave:True
@@ -22,11 +22,13 @@ Ground myRect:(x:26.00, y:-18.00, width:104.00, height:4.00)
 Ground myRect:(x:60.50, y:18.00, width:35.00, height:4.00)
 Ground myRect:(x:38.50, y:-2.50, width:3.00, height:27.00);isPlayerRespawn:True
 Ground myRect:(x:43.50, y:7.50, width:1.00, height:17.00)
+Laser pos:(70.5, -5.5);rotation:90;durOn:0.3;durOff:1.7;startOffset:0
+Laser pos:(51.5, 5.0);rotation:270;durOn:0.3;durOff:1.7;startOffset:0
 Platform myRect:(x:41.50, y:10.50, width:3.00, height:1.00);canDropThru:False;isPlayerRespawn:True
 PlayerStart pos:(64.5, -14.0)
 Snack pos:(-19.5, 10.5);playerType:Any
 Snack pos:(41.5, 8.0);playerType:Any
-Spikes myRect:(x:13.00, y:-15.50, width:72.00, height:1.00);rotation:0
 Spikes myRect:(x:52.50, y:-13.50, width:5.00, height:1.00);rotation:270
+Spikes myRect:(x:13.00, y:-15.50, width:72.00, height:1.00);rotation:0
 Spikes myRect:(x:44.50, y:3.50, width:9.00, height:1.00);rotation:270
 

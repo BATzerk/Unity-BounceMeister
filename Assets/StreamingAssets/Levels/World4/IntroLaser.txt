@@ -1,0 +1,21 @@
+roomProperties posGlobal:(846.0, 590.0);designerFlag:3
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+Ground myRect:(x:-15.00, y:-12.00, width:4.00, height:12.00)
+Ground myRect:(x:4.50, y:-15.50, width:43.00, height:9.00)
+Ground myRect:(x:-24.00, y:-7.00, width:4.00, height:26.00)
+Ground myRect:(x:2.00, y:14.50, width:16.00, height:5.00)
+Ground myRect:(x:2.00, y:4.00, width:4.00, height:6.00)
+Ground myRect:(x:12.50, y:-10.00, width:17.00, height:6.00)
+Ground myRect:(x:4.00, y:0.00, width:20.00, height:6.00)
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+Ground myRect:(x:-24.00, y:18.00, width:4.00, height:8.00)
+Ground myRect:(x:24.00, y:14.00, width:4.00, height:14.00)
+Ground myRect:(x:22.50, y:-0.50, width:7.00, height:21.00)
+Ground myRect:(x:-20.00, y:6.50, width:12.00, height:7.00)
+Ground myRect:(x:-7.00, y:-10.00, width:14.00, height:6.00)
+Ground myRect:(x:-16.00, y:1.50, width:20.00, height:3.00)
+Laser pos:(19.5, -6.5);rotation:90;durOn:0.6;durOff:1.4;startOffset:0
+Laser pos:(19.5, 7.5);rotation:90;durOn:0.6;durOff:1.4;startOffset:0
+Platform myRect:(x:16.50, y:-2.50, width:5.00, height:1.00);isPlayerRespawn:True
+PlayerStart pos:(-20.0, 11.5)
+Spikes myRect:(x:4.00, y:-3.50, width:20.00, height:1.00);rotation:180
