@@ -70,6 +70,18 @@ public class Buzzsaw : Collidable {
     }
 
 
+    public override void FlipHorz() {
+        base.FlipHorz();
+        posA *= Vector2.left;
+        posB *= Vector2.left;
+    }
+    override public void Move(Vector2 delta) {
+        base.Move(delta);
+        posA += delta;
+        posB += delta;
+    }
+
+
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
