@@ -4,6 +4,7 @@
     Any, // special type: Wild card. Any player can collect Snack like this.
     //Every, // special type: EVERY 
     
+    Clinga,
     Dilata,
     Flatline,
     Flippa,
@@ -19,6 +20,7 @@
 static public class PlayerTypeHelper {
     static public readonly PlayerTypes[] AllTypes = {
         PlayerTypes.Any,
+        PlayerTypes.Clinga,
         PlayerTypes.Dilata,
         PlayerTypes.Flatline,
         PlayerTypes.Flippa,
@@ -41,6 +43,7 @@ static public class PlayerTypeHelper {
     public static PlayerTypes TypeFromString(string str) {
         switch (str) {
             case "Any":      return PlayerTypes.Any;
+            case "Clinga":   return PlayerTypes.Clinga;
             case "Dilata":   return PlayerTypes.Dilata;
             case "Flatline": return PlayerTypes.Flatline;
             case "Flippa":   return PlayerTypes.Flippa;

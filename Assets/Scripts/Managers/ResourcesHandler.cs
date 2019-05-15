@@ -21,6 +21,7 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] public GameObject Room;
     [SerializeField] public GameObject MiniMapRoomTile;
 
+    [SerializeField] private GameObject Clinga=null;
     [SerializeField] private GameObject Dilata=null;
     [SerializeField] private GameObject Flatline=null;
     [SerializeField] private GameObject Flippa=null;
@@ -60,6 +61,7 @@ public class ResourcesHandler : MonoBehaviour {
     // Getters
     public GameObject Player(PlayerTypes type) {
         switch (type) {
+            case PlayerTypes.Clinga: return Clinga;
             case PlayerTypes.Dilata: return Dilata;
             case PlayerTypes.Flatline: return Flatline;
             case PlayerTypes.Flippa: return Flippa;

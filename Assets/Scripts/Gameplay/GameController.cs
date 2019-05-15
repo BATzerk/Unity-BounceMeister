@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour {
     private readonly PlayerTypes[] PlayerTypesAvailable = {
         PlayerTypes.Plunga,
         PlayerTypes.Jetta,
-        PlayerTypes.Flippa,
+        PlayerTypes.Clinga,
         PlayerTypes.Warpa,
     };
     int currPlayerTypeIndex = 0; // type in PlayerTypesAvailable.
@@ -252,13 +252,16 @@ public class GameController : MonoBehaviour {
 		// ~~~~ DEBUG ~~~~
 		// ALT + ___
 		if (isKey_alt) {
-            // ALT + Q, W, E = Switch Characters
-            if (Input.GetKeyDown(KeyCode.Q)) { SwapPlayerType(PlayerTypes.Plunga); }
-            else if (Input.GetKeyDown(KeyCode.W)) { SwapPlayerType(PlayerTypes.Flatline); }
-            else if (Input.GetKeyDown(KeyCode.E)) { SwapPlayerType(PlayerTypes.Dilata); }
-            else if (Input.GetKeyDown(KeyCode.R)) { SwapPlayerType(PlayerTypes.Jumpa); }
-            else if (Input.GetKeyDown(KeyCode.T)) { SwapPlayerType(PlayerTypes.Slippa); }
-            else if (Input.GetKeyDown(KeyCode.Y)) { SwapPlayerType(PlayerTypes.Jetta); }
+            // ALT + __ = Switch Characters
+            if (Input.GetKeyDown(KeyCode.C)) { SwapPlayerType(PlayerTypes.Clinga); }
+            else if (Input.GetKeyDown(KeyCode.D)) { SwapPlayerType(PlayerTypes.Dilata); }
+            else if (Input.GetKeyDown(KeyCode.F)) { SwapPlayerType(PlayerTypes.Flatline); }
+            else if (Input.GetKeyDown(KeyCode.I)) { SwapPlayerType(PlayerTypes.Flippa); }
+            else if (Input.GetKeyDown(KeyCode.J)) { SwapPlayerType(PlayerTypes.Jetta); }
+            else if (Input.GetKeyDown(KeyCode.U)) { SwapPlayerType(PlayerTypes.Jumpa); }
+            else if (Input.GetKeyDown(KeyCode.P)) { SwapPlayerType(PlayerTypes.Plunga); }
+            else if (Input.GetKeyDown(KeyCode.S)) { SwapPlayerType(PlayerTypes.Slippa); }
+            else if (Input.GetKeyDown(KeyCode.W)) { SwapPlayerType(PlayerTypes.Warpa); }
         }
         // SHIFT + ___
         if (isKey_shift) {
@@ -336,7 +339,10 @@ public class GameController : MonoBehaviour {
 
     private void OnGUI() {
         GUI.color = Color.black;
-        GUI.Label(new Rect(8,0, 200,100), "timeScale: " + Time.timeScale);
+        string str = "";
+        str += Player.PlayerType() + "   ";
+        str += "timeScale: " + Time.timeScale;
+        GUI.Label(new Rect(8,0, 800,100), str);
     }
 
 
