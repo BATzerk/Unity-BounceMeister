@@ -137,7 +137,13 @@ public class InputController : MonoBehaviour {
         LeftStick = new Vector2(ad.LeftStickX, ad.LeftStickY);
         LeftStick += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if (Mathf.Abs(LeftStick.x) < 0.1f) { LeftStick = new Vector2(0, LeftStick.y); } // TEST! Add dead zone.
-        //print(Time.frameCount + " PlayerInput: " + PlayerInput);
+        
+        // In editor? Disregard input if ALT or CONTROL keys are down!
+        #if UNITY_EDITOR
+        if (IsKeyDown_alt || IsKeyDown_control) {
+            LeftStick = Vector2.zero;
+        }
+        #endif
         
         //IsLPush = false;
         //IsRPush = false;

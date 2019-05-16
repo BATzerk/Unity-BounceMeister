@@ -204,6 +204,22 @@ public static class MathUtils {
     // ----------------------------------------------------------------
     //  Rects
     // ----------------------------------------------------------------
+    /// This much bloat is applied to EACH side of the rect. So bloat of 2 would make rect 4 units wider/taller total.
+    public static Rect BloatRect(Rect r, float bloat) {
+        r.xMin -= bloat;
+        r.xMax += bloat;
+        r.yMin -= bloat;
+        r.yMax += bloat;
+        return r;
+    }
+    /// Returns rect trimmed to fit within bounds. Like a haircut.
+    public static Rect TrimRect(Rect r, Rect bounds) {
+        if (r.xMin < bounds.xMin) { r.xMin = bounds.xMin; }
+        if (r.xMax > bounds.xMax) { r.xMax = bounds.xMax; }
+        if (r.yMin < bounds.yMin) { r.yMin = bounds.yMin; }
+        if (r.yMax > bounds.yMax) { r.yMax = bounds.yMax; }
+        return r;
+    }
     public static Line GetRectSideLine(Rect r, int side) {
         switch (side) {
             case Sides.L: return new Line(r.xMin,r.yMin, r.xMin,r.yMax);

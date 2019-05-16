@@ -28,6 +28,21 @@ abstract public class BaseGround : Collidable {
 		}
 		return new Rect(center, size);
 	}
+    /// Returns bottom-left aligned Rect.
+    protected Rect MyRectBL() {
+        Rect r = MyRect();
+        r.center = r.position;
+        return r;
+    }
+    protected void SetMyRect(Rect r) {
+        if (bodySprite.drawMode == SpriteDrawMode.Simple) { // Simple draw mode? Ok, use my SCALE.
+            bodySprite.transform.localScale = r.size;
+        }
+        else { // Tiled draw mode? Ok, use the SPRITE SIZE.
+            bodySprite.size = r.size;
+        }
+        bodySprite.transform.localPosition = r.position;
+    }
 
 
 	// ----------------------------------------------------------------
@@ -45,14 +60,8 @@ abstract public class BaseGround : Collidable {
 
 		mayPlayerEat = data.mayPlayerEat;
         isPlayerRespawn = data.isPlayerRespawn;
-
-        if (bodySprite.drawMode == SpriteDrawMode.Simple) { // Simple draw mode? Ok, use my SCALE.
-			bodySprite.transform.localScale = data.myRect.size;
-		}
-		else { // Tiled draw mode? Ok, use the SPRITE SIZE.
-			bodySprite.size = data.myRect.size;
-		}
-		bodySprite.transform.localPosition = data.myRect.position;
+        
+        SetMyRect(data.myRect);
 	}
 
 

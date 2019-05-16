@@ -12,8 +12,7 @@ public sealed class Ground : BaseGround {
 //	private bool IsInvincible { get { return numBouncesLeft < 0; } }
 
 
-    static public Color GetBodyColor(Ground g) {
-        return GetBodyColor(g.MyRoom.WorldIndex, g.isBouncy, g.mayBounce, g.doRechargePlayer); }
+    static public Color GetBodyColor(Ground g) { return GetBodyColor(g.MyRoom.WorldIndex, g.isBouncy, g.mayBounce, g.doRechargePlayer); }
     static public Color GetBodyColor(GroundData g, int worldIndex) { return GetBodyColor(worldIndex, g.isBouncy, g.mayBounce, g.doRechargePlayer); }
     static public Color GetBodyColor(int worldIndex, bool isBouncy, bool mayBounce, bool doRechargePlayer) {
 		Color color = Colors.GroundBaseColor(worldIndex);
@@ -31,6 +30,12 @@ public sealed class Ground : BaseGround {
 		}
 		return color;
 	}
+    private static Rect TrimmedRectToRoomBounds(Rect r, Room room) {
+        Rect bounds = room.GetCameraBoundsLocal();
+        bounds.yMin -= 1; // hacky-ish bloat top/bottom bounds.
+        bounds.yMax += 1;
+        return MathUtils.TrimRect(r, bounds);
+    }
 
 
 	// ----------------------------------------------------------------
@@ -49,11 +54,32 @@ public sealed class Ground : BaseGround {
 	}
 
 
+    public override void Move(Vector2 delta) {
+        Rect pr = MyRectBL(); // prev MyRect (bottom-left aligned).
+        Rect nr = MyRectBL(); // new MyRect (bottom-left aligned).
+        nr.position += delta; // Move.
+        
+        // INCREASE size.
+        Rect camBounds = MyRoom.GetCameraBoundsLocal();
+        Rect bA = MathUtils.BloatRect(camBounds, -0.8f); // bloated inward
+        Rect bB = MathUtils.BloatRect(camBounds,  0.8f); // bloated outward
+        if (pr.xMin<=bA.xMin && nr.xMin>=bB.xMin) { nr.xMin = bB.xMin; }
+        if (pr.xMax>=bA.xMax && nr.xMax<=bB.xMax) { nr.xMax = bB.xMax; }
+        if (pr.yMin<=bA.yMin && nr.yMin>=bB.yMin) { nr.yMin = bB.yMin; }
+        if (pr.yMax>=bA.yMax && nr.yMax<=bB.yMax) { nr.yMax = bB.yMax; }
+        
+        // DECREASE size.
+        nr = TrimmedRectToRoomBounds(nr, MyRoom); // finally, cut off the sides that aren't in bounds!
+        
+        // Return!
+        nr.position = nr.center; // offset to CENTER aligned.
+        SetMyRect(nr);
+    }
 
 
-	// ----------------------------------------------------------------
-	//  Serializing
-	// ----------------------------------------------------------------
+    // ----------------------------------------------------------------
+    //  Serializing
+    // ----------------------------------------------------------------
     override public PropData SerializeAsData() {
         GroundData data = new GroundData {
             myRect = MyRect(),
