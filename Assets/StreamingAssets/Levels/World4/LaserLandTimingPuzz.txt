@@ -7,7 +7,7 @@ Ground myRect:(x:-8.50, y:-16.00, width:35.00, height:8.00)
 Ground myRect:(x:-23.00, y:-3.00, width:6.00, height:26.00)
 Ground myRect:(x:-5.50, y:4.00, width:13.00, height:24.00)
 Ground myRect:(x:17.00, y:-15.50, width:18.00, height:9.00)
-Laser pos:(-19.5, -11.5);rotation:270;durOn:0.6;durOff:1.4;startOffset:0
+Laser pos:(-19.5, -11.5);rotation:270;onOfferData:(0.6, 1.4, 0)
 Platform myRect:(x:-15.50, y:9.50, width:7.00, height:1.00);isPlayerRespawn:True
 PlayerStart pos:(-22.0, 11.0)
 Spikes myRect:(x:-5.50, y:-8.50, width:13.00, height:1.00);rotation:180
