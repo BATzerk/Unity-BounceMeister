@@ -32,7 +32,7 @@ public class Laser : Prop {
         
         Physics2D.queriesHitTriggers = pqueriesHitTriggers; // Put the toilet seat back down.
         if (hit.collider != null) {
-            return hit.distance + 0.52f; // HARDCODED 0.52f
+            return hit.distance + 0.52f + 0.3f; // HACK go a liitle farther in case Player's moving away from us. // HARDCODED 0.52f
         }
         return 999; // Beam goes on fo'eva.
     }
@@ -41,7 +41,7 @@ public class Laser : Prop {
     //  Initialize
     // ----------------------------------------------------------------
     private void Awake() {
-        onOffer = this.gameObject.AddComponent<LaserOnOffer>();
+        onOffer = this.gameObject.GetComponent<LaserOnOffer>();
     }
     public void Initialize(Room _myRoom, LaserData data) {
         base.BaseInitialize(_myRoom, data);
@@ -79,7 +79,7 @@ public class Laser : Prop {
     }
     
     public void UpdateAlmostOn(float timeUntilOn) {
-        float alpha = MathUtils.SinRange(0.03f, 0.10f, timeUntilOn*40);
+        float alpha = MathUtils.SinRange(0.08f, 0.14f, timeUntilOn*40);
         GameUtils.SetSpriteAlpha(sr_beam, alpha);
     }
     
@@ -96,7 +96,7 @@ public class Laser : Prop {
             GameUtils.SetSpriteAlpha(sr_beam, 0.7f);
         }
         else {
-            LeanTween.alpha(sr_beam.gameObject, 0, 0.1f).setEaseOutQuad(); // fade out quickly.
+            LeanTween.alpha(sr_beam.gameObject, 0.02f, 0.1f).setEaseOutQuad(); // fade out quickly.
         }
         sr_beamGlow.enabled = IsOn;
     }

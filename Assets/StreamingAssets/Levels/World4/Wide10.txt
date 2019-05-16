@@ -2,48 +2,49 @@ roomProperties posGlobal:(694.0, 420.0);designerFlag:2
 CameraBounds myRect:(x:-26.00, y:-19.00, width:104.00, height:38.00)
 GateButton pos:(52.5, 6.5);channelID:0
 Gate myRect:(x:74.00, y:-12.50, width:4.00, height:7.00);channelID:0
-Ground myRect:(x:76.00, y:1.00, width:4.00, height:20.00)
-Ground myRect:(x:20.50, y:6.50, width:61.00, height:5.00)
-Ground myRect:(x:7.00, y:-8.50, width:4.00, height:15.00)
-Ground myRect:(x:-21.00, y:-4.50, width:10.00, height:27.00)
-Ground myRect:(x:64.00, y:-18.00, width:28.00, height:4.00)
-Ground myRect:(x:28.50, y:0.50, width:3.00, height:15.00)
-Ground myRect:(x:57.50, y:6.50, width:7.00, height:5.00)
-Ground myRect:(x:52.50, y:-6.00, width:3.00, height:16.00)
-Ground myRect:(x:-0.50, y:-2.50, width:19.00, height:3.00);isPlayerRespawn:True
-Ground myRect:(x:19.00, y:16.00, width:90.00, height:8.00)
-Ground myRect:(x:41.50, y:-10.50, width:7.00, height:11.00)
-Ground myRect:(x:60.00, y:0.50, width:2.00, height:17.00)
 Ground myRect:(x:-14.50, y:-18.00, width:23.00, height:4.00)
 Ground myRect:(x:24.00, y:-18.00, width:42.00, height:4.00)
+Ground myRect:(x:41.50, y:-10.50, width:7.00, height:11.00)
+Ground myRect:(x:60.00, y:0.50, width:2.00, height:17.00)
 Ground myRect:(x:13.50, y:-6.00, width:9.00, height:6.00)
-Ground myRect:(x:-8.50, y:-7.00, width:3.00, height:12.00)
-Ground myRect:(x:74.50, y:-7.50, width:7.00, height:3.00)
 Ground myRect:(x:56.00, y:8.50, width:16.00, height:1.00)
 Ground myRect:(x:74.00, y:14.00, width:8.00, height:12.00)
-InfoSign pos:(19.5, 9.0);myText:you
-InfoSign pos:(39.5, 9.0);myText:you
-InfoSign pos:(10.0, 9.0);myText:Did
-InfoSign pos:(49.5, 9.0);myText:can
+Ground myRect:(x:-8.50, y:-7.00, width:3.00, height:12.00)
+Ground myRect:(x:74.50, y:-7.50, width:7.00, height:3.00)
+Ground myRect:(x:19.00, y:16.00, width:90.00, height:8.00)
+Ground myRect:(x:7.00, y:-8.50, width:4.00, height:15.00)
+Ground myRect:(x:-21.00, y:-4.50, width:10.00, height:27.00)
+Ground myRect:(x:76.00, y:1.00, width:4.00, height:20.00)
+Ground myRect:(x:20.50, y:6.50, width:61.00, height:5.00)
+Ground myRect:(x:64.00, y:-18.00, width:28.00, height:4.00)
+Ground myRect:(x:52.50, y:-6.00, width:3.00, height:16.00)
+Ground myRect:(x:-0.50, y:-2.50, width:19.00, height:3.00);isPlayerRespawn:True
+Ground myRect:(x:28.50, y:0.50, width:3.00, height:15.00)
+Ground myRect:(x:57.50, y:6.50, width:7.00, height:5.00)
 InfoSign pos:(59.5, 9.0);myText:do
 InfoSign pos:(-0.5, -4.0);myText:Did you know? This sign is inconvenient!;rotation:180
 InfoSign pos:(29.5, 9.0);myText:know
-Laser pos:(8.5, -1.5);rotation:270;durOn:1;durOff:1;startOffset:0
-Laser pos:(27.5, -2.5);rotation:90;durOn:1;durOff:1;startOffset:0
-Laser pos:(29.0, -16.5);rotation:0;durOn:1;durOff:1;startOffset:0
+InfoSign pos:(49.5, 9.0);myText:can
+InfoSign pos:(19.5, 9.0);myText:you
+InfoSign pos:(39.5, 9.0);myText:you
+InfoSign pos:(10.0, 9.0);myText:Did
 Laser pos:(28.0, -6.5);rotation:180;durOn:1;durOff:1;startOffset:0
 Laser pos:(9.5, -15.5);rotation:270;durOn:1;durOff:1;startOffset:0
+Laser pos:(29.0, -16.5);rotation:0;durOn:1;durOff:1;startOffset:0
+Laser pos:(8.5, -1.5);rotation:270;durOn:1;durOff:1;startOffset:0
+Laser pos:(27.5, -2.5);rotation:90;durOn:1;durOff:1;startOffset:0
+Platform myRect:(x:-13.00, y:8.50, width:6.00, height:1.00);isPlayerRespawn:True
+Platform myRect:(x:34.00, y:-5.50, width:8.00, height:1.00);isPlayerRespawn:True
+Platform myRect:(x:20.50, y:-8.50, width:5.00, height:1.00)
 Platform myRect:(x:67.00, y:8.50, width:6.00, height:1.00)
 Platform myRect:(x:0.00, y:-16.50, width:6.00, height:1.00)
 Platform myRect:(x:47.50, y:-16.50, width:5.00, height:1.00)
-Platform myRect:(x:-13.00, y:8.50, width:6.00, height:1.00);isPlayerRespawn:True
-Platform myRect:(x:35.50, y:-5.50, width:5.00, height:1.00)
-Platform myRect:(x:20.50, y:-8.50, width:5.00, height:1.00)
 PlayerStart pos:(4.5, 0.5)
-Spikes myRect:(x:61.50, y:0.50, width:17.00, height:1.00);rotation:270
-Spikes myRect:(x:73.50, y:0.00, width:16.00, height:1.00);rotation:90
-Spikes myRect:(x:37.50, y:-12.00, width:8.00, height:1.00);rotation:90
-Spikes myRect:(x:73.00, y:7.50, width:6.00, height:1.00);rotation:180
 Spikes myRect:(x:73.50, y:-5.50, width:5.00, height:1.00);rotation:0
 Spikes myRect:(x:9.50, y:-12.00, width:6.00, height:1.00);rotation:270
 Spikes myRect:(x:61.00, y:7.50, width:6.00, height:1.00);rotation:180
+Spikes myRect:(x:73.00, y:7.50, width:6.00, height:1.00);rotation:180
+Spikes myRect:(x:61.50, y:0.50, width:17.00, height:1.00);rotation:270
+Spikes myRect:(x:73.50, y:0.00, width:16.00, height:1.00);rotation:90
+Spikes myRect:(x:37.50, y:-12.00, width:8.00, height:1.00);rotation:90
+
