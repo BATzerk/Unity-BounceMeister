@@ -35,7 +35,6 @@ public class Laser : Prop, IOnOffable {
     }
     
     // OnOffer Stuff
-    // Properties
     private bool isOn;
     private PropOnOffer onOffer; // added in Initialize.
     public OnOfferData onOfferData { get { return new OnOfferData(onOffer); } }
@@ -45,18 +44,29 @@ public class Laser : Prop, IOnOffable {
         if (onOffer != null) { return; } // Safety check.
         onOffer = gameObject.AddComponent<PropOnOffer>();
         onOffer.Initialize(this, data);
-        // Move OnOffer component just under my Script, for easiness.
-        #if UNITY_EDITOR
-        UnityEditorInternal.ComponentUtility.MoveComponentUp(onOffer);
-        UnityEditorInternal.ComponentUtility.MoveComponentUp(onOffer);
-        UnityEditorInternal.ComponentUtility.MoveComponentUp(onOffer);
-        #endif
     }
     public void RemoveOnOffer() {
         if (onOffer == null) { return; } // Safety check.
         Destroy(onOffer);
         onOffer = null;
         SetIsOn(true);
+    }
+    public void UpdateAlmostOn(float timeUntilOn) {
+        float alpha = MathUtils.SinRange(0.08f, 0.14f, timeUntilOn*40);
+        GameUtils.SetSpriteAlpha(sr_beam, alpha);
+    }
+    public void SetIsOn(bool _isOn) {
+        isOn = _isOn;
+        bc_beam.enabled = isOn;
+        LeanTween.cancel(sr_beam.gameObject);
+        //GameUtils.SetSpriteAlpha(sr_beam, IsOn ? 0.7f : 0);
+        if (isOn) {
+            GameUtils.SetSpriteAlpha(sr_beam, 0.7f);
+        }
+        else {
+            LeanTween.alpha(sr_beam.gameObject, 0.02f, 0.1f).setEaseOutQuad(); // fade out quickly.
+        }
+        sr_beamGlow.enabled = isOn;
     }
     
 
@@ -96,29 +106,6 @@ public class Laser : Prop, IOnOffable {
         sr_beamGlow.transform.localPosition = beamRect.center;// + new Vector2(-1.5f, 0);
         //bc_beam.size = beamRect.size;
         //bc_beam.offset = beamRect.center;
-    }
-    
-    public void UpdateAlmostOn(float timeUntilOn) {
-        float alpha = MathUtils.SinRange(0.08f, 0.14f, timeUntilOn*40);
-        GameUtils.SetSpriteAlpha(sr_beam, alpha);
-    }
-    
-    
-    // ----------------------------------------------------------------
-    //  Doers
-    // ----------------------------------------------------------------
-    public void SetIsOn(bool _isOn) {
-        isOn = _isOn;
-        bc_beam.enabled = isOn;
-        LeanTween.cancel(sr_beam.gameObject);
-        //GameUtils.SetSpriteAlpha(sr_beam, IsOn ? 0.7f : 0);
-        if (isOn) {
-            GameUtils.SetSpriteAlpha(sr_beam, 0.7f);
-        }
-        else {
-            LeanTween.alpha(sr_beam.gameObject, 0.02f, 0.1f).setEaseOutQuad(); // fade out quickly.
-        }
-        sr_beamGlow.enabled = isOn;
     }
     
 

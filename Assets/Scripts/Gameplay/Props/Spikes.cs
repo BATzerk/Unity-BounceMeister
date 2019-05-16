@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof(SpriteRenderer))]
-public class Spikes : Collidable {
+public class Spikes : Collidable, IOnOffable {
 	// Components
-	[SerializeField] private SpriteRenderer bodySprite=null;
+    [SerializeField] private Collider2D myCollider=null;
+    [SerializeField] private SpriteRenderer bodySprite=null;
 
 	// Getters
 	private Rect MyRect {
@@ -15,6 +16,40 @@ public class Spikes : Collidable {
 			return new Rect(center, size);
 		}
 	}
+    
+    // OnOffer Stuff
+    private bool isOn;
+    private PropOnOffer onOffer; // added in Initialize.
+    public OnOfferData onOfferData { get { return new OnOfferData(onOffer); } }
+    public bool IsOn() { return isOn; }
+    public bool HasOnOffer() { return onOffer != null; }
+    public void AddOnOffer(OnOfferData data) {
+        if (onOffer != null) { return; } // Safety check.
+        onOffer = gameObject.AddComponent<PropOnOffer>();
+        onOffer.Initialize(this, data);
+    }
+    public void RemoveOnOffer() {
+        if (onOffer == null) { return; } // Safety check.
+        Destroy(onOffer);
+        onOffer = null;
+        SetIsOn(true);
+    }
+    public void UpdateAlmostOn(float timeUntilOn) {
+        //float alpha = MathUtils.SinRange(0.08f, 0.14f, timeUntilOn*40);
+        float alpha = 0.18f;
+        GameUtils.SetSpriteAlpha(bodySprite, alpha);
+    }
+    public void SetIsOn(bool _isOn) {
+        isOn = _isOn;
+        myCollider.enabled = isOn;
+        LeanTween.cancel(bodySprite.gameObject);
+        if (isOn) {
+            GameUtils.SetSpriteAlpha(bodySprite, 1);
+        }
+        else {
+            LeanTween.alpha(bodySprite.gameObject, 0.02f, 0.1f).setEaseOutQuad(); // fade out quickly.
+        }
+    }
 
 
 	// ----------------------------------------------------------------
@@ -22,6 +57,8 @@ public class Spikes : Collidable {
 	// ----------------------------------------------------------------
 	public void Initialize(Room _myRoom, SpikesData data) {
 		base.BaseInitialize(_myRoom, data);
+        
+        if (data.onOfferData.durOff > 0) { AddOnOffer(data.onOfferData); }
 
 		bodySprite.size = data.myRect.size;
 		bodySprite.transform.localPosition = data.myRect.position;
@@ -53,9 +90,11 @@ public class Spikes : Collidable {
 	//  Serializing
 	// ----------------------------------------------------------------
     override public PropData SerializeAsData() {
+        if (onOffer == null) { onOffer = GetComponent<PropOnOffer>(); } // Safety check for duplicating objects.
         SpikesData data = new SpikesData {
             myRect = MyRect,
-            rotation = rotation
+            rotation = rotation,
+            onOfferData = new OnOfferData(onOffer),
         };
         return data;
 	}

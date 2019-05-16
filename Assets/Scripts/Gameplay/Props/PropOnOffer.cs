@@ -41,6 +41,17 @@ public class PropOnOffer : MonoBehaviour {
             timeUntilToggle += DurOff;
             myProp.SetIsOn(false);
         }
+        
+        // Move OnOffer component just under my Script, for easiness.
+        #if UNITY_EDITOR
+        UnityEditorInternal.ComponentUtility.MoveComponentUp(this);
+        UnityEditorInternal.ComponentUtility.MoveComponentUp(this);
+        UnityEditorInternal.ComponentUtility.MoveComponentUp(this);
+        UnityEditorInternal.ComponentUtility.MoveComponentUp(this);
+        UnityEditorInternal.ComponentUtility.MoveComponentUp(this);
+        UnityEditorInternal.ComponentUtility.MoveComponentUp(this);
+        UnityEditorInternal.ComponentUtility.MoveComponentDown(this);
+        #endif
     }
     
     

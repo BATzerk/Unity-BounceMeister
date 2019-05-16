@@ -188,6 +188,7 @@ public class SnackData : PropData {
 
 public class SpikesData : PropData {
 	public Rect myRect=new Rect();
+    public OnOfferData onOfferData;
 }
 
 public class VeilData : PropData {

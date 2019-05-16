@@ -101,21 +101,20 @@ static public class RoomSaverLoader {
             else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
             else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
             else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos", "playerType"); }
-            else if (type == typeof(SpikesData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation"); }
             else if (type == typeof(VeilData)) { AddAllPropFieldsToFS(propData, "myRect"); }
             // Props with optional params
+            else if (type == typeof(SpikesData)) {
+                SpikesData d = propData as SpikesData;
+                AddSomePropFieldsToFS(propData, "myRect", "rotation");
+                if (d.onOfferData.durOff > 0) { fs += ";onOfferData:" + d.onOfferData.ToString(); }
+                AddFSLine();
+            }
             else if (type == typeof(LaserData)) {
                 LaserData d = propData as LaserData;
                 AddSomePropFieldsToFS(propData, "pos", "rotation");
                 if (d.onOfferData.durOff > 0) { fs += ";onOfferData:" + d.onOfferData.ToString(); }
                 AddFSLine();
             }
-            //else if (type == typeof(LaserData)) {
-            //    LaserData d = propData as LaserData;
-            //    AddSomePropFieldsToFS(propData, "pos", "rotation");
-            //    AddOnOfferDataToFS(d.onOfferData);
-            //    AddFSLine();
-            //}
             else if (type == typeof(CrateData)) {
                 CrateData d = propData as CrateData;
                 AddSomePropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe");
@@ -433,11 +432,11 @@ static public class RoomSaverLoader {
         rd.AddPropData(cameraBoundsData);
 
 		PlayerStartData playerStartData = new PlayerStartData();
-		playerStartData.pos = new Vector2(-20, -14);
+		playerStartData.pos = new Vector2(-20, -13);
         rd.AddPropData(playerStartData);
 
 		Rect[] groundRects = {
-			new Rect(0,-18, 52,4),
+			new Rect(0,-17, 52,6),
 			new Rect(-24,0, 4,32),
 			new Rect(24,0, 4,32),
 			new Rect(0,18, 52,4),
