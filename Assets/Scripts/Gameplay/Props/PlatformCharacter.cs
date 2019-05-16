@@ -11,7 +11,7 @@ public class PlatformCharacter : Collidable {
 
 	virtual protected float FrictionAir { get { return 0.6f; } }
 	virtual protected float FrictionGround { get { return 0.6f; } }
-	virtual protected Vector2 Gravity { get { return new Vector2(0, -0.042f); } }
+	virtual protected Vector2 Gravity { get { return new Vector2(0, -0.034f); } }
 
 	virtual protected float MaxVelXAir { get { return 0.35f; } }
 	virtual protected float MaxVelXGround { get { return 0.25f; } }

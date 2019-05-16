@@ -16,9 +16,7 @@ public class SpikesEditor : Editor {
             mySpikes = (Spikes)target;
         }
         
-        if (GUILayout.Button("Rotate 90°")) {
-            mySpikes.Debug_Rotate(-90);
-        }
+        if (GUILayout.Button("Rotate 90°")) { mySpikes.Debug_Rotate(-90); }
         
         if (!mySpikes.HasOnOffer()) {
             if (GUILayout.Button("Add OnOffer")) {

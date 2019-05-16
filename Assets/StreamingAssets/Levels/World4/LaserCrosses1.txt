@@ -1,0 +1,27 @@
+roomProperties posGlobal:(822.0, 654.0);designerFlag:4
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+Ground myRect:(x:-16.00, y:1.00, width:12.00, height:2.00)
+Ground myRect:(x:-2.00, y:-1.00, width:2.00, height:6.00)
+Ground myRect:(x:1.00, y:-2.00, width:8.00, height:2.00)
+Ground myRect:(x:-21.00, y:-4.00, width:2.00, height:8.00)
+Ground myRect:(x:-12.50, y:12.50, width:5.00, height:5.00)
+Ground myRect:(x:-16.50, y:3.00, width:13.00, height:2.00)
+Ground myRect:(x:-15.00, y:10.50, width:2.00, height:7.00)
+Ground myRect:(x:13.50, y:-6.00, width:3.00, height:10.00)
+Ground myRect:(x:9.00, y:-2.00, width:6.00, height:2.00)
+Ground myRect:(x:5.00, y:16.50, width:42.00, height:7.00)
+Ground myRect:(x:-24.00, y:5.50, width:4.00, height:29.00)
+Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
+Ground myRect:(x:-5.00, y:1.00, width:8.00, height:2.00)
+Ground myRect:(x:23.50, y:0.00, width:5.00, height:32.00)
+Ground myRect:(x:-21.00, y:-17.00, width:10.00, height:6.00)
+Laser pos:(5.5, 13.5);rotation:180;onOfferData:(0.2, 1.2, 0)
+Laser pos:(21.5, 2.5);rotation:90;onOfferData:(0.2, 1.2, 0)
+Laser pos:(-9.5, 13.5);rotation:180;onOfferData:(0.2, 1.2, 0)
+Laser pos:(21.5, -15.5);rotation:90;onOfferData:(0.2, 1.2, 0)
+Platform myRect:(x:18.00, y:-10.50, width:6.00, height:1.00)
+PlayerStart pos:(-17.0, -13.0)
+Spikes myRect:(x:9.50, y:-3.50, width:7.00, height:1.00);rotation:180
+Spikes myRect:(x:-6.00, y:-0.50, width:6.00, height:1.00);rotation:180
+Spikes myRect:(x:2.00, y:-3.50, width:6.00, height:1.00);rotation:180
+Spikes myRect:(x:-15.50, y:-0.50, width:11.00, height:1.00);rotation:180

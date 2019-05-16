@@ -15,6 +15,8 @@ public class LaserEditor : Editor {
             myLaser = (Laser)target;
         }
         
+        if (GUILayout.Button("Rotate 90°")) { myLaser.Debug_Rotate(-90); }
+        
         if (!myLaser.HasOnOffer()) {
             if (GUILayout.Button("Add OnOffer")) {
                 myLaser.AddOnOffer(new OnOfferData(0.3f, 1.7f, 0f));

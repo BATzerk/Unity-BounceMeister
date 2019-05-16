@@ -36,7 +36,7 @@ public class Spikes : Collidable, IOnOffable {
     }
     public void UpdateAlmostOn(float timeUntilOn) {
         //float alpha = MathUtils.SinRange(0.08f, 0.14f, timeUntilOn*40);
-        float alpha = 0.18f;
+        float alpha = 0.3f;
         GameUtils.SetSpriteAlpha(bodySprite, alpha);
     }
     public void SetIsOn(bool _isOn) {
@@ -47,8 +47,11 @@ public class Spikes : Collidable, IOnOffable {
             GameUtils.SetSpriteAlpha(bodySprite, 1);
         }
         else {
-            LeanTween.alpha(bodySprite.gameObject, 0.02f, 0.1f).setEaseOutQuad(); // fade out quickly.
+            LeanTween.alpha(bodySprite.gameObject, 0.1f, 0.14f).setEaseOutQuad(); // fade out quickly.
         }
+    }
+    override protected void OnCreatedInEditor() {
+        if (onOffer == null) { onOffer = GetComponent<PropOnOffer>(); } // Safety check for duplicating objects.
     }
 
 
@@ -78,19 +81,11 @@ public class Spikes : Collidable, IOnOffable {
 	}
     
 
-    // ----------------------------------------------------------------
-    //  Debug
-    // ----------------------------------------------------------------
-    public void Debug_Rotate(float delta) {
-        rotation = Mathf.Round(rotation + delta);
-    }
-
 
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
     override public PropData SerializeAsData() {
-        if (onOffer == null) { onOffer = GetComponent<PropOnOffer>(); } // Safety check for duplicating objects.
         SpikesData data = new SpikesData {
             myRect = MyRect,
             rotation = rotation,

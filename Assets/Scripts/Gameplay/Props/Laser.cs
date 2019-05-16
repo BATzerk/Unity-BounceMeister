@@ -68,6 +68,9 @@ public class Laser : Prop, IOnOffable {
         }
         sr_beamGlow.enabled = isOn;
     }
+    override protected void OnCreatedInEditor() {
+        if (onOffer == null) { onOffer = GetComponent<PropOnOffer>(); } // Safety check for duplicating objects.
+    }
     
 
     // ----------------------------------------------------------------
@@ -114,7 +117,7 @@ public class Laser : Prop, IOnOffable {
     //  Serializing
     // ----------------------------------------------------------------
     override public PropData SerializeAsData() {
-        if (onOffer == null) { onOffer = GetComponent<PropOnOffer>(); } // Safety check for duplicating objects.
+        //if (onOffer == null) { onOffer = GetComponent<PropOnOffer>(); } // Safety check for duplicating objects.
         return new LaserData {
             pos = pos,
             rotation = rotation,

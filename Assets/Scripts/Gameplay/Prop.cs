@@ -53,14 +53,23 @@ abstract public class Prop : MonoBehaviour {
             //    PropData data = SerializeAsData();
             //    BaseInitialize(myRoom, data);
             //}
+            // Unpack me as a Prefab!
+            if (UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this.gameObject)) {
+                UnityEditor.PrefabUtility.UnpackPrefabInstance(this.gameObject, UnityEditor.PrefabUnpackMode.Completely, UnityEditor.InteractionMode.AutomatedAction);
+            }
+            OnCreatedInEditor();
         }
         #endif
     }
+    virtual protected void OnCreatedInEditor() {}
     
     
-    
-    
-
+    // ----------------------------------------------------------------
+    //  Debug
+    // ----------------------------------------------------------------
+    public void Debug_Rotate(float delta) {
+        rotation = Mathf.Round(rotation + delta);
+    }
 	virtual public void FlipHorz() {
 		pos = new Vector2(-pos.x, pos.y);
 		rotation = -rotation;
@@ -69,6 +78,10 @@ abstract public class Prop : MonoBehaviour {
         pos += delta;
     }
     
+    
+    // ----------------------------------------------------------------
+    //  Serialize
+    // ----------------------------------------------------------------
     abstract public PropData SerializeAsData();
 
 }

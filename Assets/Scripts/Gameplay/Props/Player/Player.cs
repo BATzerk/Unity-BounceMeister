@@ -18,9 +18,9 @@ abstract public class Player : PlatformCharacter {
 	//protected Vector2 GravityNeutral = new Vector2(0, -0.042f);
 	virtual protected float InputScaleX { get { return 0.1f; } }
 
-	virtual protected float JumpForce { get { return 0.64f; } }
-	virtual protected float WallSlideMinYVel { get { return -0.13f; } }
-	virtual protected Vector2 WallKickVel { get { return new Vector2(0.5f,0.52f); } }
+	virtual protected float JumpForce { get { return 0.58f; } }
+	virtual protected float WallSlideMinYVel { get { return -0.11f; } }
+	virtual protected Vector2 WallKickVel { get { return new Vector2(0.42f,0.46f); } }
 	private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);
 
 	override protected float MaxVelXAir { get { return 0.35f; } }
@@ -331,6 +331,7 @@ abstract public class Player : PlatformCharacter {
         timeLastWallKicked = Time.time;
 		isPreservingWallKickVel = true;
         isPostWallKickInputLock = true;
+        ResetMaxYSinceGround();
 		GameManagers.Instance.EventManager.OnPlayerWallKick(this);
 	}
 
@@ -420,13 +421,13 @@ abstract public class Player : PlatformCharacter {
             default: break; // Hmm.
         }
         
-        ResetMaxYSinceGround(); // Reset maxYSinceGround when touch any collider.
+        //ResetMaxYSinceGround(); // Reset maxYSinceGround when touch any collider.
 	}
 	override public void OnWhiskersLeaveCollider(int side, Collider2D col) {
 		base.OnWhiskersLeaveCollider(side, col);
         Collidable collidable = col.GetComponent<Collidable>();
         
-        ResetMaxYSinceGround(); // Reset maxYSinceGround when leave any collider.
+        //ResetMaxYSinceGround(); // Reset maxYSinceGround when leave any collider.
 
         // Feet?
         if (side == Sides.B) {

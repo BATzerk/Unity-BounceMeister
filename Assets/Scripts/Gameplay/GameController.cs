@@ -48,6 +48,10 @@ public class GameController : MonoBehaviour {
 		if (dm.currRoomData != null) {
 			StartGameAtRoom(dm.currRoomData);
 		}
+        // Temp hack for player cycling.
+        for (int i=0; i<PlayerTypesAvailable.Length; i++) {
+            if (Player.PlayerType() == PlayerTypesAvailable[i]) { currPlayerTypeIndex = i; break; }
+        }
 
 		// Add event listeners!
 		eventManager.PlayerDieEvent += OnPlayerDie;

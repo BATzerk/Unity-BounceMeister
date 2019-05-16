@@ -60,7 +60,7 @@ public class PropOnOffer : MonoBehaviour {
     // ----------------------------------------------------------------
     private void Update() {
         // Safety check for edit-mode.
-        if (myProp == null) { myProp = GetComponent<Laser>(); }
+        if (myProp == null) { myProp = GetComponent<IOnOffable>(); }
         
         timeUntilToggle -= Time.deltaTime;
         // ALMOST back ON?
