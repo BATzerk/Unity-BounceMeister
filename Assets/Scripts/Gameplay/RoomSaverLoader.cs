@@ -98,20 +98,31 @@ static public class RoomSaverLoader {
             else if (type == typeof(GateButtonData)) { AddAllPropFieldsToFS(propData, "pos", "channelID"); }
 			else if (type == typeof(GemData)) { AddAllPropFieldsToFS(propData, "pos", "type"); }
             else if (type == typeof(RoomDoorData)) { AddAllPropFieldsToFS(propData, "pos", "myID", "worldToIndex", "roomToKey", "doorToID"); }
-            else if (type == typeof(LaserData)) { AddAllPropFieldsToFS(propData, "pos", "rotation", "durOn","durOff", "startOffset"); }
             else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
-			else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
+            else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
             else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos", "playerType"); }
             else if (type == typeof(SpikesData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation"); }
             else if (type == typeof(VeilData)) { AddAllPropFieldsToFS(propData, "myRect"); }
-			// Props with optional params
-			else if (type == typeof(CrateData)) {
-				CrateData d = propData as CrateData;
-				AddSomePropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe");
+            // Props with optional params
+            else if (type == typeof(LaserData)) {
+                LaserData d = propData as LaserData;
+                AddSomePropFieldsToFS(propData, "pos", "rotation");
+                if (d.onOfferData.durOff > 0) { fs += ";onOfferData:" + d.onOfferData.ToString(); }
+                AddFSLine();
+            }
+            //else if (type == typeof(LaserData)) {
+            //    LaserData d = propData as LaserData;
+            //    AddSomePropFieldsToFS(propData, "pos", "rotation");
+            //    AddOnOfferDataToFS(d.onOfferData);
+            //    AddFSLine();
+            //}
+            else if (type == typeof(CrateData)) {
+                CrateData d = propData as CrateData;
+                AddSomePropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe");
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 AddFSLine();
-			}
+            }
 			else if (type == typeof(DamageableGroundData)) {
 				DamageableGroundData d = propData as DamageableGroundData;
 				AddSomePropFieldsToFS(propData, "myRect", "doRegen");
@@ -227,6 +238,13 @@ static public class RoomSaverLoader {
 		AddFS (propName + " " + GetPropFieldsAsString(data, fieldNames));
 		AddFSLine();
 	}
+    //static private void AddOnOfferDataToFS(OnOfferData data) {
+    //    if (data.durOff > 0) { // If there IS an OnOffer, tack on its properties to the whole string.
+    //        AddFS(";durOn:"+data.durOn);
+    //        AddFS(";durOff:"+data.durOff);
+    //        AddFS(";startOffset:"+data.startOffset);
+    //    }
+    //}
 	static private string GetPropFieldsAsString(PropData data, params string[] fieldNames) {
         //// Round rotation (so we don't get like "90.000001").
         //data.rotation = MathUtils.RoundTo2DPs(data.rotation);
@@ -470,11 +488,10 @@ static public class RoomSaverLoader {
 				Debug.LogError ("Invalid line in room file: " + debug_roomDataLoadingRoomKey + ". \"" + fieldStrings[i] + "\"");
 				continue;
 			}
-			string[] nameAndValue = new string[2];
-			nameAndValue[0] = fieldStrings[i].Substring (0, colonIndex);
-			nameAndValue[1] = fieldStrings[i].Substring (colonIndex+1);
+			string name = fieldStrings[i].Substring (0, colonIndex);
+			string value = fieldStrings[i].Substring (colonIndex+1);
 			// Set this specified field for this PropData!
-			SetPropDataFieldValue (propData, nameAndValue[0], nameAndValue[1]);
+			SetPropDataFieldValue (propData, name,value);
 		}
 	}
 
@@ -482,10 +499,10 @@ static public class RoomSaverLoader {
 		// What extension of PropData is this?
 		Type propDataType = propData.GetType ();
 		// Get the FieldInfo of the requested name from this propData's class.
-		FieldInfo fieldInfo = propDataType.GetField (fieldName);
+		FieldInfo fieldInfo = propDataType.GetField(fieldName);
 		// Get the VALUE of this field from the string!
 		if (fieldInfo == null) {
-			Debug.LogError ("We've been provided an unidentified prop field type. " + debug_roomDataLoadingRoomKey + ". PropData: " + propData + ", fieldName: " + fieldName);
+		    Debug.LogError("We've been provided an unidentified prop field type. " + debug_roomDataLoadingRoomKey + ". PropData: " + propData + ", fieldName: " + fieldName);
 		}
 		else if (fieldInfo.FieldType == typeof(bool)) {
 			fieldInfo.SetValue(propData, bool.Parse(fieldValueString));
@@ -505,6 +522,12 @@ static public class RoomSaverLoader {
 		else if (fieldInfo.FieldType == typeof(Vector2)) {
 			fieldInfo.SetValue(propData, TextUtils.GetVector2FromString(fieldValueString));
 		}
+        else if (fieldInfo.FieldType == typeof(OnOfferData)) {
+            fieldInfo.SetValue(propData, OnOfferData.FromString(fieldValueString));
+        }
+        else {
+            Debug.LogWarning("Unrecognized field type in Room file: " + debug_roomDataLoadingRoomKey + ". PropData: " + propData + ", fieldName: " + fieldName);
+        }
 	}
 
     

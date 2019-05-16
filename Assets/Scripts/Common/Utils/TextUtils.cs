@@ -104,8 +104,8 @@ public class TextUtils {
 
 
 
+    /// This function parses a string AS FORMATTED by Rect's ToString() function. Example: (x:0.68, y:76.18, width:400.00, height:400.00)
     static public Rect GetRectFromString (string str) {
-        // This function parses a string AS FORMATTED by Rect's ToString() function. Example: (x:0.68, y:76.18, width:400.00, height:400.00)
         int colonIndex, commaIndex;
         string xString, yString, wString, hString;
 

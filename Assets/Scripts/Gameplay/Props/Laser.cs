@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Laser : Prop {
+public class Laser : Prop, IOnOffable {
     // Constants
     private const float BeamWidth = 0.3f; // in Unity units.
     // Components
@@ -11,9 +11,6 @@ public class Laser : Prop {
     [SerializeField] private SpriteRenderer sr_beam=null;
     [SerializeField] private SpriteRenderer sr_beamGlow=null;
     //[SerializeField] private Transform tf_sourceBox=null;
-    private LaserOnOffer onOffer; // added in Initialize.
-    // Properties
-    public bool IsOn { get; private set; }
     // References
     private RaycastHit2D hit; // cached for optimization.
 
@@ -36,17 +33,40 @@ public class Laser : Prop {
         }
         return 999; // Beam goes on fo'eva.
     }
+    
+    // OnOffer Stuff
+    // Properties
+    private bool isOn;
+    private PropOnOffer onOffer; // added in Initialize.
+    public OnOfferData onOfferData { get { return new OnOfferData(onOffer); } }
+    public bool IsOn() { return isOn; }
+    public bool HasOnOffer() { return onOffer != null; }
+    public void AddOnOffer(OnOfferData data) {
+        if (onOffer != null) { return; } // Safety check.
+        onOffer = gameObject.AddComponent<PropOnOffer>();
+        onOffer.Initialize(this, data);
+        // Move OnOffer component just under my Script, for easiness.
+        #if UNITY_EDITOR
+        UnityEditorInternal.ComponentUtility.MoveComponentUp(onOffer);
+        UnityEditorInternal.ComponentUtility.MoveComponentUp(onOffer);
+        UnityEditorInternal.ComponentUtility.MoveComponentUp(onOffer);
+        #endif
+    }
+    public void RemoveOnOffer() {
+        if (onOffer == null) { return; } // Safety check.
+        Destroy(onOffer);
+        onOffer = null;
+        SetIsOn(true);
+    }
+    
 
     // ----------------------------------------------------------------
     //  Initialize
     // ----------------------------------------------------------------
-    private void Awake() {
-        onOffer = this.gameObject.GetComponent<LaserOnOffer>();
-    }
     public void Initialize(Room _myRoom, LaserData data) {
         base.BaseInitialize(_myRoom, data);
         
-        onOffer.Initialize(this, data);
+        if (data.onOfferData.durOff > 0) { AddOnOffer(data.onOfferData); }
         
         //tf_sourceBox.size = data.myRect.size;
         //sr_body.transform.localPosition = data.myRect.position;
@@ -88,17 +108,17 @@ public class Laser : Prop {
     //  Doers
     // ----------------------------------------------------------------
     public void SetIsOn(bool _isOn) {
-        IsOn = _isOn;
-        bc_beam.enabled = IsOn;
+        isOn = _isOn;
+        bc_beam.enabled = isOn;
         LeanTween.cancel(sr_beam.gameObject);
         //GameUtils.SetSpriteAlpha(sr_beam, IsOn ? 0.7f : 0);
-        if (IsOn) {
+        if (isOn) {
             GameUtils.SetSpriteAlpha(sr_beam, 0.7f);
         }
         else {
             LeanTween.alpha(sr_beam.gameObject, 0.02f, 0.1f).setEaseOutQuad(); // fade out quickly.
         }
-        sr_beamGlow.enabled = IsOn;
+        sr_beamGlow.enabled = isOn;
     }
     
 
@@ -107,13 +127,11 @@ public class Laser : Prop {
     //  Serializing
     // ----------------------------------------------------------------
     override public PropData SerializeAsData() {
-        if (onOffer == null) { onOffer = GetComponent<LaserOnOffer>(); } // Safety check for duplicating objects.
+        if (onOffer == null) { onOffer = GetComponent<PropOnOffer>(); } // Safety check for duplicating objects.
         return new LaserData {
             pos = pos,
             rotation = rotation,
-            durOn = onOffer.DurOn,
-            durOff = onOffer.DurOff,
-            startOffset = onOffer.StartOffset,
+            onOfferData = new OnOfferData(onOffer),
         };
     }
 

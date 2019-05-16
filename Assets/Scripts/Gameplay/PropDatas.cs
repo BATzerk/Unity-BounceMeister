@@ -8,6 +8,67 @@ public class PropData {
 	public Vector2 pos;
 }
 
+public struct OnOfferData {
+    public float durOn;
+    public float durOff;
+    public float startOffset;
+    
+    //public OnOfferData() {
+    //    durOn = 0.3f;
+    //    durOff = 1.7f;
+    //    startOffset = 0;
+    //}
+    public OnOfferData(float durOn,float durOff,float startOffset) {
+        this.durOn = durOn;
+        this.durOff = durOff;
+        this.startOffset = startOffset;
+    }
+    public OnOfferData(PropOnOffer onOfferScript) {
+        if (onOfferScript != null) {
+            durOn = onOfferScript.DurOn;
+            durOff = onOfferScript.DurOff;
+            startOffset = onOfferScript.StartOffset;
+        }
+        else {
+            durOn = 0;
+            durOff = 0;
+            startOffset = 0;
+        }
+    }
+    //public override string ToString() {
+    //    string str = "(";
+    //    str += "durOn:" + durOn;
+    //    str += ", durOff:" + durOff;
+    //    str += ", startOffset:" + startOffset;
+    //    str += ")";
+    //    return str;
+    //}
+    public override string ToString() {
+        return "(" + durOn + ", " + durOff + ", " + startOffset + ")";
+    }
+    /// str Example: (durOn:0.6, durOff:1.5, startOffset:0)
+    static public OnOfferData FromString(string str) {
+        OnOfferData data = new OnOfferData();
+        
+        //int colon, comma;
+        //colon = str.IndexOf (':');
+        //comma = str.IndexOf (',');
+        //data.durOn       = TextUtils.ParseFloat(str.Substring (colon+1, comma - (colon+1)));
+        //colon = str.IndexOf (':', colon+1);
+        //comma = str.IndexOf (',', comma+1);
+        //data.durOff      = TextUtils.ParseFloat(str.Substring (colon+1, comma - (colon+1)));
+        //colon = str.IndexOf (':', colon+1);
+        //comma = str.Length - 1;
+        //data.startOffset = TextUtils.ParseFloat(str.Substring (colon+1, comma - (colon+1)));
+        str = str.Substring(1, str.Length-2); // cut the parenthesis.
+        string[] values = str.Split(',');
+        data.durOn = TextUtils.ParseFloat(values[0]);
+        data.durOff = TextUtils.ParseFloat(values[1]);
+        data.startOffset = TextUtils.ParseFloat(values[2]);
+
+        return data;
+    }
+}
 
 
 public class BatteryData : PropData {
@@ -96,9 +157,7 @@ public class RoomDoorData : PropData {
 
 public class LaserData : PropData {
     //public Rect myRect=new Rect();
-    public float durOn = 1;
-    public float durOff = 1;
-    public float startOffset = 0;
+    public OnOfferData onOfferData;
 }
 
 public class LiftData : PropData {

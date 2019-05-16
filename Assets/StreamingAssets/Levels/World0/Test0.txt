@@ -6,6 +6,7 @@ Ground myRect:(x:0.00, y:-16.00, width:52.00, height:8.00)
 Ground myRect:(x:-20.50, y:0.00, width:11.00, height:32.00)
 Ground myRect:(x:-1.00, y:-9.00, width:8.00, height:2.00)
 Ground myRect:(x:11.00, y:-3.00, width:8.00, height:2.00)
+Laser pos:(-10.0, -11.5);rotation:0;onOfferData:(0.3, 1.7, 0)
 PlayerStart pos:(11.5, -11.0)
 Spikes myRect:(x:1.00, y:-2.50, width:6.00, height:1.00);rotation:0
 

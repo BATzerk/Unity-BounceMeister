@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserOnOffer : MonoBehaviour {
+public class PropOnOffer : MonoBehaviour {
     // Properties
     [SerializeField] public float DurOn = 0.3f;
     [SerializeField] public float DurOff = 1.7f;
     [SerializeField] public float StartOffset = 0;
     private float timeUntilToggle;
     // References
-    private Laser myLaser; // assigned in Initialize.
+    private IOnOffable myProp; // assigned in Initialize.
+    
+    public OnOfferData ToData() {
+        return new OnOfferData(this);
+    }
     
     
     // ----------------------------------------------------------------
     //  Initialize
     // ----------------------------------------------------------------
-    public void Initialize(Laser myLaser, LaserData data) {
-        this.myLaser = myLaser;
+    public void Initialize(IOnOffable myProp, OnOfferData data) {
+        this.myProp = myProp;
         DurOn = data.durOn;
         DurOff = data.durOff;
         StartOffset = data.startOffset;
@@ -31,14 +35,13 @@ public class LaserOnOffer : MonoBehaviour {
         timeUntilToggle = DurOn;
         timeUntilToggle -= appliedOffset;
         if (timeUntilToggle >= 0) { // start ON with this much time left.
-            myLaser.SetIsOn(true);
+            myProp.SetIsOn(true);
         }
         else { // start OFF with this much time left.
             timeUntilToggle += DurOff;
-            myLaser.SetIsOn(false);
+            myProp.SetIsOn(false);
         }
     }
-    
     
     
     // ----------------------------------------------------------------
@@ -46,26 +49,26 @@ public class LaserOnOffer : MonoBehaviour {
     // ----------------------------------------------------------------
     private void Update() {
         // Safety check for edit-mode.
-        if (myLaser == null) { myLaser = GetComponent<Laser>(); }
+        if (myProp == null) { myProp = GetComponent<Laser>(); }
         
         timeUntilToggle -= Time.deltaTime;
         // ALMOST back ON?
-        if (!myLaser.IsOn && timeUntilToggle < 0.25f) {
-            myLaser.UpdateAlmostOn(timeUntilToggle);
+        if (!myProp.IsOn() && timeUntilToggle < 0.25f) {
+            myProp.UpdateAlmostOn(timeUntilToggle);
         }
         // Time to toggle?
         if (timeUntilToggle <= 0) {
-            if (myLaser.IsOn) { TurnOff(); }
+            if (myProp.IsOn()) { TurnOff(); }
             else { TurnOn(); }
         }
     }
     private void TurnOn() {
         timeUntilToggle += DurOn;
-        myLaser.SetIsOn(true);
+        myProp.SetIsOn(true);
     }
     private void TurnOff() {
         timeUntilToggle += DurOff;
-        myLaser.SetIsOn(false);
+        myProp.SetIsOn(false);
     }
     
     
