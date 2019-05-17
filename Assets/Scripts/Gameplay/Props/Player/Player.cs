@@ -20,7 +20,7 @@ abstract public class Player : PlatformCharacter {
 
 	virtual protected float JumpForce { get { return 0.58f; } }
 	virtual protected float WallSlideMinYVel { get { return -0.11f; } }
-	virtual protected Vector2 WallKickVel { get { return new Vector2(0.42f,0.46f); } }
+	virtual protected Vector2 WallKickVel { get { return new Vector2(0.35f,0.46f); } }
 	private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);
 
 	override protected float MaxVelXAir { get { return 0.35f; } }
@@ -54,6 +54,7 @@ abstract public class Player : PlatformCharacter {
     public int DirFacing { get; private set; }
 	protected int wallSlideDir { get; private set; } // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
 	private int hackTEMP_framesAlive=0;
+    private Vector2 pLeftStick; // previous InputController LeftStick.
 	protected Vector2 pvel { get; private set; } // previous velocity.
     protected Vector2 ppvel { get; private set; } // HACKY workaround for getting vel from hitting a wall. ppvel is ACTUALLY how fast we were going before we hit the wall.
     // References
@@ -70,6 +71,7 @@ abstract public class Player : PlatformCharacter {
     protected bool IsInput_L() { return LeftStick.x < -0.5f; }
     protected bool IsInput_R() { return LeftStick.x >  0.5f; }
     protected Vector2 LeftStick { get { return inputController.LeftStick; } }
+    protected int DirXToSide(int dirX) { return dirX<0 ? Sides.L : Sides.R; }
     protected bool isWallSliding() { return wallSlideDir!=0; }
 	virtual protected bool MayJump() { return IsGrounded(); }
 	virtual protected bool MayWallKick() {
@@ -218,7 +220,8 @@ abstract public class Player : PlatformCharacter {
 		ApplyFriction();
 		ApplyGravity();
         ApplyInternalForces();
-		AcceptJoystickMoveInput();
+		AcceptDirectionalMoveInput();
+        RegisterJoystickPushReleases();
 		ApplyTerminalVel();
         ApplyLiftForces(); // Note: This happens AFTER TerminalVel.
         
@@ -380,6 +383,18 @@ abstract public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	//  Events (Input)
 	// ----------------------------------------------------------------
+    private void RegisterJoystickPushReleases() {
+        if (LeftStick.x < -0.1f && pLeftStick.x >= -0.1f) { OnLPush(); }
+        if (LeftStick.x >  0.1f && pLeftStick.x <=  0.1f) { OnRPush(); }
+        if (LeftStick.x >= -0.1f && pLeftStick.x < -0.1f) { OnLRelease(); }
+        if (LeftStick.x  <  0.1f && pLeftStick.x >= 0.1f) { OnRRelease(); }
+        
+        pLeftStick = LeftStick;
+    }
+    virtual protected void OnLPush() { }
+    virtual protected void OnRPush() { }
+    virtual protected void OnLRelease() { }
+    virtual protected void OnRRelease() { }
     virtual protected void OnButtonAction_Press() {}
     abstract protected void OnButtonJump_Press();
 	virtual protected void OnButtonJump_Release() { }

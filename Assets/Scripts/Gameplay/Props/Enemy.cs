@@ -46,7 +46,7 @@ public class Enemy : PlatformCharacter {
         ApplyVelFromFloor();
         ApplyFriction();
 		ApplyGravity();
-		AcceptJoystickMoveInput();
+		AcceptDirectionalMoveInput();
         ApplyLiftForces();
         ApplyTerminalVel();
 		myWhiskers.UpdateSurfaces(); // update these dependently now, so we guarantee most up-to-date info.

@@ -92,7 +92,6 @@ public class Flatline : Player {
     public bool HasHoveredWithoutTouchCollider { get; private set; } // when this is true, we can't provide input.
     public bool IsHovering { get; private set; }
     public float HoverTimeLeft { get; private set; }
-    private Vector2 pLeftStick; // previous InputController LeftStick.
     // References
     private FlatlineBody myFlatlineBody;
     private GameTimeController gameTimeController;
@@ -249,26 +248,10 @@ public class Flatline : Player {
     //  FixedUpdate
     // ----------------------------------------------------------------
     protected override void FixedUpdate() {
-        RegisterJoystickPushReleases();
-        
         base.FixedUpdate();
         
         UpdateHover();
         ApplyWallSuck();
-    }
-    private void RegisterJoystickPushReleases() {
-        if (LeftStick.x < -0.1f && pLeftStick.x >= -0.1f) { OnLPush(); }
-        if (LeftStick.x >  0.1f && pLeftStick.x <=  0.1f) { OnRPush(); }
-        if (LeftStick.x >= -0.1f && pLeftStick.x < -0.1f) { OnLRelease(); }
-        if (LeftStick.x  <  0.1f && pLeftStick.x >= 0.1f) { OnRRelease(); }
-        
-        pLeftStick = LeftStick;
-        
-        //if (InputController.Instance.IsLPush) { OnLPush(); }
-        //if (InputController.Instance.IsRPush) { OnRPush(); }
-        //if (InputController.Instance.IsLRelease) { OnLRelease(); }
-        //if (InputController.Instance.IsRRelease) { OnRRelease(); }
-        //if (Mathf.Abs(inputAxis.x)<0.1f && IsHovering) { StopHover(); } // HA CK
     }
     private void UpdateHover() {
         if (IsHovering) {
@@ -304,7 +287,7 @@ public class Flatline : Player {
     // ----------------------------------------------------------------
     override protected void OnButtonJump_Press() { }
     
-    private void OnLPush() {
+    override protected void OnLPush() {
         if (wallSlideDir == 1 && MayWallKick()) {
             WallKick();
         }
@@ -312,7 +295,7 @@ public class Flatline : Player {
             StartHover();
         }
     }
-    private void OnRPush() {
+    override protected void OnRPush() {
         if (wallSlideDir == -1 && MayWallKick()) {
             WallKick();
         }
@@ -320,12 +303,12 @@ public class Flatline : Player {
             StartHover();
         }
     }
-    private void OnLRelease() {
+    override protected void OnLRelease() {
         if (IsHovering && vel.x < 0) {
             StopHover();
         }
     }
-    private void OnRRelease() {
+    override protected void OnRRelease() {
         if (IsHovering && vel.x > 0) {
             StopHover();
         }

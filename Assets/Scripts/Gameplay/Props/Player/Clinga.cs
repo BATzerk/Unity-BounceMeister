@@ -28,10 +28,12 @@ public class Clinga : Player {
             return IsClinging ? Vector2.zero : base.Gravity;
         }
     }
+    override protected float MaxVelXAir { get { return 2f; } }
+    override protected float FrictionAir { get { return 1f; } }
     //protected override float HorzMoveInputVelXDelta() {
     //    return IsClinging ? 0 : base.HorzMoveInputVelXDelta(); // Clinging? Do NOT accept our normal horz input.
     //}
-    private const float ClingMoveInputScale = 0.1f;
+    private const float ClingMoveInputScale = 0.025f;
     // Properties
     private Syde ClingSydes = Syde.none; // bitmasks!
     // References
@@ -61,7 +63,7 @@ public class Clinga : Player {
     // ----------------------------------------------------------------
     //  FixedUpdate
     // ----------------------------------------------------------------
-    override protected void AcceptJoystickMoveInput() {
+    override protected void AcceptDirectionalMoveInput() {
         // Clinging? Register 360 input!
         if (IsClinging) {
             Vector2 v = ClingMoveInputScale * LeftStick;
@@ -74,13 +76,30 @@ public class Clinga : Player {
         }
         // NOT clinging. Do normal Player stuff.
         else {
-            base.AcceptJoystickMoveInput();
+            base.AcceptDirectionalMoveInput();
         }
     }
+    protected bool IsInputX { get { return Mathf.Abs(LeftStick.x) > 0.1f; } }
+    protected bool IsInputY { get { return Mathf.Abs(LeftStick.y) > 0.1f; } }
     override protected void ApplyFriction() {
         // Clinging?
         if (IsClinging) {
-            vel *= 0.7f; // flat clinging friction.
+            const float frictInput = 0.97f;
+            const float frictNoInput = 0;
+            if (IsClingHorz) {
+                float fricApplied = IsInputX ? frictInput : frictNoInput;
+                SetVel(vel.x*fricApplied, vel.y);
+            }
+            if (IsClingVert) {
+                float fricApplied = IsInputY ? frictInput : frictNoInput;
+                SetVel(vel.x, vel.y*fricApplied);
+            }
+            //if (LeftStick.magnitude < 0.1f) { // No input? High friction!
+            //    vel *= 0.1f;
+            //}
+            //else {
+            //    vel *= 0.94f; // flat clinging friction.
+            //}
         }
         else {
             base.ApplyFriction();
@@ -102,8 +121,24 @@ public class Clinga : Player {
             ScheduleDelayedJump();
         }
     }
-    
-    
+    protected override void WallKick() {
+        // Remove cling from this side.
+        int side = DirXToSide(myWhiskers.DirLastTouchedWall);
+        RemoveClingSyde(side);
+        // Base wall-kick.
+        base.WallKick();
+    }
+    override protected void OnLRelease() { OnLeftStickHorzRelease(); }
+    override protected void OnRRelease() { OnLeftStickHorzRelease(); }
+    // / This is called whenever we STOP pushing left or right on the joystick.
+    private void OnLeftStickHorzRelease() {
+        // We're totally in the air? Halt our xVel!
+        if (!myWhiskers.IsTouchingAnySurface()) {
+            SetVel(0, vel.y);
+        }
+    }
+
+
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
