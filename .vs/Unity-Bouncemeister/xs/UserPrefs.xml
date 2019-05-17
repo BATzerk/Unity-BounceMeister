@@ -1,18 +1,15 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/Clinga.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Room.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="17" Column="40" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Laser.cs" Line="66" Column="15" />
-      <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="432" Column="42" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Spikes.cs" Line="82" Column="5" />
-      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="52" Column="53" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PropOnOffer.cs" Line="63" Column="69" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Jetta.cs" Line="18" Column="24" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Plunga.cs" Line="11" Column="75" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="383" Column="69" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="137" Column="51" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Clinga.cs" Line="14" Column="37" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="327" Column="41" />
+      <File FileName="Assets/Scripts/Managers/DataManager.cs" Line="106" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/CharLineup.cs" Line="21" Column="72" />
+      <File FileName="Assets/Scripts/Gameplay/Props/CharBarrel.cs" Line="14" Column="72" />
+      <File FileName="Assets/Scripts/Gameplay/UI/CharLineupHUD.cs" Line="43" Column="27" />
+      <File FileName="Assets/Scripts/Gameplay/Props/CharUnlockOrb.cs" Line="19" Column="57" />
+      <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="165" Column="79" />
+      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="266" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

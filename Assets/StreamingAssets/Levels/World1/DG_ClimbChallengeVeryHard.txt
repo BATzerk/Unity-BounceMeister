@@ -1,4 +1,4 @@
-roomProperties posGlobal:(1204.0, 292.0);designerFlag:3
+roomProperties posGlobal:(1524.0, 298.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Spikes myRect:(x:-3.50, y:-6.50, width:3.00, height:1.00);rotation:0
 Spikes myRect:(x:-12.50, y:13.00, width:6.00, height:1.00);rotation:270
@@ -15,4 +15,3 @@ Ground myRect:(x:-19.00, y:4.00, width:14.00, height:12.00)
 Gem pos:(1.5, 12.5);type:1
 DamageableGround myRect:(x:-10.50, y:2.50, width:3.00, height:15.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
 DamageableGround myRect:(x:-3.50, y:4.00, width:3.00, height:12.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
-

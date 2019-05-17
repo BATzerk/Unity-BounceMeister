@@ -28,6 +28,7 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] private GameObject Jetta=null;
     [SerializeField] private GameObject Jumpa=null;
     [SerializeField] private GameObject Limo=null;
+    [SerializeField] private GameObject Neutrala=null;
     [SerializeField] private GameObject Plunga=null;
     [SerializeField] private GameObject Slippa=null;
     [SerializeField] private GameObject Warpa=null;
@@ -36,6 +37,7 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] public GameObject Buzzsaw;
 	[SerializeField] public GameObject CameraBounds;
     [SerializeField] public GameObject CharBarrel;
+    [SerializeField] public GameObject CharUnlockOrb;
 	[SerializeField] public GameObject Coin;
 	[SerializeField] public GameObject Crate;
 	[SerializeField] public GameObject DamageableGround;
@@ -68,6 +70,7 @@ public class ResourcesHandler : MonoBehaviour {
             case PlayerTypes.Jetta: return Jetta;
             case PlayerTypes.Jumpa: return Jumpa;
             case PlayerTypes.Limo: return Limo;
+            case PlayerTypes.Neutrala: return Neutrala;
             case PlayerTypes.Plunga: return Plunga;
             case PlayerTypes.Slippa: return Slippa;
             case PlayerTypes.Warpa: return Warpa;

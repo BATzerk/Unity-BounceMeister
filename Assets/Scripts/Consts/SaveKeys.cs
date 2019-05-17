@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class SaveKeys {
     // Global Gameplay
+    public const string PlayerLineup = "PlayerLineup";
     public const string LastPlayedPlayerType = "LastPlayedPlayerType";
     public static string IsPlayerTypeUnlocked(PlayerTypes playerType) { return "IsPlayerTypeUnlocked_" + playerType.ToString(); }
     

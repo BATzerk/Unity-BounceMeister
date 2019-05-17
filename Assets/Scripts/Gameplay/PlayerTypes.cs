@@ -11,6 +11,7 @@
     Jetta,
     Jumpa,
     Limo,
+    Neutrala, // no powers
     Plunga,
     Slippa,
     Warpa,
@@ -27,13 +28,14 @@ static public class PlayerTypeHelper {
         PlayerTypes.Jetta,
         PlayerTypes.Jumpa,
         PlayerTypes.Limo,
+        PlayerTypes.Neutrala,
         PlayerTypes.Plunga,
         PlayerTypes.Slippa,
         PlayerTypes.Warpa,
     };
 
     static public PlayerTypes LoadLastPlayedType() {
-        string typeStr = SaveStorage.GetString(SaveKeys.LastPlayedPlayerType, PlayerTypes.Plunga.ToString());
+        string typeStr = SaveStorage.GetString(SaveKeys.LastPlayedPlayerType, PlayerTypes.Neutrala.ToString());
         return TypeFromString(typeStr);
     }
     public static void SaveLastPlayedType(PlayerTypes _type) {
@@ -50,6 +52,7 @@ static public class PlayerTypeHelper {
             case "Jetta":    return PlayerTypes.Jetta;
             case "Jumpa":    return PlayerTypes.Jumpa;
             case "Limo":     return PlayerTypes.Limo;
+            case "Neutrala": return PlayerTypes.Neutrala;
             case "Plunga":   return PlayerTypes.Plunga;
             case "Slippa":   return PlayerTypes.Slippa;
             case "Warpa":    return PlayerTypes.Warpa;

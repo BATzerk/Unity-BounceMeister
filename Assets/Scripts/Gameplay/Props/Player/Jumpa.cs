@@ -75,16 +75,6 @@ public class Jumpa : Player {
 		}
 		// Base call.
 		base.LandOnCollidable(collidable);
-        
-        // HACK TEMP TEST
-        if (!(collidable is DamageableGround) && ppvel.y < -1.05f) {
-            if (ppvel.y < -1.22f) {
-                SetVel(new Vector2(vel.x, Mathf.Abs(ppvel.y)*0.22f));
-            }
-            else {
-                SetVel(new Vector2(vel.x, Mathf.Abs(ppvel.y)*0.16f));
-            }
-        }
 	}
     private void RechargeJumps() {
         if (numJumpsLeft < MaxJumps) {

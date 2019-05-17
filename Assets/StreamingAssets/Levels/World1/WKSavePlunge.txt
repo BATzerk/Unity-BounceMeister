@@ -1,4 +1,4 @@
-roomProperties posGlobal:(246.0, 456.0);designerFlag:3
+roomProperties posGlobal:(284.0, 364.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 DamageableGround myRect:(x:-11.50, y:0.00, width:11.00, height:2.00);doRegen:True;dieFromPlayerLeave:True
 Ground myRect:(x:-15.50, y:-14.50, width:21.00, height:11.00)
@@ -18,4 +18,3 @@ Snack pos:(6.0, 11.5);playerType:Plunga
 Spikes myRect:(x:2.00, y:9.50, width:6.00, height:1.00);rotation:180
 Spikes myRect:(x:0.50, y:7.00, width:8.00, height:1.00);rotation:270
 Spikes myRect:(x:4.00, y:4.50, width:8.00, height:1.00);rotation:0
-

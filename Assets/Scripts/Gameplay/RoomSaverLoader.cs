@@ -14,7 +14,8 @@ static public class RoomSaverLoader {
 	const string BATTERY = "Battery";
     const string BUZZSAW = "Buzzsaw";
 	const string CAMERA_BOUNDS = "CameraBounds";
-	const string CHAR_BARREL = "CharBarrel";
+    const string CHAR_BARREL = "CharBarrel";
+    const string CHAR_UNLOCK_ORB = "CharUnlockOrb";
 	const string CRATE = "Crate";
 	const string DAMAGEABLE_GROUND = "DamageableGround";
     const string ENEMY = "Enemy";
@@ -94,6 +95,7 @@ static public class RoomSaverLoader {
 			if (type == typeof(BatteryData)) { AddAllPropFieldsToFS(propData, "pos"); }
             else if (type == typeof(BuzzsawData)) { AddAllPropFieldsToFS(propData, "size", "locOffset", "speed", "posA", "posB"); }
             else if (type == typeof(CharBarrelData)) { AddAllPropFieldsToFS(propData, "pos", "otherCharName"); }
+            else if (type == typeof(CharUnlockOrbData)) { AddAllPropFieldsToFS(propData, "pos", "myCharName"); }
             else if (type == typeof(EnemyData)) { AddAllPropFieldsToFS(propData, "pos"); }
             else if (type == typeof(GateButtonData)) { AddAllPropFieldsToFS(propData, "pos", "channelID"); }
 			else if (type == typeof(GemData)) { AddAllPropFieldsToFS(propData, "pos", "type"); }
@@ -402,6 +404,7 @@ static public class RoomSaverLoader {
             case BUZZSAW: return new BuzzsawData();
             case CAMERA_BOUNDS: return new CameraBoundsData();
             case CHAR_BARREL: return new CharBarrelData();
+            case CHAR_UNLOCK_ORB: return new CharUnlockOrbData();
             case CRATE: return new CrateData();
             case DAMAGEABLE_GROUND: return new DamageableGroundData();
             case ENEMY: return new EnemyData();

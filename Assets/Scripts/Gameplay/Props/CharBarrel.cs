@@ -11,7 +11,6 @@ public class CharBarrel : Prop {
     private float timeWhenCanSensePlayer; // in SCALED seconds. So we don't keep swapping between two Player types.
 	public PlayerTypes CharTypeInMe { get; private set; }
 
-
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
@@ -40,7 +39,6 @@ public class CharBarrel : Prop {
 	}
 
 
-
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
@@ -61,8 +59,6 @@ public class CharBarrel : Prop {
         // Reset timeWhenCanSensePlayer!
         timeWhenCanSensePlayer = Time.time + 0.1f;
 	}
-
-
 
 
 	// ----------------------------------------------------------------

@@ -12,24 +12,12 @@ public class GameController : MonoBehaviour {
 
     // Getters
     public GameTimeController GameTimeController { get { return gameTimeController; } }
+    private CharLineup charLineup { get { return dm.CharLineup; } }
 	private DataManager dm { get { return GameManagers.Instance.DataManager; } }
 	private EventManager eventManager { get { return GameManagers.Instance.EventManager; } }
     private bool CanCyclePlayerType() {
         if (!CurrRoom.Player.IsGrounded()) { return false; } // Not grounded? Can't cycle.
-        return true; // Sure, why not!
-    }
-    // NOTE: Hacked in for now! Can tidy up if we like it.
-    private readonly PlayerTypes[] PlayerTypesAvailable = {
-        PlayerTypes.Plunga,
-        PlayerTypes.Jetta,
-        PlayerTypes.Clinga,
-        PlayerTypes.Warpa,
-    };
-    int currPlayerTypeIndex = 0; // type in PlayerTypesAvailable.
-    private PlayerTypes GetNextPlayerTypeInCycle(PlayerTypes currType) {
-        currPlayerTypeIndex ++;
-        if (currPlayerTypeIndex >= PlayerTypesAvailable.Length) { currPlayerTypeIndex = 0; }
-        return PlayerTypesAvailable[currPlayerTypeIndex];
+        return charLineup.CanCyclePlayerType(); // Ask CharLineup.
     }
 
 
@@ -48,10 +36,6 @@ public class GameController : MonoBehaviour {
 		if (dm.currRoomData != null) {
 			StartGameAtRoom(dm.currRoomData);
 		}
-        // Temp hack for player cycling.
-        for (int i=0; i<PlayerTypesAvailable.Length; i++) {
-            if (Player.PlayerType() == PlayerTypesAvailable[i]) { currPlayerTypeIndex = i; break; }
-        }
 
 		// Add event listeners!
 		eventManager.PlayerDieEvent += OnPlayerDie;
@@ -73,9 +57,6 @@ public class GameController : MonoBehaviour {
             pos = GetPlayerStartingPosInRoom(rd),
             type = PlayerTypeHelper.LoadLastPlayedType(),
         };
-        // HACK TEMP: Only Plunga for W1 and Flatline for W2.
-        if (rd.WorldIndex==1) { playerData.type = PlayerTypes.Plunga; }
-        else if (rd.WorldIndex==2) { playerData.type = PlayerTypes.Flatline; }
         StartGameAtRoom(rd, playerData);
     }
     public void StartGameAtRoom(RoomData rd, PlayerData playerData) {
@@ -132,7 +113,7 @@ public class GameController : MonoBehaviour {
     }
     private void MaybeCyclePlayerType() {
         if (CanCyclePlayerType()) { // If we can...!
-            PlayerTypes nextType = GetNextPlayerTypeInCycle(CurrRoom.Player.PlayerType());
+            PlayerTypes nextType = charLineup.GetNextPlayerType(CurrRoom.Player.PlayerType());
             SwapPlayerType(nextType);
         }
     }
@@ -346,9 +327,6 @@ public class GameController : MonoBehaviour {
         GUIStyle style = new GUIStyle();
         style.fontSize = 12;
         GUI.Label(new Rect(8,0, 400,100), "timeScale: " + Time.timeScale, style);
-        style.fontSize = 24;
-        style.fontStyle = FontStyle.Bold;
-        GUI.Label(new Rect(14,Screen.height-40, 400,80), Player.PlayerType().ToString(), style);
     }
 
 

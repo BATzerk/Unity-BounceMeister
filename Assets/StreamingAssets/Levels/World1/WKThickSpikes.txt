@@ -1,4 +1,4 @@
-﻿roomProperties posGlobal:(352.0, 612.0);designerFlag:4
+roomProperties posGlobal:(1196.0, 324.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:-16.50, y:2.00, width:19.00, height:28.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
@@ -11,4 +11,3 @@ PlayerStart pos:(-4.5, -14.5)
 RoomDoor pos:(11.0, -15.0);myID:0;worldToIndex:-1;roomToKey:ClustDGPuzzStart;doorToID:0
 Snack pos:(12.5, 9.5);playerType:Plunga
 Spikes myRect:(x:2.50, y:-0.50, width:5.00, height:1.00);rotation:90
-

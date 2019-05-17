@@ -1,8 +1,9 @@
-﻿roomProperties posGlobal:(428.0, 338.0);designerFlag:3;isClustStart:True
+roomProperties posGlobal:(120.0, 490.0);designerFlag:3;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:11.50, y:-1.00, width:29.00, height:36.00)
+Ground myRect:(x:-20.00, y:2.50, width:12.00, height:35.00)
+Ground myRect:(x:-14.00, y:8.50, width:24.00, height:23.00)
+Ground myRect:(x:14.50, y:0.00, width:23.00, height:40.00)
 Ground myRect:(x:0.00, y:-14.00, width:52.00, height:12.00)
-Ground myRect:(x:0.00, y:9.00, width:52.00, height:22.00)
-PlayerStart pos:(-8.0, -7.0)
-ProgressGate myRect:(x:-9.50, y:2.50, width:7.00, height:7.00);numSnacksReq:14
-RoomDoor pos:(-4.0, -7.0);myID:0;worldToIndex:-1;roomToKey:Clust1End;doorToID:0
+PlayerStart pos:(-11.0, -7.0)
+ProgressGate myRect:(x:-12.50, y:2.50, width:7.00, height:7.00);numSnacksReq:14
+RoomDoor pos:(-13.0, -7.0);myID:0;worldToIndex:-1;roomToKey:;doorToID:

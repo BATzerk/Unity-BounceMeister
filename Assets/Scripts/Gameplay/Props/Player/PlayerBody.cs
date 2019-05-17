@@ -25,6 +25,7 @@ abstract public class PlayerBody : MonoBehaviour {
             case PlayerTypes.Jetta: return new ColorHSB(290/360f, 0.7f, 0.7f).ToColor();
             case PlayerTypes.Jumpa: return new ColorHSB(100/360f, 0.6f, 0.7f).ToColor();
             case PlayerTypes.Limo: return new ColorHSB(140/360f, 0.05f, 0.5f).ToColor();
+            case PlayerTypes.Neutrala: return new ColorHSB(100/360f, 0.1f, 0.6f).ToColor();
             case PlayerTypes.Plunga: return new Color255(25, 175, 181).ToColor();
             case PlayerTypes.Slippa: return new Color255(220, 160, 40).ToColor();
             case PlayerTypes.Warpa: return new ColorHSB(250/360f, 0.5f, 0.9f).ToColor();

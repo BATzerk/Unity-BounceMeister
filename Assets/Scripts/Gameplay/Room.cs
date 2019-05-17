@@ -146,6 +146,10 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
                 newProp.Initialize(this, propData as CharBarrelData, charBarrels.Count);
                 charBarrels.Add(newProp);
             }
+            else if (pt == typeof(CharUnlockOrbData)) {
+                CharUnlockOrb newProp = Instantiate(rh.CharUnlockOrb).GetComponent<CharUnlockOrb>();
+                newProp.Initialize(this, propData as CharUnlockOrbData);
+            }
             else if (pt == typeof(CameraBoundsData)) {
                 CameraBounds newProp = Instantiate(rh.CameraBounds).GetComponent<CameraBounds>();
                 newProp.Initialize(this, propData as CameraBoundsData);
@@ -262,7 +266,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
     private void AddHardcodedRoomElements() {
         //// CANDO: If this function starts getting big, make new Prop, Decor. Has prefabName, pos, rotation, scale. :)
         if (RoomKey == "IntroPlunge") {
-            AddDecor("PlungeImplicationGhost", new Vector2(3.7f, -0.9f), new Vector2(8,8));
+            AddDecor("PlungeImplicationGhost", new Vector2(-4.5f, -3.7f), new Vector2(-8,8));
         }
         //else if (RoomKey == "IntroHover") {
         //    AddDecor("InstructsHover", new Vector2(0, 11));

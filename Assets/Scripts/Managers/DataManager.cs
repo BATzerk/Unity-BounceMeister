@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DataManager {
 	// Properties
+    public CharLineup CharLineup { get; private set; }
     private List<WorldData> worldDatas;
     //  public int mostRecentlySavedRoom_worldIndex; // an nbd shortcut to highlight the most recently created room in the MapEditor.
     //  public string mostRecentlySavedRoom_roomKey; // an nbd shortcut to highlight the most recently created room in the MapEditor.
@@ -84,11 +85,16 @@ public class DataManager {
 	private void Reset () {
 		CoinsCollected = 0;
 //		highestWorldEndEverReached = SaveStorage.GetInt (SaveKeys.HIGHEST_WORLD_END_EVER_REACHED);
-
+        
+        ReloadCharLineup();
 		ReloadWorldDatas();
         RefreshSnackCountGame();
 	}
-
+    
+    private void ReloadCharLineup() {
+        CharLineup = new CharLineup();
+        CharLineup.LoadFromSaveData();
+    }
 	public void ReloadWorldDatas () {
 		worldDatas = new List<WorldData> ();
 		for (int i=0; i<GameProperties.NUM_WORLDS; i++) {
