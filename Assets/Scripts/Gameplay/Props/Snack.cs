@@ -19,7 +19,7 @@ public class Snack : Edible {
         bool wasAddedInEditor = !IsInitialized && playerType==PlayerTypes.Undefined;
         base.Start();
         if (wasAddedInEditor) {
-            playerType = MyRoom.Player.PlayerType();
+            playerType = PlayerTypes.Any;// CHANGED: Default to ANY player. // MyRoom.Player.PlayerType();
             UpdatePresence();
         }
     }

@@ -1,6 +1,6 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Room.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Snack.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="327" Column="41" />
       <File FileName="Assets/Scripts/Managers/DataManager.cs" Line="106" Column="1" />
@@ -9,7 +9,8 @@
       <File FileName="Assets/Scripts/Gameplay/UI/CharLineupHUD.cs" Line="43" Column="27" />
       <File FileName="Assets/Scripts/Gameplay/Props/CharUnlockOrb.cs" Line="19" Column="57" />
       <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="165" Column="79" />
-      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="266" Column="18" />
+      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="250" Column="47" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Snack.cs" Line="19" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

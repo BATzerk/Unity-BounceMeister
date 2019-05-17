@@ -106,6 +106,10 @@ public class GameController : MonoBehaviour {
         PlayerTypeHelper.SaveLastPlayedType(Player.PlayerType());
 	}
     public void SwapPlayerType(PlayerTypes _type) {
+        // TEMP DEBUGGIN'
+        if (charLineup.Lineup.Contains(_type)) {
+            charLineup.AddPlayerType(_type);
+        }
         PlayerData playerData = Player.SerializeAsData() as PlayerData;
         playerData.type = _type;
         MakePlayer(playerData);
