@@ -1,0 +1,17 @@
+roomProperties posGlobal:(128.0, 1636.0);designerFlag:4
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+Buzzsaw size:(3.0, 3.0);locOffset:0;speed:1.6;posA:(-12.0, -10.0);posB:(-12.0, 11.0)
+Buzzsaw size:(3.0, 3.0);locOffset:0;speed:1.6;posA:(-15.0, 10.0);posB:(-15.0, -10.0)
+Buzzsaw size:(3.0, 3.0);locOffset:0;speed:2;posA:(6.0, -11.0);posB:(6.0, 6.0)
+Ground myRect:(x:-18.50, y:0.00, width:7.00, height:24.00)
+Ground myRect:(x:-5.00, y:0.00, width:14.00, height:24.00)
+Ground myRect:(x:19.00, y:-4.00, width:14.00, height:24.00)
+Ground myRect:(x:5.00, y:18.50, width:42.00, height:3.00)
+Ground myRect:(x:-24.00, y:2.00, width:4.00, height:36.00)
+Ground myRect:(x:-21.50, y:-13.00, width:9.00, height:6.00)
+Ground myRect:(x:1.00, y:-2.50, width:10.00, height:21.00)
+Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00);isPlayerRespawn:True
+Ground myRect:(x:21.00, y:16.00, width:10.00, height:8.00)
+Ground myRect:(x:-2.50, y:16.00, width:9.00, height:8.00)
+Ground myRect:(x:18.50, y:-2.50, width:15.00, height:21.00)
+PlayerStart pos:(-20.5, 13.0)

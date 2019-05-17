@@ -1,4 +1,4 @@
-roomProperties posGlobal:(724.0, 1006.0);designerFlag:3
+roomProperties posGlobal:(720.0, 926.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Buzzsaw size:(4.0, 4.0);locOffset:0;speed:2;posA:(-19.0, -15.0);posB:(-7.0, -15.0)
 Buzzsaw size:(4.0, 4.0);locOffset:0;speed:2;posA:(-7.0, -4.0);posB:(-19.0, -4.0)
@@ -35,4 +35,3 @@ Spikes myRect:(x:-0.50, y:-2.50, width:7.00, height:1.00);rotation:90;onOfferDat
 Spikes myRect:(x:-3.50, y:-2.50, width:7.00, height:1.00);rotation:270;onOfferData:(0.3, 1.7, 0)
 Spikes myRect:(x:4.00, y:-13.50, width:12.00, height:1.00);rotation:0;onOfferData:(0.3, 1.7, 0)
 Spikes myRect:(x:-16.00, y:0.50, width:12.00, height:1.00);rotation:0;onOfferData:(0.3, 1.7, 0)
-

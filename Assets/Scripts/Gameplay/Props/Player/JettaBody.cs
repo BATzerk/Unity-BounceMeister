@@ -41,6 +41,7 @@ public class JettaBody : PlayerBody {
 	//  Update
 	// ----------------------------------------------------------------
     public void UpdateFillSprite() {
+        if (myJetta == null) { return; } // Safety check.
         // Size it.
         float percentFull = myJetta.FuelLeft / Jetta.FuelCapacity;
         SizeFillSprite(percentFull);
