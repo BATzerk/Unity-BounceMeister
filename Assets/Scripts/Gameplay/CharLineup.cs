@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class CharLineup {
     // Properties
-    public int CurrTypeIndex = 0; // type in playerTypesAvailable.
+    public int CurrTypeIndex = 0; // type in Lineup.
     public List<PlayerTypes> Lineup; // who's in da lineuppp
     
     // Getters (Public)
     public bool CanCyclePlayerType() { return true; }
-    public PlayerTypes GetNextPlayerType(PlayerTypes currType) {
-        CurrTypeIndex ++;
-        if (CurrTypeIndex >= Lineup.Count) { CurrTypeIndex = 0; }
-        return Lineup[CurrTypeIndex];
+    public PlayerTypes GetNextPlayerType() {
+        return Lineup[GetNextTypeIndex()];
+    }
+    private int GetNextTypeIndex() {
+        if (CurrTypeIndex+1 >= Lineup.Count) { return 0; }
+        return CurrTypeIndex+1;
     }
     
     
@@ -26,11 +28,6 @@ public class CharLineup {
         for (int i=0; i<strs.Length; i++) {
             Lineup.Add(PlayerTypeHelper.TypeFromString(strs[i]));
         }
-        
-        //// Temp hack for player cycling.
-        //for (int i=0; i<PlayerTypesAvailable.Length; i++) {
-        //    if (Player.PlayerType() == PlayerTypesAvailable[i]) { currTypeIndex = i; break; }
-        //}
     }
     private void SaveLineup() {
         string str = "";
@@ -42,6 +39,16 @@ public class CharLineup {
     }
     
     
+    // ----------------------------------------------------------------
+    //  Events
+    // ----------------------------------------------------------------
+    public void OnSetCurrPlayerType(PlayerTypes pt) {
+        // Update CurrTypeIndex!
+        for (int i=0; i<Lineup.Count; i++) {
+            if (pt == Lineup[i]) { CurrTypeIndex = i; return; }
+        }
+    }
+    
     
     // ----------------------------------------------------------------
     //  Doers
@@ -50,6 +57,10 @@ public class CharLineup {
         Lineup.Add(pt);
         SaveLineup();
         //GameManagers.Instance.EventManager.On
+    }
+    public void Debug_RemovePlayerType(PlayerTypes pt) {
+        Lineup.Remove(pt);
+        SaveLineup();
     }
     
     

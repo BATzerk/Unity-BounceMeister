@@ -84,7 +84,7 @@ public class Clinga : Player {
     override protected void ApplyFriction() {
         // Clinging?
         if (IsClinging) {
-            const float frictInput = 0.97f;
+            const float frictInput = 0.98f;
             const float frictNoInput = 0;
             if (IsClingHorz) {
                 float fricApplied = IsInputX ? frictInput : frictNoInput;

@@ -9,19 +9,33 @@ public class RoomClusterData {
     public Rect BoundsGlobal { get; private set; }
     public RoomAddress MyAddress { get; private set; }
     public SnackCount SnackCount = new SnackCount();
+    public PlayerTypes TrialPlayerType { get; private set; }
     // References
     public List<RoomData> rooms=new List<RoomData>();
     
     // Getters
     public int ClustIndex { get { return MyAddress.clust; } }
     public int WorldIndex { get { return MyAddress.world; } }
+    public bool IsCharTrial { get { return TrialPlayerType != PlayerTypes.Undefined; } }
     
     
     // ----------------------------------------------------------------
     //  Initialize
     // ----------------------------------------------------------------
-    public RoomClusterData(int WorldIndex) {
+    public RoomClusterData(int WorldIndex, string startRoomKey) {
         this.MyAddress = new RoomAddress(WorldIndex, -1);
+        // TEMP HARDCODED-ISH set TrialPlayerType!
+        if (WorldIndex == GameProperties.TEMP_TrialsWorldIndex) {
+            string rk = startRoomKey;
+            int strInd = rk.IndexOf("TrialStart", System.StringComparison.Ordinal);
+            if (strInd >= 0) {
+                string typeStr = rk.Substring(0, strInd);
+                TrialPlayerType = PlayerTypeHelper.TypeFromString(typeStr);
+            }
+            else {
+                Debug.LogWarning(startRoomKey + " doesn't fit char-trial-start-cluster naming scheme.");
+            }
+        }
     }
     public void SetClustIndex(int clustIndex) {
         this.MyAddress = new RoomAddress(WorldIndex,clustIndex);

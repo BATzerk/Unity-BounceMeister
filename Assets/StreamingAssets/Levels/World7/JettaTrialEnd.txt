@@ -1,0 +1,8 @@
+roomProperties posGlobal:(180.0, 352.0);designerFlag:2
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+Ground myRect:(x:17.00, y:0.00, width:18.00, height:32.00)
+Ground myRect:(x:0.00, y:11.00, width:52.00, height:18.00)
+Ground myRect:(x:-24.00, y:4.50, width:4.00, height:23.00)
+Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
+PlayerStart pos:(-20.0, -13.0)
+RoomDoor pos:(6.5, -13.0);myID:0;worldToIndex:1;roomToKey:GetJetta;doorToID:

@@ -17,7 +17,18 @@ public class GameController : MonoBehaviour {
 	private EventManager eventManager { get { return GameManagers.Instance.EventManager; } }
     private bool CanCyclePlayerType() {
         if (!CurrRoom.Player.IsGrounded()) { return false; } // Not grounded? Can't cycle.
+        if (CurrRoom.MyClusterData.IsCharTrial) { return false; } // Char Trial? No cycling.
         return charLineup.CanCyclePlayerType(); // Ask CharLineup.
+    }
+    
+    
+    private bool Temp_IsTrialEnd(Room _room) {
+        return _room.RoomKey.EndsWith("TrialEnd", System.StringComparison.Ordinal);
+    }
+    private PlayerTypes Temp_GetTrialEndPlayerType(Room _room) {
+        string rk = _room.RoomKey;
+        string typeStr = rk.Substring(0, rk.IndexOf("TrialEnd", System.StringComparison.Ordinal));
+        return PlayerTypeHelper.TypeFromString(typeStr);
     }
 
 
@@ -53,9 +64,10 @@ public class GameController : MonoBehaviour {
     // ----------------------------------------------------------------
     //public void StartGameAtRoom (int worldIndex, string roomKey) { StartGameAtRoom(dm.GetRoomData(worldIndex, roomKey, true)); }
     public void StartGameAtRoom(RoomData rd) {
+        if (rd == null) { Debug.LogError("StartGameAtRoom's RoomData is null!"); return; } // Safety check.
         PlayerData playerData = new PlayerData {
-            pos = GetPlayerStartingPosInRoom(rd),
-            type = PlayerTypeHelper.LoadLastPlayedType(),
+            pos = GetPlayerStartingPos(rd),
+            type = GetPlayerStartingType(rd),
         };
         StartGameAtRoom(rd, playerData);
     }
@@ -90,7 +102,7 @@ public class GameController : MonoBehaviour {
     }
     
     private void MakePlayer(PlayerTypes type, RoomData roomData) {
-		Vector2 startingPos = GetPlayerStartingPosInRoom(roomData);
+		Vector2 startingPos = GetPlayerStartingPos(roomData);
         PlayerData playerData = new PlayerData {
             pos = startingPos,
             type = type,
@@ -104,12 +116,10 @@ public class GameController : MonoBehaviour {
 		Player.Initialize(CurrRoom, playerData);
         // Save lastPlayedType!
         PlayerTypeHelper.SaveLastPlayedType(Player.PlayerType());
+        // Tell CharLineup.
+        charLineup.OnSetCurrPlayerType(playerData.type);
 	}
-    public void SwapPlayerType(PlayerTypes _type) {
-        // TEMP DEBUGGIN'
-        if (charLineup.Lineup.Contains(_type)) {
-            charLineup.AddPlayerType(_type);
-        }
+    public void SetPlayerType(PlayerTypes _type) {
         PlayerData playerData = Player.SerializeAsData() as PlayerData;
         playerData.type = _type;
         MakePlayer(playerData);
@@ -117,8 +127,8 @@ public class GameController : MonoBehaviour {
     }
     private void MaybeCyclePlayerType() {
         if (CanCyclePlayerType()) { // If we can...!
-            PlayerTypes nextType = charLineup.GetNextPlayerType(CurrRoom.Player.PlayerType());
-            SwapPlayerType(nextType);
+            PlayerTypes nextType = charLineup.GetNextPlayerType();
+            SetPlayerType(nextType);
         }
     }
 
@@ -133,7 +143,7 @@ public class GameController : MonoBehaviour {
 	}
 
 
-    private Vector2 GetPlayerStartingPosInRoom(RoomData rd) {
+    private Vector2 GetPlayerStartingPos(RoomData rd) {
         // Starting at RoomDoor?
         if (!string.IsNullOrEmpty(dm.doorToID)) {
             return rd.GetRoomDoorPos(dm.doorToID);// + new Vector2(0, -playerHeight*0.5f);
@@ -146,6 +156,14 @@ public class GameController : MonoBehaviour {
         else {
             return rd.DefaultPlayerStartPos();
         }
+    }
+    private PlayerTypes GetPlayerStartingType(RoomData rd) {
+        // Trial?? FORCE it to this PlayerType.
+        if (rd.MyCluster!=null && rd.MyCluster.IsCharTrial) {
+            return rd.MyCluster.TrialPlayerType;
+        }
+        // NOT a trial. Just return last played type!
+        return PlayerTypeHelper.LoadLastPlayedType();
     }
     
     private Vector2 GetPlayerStartingPosFromPrevExitPos(RoomData rd, int sideEntering, Vector2 posExited) {
@@ -185,13 +203,20 @@ public class GameController : MonoBehaviour {
         Player.EatEdiblesHolding(); // TEMP solution. Willdo: Bring Edibles between rooms.
     }
     
-
-    
     public void OnPlayerTouchRoomDoor(RoomDoor rd) {
-        //GoToMyRoom();TEMP TEST DISABLED RoomDoor functionality! Just open ClustSel for now!
-        // Open ClustSel scene!
-        OnPlayerExitRoom(rd.MyRoom);
-        SceneHelper.OpenScene(SceneNames.ClustSelect);
+        // TEMP TEST: If no Room to go to, open ClustSelect scene!
+        if (string.IsNullOrEmpty(rd.RoomToKey)) {
+            OnPlayerExitRoom(rd.MyRoom);
+            SceneHelper.OpenScene(SceneNames.ClustSelect);
+        }
+        // Otherwise...
+        else {
+            // TEMP HACK: Finished Trial? Unlock this PlayerType!
+            if (Temp_IsTrialEnd(rd.MyRoom)) {
+                charLineup.AddPlayerType(Temp_GetTrialEndPlayerType(rd.MyRoom));
+            }
+            GoToRoomDoorRoom(rd);
+        }
     }
     private void GoToRoomDoorRoom(RoomDoor rd) {
         // Register exiting the Room!
@@ -207,6 +232,15 @@ public class GameController : MonoBehaviour {
         else { // There IS a room to go to! Go!
             StartGameAtRoom(rdTo);
         }
+    }
+    
+    public void OnPlayerTouchCharUnlockOrb(CharUnlockOrb orb) {
+        // Start this character's trial!
+        StartPlayerTrialCluster(orb.MyPlayerType);
+    }
+    private void StartPlayerTrialCluster(PlayerTypes pt) {
+        RoomData rd = dm.GetPlayerTrialStartRoom(pt);
+        StartGameAtRoom(rd);
     }
     
 
@@ -242,15 +276,15 @@ public class GameController : MonoBehaviour {
 		// ALT + ___
 		if (isKey_alt) {
             // ALT + __ = Switch Characters
-            if (Input.GetKeyDown(KeyCode.C)) { SwapPlayerType(PlayerTypes.Clinga); }
-            else if (Input.GetKeyDown(KeyCode.D)) { SwapPlayerType(PlayerTypes.Dilata); }
-            else if (Input.GetKeyDown(KeyCode.F)) { SwapPlayerType(PlayerTypes.Flatline); }
-            else if (Input.GetKeyDown(KeyCode.I)) { SwapPlayerType(PlayerTypes.Flippa); }
-            else if (Input.GetKeyDown(KeyCode.J)) { SwapPlayerType(PlayerTypes.Jetta); }
-            else if (Input.GetKeyDown(KeyCode.U)) { SwapPlayerType(PlayerTypes.Jumpa); }
-            else if (Input.GetKeyDown(KeyCode.P)) { SwapPlayerType(PlayerTypes.Plunga); }
-            else if (Input.GetKeyDown(KeyCode.S)) { SwapPlayerType(PlayerTypes.Slippa); }
-            else if (Input.GetKeyDown(KeyCode.W)) { SwapPlayerType(PlayerTypes.Warpa); }
+            if (Input.GetKeyDown(KeyCode.C)) { Debug_TogPlayerInLineup(PlayerTypes.Clinga); }
+            else if (Input.GetKeyDown(KeyCode.D)) { Debug_TogPlayerInLineup(PlayerTypes.Dilata); }
+            else if (Input.GetKeyDown(KeyCode.F)) { Debug_TogPlayerInLineup(PlayerTypes.Flatline); }
+            else if (Input.GetKeyDown(KeyCode.I)) { Debug_TogPlayerInLineup(PlayerTypes.Flippa); }
+            else if (Input.GetKeyDown(KeyCode.J)) { Debug_TogPlayerInLineup(PlayerTypes.Jetta); }
+            else if (Input.GetKeyDown(KeyCode.U)) { Debug_TogPlayerInLineup(PlayerTypes.Jumpa); }
+            else if (Input.GetKeyDown(KeyCode.P)) { Debug_TogPlayerInLineup(PlayerTypes.Plunga); }
+            else if (Input.GetKeyDown(KeyCode.S)) { Debug_TogPlayerInLineup(PlayerTypes.Slippa); }
+            else if (Input.GetKeyDown(KeyCode.W)) { Debug_TogPlayerInLineup(PlayerTypes.Warpa); }
         }
         // SHIFT + ___
         if (isKey_shift) {
@@ -320,6 +354,15 @@ public class GameController : MonoBehaviour {
         }
     }
 #endif
+    private void Debug_TogPlayerInLineup(PlayerTypes pt) {
+        if (!charLineup.Lineup.Contains(pt)) {
+            SetPlayerType(pt);
+            charLineup.AddPlayerType(pt);
+        }
+        else {
+            charLineup.Debug_RemovePlayerType(pt);
+        }
+    }
     private void Debug_JumpToRoomAtSide(int side) {
         OnPlayerEscapeRoomBounds(side); // Pretend the player just exited in this direction.
         Player.SetPosLocal(CurrRoom.Debug_PlayerStartPosLocal()); // just put the player at the PlayerStart.

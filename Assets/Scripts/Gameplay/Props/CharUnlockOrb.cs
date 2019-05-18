@@ -8,7 +8,7 @@ public class CharUnlockOrb : Prop {
     [SerializeField] private SpriteRenderer sr_body=null;
     // Properties
     [SerializeField] private string myCharName = "Plunga";
-    private PlayerTypes myPlayerType; // set from myCharName.
+    public PlayerTypes MyPlayerType { get; private set; } // set from myCharName.
     //private int myIndex; // which CharUnlockOrb I am in Room.
     
     // Getters (Private)
@@ -30,10 +30,10 @@ public class CharUnlockOrb : Prop {
         base.BaseInitialize(_myRoom, data);
 
         this.myCharName = data.myCharName;
-        myPlayerType = PlayerTypeHelper.TypeFromString(myCharName);
+        MyPlayerType = PlayerTypeHelper.TypeFromString(myCharName);
 
         // Color my body!
-        Color color = PlayerBody.GetBodyColorNeutral(myPlayerType);
+        Color color = PlayerBody.GetBodyColorNeutral(MyPlayerType);
         sr_body.color = Color.Lerp(color,Color.black, 0.2f); // darken it slightly.
         
         UpdateUnlockedVisuals();
@@ -44,16 +44,16 @@ public class CharUnlockOrb : Prop {
     //  Doers
     // ----------------------------------------------------------------
     private void UpdateUnlockedVisuals() {
-        bool didUnlockType = lineup.Lineup.Contains(myPlayerType);
+        bool didUnlockType = lineup.Lineup.Contains(MyPlayerType);
         myCollider.enabled = !didUnlockType;
         if (didUnlockType) {
             GameUtils.SetSpriteAlpha(sr_body, 0.1f);
         }
     }
-    private void UnlockMyChar() {
-        lineup.AddPlayerType(myPlayerType);
-        UpdateUnlockedVisuals();
-    }
+    //private void UnlockMyChar() {
+    //    lineup.AddPlayerType(myPlayerType);
+    //    UpdateUnlockedVisuals();
+    //}
 
 
     // ----------------------------------------------------------------
@@ -62,7 +62,7 @@ public class CharUnlockOrb : Prop {
     private void OnTriggerEnter2D(Collider2D col) {
         Player player = col.gameObject.GetComponent<Player>();
         if (player != null) {
-            UnlockMyChar();
+            MyRoom.GameController.OnPlayerTouchCharUnlockOrb(this);
         }
     }
 

@@ -72,10 +72,19 @@ public class Buzzsaw : Collidable {
     }
 
 
+
+    // ----------------------------------------------------------------
+    //  Editing
+    // ----------------------------------------------------------------
     public override void FlipHorz() {
         base.FlipHorz();
         posA *= Vector2.left;
         posB *= Vector2.left;
+    }
+    public override void FlipVert() {
+        base.FlipVert();
+        posA *= Vector2.down;
+        posB *= Vector2.down;
     }
     override public void Move(Vector2 delta) {
         base.Move(delta);

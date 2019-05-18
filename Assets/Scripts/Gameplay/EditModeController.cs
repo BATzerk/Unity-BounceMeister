@@ -209,6 +209,8 @@ public class EditModeController : MonoBehaviour {
                 if (CurrRoom != null) {
                     // CONTROL + SHIFT + X = Flip Horizontal!
                     if (Input.GetKeyDown(KeyCode.X)) { CurrRoom.FlipHorz(); }
+                    // CONTROL + SHIFT + Y = Flip Vertical!
+                    if (Input.GetKeyDown(KeyCode.Y)) { CurrRoom.FlipVert(); }
                     // CONTROL + SHIFT + [ARROW KEYS] = Move all Props!
                     else if (Input.GetKeyDown(KeyCode.LeftArrow))  { CurrRoom.MoveAllProps(Vector2Int.L); }
                     else if (Input.GetKeyDown(KeyCode.RightArrow)) { CurrRoom.MoveAllProps(Vector2Int.R); }

@@ -12,9 +12,10 @@ static public class GameProperties {
     // Gameplay
     public const float UnitSize = 1f; // Grid-snap units! In Unity units.
     
+    public const int TEMP_TrialsWorldIndex = 7; // TEMP HACK they're all in W7.
     
     // Rooms!
-    public const int NUM_WORLDS = 6; // including World 0 for testing.
+    public const int NUM_WORLDS = 8; // including World 0 for testing.
     public const int FirstWorld = 1;
     public const int LastWorld = 4;
     public static bool IsFirstCluster(RoomAddress address) {

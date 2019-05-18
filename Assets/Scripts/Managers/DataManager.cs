@@ -51,6 +51,10 @@ public class DataManager {
         RoomAddress address = LastPlayedRoomAddress(worldIndex);
         return GetRoomData(address, false);
     }
+    public RoomData GetPlayerTrialStartRoom(PlayerTypes pt) {
+        string roomKey = pt.ToString() + "TrialStart"; // TEMP HARDCODED finding.
+        return GetRoomData(GameProperties.TEMP_TrialsWorldIndex, roomKey, false);
+    }
 
 
     // ----------------------------------------------------------------

@@ -193,7 +193,7 @@ public class WorldData {
             // If this is a ClusterStart room...!
             if (rd.isClustStart) {
                 // Add a new Cluster, and populate it!
-                RoomClusterData newClust = new RoomClusterData(worldIndex);
+                RoomClusterData newClust = new RoomClusterData(worldIndex, rd.RoomKey);
                 clusters.Add(newClust);
                 RecursivelyAddRoomToCluster(rd, newClust);
                 // Update its bounds!

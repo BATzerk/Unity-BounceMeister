@@ -1,32 +1,31 @@
-roomProperties posGlobal:(238.0, 272.0);designerFlag:0
+roomProperties posGlobal:(228.0, 356.0);designerFlag:0
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+Ground myRect:(x:1.50, y:6.00, width:7.00, height:6.00)
+Ground myRect:(x:11.50, y:-4.00, width:5.00, height:2.00)
+Ground myRect:(x:15.50, y:-3.50, width:3.00, height:13.00)
+Ground myRect:(x:-1.00, y:-1.00, width:2.00, height:14.00)
+Ground myRect:(x:-4.50, y:6.00, width:7.00, height:4.00)
+Ground myRect:(x:1.50, y:-2.00, width:7.00, height:2.00)
+Ground myRect:(x:11.50, y:-9.00, width:5.00, height:2.00)
+Ground myRect:(x:20.00, y:-1.50, width:12.00, height:9.00)
+Ground myRect:(x:7.00, y:-17.50, width:38.00, height:5.00);mayPlayerEat:False
+Ground myRect:(x:22.50, y:7.50, width:7.00, height:17.00)
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+Ground myRect:(x:11.50, y:1.00, width:5.00, height:2.00)
 Ground myRect:(x:-21.50, y:-14.00, width:9.00, height:12.00)
 Ground myRect:(x:-23.00, y:9.00, width:6.00, height:18.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:11.50, y:3.00, width:5.00, height:2.00)
-Ground myRect:(x:1.50, y:-6.00, width:7.00, height:2.00)
-Ground myRect:(x:-10.50, y:-15.00, width:3.00, height:2.00)
-Ground myRect:(x:13.50, y:-15.00, width:27.00, height:2.00)
+Ground myRect:(x:1.50, y:-7.00, width:7.00, height:2.00)
 Ground myRect:(x:-17.50, y:14.00, width:5.00, height:4.00)
 Ground myRect:(x:-7.00, y:5.50, width:2.00, height:25.00)
-Ground myRect:(x:22.50, y:10.00, width:7.00, height:12.00)
-Ground myRect:(x:15.50, y:-3.00, width:3.00, height:14.00)
-Ground myRect:(x:-1.00, y:0.00, width:2.00, height:14.00)
-Ground myRect:(x:1.50, y:8.00, width:7.00, height:6.00)
-Ground myRect:(x:11.50, y:-3.00, width:5.00, height:2.00)
-Ground myRect:(x:-4.50, y:6.00, width:7.00, height:4.00)
-Ground myRect:(x:20.00, y:-1.00, width:12.00, height:10.00)
-Ground myRect:(x:7.00, y:-17.50, width:38.00, height:5.00);mayPlayerEat:False
-Ground myRect:(x:1.50, y:0.00, width:7.00, height:2.00)
-Ground myRect:(x:11.50, y:-9.00, width:5.00, height:2.00)
+Ground myRect:(x:-10.50, y:-15.00, width:3.00, height:2.00)
+Ground myRect:(x:14.00, y:-15.00, width:24.00, height:2.00);isPlayerRespawn:True
 Platform myRect:(x:-14.50, y:-14.50, width:5.00, height:1.00)
 PlayerStart pos:(23.0, -13.0)
-Snack pos:(-4.0, 9.5);playerType:Any
 Snack pos:(-4.0, 2.0);playerType:Any
+Snack pos:(-4.0, 9.5);playerType:Any
+Spikes myRect:(x:1.50, y:-5.50, width:7.00, height:1.00);rotation:0
+Spikes myRect:(x:11.50, y:2.50, width:5.00, height:1.00);rotation:0
+Spikes myRect:(x:1.50, y:-0.50, width:7.00, height:1.00);rotation:0
 Spikes myRect:(x:-4.00, y:-14.50, width:12.00, height:1.00);rotation:0;onOfferData:(1, 1, 0)
 Spikes myRect:(x:11.50, y:-7.50, width:5.00, height:1.00);rotation:0
-Spikes myRect:(x:11.50, y:-1.50, width:5.00, height:1.00);rotation:0
-Spikes myRect:(x:1.50, y:-4.50, width:7.00, height:1.00);rotation:0
-Spikes myRect:(x:11.50, y:4.50, width:5.00, height:1.00);rotation:0
-Spikes myRect:(x:1.50, y:1.50, width:7.00, height:1.00);rotation:0
-
+Spikes myRect:(x:11.50, y:-2.50, width:5.00, height:1.00);rotation:0

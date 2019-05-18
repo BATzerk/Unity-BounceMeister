@@ -29,9 +29,9 @@ public class Platform : BaseGround {
         bodySprite.sprite = canDropThru ? s_canDropThru : s_cannotDropThru;
 	}
 
-	// ----------------------------------------------------------------
-	//  Serializing
-	// ----------------------------------------------------------------
+    // ----------------------------------------------------------------
+    //  Serializing
+    // ----------------------------------------------------------------
     override public PropData SerializeAsData() {
         PlatformData data = new PlatformData {
             myRect = MyRect(),

@@ -70,10 +70,14 @@ abstract public class Prop : MonoBehaviour {
     public void Debug_Rotate(float delta) {
         rotation = Mathf.Round(rotation + delta);
     }
-	virtual public void FlipHorz() {
-		pos = new Vector2(-pos.x, pos.y);
-		rotation = -rotation;
-	}
+    virtual public void FlipHorz() {
+        pos = new Vector2(-pos.x, pos.y);
+        rotation = -rotation;
+    }
+    virtual public void FlipVert() {
+        pos = new Vector2(pos.x, -pos.y);
+        //rotation += 180;
+    }
     virtual public void Move(Vector2 delta) {
         pos += delta;
     }

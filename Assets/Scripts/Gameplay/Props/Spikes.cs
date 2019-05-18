@@ -81,6 +81,14 @@ public class Spikes : Collidable, IOnOffable {
 	}
     
 
+    // ----------------------------------------------------------------
+    //  Editing
+    // ----------------------------------------------------------------
+    public override void FlipVert() {
+        pos = new Vector2(pos.x, -pos.y);
+        rotation += 180;
+    }
+
 
 	// ----------------------------------------------------------------
 	//  Serializing

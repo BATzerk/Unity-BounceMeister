@@ -52,7 +52,7 @@ public class CharBarrel : Prop {
         PlayerTypes playerNewType = CharTypeInMe;
         PlayerTypes myNewType = player.PlayerType();
         // Set Player's type!
-        MyRoom.SwapPlayerType(playerNewType);
+        MyRoom.GameController.SetPlayerType(playerNewType);
         // Set/save my type!
         SetCharTypeInMe(myNewType);
         SaveStorage.SetString(SaveKeys.CharBarrelTypeInMe(MyRoom.MyRoomData, myIndex), myNewType.ToString());

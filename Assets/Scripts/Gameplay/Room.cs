@@ -266,7 +266,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
     private void AddHardcodedRoomElements() {
         //// CANDO: If this function starts getting big, make new Prop, Decor. Has prefabName, pos, rotation, scale. :)
         if (RoomKey == "IntroPlunge") {
-            AddDecor("PlungeImplicationGhost", new Vector2(-4.5f, -3.7f), new Vector2(-8,8));
+            AddDecor("PlungeImplicationGhost", new Vector2(4.5f, -3.7f), new Vector2(8,8));
         }
         //else if (RoomKey == "IntroHover") {
         //    AddDecor("InstructsHover", new Vector2(0, 11));
@@ -278,14 +278,6 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
         GameUtils.ParentAndReset(go, this.transform);
         go.transform.localPosition = _pos;
         go.transform.localScale = _scale;
-    }
-
-
-    // ----------------------------------------------------------------
-    //  Doers
-    // ----------------------------------------------------------------
-    public void SwapPlayerType(PlayerTypes _type) {
-        gameControllerRef.SwapPlayerType(_type);
     }
 
 
@@ -317,10 +309,10 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
     //	Editing
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     public void FlipHorz() {
-        Prop[] allProps = FindObjectsOfType<Prop>();
-        foreach (Prop prop in allProps) {
-            prop.FlipHorz();
-        }
+        foreach (Prop prop in FindObjectsOfType<Prop>()) { prop.FlipHorz(); }
+    }
+    public void FlipVert() {
+        foreach (Prop prop in FindObjectsOfType<Prop>()) { prop.FlipVert(); }
     }
     public void MoveAllProps(Vector2Int dir) {
         MoveAllProps(dir * GameProperties.UnitSize);
