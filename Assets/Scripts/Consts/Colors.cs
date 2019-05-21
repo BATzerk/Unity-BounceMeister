@@ -24,7 +24,7 @@ static public class Colors {
             case 4: return Hungaria;
             case 5: return GrayClicks;
             case 6: return NoirDark;
-            case 7: return NoirLight;
+            //case 7: return NoirLight;QQQ
             default: return TestingGreen;
         }
     }

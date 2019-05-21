@@ -23,7 +23,7 @@ public class Jetta : Player {
     private const float JetDuration = 1.9f; // in SECONDS, how long we may jet until recharging.
 	public  const float FuelCapacity = 100f; // this number doesn't matter at *all*. Just has to be something.
 	private const float FuelSpendRate = FuelCapacity/JetDuration; // how much fuel we spend PER SECOND.
-	private const float JetTargetYVel = 0.04f; // TEST
+	private const float JetTargetYVel = 0.052f; // TEST
 //	private readonly Vector2 JetForce = new Vector2(0, 0.05f);
 	// Properties
 	public bool IsJetting { get; private set; }
@@ -78,7 +78,7 @@ public class Jetta : Player {
 		if (IsJetting) {
 			// Apply jet force!
 //			vel += JetForce;
-			vel += new Vector2(0, (JetTargetYVel-vel.y)/4f);
+			vel += new Vector2(0, (JetTargetYVel-vel.y)/8f);
 			// Spend that fuel!
 			FuelLeft -= Time.deltaTime * FuelSpendRate;
             myJettaBody.UpdateFillSprite();
@@ -134,19 +134,18 @@ public class Jetta : Player {
 		StopWallSlide(); // can't both jet AND wall-slide.
 		IsJetting = true;
 		groundedSinceJet = false;
-		isPreservingWallKickVel = false; // When we jet, forget about retaining my wall-kick vel!
+		//isPreservingWallKickVel = false; // When we jet, forget about retaining my wall-kick vel!
 		myJettaBody.OnStartJet();
-//		GameManagers.Instance.EventManager.OnPlayerStartJet(this);
 	}
 	private void StopJet() {
 		if (!IsJetting) { return; } // Not jetting? Do nothing.
 		IsJetting = false;
+        isPreservingWallKickVel = false; // When we stop jet, forget about retaining my wall-kick vel!
 		myJettaBody.OnStopJet();
 	}
 	private void RechargeJet() {
 		SetJetFuelLeft(FuelCapacity); // fill 'er up regular.
 		myJettaBody.OnRechargeJet();
-//		GameManagers.Instance.EventManager.OnPlayerRechargeJet(this);
 	}
 
 	private void SetJetFuelLeft(float _fuelLeft) {

@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour {
 	private EventManager eventManager { get { return GameManagers.Instance.EventManager; } }
     private bool CanCyclePlayerType() {
         if (!CurrRoom.Player.IsGrounded()) { return false; } // Not grounded? Can't cycle.
-        if (CurrRoom.MyClusterData.IsCharTrial) { return false; } // Char Trial? No cycling.
+        if (CurrRoom.MyClusterData!=null && CurrRoom.MyClusterData.IsCharTrial) { return false; } // Char Trial? No cycling.
         return charLineup.CanCyclePlayerType(); // Ask CharLineup.
     }
     

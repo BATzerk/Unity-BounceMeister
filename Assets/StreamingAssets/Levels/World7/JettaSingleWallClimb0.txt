@@ -1,0 +1,9 @@
+roomProperties posGlobal:(916.0, 508.0);designerFlag:1
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+Ground myRect:(x:15.00, y:-6.50, width:22.00, height:19.00)
+Ground myRect:(x:-19.50, y:4.00, width:13.00, height:26.00)
+Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
+PlayerStart pos:(2.0, -13.0)
+Spikes myRect:(x:-12.50, y:4.00, width:26.00, height:1.00);rotation:270
+Spikes myRect:(x:3.50, y:-6.50, width:1.00, height:1.00);rotation:90
