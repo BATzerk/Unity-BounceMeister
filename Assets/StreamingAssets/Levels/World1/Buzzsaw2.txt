@@ -1,4 +1,4 @@
-roomProperties posGlobal:(466.0, 914.0);designerFlag:4
+roomProperties posGlobal:(122.0, 342.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Buzzsaw size:(3.0, 3.0);locOffset:0;speed:1.1;posA:(-11.0, -3.0);posB:(11.0, -3.0)
 Buzzsaw size:(3.0, 3.0);locOffset:3.14159;speed:1.1;posA:(-7.0, 9.0);posB:(15.0, 9.0)

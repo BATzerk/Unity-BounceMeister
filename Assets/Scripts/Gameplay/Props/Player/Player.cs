@@ -94,7 +94,7 @@ abstract public class Player : PlatformCharacter {
 		// TESTing out controls!
 		float mult = 1;//feetOnGround() ? 1 : 0.65f;
 		if (!MathUtils.IsSameSign(dirX, vel.x)) { // Pushing the other way? Make us go WAY the other way, ok?
-			mult = 3;
+			//mult = 3;QQQ disabled for now.
 			// If we're pushing AGAINST our velocity AND we just kicked off a wall, don't allow the input, ok?
 			if (isPostWallKickInputLock) {//Time.time < timeLastWallKicked+PostWallKickHorzInputLockDur) {
 				mult = 0;

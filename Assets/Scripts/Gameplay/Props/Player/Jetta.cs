@@ -15,9 +15,26 @@ public class Jetta : Player {
     override protected Vector2 Gravity {
         get {
             if (IsJetting) { return Vector2.zero; }
-            return base.Gravity;
+            Vector2 baseGravity = new Vector2(0, -0.024f);
+            //if (IsAgainstWall()) { return baseGravity * 0.2f; } // On a wall? Reduce gravity!
+            return baseGravity;
         }
     }
+    override protected float FrictionAir {
+        get {
+            return isPreservingWallKickVel ? 1f : 0.94f; // No air friction while we're preserving our precious wall-kick vel.
+        }
+    }
+    override protected float FrictionGround {
+        get {
+            //if (Mathf.Abs(LeftStick.x) > 0.1f) { return 0.7f; } // Providing input? Less friction!
+            return 0.82f; // No input? Basically halt.
+        }
+    }
+    override protected float InputScaleX { get { return 0.08f; } }
+    override protected float WallSlideMinYVel { get { return -0.28f; } }
+    override protected float JumpForce { get { return 0.46f; } }
+    override protected Vector2 WallKickVel { get { return new Vector2(0.32f,0.4f); } }
     // Constants
     private const float JetDuration = 1.9f; // in SECONDS, how long we may jet until recharging.
     public  const float FuelCapacity = 100f; // this number doesn't matter at *all*. Just has to be something.
@@ -77,7 +94,7 @@ public class Jetta : Player {
         if (IsJetting) {
             // Apply jet force!
 //          vel += JetForce;
-            vel += new Vector2(0, (JetTargetYVel-vel.y)/8f);
+            vel += new Vector2(0, (JetTargetYVel-vel.y)/4f);
             // Spend that fuel!
             FuelLeft -= Time.deltaTime * FuelSpendRate;
             //myJettaBody.UpdateFillSprite();
