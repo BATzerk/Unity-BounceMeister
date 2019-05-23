@@ -37,7 +37,7 @@ public class JumpaBody : PlayerBody {
     // ----------------------------------------------------------------
 	public void OnJump() {
         if (myJumpa.IsJumpRecharged) {
-			SetBodyColor(bodyColor_neutral);
+			SetBodyColor(c_bodyNeutral);
 		}
 		else {
 			SetBodyColor(bodyColor_jumpsExhausted);
@@ -45,7 +45,7 @@ public class JumpaBody : PlayerBody {
 	}
 
 	public void OnRechargeJumps() {
-        SetBodyColor(bodyColor_neutral);
+        SetBodyColor(c_bodyNeutral);
         // Flash me white!
         GameUtils.SetSpriteAlpha(sr_highlight, 1f);
         LeanTween.cancel(sr_highlight.gameObject);

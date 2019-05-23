@@ -262,16 +262,6 @@ public class GameController : MonoBehaviour {
 		bool isKey_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 		bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
-        // ESCAPE or P = Toggle Pause!
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) {
-            gameTimeController.TogglePause();
-        }
-        
-        // Cycle PlayerType!
-        if (InputController.Instance.IsCycleChar_Press) {
-            MaybeCyclePlayerType();
-        }
-
 		// ~~~~ DEBUG ~~~~
 		// ALT + ___
 		if (isKey_alt) {
@@ -301,8 +291,17 @@ public class GameController : MonoBehaviour {
         
         // NOTHING + _____
         if (!isKey_alt && !isKey_shift && !isKey_control) {
+            // ESCAPE or P = Toggle Pause!
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) {
+                gameTimeController.TogglePause();
+            }
+            
+            // Cycle PlayerType!
+            else if (InputController.Instance.IsCycleChar_Press) {
+                MaybeCyclePlayerType();
+            }
             // BACKSPACE = Clear current Room save data.
-            if (Input.GetKeyDown(KeyCode.Backspace)) {
+            else if (Input.GetKeyDown(KeyCode.Backspace)) {
                 dm.ClearRoomSaveData(CurrRoom);
                 SceneHelper.ReloadScene();
                 return;

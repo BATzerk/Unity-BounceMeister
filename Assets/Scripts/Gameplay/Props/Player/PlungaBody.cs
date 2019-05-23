@@ -43,7 +43,7 @@ public class PlungaBody : PlayerBody {
 	public void OnStopPlunge() {
         SetVisualScale(Vector2.one);
         if (myPlunga.IsPlungeRecharged) {
-			SetBodyColor(bodyColor_neutral);
+			SetBodyColor(c_bodyNeutral);
 		}
 		else {
 			SetBodyColor(bodyColor_plungeExhausted);
@@ -52,7 +52,7 @@ public class PlungaBody : PlayerBody {
 
 	public void OnRechargePlunge() {
         SetVisualScale(Vector2.one);
-        SetBodyColor(bodyColor_neutral);
+        SetBodyColor(c_bodyNeutral);
         // Flash me white!
         GameUtils.SetSpriteAlpha(sr_highlight, 1f);
         LeanTween.cancel(sr_highlight.gameObject);

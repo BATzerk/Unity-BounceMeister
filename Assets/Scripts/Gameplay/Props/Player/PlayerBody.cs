@@ -9,7 +9,7 @@ abstract public class PlayerBody : MonoBehaviour {
     [SerializeField] protected PlayerBodyEyes eyes=null;
     [SerializeField] private SpriteRenderer sr_body=null;
 	// Properties
-	protected Color bodyColor_neutral = Color.magenta;
+	protected Color c_bodyNeutral = Color.magenta;
 	private Color bodyColor;
 	private float alpha; // we modify this independently of bodyColor.
 	// References
@@ -41,10 +41,10 @@ abstract public class PlayerBody : MonoBehaviour {
         myBasePlayer = GetComponentInParent<Player>();
     }
     virtual protected void Start() {
-		bodyColor_neutral = GetBodyColorNeutral(myBasePlayer.PlayerType());
+		c_bodyNeutral = GetBodyColorNeutral(myBasePlayer.PlayerType());
 
 		alpha = 1;
-		SetBodyColor(bodyColor_neutral);
+		SetBodyColor(c_bodyNeutral);
         SetVisualScale(Vector2.one);
         OnStopWallSlide();
 	}
