@@ -15,8 +15,10 @@ static public class Colors {
     private const int NoirLight = 8;
     
     static private int GetTheme(int worldIndex) {
+        // Debug ignore theme? Return TestingGreen theme.
+        if (SaveStorage.GetBool(SaveKeys.Debug_IgnoreColorTheme)) { return TestingGreen; }
+        // Otherwise, return the theme for this world!
         switch (worldIndex) {
-            //case 2: return MauveStorm;
             case 0: return TestingGreen;
             case 1: return BasicGreen;
             case 2: return MyYachtBlue;
@@ -24,7 +26,7 @@ static public class Colors {
             case 4: return Hungaria;
             case 5: return GrayClicks;
             case 6: return NoirDark;
-            //case 7: return NoirLight;QQQ
+            case 7: return NoirLight;
             default: return TestingGreen;
         }
     }

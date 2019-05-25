@@ -1,4 +1,4 @@
-roomProperties posGlobal:(1134.0, 250.0);designerFlag:4
+roomProperties posGlobal:(862.0, 318.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 DamageableGround myRect:(x:8.00, y:-3.00, width:4.00, height:4.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
 DamageableGround myRect:(x:8.00, y:1.00, width:4.00, height:4.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True

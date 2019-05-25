@@ -262,10 +262,30 @@ public class GameController : MonoBehaviour {
 		bool isKey_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 		bool isKey_shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
-		// ~~~~ DEBUG ~~~~
-		// ALT + ___
+        // Clearing Save Data
+        if (Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(KeyCode.Delete)) {
+            // CONTROL + SHIFT + BACKSPACE = Clear ALL save data!
+            if (isKey_control && isKey_shift) {
+                dm.ClearAllSaveData();
+                SceneHelper.ReloadScene();
+                return;
+            }
+            // SHIFT + BACKSPACE = Clear current Cluster save data.
+            else if (isKey_shift) {
+                dm.ClearClusterSaveData(CurrRoom.MyClusterData);
+                SceneHelper.ReloadScene();
+                return;
+            }
+            // BACKSPACE = Clear current Room save data.
+            else {
+                dm.ClearRoomSaveData(CurrRoom);
+                SceneHelper.ReloadScene();
+                return;
+            }
+        }
+
+        // ALT + __ = Toggle/Switch Characters
 		if (isKey_alt) {
-            // ALT + __ = Switch Characters
             if (Input.GetKeyDown(KeyCode.C)) { Debug_TogPlayerInLineup(PlayerTypes.Clinga); }
             else if (Input.GetKeyDown(KeyCode.D)) { Debug_TogPlayerInLineup(PlayerTypes.Dilata); }
             else if (Input.GetKeyDown(KeyCode.F)) { Debug_TogPlayerInLineup(PlayerTypes.Flatline); }
@@ -276,18 +296,10 @@ public class GameController : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.S)) { Debug_TogPlayerInLineup(PlayerTypes.Slippa); }
             else if (Input.GetKeyDown(KeyCode.W)) { Debug_TogPlayerInLineup(PlayerTypes.Warpa); }
         }
-        // SHIFT + ___
-        if (isKey_shift) {
+        // SHIFT + C = Toggle IgnoreColorTheme.
+        if (isKey_shift && Input.GetKeyDown(KeyCode.C)) {
+            Debug_ToggleIgnoreColorTheme(); return;
         }
-        // CONTROL + ___
-        if (isKey_control) {
-            // CONTROL + DELETE = Clear ALL save data!
-            if (Input.GetKeyDown(KeyCode.Delete)) {
-                GameManagers.Instance.DataManager.ClearAllSaveData();
-                SceneHelper.ReloadScene();
-                return;
-            }
-		}
         
         // NOTHING + _____
         if (!isKey_alt && !isKey_shift && !isKey_control) {
@@ -295,17 +307,11 @@ public class GameController : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) {
                 gameTimeController.TogglePause();
             }
-            
             // Cycle PlayerType!
             else if (InputController.Instance.IsCycleChar_Press) {
                 MaybeCyclePlayerType();
             }
-            // BACKSPACE = Clear current Room save data.
-            else if (Input.GetKeyDown(KeyCode.Backspace)) {
-                dm.ClearRoomSaveData(CurrRoom);
-                SceneHelper.ReloadScene();
-                return;
-            }
+
             // Room-Jumping
             else if (Input.GetKeyDown(KeyCode.Equals))       { Debug_JumpToRoomAtSide(Sides.T); return; }
             else if (Input.GetKeyDown(KeyCode.RightBracket)) { Debug_JumpToRoomAtSide(Sides.R); return; }
@@ -366,6 +372,11 @@ public class GameController : MonoBehaviour {
         OnPlayerEscapeRoomBounds(side); // Pretend the player just exited in this direction.
         Player.SetPosLocal(CurrRoom.Debug_PlayerStartPosLocal()); // just put the player at the PlayerStart.
         Player.SetVel(Vector2.zero);
+    }
+    private void Debug_ToggleIgnoreColorTheme() {
+        bool val = SaveStorage.GetBool(SaveKeys.Debug_IgnoreColorTheme);
+        SaveStorage.SetBool(SaveKeys.Debug_IgnoreColorTheme, !val);
+        SceneHelper.ReloadScene();
     }
 
     private void OnGUI() {

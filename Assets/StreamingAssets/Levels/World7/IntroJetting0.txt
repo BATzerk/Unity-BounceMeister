@@ -1,0 +1,11 @@
+roomProperties posGlobal:(106.0, -166.0);designerFlag:4
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+Ground myRect:(x:0.00, y:14.50, width:52.00, height:11.00)
+Ground myRect:(x:23.00, y:10.50, width:6.00, height:11.00)
+Ground myRect:(x:0.00, y:-12.50, width:52.00, height:15.00)
+Ground myRect:(x:-18.50, y:-12.00, width:15.00, height:16.00)
+Ground myRect:(x:-23.00, y:9.50, width:6.00, height:13.00)
+Ground myRect:(x:19.00, y:-10.50, width:14.00, height:19.00)
+InfoSign pos:(-17.0, -4.0);myText:Hold JUMP to JET
+PlayerStart pos:(-15.5, -3.0)
+Spikes myRect:(x:2.50, y:-4.50, width:29.00, height:1.00);rotation:0

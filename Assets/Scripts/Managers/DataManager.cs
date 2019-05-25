@@ -152,11 +152,16 @@ public class DataManager {
         Debug.Log ("All SaveStorage CLEARED!");
     }
 
+    public void ClearClusterSaveData(RoomClusterData clustData) {
+        if (clustData == null) { Debug.LogWarning("Can't clear NULL Cluster save data!"); return; } // Safety check.
+        foreach (RoomData rd in clustData.rooms) { ClearRoomSaveData(rd); }
+        Debug.Log("Cleared CLUSTER save data!");
+    }
     public void ClearRoomSaveData(Room room) { ClearRoomSaveData(room.MyRoomData); }
     public void ClearRoomSaveData(RoomData rd) {
         // Delete saved values!
         SaveStorage.DeleteKey(SaveKeys.HasPlayerBeenInRoom(rd));
-        for (int i=0; i<99; i++) { // Sloppy and inefficient!! But NBD for our purposes.
+        for (int i=0; i<9; i++) { // Sloppy and inefficient!! But NBD for our purposes.
             SaveStorage.DeleteKey(SaveKeys.DidEatGem(rd, i));
             SaveStorage.DeleteKey(SaveKeys.DidEatSnack(rd, i));
             SaveStorage.DeleteKey(SaveKeys.IsGateUnlocked(rd, i));
