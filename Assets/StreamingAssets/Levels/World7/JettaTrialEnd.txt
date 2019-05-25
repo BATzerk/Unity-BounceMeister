@@ -1,8 +1,11 @@
-roomProperties posGlobal:(682.0, 286.0);designerFlag:2
+roomProperties posGlobal:(682.0, 280.0);designerFlag:2
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:17.00, y:0.00, width:18.00, height:32.00)
-Ground myRect:(x:0.00, y:11.00, width:52.00, height:18.00)
-Ground myRect:(x:-24.00, y:4.50, width:4.00, height:23.00)
-Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
-PlayerStart pos:(-20.0, -13.0)
-RoomDoor pos:(6.5, -13.0);myID:0;worldToIndex:1;roomToKey:GetJetta;doorToID:
+Ground myRect:(x:0.00, y:12.50, width:52.00, height:15.00)
+Ground myRect:(x:-9.00, y:-13.50, width:18.00, height:9.00)
+Ground myRect:(x:-19.00, y:-10.00, width:14.00, height:8.00)
+Ground myRect:(x:-23.00, y:9.50, width:6.00, height:21.00)
+Ground myRect:(x:0.00, y:-16.00, width:52.00, height:8.00)
+Ground myRect:(x:20.00, y:2.00, width:12.00, height:36.00)
+PlayerStart pos:(-18.0, -5.0)
+RoomDoor pos:(12.5, -11.0);myID:0;worldToIndex:1;roomToKey:GetJetta;doorToID:
+

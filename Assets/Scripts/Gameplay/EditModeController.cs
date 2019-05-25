@@ -116,10 +116,12 @@ public class EditModeController : MonoBehaviour {
         string newRoomKey = currRD.MyWorldData.GetUnusedRoomKey(currRD.RoomKey);
         RoomSaverLoader.SaveRoomFileAs(currRD, currRD.WorldIndex, newRoomKey);
         dm.ReloadWorldDatas();
-        RoomData newLD = dm.GetRoomData(currRD.WorldIndex,newRoomKey, false);
-        newLD.SetPosGlobal(newLD.PosGlobal + new Vector2(15,-15)*GameProperties.UnitSize); // offset its position a bit.
-        RoomSaverLoader.UpdateRoomPropertiesInRoomFile(newLD); // update file!
-        dm.currRoomData = newLD;
+        RoomData newRD = dm.GetRoomData(currRD.WorldIndex,newRoomKey, false);
+        newRD.isClustStart = false; // say new room's NOT a clustStart.
+        newRD.SetPosGlobal(newRD.PosGlobal + new Vector2(15,-15)*GameProperties.UnitSize); // offset its position a bit.
+        newRD.SetDesignerFlag(0); // Reset its designerFlag
+        RoomSaverLoader.UpdateRoomPropertiesInRoomFile(newRD); // update file!
+        dm.currRoomData = newRD;
         SceneHelper.ReloadScene();
     }
     private void OpenRoomTextFile() {

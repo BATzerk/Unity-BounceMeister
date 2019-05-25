@@ -14,7 +14,7 @@ public class DataManager {
     public SnackCount SnackCountGame = new SnackCount(); // ALL snack counts totaled together!
     // Entering-Room Properties
     public string doorToID = null; // defined when use a RoomDoor. When we enter a room, this is the door we'll start at!
-    public Vector2 playerGroundedRespawnPos=Vector2Extensions.NaN; // I'll respawn at this pos. Set when we leave a Ground that has IsPlayerRespawn.
+    public PlayerData playerGroundedRespawnData=null; // I'll respawn at this pos. Set when we leave a Ground that has IsPlayerRespawn.
     
 	// ----------------------------------------------------------------
 	//  Getters
@@ -177,7 +177,7 @@ public class DataManager {
     /// Resets static values that determine where Player will start when reloading a Room (e.g. RoomDoorID, prev-room-exit-pos, grounded-respawn-pos).
     public void ResetRoomEnterValues() {
         doorToID = null;
-        playerGroundedRespawnPos = Vector2Extensions.NaN;
+        playerGroundedRespawnData = null;
     }
 
 

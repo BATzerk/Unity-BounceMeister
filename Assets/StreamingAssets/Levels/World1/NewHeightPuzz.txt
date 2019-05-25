@@ -1,4 +1,4 @@
-roomProperties posGlobal:(416.0, 1288.0);designerFlag:1
+roomProperties posGlobal:(416.0, 1474.0);designerFlag:1
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Gem pos:(-9.0, 9.0);type:1
 Ground myRect:(x:-16.00, y:-2.00, width:20.00, height:18.00)

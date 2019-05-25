@@ -70,6 +70,7 @@ public class MiniMapRoomTile : MonoBehaviour {
         imageLine.name = "BorderLine_" + side;
         imageLine.SetThickness(4);
         imageLine.SetColor(new Color(0,0,0, 0.75f));
+        imageLine.gameObject.layer = this.gameObject.layer;
         i_borders[side] = imageLine;
     }
     

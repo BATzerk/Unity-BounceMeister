@@ -126,6 +126,12 @@ abstract public class Player : PlatformCharacter {
     }
 
     // Debug
+    public List<Edible> Temp_GetEdiblesHolding() { return ediblesHolding; }
+    public void Temp_SetEdiblesHolding(List<Edible> _edibles) {
+        for (int i=0; i<_edibles.Count; i++) {
+            OnTouchEdible(_edibles[i]);
+        }
+    }
  //   private void OnDrawGizmos() {
 	//	if (myRoom==null) { return; }
 	//	Gizmos.color = Color.cyan;
@@ -517,7 +523,13 @@ abstract public class Player : PlatformCharacter {
         posX = Mathf.Max(gr.x-gr.width*0.5f + marginX, posX);
         posX = Mathf.Min(gr.x+gr.width*0.5f - marginX, posX);
 
-        GameManagers.Instance.DataManager.playerGroundedRespawnPos = new Vector2(posX, posY);
+        GameManagers.Instance.DataManager.playerGroundedRespawnData = new PlayerData {
+            pos = new Vector2(posX,posY),
+            type = PlayerType(),
+            dirFacing = DirFacing,
+            rotation = 0,
+            vel = Vector2.zero,
+        };
     }
 
 

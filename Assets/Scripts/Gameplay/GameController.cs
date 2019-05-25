@@ -65,11 +65,7 @@ public class GameController : MonoBehaviour {
     //public void StartGameAtRoom (int worldIndex, string roomKey) { StartGameAtRoom(dm.GetRoomData(worldIndex, roomKey, true)); }
     public void StartGameAtRoom(RoomData rd) {
         if (rd == null) { Debug.LogError("StartGameAtRoom's RoomData is null!"); return; } // Safety check.
-        PlayerData playerData = new PlayerData {
-            pos = GetPlayerStartingPos(rd),
-            type = GetPlayerStartingType(rd),
-        };
-        StartGameAtRoom(rd, playerData);
+        StartGameAtRoom(rd, GetPlayerStartingData(rd));
     }
     public void StartGameAtRoom(RoomData rd, PlayerData playerData) {
 		// Wipe everything totally clean.
@@ -101,14 +97,14 @@ public class GameController : MonoBehaviour {
 		eventManager.OnStartRoom(CurrRoom);
     }
     
-    private void MakePlayer(PlayerTypes type, RoomData roomData) {
-		Vector2 startingPos = GetPlayerStartingPos(roomData);
-        PlayerData playerData = new PlayerData {
-            pos = startingPos,
-            type = type,
-        };
-		MakePlayer(playerData);
-	}
+ //   private void MakePlayer(PlayerTypes type, RoomData roomData) {
+	//	Vector2 startingPos = GetPlayerStartingPos(roomData);
+ //       PlayerData playerData = new PlayerData {
+ //           pos = startingPos,
+ //           type = type,
+ //       };
+	//	MakePlayer(playerData);
+	//}
 	private void MakePlayer(PlayerData playerData) {
 		if (Player != null) { DestroyPlayer(); } // Just in case.
         // Make 'em!
@@ -120,10 +116,16 @@ public class GameController : MonoBehaviour {
         charLineup.OnSetCurrPlayerType(playerData.type);
 	}
     public void SetPlayerType(PlayerTypes _type) {
+        // TEMP HACK remember Snacks we've got.
+        List<Edible> edibles = Player.Temp_GetEdiblesHolding();
+
         PlayerData playerData = Player.SerializeAsData() as PlayerData;
         playerData.type = _type;
         MakePlayer(playerData);
         GameManagers.Instance.EventManager.OnSwapPlayerType();
+
+        // Put Snacks back on da Player
+        Player.Temp_SetEdiblesHolding(edibles);
     }
     private void MaybeCyclePlayerType() {
         if (CanCyclePlayerType()) { // If we can...!
@@ -142,28 +144,26 @@ public class GameController : MonoBehaviour {
 		Player = null;
 	}
 
-
-    private Vector2 GetPlayerStartingPos(RoomData rd) {
-        // Starting at RoomDoor?
-        if (!string.IsNullOrEmpty(dm.doorToID)) {
-            return rd.GetRoomDoorPos(dm.doorToID);// + new Vector2(0, -playerHeight*0.5f);
+    private PlayerData GetPlayerStartingData(RoomData rd) {
+        // Respawning from death? Return THAT data!
+        if (dm.playerGroundedRespawnData != null) {
+            return dm.playerGroundedRespawnData;
         }
-        // Respawning from death?
-        else if (!dm.playerGroundedRespawnPos.Equals(Vector2Extensions.NaN)) {
-            return dm.playerGroundedRespawnPos;
-        }
-        // Totally undefined? Default to PlayerStart.
-        else {
-            return rd.DefaultPlayerStartPos();
-        }
-    }
-    private PlayerTypes GetPlayerStartingType(RoomData rd) {
+        // Otherwise...
+        PlayerData pd = new PlayerData {
+            pos = rd.DefaultPlayerStartPos(), // Default to PlayerStart pos.
+            type = PlayerTypeHelper.LoadLastPlayedType(), // Default to last-played PlayerType.
+        };
         // Trial?? FORCE it to this PlayerType.
         if (rd.MyCluster!=null && rd.MyCluster.IsCharTrial) {
-            return rd.MyCluster.TrialPlayerType;
+            pd.type = rd.MyCluster.TrialPlayerType;
         }
-        // NOT a trial. Just return last played type!
-        return PlayerTypeHelper.LoadLastPlayedType();
+        // Starting at RoomDoor?
+        if (!string.IsNullOrEmpty(dm.doorToID)) {
+            pd.pos = rd.GetRoomDoorPos(dm.doorToID);// + new Vector2(0, -playerHeight*0.5f);
+        }
+        // Return!
+        return pd;
     }
     
     private Vector2 GetPlayerStartingPosFromPrevExitPos(RoomData rd, int sideEntering, Vector2 posExited) {
@@ -200,6 +200,7 @@ public class GameController : MonoBehaviour {
 	}
     private void OnPlayerExitRoom(Room _room) {
         _room.OnPlayerExitMe();
+        dm.ResetRoomEnterValues();
         Player.EatEdiblesHolding(); // TEMP solution. Willdo: Bring Edibles between rooms.
     }
     

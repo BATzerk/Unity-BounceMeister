@@ -32,9 +32,9 @@ public class Jetta : Player {
         }
     }
     override protected float InputScaleX { get { return 0.08f; } }
-    override protected float WallSlideMinYVel { get { return -0.28f; } }
-    override protected float JumpForce { get { return 0.46f; } }
-    override protected Vector2 WallKickVel { get { return new Vector2(0.32f,0.4f); } }
+    override protected float WallSlideMinYVel { get { return -0.22f; } }
+    override protected float JumpForce { get { return 0.39f; } }
+    override protected Vector2 WallKickVel { get { return new Vector2(0.32f,0.43f); } }
     override protected float HorzMoveInputVelXDelta() {
         float val = base.HorzMoveInputVelXDelta();
         return IsGrounded() ? val : val*0.2f; // less (finer!) control in air.
