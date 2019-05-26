@@ -1,4 +1,4 @@
-roomProperties posGlobal:(124.0, 316.0);designerFlag:3
+roomProperties posGlobal:(120.0, 350.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 CharUnlockOrb pos:(2.5, -7.0);myCharName:Jetta
 Ground myRect:(x:24.00, y:1.00, width:4.00, height:32.00)

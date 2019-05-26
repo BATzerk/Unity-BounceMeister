@@ -74,7 +74,7 @@ public class Slippa : Player {
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
-        print(Time.frameCount + "  " + vel.y);
+        //print(Time.frameCount + "  " + vel.y);
     }
 
 

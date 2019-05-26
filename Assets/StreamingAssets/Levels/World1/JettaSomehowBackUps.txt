@@ -1,4 +1,4 @@
-roomProperties posGlobal:(328.0, 306.0);designerFlag:4
+roomProperties posGlobal:(272.0, 320.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 DamageableGround myRect:(x:-8.00, y:-8.00, width:8.00, height:2.00);doRegen:True;dieFromPlayerLeave:True
 GateButton pos:(-5.5, -10.5);channelID:0
@@ -23,4 +23,3 @@ Spikes myRect:(x:16.50, y:1.50, width:11.00, height:1.00);rotation:90
 Spikes myRect:(x:8.00, y:-12.50, width:20.00, height:1.00);rotation:0
 Spikes myRect:(x:-11.50, y:-13.50, width:19.00, height:1.00);rotation:0
 Spikes myRect:(x:-19.50, y:5.50, width:7.00, height:1.00);rotation:270
-

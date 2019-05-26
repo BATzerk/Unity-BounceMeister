@@ -28,8 +28,11 @@ public class Clinga : Player {
             return IsClinging ? Vector2.zero : base.Gravity;
         }
     }
+    override protected float MaxVelXGround { get { return 2f; } }
     override protected float MaxVelXAir { get { return 2f; } }
     override protected float FrictionAir { get { return 1f; } }
+    //override protected float FrictionGround { get { return 1f; } } // no friction ground. We already cling to ground.
+    override protected float JumpForce { get { return 0.42f; } }
     //protected override float HorzMoveInputVelXDelta() {
     //    return IsClinging ? 0 : base.HorzMoveInputVelXDelta(); // Clinging? Do NOT accept our normal horz input.
     //}
@@ -46,8 +49,9 @@ public class Clinga : Player {
     private bool IsClingHorz { get { return IsClingSyde(Syde.B) || IsClingSyde(Syde.T); } }
     private bool IsClingVert { get { return IsClingSyde(Syde.L) || IsClingSyde(Syde.R); } }
     private bool MayCling(Collider2D col) {
-        // We may only cling to Ground.
-        return LayerUtils.IsLayer(col.gameObject, Layers.Ground);
+        // We may only cling to Ground or Platforms.
+        return LayerUtils.IsLayer(col.gameObject, Layers.Ground)
+            || LayerUtils.IsLayer(col.gameObject, Layers.Platform);
     }
 
 
@@ -72,6 +76,11 @@ public class Clinga : Player {
             if (myWhiskers.OnSurface(Sides.R) && v.x>0) { v = new Vector2(0, v.y); }
             if (myWhiskers.OnSurface(Sides.B) && v.y<0) { v = new Vector2(v.x, 0); }
             if (myWhiskers.OnSurface(Sides.T) && v.y>0) { v = new Vector2(v.x, 0); }
+            // TEMP TEST TODO: Clean/clarify this up.
+            if (IsGrounded() && !IsClingVert) {
+                v = new Vector2(v.x, Mathf.Min(0, v.y)); // don't register pushing up if we're only on the ground.
+            }
+            
             ChangeVel(v);
         }
         // NOT clinging. Do normal Player stuff.
@@ -162,7 +171,7 @@ public class Clinga : Player {
     public override void OnWhiskersTouchCollider(int side, Collider2D col) {
         base.OnWhiskersTouchCollider(side, col);
         // NON-feet side touch collider, AND may cling to it...!
-        if (side != Sides.B && MayCling(col)) {
+        if (side != Sides.B && MayCling(col)) {// && 
             if (!IsClingSyde(side)) { // NOT already clinging here?...
                 AddClingSyde(side);
             }

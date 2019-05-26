@@ -35,10 +35,12 @@ public class Jetta : Player {
     override protected float WallSlideMinYVel { get { return -0.22f; } }
     override protected float JumpForce { get { return 0.39f; } }
     override protected Vector2 WallKickVel { get { return new Vector2(0.32f,0.43f); } }
+    protected override float MaxVelYDown { get { return -0.5f; } }
     override protected float HorzMoveInputVelXDelta() {
         float val = base.HorzMoveInputVelXDelta();
         return IsGrounded() ? val : val*0.2f; // less (finer!) control in air.
     }
+    
     // Constants
     private const float JetDuration = 1.9f; // in SECONDS, how long we may jet until recharging.
     public  const float FuelCapacity = 100f; // this number doesn't matter at *all*. Just has to be something.
