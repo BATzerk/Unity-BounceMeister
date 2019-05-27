@@ -156,6 +156,7 @@ static public class RoomSaverLoader {
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 if (!d.mayBounce) { fs += ";mayBounce:" + d.mayBounce; }
                 if (!d.doRechargePlayer) { fs += ";doRechargePlayer:" + d.doRechargePlayer; }
+                if (d.travelMind.IsUsed) { fs += ";travelMind:" + d.travelMind.ToString(); }
                 AddFSLine();
 			}
             else if (type == typeof(InfoSignData)) {

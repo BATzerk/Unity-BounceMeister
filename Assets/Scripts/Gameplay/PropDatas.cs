@@ -156,6 +156,7 @@ public class GemData : PropData {
 }
 
 public class BaseGroundData : PropData {
+    public TravelMindData travelMind;
 	public Rect myRect;
 	public bool mayPlayerEat=true;
     public bool isPlayerRespawn=false;

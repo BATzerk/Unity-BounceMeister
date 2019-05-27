@@ -4,28 +4,27 @@ using UnityEngine;
 
 
 
-//[UnityEditor.CustomEditor(typeof(Ground))]
-//public class GroundEditor : UnityEditor.Editor {
-//    // References
-//    private Ground myProp;
-    
-//    public override void OnInspectorGUI() {
-//        base.OnInspectorGUI();
-//        if (myProp == null) { myProp = (Ground)target; }
-//        if (!myProp.HasTravelMind()) {
-//            if (GUILayout.Button("Add TravelMind")) {
-//                myProp.AddTravelMind(new TravelMindData(new Vector2(-5,0), new Vector2(5,0), 2, 0));
-//            }
-//        }
-//        else {
-//            if (GUILayout.Button("Remove TravelMind")) {
-//                myProp.RemoveTravelMind();
-//            }
-//        }
-//    }
-//}
+[UnityEditor.CustomEditor(typeof(Ground))]
+public class GroundEditor : UnityEditor.Editor {
+    // References
+    private Ground myProp;
+    public override void OnInspectorGUI() {
+        base.OnInspectorGUI();
+        if (myProp == null) { myProp = (Ground)target; }
+        if (!myProp.HasTravelMind()) {
+            if (GUILayout.Button("Add TravelMind")) {
+                myProp.AddTravelMind(new TravelMindData(new Vector2(-5,0), new Vector2(5,0), 2, 0));
+            }
+        }
+        else {
+            if (GUILayout.Button("Remove TravelMind")) {
+                myProp.RemoveTravelMind();
+            }
+        }
+    }
+}
 
-public sealed class Ground : BaseGround {
+public sealed class Ground : BaseGround, ITravelable {
 	// Properties
 //	[SerializeField] private bool doDisappearAfterBounces = false;
 //	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
@@ -58,6 +57,28 @@ public sealed class Ground : BaseGround {
         bounds.yMax += 1;
         return MathUtils.TrimRect(r, bounds);
     }
+    
+    // Travelable Stuff
+    private PropTravelMind travelMind; // added in Initialize.
+    public TravelMindData travelMindData { get { return new TravelMindData(travelMind); } }
+    public bool HasTravelMind() { return travelMind != null; }
+    public void AddTravelMind(TravelMindData data) {
+        if (travelMind != null) { return; } // Safety check.
+        travelMind = gameObject.AddComponent<PropTravelMind>();
+        travelMind.Initialize(this, data);
+        RemoveGridSnapPosScale();
+    }
+    public void RemoveTravelMind() {
+        if (travelMind == null) { return; } // Safety check.
+        Destroy(travelMind);
+        travelMind = null;
+        AddGridSnapPosScale();
+    }
+    public Vector2 GetPos() { return pos; }
+    public void SetPos(Vector2 _pos) { pos = _pos; }
+    override protected void OnCreatedInEditor() {
+        if (travelMind == null) { travelMind = GetComponent<PropTravelMind>(); } // Safety check for duplicating objects.
+    }
 
 
 	// ----------------------------------------------------------------
@@ -65,6 +86,8 @@ public sealed class Ground : BaseGround {
 	// ----------------------------------------------------------------
 	public void Initialize(Room _myRoom, GroundData data) {
 		base.BaseGroundInitialize(_myRoom, data);
+        
+        if (data.travelMind.IsUsed) { AddTravelMind(data.travelMind); }
 
 		mayBounce = data.mayBounce;
 		doRechargePlayer = data.doRechargePlayer;
@@ -103,6 +126,7 @@ public sealed class Ground : BaseGround {
     //  Serializing
     // ----------------------------------------------------------------
     override public PropData SerializeAsData() {
+        if (travelMind == null) { travelMind = GetComponent<PropTravelMind>(); } // Make sure we got the reference!
         GroundData data = new GroundData {
             myRect = MyRect(),
             mayPlayerEat = MayPlayerEatHere,
@@ -110,6 +134,7 @@ public sealed class Ground : BaseGround {
             isBouncy = isBouncy,
             mayBounce = mayBounce,
             doRechargePlayer = doRechargePlayer,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
 	}

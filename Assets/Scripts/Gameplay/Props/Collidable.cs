@@ -8,6 +8,8 @@ abstract public class Collidable : Prop {
 	[SerializeField] protected bool doRechargePlayer = true; // if TRUE, we recharge Plunga's plunge when their feet touch me.
 	[SerializeField] protected bool isBouncy = false; // if TRUE, PlatformCharacter will bounce on me instead of land.
     public Vector2 vel { get; protected set; }
+    
+    public void SetVel(Vector2 _vel) { vel = _vel; }
 
 	// Getters (Public)
 	public bool MayBounce { get { return mayBounce; } }

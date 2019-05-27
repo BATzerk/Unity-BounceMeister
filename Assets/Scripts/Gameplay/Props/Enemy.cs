@@ -43,7 +43,7 @@ public class Enemy : PlatformCharacter {
         if (!DoUpdate()) { return; }
 		Vector2 ppos = pos;
 
-        ApplyVelFromFloor();
+        ApplyVelFromSurfaces();
         ApplyFriction();
 		ApplyGravity();
 		AcceptDirectionalMoveInput();

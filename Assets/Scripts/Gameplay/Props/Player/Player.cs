@@ -217,7 +217,7 @@ abstract public class Player : PlatformCharacter {
 		//if (inputController == null) { return; } // Safety check for runtime compile.
         if (!DoUpdate()) { return; } // Not supposed to Update? No dice.
 
-        ApplyVelFromFloor();
+        ApplyVelFromSurfaces();
         
         Vector2 ppos = pos;
         ppvel = pvel;

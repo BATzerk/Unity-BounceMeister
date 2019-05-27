@@ -6,7 +6,6 @@ using UnityEngine;
 public class BuzzsawEditor : UnityEditor.Editor {
     // References
     private Buzzsaw myProp;
-    
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
         if (myProp == null) { myProp = (Buzzsaw)target; }

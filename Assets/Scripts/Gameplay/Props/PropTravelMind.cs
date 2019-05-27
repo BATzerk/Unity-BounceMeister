@@ -16,6 +16,9 @@ public class PropTravelMind : MonoBehaviour {
         return new TravelMindData(this);
     }
     
+    // Getters
+    private Vector2 Pos { get { return myProp.GetPos(); } }
+    
     
     // ----------------------------------------------------------------
     //  Initialize
@@ -50,11 +53,11 @@ public class PropTravelMind : MonoBehaviour {
         // Safety check for edit-mode.
         if (myProp == null) { myProp = GetComponent<ITravelable>(); }
         
-        //Vector2 prevPos = Pos;TODO: This, vel-setting.
+        Vector2 prevPos = Pos;
 
         ApplyPos();
 
-        //vel = Pos - prevPos;
+        myProp.SetVel(Pos - prevPos);
     }
     private void ApplyPos() {
         oscLoc += Time.deltaTime * Speed;

@@ -110,7 +110,7 @@ public class PlatformCharacter : Collidable {
             //print("vel: " + vel.y + "    applied: " + appliedVel.y);
 		}
 	}
-    protected void ApplyVelFromFloor() {
+    virtual protected void ApplyVelFromSurfaces() {
         if (IsGrounded()) {
             Collidable obj = myWhiskers.TEMP_GetFloorCollidable();
             if (obj != null) {

@@ -63,6 +63,16 @@ abstract public class Prop : MonoBehaviour {
     }
     virtual protected void OnCreatedInEditor() {}
     
+    // NOTE: These functions are intended ONLY for use with PropTravelMind adding/removing.
+    protected void AddGridSnapPosScale() {
+        GridSnapPosScale script = this.gameObject.GetComponent<GridSnapPosScale>();
+        if (script == null) { this.gameObject.AddComponent<GridSnapPosScale>(); }
+    }
+    protected void RemoveGridSnapPosScale() {
+        GridSnapPosScale script = this.gameObject.GetComponent<GridSnapPosScale>();
+        if (script != null) { Destroy(script); }
+    }
+    
     
     // ----------------------------------------------------------------
     //  Debug

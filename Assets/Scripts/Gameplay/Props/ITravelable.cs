@@ -11,4 +11,5 @@ public interface ITravelable {
     void RemoveTravelMind();
     Vector2 GetPos();
     void SetPos(Vector2 _pos);
+    void SetVel(Vector2 _vel);
 }

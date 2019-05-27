@@ -1,8 +1,8 @@
 roomProperties posGlobal:(56.0, 204.0);designerFlag:0;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Buzzsaw pos:(-5.0, 0.0);size:(6.0, 4.0);travelMind:(-5,0,5,10, 4, 0.2)
 Ground myRect:(x:-20.50, y:0.00, width:11.00, height:32.00)
-Ground myRect:(x:0.00, y:-16.00, width:52.00, height:8.00)
+Ground myRect:(x:-4.34, y:0.00, width:6.00, height:5.00);travelMind:(-5,0,5,0, 2, 0)
 Ground myRect:(x:0.00, y:17.00, width:52.00, height:6.00)
+Ground myRect:(x:0.00, y:-16.00, width:52.00, height:8.00)
 PlayerStart pos:(11.5, -11.0)
 
