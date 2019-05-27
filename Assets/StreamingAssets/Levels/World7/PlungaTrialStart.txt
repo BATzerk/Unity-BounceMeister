@@ -1,8 +1,9 @@
-roomProperties posGlobal:(54.0, 52.0);designerFlag:0;isClustStart:True
+roomProperties posGlobal:(54.0, 142.0);designerFlag:0;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:24.00, y:9.00, width:4.00, height:16.00)
-Ground myRect:(x:0.00, y:15.00, width:52.00, height:10.00)
-Ground myRect:(x:-20.00, y:1.00, width:12.00, height:32.00)
 Ground myRect:(x:0.00, y:-13.00, width:52.00, height:14.00)
 Ground myRect:(x:-13.00, y:-9.00, width:26.00, height:12.00)
+Ground myRect:(x:-20.00, y:1.00, width:12.00, height:32.00)
+Ground myRect:(x:24.00, y:9.00, width:4.00, height:16.00)
+Ground myRect:(x:0.00, y:15.00, width:52.00, height:10.00)
+InfoSign pos:(-3.5, -3.0);myText:~ PLUNGA Trials ~
 PlayerStart pos:(-6.5, 0.0)

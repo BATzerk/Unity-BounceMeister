@@ -1,10 +1,9 @@
-roomProperties posGlobal:(314.0, 112.0);designerFlag:0
+roomProperties posGlobal:(588.0, 168.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-23.50, y:-5.00, width:5.00, height:30.00)
-Ground myRect:(x:0.00, y:9.00, width:52.00, height:22.00)
-Ground myRect:(x:15.50, y:-5.00, width:21.00, height:30.00)
-Ground myRect:(x:6.50, y:-17.00, width:39.00, height:6.00)
-Ground myRect:(x:-22.00, y:-17.00, width:8.00, height:6.00)
-Platform myRect:(x:-15.50, y:-14.50, width:5.00, height:1.00)
-PlayerStart pos:(-11.5, -13.0)
-RoomDoor pos:(3.5, -13.0);myID:0;worldToIndex:1;roomToKey:GetPlunga;doorToID:
+Ground myRect:(x:15.50, y:-3.00, width:21.00, height:34.00)
+Ground myRect:(x:0.00, y:-15.00, width:52.00, height:10.00)
+Ground myRect:(x:-23.50, y:5.00, width:5.00, height:18.00)
+Ground myRect:(x:0.00, y:11.00, width:52.00, height:18.00)
+InfoSign pos:(-6.5, -10.0);myText:Congrats! You've unlocked PLUNGA!
+PlayerStart pos:(-11.5, -9.0)
+RoomDoor pos:(3.5, -9.0);myID:0;worldToIndex:1;roomToKey:GetPlunga;doorToID:

@@ -4,7 +4,7 @@ using System.Collections;
 namespace MapEditorNamespace {
 public class RoomTile : MonoBehaviour {
 	// Properties
-	private bool IsMouseOverMe=false;
+	public bool IsMouseOverMe { get; private set; }
 	private bool isInSelectionRect; // true if my center's inside the RoomTileSelectionRect!
 	public bool IsSelected { get; private set; } // true when we're clicked on to be dragged about!
 //	private Rect myRect; // the clickable and displaying area.
