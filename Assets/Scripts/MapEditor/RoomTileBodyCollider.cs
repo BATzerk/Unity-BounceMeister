@@ -8,20 +8,27 @@ public class RoomTileBodyCollider : MonoBehaviour {
 	[SerializeField] private BoxCollider2D boxCollider=null;
 	// References
 	[SerializeField] private RoomTile roomTileRef=null;
-
-
+        
+    // Getters
+    public bool IsEnabled { get { return boxCollider.enabled; } }
+    
+    
+    // ----------------------------------------------------------------
+    //  Doers
+    // ----------------------------------------------------------------
 //	public void UpdatePosAndSize (float x,float y, float w,float h) {
 	public void UpdatePosAndSize(Rect rect) {
 		boxCollider.transform.localPosition = new Vector3 (rect.center.x,rect.center.y, 0);
 		boxCollider.size = rect.size;
 	}
-    
-    public bool IsEnabled { get { return boxCollider.enabled; } }
     public void SetIsEnabled(bool val) {
         boxCollider.enabled = val;
     }
 
 	
+    // ----------------------------------------------------------------
+    //  Events
+    // ----------------------------------------------------------------
 	private void OnMouseEnter() {
 		roomTileRef.OnMouseEnterBodyCollider();
 	}

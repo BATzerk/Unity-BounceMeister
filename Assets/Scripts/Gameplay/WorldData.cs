@@ -208,6 +208,9 @@ public class WorldData {
             clusters[i].RefreshSnackCount();
         }
         // Reset Rooms' WasUsedInSearchAlgorithm.
+        ResetRoomsWasUsedInSearch();
+    }
+    public void ResetRoomsWasUsedInSearch() {
         foreach (RoomData rd in roomDatas.Values) {
             rd.WasUsedInSearchAlgorithm = false;
         }

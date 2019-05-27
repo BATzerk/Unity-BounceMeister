@@ -51,38 +51,27 @@ static public class RoomUtils {
 		return roomDatasFromRoomTo.Count;
         */
 	}
-	private static void RecursivelyAddRoomDatasConnectedToRoomData (WorldData worldData, ref List<RoomData> roomDatas, RoomData startingRoomData) {
-		// If this startingRoomData has ALREADY been used, OR it's a VIRGIN SECRET room, get outta here!
-		if (startingRoomData.WasUsedInSearchAlgorithm) {// || (startingRoomData.isSecretRoom && !startingRoomData.hasPlayerBeenHere)
-			return;
-		}
-
-		// Use me use me!
-		startingRoomData.WasUsedInSearchAlgorithm = true;
-		// Arright, get ALL the rooms that connect to the startingRoomData!
-		//List<RoomData> neighborRoomDatas = worldData.GetRoomDatasConnectedToRoomData (startingRoomData);
-		//// Add the remaining ones that HAVEN'T yet been used in this search to the list AND do this function again for each of those unused neighboring rooms!
-		//for (int i=0; i<neighborRoomDatas.Count; i++) {
-		//	if (neighborRoomDatas[i].WasUsedInSearchAlgorithm) { continue; }// || (neighborRoomDatas[i].isSecretRoom && !neighborRoomDatas[i].hasPlayerBeenHere)
-		//	roomDatas.Add (neighborRoomDatas[i]);
-		//	RecursivelyAddRoomDatasConnectedToRoomData (worldData, ref roomDatas, neighborRoomDatas[i]);
-		//}
-	}
-
-	public static List<RoomData> GetRoomsConnectedToRoom (WorldData worldData, RoomData sourceRoom, bool doIncludeSourceRoom=true) {
-		Dictionary<string, RoomData> allRoomDatas = worldData.RoomDatas;
-
-		List<RoomData> roomsConnectedToSourceRooms = new List<RoomData> ();
-		if (doIncludeSourceRoom) { roomsConnectedToSourceRooms.Add (sourceRoom); } // We can opt to include/not include the source room for this function.
-		// Now, recursively puck up a big list of all the RoomDatas that are connected to the sourceRoom!
-		RecursivelyAddRoomDatasConnectedToRoomData (worldData, ref roomsConnectedToSourceRooms, sourceRoom);
-
-		// Reset used-in-algorithm values for all RoomDatas
-		foreach (RoomData rd in allRoomDatas.Values) { rd.WasUsedInSearchAlgorithm = false; }
-
-		// Return!
-		return roomsConnectedToSourceRooms;
-	}
+    public static List<RoomData> GetRoomsConnectedToRoom(RoomData sourceRD) {
+        WorldData wd = sourceRD.MyWorldData;
+        wd.ResetRoomsWasUsedInSearch();
+        
+        List<RoomData> list = new List<RoomData>();
+        RecursivelyAddRoomToList(sourceRD, ref list);
+        
+        wd.ResetRoomsWasUsedInSearch();
+        return list;
+    }
+    private static void RecursivelyAddRoomToList(RoomData rd, ref List<RoomData> list) {
+        if (rd.WasUsedInSearchAlgorithm) { return; } // This RoomData was used? Ignore it.
+        rd.WasUsedInSearchAlgorithm = true;
+        list.Add(rd);
+        // Now try for all its neighbors!
+        for (int i=0; i<rd.Openings.Count; i++) {
+            if (rd.Openings[i].IsRoomTo) {
+                RecursivelyAddRoomToList(rd.Openings[i].RoomTo, ref list);
+            }
+        }
+    }
 
 
 

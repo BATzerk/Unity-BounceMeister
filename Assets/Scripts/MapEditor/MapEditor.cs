@@ -15,6 +15,7 @@ public class MapEditor : MonoBehaviour {
 	private List<List<RoomTile>> allRoomTiles; // RoomTiles for EVERY ROOM IN THE GAME!
 	// Properties
 	private bool isSearchingRoom; // When we start typing letters, yeah! Narrow down our options.
+    private bool isKeyMultiSelection; // SHIFT key allows us to select/deselect multiple Tiles!
 	private int currWorldIndex=-1;
 	private string roomSearchString = "";
     public MapEditorSettings MySettings { get; private set; }
@@ -22,7 +23,7 @@ public class MapEditor : MonoBehaviour {
 	public Vector2 MousePosWorld { get; private set; }
 	// References
 	[SerializeField] private Text currentWorldText=null;
-	[SerializeField] private Text demoText;
+	[SerializeField] private Text demoText=null;
 	[SerializeField] private Text instructionsText=null;
 	private List<RoomTile> tilesSelected = new List<RoomTile>();
     private MapEditorCamera editorCamera;
@@ -41,14 +42,14 @@ public class MapEditor : MonoBehaviour {
 	private float fTS { get { return TimeController.FrameTimeScaleUnscaled; } } // frame time scale
 	private List<RoomTile> CurrWorldRoomTiles { get { return allRoomTiles==null?null : allRoomTiles [currWorldIndex]; } }
 
-	public bool CanSelectARoomTile() {
-		// Otherwise, NO tiles selected and our mouse isn't down? Yeah, return true!
-		if (tilesSelected.Count==0 && !Input.GetMouseButton(0)) { return true; }
-		// Okay, so some might be selected? Can we select multiple ones??
-		if (CanSelectMultipleTiles()) { return true; }
-		// Hmm. No, there's no way we can select a RoomTile right now.
-		return false;
-	}
+	//public bool CanSelectARoomTile() {
+	//	// NO tiles selected and mouse isn't down? Yeah, return true!
+	//	if (tilesSelected.Count==0 && !Input.GetMouseButton(0)) { return true; }
+	//	// Okay, if some might be selected, then return if we may we select multiple ones!
+	//	if (isKeyMultiSelection) { return true; }
+	//	// Hmm. No, there's no way we can select a RoomTile right now.
+	//	return false;
+	//}
 	/** We may only move RoomTiles while running in the UNITY EDITOR. Don't allow moving tiles in a BUILD version. */
 	private bool MayMoveRoomTiles () {
 		bool mayMove = false;
@@ -57,12 +58,8 @@ public class MapEditor : MonoBehaviour {
 		#endif
 		return mayMove;
 	}
-	private bool CanSelectMultipleTiles() {
-		// Is the right key down?
-		return Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift);
-	}
 	public bool IsDraggingSelectedRoomTiles() {
-		return MayMoveRoomTiles() && !CanSelectMultipleTiles () && Input.GetMouseButton (0);
+		return MayMoveRoomTiles() && !isKeyMultiSelection && Input.GetMouseButton (0);
 	}
 	private RoomTile GetRoomTileByKey (string roomKey) {
 		for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
@@ -89,28 +86,17 @@ public class MapEditor : MonoBehaviour {
             return MousePosWorldDragging(_mouseClickOffset);
         }
     }
-	private RoomTile GetRoomTileAtPoint(Vector2 point) {
+	private RoomTile GetVisibleTileAtPoint(Vector2 point) {
 		if (CurrWorldRoomTiles==null) { return null; } // Safety check for runtime compile.
 		for (int i=CurrWorldRoomTiles.Count-1; i>=0; --i) { // loop thru backwards so we click NEWER tiles before older ones.
             RoomTile tile = CurrWorldRoomTiles[i];
+            if (!tile.IsFullyVisible) { continue; } // Tile's not available?? Skip it!
 			Rect boundsGlobal = tile.BoundsGlobal;
 			if (boundsGlobal.Contains(point+boundsGlobal.size*0.5f)) { // Note: convert back to center-aligned. SIGH. I would love to just make room's rect corner-aligned. Avoid any ambiguity.
 				return tile;
 			}
 		}
 		return null;
-	}
-	private bool IsMouseOverAnything() {
-		/*
-		// RoomTiles?
-		for (int i=0; i<roomTiles.Count; i++) {
-			if (roomTiles[i].IsDragReadyMouseOverMe) {
-				return true;
-			}
-		}
-		return false;
-		*/
-		return GetRoomTileAtPoint (MousePosWorld) != null;
 	}
 
 //	private void OnGUI () {
@@ -234,6 +220,7 @@ public class MapEditor : MonoBehaviour {
     //  Doers: Room Tiles
     // ================================================================
 	private void SelectTile(RoomTile tile) {
+        if (tile.IsSelected) { return; } // Safety check.
 		/*
 		// First, check if we're trying to set ANOTHER, different roomTile as roomTileDragging.
 		if (roomTileDragging != null && thisRoomTile != null && roomTileDragging != thisRoomTile) {
@@ -262,9 +249,12 @@ public class MapEditor : MonoBehaviour {
 		tile.OnSelected(MousePosWorld);
 	}
 	private void DeselectTile(RoomTile tile) {
+        if (!tile.IsSelected) { return; } // Safety check.
 		tile.OnDeselected ();
 		tilesSelected.Remove (tile);
 	}
+    private void SelectTiles(List<RoomTile> tiles) { foreach (RoomTile tile in tiles) { SelectTile(tile); } }
+    private void DeselectTiles(List<RoomTile> tiles) { foreach (RoomTile tile in tiles) { DeselectTile(tile); } }
 	private void DeselectAllRoomTiles() {
 		for (int i=tilesSelected.Count-1; i>=0; --i) {
 			DeselectTile (tilesSelected [i]);
@@ -277,9 +267,7 @@ public class MapEditor : MonoBehaviour {
             SelectTile(tile);
         }
     }
-	private void ReleaseRoomTilesSelected() {
-		// No tiles selected? No gazpacho!
-		if (tilesSelected.Count == 0) { return; }
+	private void DeselectTilesSelected() {
 		// Tell all the tiles they've been deselected and clear out the list.
 		foreach (RoomTile roomTile in tilesSelected) {
 			roomTile.OnDeselected ();
@@ -294,11 +282,12 @@ public class MapEditor : MonoBehaviour {
 //		}
 	}
 	private void SelectAllRoomTiles() {
-		ReleaseRoomTilesSelected(); // Just in case release any if we're already holding some.
+		DeselectTilesSelected(); // Just in case release any if we're already holding some.
 		foreach (RoomTile roomTile in CurrWorldRoomTiles) {
 			SelectTile(roomTile);
 		}
 	}
+    
     private void DuplicateSelectedRooms() {
         List<string> newRoomKeys = new List<string>();
         foreach (RoomTile rt in tilesSelected) {
@@ -411,19 +400,46 @@ public class MapEditor : MonoBehaviour {
             }
         }
     }
-    public void OnClickRoomTile(RoomTile roomTile) {
-		// Conditions are right for selecting the tile!
-//		if (!Input.GetKey(KeyCode.LeftAlt) && newLinkFirstRoomTile==null) {
-		if (!Input.GetKey(KeyCode.LeftAlt)) {
-			// If the COMMAND/CONTROL key ISN'T down, first release all roomTilesSelected!
-			if (!CanSelectMultipleTiles()) {
-				ReleaseRoomTilesSelected();
+    private void OnClickRoomTile(RoomTile tile) {
+        //// Conditions are right for selecting the tile!
+        //if (CanSelectARoomTile()) {
+            // Determine which tiles are affected.
+            List<RoomTile> tiles = GetTilesInClick(tile);
+            bool doSelect = !tile.IsSelected;
+            
+            // MULTI-SELECT key is down??...
+            if (isKeyMultiSelection) {
+                if (doSelect) { SelectTiles(tiles); }
+                else { DeselectTiles(tiles); }
+            }
+            // MULTI-SELECT key ISN'T down...!
+            else {
+                // This tile's NOT already selected. Deselect all tiles first.
+                if (!tile.IsSelected) {
+				    DeselectTilesSelected();
+                }
+                // Select the affected tiles!
+                SelectTiles(tiles);
 			}
-			// If this guy is IN the list, remove him; if he's NOT in the list, add him!
-			if (tilesSelected.Contains(roomTile)) { DeselectTile(roomTile); }
-			else { SelectTile(roomTile); }
-		}
+		//}
 	}
+    
+    private List<RoomTile> GetTilesInClick(RoomTile sourceTile) {
+        // CONTROL = Consider ALL CONNECTED tiles!
+        if (InputController.IsKey_control) { return GetConnectedTiles(sourceTile); }
+        // Otherwise, just return the ONE Tile.
+        return new List<RoomTile> { sourceTile };
+    }
+    /// Returns all RoomTiles that're connected to this one (including this one).
+    private List<RoomTile> GetConnectedTiles(RoomTile firstTile) {
+        RoomData firstRD = firstTile.MyRoomData;
+        List<RoomData> roomDatas = RoomUtils.GetRoomsConnectedToRoom(firstRD);
+        List<RoomTile> tiles = new List<RoomTile>();
+        foreach (RoomData rd in roomDatas) {
+            tiles.Add(GetRoomTileByKey(rd.RoomKey));
+        }
+        return tiles;
+    }
 
 	private void RefreshAllTileVisuals() {
 		for (int i=0; i<CurrWorldRoomTiles.Count; i++) { CurrWorldRoomTiles[i].RefreshAllVisuals(); }
@@ -466,7 +482,7 @@ public class MapEditor : MonoBehaviour {
 		if (CurrWorldRoomTiles==null) { return; } // Safety check for runtime compile.
 		// Select all the extra ones selected by the selection rect!
 		for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
-			if (CurrWorldRoomTiles[i].IsWithinRoomTileSelectionRect) {
+			if (CurrWorldRoomTiles[i].IsInSelectionRect) {
 				if (!tilesSelected.Contains(CurrWorldRoomTiles[i])) {
 					SelectTile (CurrWorldRoomTiles[i]);
 				}
@@ -485,7 +501,14 @@ public class MapEditor : MonoBehaviour {
 			CurrWorldRoomTiles[i].UpdateVisibilityFromSearchCriteria (roomSearchString);
 		}
 	}
-
+    
+    private void UpdateIsKeyMultiSelection() {
+        isKeyMultiSelection = InputController.IsKey_shift;
+        //// Tell all the (curr world) tiles!
+        //for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
+        //    CurrWorldRoomTiles[i].UpdateIsDragReadyMouseOverMe();
+        //}
+    }
 	
 	
 	
@@ -499,7 +522,7 @@ public class MapEditor : MonoBehaviour {
 		UpdateMousePosWorld();
 		RegisterKeyInputs();
 		RegisterMouseInputs();
-		UpdateRoomTileSelectionRectSelection();
+		UpdateSelectionRectSelection();
 		UpdateUI();
 	}
 
@@ -525,11 +548,11 @@ public class MapEditor : MonoBehaviour {
 		}
 	}
 
-	private void UpdateRoomTileSelectionRectSelection() {
+	private void UpdateSelectionRectSelection() {
 		if (CurrWorldRoomTiles==null) { return; } // Safety check for runtime compile.
 		// Update which tiles are within the rect!
 		for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
-			CurrWorldRoomTiles[i].IsWithinRoomTileSelectionRect =
+			CurrWorldRoomTiles[i].IsInSelectionRect =
                    CurrWorldRoomTiles[i].BodyCollider.IsEnabled
                 && selectionRect.IsActive
                 && selectionRect.SelectionRect.Contains(CurrWorldRoomTiles[i].MyRoomData.PosGlobal);
@@ -572,7 +595,7 @@ public class MapEditor : MonoBehaviour {
             ClearRoomSearch();
         }
         // SHIFT + Some typeable character = Search string!
-        else if (InputController.IsKeyDown_shift && Input.inputString.Length > 0) {
+        else if (InputController.IsKey_shift && Input.inputString.Length > 0) {
 			char c = Input.inputString[0];
 			// Typeable character
 			if (char.IsLetterOrDigit(c) || char.IsPunctuation(c)) {
@@ -580,9 +603,14 @@ public class MapEditor : MonoBehaviour {
 				UpdateRoomTilesFromSearchString ();
 			}
 		}
+        
+        // SHIFT UP or DOWN...
+        if (InputController.IsKeyDown_shift || InputController.IsKeyUp_shift) {
+            UpdateIsKeyMultiSelection();
+        }
 
         // CONTROL + ...
-        if (InputController.IsKeyDown_control) {
+        if (InputController.IsKey_control) {
             // CONTROL + A = Select ALL RoomTiles!
             if (Input.GetKeyDown (KeyCode.A)) {
 			    SelectAllRoomTiles();
@@ -606,7 +634,7 @@ public class MapEditor : MonoBehaviour {
         }
 
 		// ALT + ____
-		else if (InputController.IsKeyDown_alt) {
+		else if (InputController.IsKey_alt) {
 			// ALT + [number] = Move all RoomTiles selected to that world!!
 			if (Input.GetKeyDown (KeyCode.Alpha0)) { MoveRoomTilesSelectedToWorld (0); }
 			else if (Input.GetKeyDown (KeyCode.Alpha1)) { MoveRoomTilesSelectedToWorld (1); }
@@ -620,10 +648,6 @@ public class MapEditor : MonoBehaviour {
 			else if (Input.GetKeyDown (KeyCode.Alpha9)) { MoveRoomTilesSelectedToWorld (9); }
 			else if (Input.GetKeyDown (KeyCode.Minus)) { MoveRoomTilesSelectedToWorld (10); }
 		}
-
-        // SHIFT + ____
-        else if (InputController.IsKeyDown_shift) {
-        }
 		
         // NO alt/control/shift...!
         else {
@@ -652,23 +676,22 @@ public class MapEditor : MonoBehaviour {
 		    else if (Input.GetKeyDown(KeyCode.Minus)) { SetCurrWorld (10); }
         }
 	}
-	
-	
 	private void OnMouseDown() {
 		int mouseButton = InputController.GetMouseButtonDown();
 		// LEFT click?
 		if (mouseButton == 0) {
-			// Double-click?!
-//			Debug.Log(Time.frameCount + " timeSinceMouseButtonDown: " + timeSinceMouseButtonDown + "     " + Vector2.Distance (MousePosScreen, mousePosScreenOnDown));
-//			if (timeSinceMouseButtonDown < DOUBLE_CLICK_TIME && Vector2.Distance (MousePosScreen, mousePosScreenOnDown) < 4) {
 			// Tell ALL selected tiles to update their click offset!
 			foreach (RoomTile roomTile in tilesSelected) {
 				roomTile.SetMouseClickOffset (MousePosWorld);
 			}
-			// Are we NOT over anything? Activate the selectionRect AND release any selected tiles!
-			if (!IsMouseOverAnything ()) {
-				selectionRect.Activate ();
-				ReleaseRoomTilesSelected();
+            RoomTile tileOver = GetVisibleTileAtPoint(MousePosWorld);
+            // YES over a tile??...
+            if (tileOver != null) {
+                OnClickRoomTile(tileOver);
+            }
+            else { // Not over ANY tile?? Deselect Tiles and activate selectionRect!
+                DeselectTilesSelected();
+                selectionRect.Activate();
 			}
 		}
         // RIGHT click?
@@ -681,8 +704,8 @@ public class MapEditor : MonoBehaviour {
 	private void OnMouseUp() {
 		int mouseButton = InputController.GetMouseButtonUp ();
 
-		// Dragging a ROOM TILE(S), released the LEFT mouse button, AND not holding down the multi-selection key??
-		if (tilesSelected.Count>0 && mouseButton==0 && !CanSelectMultipleTiles()) {
+		// Dragging a TILE(S), released the LEFT mouse button, AND not holding down the multi-selection key??
+		if (tilesSelected.Count>0 && mouseButton==0 && !isKeyMultiSelection) {
 			// Save all dragging tiles' roomData to file (and clear out any snapshot datas)!
 			foreach (RoomTile tile in tilesSelected) {
 				RoomSaverLoader.UpdateRoomPropertiesInRoomFile(tile.MyRoomData);
@@ -695,17 +718,14 @@ public class MapEditor : MonoBehaviour {
 			}
 
 //			// Mouse up = release all roomTilesSelected!
-//			ReleaseRoomTilesSelected();
+//			DeselectTilesSelected();
 		}
 	}
 	private void OnMouseDoubleClicked() {
 		// Am I over any room?? Load it!!
-		for (int i=CurrWorldRoomTiles.Count-1; i>=0; --i) {
-			RoomTile tile = CurrWorldRoomTiles[i];
-			if (tile.IsDragReadyMouseOverMe) {
-				SceneHelper.OpenGameplayScene(tile.WorldIndex, tile.RoomKey);
-				break;
-			}
+        RoomTile tileOver = GetVisibleTileAtPoint(MousePosWorld);
+        if (tileOver != null) {
+			SceneHelper.OpenGameplayScene(tileOver.WorldIndex, tileOver.RoomKey);
 		}
 	}
 

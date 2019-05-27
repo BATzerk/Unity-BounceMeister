@@ -77,16 +77,18 @@ public class MapEditorCamera : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Set / Reset
     // ----------------------------------------------------------------
-    private void ResetToNeutral() {
+    private void EaseToNeutral() {
         // Reset scale
-        SetMapScale(MAP_SCALE_DEFAULT);
         Vector2 averageRoomPos = new Vector2 (0,0);
         WorldData wd = editor.CurrWorldData;
         foreach (RoomData rd in wd.RoomDatas.Values) {
             averageRoomPos += rd.PosGlobal;
         }
         averageRoomPos /= wd.RoomDatas.Count;
-        Pos = averageRoomPos;
+        // Ease-y!
+        LeanTween.cancel(this.gameObject);
+        LeanTween.value(this.gameObject, SetMapScale, MapScale,MAP_SCALE_DEFAULT, 0.2f).setEaseOutQuint();
+        LeanTween.value(this.gameObject, SetPos, Pos,averageRoomPos, 0.2f).setEaseOutQuint();
     }
 
     private void SetBackgroundColor(int worldIndex) {
@@ -112,6 +114,9 @@ public class MapEditorCamera : MonoBehaviour {
         camera.orthographicSize = cameraSize;
         // Tell the Editor!
         editor.OnSetMapScale();
+    }
+    private void SetPos(Vector2 _pos) {
+        Pos = _pos;
     }
 
 
@@ -184,9 +189,9 @@ public class MapEditorCamera : MonoBehaviour {
 		}
 	}
     private void RegisterButtonInput() {
-        if (!InputController.IsKeyDown_alt && !InputController.IsKeyDown_control && !InputController.IsKeyDown_shift) {
+        if (!InputController.IsKey_alt && !InputController.IsKey_control && !InputController.IsKey_shift) {
             // C = Reset to neutral
-		    if (Input.GetKeyDown(KeyCode.C)) { ResetToNeutral(); }
+		    if (Input.GetKeyDown(KeyCode.C)) { EaseToNeutral(); }
 
             // Arrow/WASD/Joystick Panning!
             //else if (Input.GetKey(KeyCode.LeftArrow)) { MoveCamera(-ARROW_KEYS_PAN_SPEED/mapScale*fTS,0); }

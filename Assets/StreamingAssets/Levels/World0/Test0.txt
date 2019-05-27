@@ -1,4 +1,4 @@
-roomProperties posGlobal:(52.0, 196.0);designerFlag:0;isClustStart:True
+roomProperties posGlobal:(56.0, 204.0);designerFlag:0;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:-20.50, y:0.00, width:11.00, height:32.00)
 Ground myRect:(x:-1.00, y:-9.00, width:8.00, height:2.00)
@@ -10,4 +10,3 @@ Laser pos:(-6.5, -11.5);rotation:0
 Laser pos:(-10.0, -11.5);rotation:0;onOfferData:(0.3, 1.7, 0)
 PlayerStart pos:(11.5, -11.0)
 Spikes myRect:(x:1.00, y:-2.50, width:6.00, height:1.00);rotation:0;onOfferData:(0.3, 1.7, 0)
-

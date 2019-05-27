@@ -60,9 +60,11 @@ public class InputController : MonoBehaviour {
 		return GetMouseButtonUp() != -1;
 	}
 
-    static public bool IsKeyDown_alt { get { return Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt); } }
-    static public bool IsKeyDown_shift { get { return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift); } }
-    static public bool IsKeyDown_control { get { return Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl); } }
+    static public bool IsKey_alt { get { return Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt); } }
+    static public bool IsKey_shift { get { return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift); } }
+    static public bool IsKey_control { get { return Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl); } }
+    static public bool IsKeyUp_shift { get { return Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift); } }
+    static public bool IsKeyDown_shift { get { return Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift); } }
 
 
 
@@ -140,7 +142,7 @@ public class InputController : MonoBehaviour {
         
         // In editor? Disregard input if ALT or CONTROL keys are down!
         #if UNITY_EDITOR
-        if (IsKeyDown_alt || IsKeyDown_control) {
+        if (IsKey_alt || IsKey_control) {
             LeftStick = Vector2.zero;
         }
         #endif

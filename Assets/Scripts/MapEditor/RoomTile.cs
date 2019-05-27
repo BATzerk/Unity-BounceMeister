@@ -4,11 +4,9 @@ using System.Collections;
 namespace MapEditorNamespace {
 public class RoomTile : MonoBehaviour {
 	// Properties
-	private bool isDragReadyMouseOverMe; // true if the mouse is over me AND able to click and drag RoomTiles.
-	private bool isWithinRoomTileSelectionRect; // true if the RoomTileSelectionRect is over me!
-	private bool isRoomLinkViewSelectedOverMePrimary=false; // true when the CURRENT connectionCircle being dragged is over me!
-	private bool isRoomLinkViewSelectedOverMeSecondary=false; // true when the OTHER connectionCircle of roomLinkViewSelected is over me!
-	private bool isSelected; // true when we're clicked on to be dragged about!
+	private bool IsMouseOverMe=false;
+	private bool isInSelectionRect; // true if my center's inside the RoomTileSelectionRect!
+	public bool IsSelected { get; private set; } // true when we're clicked on to be dragged about!
 //	private Rect myRect; // the clickable and displaying area.
 //	private float backingXMin, backingXMax, backingYMin, backingYMax;
 	private Vector3 mouseClickOffset;
@@ -18,53 +16,36 @@ public class RoomTile : MonoBehaviour {
 	[SerializeField] private SpriteRenderer sr_backing=null; // my whole placemat thing.
 	[SerializeField] private SpriteRenderer sr_border=null; // borders still look nice.
 	// References
+    [SerializeField] private Sprite s_borderThick=null;
+    [SerializeField] private Sprite s_borderThin=null;
     public RoomData MyRoomData { get; private set; }
-	public MapEditor MapEditor { get; private set; }
+    public MapEditor MapEditor { get; private set; }
 
 
 
     // ================================================================
     //  Getters / Setters
     // ================================================================
-    //	public float BackingXMin { get { return backingXMin; } }
-    //	public float BackingXMax { get { return backingXMax; } }
-    //	public float BackingYMin { get { return backingYMin; } }
-    //	public float BackingYMax { get { return backingYMax; } }
+    public bool IsFullyVisible { get { return this.gameObject.activeInHierarchy && bodyCollider.IsEnabled; } }
     public RoomTileBodyCollider BodyCollider { get { return bodyCollider; } }
     public int WorldIndex { get { return MyRoomData.WorldIndex; } }
 	public string RoomKey { get { return MyRoomData.RoomKey; } }
 	//	public Rect PlacematRect { get { return new Rect (x-w*0.5f,y-h*0.5f, w,h); } }
 	public Rect BoundsGlobal { get { return MyRoomData.BoundsGlobal; } }
 	public Rect BoundsLocal { get { return MyRoomData.BoundsLocal; } }
-	public bool IsRoomLinkViewSelectedOverMePrimary {
-		get { return isRoomLinkViewSelectedOverMePrimary; }
-		set {
-			isRoomLinkViewSelectedOverMePrimary = value;
-			UpdateBorderLine();
-		}
-	}
-	public bool IsRoomLinkViewSelectedOverMeSecondary {
-		get { return isRoomLinkViewSelectedOverMeSecondary; }
-		set {
-			isRoomLinkViewSelectedOverMeSecondary = value;
-			UpdateBorderLine();
-		}
-	}
 	private Vector2 Pos { get { return MyRoomData.PosGlobal; } }
-    public bool IsDragReadyMouseOverMe {
-		get { return isDragReadyMouseOverMe; }
+ //   public bool IsDragReadyMouseOverMe {
+	//	get { return isDragReadyMouseOverMe; }
+	//	private set {
+	//		isDragReadyMouseOverMe = value;
+	//		UpdateBorderColor();
+	//	}
+	//}
+	public bool IsInSelectionRect {
+		get { return isInSelectionRect; }
 		set {
-			if (isDragReadyMouseOverMe == value) { return; }
-			isDragReadyMouseOverMe = value;
-			UpdateBorderLine();
-		}
-	}
-	public bool IsWithinRoomTileSelectionRect {
-		get { return isWithinRoomTileSelectionRect; }
-		set {
-			if (isWithinRoomTileSelectionRect == value) { return; }
-			isWithinRoomTileSelectionRect = value;
-			UpdateBorderLine();
+			isInSelectionRect = value;
+			UpdateBorderColor();
 		}
 	}
 	public void SetMouseClickOffset(Vector3 _mousePosWorld) {
@@ -90,7 +71,6 @@ public class RoomTile : MonoBehaviour {
 		ApplySize ();
 
 		OnDeselected ();
-		IsDragReadyMouseOverMe = false;
 
 		// Hide by default
 		Hide();
@@ -117,10 +97,10 @@ public class RoomTile : MonoBehaviour {
 	// ================================================================
 	private void Update() {
 		RegisterMouseInput ();
-		// If I'm a candidate for a RoomLinkView being dragged, update my borderLine!
-		if (isRoomLinkViewSelectedOverMePrimary) {
-			UpdateBorderLine();
-		}
+        // If I'm selected, oscillate my border color!
+        if (IsSelected) {
+            UpdateBorderColor();
+        }
 	}
 	
 	// ================================================================
@@ -128,7 +108,9 @@ public class RoomTile : MonoBehaviour {
 	// ================================================================
 	public void Hide() {
         this.gameObject.SetActive(false);
-        IsDragReadyMouseOverMe = false; // Deselect me from mouse-over just in case.
+        //OnDeselected();
+        IsMouseOverMe = false;
+        //IsDragReadyMouseOverMe = false; // Deselect me from mouse-over just in case.
         //contents.Hide ();
 
 		//Color backingColor = new Color(0.3f,0.3f,0.3f);//Colors.GetBGColor_ViewGameplay (Colors.GetBGTheme (roomDataRef.WorldIndex));
@@ -191,31 +173,22 @@ public class RoomTile : MonoBehaviour {
         contents.RefreshColors();
     }
 
-	public void UpdateBorderLine() {
-		// Selected!
-		if (isSelected || isWithinRoomTileSelectionRect) {
-			sr_border.color = new Color(1,0.8f,0f);
-		}
-		// BOTH RoomLinkView circles are over me!
-		else if (isRoomLinkViewSelectedOverMePrimary && isRoomLinkViewSelectedOverMeSecondary) {
-			sr_border.color = Color.clear;
-		}
-		// Currently dragged RoomLinkView circle is over me!
-		else if (isRoomLinkViewSelectedOverMePrimary) {
-			float alpha = 0.7f + Mathf.Sin(Time.time*8)*0.4f;
-			sr_border.color = new Color(1,0.8f,0f, alpha);
-		}
-		// Other (non-dragged) RoomLinkView circle is over me!
-		else if (isRoomLinkViewSelectedOverMeSecondary) {
-			sr_border.color = new Color(1,0.8f,0f, 0.4f);
-		}
-		// Drag-ready mouse over me!
-		else if (MapEditor.CanSelectARoomTile() && isDragReadyMouseOverMe) {
-			sr_border.color = new Color(1,0.8f,0f);
-		}
+	public void UpdateBorderColor() {
+        // Drag-ready mouse over me!
+        if (IsMouseOverMe) {//MapEditor.CanSelectARoomTile()) {
+            sr_border.color = new Color(0.5f,0.95f,1, 0.6f);
+            sr_border.sprite = s_borderThick;
+        }
+        // Selected!
+        else if (IsSelected || isInSelectionRect) {
+            float alpha = MathUtils.SinRange(0.5f, 1f, Time.time*7 + Pos.x*0.2f+Pos.y*0.2f);
+            sr_border.color = new Color(1,0.8f,0f, alpha);
+            sr_border.sprite = s_borderThick;
+        }
 		// Not being dragged nor over.
 		else {
 			sr_border.color = new Color(1,1,1, 0.1f);
+            sr_border.sprite = s_borderThin;
 		}
 	}
 
@@ -229,33 +202,31 @@ public class RoomTile : MonoBehaviour {
 		contents.OnMapScaleChanged(MapEditor.MapScale);
 	}
 	public void OnMouseEnterBodyCollider() {
-		if (MapEditor.CanSelectARoomTile()) {
-			IsDragReadyMouseOverMe = true;
-		}
+		IsMouseOverMe = true;
 	}
 	public void OnMouseExitBodyCollider() {
-		IsDragReadyMouseOverMe = false;
+		IsMouseOverMe = false;
 	}
 
 	public void OnSelected(Vector3 _mousePosWorld) {
-		isSelected = true;
+		IsSelected = true;
 		SetMouseClickOffset (_mousePosWorld);
-		UpdateBorderLine ();
+		UpdateBorderColor ();
 	}
 	public void OnDeselected() {
-		isSelected = false;
-		UpdateBorderLine ();
+		IsSelected = false;
+		UpdateBorderColor ();
 	}
 
 
 	private void RegisterMouseInput() {
-		// Clicked me??
-		if (isDragReadyMouseOverMe && Input.GetMouseButtonDown (0)) {
-			MapEditor.OnClickRoomTile(this);
-		}
+		//// Clicked me??
+		//if (IsMouseOverMe && Input.GetMouseButtonDown (0)) {
+		//	MapEditor.OnClickRoomTile(this);
+		//}
 		
 		// Dragging me??
-		if (isSelected && MapEditor.IsDraggingSelectedRoomTiles()) {
+		if (IsSelected && MapEditor.IsDraggingSelectedRoomTiles()) {
 			// Update my RoomData's PosGlobal!!
 			Vector2 newPosGlobal = MapEditor.MousePosWorldDraggingGrid(mouseClickOffset);
 			MyRoomData.SetPosGlobal(newPosGlobal);
