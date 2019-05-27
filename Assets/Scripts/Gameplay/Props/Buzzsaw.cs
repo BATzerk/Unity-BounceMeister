@@ -2,21 +2,56 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Buzzsaw : Collidable {
+[UnityEditor.CustomEditor(typeof(Buzzsaw))]
+public class BuzzsawEditor : UnityEditor.Editor {
+    // References
+    private Buzzsaw myProp;
+    
+    public override void OnInspectorGUI() {
+        base.OnInspectorGUI();
+        if (myProp == null) { myProp = (Buzzsaw)target; }
+        if (!myProp.HasTravelMind()) {
+            if (GUILayout.Button("Add TravelMind")) {
+                myProp.AddTravelMind(new TravelMindData(new Vector2(-5,0), new Vector2(5,0), 2, 0));
+            }
+        }
+        else {
+            if (GUILayout.Button("Remove TravelMind")) {
+                myProp.RemoveTravelMind();
+            }
+        }
+    }
+}
+
+
+public class Buzzsaw : Collidable, ITravelable {
     // Components
     [SerializeField] private CircleCollider2D circleCollider=null;
     [SerializeField] private SpriteRenderer bodySprite=null;
-    //[SerializeField] private Transform tf_body=null;
-    [SerializeField] private Vector2 posA;
-    [SerializeField] private Vector2 posB;
-    // Properties
-    [SerializeField] private float locOffset=0;
-    [SerializeField] private float speed=1;
-    private float oscLoc;
 
     // Getters
     private Vector2 size { get { return bodySprite.size; } }
-
+    
+    // Travelable Stuff
+    private PropTravelMind travelMind; // added in Initialize.
+    public TravelMindData travelMindData { get { return new TravelMindData(travelMind); } }
+    public bool HasTravelMind() { return travelMind != null; }
+    public void AddTravelMind(TravelMindData data) {
+        if (travelMind != null) { return; } // Safety check.
+        travelMind = gameObject.AddComponent<PropTravelMind>();
+        travelMind.Initialize(this, data);
+    }
+    public void RemoveTravelMind() {
+        if (travelMind == null) { return; } // Safety check.
+        Destroy(travelMind);
+        travelMind = null;
+    }
+    // TODO: Clean this pos-stuff up! Would we want TravelMind on ANY Prop? Make changes accordingly.
+    public Vector2 GetPos() { return pos; }
+    public void SetPos(Vector2 _pos) { pos = _pos; }
+    override protected void OnCreatedInEditor() {
+        if (travelMind == null) { travelMind = GetComponent<PropTravelMind>(); } // Safety check for duplicating objects.
+    }
 
 
     // ----------------------------------------------------------------
@@ -24,37 +59,21 @@ public class Buzzsaw : Collidable {
     // ----------------------------------------------------------------
     public void Initialize(Room _myRoom, BuzzsawData data) {
         base.BaseInitialize(_myRoom, data);
+        
+        if (data.travelMind.IsUsed) { AddTravelMind(data.travelMind); }
 
         bodySprite.size = data.size;
         circleCollider.radius = (data.size.x/2) * 0.75f; // Note: Shrink collider; be a lil' generous.
         //bodySprite.transform.localPosition = data.myRect.position;
         //bodySprite.color = Colors.Spikes(WorldIndex);
-        
-        locOffset = data.locOffset;
-        speed = data.speed;
-        posA = data.posA;
-        posB = data.posB;
-        oscLoc = locOffset; // start with my desired offset!
-        
-        UpdatePos();
     }
 
 
     // ----------------------------------------------------------------
     //  FixedUpdate
     // ----------------------------------------------------------------
-    private void FixedUpdate() {
-        Vector2 prevPos = pos;
-
-        UpdatePos();
+    private void Update() {
         UpdateBodyRotation();
-
-        vel = pos - prevPos;
-    }
-    private void UpdatePos() {
-        oscLoc += Time.deltaTime * speed;
-        float loc = MathUtils.Sin01(oscLoc);
-        pos = Vector2.Lerp(posA,posB, loc);
     }
     private void UpdateBodyRotation() {
         bodySprite.transform.Rotate(new Vector3(0, 0, -Time.deltaTime*2000));
@@ -76,39 +95,32 @@ public class Buzzsaw : Collidable {
     // ----------------------------------------------------------------
     //  Editing
     // ----------------------------------------------------------------
-    public override void FlipHorz() {
-        base.FlipHorz();
-        posA *= Vector2.left;
-        posB *= Vector2.left;
-    }
-    public override void FlipVert() {
-        base.FlipVert();
-        posA *= Vector2.down;
-        posB *= Vector2.down;
-    }
-    override public void Move(Vector2 delta) {
-        base.Move(delta);
-        posA += delta;
-        posB += delta;
-    }
-    public void Debug_SetPosA() {
-        posA = MathUtils.Round(pos);
-    }
-    public void Debug_SetPosB() {
-        posB = MathUtils.Round(pos);
-    }
+    //public override void FlipHorz() {TODO: Deez.
+    //    base.FlipHorz();
+    //    posA *= Vector2.left;
+    //    posB *= Vector2.left;
+    //}
+    //public override void FlipVert() {
+    //    base.FlipVert();
+    //    posA *= Vector2.down;
+    //    posB *= Vector2.down;
+    //}
+    //override public void Move(Vector2 delta) {
+    //    base.Move(delta);
+    //    posA += delta;
+    //    posB += delta;
+    //}
 
 
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
     override public PropData SerializeAsData() {
+        if (travelMind == null) { travelMind = GetComponent<PropTravelMind>(); } // Make sure we got the reference!
         return new BuzzsawData {
+            pos = pos,
             size = size,
-            locOffset = locOffset,
-            speed = speed,
-            posA = posA,
-            posB = posB,
+            travelMind = new TravelMindData(travelMind),
         };
     }
 }

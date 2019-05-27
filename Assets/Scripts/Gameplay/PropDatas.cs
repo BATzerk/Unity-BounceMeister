@@ -8,6 +8,58 @@ public class PropData {
 	public Vector2 pos;
 }
 
+public struct TravelMindData {
+    public float locOffset;
+    public float speed;
+    public Vector2 posA;
+    public Vector2 posB;
+    // Getters (Public)
+    public bool IsUsed { get { return posA!=posB && speed != 0; } }
+    
+    public TravelMindData(Vector2 posA,Vector2 posB, float speed, float locOffset) {
+        this.posA = posA;
+        this.posB = posB;
+        this.speed = speed;
+        this.locOffset = locOffset;
+    }
+    public TravelMindData(PropTravelMind script) {
+        if (script != null) {
+            posA = script.PosA;
+            posB = script.PosB;
+            speed = script.Speed;
+            locOffset = script.LocOffset;
+        }
+        else {
+            posA = new Vector2(0, 0);
+            posB = new Vector2(0, 0);
+            speed = 1;
+            locOffset = 0;
+        }
+    }
+    //public override string ToString() {
+    //    string str = "(";
+    //    str += "durOn:" + durOn;
+    //    str += ", durOff:" + durOff;
+    //    str += ", startOffset:" + startOffset;
+    //    str += ")";
+    //    return str;
+    //}
+    public override string ToString() {
+        return "(" + posA.x+","+posA.y + "," + posB.x+","+posB.y + ", " + speed + ", " + locOffset+ ")";
+    }
+    static public TravelMindData FromString(string str) {
+        str = str.Substring(1, str.Length-2); // cut the parenthesis.
+        string[] values = str.Split(',');
+        TravelMindData data = new TravelMindData {
+            posA = new Vector2(TextUtils.ParseFloat(values[0]), TextUtils.ParseFloat(values[1])),
+            posB = new Vector2(TextUtils.ParseFloat(values[2]), TextUtils.ParseFloat(values[3])),
+            speed = TextUtils.ParseFloat(values[4]),
+            locOffset = TextUtils.ParseFloat(values[5])
+        };
+        return data;
+    }
+}
+
 public struct OnOfferData {
     public float durOn;
     public float durOff;
@@ -74,11 +126,12 @@ public struct OnOfferData {
 public class BatteryData : PropData {
 }
 public class BuzzsawData : PropData {
+    public TravelMindData travelMind;
     public Vector2 size;
-    public float locOffset = 0;
-    public float speed = 1;
-    public Vector2 posA = new Vector2(0, 0);
-    public Vector2 posB = new Vector2(10, 0);
+    //public float locOffset = 0;
+    //public float speed = 1;
+    //public Vector2 posA = new Vector2(0, 0);
+    //public Vector2 posB = new Vector2(10, 0);
 }
 public class CameraBoundsData : PropData {
 	public Rect myRect=new Rect();
@@ -160,7 +213,7 @@ public class RoomDoorData : PropData {
 
 public class LaserData : PropData {
     //public Rect myRect=new Rect();
-    public OnOfferData onOfferData;
+    public OnOfferData onOfferData; // TODO: Rename this (and one in Spikes) to onOffer! Here and in all room files!
 }
 
 public class LiftData : PropData {

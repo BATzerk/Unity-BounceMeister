@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
-[CustomEditor(typeof(Spikes))]
-public class SpikesEditor : Editor {
+[UnityEditor.CustomEditor(typeof(Spikes))]
+public class SpikesEditor : UnityEditor.Editor {
     // References
     private Spikes mySpikes;
     

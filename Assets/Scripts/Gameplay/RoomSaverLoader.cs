@@ -93,7 +93,6 @@ static public class RoomSaverLoader {
 		foreach (PropData propData in rd.allPropDatas) {
 			Type type = propData.GetType();
 			if (type == typeof(BatteryData)) { AddAllPropFieldsToFS(propData, "pos"); }
-            else if (type == typeof(BuzzsawData)) { AddAllPropFieldsToFS(propData, "size", "locOffset", "speed", "posA", "posB"); }
             else if (type == typeof(CharBarrelData)) { AddAllPropFieldsToFS(propData, "pos", "otherCharName"); }
             else if (type == typeof(CharUnlockOrbData)) { AddAllPropFieldsToFS(propData, "pos", "myCharName"); }
             else if (type == typeof(EnemyData)) { AddAllPropFieldsToFS(propData, "pos"); }
@@ -105,6 +104,12 @@ static public class RoomSaverLoader {
             else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos", "playerType"); }
             else if (type == typeof(VeilData)) { AddAllPropFieldsToFS(propData, "myRect"); }
             // Props with optional params
+            else if (type == typeof(BuzzsawData)) {
+                BuzzsawData d = propData as BuzzsawData;
+                AddSomePropFieldsToFS(propData, "pos", "size");
+                if (d.travelMind.IsUsed) { fs += ";travelMind:" + d.travelMind.ToString(); }
+                AddFSLine();
+            }
             else if (type == typeof(SpikesData)) {
                 SpikesData d = propData as SpikesData;
                 AddSomePropFieldsToFS(propData, "myRect", "rotation");
@@ -526,6 +531,9 @@ static public class RoomSaverLoader {
 		}
         else if (fieldInfo.FieldType == typeof(OnOfferData)) {
             fieldInfo.SetValue(propData, OnOfferData.FromString(fieldValueString));
+        }
+        else if (fieldInfo.FieldType == typeof(TravelMindData)) {
+            fieldInfo.SetValue(propData, TravelMindData.FromString(fieldValueString));
         }
         else {
             Debug.LogWarning("Unrecognized field type in Room file: " + debug_roomDataLoadingRoomKey + ". PropData: " + propData + ", fieldName: " + fieldName);

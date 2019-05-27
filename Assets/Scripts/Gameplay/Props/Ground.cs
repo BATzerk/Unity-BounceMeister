@@ -3,6 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
+//[UnityEditor.CustomEditor(typeof(Ground))]
+//public class GroundEditor : UnityEditor.Editor {
+//    // References
+//    private Ground myProp;
+    
+//    public override void OnInspectorGUI() {
+//        base.OnInspectorGUI();
+//        if (myProp == null) { myProp = (Ground)target; }
+//        if (!myProp.HasTravelMind()) {
+//            if (GUILayout.Button("Add TravelMind")) {
+//                myProp.AddTravelMind(new TravelMindData(new Vector2(-5,0), new Vector2(5,0), 2, 0));
+//            }
+//        }
+//        else {
+//            if (GUILayout.Button("Remove TravelMind")) {
+//                myProp.RemoveTravelMind();
+//            }
+//        }
+//    }
+//}
+
 public sealed class Ground : BaseGround {
 	// Properties
 //	[SerializeField] private bool doDisappearAfterBounces = false;
