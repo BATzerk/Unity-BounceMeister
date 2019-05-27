@@ -1,7 +1,7 @@
 roomProperties posGlobal:(458.0, 1402.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Buzzsaw size:(3.0, 3.0);locOffset:0;speed:1.1;posA:(-11.0, -3.0);posB:(11.0, -3.0)
-Buzzsaw size:(3.0, 3.0);locOffset:3.14159;speed:1.1;posA:(-7.0, 9.0);posB:(15.0, 9.0)
+Buzzsaw size:(3.0, 3.0);travelMind:(-11.0, -3.0, 11.0, -3.0, 1.1, 0)
+Buzzsaw size:(3.0, 3.0);travelMind:(-7.0, 9.0, 15.0, 9.0, 1.1, 3.14159)
 Ground myRect:(x:2.50, y:14.50, width:17.00, height:3.00)
 Ground myRect:(x:24.00, y:6.50, width:4.00, height:23.00)
 Ground myRect:(x:-17.00, y:7.50, width:18.00, height:5.00);isPlayerRespawn:True

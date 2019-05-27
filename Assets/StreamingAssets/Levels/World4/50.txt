@@ -1,24 +1,25 @@
 roomProperties posGlobal:(642.0, 344.0);designerFlag:0
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Buzzsaw size:(8.0, 8.0);locOffset:0;speed:1;posA:(-2.0, 0.0);posB:(-2.0, 0.0)
-Ground myRect:(x:13.00, y:-5.00, width:6.00, height:24.00)
-Ground myRect:(x:4.50, y:-14.00, width:19.00, height:8.00)
-Ground myRect:(x:-21.00, y:-10.50, width:8.00, height:11.00)
-Ground myRect:(x:24.00, y:3.50, width:4.00, height:25.00)
+Buzzsaw size:(8.0, 8.0);pos:(-2.5, 0.0)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
 Ground myRect:(x:-23.50, y:0.00, width:5.00, height:32.00)
 Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
-Lift myRect:(x:18.00, y:-5.00, width:4.00, height:14.00);rotation:0;strength:0.08
-Lift myRect:(x:6.00, y:2.00, width:6.00, height:10.00);rotation:0;strength:0.08
+Ground myRect:(x:24.00, y:3.50, width:4.00, height:25.00)
+Ground myRect:(x:13.00, y:-5.00, width:6.00, height:24.00)
+Ground myRect:(x:4.50, y:-14.00, width:19.00, height:8.00)
+Ground myRect:(x:-21.00, y:-10.50, width:8.00, height:11.00)
 Lift myRect:(x:-11.00, y:-1.00, width:6.00, height:20.00);rotation:0;strength:0.08
-Platform myRect:(x:19.00, y:6.50, width:6.00, height:1.00)
+Lift myRect:(x:6.00, y:2.00, width:6.00, height:10.00);rotation:0;strength:0.08
+Lift myRect:(x:18.00, y:-5.00, width:4.00, height:14.00);rotation:0;strength:0.08
 Platform myRect:(x:-17.50, y:8.50, width:7.00, height:1.00);mayPlayerEat:False
+Platform myRect:(x:19.00, y:6.50, width:6.00, height:1.00)
 PlayerStart pos:(18.0, -14.0)
 Snack pos:(-18.5, 11.0);playerType:Any
-Spikes myRect:(x:2.50, y:-9.50, width:15.00, height:1.00);rotation:0
-Spikes myRect:(x:-20.50, y:-3.50, width:15.00, height:1.00);rotation:270
-Spikes myRect:(x:9.50, y:-5.00, width:10.00, height:1.00);rotation:90
-Spikes myRect:(x:-9.50, y:-15.50, width:15.00, height:1.00);rotation:0
 Spikes myRect:(x:-5.50, y:-15.00, width:10.00, height:1.00);rotation:90
 Spikes myRect:(x:-21.00, y:-4.50, width:8.00, height:1.00);rotation:0
 Spikes myRect:(x:-16.50, y:-12.50, width:15.00, height:1.00);rotation:270
+Spikes myRect:(x:-9.50, y:-15.50, width:15.00, height:1.00);rotation:0
+Spikes myRect:(x:2.50, y:-9.50, width:15.00, height:1.00);rotation:0
+Spikes myRect:(x:-20.50, y:-3.50, width:15.00, height:1.00);rotation:270
+Spikes myRect:(x:9.50, y:-5.00, width:10.00, height:1.00);rotation:90
+

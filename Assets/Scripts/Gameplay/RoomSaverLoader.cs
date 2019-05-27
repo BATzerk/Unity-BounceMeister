@@ -106,8 +106,9 @@ static public class RoomSaverLoader {
             // Props with optional params
             else if (type == typeof(BuzzsawData)) {
                 BuzzsawData d = propData as BuzzsawData;
-                AddSomePropFieldsToFS(propData, "pos", "size");
+                AddSomePropFieldsToFS(propData, "size");
                 if (d.travelMind.IsUsed) { fs += ";travelMind:" + d.travelMind.ToString(); }
+                else { fs += ";pos:" + d.pos; }
                 AddFSLine();
             }
             else if (type == typeof(SpikesData)) {

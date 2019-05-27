@@ -1,13 +1,13 @@
 roomProperties posGlobal:(720.0, 926.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Buzzsaw size:(4.0, 4.0);locOffset:0;speed:2;posA:(-19.0, -15.0);posB:(-7.0, -15.0)
-Buzzsaw size:(4.0, 4.0);locOffset:0;speed:2;posA:(-7.0, -4.0);posB:(-19.0, -4.0)
-Buzzsaw size:(4.0, 4.0);locOffset:0;speed:2;posA:(-21.0, -5.0);posB:(-21.0, -14.0)
-Buzzsaw size:(4.0, 4.0);locOffset:0;speed:1;posA:(-23.0, 2.0);posB:(-23.0, 15.0)
-Buzzsaw size:(4.0, 4.0);locOffset:0;speed:2;posA:(-8.0, 9.0);posB:(0.0, 9.0)
-Buzzsaw size:(4.0, 4.0);locOffset:0;speed:2;posA:(23.0, -2.0);posB:(23.0, 5.0)
-Buzzsaw size:(4.0, 4.0);locOffset:0;speed:2;posA:(9.0, -4.0);posB:(21.0, -4.0)
-Buzzsaw size:(4.0, 4.0);locOffset:0;speed:2;posA:(21.0, 7.0);posB:(9.0, 7.0)
+Buzzsaw size:(4.0, 4.0);travelMind:(-19.0, -15.0,-7.0, -15.0, 2,0)
+Buzzsaw size:(4.0, 4.0);travelMind:(-7.0, -4.0,-19.0, -4.0, 2,0)
+Buzzsaw size:(4.0, 4.0);travelMind:(-21.0, -5.0,-21.0, -14.0, 2,0)
+Buzzsaw size:(4.0, 4.0);travelMind:(-23.0, 2.0,-23.0, 15.0, 2,0)
+Buzzsaw size:(4.0, 4.0);travelMind:(-8.0, 9.0,0.0, 9.0, 2,0)
+Buzzsaw size:(4.0, 4.0);travelMind:(23.0, -2.0,23.0, 5.0, 2,0)
+Buzzsaw size:(4.0, 4.0);travelMind:(9.0, -4.0,21.0, -4.0, 2,0)
+Buzzsaw size:(4.0, 4.0);travelMind:(21.0, 7.0,9.0, 7.0, 2,0)
 GateButton pos:(-2.0, -3.0);channelID:0
 GateButton pos:(20.5, 4.5);channelID:0
 GateButton pos:(-18.5, -6.5);channelID:0

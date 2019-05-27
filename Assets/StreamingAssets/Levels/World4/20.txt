@@ -1,6 +1,6 @@
 roomProperties posGlobal:(694.0, 382.0);designerFlag:2
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Buzzsaw size:(4.5, 4.4);locOffset:0;speed:1;posA:(-16.0, -16.0);posB:(15.0, -16.0)
+Buzzsaw size:(4.5, 4.4);travelMind:(-16.0, -16.0, 15.0, -16.0, 1, 0)
 DamageableGround myRect:(x:-6.00, y:-7.00, width:6.00, height:10.00);doRegen:True;dieFromPlayerLeave:True
 DamageableGround myRect:(x:6.00, y:-0.50, width:6.00, height:23.00);doRegen:True;dieFromPlayerLeave:True
 GateButton pos:(17.0, 5.5);channelID:0
