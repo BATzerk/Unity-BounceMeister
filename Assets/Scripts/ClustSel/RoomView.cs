@@ -6,8 +6,9 @@ using UnityEngine.UI;
 namespace ClustSelNamespace {
     public class RoomView : MonoBehaviour {
         // Components
-        [SerializeField] private RectTransform myRectTransform=null;
         [SerializeField] private Image i_back=null;
+        [SerializeField] private RectTransform myRectTransform=null;
+        [SerializeField] private RoomViewContents contents=null;
         // Properties
         public RoomData MyRoomData { get; private set; }
         
@@ -22,11 +23,13 @@ namespace ClustSelNamespace {
             GameUtils.ParentAndReset(this.gameObject, tf_parent);
             this.gameObject.name = "RoomView " + myRoomData.RoomKey;
             
-            myRectTransform.sizeDelta = myRoomData.BoundsLocal.size * scale;
+            myRectTransform.sizeDelta = myRoomData.BoundsLocal.size;// * scale;
             
             Vector2 pos = myRoomData.PosGlobal - myClustData.BoundsGlobal.center;
             pos += myRoomData.cameraBoundsData.myRect.center; // hack-y! Just getting to work for now. Works around the rooms' local/global alignment mismatch.
-            myRectTransform.anchoredPosition = pos * scale;
+            myRectTransform.anchoredPosition = pos;// * scale;
+            
+            contents.Initialize(this);
             
             // Secret and unvisited? Hide me!
             if (myRoomData.IsSecret && !myRoomData.HasPlayerBeenHere) {

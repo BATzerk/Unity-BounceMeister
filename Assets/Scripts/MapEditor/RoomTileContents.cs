@@ -13,20 +13,18 @@ public class RoomTileContents : MonoBehaviour {
 	[SerializeField] private GameObject go_props=null;
 	[SerializeField] private RoomTileDesignerFlag designerFlag=null;
 	[SerializeField] private SpriteMask propsMask=null;
+    [SerializeField] private TextMesh t_roomName=null; // what's my name, again?
     private List<SpriteRenderer> srs_grounds=new List<SpriteRenderer>();
     private List<SpriteRenderer> srs_openings;
-	// Properties
-	private bool hasInitializedContent = false;
-	// References
-    [SerializeField] private Sprite s_battery=null;
-    [SerializeField] private Sprite s_ground=null;
-    [SerializeField] private Sprite s_snack=null;
-	[SerializeField] private Sprite s_spikes=null;
-	[SerializeField] private TextMesh t_roomName=null; // what's my name, again?
+    // Properties
+    private bool hasInitializedContent = false;
+    // References
     private List<GroundData> groundDatas = new List<GroundData>();
     private RoomData myRD;
     private RoomTile myRoomTile;
 
+    // Getters (Private)
+    private ResourcesHandler rh { get { return ResourcesHandler.Instance; } }
     private MapEditorSettings editorSettings { get { return myRoomTile.MapEditor.MySettings; } }
 
 
@@ -67,38 +65,38 @@ public class RoomTileContents : MonoBehaviour {
             // -- Batteries --
             if (propData.GetType() == typeof(BatteryData)) {
                 BatteryData pd = propData as BatteryData;
-                AddSpriteRenderer("Battery",s_battery, go_props, pd.pos, BatteryIconSize, 10, Color.white);
+                AddSpriteRenderer("Battery",rh.s_battery, go_props, pd.pos, BatteryIconSize, 10, Color.white);
             }
 			// -- Grounds --
 			else if (propData.GetType() == typeof(GroundData)) {
 				GroundData pd = propData as GroundData;
                 groundDatas.Add(pd); // also add it to my ref list!
-				srs_grounds.Add(AddSpriteRenderer("Ground", s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, Color.white));//WHY POSITION? why not center?
+				srs_grounds.Add(AddSpriteRenderer("Ground", rh.s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, Color.white));//WHY POSITION? why not center?
 			}
 			// -- DamageableGrounds --
 			else if (propData.GetType() == typeof(DamageableGroundData)) {
                 DamageableGroundData pd = propData as DamageableGroundData;
 				Color color = DamageableGround.GetBodyColor(pd);
                 color = new Color(color.r,color.g,color.b, color.a*0.6f); // alpha it out a bit, to taste.
-                AddSpriteRenderer("DamageableGround", s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, color);
+                AddSpriteRenderer("DamageableGround", rh.s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, color);
 			}
             // -- Gems --
             else if (propData.GetType() == typeof(GemData)) {
                 GemData pd = propData as GemData;
-                Sprite sprite = ResourcesHandler.Instance.GetGemSprite(pd.type);
+                Sprite sprite = rh.GetGemSprite(pd.type);
                 AddSpriteRenderer("Gem",sprite, go_props, pd.pos, GemIconSize, 10, Color.white);
             }
             // -- Snacks --
             else if (propData.GetType() == typeof(SnackData)) {
                 SnackData pd = propData as SnackData;
                 Color color = PlayerBody.GetBodyColorNeutral(PlayerTypeHelper.TypeFromString(pd.playerType));
-                AddSpriteRenderer("Snack",s_snack, go_props, pd.pos, SnackIconSize, 10, color);
+                AddSpriteRenderer("Snack",rh.s_snack, go_props, pd.pos, SnackIconSize, 10, color);
             }
 			// -- Spikes --
 			else if (propData.GetType() == typeof(SpikesData)) {
 				SpikesData spikesData = propData as SpikesData;
                 Color color = Colors.Spikes(myRD.WorldIndex);// new Color(0.7f,0.1f,0f, 0.6f);
-				SpriteRenderer newSprite = AddSpriteRenderer("Spikes", s_spikes, go_props, spikesData.myRect.position, Vector2.one, 0, color);
+				SpriteRenderer newSprite = AddSpriteRenderer("Spikes", rh.s_spikes, go_props, spikesData.myRect.position, Vector2.one, 0, color);
 				newSprite.drawMode = SpriteDrawMode.Tiled;
 				newSprite.size = spikesData.myRect.size;
 				newSprite.transform.localEulerAngles = new Vector3(0, 0, spikesData.rotation);
@@ -111,7 +109,7 @@ public class RoomTileContents : MonoBehaviour {
 		SpriteRenderer sr = iconGO.AddComponent<SpriteRenderer> ();
 		sr.name = goName;
 		sr.sprite = sprite;
-		sr.transform.SetParent (parentGO.transform);
+        GameUtils.ParentAndReset(sr.gameObject, parentGO.transform);
 		sr.transform.localPosition = pos;
 		GameUtils.SizeSpriteRenderer (sr, size);
 		sr.sortingOrder = sortingOrder;

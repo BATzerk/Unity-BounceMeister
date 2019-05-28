@@ -94,13 +94,13 @@ public class MiniMap : MonoBehaviour {
         }
     }
     private void UpdateSnackCountText() {
-        if (currRoomData.MyCluster != null) {
+        if (currRoomData.MyCluster == null || currRoomData.MyCluster.SnackCount.Total_All==0) {
+            go_snackCount.SetActive(false); // No cluster ('cause dev), OR no Snacks? Hide snackCount.
+        }
+        else {
             go_snackCount.SetActive(true);
             SnackCount sc = currRoomData.MyCluster.SnackCount;
             t_snackCount.text = sc.Eaten(currPlayerType) + " / " + sc.Total(currPlayerType);
-        }
-        else {
-            go_snackCount.SetActive(false); // No cluster ('cause I'm developing levels)? Hide snackCount.
         }
     }
     

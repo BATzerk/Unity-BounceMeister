@@ -381,12 +381,12 @@ public class GameController : MonoBehaviour {
         SceneHelper.ReloadScene();
     }
 
-    private void OnGUI() {
-        GUI.color = Color.black;
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 12;
-        GUI.Label(new Rect(8,0, 400,100), "timeScale: " + Time.timeScale, style);
-    }
+    //private void OnGUI() {
+    //    GUI.color = Color.black;
+    //    GUIStyle style = new GUIStyle();
+    //    style.fontSize = 12;
+    //    GUI.Label(new Rect(8,0, 400,100), "timeScale: " + Time.timeScale, style);
+    //}
 
 
 

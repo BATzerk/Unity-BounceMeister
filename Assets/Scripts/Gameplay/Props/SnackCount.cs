@@ -6,7 +6,8 @@ public class SnackCount {
     // Properties
     private Dictionary<PlayerTypes, int> eaten; // num eaten by PlayerType, including the Any type.
     private Dictionary<PlayerTypes, int> total; // num total by PlayerType, including the Any type.
-    public int Eaten_All { get; private set; } // sum of ALL types total!
+    public int Eaten_All { get; private set; } // sum of ALL types!
+    public int Total_All { get; private set; } // sum of ALL types!
     //private int total_all; // sum of all other types.
     
     
@@ -15,7 +16,6 @@ public class SnackCount {
     public int Eaten(PlayerTypes pt) {
         if (pt == PlayerTypes.Any) { return eaten[pt]; }
         else { return eaten[pt] + eaten[PlayerTypes.Any]; }
-        //return eaten[pt];
     }
     /// Returns num for this PlayerType, PLUS num for the ANY PlayerType! (E.g. if 5 Plunga and 3 Any, I'll return 8.)
     public int Total(PlayerTypes pt) {
@@ -38,6 +38,7 @@ public class SnackCount {
         eaten = new Dictionary<PlayerTypes, int>();
         total = new Dictionary<PlayerTypes, int>();
         Eaten_All = 0;
+        Total_All = 0;
         //eaten[PlayerTypes.Every] = 0;
         //total[PlayerTypes.Every] = 0;
         foreach (PlayerTypes playerType in PlayerTypeHelper.AllTypes) {
@@ -52,6 +53,7 @@ public class SnackCount {
         for (int i=0; i<rd.snackDatas.Count; i++) {
             PlayerTypes playerType = PlayerTypeHelper.TypeFromString(rd.snackDatas[i].playerType);
             total[playerType] ++;
+            Total_All ++;
             //total[PlayerTypes.Every] ++;
             if (SaveStorage.GetBool(SaveKeys.DidEatSnack(rd, i))) {
                 eaten[playerType] ++;
@@ -62,9 +64,10 @@ public class SnackCount {
     
     public void Add(SnackCount other) {
         foreach (PlayerTypes pt in other.total.Keys) {
-            total[pt] += other.total[pt];
             eaten[pt] += other.eaten[pt];
             Eaten_All += other.eaten[pt];
+            total[pt] += other.total[pt];
+            Total_All += other.total[pt];
         }
     }
 }

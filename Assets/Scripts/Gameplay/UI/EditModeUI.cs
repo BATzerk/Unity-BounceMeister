@@ -50,7 +50,7 @@ public class EditModeUI : MonoBehaviour {
         // Change color if there's a naming conflict!
         string newName = tif_roomName.text;
         Color color;
-        if (newName == room.RoomKey) { color = Color.black; } // Same name? Black.
+        if (newName == room.RoomKey) { color = new Color(0,0,0, 0.4f); } // Same name? Black.
         else if (RoomSaverLoader.MayRenameRoomFile(room,newName)) { color = new Color(130/255f, 160/255f, 40/255f); } // Can rename? Green!
         else { color = new Color(140/255f, 55/255f, 40/255f); } // CAN'T rename? Red.
         // Apply the color.

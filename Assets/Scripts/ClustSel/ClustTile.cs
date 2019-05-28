@@ -71,6 +71,7 @@ namespace ClustSelNamespace {
             // Size myRectTransform!
             Vector2 sizeDiff = myRectTransform.rect.size - rt_rooms.rect.size;
             myRectTransform.sizeDelta = clustBoundsSize*scale + sizeDiff;
+            rt_rooms.localScale = Vector3.one * scale;
             
             // Add views!
             int NumRooms = myClustData.rooms.Count;
@@ -97,7 +98,7 @@ namespace ClustSelNamespace {
             
             // Texts and back!
             int numAdditionalSnacksReq = Mathf.Max(0, myClustData.NumSnacksReq - totalSnacksEaten);
-            int numSnacksInClust = myClustData.SnackCount.Total(PlayerTypes.Any);
+            int numSnacksInClust = myClustData.SnackCount.Total_All;
             //int numSnacksLeft = myClustData.SnackCount.Uneaten(tempPlayerType);
             myButton.interactable = myClustData.IsUnlocked;
             go_snacksReq.SetActive(!myClustData.IsUnlocked);
@@ -105,10 +106,10 @@ namespace ClustSelNamespace {
             go_snacksLeft.SetActive(myClustData.IsUnlocked && numSnacksInClust>0);
             t_snacksReq.text = numAdditionalSnacksReq.ToString();
             t_snacksLeft.text = myClustData.SnackCount.Eaten_All + " / " + numSnacksInClust; //numSnacksLeft.ToString();
-            i_back.color = myClustData.IsUnlocked || canUnlockMe ? new ColorHSB(worldHue,0.5f,1f, 0.4f).ToColor() : new Color(0,0,0, 0.08f);
+            i_back.color = myClustData.IsUnlocked || canUnlockMe ? new ColorHSB(worldHue,0.5f,1f, 0.1f).ToColor() : new Color(0,0,0, 0.08f);
             
             // RoomViews!
-            Color roomColorVisited = new ColorHSB(worldHue, 0.5f, 0.95f).ToColor();
+            Color roomColorVisited = new ColorHSB(worldHue, 0.5f, 0.95f, 0.1f).ToColor();
             foreach (RoomView roomView in roomViews) {
                 roomView.UpdateColor(roomColorVisited);
             }

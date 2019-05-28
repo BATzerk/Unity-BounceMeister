@@ -17,6 +17,10 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] public Sprite s_whiteSquare;
     [SerializeField] public Sprite s_gem0;
     [SerializeField] public Sprite s_gem1;
+    [SerializeField] public Sprite s_battery=null;
+    [SerializeField] public Sprite s_ground=null;
+    [SerializeField] public Sprite s_snack=null;
+    [SerializeField] public Sprite s_spikes=null;
     
     [SerializeField] public GameObject Room;
     [SerializeField] public GameObject MiniMapRoomTile;

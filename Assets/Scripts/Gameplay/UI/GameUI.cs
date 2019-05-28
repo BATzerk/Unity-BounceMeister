@@ -76,6 +76,9 @@ public class GameUI : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
+    public void OpenClustSelScene() {
+        SceneHelper.OpenScene(SceneNames.ClustSelect);
+    }
     private void UpdateCoinsCollectedText() {
         t_coinsCollected.text = dm.CoinsCollected.ToString();
     }
