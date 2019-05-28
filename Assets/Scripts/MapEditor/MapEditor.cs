@@ -425,8 +425,8 @@ public class MapEditor : MonoBehaviour {
 	}
     
     private List<RoomTile> GetTilesInClick(RoomTile sourceTile) {
-        // CONTROL = Consider ALL CONNECTED tiles!
-        if (InputController.IsKey_control) { return GetConnectedTiles(sourceTile); }
+        // SHIFT = Consider ALL CONNECTED tiles!
+        if (InputController.IsKey_shift) { return GetConnectedTiles(sourceTile); }
         // Otherwise, just return the ONE Tile.
         return new List<RoomTile> { sourceTile };
     }
@@ -503,7 +503,7 @@ public class MapEditor : MonoBehaviour {
 	}
     
     private void UpdateIsKeyMultiSelection() {
-        isKeyMultiSelection = InputController.IsKey_shift;
+        isKeyMultiSelection = InputController.IsKey_control;
         //// Tell all the (curr world) tiles!
         //for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
         //    CurrWorldRoomTiles[i].UpdateIsDragReadyMouseOverMe();
@@ -605,7 +605,7 @@ public class MapEditor : MonoBehaviour {
 		}
         
         // SHIFT UP or DOWN...
-        if (InputController.IsKeyDown_shift || InputController.IsKeyUp_shift) {
+        if (InputController.IsKeyDown_control || InputController.IsKeyUp_control) {
             UpdateIsKeyMultiSelection();
         }
 

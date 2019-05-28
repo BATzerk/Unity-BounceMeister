@@ -6,8 +6,8 @@ abstract public class PlayerBody : MonoBehaviour {
     // Components
     [SerializeField] private GameObject go_wallSliding=null;
     [SerializeField] private ParticleSystem ps_dieBurst=null;
-    [SerializeField] protected PlayerBodyEyes eyes=null;
     [SerializeField] private SpriteRenderer sr_body=null;
+    protected PlayerBodyEyes eyes=null;//[SerializeField] 
 	// Properties
 	protected Color c_bodyNeutral = Color.magenta;
 	private Color bodyColor;
@@ -40,6 +40,7 @@ abstract public class PlayerBody : MonoBehaviour {
     // ----------------------------------------------------------------
     virtual protected void Awake() {
         myBasePlayer = GetComponentInParent<Player>();
+        eyes = GetComponentInChildren<PlayerBodyEyes>();
     }
     virtual protected void Start() {
 		c_bodyNeutral = GetBodyColorNeutral(myBasePlayer.PlayerType());

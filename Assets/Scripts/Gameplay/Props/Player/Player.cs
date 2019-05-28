@@ -8,6 +8,7 @@ abstract public class Player : PlatformCharacter {
     abstract public PlayerTypes PlayerType();
 	// Constants
 	override protected int StartingHealth { get { return 1; } }
+    //virtual protected float FrictionAir_//TODO: Clean this up! Seriously, it won't be too hard.
 	override protected float FrictionAir { get { return isPreservingWallKickVel ? 1f : FrictionGround; } } // No air friction while we're preserving our precious wall-kick vel.
 	override protected float FrictionGround {
 		get {

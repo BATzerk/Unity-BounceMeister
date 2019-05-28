@@ -31,6 +31,7 @@ public class RoomViewContents : MonoBehaviour {
         }
     }
     private void AddPropImages() {
+        int snackIndex = 0; // for determining which Snacks we gots!
         foreach (PropData propData in myRD.allPropDatas) {
             // -- Spikes --
             if (propData.GetType() == typeof(SpikesData)) {
@@ -70,8 +71,12 @@ public class RoomViewContents : MonoBehaviour {
             // -- Snacks --
             else if (propData.GetType() == typeof(SnackData)) {
                 SnackData pd = propData as SnackData;
-                Color color = PlayerBody.GetBodyColorNeutral(PlayerTypeHelper.TypeFromString(pd.playerType));
+                Color color;
+                bool didEatSnack = SaveStorage.GetBool(SaveKeys.DidEatSnack(myRD, snackIndex));
+                if (didEatSnack) { color = new Color(0,0,0, 0.2f); }
+                else { color = PlayerBody.GetBodyColorNeutral(PlayerTypeHelper.TypeFromString(pd.playerType)); }
                 AddImage("Snack",rh.s_snack, rt_props, pd.pos, SnackIconSize, color);
+                snackIndex ++;
             }
         }
     }
