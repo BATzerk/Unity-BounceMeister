@@ -7,4 +7,3 @@ Ground myRect:(x:0.00, y:16.50, width:52.00, height:7.00)
 Ground myRect:(x:0.00, y:-15.50, width:52.00, height:9.00)
 Ground myRect:(x:3.00, y:-11.50, width:16.00, height:7.00)
 PlayerStart pos:(1.0, 3.0)
-

@@ -25,16 +25,12 @@ public class EditModeController : MonoBehaviour {
     private Room CurrRoom { get { return gameController.CurrRoom; } }
 
 
+
+#if UNITY_EDITOR
     // ----------------------------------------------------------------
     //  Awake / Destroy
     // ----------------------------------------------------------------
     private void Awake() {
-        // Not in EditMode? Destroy this script!
-        if (!GameProperties.IsEditModeAvailable) {
-            Destroy(this);
-            return;
-        }
-
         // Set references.
         gameController = GetComponent<GameController>();
         
@@ -45,10 +41,7 @@ public class EditModeController : MonoBehaviour {
         // Remove event listeners!
         GameManagers.Instance.EventManager.StartRoomEvent -= OnStartRoom;
     }
-
-
-
-#if UNITY_EDITOR
+    
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
@@ -221,6 +214,15 @@ public class EditModeController : MonoBehaviour {
                 }
             }
         }
+    }
+
+#else
+    // ----------------------------------------------------------------
+    //  Awake
+    // ----------------------------------------------------------------
+    private void Awake() {
+        Destroy(this);
+        return;
     }
 
 #endif

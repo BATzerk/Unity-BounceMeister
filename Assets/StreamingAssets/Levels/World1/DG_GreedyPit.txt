@@ -1,17 +1,18 @@
 roomProperties posGlobal:(400.0, 72.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 DamageableGround myRect:(x:0.00, y:0.00, width:24.00, height:2.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
-GateButton pos:(3.0, 5.0);channelID:0
+GateButton pos:(4.0, 5.0);channelID:0
 Gate myRect:(x:22.00, y:5.00, width:4.00, height:6.00);channelID:0
-Ground myRect:(x:-15.50, y:2.50, width:3.00, height:3.00)
-Ground myRect:(x:23.00, y:14.00, width:6.00, height:12.00)
-Ground myRect:(x:-20.50, y:-7.50, width:11.00, height:19.00)
-Ground myRect:(x:15.50, y:2.50, width:3.00, height:3.00)
-Ground myRect:(x:-23.50, y:13.50, width:5.00, height:13.00)
 Ground myRect:(x:20.50, y:-7.50, width:11.00, height:19.00)
-Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
+Ground myRect:(x:-23.50, y:13.50, width:5.00, height:13.00)
 Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
+Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
+Ground myRect:(x:23.00, y:14.00, width:6.00, height:12.00)
+Ground myRect:(x:-15.50, y:2.50, width:3.00, height:3.00)
+Ground myRect:(x:15.50, y:2.50, width:3.00, height:3.00)
+Ground myRect:(x:-20.50, y:-7.50, width:11.00, height:19.00)
 PlayerStart pos:(-16.0, 5.0)
-Spikes myRect:(x:-14.50, y:-8.50, width:19.00, height:1.00);rotation:270
-Spikes myRect:(x:0.00, y:-13.50, width:30.00, height:1.00);rotation:0
 Spikes myRect:(x:14.50, y:-8.50, width:19.00, height:1.00);rotation:90
+Spikes myRect:(x:0.00, y:-13.50, width:30.00, height:1.00);rotation:0
+Spikes myRect:(x:-14.50, y:-8.50, width:19.00, height:1.00);rotation:270
+
