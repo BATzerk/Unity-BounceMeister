@@ -53,19 +53,24 @@ public class PlatformCharacter : Collidable {
 	//	}
 	//}
     private Collidable GetCollidable(Collider2D col) {
-        //CollidableLiaison collLiaison = col.GetComponent<CollidableLiaison>();
-        //return collLiaison==null ? null : collLiaison.MyCollidable;
         return col==null ? null : col.GetComponent<Collidable>();
     }
     private Vector2 GetRelativeVel(Collider2D coll2D) {
-        if (coll2D != null) {
-            Collidable collidable = coll2D.GetComponent<Collidable>();
-            if (collidable!=null) { return vel - collidable.vel; } // Return my vel, relative to this collidable!
-        }
-        return vel; // no collidable. Just return my vel.
+        return GetRelativeVel(GetCollidable(coll2D));
+    }
+    private Vector2 GetRelativeVel(Collidable coll) {
+        if (coll == null) { return vel; } // no collidable. Just return my vel.
+        return vel - coll.vel; // Return my vel, relative to this collidable!
+    }
+    public bool IsMovingAwayFromColl(int side, Collidable coll) {
+        Vector2 velRel = GetRelativeVel(coll);
+        return IsMovingAwayFromSide(side, velRel);
     }
     public bool IsMovingAwayFromColl(int side, Collider2D coll2D) {
         Vector2 velRel = GetRelativeVel(coll2D);
+        return IsMovingAwayFromSide(side, velRel);
+    }
+    private bool IsMovingAwayFromSide(int side, Vector2 velRel) {
         switch (side) {
             case Sides.L: return velRel.x >  0.01f;
             case Sides.R: return velRel.x < -0.01f;
@@ -90,7 +95,7 @@ public class PlatformCharacter : Collidable {
     // ----------------------------------------------------------------
     override protected void Start() {
         base.Start();
-        Size = bodyCollider.size;
+        Size = bodyCollider.size + new Vector2(bodyCollider.edgeRadius, bodyCollider.edgeRadius)*2;
         timeSinceDamage = Mathf.NegativeInfinity;
 		health = StartingHealth;
         IsInLift = false;
@@ -116,7 +121,7 @@ public class PlatformCharacter : Collidable {
         }
     }
     protected void ApplyGravity() {
-		vel += Gravity;
+		ChangeVel(Gravity);
 	}
     virtual protected void ApplyInternalForces() {} // For Plunga's plunge-force, Jetta's jetting, etc.
 	virtual protected void ApplyFriction() {
@@ -131,14 +136,14 @@ public class PlatformCharacter : Collidable {
 		}
 	}
 	virtual protected void AcceptDirectionalMoveInput() {
-		vel += new Vector2(HorzMoveInputVelXDelta(), 0);
+		ChangeVel(new Vector2(HorzMoveInputVelXDelta(), 0));
 	}
 	protected void ApplyTerminalVel() {
         //if (IsInLift) { return; } // TEST
 		float maxXVel = IsGrounded() ? MaxVelXGround : MaxVelXAir;
 		float xVel = Mathf.Clamp(vel.x, -maxXVel,maxXVel);
 		float yVel = Mathf.Clamp(vel.y, MaxVelYDown,MaxVelYUp);
-		SetVel(new Vector2(xVel, yVel));
+		SetVel(xVel, yVel);
 	}
 	protected void UpdateTimeLastTouchedWall() {
 		if (IsAgainstWall()) {
@@ -176,8 +181,10 @@ public class PlatformCharacter : Collidable {
         Collidable collidable = GetCollidable(col);
 		if (collidable != null) {
 			collidable.OnCharacterLeaveMe(side, this);
-            // Traveling collidable? Add its vel to OUR vel!
-            ChangeVel(collidable.vel);
+            //// We're NOT moving away from it? Add its vel to OUR vel!
+            //if (IsMovingAwayFromColl(side, collidable)) {
+            //    ChangeVel(collidable.vel);
+            //}
         }
 	}
 
@@ -185,9 +192,9 @@ public class PlatformCharacter : Collidable {
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
-    public void SetVel(float _x,float _y) { vel = new Vector2(_x,_y); }
+    public void SetVel(float _x,float _y) { SetVel(new Vector2(_x,_y)); }
     //public void SetVel(Vector2 _vel) { vel = _vel; }
-	protected void ChangeVel(Vector2 delta) { vel += delta; }
+	protected void ChangeVel(Vector2 delta) { SetVel(vel + delta); }
     protected void ChangeVel(float _x,float _y) { ChangeVel(new Vector2(_x,_y)); }
     
     virtual protected void TakeDamage(int damageAmount) {
@@ -202,6 +209,7 @@ public class PlatformCharacter : Collidable {
 		isDead = true;
 		this.gameObject.SetActive(false); // TEMP super simple for now.
 	}
+    
 
 	// ----------------------------------------------------------------
 	//  Events (Physics)
@@ -226,6 +234,7 @@ public class PlatformCharacter : Collidable {
     //  Serializing
     // ----------------------------------------------------------------
     override public PropData SerializeAsData() { return null; }
+
 
 }
 

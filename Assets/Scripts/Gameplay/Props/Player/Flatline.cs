@@ -201,14 +201,14 @@ public class Flatline : Player {
     }
     
     private void ConvertVelYToX(int dir) {
-        vel = new Vector2(Mathf.Abs(ppvel.y)*dir, 0);
+        SetVel(new Vector2(Mathf.Abs(ppvel.y)*dir, 0));
     }
     private void ConvertVelXToY() {
         int dirY = vel.y>-0.2f ? 1 : -1; // NOT moving down? Convert to yVel UP! Moving DOWN? Convert to yVel DOWN!
         float yVel = Mathf.Abs(ppvel.x) * dirY;
         // Don't *lose* speed if our yVel is faster than what we'd make it.
         yVel = dirY>0 ? Mathf.Max(vel.y, yVel) : Mathf.Min(vel.y, yVel);
-        vel = new Vector2(0, yVel);
+        SetVel(new Vector2(0, yVel));
     }
     
     public override void OnUseBattery() {

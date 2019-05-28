@@ -293,6 +293,7 @@ public class GameController : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.I)) { Debug_TogPlayerInLineup(PlayerTypes.Flippa); }
             else if (Input.GetKeyDown(KeyCode.J)) { Debug_TogPlayerInLineup(PlayerTypes.Jetta); }
             else if (Input.GetKeyDown(KeyCode.U)) { Debug_TogPlayerInLineup(PlayerTypes.Jumpa); }
+            else if (Input.GetKeyDown(KeyCode.N)) { Debug_TogPlayerInLineup(PlayerTypes.Neutrala); }
             else if (Input.GetKeyDown(KeyCode.P)) { Debug_TogPlayerInLineup(PlayerTypes.Plunga); }
             else if (Input.GetKeyDown(KeyCode.S)) { Debug_TogPlayerInLineup(PlayerTypes.Slippa); }
             else if (Input.GetKeyDown(KeyCode.W)) { Debug_TogPlayerInLineup(PlayerTypes.Warpa); }

@@ -100,7 +100,7 @@ public class Jetta : Player {
         if (IsJetting) {
             // Apply jet force!
 //          vel += JetForce;
-            vel += new Vector2(0, (JetTargetYVel-vel.y)/4f);
+            ChangeVel(new Vector2(0, (JetTargetYVel-vel.y)/4f));
             // Spend that fuel!
             FuelLeft -= Time.deltaTime * FuelSpendRate;
             //myJettaBody.UpdateFillSprite();

@@ -76,7 +76,7 @@ public class Plunga : Player {
     override protected void ApplyInternalForces() {
         base.ApplyInternalForces();
         if (isPlunging) {
-            vel += PlungeForce;
+            ChangeVel(PlungeForce);
         }
     }
     override protected void UpdateMaxYSinceGround() {

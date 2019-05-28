@@ -1,25 +1,29 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/Flatline.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/PropTravelMind.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="282" Column="25" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Buzzsaw.cs" Line="25" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Clinga.cs" Line="121" Column="38" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="93" Column="10" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" Line="52" Column="57" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="522" Column="46" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" Line="44" Column="37" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlungaBody.cs" Line="13" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/FlatlineBody.cs" Line="15" Column="5" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/JettaBody.cs" Line="26" Column="36" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/JumpaBody.cs" Line="18" Column="41" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Enemy.cs" Line="8" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="8" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="273" Column="14" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="177" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="218" Column="73" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" Line="274" Column="10" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Collidable.cs" Line="12" Column="17" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Clinga.cs" Line="188" Column="36" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="211" Column="37" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Plunga.cs" Line="75" Column="72" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Jetta.cs" Line="103" Column="64" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PropTravelMind.cs" Line="55" Column="37" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/bretttaylor/Documents/GitHub/Unity-Bouncemeister/Assets/Scripts/Gameplay/Props/Player/Clinga.cs" relfile="Assets/Scripts/Gameplay/Props/Player/Clinga.cs" line="120" column="1" />
+      <Breakpoint file="/Users/bretttaylor/Documents/GitHub/Unity-Bouncemeister/Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" relfile="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" line="177" column="1" />
+      <Breakpoint file="/Users/bretttaylor/Documents/GitHub/Unity-Bouncemeister/Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" relfile="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" line="273" column="1" />
+      <Breakpoint file="/Users/bretttaylor/Documents/GitHub/Unity-Bouncemeister/Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" relfile="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" line="338" column="1" />
+      <Breakpoint file="/Users/bretttaylor/Documents/GitHub/Unity-Bouncemeister/Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" relfile="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" line="333" column="1" />
+      <Breakpoint file="/Users/bretttaylor/Documents/GitHub/Unity-Bouncemeister/Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" relfile="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" line="284" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />

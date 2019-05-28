@@ -10,7 +10,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	private const float TouchDistThreshold = 0.02f; // if we're this close to a surface, we count it as touching. This COULD be 0 and still work, but I like the grace for slightly-more-generous wall-detection.
 	private const int NumSides = PlatformCharacter.NumSides;
 	private const int NumWhiskersPerSide = 3; // this MUST match SideOffsetLocs! Just made its own variable for easy/readable access.
-	private readonly float[] SideOffsetLocs = new float[]{-0.45f, 0f, 0.45f}; // 3 whiskers per side: left, center, right.
+	private readonly float[] SideOffsetLocs = new float[]{-0.4f, 0f, 0.4f}; // 3 whiskers per side: left, center, right.
     // References
     [SerializeField] private PlatformCharacter myCharacter=null;
     // Properties
@@ -269,7 +269,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 			// Remember the previous colliders, and clear out the new list!
 			pcollsTouching[side] = new HashSet<Collider2D>(collsTouching[side]);
 			collsTouching[side].Clear();
-
+            
 			UpdateSurface(side);
         }
 
@@ -325,6 +325,17 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 
         // Update my knowledge!
         float dist = DistToColl(h, WhiskerPos(side, wi));
+        
+        //// QQQ!
+        //if (coll != null) {
+        //    Collidable collidable = coll.gameObject.GetComponent<Collidable>();
+        //    if (collidable != null) {
+        //        float collSpeed = GetCollSpeedRel(side, collidable);
+        //        dist += -Mathf.Abs(collSpeed);
+        //        dist = Mathf.Max(0, dist);
+        //    }
+        //}
+        
 		surfaceDists[side,wi] = dist;
 		collsAroundMe[side,wi] = coll;
         UpdateCollSpeedsRel(side, coll);

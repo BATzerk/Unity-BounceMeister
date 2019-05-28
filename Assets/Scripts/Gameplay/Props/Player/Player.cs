@@ -94,7 +94,7 @@ abstract public class Player : PlatformCharacter {
 		// TESTing out controls!
 		float mult = 1;//feetOnGround() ? 1 : 0.65f;
 		if (!MathUtils.IsSameSign(dirX, vel.x)) { // Pushing the other way? Make us go WAY the other way, ok?
-			//mult = 3;QQQ disabled for now.
+			//mult = 3;Note: DISABLED.
 			// If we're pushing AGAINST our velocity AND we just kicked off a wall, don't allow the input, ok?
 			if (isPostWallKickInputLock) {//Time.time < timeLastWallKicked+PostWallKickHorzInputLockDur) {
 				mult = 0;
@@ -217,6 +217,7 @@ abstract public class Player : PlatformCharacter {
 		//if (inputController == null) { return; } // Safety check for runtime compile.
         if (!DoUpdate()) { return; } // Not supposed to Update? No dice.
 
+        //myWhiskers.UpdateSurfaces(); // TEST
         ApplyVelFromSurfaces();
         
         Vector2 ppos = pos;
@@ -237,7 +238,7 @@ abstract public class Player : PlatformCharacter {
         // Update vel to be the distance we ended up moving this frame.
         SetVel(pos - ppos);
         
-        myWhiskers.UpdateSurfaces(); // TEST update surfaces AGAIN.
+        //myWhiskers.UpdateSurfaces(); // TEST update surfaces AGAIN.
         
         UpdateDirFacing();
 		UpdateTimeLastTouchedWall();
@@ -379,7 +380,7 @@ abstract public class Player : PlatformCharacter {
     
     virtual protected void DropThruPlatform() {
         pos += new Vector2(0, -0.2f);
-        vel += new Vector2(0, -0.16f);
+        ChangeVel(new Vector2(0, -0.16f));
         myBody.OnDropThruPlatform();
     }
     
