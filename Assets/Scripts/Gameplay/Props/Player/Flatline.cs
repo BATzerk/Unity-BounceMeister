@@ -5,7 +5,7 @@ using UnityEngine;
 public class Flatline : Player {
     // Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Flatline; }
-    override public Vector2 Size { get { return new Vector2(1.6f, 1.6f); } }
+    //override public Vector2 Size { get { return new Vector2(1.6f, 1.6f); } }
     override protected float InputScaleX {
         get {
             if (IsHovering) { return 0; }// || IsHoverEmpty

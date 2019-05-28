@@ -114,6 +114,18 @@ public class Clinga : Player {
             base.ApplyFriction();
         }
     }
+    // TEST TEMP TODO: Clean this upp.
+    private HashSet<Collidable> collsClinging=new HashSet<Collidable>();
+    override protected void ApplyVelFromSurfaces() {
+        if (IsClinging) {
+            foreach (Collidable col in collsClinging) {
+                pos += col.vel;
+            }
+        }
+        else {
+            base.ApplyVelFromSurfaces();
+        }
+    }
     
 
     // ----------------------------------------------------------------
@@ -175,6 +187,9 @@ public class Clinga : Player {
             if (!IsClingSyde(side)) { // NOT already clinging here?...
                 AddClingSyde(side);
             }
+            // Add to list!
+            Collidable collidable = col.GetComponent<Collidable>();
+            if (collidable!=null && !collsClinging.Contains(collidable)) { collsClinging.Add(collidable); }
         }
     }
     public override void OnWhiskersLeaveCollider(int side, Collider2D col) {
@@ -183,6 +198,9 @@ public class Clinga : Player {
         if (IsClingSyde(side) && !myWhiskers.OnSurface(side)) {
             RemoveClingSyde(side);
         }
+        // Remove from list!
+        Collidable collidable = col.GetComponent<Collidable>();
+        if (collidable!=null && collsClinging.Contains(collidable)) { collsClinging.Remove(collidable); }
     }
 
 }

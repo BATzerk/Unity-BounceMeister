@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : PlatformCharacter {
 	// Constants
 	override protected int StartingHealth { get { return 1; } }
-    override public Vector2 Size { get { return new Vector2(2f, 1.5f); } }
+    //override public Vector2 Size { get { return new Vector2(2f, 1.5f); } }
 
 	override protected float FrictionAir { get { return 0.6f; } }
 	override protected float FrictionGround { get { return 0.6f; } }

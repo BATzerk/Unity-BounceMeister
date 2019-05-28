@@ -12,6 +12,7 @@ abstract public class PlayerBody : MonoBehaviour {
 	protected Color c_bodyNeutral = Color.magenta;
 	private Color bodyColor;
 	private float alpha; // we modify this independently of bodyColor.
+    private Vector2 visualScale=Vector2.one;
 	// References
 	protected Player myBasePlayer=null; // set in Awake.
 
@@ -43,8 +44,9 @@ abstract public class PlayerBody : MonoBehaviour {
     virtual protected void Start() {
 		c_bodyNeutral = GetBodyColorNeutral(myBasePlayer.PlayerType());
 
-		alpha = 1;
-		SetBodyColor(c_bodyNeutral);
+        //GameUtils.SizeSpriteRenderer(sr_body, myBasePlayer.Size);
+        alpha = 1;
+        SetBodyColor(c_bodyNeutral);
         SetVisualScale(Vector2.one);
         OnStopWallSlide();
 	}
@@ -57,9 +59,9 @@ abstract public class PlayerBody : MonoBehaviour {
 	//	GameUtils.SizeSpriteRenderer(sr_body, _size);
 	//}
     /// Changes the visuals of our body components without affecting collisions.
-    virtual protected void SetVisualScale(Vector2 _scale) {
-        Vector2 _size = myBasePlayer.Size * _scale;
-        GameUtils.SizeSpriteRenderer(sr_body, _size);
+    protected void SetVisualScale(Vector2 _scale) {
+        visualScale = _scale;
+        ApplyVisualScale();
     }
 	protected void SetBodyColor(Color color) {
 		bodyColor = color;
@@ -68,6 +70,9 @@ abstract public class PlayerBody : MonoBehaviour {
 	private void ApplyBodyColor() {
 		sr_body.color = new Color(bodyColor.r,bodyColor.g,bodyColor.b, bodyColor.a*alpha);
 	}
+    private void ApplyVisualScale() {
+        this.transform.localScale = new Vector3(visualScale.x*myBasePlayer.DirFacing, visualScale.y, 1);
+    }
 
 
 	// ----------------------------------------------------------------
@@ -121,7 +126,7 @@ abstract public class PlayerBody : MonoBehaviour {
 		if (!myBasePlayer.DoUpdate()) { return; } // Not updating? No dice.
 
         // Face correct dir
-        this.transform.localScale = new Vector3(myBasePlayer.DirFacing, 1, 1);
+        ApplyVisualScale();
 
         // Flash from damage
 		if (myBasePlayer.IsPostDamageImmunity) {

@@ -11,19 +11,19 @@ public class FlatlineBody : PlayerBody {
     [SerializeField] private SpriteRenderer sr_highlight=null;
     // References
     private Flatline myFlatline;
-
-
+    
+    
     // ----------------------------------------------------------------
     //  Start
     // ----------------------------------------------------------------
-    override protected void Awake() {
-        base.Awake();
+    override protected void Start() {
         myFlatline = myBasePlayer as Flatline;
+        base.Start();
     }
-    protected override void SetVisualScale(Vector2 _scale) {
-        base.SetVisualScale(_scale);
-        GameUtils.SizeSpriteRenderer(sr_highlight, _scale*myBasePlayer.Size);
-    }
+    //protected override void SetVisualScale(Vector2 _scale) {
+    //    base.SetVisualScale(_scale);
+    //    GameUtils.SizeSpriteRenderer(sr_highlight, _scale*myBasePlayer.Size);
+    //}
 
 
     // ----------------------------------------------------------------

@@ -17,20 +17,17 @@ public class PlungaBody : PlayerBody {
 	// ----------------------------------------------------------------
 	override protected void Start() {
         myPlunga = myBasePlayer as Plunga;
-
 		base.Start();
-        
-        GameUtils.SizeSpriteRenderer(sr_highlight, myBasePlayer.Size);
     }
 
 
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
-    override protected void SetVisualScale(Vector2 _scale) {
-        base.SetVisualScale(_scale);
-        GameUtils.SizeSpriteRenderer(sr_highlight, myBasePlayer.Size*_scale);
-    }
+    //override protected void SetVisualScale(Vector2 _scale) {
+    //    base.SetVisualScale(_scale);
+    //    GameUtils.SizeSpriteRenderer(sr_highlight, myBasePlayer.Size*_scale);
+    //}
 
 
     // ----------------------------------------------------------------

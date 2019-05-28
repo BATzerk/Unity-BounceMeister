@@ -7,7 +7,6 @@ public class PlatformCharacter : Collidable {
 	public const int NumSides = 4; // it's hip to be square.
 	// Overrideables
 	virtual protected int StartingHealth { get { return 1; } }
-    virtual public Vector2 Size { get { return new Vector2(1.5f, 1.8f); } }
 
 	virtual protected float FrictionAir { get { return 0.6f; } }
 	virtual protected float FrictionGround { get { return 0.6f; } }
@@ -27,6 +26,7 @@ public class PlatformCharacter : Collidable {
 	protected int health { get; private set; } // we die when we hit 0.
     protected float timeLastTouchedWall=Mathf.NegativeInfinity;
     protected float timeSinceDamage { get; private set; } // set to Time.time when we take damage.
+    public Vector2 Size { get; private set; } // Set in Start by the size of my collider!
     // References
     private List<Lift> liftsTouching = new List<Lift>();
 
@@ -90,14 +90,11 @@ public class PlatformCharacter : Collidable {
     // ----------------------------------------------------------------
     override protected void Start() {
         base.Start();
+        Size = bodyCollider.size;
         timeSinceDamage = Mathf.NegativeInfinity;
 		health = StartingHealth;
-        bodyCollider.size = Size;
         IsInLift = false;
 	}
-	//virtual protected void SetSize(Vector2 _size) {
-	//	this.Size = _size;
-	//}
 
 
 	// ----------------------------------------------------------------
@@ -189,7 +186,7 @@ public class PlatformCharacter : Collidable {
 	//  Doers
 	// ----------------------------------------------------------------
     public void SetVel(float _x,float _y) { vel = new Vector2(_x,_y); }
-    public void SetVel(Vector2 _vel) { vel = _vel; }
+    //public void SetVel(Vector2 _vel) { vel = _vel; }
 	protected void ChangeVel(Vector2 delta) { vel += delta; }
     protected void ChangeVel(float _x,float _y) { ChangeVel(new Vector2(_x,_y)); }
     
