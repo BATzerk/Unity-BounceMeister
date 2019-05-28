@@ -586,7 +586,7 @@ abstract public class Player : PlatformCharacter {
 			Jump();
 		}
         else if (Time.time <= timeWhenAteEdible+0.8f) {
-            SetVel(new Vector2(vel.x, Mathf.Max(vel.y, 0.22f))); // Hop happily if we just ate a Snack!
+            DoOneJustAteHappyHop();
         }
         // Do FarFallHop?
         else if (DoesFarFallHop) {
@@ -659,8 +659,11 @@ abstract public class Player : PlatformCharacter {
         timeWhenAteEdible = Time.time;
         myBody.OnEatEdiblesHolding();
         if (IsGrounded()) {
-            SetVel(new Vector2(vel.x, Mathf.Max(vel.y, 0.22f))); // Hop happily if we just ate a Snack!
+            DoOneJustAteHappyHop();
         }
+    }
+    private void DoOneJustAteHappyHop() {
+        SetVel(new Vector2(vel.x, Mathf.Max(vel.y, -Gravity.y*6f))); // Hop happily if we just ate a Snack!
 	}
 
 

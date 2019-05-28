@@ -39,7 +39,7 @@ public class RoomClusterData {
     }
     public void SetClustIndex(int clustIndex) {
         this.MyAddress = new RoomAddress(WorldIndex,clustIndex);
-        this.IsUnlocked = SaveStorage.GetBool(SaveKeys.ClustIsUnlocked(MyAddress), false);
+        this.IsUnlocked = true;//HACK TEMP DISABLED locked-ness. SaveStorage.GetBool(SaveKeys.ClustIsUnlocked(MyAddress), false);
         if (GameProperties.IsFirstCluster(MyAddress)) { this.IsUnlocked = true; } // First cluster is ALWAYS unlocked.
         
         // Set NumSnacksReq

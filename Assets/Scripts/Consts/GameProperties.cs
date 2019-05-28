@@ -17,11 +17,13 @@ static public class GameProperties {
     // Rooms!
     public const int NUM_WORLDS = 8; // including World 0 for testing.
     public const int FirstWorld = 1;
-    public const int LastWorld = 4;
+    public const int LastWorld = 1;
     public static bool IsFirstCluster(RoomAddress address) {
         return address.world==FirstWorld && address.clust==0;
     }
     public static int ClustNumSnacksReq(RoomAddress address) {
+        return 0; //DISABLED Snacks req.
+        /*
         switch (address.world) {
             // World 1
             case 1:
@@ -57,6 +59,7 @@ static public class GameProperties {
                 }
             default: return 0;
         }
+        */
     }
 
 

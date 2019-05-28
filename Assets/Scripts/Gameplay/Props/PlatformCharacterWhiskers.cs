@@ -326,7 +326,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
         // Update my knowledge!
         float dist = DistToColl(h, WhiskerPos(side, wi));
         
-        //// QQQ!
+        //// TESTTT!
         //if (coll != null) {
         //    Collidable collidable = coll.gameObject.GetComponent<Collidable>();
         //    if (collidable != null) {

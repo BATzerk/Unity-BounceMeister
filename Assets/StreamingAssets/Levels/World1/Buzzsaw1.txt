@@ -1,4 +1,4 @@
-roomProperties posGlobal:(406.0, 1402.0);designerFlag:4;isClustStart:True
+roomProperties posGlobal:(406.0, 1402.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Buzzsaw size:(3.0, 3.0);travelMind:(-11,-14,11,-14, 1, 0)
 Buzzsaw size:(3.0, 3.0);travelMind:(-11,7,11,7, 2, 3.14159)
@@ -21,4 +21,3 @@ Platform myRect:(x:19.50, y:-1.50, width:5.00, height:1.00);isPlayerRespawn:True
 PlayerStart pos:(-17.0, -12.0)
 Spikes myRect:(x:0.00, y:-2.50, width:6.00, height:1.00);rotation:0
 Spikes myRect:(x:0.00, y:7.50, width:2.00, height:1.00);rotation:0
-

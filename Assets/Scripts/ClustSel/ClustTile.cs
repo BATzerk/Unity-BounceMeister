@@ -13,6 +13,7 @@ namespace ClustSelNamespace {
         [SerializeField] private GameObject go_snacksLeft=null;
         [SerializeField] private Image i_back=null;
         [SerializeField] private Image i_checkmark=null;
+        [SerializeField] private TextMeshProUGUI t_clustName=null;
         [SerializeField] private TextMeshProUGUI t_snacksReq=null;
         [SerializeField] private TextMeshProUGUI t_snacksLeft=null;
         [SerializeField] private RectTransform rt_rooms=null;
@@ -50,6 +51,8 @@ namespace ClustSelNamespace {
             this.gameObject.name = "ClustTile " + myClustData.ClustIndex;
             myRectTransform.anchoredPosition = pos;
             
+            t_clustName.text = (myClustData.ClustIndex+1).ToString();
+            
             // Make RoomViews!
             AddRoomViews();
             
@@ -64,7 +67,7 @@ namespace ClustSelNamespace {
                 availableSize.x/clustBoundsSize.x,
                 availableSize.y/clustBoundsSize.y);
             
-            scale = Mathf.Min(0.4f, scale); // Keep RoomViews small.
+            //scale = Mathf.Min(0.4f, scale); // Keep RoomViews small.
             // Size myRectTransform!
             Vector2 sizeDiff = myRectTransform.rect.size - rt_rooms.rect.size;
             myRectTransform.sizeDelta = clustBoundsSize*scale + sizeDiff;
@@ -84,9 +87,9 @@ namespace ClustSelNamespace {
         //  Doers
         // ----------------------------------------------------------------
         private void RefreshVisuals() {
-            PlayerTypes tempPlayerType=PlayerTypes.Any; // TEMP HACK!!
-            if (myClustData.WorldIndex==1) { tempPlayerType = PlayerTypes.Plunga; }
-            else if (myClustData.WorldIndex==2) { tempPlayerType = PlayerTypes.Flatline; }
+            //PlayerTypes tempPlayerType=PlayerTypes.Any; // TEMP HACK!!
+            //if (myClustData.WorldIndex==1) { tempPlayerType = PlayerTypes.Plunga; }
+            //else if (myClustData.WorldIndex==2) { tempPlayerType = PlayerTypes.Flatline; }
         
             // Values.
             int totalSnacksEaten = GameManagers.Instance.DataManager.SnackCountGame.Eaten_All;
@@ -94,12 +97,14 @@ namespace ClustSelNamespace {
             
             // Texts and back!
             int numAdditionalSnacksReq = Mathf.Max(0, myClustData.NumSnacksReq - totalSnacksEaten);
-            int numSnacksLeft = myClustData.SnackCount.Uneaten(tempPlayerType);
+            int numSnacksInClust = myClustData.SnackCount.Total(PlayerTypes.Any);
+            //int numSnacksLeft = myClustData.SnackCount.Uneaten(tempPlayerType);
             myButton.interactable = myClustData.IsUnlocked;
             go_snacksReq.SetActive(!myClustData.IsUnlocked);
-            go_snacksLeft.SetActive(myClustData.IsUnlocked && numSnacksLeft>0);
+            //go_snacksLeft.SetActive(myClustData.IsUnlocked && numSnacksLeft>0);
+            go_snacksLeft.SetActive(myClustData.IsUnlocked && numSnacksInClust>0);
             t_snacksReq.text = numAdditionalSnacksReq.ToString();
-            t_snacksLeft.text = numSnacksLeft.ToString();
+            t_snacksLeft.text = myClustData.SnackCount.Eaten_All + " / " + numSnacksInClust; //numSnacksLeft.ToString();
             i_back.color = myClustData.IsUnlocked || canUnlockMe ? new ColorHSB(worldHue,0.5f,1f, 0.4f).ToColor() : new Color(0,0,0, 0.08f);
             
             // RoomViews!

@@ -62,8 +62,9 @@ public class SnackCount {
     
     public void Add(SnackCount other) {
         foreach (PlayerTypes pt in other.total.Keys) {
-            eaten[pt] += other.eaten[pt];
             total[pt] += other.total[pt];
+            eaten[pt] += other.eaten[pt];
+            Eaten_All += other.eaten[pt];
         }
     }
 }

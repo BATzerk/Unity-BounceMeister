@@ -25,7 +25,7 @@ namespace ClustSelNamespace {
             
             float maxHeight = 0;
             float tempX = MainCanvas.Width*0.5f; // start with World 1 centered in screen.
-            for (int worldIndex=GameProperties.FirstWorld; worldIndex<GameProperties.LastWorld; worldIndex++) {
+            for (int worldIndex=GameProperties.FirstWorld; worldIndex<=GameProperties.LastWorld; worldIndex++) {
                 WorldView newObj = Instantiate(ResourcesHandler.Instance.ClustSelWorldView).GetComponent<WorldView>();
                 Vector2 pos = new Vector2(tempX, -20);
                 newObj.Initialize(this, rt_worldViews, worldIndex, pos);
