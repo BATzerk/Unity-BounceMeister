@@ -1,12 +1,13 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/EditModeController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ClustSel/RoomViewContents.cs">
     <Files>
       <File FileName="Assets/Editor/PropEditorScripts.cs" Line="27" Column="1" />
       <File FileName="Assets/Scripts/Gameplay/Props/Buzzsaw.cs" Line="3" Column="19" />
       <File FileName="Assets/Scripts/Gameplay/Props/Spikes.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Gameplay/Props/Ground.cs" Line="3" Column="19" />
-      <File FileName="Assets/Scripts/Gameplay/EditModeController.cs" Line="64" Column="19" />
+      <File FileName="Assets/Scripts/Gameplay/EditModeController.cs" Line="219" Column="6" />
+      <File FileName="Assets/Scripts/ClustSel/RoomViewContents.cs" Line="41" Column="41" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
