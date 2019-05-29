@@ -1,12 +1,13 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/DamageableGround.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="18" Column="60" />
       <File FileName="Assets/Scripts/Gameplay/Props/Player/Clinga.cs" Line="29" Column="10" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="30" Column="64" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/ClingaBody.cs" Line="34" Column="19" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" Line="118" Column="36" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="605" Column="52" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/ClingaBody.cs" Line="6" Column="18" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" Line="10" Column="9" />
+      <File FileName="Assets/Scripts/Gameplay/Props/DamageableGround.cs" Line="28" Column="30" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

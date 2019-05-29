@@ -25,6 +25,7 @@ public class DamageableGround : BaseGround {
 	private Player playerTouchingMe;
 
     // Getters (Public)
+    public bool DieFromPlayerLeave { get { return dieFromPlayerLeave; } }
     public SpriteRenderer BodySprite { get { return bodySprite; } }
     public SpriteRenderer sr_Stroke { get { return sr_stroke; } }
     static public Color GetBodyColor(DamageableGroundData data) {

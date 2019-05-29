@@ -586,24 +586,38 @@ abstract public class Player : PlatformCharacter {
         if (Time.time <= timeWhenDelayedJump) {
 			Jump();
 		}
-        else if (Time.time <= timeWhenAteEdible+0.8f) {
-            DoOneJustAteHappyHop();
-        }
-        // Do FarFallHop?
-        else if (DoesFarFallHop) {
-            FarFallHop(collidable);
+        // Otherwise, if we may do a fun-hop...
+        else if (MayDoAFunHop()) {
+            // Do FarFallHop?
+            if (ShouldDoFallFarHop()) {
+                FarFallHop(collidable);
+            }
+            else if (Time.time <= timeWhenAteEdible+0.8f) {
+                DoOneJustAteHappyHop();
+            }
         }
 	}
+    /// Returns TRUE if we can do a far-fall hop or just-ate-happy-hop.
+    private bool MayDoAFunHop() {
+        //if (!IsGrounded()) { return false; } // Not on ground? Can't hop.
+        Collidable collOn = myWhiskers.TEMP_GetFloorCollidable();
+        if (collOn!=null) {
+            DamageableGround dg = collOn as DamageableGround;
+            if (dg != null && dg.DieFromPlayerLeave) { return false; } // DamageableGround that'll disappear if we leave it? Don't hop!
+        }
+        return true; // Looks good!
+    }
+    private bool ShouldDoFallFarHop() {
+        return DoesFarFallHop && ppvel.y < -1.05f;
+    }
     
     /// When we land from great height, it feels nice to thump on the ground. This does that.
     private void FarFallHop(Collidable collidable) {
-        if (!(collidable is DamageableGround) && ppvel.y < -1.05f) {
-            if (ppvel.y < -1.22f) {
-                SetVel(new Vector2(vel.x, Mathf.Abs(ppvel.y)*0.22f));
-            }
-            else {
-                SetVel(new Vector2(vel.x, Mathf.Abs(ppvel.y)*0.16f));
-            }
+        if (ppvel.y < -1.22f) {
+            SetVel(new Vector2(vel.x, Mathf.Abs(ppvel.y)*0.22f));
+        }
+        else {
+            SetVel(new Vector2(vel.x, Mathf.Abs(ppvel.y)*0.16f));
         }
     }
 
@@ -659,7 +673,7 @@ abstract public class Player : PlatformCharacter {
 		ediblesHolding.Clear();
         timeWhenAteEdible = Time.time;
         myBody.OnEatEdiblesHolding();
-        if (IsGrounded()) {
+        if (MayDoAFunHop()) {
             DoOneJustAteHappyHop();
         }
     }
