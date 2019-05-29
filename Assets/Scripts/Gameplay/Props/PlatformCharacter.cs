@@ -16,6 +16,10 @@ public class PlatformCharacter : Collidable {
 	virtual protected float MaxVelXGround { get { return 0.25f; } }
 	virtual protected float MaxVelYUp { get { return 3; } }
 	virtual protected float MaxVelYDown { get { return -3; } }
+    virtual protected float GetCurrMaxVelX() {
+        return IsGrounded() ? MaxVelXGround : MaxVelXAir;
+    }
+    
 //  virtual public bool IsAffectedByLift() { return true; }
 
 	// Components
@@ -140,7 +144,7 @@ public class PlatformCharacter : Collidable {
 	}
 	protected void ApplyTerminalVel() {
         //if (IsInLift) { return; } // TEST
-		float maxXVel = IsGrounded() ? MaxVelXGround : MaxVelXAir;
+		float maxXVel = GetCurrMaxVelX();
 		float xVel = Mathf.Clamp(vel.x, -maxXVel,maxXVel);
 		float yVel = Mathf.Clamp(vel.y, MaxVelYDown,MaxVelYUp);
 		SetVel(xVel, yVel);
@@ -192,7 +196,6 @@ public class PlatformCharacter : Collidable {
 	// ----------------------------------------------------------------
 	//  Doers
 	// ----------------------------------------------------------------
-    public void SetVel(float _x,float _y) { SetVel(new Vector2(_x,_y)); }
     //public void SetVel(Vector2 _vel) { vel = _vel; }
 	protected void ChangeVel(Vector2 delta) { SetVel(vel + delta); }
     protected void ChangeVel(float _x,float _y) { ChangeVel(new Vector2(_x,_y)); }

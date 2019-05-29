@@ -80,6 +80,9 @@ abstract public class Prop : MonoBehaviour {
     public void Debug_Rotate(float delta) {
         rotation = Mathf.Round(rotation + delta);
     }
+    public void Debug_SetRotation(float _rot) {
+        rotation = Mathf.Round(_rot);
+    }
     virtual public void FlipHorz() {
         pos = new Vector2(-pos.x, pos.y);
         rotation = -rotation;

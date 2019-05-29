@@ -29,7 +29,7 @@ abstract public class BaseGround : Collidable {
 		return new Rect(center, size);
 	}
     /// Returns bottom-left aligned Rect.
-    protected Rect MyRectBL() {
+    public Rect MyRectBL() {
         Rect r = MyRect();
         r.center = r.position;
         return r;

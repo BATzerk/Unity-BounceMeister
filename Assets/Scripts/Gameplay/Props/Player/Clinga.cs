@@ -28,19 +28,22 @@ public class Clinga : Player {
             return IsClinging ? Vector2.zero : new Vector2(0, -0.028f);
         }
     }
-    override protected float MaxVelXGround { get { return 2f; } }
-    override protected float MaxVelXAir { get { return 2f; } }
     override protected float FrictionAir { get { return 1f; } }
     //override protected float FrictionGround { get { return 1f; } } // no friction ground. We already cling to ground.
+    override protected float MaxVelXGround { get { return 0.26f; } }
+    override protected float MaxVelXAir { get { return 0.26f; } }
+    override protected float GetCurrMaxVelX() {
+        return IsClinging ? 2f : base.GetCurrMaxVelX();
+    }
     override protected float JumpForce { get { return 0.36f; } }
     override protected float InputScaleX { get { return 0.08f; } }
-    override protected Vector2 WallKickVel { get { return new Vector2(0.23f,0.42f); } }
+    override protected Vector2 WallKickVel { get { return new Vector2(0.26f,0.44f); } }
     //protected override float HorzMoveInputVelXDelta() {
     //    return IsClinging ? 0 : base.HorzMoveInputVelXDelta(); // Clinging? Do NOT accept our normal horz input.
     //}
     override protected float HorzMoveInputVelXDelta() {
         float val = base.HorzMoveInputVelXDelta();
-        return IsGrounded() ? val : val*0.3f; // less (finer!) control in air.
+        return IsGrounded() ? val : val*0.5f; // less (finer!) control in air.
     }
     private const float ClingMoveInputScale = 0.022f;
     // Properties
@@ -155,15 +158,15 @@ public class Clinga : Player {
         // Base wall-kick.
         base.WallKick();
     }
-    override protected void OnLRelease() { OnLeftStickHorzRelease(); }
-    override protected void OnRRelease() { OnLeftStickHorzRelease(); }
-    // / This is called whenever we STOP pushing left or right on the joystick.
-    private void OnLeftStickHorzRelease() {
-        // We're totally in the air? Halt our xVel!
-        if (!myWhiskers.IsTouchingAnySurface()) {
-            SetVel(0, vel.y);
-        }
-    }
+    //override protected void OnLRelease() { OnLeftStickHorzRelease(); }
+    //override protected void OnRRelease() { OnLeftStickHorzRelease(); }
+    ///// This is called whenever we STOP pushing left or right on the joystick.
+    //private void OnLeftStickHorzRelease() {
+    //    // We're totally in the air? Halt our xVel!
+    //    if (!myWhiskers.IsTouchingAnySurface()) {
+    //        SetVel(0, vel.y);
+    //    }
+    //}
 
 
     // ----------------------------------------------------------------

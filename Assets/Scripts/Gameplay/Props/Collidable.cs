@@ -9,6 +9,7 @@ abstract public class Collidable : Prop {
 	[SerializeField] protected bool isBouncy = false; // if TRUE, PlatformCharacter will bounce on me instead of land.
     public Vector2 vel { get; private set; }
     
+    public void SetVel(float _x,float _y) { SetVel(new Vector2(_x,_y)); }
     public void SetVel(Vector2 _vel) { vel = _vel; }
 
 	// Getters (Public)
