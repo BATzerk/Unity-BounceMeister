@@ -30,10 +30,12 @@ public class Clinga : Player {
     }
     override protected float FrictionAir { get { return 1f; } }
     //override protected float FrictionGround { get { return 1f; } } // no friction ground. We already cling to ground.
+    private const float MaxVelXClinging = 2f;
     override protected float MaxVelXGround { get { return 0.26f; } }
-    override protected float MaxVelXAir { get { return 0.26f; } }
+    override protected float MaxVelXAir { get { return MaxVelXClinging; } }
+    override protected float MaxVelXFromInput { get { return 0.26f; } }
     override protected float GetCurrMaxVelX() {
-        return IsClinging ? 2f : base.GetCurrMaxVelX();
+        return IsClinging ? MaxVelXClinging : base.GetCurrMaxVelX();
     }
     override protected float JumpForce { get { return 0.36f; } }
     override protected float InputScaleX { get { return 0.08f; } }

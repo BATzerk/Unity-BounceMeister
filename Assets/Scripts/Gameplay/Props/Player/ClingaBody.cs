@@ -5,9 +5,15 @@ using UnityEngine;
 public class ClingaBody : PlayerBody {
     // Components
     [SerializeField] private SpriteRenderer[] sr_clingHands=null; // T, R, B, L.
-    //[SerializeField] private SpriteRenderer sr_highlight=null;
     // References
     private Clinga myClinga;
+    
+    // Setters
+    //private float visualRotation {
+    //    get { return this.transform.localEulerAngles.z; }
+    //    set { this.transform.localEulerAngles = new Vector3(0,0, value); }
+    //}
+    
     
     // ----------------------------------------------------------------
     //  Start
@@ -18,10 +24,6 @@ public class ClingaBody : PlayerBody {
         
         OnChangeClingSydes(); // refresh cling visuals.
     }
-    //protected override void SetVisualScale(Vector2 _scale) {
-    //    base.SetVisualScale(_scale);
-    //    GameUtils.SizeSpriteRenderer(sr_highlight, _scale*myBasePlayer.Size);
-    //}
     
     
     // ----------------------------------------------------------------
@@ -31,5 +33,17 @@ public class ClingaBody : PlayerBody {
         for (int i=0; i<sr_clingHands.Length; i++) {
             sr_clingHands[i].enabled = myClinga.IsClingSyde(i);
         }
+        //if (myClinga.IsClingSyde(Sides.T)) {
+        //    visualRotation = 180;
+        //}
+        //else if (myClinga.IsClingSyde(Sides.L)) {
+        //    visualRotation = -90;
+        //}
+        //else if (myClinga.IsClingSyde(Sides.R)) {
+        //    visualRotation =  90;
+        //}
+        //else {
+        //    visualRotation = 0;
+        //}
     }
 }
