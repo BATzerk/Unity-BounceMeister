@@ -1,10 +1,8 @@
 roomProperties posGlobal:(108.0, 204.0);designerFlag:0
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:19.50, y:0.00, width:13.00, height:32.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:-24.00, y:5.00, width:4.00, height:22.00)
+Ground myRect:(x:0.00, y:10.00, width:52.00, height:20.00)
 Ground myRect:(x:0.00, y:-15.50, width:52.00, height:9.00)
-Ground myRect:(x:4.45, y:-5.00, width:7.00, height:5.00);travelMind:(-5,-5,5,-5, 2, 0)
+Platform myRect:(x:3.50, y:-9.50, width:5.00, height:1.00)
 PlayerStart pos:(0.0, -0.5)
-RoomDoor pos:(-20.5, 11.0);myID:0;worldToIndex:-1;roomToKey:Test2;doorToID:
 

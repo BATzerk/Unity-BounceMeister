@@ -182,7 +182,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 			Vector2 dir = whiskerDirs[side];
 			for (int index=0; index<NumWhiskersPerSide; index++) {
 				Vector2 startPos = WhiskerPos(side, index);
-				bool isTouching = surfaceDists[side,index] <= TouchDistThreshold;
+				bool isTouching = surfaceDists[side,index] < TouchDistThreshold;//onSurfaces[side];
 				Gizmos.color = isTouching ? Color.green : Color.red;
 				Gizmos.DrawLine(startPos, startPos + dir * length);
 			}
@@ -288,9 +288,8 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 		for (int side=0; side<NumSides; side++) {
 			foreach (Collider2D col in collsTouching[side]) {
 				if (!pcollsTouching[side].Contains(col)) {
-                    // We're moving AWAY from this collider? Ignore the collision! (This prevents whiskers-touching-2-things issues, like recharging plunge or cancelling preserving wall-kick vel.) Note: We can possibly bring this check all the way up to Whiskers for consistency.
-                    //if (myCharacter.IsMovingAwayFrom(side)) { continue; }
-                    if (myCharacter.IsMovingAwayFromColl(side, col)) { continue; }
+                    // Ignore collider? Skip it.
+                    if (myCharacter.IgnoreColl(side, col)) { continue; }
 					myCharacter.OnWhiskersTouchCollider(side, col);
 				}
 			}
@@ -340,13 +339,16 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 		collsAroundMe[side,wi] = coll;
         UpdateCollSpeedsRel(side, coll);
         
+        //if (side == 0 && dist<Mathf.Infinity) {
+        //    print(Time.frameCount + " side, wi: " + side+","+wi + "  dist: " + dist + " coll: " + coll + "    IgnoreColl: " + myCharacter.IgnoreColl(side, coll));
+        //}
+        
         // If we HIT a collider...!
         if (coll != null) {
             // If we're (just about) touching this collider...!
             if (dist <= TouchDistThreshold) {
-                // If we're NOT moving away from this side...! (This prevents registering any contact when passing up thru a Platform.)
-                //if (!myCharacter.IsMovingAwayFrom(side)) {
-                if (!myCharacter.IsMovingAwayFromColl(side, coll)) {
+                // If we SHAN'T ignore this collider...!
+                if (!myCharacter.IgnoreColl(side, coll)) {
         			if (!collsTouching[side].Contains(coll)) {
         				collsTouching[side].Add(coll);
         			}

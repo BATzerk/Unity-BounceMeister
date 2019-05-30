@@ -79,7 +79,7 @@ public class Battery : Prop {
 		}
 		Player player = col.GetComponent<Player>();
 		// The player is thirsty!!
-		if (!player.MayUseBattery()) {
+		if (player.MayUseBattery()) {
 			PlayerUseMe(player);
 		}
 	}

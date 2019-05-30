@@ -1,9 +1,9 @@
-roomProperties posGlobal:(576.0, 622.0);designerFlag:3
+roomProperties posGlobal:(576.0, 642.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-19.00, y:5.00, width:14.00, height:22.00)
-Ground myRect:(x:0.00, y:-16.00, width:52.00, height:8.00)
-Ground myRect:(x:18.50, y:0.00, width:15.00, height:32.00)
-Ground myRect:(x:0.00, y:12.00, width:52.00, height:16.00)
-InfoSign pos:(0.0, 4.0);myText:Congrats! You've unlocked CLINGA!;rotation:180
-PlayerStart pos:(-10.0, -11.0)
-RoomDoor pos:(-10.5, 2.5);myID:0;worldToIndex:1;roomToKey:GetClinga;doorToID:
+Ground myRect:(x:18.50, y:4.50, width:15.00, height:31.00)
+Ground myRect:(x:0.00, y:14.50, width:52.00, height:11.00)
+Ground myRect:(x:-19.00, y:9.50, width:14.00, height:21.00)
+Ground myRect:(x:0.00, y:-13.50, width:52.00, height:13.00)
+InfoSign pos:(0.0, 9.0);myText:Congrats! You've unlocked CLINGA!;rotation:180
+PlayerStart pos:(-10.0, -6.0)
+RoomDoor pos:(-10.5, 7.5);myID:0;worldToIndex:1;roomToKey:GetClinga;doorToID:

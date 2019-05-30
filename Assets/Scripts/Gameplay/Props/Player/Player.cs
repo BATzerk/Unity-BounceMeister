@@ -678,7 +678,7 @@ abstract public class Player : PlatformCharacter {
         }
     }
     private void DoOneJustAteHappyHop() {
-        SetVel(new Vector2(vel.x, Mathf.Max(vel.y, -Gravity.y*6f))); // Hop happily if we just ate a Snack!
+        SetVel(new Vector2(vel.x*0.2f, Mathf.Max(vel.y, -Gravity.y*6f))); // Hop happily if we just ate a Snack!
 	}
 
 

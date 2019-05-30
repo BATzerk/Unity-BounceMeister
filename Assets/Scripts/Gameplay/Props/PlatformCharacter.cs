@@ -66,11 +66,12 @@ public class PlatformCharacter : Collidable {
         if (coll == null) { return vel; } // no collidable. Just return my vel.
         return vel - coll.vel; // Return my vel, relative to this collidable!
     }
-    public bool IsMovingAwayFromColl(int side, Collidable coll) {
-        Vector2 velRel = GetRelativeVel(coll);
-        return IsMovingAwayFromSide(side, velRel);
+    /** By default, we ignore colliders we're moving away from!
+     * This prevents A) Registering contact when passing up thru a Platform, B) Whiskers-touching-2-things issues, like recharging plunge or cancelling preserving wall-kick vel. */
+    virtual public bool IgnoreColl(int side, Collider2D coll) {
+        return IsMovingAwayFromColl(side, coll);
     }
-    public bool IsMovingAwayFromColl(int side, Collider2D coll2D) {
+    protected bool IsMovingAwayFromColl(int side, Collider2D coll2D) {
         Vector2 velRel = GetRelativeVel(coll2D);
         return IsMovingAwayFromSide(side, velRel);
     }
@@ -83,15 +84,6 @@ public class PlatformCharacter : Collidable {
             default: return false; // Hmm.
         }
     }
-    //public bool IsMovingAwayFrom(int side) {
-    //    //switch (side) {
-    //    //    case Sides.L: return vel.x >  0.01f;
-    //    //    case Sides.R: return vel.x < -0.01f;
-    //    //    case Sides.B: return vel.y >  0.01f;
-    //    //    case Sides.T: return vel.y < -0.01f;
-    //    //    default: return false; // Hmm.
-    //    //}
-    //}
 
 
     // ----------------------------------------------------------------

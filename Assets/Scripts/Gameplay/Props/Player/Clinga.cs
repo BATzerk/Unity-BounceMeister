@@ -25,7 +25,7 @@ public class Clinga : Player {
     override public PlayerTypes PlayerType() { return PlayerTypes.Clinga; }
     override protected bool MayWallSlide() { return false; } // I don't slide. I /cling/.
     override protected Vector2 Gravity { get {
-            return IsClinging ? Vector2.zero : new Vector2(0, -0.028f);
+            return IsClinging ? Vector2.zero : new Vector2(0, -0.024f);
         }
     }
     override protected float FrictionAir { get { return 1f; } }
@@ -34,12 +34,13 @@ public class Clinga : Player {
     override protected float MaxVelXGround { get { return 0.26f; } }
     override protected float MaxVelXAir { get { return MaxVelXClinging; } }
     override protected float MaxVelXFromInput { get { return 0.26f; } }
+    protected override float MaxVelYDown { get { return -0.6f; } }
     override protected float GetCurrMaxVelX() {
         return IsClinging ? MaxVelXClinging : base.GetCurrMaxVelX();
     }
-    override protected float JumpForce { get { return 0.36f; } }
+    override protected float JumpForce { get { return 0.32f; } }
     override protected float InputScaleX { get { return 0.08f; } }
-    override protected Vector2 WallKickVel { get { return new Vector2(0.26f,0.44f); } }
+    override protected Vector2 WallKickVel { get { return new Vector2(0.26f,0.42f); } }
     //protected override float HorzMoveInputVelXDelta() {
     //    return IsClinging ? 0 : base.HorzMoveInputVelXDelta(); // Clinging? Do NOT accept our normal horz input.
     //}
@@ -48,6 +49,9 @@ public class Clinga : Player {
         return IsGrounded() ? val : val*0.5f; // less (finer!) control in air.
     }
     private const float ClingMoveInputScale = 0.022f;
+    override public bool IgnoreColl(int side, Collider2D coll) {
+        return false; // EXCEPTION! Clinga doesn't ignore ANY collisions!
+    }
     // Properties
     private Syde ClingSydes = Syde.none; // bitmasks!
     // References
@@ -104,8 +108,8 @@ public class Clinga : Player {
     override protected void ApplyFriction() {
         // Clinging?
         if (IsClinging) {
-            const float frictInput = 0.972f;
-            const float frictNoInput = 0.6f;
+            const float frictInput = 0.978f;
+            const float frictNoInput = 0.68f;
             if (IsClingHorz) {
                 float fricApplied = IsInputX ? frictInput : frictNoInput;
                 SetVel(vel.x*fricApplied, vel.y);
