@@ -573,38 +573,7 @@ public class MapEditor : MonoBehaviour {
 		else if (InputController.IsMouseButtonUp()) { OnMouseUp(); }
 	}
 	private void RegisterKeyInputs() {
-		// DELETE/BACKSPACE = move selected files to this world's trash folder
-		if (tilesSelected.Count>0 && !isSearchingRoom && (Input.GetKeyDown (KeyCode.Delete) || Input.GetKeyDown (KeyCode.Backspace))) {
-			MoveRoomTilesSelectedRoomFilesToTrashFolder ();
-		}
-        
-        // ENTER = Reload datas and reload scene!
-        else if (Input.GetKeyDown(KeyCode.Return)) {
-            ReloadAllWorldDatasAndScene();
-        }
-		
-		// BACKSPACE
-		else if (Input.GetKeyDown (KeyCode.Backspace)) {//c == "\b"[0]) {
-			if (roomSearchString.Length != 0) {
-				roomSearchString = roomSearchString.Substring(0, roomSearchString.Length - 1);
-				UpdateRoomTilesFromSearchString ();
-			}
-        }
-        // ESCAPE = Cancel searching
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            ClearRoomSearch();
-        }
-        // SHIFT + Some typeable character = Search string!
-        else if (InputController.IsKey_shift && Input.inputString.Length > 0) {
-			char c = Input.inputString[0];
-			// Typeable character
-			if (char.IsLetterOrDigit(c) || char.IsPunctuation(c)) {
-				roomSearchString += c;
-				UpdateRoomTilesFromSearchString ();
-			}
-		}
-        
-        // SHIFT UP or DOWN...
+        // CONTROL UP or DOWN...
         if (InputController.IsKeyDown_control || InputController.IsKeyUp_control) {
             UpdateIsKeyMultiSelection();
         }
@@ -649,8 +618,42 @@ public class MapEditor : MonoBehaviour {
 			else if (Input.GetKeyDown (KeyCode.Minus)) { MoveRoomTilesSelectedToWorld (10); }
 		}
 		
-        // NO alt/control/shift...!
+        // NO alt/control...!
         else {
+            // DELETE/BACKSPACE = move selected files to this world's trash folder
+            if (tilesSelected.Count>0 && !isSearchingRoom && (Input.GetKeyDown (KeyCode.Delete) || Input.GetKeyDown (KeyCode.Backspace))) {
+                MoveRoomTilesSelectedRoomFilesToTrashFolder ();
+            }
+            
+            // ENTER = Reload datas and reload scene!
+            else if (Input.GetKeyDown(KeyCode.Return)) {
+                ReloadAllWorldDatasAndScene();
+            }
+            
+            // BACKSPACE
+            else if (Input.GetKeyDown (KeyCode.Backspace)) {//c == "\b"[0]) {
+                if (roomSearchString.Length != 0) {
+                    roomSearchString = roomSearchString.Substring(0, roomSearchString.Length - 1);
+                    UpdateRoomTilesFromSearchString ();
+                }
+            }
+            // ESCAPE = Cancel searching
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                ClearRoomSearch();
+            }
+            // SHIFT + Some typeable character = Search string!
+            else if (InputController.IsKey_shift && Input.inputString.Length > 0) {
+                char c = Input.inputString[0];
+                // Typeable character
+                if (char.IsLetterOrDigit(c) || char.IsPunctuation(c)) {
+                    roomSearchString += c;
+                    UpdateRoomTilesFromSearchString ();
+                }
+            }
+        }
+        
+        // No ALT/CONTROL/SHIFT...!
+        if (!InputController.IsKey_alt && !InputController.IsKey_control && !InputController.IsKey_shift) {
             // R = Print incomplete room links!
             if (Input.GetKeyDown(KeyCode.R)) { Debug_PrintIncompleteRoomLinks(); }
 		    // Visibility togglin'

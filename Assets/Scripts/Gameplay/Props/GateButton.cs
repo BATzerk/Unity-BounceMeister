@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class GateButton : Prop {
 	// Components
-//	[SerializeField] private Collider2D myCollider;
-	[SerializeField] private SpriteRenderer sr_body=null;
+    [SerializeField] private SpriteRenderer sr_aura=null;
+    [SerializeField] private SpriteRenderer sr_body=null;
 	// Properties
 	[SerializeField] private int channelID;
 	private Color bodyColor=Color.red;
@@ -25,10 +25,11 @@ public class GateButton : Prop {
 	// ----------------------------------------------------------------
 	public void Initialize(Room _myRoom, GateButtonData data) {
 		base.BaseInitialize(_myRoom, data);
-
+        
 		channelID = data.channelID;
 		bodyColor = MyChannel.Color;
 		sr_body.color = bodyColor;
+        sr_aura.color = Color.Lerp(bodyColor, Color.white, 0.3f);
         SetIsPressed(MyChannel.IsUnlocked);
 	}
 
@@ -48,11 +49,17 @@ public class GateButton : Prop {
 	}
 
 
+    private void Update() {
+        float auraAlpha = isPressed ? 0.1f : MathUtils.SinRange(0.3f,0.5f, Time.time*4-(pos.x+pos.y)*0.2f);
+        GameUtils.SetSpriteAlpha(sr_aura, auraAlpha);
+    }
 
-	// ----------------------------------------------------------------
-	//  Events
-	// ----------------------------------------------------------------
-	private void OnTriggerEnter2D(Collider2D otherCol) {
+
+
+    // ----------------------------------------------------------------
+    //  Events
+    // ----------------------------------------------------------------
+    private void OnTriggerEnter2D(Collider2D otherCol) {
 		// Ground??
 		if (LayerMask.LayerToName(otherCol.gameObject.layer) == Layers.Player) {
 			OnPlayerTouchMe(otherCol.GetComponentInChildren<Player>());
@@ -69,10 +76,11 @@ public class GateButton : Prop {
 	//  Serializing
 	// ----------------------------------------------------------------
     override public PropData SerializeAsData() {
-		GateButtonData data = new GateButtonData();
-		data.pos = pos;
-		data.channelID = channelID;
-		return data;
+        GateButtonData data = new GateButtonData {
+            pos = pos,
+            channelID = channelID
+        };
+        return data;
 	}
 
 }

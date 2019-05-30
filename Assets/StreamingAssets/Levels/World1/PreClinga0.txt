@@ -1,4 +1,4 @@
-roomProperties posGlobal:(128.0, 738.0);designerFlag:3
+roomProperties posGlobal:(128.0, 718.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:-21.50, y:5.50, width:9.00, height:29.00)
 Ground myRect:(x:-2.00, y:-16.50, width:48.00, height:7.00)
