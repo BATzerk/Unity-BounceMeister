@@ -20,7 +20,7 @@ public class GridSnapPos : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void Update () {
 		// Snap position.
-		float pu = UnitSize*0.5f;
+		float pu = UnitSize;
 		pos = new Vector3(
 			Mathf.Round((pos.x-posOffset.x)/pu)*pu + posOffset.x,
 			Mathf.Round((pos.y-posOffset.y)/pu)*pu + posOffset.y,

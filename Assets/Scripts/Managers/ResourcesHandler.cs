@@ -50,17 +50,19 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject GateButton;
 	[SerializeField] public GameObject Gem;
 	[SerializeField] public GameObject Ground;
-	[SerializeField] public GameObject RoomDoor;
+    [SerializeField] public GameObject InfoSign;
     [SerializeField] public GameObject Laser;
     [SerializeField] public GameObject Lift;
     [SerializeField] public GameObject Platform;
 	[SerializeField] public GameObject PlayerStart;
     [SerializeField] public GameObject ProgressGate;
-    [SerializeField] public GameObject InfoSign;
+	[SerializeField] public GameObject RoomDoor;
     [SerializeField] public GameObject Snack;
 	[SerializeField] public GameObject Spikes;
 	[SerializeField] public GameObject ToggleGround;
     [SerializeField] public GameObject TravelingPlatform;
+	[SerializeField] public GameObject Turret;
+	[SerializeField] public GameObject TurretBullet;
     [SerializeField] public GameObject Veil;
 
 

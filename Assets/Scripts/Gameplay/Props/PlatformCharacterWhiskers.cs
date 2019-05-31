@@ -297,7 +297,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     }
 	private void UpdateSurface(int side) {
 		minDistsIndexes[side] = -1; // Default this to -1: There is no closest, because they're all infinity.
-        collSpeedsRel[side] = Mathf.NegativeInfinity; // nothing's moving towards me.
+        collSpeedsRel[side] = 0;// TEST. 0 instead of neg-infinity will disable being able to move into a coll that won't be there next frame. //Mathf.NegativeInfinity; // nothing's moving towards me.
 		for (int index=0; index<NumWhiskersPerSide; index++) {
 			UpdateWhiskerRaycast(side, index); // update the distances and colliders.
 			float dist = surfaceDists[side,index]; // use the dist we just updated.

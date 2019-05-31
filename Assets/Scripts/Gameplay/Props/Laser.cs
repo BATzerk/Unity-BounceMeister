@@ -23,7 +23,7 @@ public class Laser : Prop, IOnOffable {
         bool pqueriesHitTriggers = Physics2D.queriesHitTriggers;
         Physics2D.queriesHitTriggers = false;
         
-        Vector2 dir = MathUtils.GetVectorFromAngleDeg(-rotation);
+        Vector2 dir = MathUtils.GetVectorFromDeg(rotation);
         Vector2 sourcePos = PosGlobal + dir*0.52f; // HARDCODED 0.52f. just beyond my tip, so I can be slightly in some Ground and not detect it.
         hit = Physics2D.Raycast(sourcePos, dir, 999, lm_beamStops);//beamOriginOffset
         

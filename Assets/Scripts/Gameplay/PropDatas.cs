@@ -248,6 +248,11 @@ public class SpikesData : PropData {
     public OnOfferData onOfferData;
 }
 
+public class TurretData : PropData {
+    public float interval;
+    public float speed;
+}
+
 public class VeilData : PropData {
     public Rect myRect=new Rect();
 }

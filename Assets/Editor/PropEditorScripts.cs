@@ -120,3 +120,15 @@ public class SpikesEditor : Editor {
         }
     }
 }
+
+
+[CustomEditor(typeof(Turret))]
+public class TurretEditor : Editor {
+    // References
+    private Turret myProp;
+    public override void OnInspectorGUI() {
+        base.OnInspectorGUI();
+        if (myProp == null) { myProp = (Turret)target; }
+        if (GUILayout.Button("Rotate 90°")) { myProp.Debug_Rotate(-90); }
+    }
+}

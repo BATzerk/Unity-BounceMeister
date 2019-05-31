@@ -164,9 +164,9 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
                 newProp.Initialize(this, propData as GemData, gems.Count);
                 gems.Add(newProp);
             }
-            else if (pt == typeof(RoomDoorData)) {
-                RoomDoor newProp = Instantiate(rh.RoomDoor).GetComponent<RoomDoor>();
-                newProp.Initialize(this, propData as RoomDoorData);
+            else if (pt == typeof(InfoSignData)) {
+                InfoSign newProp = Instantiate(rh.InfoSign).GetComponent<InfoSign>();
+                newProp.Initialize(this, propData as InfoSignData);
             }
             else if (pt == typeof(LaserData)) {
                 Laser newProp = Instantiate(rh.Laser).GetComponent<Laser>();
@@ -184,9 +184,9 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
                 ProgressGate newProp = Instantiate(rh.ProgressGate).GetComponent<ProgressGate>();
                 newProp.Initialize(this, propData as ProgressGateData, numProgressGates++);
             }
-            else if (pt == typeof(InfoSignData)) {
-                InfoSign newProp = Instantiate(rh.InfoSign).GetComponent<InfoSign>();
-                newProp.Initialize(this, propData as InfoSignData);
+            else if (pt == typeof(RoomDoorData)) {
+                RoomDoor newProp = Instantiate(rh.RoomDoor).GetComponent<RoomDoor>();
+                newProp.Initialize(this, propData as RoomDoorData);
             }
             else if (pt == typeof(SnackData)) {
                 Snack newProp = Instantiate(rh.Snack).GetComponent<Snack>();
@@ -196,6 +196,10 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
             else if (pt == typeof(SpikesData)) {
                 Spikes newProp = Instantiate(rh.Spikes).GetComponent<Spikes>();
                 newProp.Initialize(this, propData as SpikesData);
+            }
+            else if (pt == typeof(TurretData)) {
+                Turret newProp = Instantiate(rh.Turret).GetComponent<Turret>();
+                newProp.Initialize(this, propData as TurretData);
             }
             else if (pt == typeof(VeilData)) {
                 Veil newProp = Instantiate(rh.Veil).GetComponent<Veil>();

@@ -123,7 +123,7 @@ public static class MathUtils {
 
 	/** TO DO: #optimization This function uses way overkill with converting to vectors and back. There has GOT to be a simpler way with just using the angles. */
 	public static float GetAngleReflection (float angleIn, float surfaceAngle) {
-		return 180+GetAngleDeg (Vector2.Reflect (GetVectorFromAngleDeg(-angleIn), GetVectorFromAngleDeg(surfaceAngle)));
+		return 180+GetAngleDeg (Vector2.Reflect (GetVectorFromDeg(-angleIn), GetVectorFromDeg(surfaceAngle)));
     }
 
     public static Vector2 GetRotatedVector2Rad(Vector2 v,float radians) {
@@ -135,12 +135,12 @@ public static class MathUtils {
     public static Vector3 GetRotatedVector3Deg(Vector3 v,float degrees) {
         return Quaternion.Euler(0,0,degrees) * v;
     }
-    /** 0 is UP, PI is RIGHT. */
-    public static Vector2 GetVectorFromAngleRad(float radians) {
-        return new Vector2(Mathf.Sin(radians),Mathf.Cos(radians));
+    /** 0 is UP, PI is LEFT. */
+    public static Vector2 GetVectorFromRad(float radians) {
+        return new Vector2(Mathf.Sin(-radians), Mathf.Cos(-radians));
     }
-    /** 0 is UP, 90 degrees is RIGHT. */
-    public static Vector2 GetVectorFromAngleDeg(float degrees) { return GetVectorFromAngleRad(degrees*Mathf.Deg2Rad); }
+    /** 0 is UP, 90 degrees is LEFT. */
+    public static Vector2 GetVectorFromDeg(float degrees) { return GetVectorFromRad(degrees*Mathf.Deg2Rad); }
 
 
     public static Vector3 ConstantSlerp(Vector3 from,Vector3 to,float angle) {

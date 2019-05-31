@@ -34,6 +34,7 @@ static public class RoomSaverLoader {
     const string SPIKES = "Spikes";
     const string TOGGLE_GROUND = "ToggleGround";
     const string TRAVELING_PLATFORM = "TravelingPlatform";
+    const string TURRET = "Turret";
     const string VEIL = "Veil";
 	// Properties
 	private static string debug_roomDataLoadingRoomKey; // purely for printing to the console without having to pass this parameter through a chain of functions
@@ -102,6 +103,7 @@ static public class RoomSaverLoader {
             else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
             else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
             else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos", "playerType"); }
+            else if (type == typeof(TurretData)) { AddAllPropFieldsToFS(propData, "pos", "rotation", "interval", "speed"); }
             else if (type == typeof(VeilData)) { AddAllPropFieldsToFS(propData, "myRect"); }
             // Props with optional params
             else if (type == typeof(BuzzsawData)) {
@@ -430,6 +432,7 @@ static public class RoomSaverLoader {
             case SPIKES: return new SpikesData();
             case TOGGLE_GROUND: return new ToggleGroundData();
             case TRAVELING_PLATFORM: return new TravelingPlatformData();
+            case TURRET: return new TurretData();
             case VEIL: return new VeilData();
             default: return null;
         }
