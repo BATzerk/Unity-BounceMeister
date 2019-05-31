@@ -4,6 +4,14 @@ using UnityEngine;
 using UnityEditor;
 
 
+//public class BasePropEditor : Editor {
+//    private void OnSceneGUI() {
+//        if (Event.current.modifiers == EventModifiers.Control) {
+//            Debug.Log("Control");
+//        }
+//    }
+//}
+
 [CustomEditor(typeof(Buzzsaw))]
 public class BuzzsawEditor : Editor {
     // References
@@ -13,7 +21,7 @@ public class BuzzsawEditor : Editor {
         if (myProp == null) { myProp = (Buzzsaw)target; }
         if (!myProp.HasTravelMind()) {
             if (GUILayout.Button("Add TravelMind")) {
-                myProp.AddTravelMind(new TravelMindData(new Vector2(-5,0), new Vector2(5,0), 2, 0));
+                myProp.AddTravelMind(TravelMindData.Default);
             }
         }
         else {
@@ -34,7 +42,7 @@ public class GroundEditor : Editor {
         if (myProp == null) { myProp = (Ground)target; }
         if (!myProp.HasTravelMind()) {
             if (GUILayout.Button("Add TravelMind")) {
-                myProp.AddTravelMind(new TravelMindData(new Vector2(-5,0), new Vector2(5,0), 2, 0));
+                myProp.AddTravelMind(TravelMindData.Default);
             }
         }
         else {
@@ -54,8 +62,7 @@ public class LaserEditor : Editor {
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
         if (myLaser == null) { myLaser = (Laser)target; }
-        
-        if (GUILayout.Button("Rotate 90°")) { myLaser.Debug_Rotate(-90); }
+        //if (GUILayout.Button("Rotate 90°")) { myLaser.Debug_RotateCW(); }
         if (!myLaser.HasOnOffer()) {
             if (GUILayout.Button("Add OnOffer")) {
                 myLaser.AddOnOffer(new OnOfferData(0.3f, 1.7f, 0f));
@@ -77,12 +84,7 @@ public class PropTravelMindEditor : Editor {
     
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
-        //DrawDefaultInspector();
-        
-        if (myTravelMind == null) {
-            myTravelMind = (PropTravelMind)target;
-        }
-        
+        if (myTravelMind == null) { myTravelMind = (PropTravelMind)target; }
         if (GUILayout.Button("Set Pos A")) {
             myTravelMind.Debug_SetPosA();
         }
@@ -100,14 +102,9 @@ public class SpikesEditor : Editor {
     
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
-        //DrawDefaultInspector();
+        if (mySpikes == null) { mySpikes = (Spikes)target; }
         
-        if (mySpikes == null) {
-            mySpikes = (Spikes)target;
-        }
-        
-        if (GUILayout.Button("Rotate 90°")) { mySpikes.Debug_Rotate(-90); }
-        
+        //if (GUILayout.Button("Rotate 90°")) { mySpikes.Debug_RotateCW(); }
         if (!mySpikes.HasOnOffer()) {
             if (GUILayout.Button("Add OnOffer")) {
                 mySpikes.AddOnOffer(new OnOfferData(0.3f, 1.7f, 0f));
@@ -122,13 +119,13 @@ public class SpikesEditor : Editor {
 }
 
 
-[CustomEditor(typeof(Turret))]
-public class TurretEditor : Editor {
-    // References
-    private Turret myProp;
-    public override void OnInspectorGUI() {
-        base.OnInspectorGUI();
-        if (myProp == null) { myProp = (Turret)target; }
-        if (GUILayout.Button("Rotate 90°")) { myProp.Debug_Rotate(-90); }
-    }
-}
+//[CustomEditor(typeof(Turret))]
+//public class TurretEditor : Editor {
+//    // References
+//    private Turret myProp;
+//    public override void OnInspectorGUI() {
+//        base.OnInspectorGUI();
+//        if (myProp == null) { myProp = (Turret)target; }
+//        if (GUILayout.Button("Rotate 90°")) { myProp.Debug_RotateCW(); }
+//    }
+//}

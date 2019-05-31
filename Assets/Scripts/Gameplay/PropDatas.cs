@@ -6,16 +6,24 @@ using UnityEngine;
 public class PropData {
 	public float rotation;
 	public Vector2 pos;
+    public TravelMindData travelMind;
 }
 
 public struct TravelMindData {
+    static public readonly TravelMindData Default = new TravelMindData(new Vector2(-5,0), new Vector2(5,0), 2, 0);
     public float locOffset;
     public float speed;
     public Vector2 posA;
     public Vector2 posB;
     // Getters (Public)
     public bool IsUsed { get { return posA!=posB && speed != 0; } }
-    
+
+    //public TravelMindData() {
+    //    this.posA = new Vector2(-5,0);
+    //    this.posB = new Vector2(5,0);
+    //    this.speed = 2;
+    //    this.locOffset = 0;
+    //}
     public TravelMindData(Vector2 posA,Vector2 posB, float speed, float locOffset) {
         this.posA = posA;
         this.posB = posB;
@@ -126,12 +134,7 @@ public struct OnOfferData {
 public class BatteryData : PropData {
 }
 public class BuzzsawData : PropData {
-    public TravelMindData travelMind;
     public Vector2 size;
-    //public float locOffset = 0;
-    //public float speed = 1;
-    //public Vector2 posA = new Vector2(0, 0);
-    //public Vector2 posB = new Vector2(10, 0);
 }
 public class CameraBoundsData : PropData {
 	public Rect myRect=new Rect();
@@ -156,7 +159,6 @@ public class GemData : PropData {
 }
 
 public class BaseGroundData : PropData {
-    public TravelMindData travelMind;
 	public Rect myRect;
 	public bool mayPlayerEat=true;
     public bool isPlayerRespawn=false;

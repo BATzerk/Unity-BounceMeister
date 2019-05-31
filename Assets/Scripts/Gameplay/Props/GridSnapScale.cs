@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //[ExecuteInEditMode]
-public class GridSnapScale : MonoBehaviour {
+public class GridSnapScale : BaseGridSnap {
     // Components
     private SpriteRenderer spriteRenderer;
     // Properties

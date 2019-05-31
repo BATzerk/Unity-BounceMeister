@@ -14,14 +14,12 @@ public class Snack : Edible {
     // ----------------------------------------------------------------
     //  Initialize
     // ----------------------------------------------------------------
-    override protected void Start() {
-        // Not initialized?? Find a Player in this scene, and default my type to IT!
-        bool wasAddedInEditor = !IsInitialized && playerType==PlayerTypes.Undefined;
-        base.Start();
-        if (wasAddedInEditor) {
-            playerType = PlayerTypes.Any;// CHANGED: Default to ANY player. // MyRoom.Player.PlayerType();
-            UpdatePresence();
-        }
+    override protected void OnCreatedInEditor() {
+        base.OnCreatedInEditor();
+        //if (playerType == PlayerTypes.Undefined) { // Haven't defined my PlayerType? Default me to what Player's in this Room!
+        //    playerType = MyRoom.Player.PlayerType();
+        //}
+        UpdatePresence();
     }
     private void Awake() {
         // Add event listeners!

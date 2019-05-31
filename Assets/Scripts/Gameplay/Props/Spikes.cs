@@ -51,6 +51,7 @@ public class Spikes : Collidable, IOnOffable {
         }
     }
     override protected void OnCreatedInEditor() {
+        base.OnCreatedInEditor();
         if (onOffer == null) { onOffer = GetComponent<PropOnOffer>(); } // Safety check for duplicating objects.
     }
 

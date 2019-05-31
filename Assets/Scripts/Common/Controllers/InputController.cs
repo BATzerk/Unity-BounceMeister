@@ -2,6 +2,71 @@
 using System.Collections;
 using InControl;
 
+
+#if UNITY_EDITOR
+using UnityEditor;
+
+[InitializeOnLoad]
+public static class EditorInputController {
+    // Properties
+    private static Prop propSel;
+
+
+    static EditorInputController() {
+        SceneView.onSceneGUIDelegate += OnSceneGUI;
+    }
+
+
+    private static void OnSceneGUI(SceneView sceneView) {
+        // Do your general-purpose scene gui stuff here...
+        // Applies to all scene views regardless of selection!
+ 
+        // You'll need a control id to avoid messing with other tools!
+        int controlID = GUIUtility.GetControlID(FocusType.Passive);
+
+        InputController.IsEditorKey_Control = Event.current.modifiers == EventModifiers.Control;
+
+        propSel = Selection.activeGameObject==null ? null : Selection.activeGameObject.GetComponent<Prop>();
+
+        // CONTROL + ___....
+        if (InputController.IsEditorKey_Control) {
+            if (Event.current.GetTypeForControl(controlID) == EventType.KeyDown) {
+                // CONTROL + R = Selected Prop: Rotate!
+                if (Event.current.keyCode == KeyCode.R) {
+                    PropSelRotateCW();
+                    Event.current.Use(); // Use the event here.
+                }
+                //// CONTROL + O = Selected Prop: Add/Remove OnOffer!
+                //if (Event.current.keyCode == KeyCode.O) {
+                //    PropSelToggleOnOffer();
+                //    Event.current.Use(); // Use the event here.
+                //}
+                // CONTROL + T = Selected Prop: Add/Remove TravelMind!
+                if (Event.current.keyCode == KeyCode.T) {
+                    PropSelToggleTravelMind();
+                    Event.current.Use(); // Use the event here.
+                }
+            }
+        }
+    }
+    
+    private static void PropSelRotateCW() {
+        if (propSel == null) { return; } // Safety check.
+        propSel.Debug_RotateCW();
+    }
+    //private static void PropSelToggleOnOffer() {
+        //if (propSel == null) { return; } // Safety check.
+        //propSel.ToggleHasOnOffer();
+    //}
+    private static void PropSelToggleTravelMind() {
+        if (propSel == null) { return; } // Safety check.
+        propSel.ToggleHasTravelMind();
+    }
+}
+#endif
+
+
+
 public class InputController : MonoBehaviour {
 	// Constants
 	private const float QUICK_CLICK_TIME_WINDOW = 0.3f; // quick-click is used for double-clicks (but could be extended to 3 or more).
@@ -67,6 +132,8 @@ public class InputController : MonoBehaviour {
     static public bool IsKey_shift { get { return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift); } }
     static public bool IsKeyUp_shift { get { return Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift); } }
     static public bool IsKeyDown_shift { get { return Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift); } }
+
+    static public bool IsEditorKey_Control; // Assigned by EditorInputController.
 
 
 

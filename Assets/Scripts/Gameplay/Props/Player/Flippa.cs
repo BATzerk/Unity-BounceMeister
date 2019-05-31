@@ -9,7 +9,7 @@ public class Flippa : Player {
     //override protected float WallSlideMinYVel { get { return -0.10f; } }
     //override protected Vector2 WallKickVel { get { return new Vector2(0.4f,0.42f); } }
     // References
-    private FlippaBody myFlippaBody;
+    //private FlippaBody myFlippaBody;
 
     // Getters
     private bool MayFlipGravity() {
@@ -22,7 +22,7 @@ public class Flippa : Player {
     //  Start
     // ----------------------------------------------------------------
     override protected void Start() {
-        myFlippaBody = myBody as FlippaBody;
+        //myFlippaBody = myBody as FlippaBody;
 
         base.Start();
     }

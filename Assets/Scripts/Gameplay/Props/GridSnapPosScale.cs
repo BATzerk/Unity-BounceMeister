@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //[ExecuteInEditMode]
-public class GridSnapPosScale : MonoBehaviour {
+public class GridSnapPosScale : BaseGridSnap {
 	// Components
 	private SpriteRenderer spriteRenderer;
 	// Properties
 	private bool doSnapSpriteSize; // true if I have a SpriteRenderer that's sliced or tiled! (In this scenario, our scale will probably stay at 1, and it's the SPRITE that's scaled.)
+	private Vector3 ppos;
+	private Vector3 pscale;
 
 	// Getters
-	private float rotation { get { return this.transform.localEulerAngles.z; } }
-	private Vector3 pos {
-		get { return this.transform.localPosition; }
-		set { this.transform.localPosition = value; }
-	}
 	private Vector3 scale {
 		get {
 			if (doSnapSpriteSize) { return spriteRenderer.size; }
@@ -39,8 +36,6 @@ public class GridSnapPosScale : MonoBehaviour {
 	// ----------------------------------------------------------------
 	//  Update
 	// ----------------------------------------------------------------
-	private Vector3 ppos;
-	private Vector3 pscale;
 	private void Update () {
 		// If scale or pos has changed, snap me!
 		if (scale != pscale || pos != ppos) {

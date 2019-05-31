@@ -35,28 +35,6 @@ public sealed class Ground : BaseGround, ITravelable {
         bounds.yMax += 1;
         return MathUtils.TrimRect(r, bounds);
     }
-    
-    // Travelable Stuff
-    private PropTravelMind travelMind; // added in Initialize.
-    public TravelMindData travelMindData { get { return new TravelMindData(travelMind); } }
-    public bool HasTravelMind() { return travelMind != null; }
-    public void AddTravelMind(TravelMindData data) {
-        if (travelMind != null) { return; } // Safety check.
-        travelMind = gameObject.AddComponent<PropTravelMind>();
-        travelMind.Initialize(this, data);
-        RemoveGridSnapPosScale();
-    }
-    public void RemoveTravelMind() {
-        if (travelMind == null) { return; } // Safety check.
-        Destroy(travelMind);
-        travelMind = null;
-        AddGridSnapPosScale();
-    }
-    public Vector2 GetPos() { return pos; }
-    public void SetPos(Vector2 _pos) { pos = _pos; }
-    override protected void OnCreatedInEditor() {
-        if (travelMind == null) { travelMind = GetComponent<PropTravelMind>(); } // Safety check for duplicating objects.
-    }
 
 
 	// ----------------------------------------------------------------
@@ -64,8 +42,6 @@ public sealed class Ground : BaseGround, ITravelable {
 	// ----------------------------------------------------------------
 	public void Initialize(Room _myRoom, GroundData data) {
 		base.BaseGroundInitialize(_myRoom, data);
-        
-        if (data.travelMind.IsUsed) { AddTravelMind(data.travelMind); }
 
 		mayBounce = data.mayBounce;
 		doRechargePlayer = data.doRechargePlayer;
@@ -104,7 +80,6 @@ public sealed class Ground : BaseGround, ITravelable {
     //  Serializing
     // ----------------------------------------------------------------
     override public PropData SerializeAsData() {
-        if (travelMind == null) { travelMind = GetComponent<PropTravelMind>(); } // Make sure we got the reference!
         GroundData data = new GroundData {
             myRect = MyRect(),
             mayPlayerEat = MayPlayerEatHere,
@@ -116,7 +91,6 @@ public sealed class Ground : BaseGround, ITravelable {
         };
         return data;
 	}
-
 
 }
 

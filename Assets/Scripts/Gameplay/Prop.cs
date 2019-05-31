@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-abstract public class Prop : MonoBehaviour {
+abstract public class Prop : MonoBehaviour, ITravelable {
     // Overrideables
     virtual public bool DoSaveInRoomFile() { return true; } // by default, ALL Props wanna get saved into the Room text file. But some (e.g. Player) do NOT.
     // Properties
@@ -29,13 +29,63 @@ abstract public class Prop : MonoBehaviour {
 		get { return this.transform.localEulerAngles.z; }
 		protected set { this.transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, value); }
 	}
+    public Vector2 vel { get; private set; }
+    
+    public void SetVel(float _x,float _y) { SetVel(new Vector2(_x,_y)); }
+    public void SetVel(Vector2 _vel) { vel = _vel; }
+    
+    // Travelable Stuff
+    protected PropTravelMind travelMind { get; private set; } // added in Initialize.
+    public TravelMindData travelMindData { get { return new TravelMindData(travelMind); } }
+    public bool HasTravelMind() { return travelMind != null; }
+    public void AddTravelMind(TravelMindData data) {
+        if (travelMind != null) { return; } // Safety check.
+        travelMind = gameObject.AddComponent<PropTravelMind>();
+        travelMind.Initialize(this, data);
+        DisableSnappingScript();
+    }
+    public void RemoveTravelMind() {
+        if (travelMind == null) { return; } // Safety check.
+        Destroy(travelMind);
+        travelMind = null;
+        EnableSnappingScript();
+    }
+    public void ToggleHasTravelMind() {
+        if (HasTravelMind()) { RemoveTravelMind(); }
+        else { AddTravelMind(TravelMindData.Default); }
+    }
+    // TODO: Clean this pos-stuff up! Would we want TravelMind on ANY Prop? Make changes accordingly.
+    public Vector2 GetPos() { return pos; }
+    public void SetPos(Vector2 _pos) { pos = _pos; }
+    virtual protected void OnCreatedInEditor() {
+        if (travelMind == null) { travelMind = GetComponent<PropTravelMind>(); } // Safety check for duplicating objects.
+    }
+    
+    private void EnableSnappingScript() {
+        BaseGridSnap script = GetComponent<BaseGridSnap>();
+        if (script != null) { script.enabled = true; }
+    }
+    private void DisableSnappingScript() {
+        BaseGridSnap script = GetComponent<BaseGridSnap>();
+        if (script != null) { script.enabled = false; }
+    }
+    
 
+    //protected void PreSerializeSafetyChecks() {
+    //    if (travelMind == null) { travelMind = GetComponent<PropTravelMind>(); } // Make sure we got the reference!
+    //}
+
+
+    // ----------------------------------------------------------------
+    //  Initialize
+    // ----------------------------------------------------------------
 	virtual protected void BaseInitialize(Room myRoom, PropData data) {
 		this.MyRoom = myRoom;
         GameUtils.ParentAndReset(this.gameObject, myRoom.transform);
 
 		this.transform.localPosition = data.pos; // note that this is just a convenience default. Any grounds will set their pos from their rect.
 		rotation = data.rotation;
+        if (data.travelMind.IsUsed) { AddTravelMind(data.travelMind); }
         
         IsInitialized = true;
         FrameCountWhenBorn = Time.frameCount;
@@ -47,7 +97,6 @@ abstract public class Prop : MonoBehaviour {
             // Set my Room ref!
             MyRoom = GetComponentInParent<Room>();
             if (MyRoom == null) { MyRoom = FindObjectOfType<Room>(); } // Also check the whole scene, just in case.
-            //GameUtils.ParentAndReset(this.gameObject, myRoom.transform);
             this.transform.SetParent(MyRoom.transform);
             //if (myRoom != null) { // Safety check.
             //    PropData data = SerializeAsData();
@@ -61,7 +110,6 @@ abstract public class Prop : MonoBehaviour {
         }
         #endif
     }
-    virtual protected void OnCreatedInEditor() {}
     
     // NOTE: These functions are intended ONLY for use with PropTravelMind adding/removing.
     protected void AddGridSnapPosScale() {
@@ -72,12 +120,13 @@ abstract public class Prop : MonoBehaviour {
         GridSnapPosScale script = this.gameObject.GetComponent<GridSnapPosScale>();
         if (script != null) { Destroy(script); }
     }
-    
-    
+
+
     // ----------------------------------------------------------------
     //  Debug
     // ----------------------------------------------------------------
-    public void Debug_Rotate(float delta) {
+    public void Debug_RotateCW() { Debug_Rotate(-90); }
+    private void Debug_Rotate(float delta) {
         rotation = Mathf.Round(rotation + delta);
     }
     public void Debug_SetRotation(float _rot) {

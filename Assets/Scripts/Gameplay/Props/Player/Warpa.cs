@@ -6,7 +6,7 @@ public class Warpa : Player {
     // Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Warpa; }
     // References
-    private WarpaBody myWarpaBody;
+    //private WarpaBody myWarpaBody;
 
     // Getters
     private bool MayWarp() {
@@ -23,7 +23,7 @@ public class Warpa : Player {
     //  Start
     // ----------------------------------------------------------------
     override protected void Start() {
-        myWarpaBody = myBody as WarpaBody;
+        //myWarpaBody = myBody as WarpaBody;
 
         base.Start();
     }

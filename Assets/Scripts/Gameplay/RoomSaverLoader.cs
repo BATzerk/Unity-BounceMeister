@@ -111,7 +111,7 @@ static public class RoomSaverLoader {
                 AddSomePropFieldsToFS(propData, "size");
                 if (d.travelMind.IsUsed) { fs += ";travelMind:" + d.travelMind.ToString(); }
                 else { fs += ";pos:" + d.pos; }
-                AddFSLine();
+                AddFSLine(); // TODO: Don't do this for each one! Do it ONCE after all these checks.
             }
             else if (type == typeof(SpikesData)) {
                 SpikesData d = propData as SpikesData;

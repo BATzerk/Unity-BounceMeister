@@ -23,7 +23,6 @@ public class MapEditor : MonoBehaviour {
 	public Vector2 MousePosWorld { get; private set; }
 	// References
 	[SerializeField] private Text currentWorldText=null;
-	[SerializeField] private Text demoText=null;
 	[SerializeField] private Text instructionsText=null;
 	private List<RoomTile> tilesSelected = new List<RoomTile>();
     private MapEditorCamera editorCamera;

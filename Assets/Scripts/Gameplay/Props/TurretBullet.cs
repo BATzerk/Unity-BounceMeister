@@ -32,7 +32,6 @@ public class TurretBullet : MonoBehaviour {
         dieBounds = MathUtils.BloatRect(myRoom.GetCameraBoundsLocal(), 6);
     }
 
-
     // ----------------------------------------------------------------
     //  FixedUpdate
     // ----------------------------------------------------------------

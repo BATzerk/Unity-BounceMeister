@@ -9,27 +9,6 @@ public class Buzzsaw : Collidable, ITravelable {
 
     // Getters
     private Vector2 size { get { return bodySprite.size; } }
-    
-    // Travelable Stuff
-    private PropTravelMind travelMind; // added in Initialize.
-    public TravelMindData travelMindData { get { return new TravelMindData(travelMind); } }
-    public bool HasTravelMind() { return travelMind != null; }
-    public void AddTravelMind(TravelMindData data) {
-        if (travelMind != null) { return; } // Safety check.
-        travelMind = gameObject.AddComponent<PropTravelMind>();
-        travelMind.Initialize(this, data);
-    }
-    public void RemoveTravelMind() {
-        if (travelMind == null) { return; } // Safety check.
-        Destroy(travelMind);
-        travelMind = null;
-    }
-    // TODO: Clean this pos-stuff up! Would we want TravelMind on ANY Prop? Make changes accordingly.
-    public Vector2 GetPos() { return pos; }
-    public void SetPos(Vector2 _pos) { pos = _pos; }
-    override protected void OnCreatedInEditor() {
-        if (travelMind == null) { travelMind = GetComponent<PropTravelMind>(); } // Safety check for duplicating objects.
-    }
 
 
     // ----------------------------------------------------------------
@@ -94,7 +73,6 @@ public class Buzzsaw : Collidable, ITravelable {
     //  Serializing
     // ----------------------------------------------------------------
     override public PropData SerializeAsData() {
-        if (travelMind == null) { travelMind = GetComponent<PropTravelMind>(); } // Make sure we got the reference!
         return new BuzzsawData {
             pos = pos,
             size = size,

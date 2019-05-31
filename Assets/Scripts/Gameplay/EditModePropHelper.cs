@@ -8,7 +8,6 @@ using UnityEditor;
 public class EditModePropHelper : MonoBehaviour {
 #if UNITY_EDITOR
     // Properties
-    private bool doAutoRotateSpikes = true;
     private Vector3 spikesSelPos; // when this changes, we update spikesSel rotation!
     // References
     private GameController gameController; // set in Awake.
@@ -44,15 +43,11 @@ public class EditModePropHelper : MonoBehaviour {
     //  Update
     // ----------------------------------------------------------------
     private void Update() {
-        // We DO wanna auto-rotate?? Do our updates!
-        if (doAutoRotateSpikes) {
+        bool doAutoRotateSpikes = !InputController.IsEditorKey_Control;
+        if (doAutoRotateSpikes) { // DO auto-rotate updates!
             UpdateSpikesSelRef();
             CheckSpikesSelPosChanged();
         }
-        RegisterKeyInput();
-    }
-    private void RegisterKeyInput() {
-        if (InputController.IsKeyDown_control) { ToggleDoAutoRotateSpikes(); }
     }
     private void UpdateSpikesSelRef() {
         Spikes _spikes = null;
@@ -83,10 +78,6 @@ public class EditModePropHelper : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
-    private void ToggleDoAutoRotateSpikes() {
-        doAutoRotateSpikes = !doAutoRotateSpikes;
-        Debug.Log("Auto-rotate Spikes " + (doAutoRotateSpikes?"ENABLED":"DISabled") + ".");
-    }
     private void NullifySpikesSel() {
         spikesSel = null;
     }

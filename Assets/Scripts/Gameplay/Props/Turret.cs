@@ -23,6 +23,7 @@ public class Turret : Prop {
         bodyScaleNeutral = sr_body.transform.localScale;
         base.Start();
     }
+
     public void Initialize(Room _myRoom, TurretData data) {
         base.BaseInitialize(_myRoom, data);
 
@@ -31,6 +32,7 @@ public class Turret : Prop {
         SetTimeWhenShoot(Time.time);// + interval);
     }
     override protected void OnCreatedInEditor() {
+        base.OnCreatedInEditor();
         SetTimeWhenShoot(Time.time);// + interval);
     }
 
@@ -56,7 +58,8 @@ public class Turret : Prop {
     private void SetTimeWhenShoot(float _time) {
         timeWhenShoot = _time;
         // Prep pre-shoot tween!
-        LeanTween.delayedCall(Mathf.Max(0, interval-0.2f), PreShootTween);
+        float delay = Mathf.Max(0, interval-0.2f);
+        Invoke("PreShootTween", delay);
     }
     private void Shoot() {
         // Shoot a bullet!
@@ -89,6 +92,7 @@ public class Turret : Prop {
             rotation = rotation,
             interval = interval,
             speed = speed,
+            travelMind = new TravelMindData(travelMind),
         };
     }
 

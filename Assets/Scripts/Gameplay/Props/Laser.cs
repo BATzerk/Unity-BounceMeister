@@ -69,6 +69,7 @@ public class Laser : Prop, IOnOffable {
         sr_beamGlow.enabled = isOn;
     }
     override protected void OnCreatedInEditor() {
+        base.OnCreatedInEditor();
         if (onOffer == null) { onOffer = GetComponent<PropOnOffer>(); } // Safety check for duplicating objects.
     }
     

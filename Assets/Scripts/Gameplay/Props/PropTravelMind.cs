@@ -34,7 +34,7 @@ public class PropTravelMind : MonoBehaviour {
         
         ApplyPos();
         
-        // Move OnOffer component just under my Script, for easiness.
+        // Move this component just under my Script, for easiness.
         #if UNITY_EDITOR
         UnityEditorInternal.ComponentUtility.MoveComponentUp(this);
         UnityEditorInternal.ComponentUtility.MoveComponentUp(this);
