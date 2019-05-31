@@ -44,9 +44,7 @@ public class RoomClusterData {
         
         // Set NumSnacksReq
         NumSnacksReq = GameProperties.ClustNumSnacksReq(MyAddress);
-        
-        // Update Rooms, yo
-        // TODO: This?
+        // NOTE: Doesn't seem as if we need to update Rooms, so I'm not doing that.
     }
     
     

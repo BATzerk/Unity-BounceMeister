@@ -15,8 +15,6 @@ public class WorldData {
     public Rect BoundsRectPlayableRooms { get; private set; } // NOTE: Unused! For determining RoomSelect view and WorldSelect view.
 
     // Getters
-    /** Though we don't position anything special with this value, this IS used under the hood to keep street poses within a reasonable range to avoid float-point issues. */
-    public Vector2 CenterPos { get { return BoundsRectPlayableRooms.center; } } // TODO: Decide if we're using this or not. (I'd say cut it for now unless we know we want it.)
     public bool IsWorldUnlocked { get { return isWorldUnlocked; } }
     public int WorldIndex { get { return worldIndex; } }
     public Dictionary<string, RoomData> RoomDatas { get { return roomDatas; } }

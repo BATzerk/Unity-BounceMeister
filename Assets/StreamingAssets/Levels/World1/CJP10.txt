@@ -20,12 +20,12 @@ Ground myRect:(x:-22.00, y:-0.50, width:2.00, height:7.00)
 PlayerStart pos:(-19.5, -6.0)
 Spikes myRect:(x:-12.00, y:16.50, width:18.00, height:1.00);rotation:180
 Spikes myRect:(x:-2.50, y:-10.00, width:18.00, height:1.00);rotation:270
-Spikes myRect:(x:13.50, y:1.50, width:11.00, height:1.00);rotation:0;onOfferData:(0.3, 1.7, 0)
-Spikes myRect:(x:4.50, y:-0.50, width:19.00, height:1.00);rotation:270;onOfferData:(0.3, 1.7, 0)
-Spikes myRect:(x:16.50, y:8.50, width:17.00, height:1.00);rotation:90;onOfferData:(0.3, 1.7, 0)
+Spikes myRect:(x:13.50, y:1.50, width:11.00, height:1.00);rotation:0;onOffer:(0.3, 1.7, 0)
+Spikes myRect:(x:4.50, y:-0.50, width:19.00, height:1.00);rotation:270;onOffer:(0.3, 1.7, 0)
+Spikes myRect:(x:16.50, y:8.50, width:17.00, height:1.00);rotation:90;onOffer:(0.3, 1.7, 0)
 Spikes myRect:(x:14.50, y:-12.50, width:9.00, height:1.00);rotation:90
 Spikes myRect:(x:-19.50, y:12.50, width:13.00, height:1.00);rotation:270
 Spikes myRect:(x:7.50, y:-14.50, width:21.00, height:1.00);rotation:0
-Spikes myRect:(x:7.50, y:9.50, width:11.00, height:1.00);rotation:0;onOfferData:(0.3, 1.7, 0)
+Spikes myRect:(x:7.50, y:9.50, width:11.00, height:1.00);rotation:0;onOffer:(0.3, 1.7, 0)
 Spikes myRect:(x:3.00, y:-10.50, width:2.00, height:1.00);rotation:180
 Spikes myRect:(x:-11.00, y:-15.50, width:14.00, height:1.00);rotation:0

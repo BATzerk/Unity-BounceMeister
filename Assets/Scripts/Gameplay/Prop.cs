@@ -36,7 +36,6 @@ abstract public class Prop : MonoBehaviour, ITravelable {
     
     // Travelable Stuff
     protected PropTravelMind travelMind { get; private set; } // added in Initialize.
-    public TravelMindData travelMindData { get { return new TravelMindData(travelMind); } }
     public bool HasTravelMind() { return travelMind != null; }
     public void AddTravelMind(TravelMindData data) {
         if (travelMind != null) { return; } // Safety check.

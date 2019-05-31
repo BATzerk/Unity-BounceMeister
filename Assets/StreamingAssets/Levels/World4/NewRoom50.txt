@@ -23,7 +23,7 @@ Spikes myRect:(x:-0.50, y:-13.50, width:13.00, height:1.00);rotation:0
 Spikes myRect:(x:-9.50, y:-4.50, width:7.00, height:1.00);rotation:0
 Spikes myRect:(x:-3.00, y:12.50, width:6.00, height:1.00);rotation:180
 Spikes myRect:(x:-11.50, y:0.50, width:3.00, height:1.00);rotation:180
-Spikes myRect:(x:4.50, y:-7.50, width:13.00, height:1.00);rotation:90;onOfferData:(0.3, 2.1, 0)
+Spikes myRect:(x:4.50, y:-7.50, width:13.00, height:1.00);rotation:90;onOffer:(0.3, 2.1, 0)
 Spikes myRect:(x:6.50, y:-0.50, width:3.00, height:1.00);rotation:0
-Spikes myRect:(x:0.50, y:-1.00, width:8.00, height:1.00);rotation:270;onOfferData:(0.3, 2.1, 0)
-Spikes myRect:(x:-3.00, y:3.50, width:6.00, height:1.00);rotation:0;onOfferData:(0.3, 2.1, 0)
+Spikes myRect:(x:0.50, y:-1.00, width:8.00, height:1.00);rotation:270;onOffer:(0.3, 2.1, 0)
+Spikes myRect:(x:-3.00, y:3.50, width:6.00, height:1.00);rotation:0;onOffer:(0.3, 2.1, 0)

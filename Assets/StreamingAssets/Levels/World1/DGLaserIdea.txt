@@ -10,6 +10,6 @@ Ground myRect:(x:11.00, y:14.50, width:2.00, height:5.00)
 Ground myRect:(x:0.00, y:-17.50, width:52.00, height:5.00)
 Ground myRect:(x:-22.50, y:11.50, width:5.00, height:9.00)
 Ground myRect:(x:-7.50, y:18.00, width:37.00, height:4.00)
-Laser pos:(14.5, -13.5);rotation:0;onOfferData:(0.5, 1.5, 0)
+Laser pos:(14.5, -13.5);rotation:0;onOffer:(0.5, 1.5, 0)
 Platform myRect:(x:14.00, y:12.50, width:4.00, height:1.00);isPlayerRespawn:True
 PlayerStart pos:(-20.0, -14.0)

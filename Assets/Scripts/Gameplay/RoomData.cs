@@ -23,7 +23,7 @@ public class RoomData {
     public HashSet<RoomData> NeighborRooms { get; private set; } // All RoomDatas I have Openings to.
     
     // Getters
-    public Rect BoundsLocal { get { return new Rect(cameraBoundsData.myRect); } } // TODO: Try not copying the rect. // Currently, the camera bounds and room bounds are one in the same.
+    public Rect BoundsLocal { get { return cameraBoundsData.myRect; } } // NOTE: The camera bounds and room bounds are one in the same.
  //   public Rect BoundsLocal { get { return new Rect(cameraBoundsData.myRect.center, cameraBoundsData.myRect.size); } } // Currently, the camera bounds and room bounds are one in the same.
 	public Rect BoundsGlobal { get { return new Rect(cameraBoundsData.myRect.center+PosGlobal, cameraBoundsData.myRect.size); } }
     //public Rect BoundsGlobal { get { return new Rect(BoundsLocal.position+posGlobal, BoundsLocal.size); } }

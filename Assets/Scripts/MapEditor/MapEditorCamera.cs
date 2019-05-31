@@ -87,8 +87,8 @@ public class MapEditorCamera : MonoBehaviour {
         averageRoomPos /= wd.RoomDatas.Count;
         // Ease-y!
         LeanTween.cancel(this.gameObject);
-        LeanTween.value(this.gameObject, SetMapScale, MapScale,MAP_SCALE_DEFAULT, 0.2f).setEaseOutQuint();
-        LeanTween.value(this.gameObject, SetPos, Pos,averageRoomPos, 0.2f).setEaseOutQuint();
+        LeanTween.value(this.gameObject, SetMapScale, MapScale,MAP_SCALE_DEFAULT, 0.26f).setEaseOutQuint();
+        LeanTween.value(this.gameObject, SetPos, Pos,averageRoomPos, 0.3f).setEaseOutQuint();
     }
 
     private void SetBackgroundColor(int worldIndex) {

@@ -26,6 +26,6 @@ Snack pos:(-4.0, 9.5);playerType:Any
 Spikes myRect:(x:1.50, y:-5.50, width:7.00, height:1.00);rotation:0
 Spikes myRect:(x:11.50, y:2.50, width:5.00, height:1.00);rotation:0
 Spikes myRect:(x:1.50, y:-0.50, width:7.00, height:1.00);rotation:0
-Spikes myRect:(x:-4.00, y:-14.50, width:12.00, height:1.00);rotation:0;onOfferData:(1, 1, 0)
+Spikes myRect:(x:-4.00, y:-14.50, width:12.00, height:1.00);rotation:0;onOffer:(1, 1, 0)
 Spikes myRect:(x:11.50, y:-7.50, width:5.00, height:1.00);rotation:0
 Spikes myRect:(x:11.50, y:-2.50, width:5.00, height:1.00);rotation:0

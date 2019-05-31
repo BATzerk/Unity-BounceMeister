@@ -107,12 +107,12 @@ static public class RoomSaverLoader {
             else if (type == typeof(SpikesData)) {
                 SpikesData d = propData as SpikesData;
                 AddPropFieldsToFS(propData, "myRect", "rotation");
-                if (d.onOfferData.IsUsed) { fs += ";onOfferData:" + d.onOfferData.ToString(); }
+                if (d.onOffer.IsUsed) { fs += ";onOffer:" + d.onOffer.ToString(); }
             }
             else if (type == typeof(LaserData)) {
                 LaserData d = propData as LaserData;
                 AddPropFieldsToFS(propData, "pos", "rotation");
-                if (d.onOfferData.IsUsed) { fs += ";onOfferData:" + d.onOfferData.ToString(); }
+                if (d.onOffer.IsUsed) { fs += ";onOffer:" + d.onOffer.ToString(); }
             }
             else if (type == typeof(CrateData)) {
                 CrateData d = propData as CrateData;

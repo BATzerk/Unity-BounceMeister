@@ -17,6 +17,6 @@ PlayerStart pos:(-15.5, -13.0)
 ProgressGate myRect:(x:-1.50, y:-8.50, width:5.00, height:5.00);numSnacksReq:6
 Spikes myRect:(x:-7.50, y:-5.50, width:9.00, height:1.00);rotation:0
 Spikes myRect:(x:8.50, y:-1.00, width:6.00, height:1.00);rotation:90
-Spikes myRect:(x:-6.00, y:12.50, width:34.00, height:1.00);rotation:180;onOfferData:(0.3, 1.7, 0)
+Spikes myRect:(x:-6.00, y:12.50, width:34.00, height:1.00);rotation:180;onOffer:(0.3, 1.7, 0)
 Spikes myRect:(x:9.50, y:-10.50, width:25.00, height:1.00);rotation:0
-Spikes myRect:(x:-9.00, y:5.50, width:28.00, height:1.00);rotation:0;onOfferData:(0.3, 1.7, 0)
+Spikes myRect:(x:-9.00, y:5.50, width:28.00, height:1.00);rotation:0;onOffer:(0.3, 1.7, 0)

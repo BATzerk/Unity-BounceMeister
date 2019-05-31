@@ -67,7 +67,7 @@ public class Room : MonoBehaviour {
         // Reverse the propDatas list so it's saved in the same order each time. (Kinda weird, but this is the easy solution.)
         rd.allPropDatas.Reverse();
 
-        // HACK TEMP TODO: clean this up
+        // HACKy-ish: Find CameraBounds manually.
         CameraBounds cameraBounds = FindObjectOfType<CameraBounds>();
         if (cameraBounds != null) { rd.cameraBoundsData = cameraBounds.ToData() as CameraBoundsData; }
 

@@ -20,7 +20,6 @@ public class Spikes : Collidable, IOnOffable {
     // OnOffer Stuff
     private bool isOn;
     private PropOnOffer onOffer; // added in Initialize.
-    public OnOfferData onOfferData { get { return new OnOfferData(onOffer); } }
     public bool IsOn() { return isOn; }
     public bool HasOnOffer() { return onOffer != null; }
     public void AddOnOffer(OnOfferData data) {
@@ -62,7 +61,7 @@ public class Spikes : Collidable, IOnOffable {
 	public void Initialize(Room _myRoom, SpikesData data) {
 		base.BaseInitialize(_myRoom, data);
         
-        if (data.onOfferData.durOff > 0) { AddOnOffer(data.onOfferData); }
+        if (data.onOffer.durOff > 0) { AddOnOffer(data.onOffer); }
 
 		bodySprite.size = data.myRect.size;
 		bodySprite.transform.localPosition = data.myRect.position;
@@ -98,7 +97,7 @@ public class Spikes : Collidable, IOnOffable {
         SpikesData data = new SpikesData {
             myRect = MyRect,
             rotation = rotation,
-            onOfferData = new OnOfferData(onOffer),
+            onOffer = new OnOfferData(onOffer),
             travelMind = new TravelMindData(travelMind),
         };
         return data;

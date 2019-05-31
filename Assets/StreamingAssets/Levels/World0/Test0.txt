@@ -1,10 +1,12 @@
 roomProperties posGlobal:(56.0, 204.0);designerFlag:0;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Buzzsaw pos:(-0.2, 2.8);size:(3.0, 3.0);travelMind:(14,11,-5,0, 2, 0)
-Buzzsaw pos:(9.3, 8.3);size:(3.0, 3.0);travelMind:(14,11,-5,0, 1, 0)
+Buzzsaw pos:(5.0, 0.0);size:(3.0, 3.0);travelMind:(-14,11,5,0, 2, 0)
+Buzzsaw pos:(-4.8, 5.7);size:(3.0, 3.0);travelMind:(-14,11,5,0, 1, 0)
 Ground myRect:(x:0.00, y:-16.00, width:52.00, height:8.00)
 Ground myRect:(x:0.00, y:16.50, width:52.00, height:7.00)
-Ground myRect:(x:21.00, y:1.00, width:10.00, height:38.00)
-PlayerStart pos:(13.0, -11.0)
-Snack pos:(-4.7, 0.0);playerType:Any;travelMind:(-5,0,5,0, 2, 0)
+Ground myRect:(x:-21.00, y:1.00, width:10.00, height:38.00)
+Laser pos:(14.5, -6.5);rotation:0
+PlayerStart pos:(-13.0, -11.0)
+Snack pos:(-5.0, 0.0);playerType:Any;travelMind:(5,0,-5,0, 2, 0)
+Spikes myRect:(x:9.00, y:-11.50, width:6.00, height:1.00);rotation:0;onOffer:(0.8, 1, 0)
 

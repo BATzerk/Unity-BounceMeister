@@ -37,7 +37,6 @@ public class Laser : Prop, IOnOffable {
     // OnOffer Stuff
     private bool isOn;
     private PropOnOffer onOffer; // added in Initialize.
-    public OnOfferData onOfferData { get { return new OnOfferData(onOffer); } }
     public bool IsOn() { return isOn; }
     public bool HasOnOffer() { return onOffer != null; }
     public void AddOnOffer(OnOfferData data) {
@@ -80,7 +79,7 @@ public class Laser : Prop, IOnOffable {
     public void Initialize(Room _myRoom, LaserData data) {
         base.BaseInitialize(_myRoom, data);
         
-        if (data.onOfferData.durOff > 0) { AddOnOffer(data.onOfferData); }
+        if (data.onOffer.durOff > 0) { AddOnOffer(data.onOffer); }
         
         //tf_sourceBox.size = data.myRect.size;
         //sr_body.transform.localPosition = data.myRect.position;
@@ -129,7 +128,7 @@ public class Laser : Prop, IOnOffable {
         return new LaserData {
             pos = pos,
             rotation = rotation,
-            onOfferData = new OnOfferData(onOffer),
+            onOffer = new OnOfferData(onOffer),
             travelMind = new TravelMindData(travelMind),
         };
     }

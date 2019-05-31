@@ -15,9 +15,9 @@ Ground myRect:(x:-23.00, y:-5.00, width:6.00, height:6.00)
 Ground myRect:(x:-23.50, y:0.50, width:5.00, height:17.00)
 Ground myRect:(x:-4.50, y:10.50, width:7.00, height:3.00)
 Ground myRect:(x:8.00, y:-2.00, width:2.00, height:20.00)
-Laser pos:(7.5, -0.5);rotation:90;onOfferData:(0.3, 1.7, 1)
-Laser pos:(17.5, 8.5);rotation:90;onOfferData:(0.3, 1.7, 0)
-Laser pos:(9.5, 6.5);rotation:180;onOfferData:(0.3, 1.7, 1)
+Laser pos:(7.5, -0.5);rotation:90;onOffer:(0.3, 1.7, 1)
+Laser pos:(17.5, 8.5);rotation:90;onOffer:(0.3, 1.7, 0)
+Laser pos:(9.5, 6.5);rotation:180;onOffer:(0.3, 1.7, 1)
 PlayerStart pos:(-20.0, -13.0)
 Snack pos:(18.5, -5.5);playerType:Any
 Spikes myRect:(x:14.50, y:-11.50, width:9.00, height:1.00);rotation:90

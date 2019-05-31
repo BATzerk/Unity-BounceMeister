@@ -58,7 +58,7 @@ public class MiniMap : MonoBehaviour {
     private void MakeAllTiles() {
         DestroyAllTiles();
         
-        // TODO: Just do clusters?
+        // TO DO: #maybe Just do clusters?
         tiles = new Dictionary<string, MiniMapRoomTile>();
         WorldData wd = currRoom.MyWorldData;
         foreach (RoomData rd in wd.roomDatas.Values) {
@@ -121,7 +121,7 @@ public class MiniMap : MonoBehaviour {
         }
         
         // Update tile visuals!
-        UpdateAllTilesVisuals();// TODO: This more efficiently?
+        UpdateAllTilesVisuals();
         UpdateSnackCountText();
     }
     private void OnSwapPlayerType() {

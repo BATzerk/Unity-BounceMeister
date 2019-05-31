@@ -219,7 +219,7 @@ public class RoomDoorData : PropData {
 
 public class LaserData : PropData {
     //public Rect myRect=new Rect();
-    public OnOfferData onOfferData; // TODO: Rename this (and one in Spikes) to onOffer! Here and in all room files!
+    public OnOfferData onOffer;
 }
 
 public class LiftData : PropData {
@@ -250,7 +250,7 @@ public class SnackData : PropData {
 
 public class SpikesData : PropData {
 	public Rect myRect=new Rect();
-    public OnOfferData onOfferData;
+    public OnOfferData onOffer;
 }
 
 public class TurretData : PropData {
