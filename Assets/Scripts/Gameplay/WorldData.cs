@@ -129,7 +129,7 @@ public class WorldData {
 //		// Collect serialized RoomDatas for every room in the provided world.
 //		Dictionary<string, RoomData> serializedRoomDatas = new Dictionary<string, RoomData> (_rooms.Count);
 //		foreach (Room l in _rooms.Values) {
-//			RoomData serializedRoomData = l.SerializeAsData();
+//			RoomData serializedRoomData = l.ToData();
 //			serializedRoomDatas[l.RoomKey] = serializedRoomData;
 //		}
 //		// Assign my RoomDatas and RoomLinkDatas from the ones we've created.

@@ -102,21 +102,21 @@ public sealed class ToggleGround : BaseGround {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         ToggleGroundData data = new ToggleGroundData {
             myRect = MyRect(),
             mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
             startsOn = startsOn,
             togFromContact = togFromContact,//togBehavior is TogGroundBehavior_Contact;
-            togFromAction = togFromAction//togBehavior is TogGroundBehavior_Plunge;
+            togFromAction = togFromAction,//togBehavior is TogGroundBehavior_Plunge;
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
 	}
 
-
-
 }
+
 
 /*
 public sealed class ToggleGround : BaseGround {

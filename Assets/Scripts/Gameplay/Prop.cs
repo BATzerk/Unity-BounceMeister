@@ -54,7 +54,7 @@ abstract public class Prop : MonoBehaviour, ITravelable {
         if (HasTravelMind()) { RemoveTravelMind(); }
         else { AddTravelMind(TravelMindData.Default); }
     }
-    // TODO: Clean this pos-stuff up! Would we want TravelMind on ANY Prop? Make changes accordingly.
+
     public Vector2 GetPos() { return pos; }
     public void SetPos(Vector2 _pos) { pos = _pos; }
     virtual protected void OnCreatedInEditor() {
@@ -70,10 +70,6 @@ abstract public class Prop : MonoBehaviour, ITravelable {
         if (script != null) { script.enabled = false; }
     }
     
-
-    //protected void PreSerializeSafetyChecks() {
-    //    if (travelMind == null) { travelMind = GetComponent<PropTravelMind>(); } // Make sure we got the reference!
-    //}
 
 
     // ----------------------------------------------------------------
@@ -99,7 +95,7 @@ abstract public class Prop : MonoBehaviour, ITravelable {
             if (MyRoom == null) { MyRoom = FindObjectOfType<Room>(); } // Also check the whole scene, just in case.
             this.transform.SetParent(MyRoom.transform);
             //if (myRoom != null) { // Safety check.
-            //    PropData data = SerializeAsData();
+            //    PropData data = ToData();
             //    BaseInitialize(myRoom, data);
             //}
             // Unpack me as a Prefab!
@@ -109,16 +105,6 @@ abstract public class Prop : MonoBehaviour, ITravelable {
             OnCreatedInEditor();
         }
         #endif
-    }
-    
-    // NOTE: These functions are intended ONLY for use with PropTravelMind adding/removing.
-    protected void AddGridSnapPosScale() {
-        GridSnapPosScale script = this.gameObject.GetComponent<GridSnapPosScale>();
-        if (script == null) { this.gameObject.AddComponent<GridSnapPosScale>(); }
-    }
-    protected void RemoveGridSnapPosScale() {
-        GridSnapPosScale script = this.gameObject.GetComponent<GridSnapPosScale>();
-        if (script != null) { Destroy(script); }
     }
 
 
@@ -135,19 +121,23 @@ abstract public class Prop : MonoBehaviour, ITravelable {
     virtual public void FlipHorz() {
         pos = new Vector2(-pos.x, pos.y);
         rotation = -rotation;
+        if (travelMind != null) { travelMind.FlipHorz(); }
     }
     virtual public void FlipVert() {
         pos = new Vector2(pos.x, -pos.y);
-        //rotation += 180;
+        if (travelMind != null) { travelMind.FlipVert(); }
     }
     virtual public void Move(Vector2 delta) {
         pos += delta;
+        if (travelMind != null) { travelMind.Move(delta); }
     }
+
     
     
     // ----------------------------------------------------------------
     //  Serialize
     // ----------------------------------------------------------------
-    abstract public PropData SerializeAsData();
+    abstract public PropData ToData();
+
 
 }

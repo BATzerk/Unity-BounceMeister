@@ -14,10 +14,11 @@ public class CharBarrel : Prop {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         CharBarrelData data = new CharBarrelData {
             pos = PosLocal,
-            otherCharName = otherCharName
+            otherCharName = otherCharName,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
     }

@@ -228,7 +228,7 @@ public class PlatformCharacter : Collidable {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() { return null; }
+    override public PropData ToData() { return null; }
 
 
 }

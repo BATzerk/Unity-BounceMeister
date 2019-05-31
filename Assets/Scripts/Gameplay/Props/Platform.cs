@@ -32,12 +32,13 @@ public class Platform : BaseGround {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         PlatformData data = new PlatformData {
             myRect = MyRect(),
             mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
             canDropThru = canDropThru,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
 	}

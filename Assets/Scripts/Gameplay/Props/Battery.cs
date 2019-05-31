@@ -88,9 +88,10 @@ public class Battery : Prop {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	override public PropData SerializeAsData() {
+	override public PropData ToData() {
         BatteryData data = new BatteryData {
-            pos = pos
+            pos = pos,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
 	}

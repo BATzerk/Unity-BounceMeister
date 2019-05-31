@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿//using System.Collections;
+//using UnityEngine;
 
-public interface ISerializableData<T> {
-	T SerializeAsData();
-}
+//public interface ISerializableData<T> {
+//	T SerializeAsData();
+//}

@@ -703,7 +703,7 @@ abstract public class Player : PlatformCharacter {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         return new PlayerData {
             pos = pos,
             vel = vel,

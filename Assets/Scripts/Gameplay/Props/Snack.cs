@@ -139,10 +139,11 @@ public class Snack : Edible {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         SnackData data = new SnackData {
             pos = pos,
             playerType = playerType.ToString(),
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
     }

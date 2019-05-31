@@ -76,11 +76,12 @@ public class Crate : BaseGround {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         CrateData data = new CrateData {
             myRect = MyRect(),
             hitsUntilBreak = hitsUntilBreak,
-            numCoinsInMe = numCoinsInMe
+            numCoinsInMe = numCoinsInMe,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
 	}

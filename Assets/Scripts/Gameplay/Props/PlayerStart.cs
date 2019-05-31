@@ -19,7 +19,7 @@ public class PlayerStart : Prop {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
 		PlayerStartData data = new PlayerStartData();
 		data.pos = PosLocal;
 		return data;

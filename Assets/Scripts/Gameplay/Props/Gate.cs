@@ -62,13 +62,15 @@ public class Gate : BaseGround {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
-		GateData data = new GateData();
-		data.myRect = MyRect();
-		data.mayPlayerEat = MayPlayerEatHere;
-        data.isPlayerRespawn = IsPlayerRespawn;
-        data.channelID = channelID;
-		return data;
+    override public PropData ToData() {
+        GateData data = new GateData {
+            myRect = MyRect(),
+            mayPlayerEat = MayPlayerEatHere,
+            isPlayerRespawn = IsPlayerRespawn,
+            channelID = channelID,
+            travelMind = new TravelMindData(travelMind),
+        };
+        return data;
 	}
 
 }

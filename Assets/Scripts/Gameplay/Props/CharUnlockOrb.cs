@@ -15,10 +15,11 @@ public class CharUnlockOrb : Prop {
     private CharLineup lineup { get { return GameManagers.Instance.DataManager.CharLineup; } }
     
     // Serializing
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         CharUnlockOrbData data = new CharUnlockOrbData {
             pos = PosLocal,
             myCharName = myCharName,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
     }

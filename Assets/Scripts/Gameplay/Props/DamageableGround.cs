@@ -217,7 +217,7 @@ public class DamageableGround : BaseGround {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         DamageableGroundData data = new DamageableGroundData {
             myRect = MyRect(),
             mayPlayerEat = MayPlayerEatHere,
@@ -226,7 +226,8 @@ public class DamageableGround : BaseGround {
             regenTime = regenTime,
             dieFromBounce = dieFromBounce,
             dieFromPlayerLeave = dieFromPlayerLeave,
-            dieFromVel = dieFromVel
+            dieFromVel = dieFromVel,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
 	}

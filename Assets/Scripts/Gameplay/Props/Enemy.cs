@@ -106,7 +106,7 @@ public class Enemy : PlatformCharacter {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         return new EnemyData {
             pos = pos
         };

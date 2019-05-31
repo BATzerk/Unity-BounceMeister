@@ -48,11 +48,12 @@ public class InfoSign : Prop {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         InfoSignData data = new InfoSignData {
             pos = pos,
             rotation = rotation,
             myText = myText,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
     }

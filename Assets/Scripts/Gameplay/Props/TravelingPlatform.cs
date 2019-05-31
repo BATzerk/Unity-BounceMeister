@@ -67,7 +67,7 @@ public class TravelingPlatform : Platform {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
     	return new TravelingPlatformData {
             myRect = MyRect(),
             mayPlayerEat = MayPlayerEatHere,

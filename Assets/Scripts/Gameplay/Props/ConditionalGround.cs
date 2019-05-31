@@ -70,9 +70,10 @@ public sealed class ConditionalGround : BaseGround {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() { // NOTE: Just here to pacify errors. This class isn't used in the game yet.
+    override public PropData ToData() { // NOTE: Just here to pacify errors. This class isn't used in the game yet.
         GroundData data = new GroundData {
-            myRect = MyRect()
+            myRect = MyRect(),
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
     }

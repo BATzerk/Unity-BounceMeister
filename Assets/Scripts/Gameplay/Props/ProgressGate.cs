@@ -136,11 +136,12 @@ public class ProgressGate : BaseGround {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         ProgressGateData data = new ProgressGateData {
             myRect = MyRect(),
             //numGemsReq = numGemsReq,
             numSnacksReq = numSnacksReq,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
 	}

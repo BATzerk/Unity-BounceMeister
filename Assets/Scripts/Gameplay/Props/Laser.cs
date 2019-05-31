@@ -125,12 +125,12 @@ public class Laser : Prop, IOnOffable {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
-        //if (onOffer == null) { onOffer = GetComponent<PropOnOffer>(); } // Safety check for duplicating objects.
+    override public PropData ToData() {
         return new LaserData {
             pos = pos,
             rotation = rotation,
             onOfferData = new OnOfferData(onOffer),
+            travelMind = new TravelMindData(travelMind),
         };
     }
 

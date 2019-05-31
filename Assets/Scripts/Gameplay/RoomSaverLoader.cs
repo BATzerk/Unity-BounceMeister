@@ -74,132 +74,116 @@ static public class RoomSaverLoader {
 	//  Saving
 	// ================================================================
 	static private string fs; // Messy. I don't like how this is out here. This could be avoided if we were able to use anonymous functions.
-    static public void SaveRoomFile (Room r) { SaveRoomFile (r.SerializeAsData()); }
+    static public void SaveRoomFile (Room r) { SaveRoomFile (r.ToData()); }
     static public void SaveRoomFile (RoomData rd) { SaveRoomFileAs (rd, rd.WorldIndex, rd.RoomKey); }
-	//static public void SaveRoomFileAs (Room r, int worldIndex,string roomKey) {
-	//	SaveRoomFileAs(r.SerializeAsData(), worldIndex, roomKey);
- //       //// Update ALL WorldData room stuff (actually just for openings/neighbors atm).
- //       //GameManagers.Instance.DataManager.GetWorldData(worldIndex).SetAllRoomDatasFundamentalProperties();
-	//}
-	static public void SaveRoomFileAs(RoomData rd, int worldIndex,string roomKey) {
+    static public void SaveRoomFileAs(RoomData rd, int worldIndex,string roomKey) {
 		fs = ""; // fileString. this guy will be packed with \n line-breaks, then at the very end split by \n. It's less code to look at.
         
         // Alphabetize the props list, so all Grounds are clumped together, then Platforms, etc.
         rd.allPropDatas.Sort( (a,b) => string.Compare(a.GetType().FullName, b.GetType().FullName, StringComparison.Ordinal));
 
 		// Room Properties
-		AddFSLine (GetRoomPropertiesLine(rd));
-		AddAllPropFieldsToFS(rd.cameraBoundsData, "myRect");
+		AddFSLine(GetRoomPropertiesLine(rd));
+
+		AddPropFieldsToFS(rd.cameraBoundsData, "myRect");
+        AddFSLineBreak();
 
 		foreach (PropData propData in rd.allPropDatas) {
 			Type type = propData.GetType();
-			if (type == typeof(BatteryData)) { AddAllPropFieldsToFS(propData, "pos"); }
-            else if (type == typeof(CharBarrelData)) { AddAllPropFieldsToFS(propData, "pos", "otherCharName"); }
-            else if (type == typeof(CharUnlockOrbData)) { AddAllPropFieldsToFS(propData, "pos", "myCharName"); }
-            else if (type == typeof(EnemyData)) { AddAllPropFieldsToFS(propData, "pos"); }
-            else if (type == typeof(GateButtonData)) { AddAllPropFieldsToFS(propData, "pos", "channelID"); }
-			else if (type == typeof(GemData)) { AddAllPropFieldsToFS(propData, "pos", "type"); }
-            else if (type == typeof(RoomDoorData)) { AddAllPropFieldsToFS(propData, "pos", "myID", "worldToIndex", "roomToKey", "doorToID"); }
-            else if (type == typeof(LiftData)) { AddAllPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
-            else if (type == typeof(PlayerStartData)) { AddAllPropFieldsToFS(propData, "pos"); }
-            else if (type == typeof(SnackData)) { AddAllPropFieldsToFS(propData, "pos", "playerType"); }
-            else if (type == typeof(TurretData)) { AddAllPropFieldsToFS(propData, "pos", "rotation", "interval", "speed"); }
-            else if (type == typeof(VeilData)) { AddAllPropFieldsToFS(propData, "myRect"); }
+			if (type == typeof(BatteryData)) { AddPropFieldsToFS(propData, "pos"); }
+            else if (type == typeof(BuzzsawData)) { AddPropFieldsToFS(propData, "pos", "size"); }
+            else if (type == typeof(CharBarrelData)) { AddPropFieldsToFS(propData, "pos", "otherCharName"); }
+            else if (type == typeof(CharUnlockOrbData)) { AddPropFieldsToFS(propData, "pos", "myCharName"); }
+            else if (type == typeof(EnemyData)) { AddPropFieldsToFS(propData, "pos"); }
+            else if (type == typeof(GateButtonData)) { AddPropFieldsToFS(propData, "pos", "channelID"); }
+			else if (type == typeof(GemData)) { AddPropFieldsToFS(propData, "pos", "type"); }
+            else if (type == typeof(RoomDoorData)) { AddPropFieldsToFS(propData, "pos", "myID", "worldToIndex", "roomToKey", "doorToID"); }
+            else if (type == typeof(LiftData)) { AddPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
+            else if (type == typeof(PlayerStartData)) { AddPropFieldsToFS(propData, "pos"); }
+            else if (type == typeof(SnackData)) { AddPropFieldsToFS(propData, "pos", "playerType"); }
+            else if (type == typeof(TurretData)) { AddPropFieldsToFS(propData, "pos", "rotation", "interval", "speed"); }
+            else if (type == typeof(VeilData)) { AddPropFieldsToFS(propData, "myRect"); }
             // Props with optional params
-            else if (type == typeof(BuzzsawData)) {
-                BuzzsawData d = propData as BuzzsawData;
-                AddSomePropFieldsToFS(propData, "size");
-                if (d.travelMind.IsUsed) { fs += ";travelMind:" + d.travelMind.ToString(); }
-                else { fs += ";pos:" + d.pos; }
-                AddFSLine(); // TODO: Don't do this for each one! Do it ONCE after all these checks.
-            }
             else if (type == typeof(SpikesData)) {
                 SpikesData d = propData as SpikesData;
-                AddSomePropFieldsToFS(propData, "myRect", "rotation");
-                if (d.onOfferData.durOff > 0) { fs += ";onOfferData:" + d.onOfferData.ToString(); }
-                AddFSLine();
+                AddPropFieldsToFS(propData, "myRect", "rotation");
+                if (d.onOfferData.IsUsed) { fs += ";onOfferData:" + d.onOfferData.ToString(); }
             }
             else if (type == typeof(LaserData)) {
                 LaserData d = propData as LaserData;
-                AddSomePropFieldsToFS(propData, "pos", "rotation");
-                if (d.onOfferData.durOff > 0) { fs += ";onOfferData:" + d.onOfferData.ToString(); }
-                AddFSLine();
+                AddPropFieldsToFS(propData, "pos", "rotation");
+                if (d.onOfferData.IsUsed) { fs += ";onOfferData:" + d.onOfferData.ToString(); }
             }
             else if (type == typeof(CrateData)) {
                 CrateData d = propData as CrateData;
-                AddSomePropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe");
+                AddPropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe");
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-                AddFSLine();
             }
 			else if (type == typeof(DamageableGroundData)) {
 				DamageableGroundData d = propData as DamageableGroundData;
-				AddSomePropFieldsToFS(propData, "myRect", "doRegen");
+				AddPropFieldsToFS(propData, "myRect", "doRegen");
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 if (d.regenTime!=DamageableGround.RegenTimeDefault) { fs += ";regenTime:" + d.regenTime; }
                 if (d.dieFromBounce) { fs += ";dieFromBounce:" + d.dieFromBounce; }
                 if (d.dieFromPlayerLeave) { fs += ";dieFromPlayerLeave:" + d.dieFromPlayerLeave; }
                 if (d.dieFromVel) { fs += ";dieFromVel:" + d.dieFromVel; }
-                AddFSLine();
 			}
 			else if (type == typeof(GateData)) {
 				GateData d = propData as GateData;
-				AddSomePropFieldsToFS(propData, "myRect", "channelID");
+				AddPropFieldsToFS(propData, "myRect", "channelID");
 				if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-                AddFSLine();
 			}
 			else if (type == typeof(GroundData)) {
 				GroundData d = propData as GroundData;
-				AddSomePropFieldsToFS(propData, "myRect");
+				AddPropFieldsToFS(propData, "myRect");
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isBouncy) { fs += ";isBouncy:" + d.isBouncy; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
                 if (!d.mayBounce) { fs += ";mayBounce:" + d.mayBounce; }
                 if (!d.doRechargePlayer) { fs += ";doRechargePlayer:" + d.doRechargePlayer; }
                 if (d.travelMind.IsUsed) { fs += ";travelMind:" + d.travelMind.ToString(); }
-                AddFSLine();
 			}
             else if (type == typeof(InfoSignData)) {
                 InfoSignData d = propData as InfoSignData;
-                AddSomePropFieldsToFS(propData, "pos", "myText");
+                AddPropFieldsToFS(propData, "pos", "myText");
                 if (!Mathf.Approximately(d.rotation, 0)) { fs += ";rotation:" + Mathf.Round(d.rotation); }
-                AddFSLine();
             }
             else if (type == typeof(PlatformData)) {
                 PlatformData d = propData as PlatformData;
-                AddSomePropFieldsToFS(propData, "myRect");
+                AddPropFieldsToFS(propData, "myRect");
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (!d.canDropThru) { fs += ";canDropThru:" + d.canDropThru; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-                AddFSLine();
             }
             else if (type == typeof(ProgressGateData)) {
                 ProgressGateData d = propData as ProgressGateData;
-                AddSomePropFieldsToFS(propData, "myRect", "numSnacksReq");
+                AddPropFieldsToFS(propData, "myRect", "numSnacksReq");
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-                AddFSLine();
             }
             else if (type == typeof(ToggleGroundData)) {
                 ToggleGroundData d = propData as ToggleGroundData;
-                AddSomePropFieldsToFS(propData, "myRect", "startsOn", "togFromContact", "togFromAction");
+                AddPropFieldsToFS(propData, "myRect", "startsOn", "togFromContact", "togFromAction");
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-                AddFSLine();
             }
             else if (type == typeof(TravelingPlatformData)) {
                 TravelingPlatformData d = propData as TravelingPlatformData;
-                AddSomePropFieldsToFS(propData, "myRect", "locOffset", "speed", "posA", "posB");
+                AddPropFieldsToFS(propData, "myRect", "locOffset", "speed", "posA", "posB");
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (!d.canDropThru) { fs += ";canDropThru:" + d.canDropThru; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-                AddFSLine();
             }
             else {
                 Debug.LogWarning("Prop in Room not recognized for serialization: " + type);
             }
+            // Things ALL Props can have...
+            if (propData.travelMind.IsUsed) { fs += ";travelMind:" + propData.travelMind.ToString(); }
+
+            AddFSLineBreak();
 		}
 
 
@@ -236,18 +220,17 @@ static public class RoomSaverLoader {
 	}
 
 	/** Use this when we want to tack on optional params after, within the same line. */
-	static private void AddSomePropFieldsToFS(PropData data, params string[] fieldNames) {
+	static private void AddPropFieldsToFS(PropData data, params string[] fieldNames) {
 		// Create and add the line to fileString!
 		string propName = GetPropName(data);
 		AddFS (propName + " " + GetPropFieldsAsString(data, fieldNames));
 	}
-	/** Use this when this prop has no optional params. */
-	static private void AddAllPropFieldsToFS(PropData data, params string[] fieldNames) {
-		// Create and add the line to fileString!
-		string propName = GetPropName(data);
-		AddFS (propName + " " + GetPropFieldsAsString(data, fieldNames));
-		AddFSLine();
-	}
+	///** Use this when this prop has no optional params. */
+	//static private void AddAllPropFieldsToFS(PropData data, params string[] fieldNames) {
+	//	// Create and add the line to fileString!
+	//	string propName = GetPropName(data);
+	//	AddFS (propName + " " + GetPropFieldsAsString(data, fieldNames));
+	//}
     //static private void AddOnOfferDataToFS(OnOfferData data) {
     //    if (data.durOff > 0) { // If there IS an OnOffer, tack on its properties to the whole string.
     //        AddFS(";durOn:"+data.durOn);
@@ -305,7 +288,7 @@ static public class RoomSaverLoader {
 	static private void AddFS(string stringToAdd) {
 		fs += stringToAdd;
 	}
-	static private void AddFSLine() { AddFSLine (""); }
+	static private void AddFSLineBreak() { AddFSLine (""); }
 	static private void AddFSLine(string stringToAdd) {
 		AddFS(stringToAdd + "\n");
 	}

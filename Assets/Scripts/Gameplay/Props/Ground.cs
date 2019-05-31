@@ -79,7 +79,7 @@ public sealed class Ground : BaseGround, ITravelable {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         GroundData data = new GroundData {
             myRect = MyRect(),
             mayPlayerEat = MayPlayerEatHere,

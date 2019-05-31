@@ -23,13 +23,14 @@ public class RoomDoor : Prop {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         RoomDoorData data = new RoomDoorData {
             pos = PosLocal,
             myID = myID,
             worldToIndex = worldToIndex,
             roomToKey = roomToKey,
-            doorToID = doorToID
+            doorToID = doorToID,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
     }

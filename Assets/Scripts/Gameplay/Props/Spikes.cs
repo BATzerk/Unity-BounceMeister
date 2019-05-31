@@ -94,11 +94,12 @@ public class Spikes : Collidable, IOnOffable {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         SpikesData data = new SpikesData {
             myRect = MyRect,
             rotation = rotation,
             onOfferData = new OnOfferData(onOffer),
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
 	}

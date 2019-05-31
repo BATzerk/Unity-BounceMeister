@@ -72,9 +72,10 @@ public class Veil : Prop {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         VeilData data = new VeilData {
             myRect = MyRect,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
     }

@@ -74,10 +74,11 @@ public class Gem : Edible {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         GemData data = new GemData {
             pos = pos,
             type = type,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
 	}

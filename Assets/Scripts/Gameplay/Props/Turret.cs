@@ -86,7 +86,7 @@ public class Turret : Prop {
     // ----------------------------------------------------------------
     //  Serializing
     // ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         return new TurretData {
             pos = pos,
             rotation = rotation,

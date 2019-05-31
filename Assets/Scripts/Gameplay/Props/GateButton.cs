@@ -75,10 +75,11 @@ public class GateButton : Prop {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         GateButtonData data = new GateButtonData {
             pos = pos,
-            channelID = channelID
+            channelID = channelID,
+            travelMind = new TravelMindData(travelMind),
         };
         return data;
 	}

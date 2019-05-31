@@ -76,6 +76,18 @@ public class PropTravelMind : MonoBehaviour {
     public void Debug_SetPosB() {
         PosB = MathUtils.Round(myProp.GetPos());
     }
+    public void FlipHorz() {
+        PosA = new Vector2(-PosA.x, PosA.y);
+        PosB = new Vector2(-PosB.x, PosB.y);
+    }
+    public void FlipVert() {
+        PosA = new Vector2(PosA.x, -PosA.y);
+        PosB = new Vector2(PosB.x, -PosB.y);
+    }
+    public void Move(Vector2 delta) {
+        PosA += delta;
+        PosB += delta;
+    }
     
     
 }

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Room : MonoBehaviour, ISerializableData<RoomData> {
+public class Room : MonoBehaviour {
     // Components
     [SerializeField] private RoomGizmos roomGizmos = null;
     // Properties
@@ -48,7 +48,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
     // ----------------------------------------------------------------
     //	Serialization
     // ----------------------------------------------------------------
-    public RoomData SerializeAsData() {
+    public RoomData ToData() {
         RoomData rd = new RoomData(MyWorldData, RoomKey);
 
         // -- General Properties --
@@ -62,14 +62,14 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
         Prop[] allProps = FindObjectsOfType<Prop>();
         foreach (Prop prop in allProps) {
             if (!prop.DoSaveInRoomFile()) { continue; } // This type of Prop doesn't save to Room file? Skip it.
-            rd.AddPropData(prop.SerializeAsData());
+            rd.AddPropData(prop.ToData());
         }
         // Reverse the propDatas list so it's saved in the same order each time. (Kinda weird, but this is the easy solution.)
         rd.allPropDatas.Reverse();
 
         // HACK TEMP TODO: clean this up
         CameraBounds cameraBounds = FindObjectOfType<CameraBounds>();
-        if (cameraBounds != null) { rd.cameraBoundsData = cameraBounds.SerializeAsData() as CameraBoundsData; }
+        if (cameraBounds != null) { rd.cameraBoundsData = cameraBounds.ToData() as CameraBoundsData; }
 
         return rd;
     }
@@ -224,7 +224,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
         // TEMP totes hacky, yo.
         string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         MyRoomData = new RoomData(dataManager.CurrWorldData, sceneName); // NOTE! Be careful; we can easily overwrite rooms like this.
-        MyRoomData = SerializeAsData();
+        MyRoomData = ToData();
 
         // Initialize things!
         // Player
@@ -237,7 +237,7 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
         // CameraBounds
         if (FindObjectOfType<CameraBounds>() == null) {
             CameraBounds cameraBounds = Instantiate(ResourcesHandler.Instance.CameraBounds).GetComponent<CameraBounds>();
-            cameraBounds.Initialize(this, cameraBounds.SerializeAsData() as CameraBoundsData); // Strange and hacky: It initializes itself as what it already is. Just to go through other paperwork.
+            cameraBounds.Initialize(this, cameraBounds.ToData() as CameraBoundsData); // Strange and hacky: It initializes itself as what it already is. Just to go through other paperwork.
         }
     }
     private void AutoAddSilentBoundaries() {
@@ -299,13 +299,13 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //	Debug
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    private void OnDrawGizmos() {
+    //private void OnDrawGizmos() {
         //Vector2 posGlobal = MyRoomData.posGlobal;
         //foreach (RoomOpening ro in MyRoomData.Openings) {
         //    Gizmos.color = ro.RoomTo!=null ? new Color(0.5f,1,0) : new Color(1,0.5f,0);
         //    Gizmos.DrawLine(posGlobal+ro.posStart, posGlobal+ro.posEnd);
         //}
-    }
+    //}
 
 
 
@@ -332,56 +332,6 @@ public class Room : MonoBehaviour, ISerializableData<RoomData> {
 
 
 }
-
-
-
-
-/*
-Battery[] batteries = FindObjectsOfType<Battery>();
-foreach (Battery obj in batteries) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-CameraBounds cameraBounds = FindObjectOfType<CameraBounds>();
-if (cameraBounds != null) { rd.cameraBoundsData = cameraBounds.SerializeAsData(); }
-
-Crate[] crates = FindObjectsOfType<Crate>();
-foreach (Crate obj in crates) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-DamageableGround[] damageableGrounds = FindObjectsOfType<DamageableGround>();
-foreach (DamageableGround obj in damageableGrounds) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-Gate[] gates = FindObjectsOfType<Gate>();
-foreach (Gate obj in gates) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-GateButton[] gateButtons = FindObjectsOfType<GateButton>();
-foreach (GateButton obj in gateButtons) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-Gem[] _gems = FindObjectsOfType<Gem>();
-foreach (Gem obj in _gems) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-Ground[] grounds = FindObjectsOfType<Ground>();
-foreach (Ground obj in grounds) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-RoomDoor[] roomDoors = FindObjectsOfType<RoomDoor>();
-foreach (RoomDoor obj in roomDoors) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-Lift[] lifts = FindObjectsOfType<Lift>();
-foreach (Lift obj in lifts) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-Platform[] platforms = FindObjectsOfType<Platform>();
-foreach (Platform obj in platforms) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-PlayerStart[] playerStarts = FindObjectsOfType<PlayerStart>();
-foreach (PlayerStart obj in playerStarts) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-Snack[] _snacks = FindObjectsOfType<Snack>();
-foreach (Snack obj in _snacks) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-Spikes[] spikes = FindObjectsOfType<Spikes>();
-foreach (Spikes obj in spikes) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-
-ToggleGround[] toggleGrounds = FindObjectsOfType<ToggleGround>();
-foreach (ToggleGround obj in toggleGrounds) { rd.allPropDatas.Add(obj.SerializeAsData()); }
-*/
 
 
 

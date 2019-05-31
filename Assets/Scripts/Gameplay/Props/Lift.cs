@@ -110,11 +110,12 @@ public class Lift : Prop {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-    override public PropData SerializeAsData() {
+    override public PropData ToData() {
         return new LiftData {
             myRect = MyRect,
             rotation = rotation,
-            strength = strength
+            strength = strength,
+            travelMind = new TravelMindData(travelMind),
         };
 	}
 

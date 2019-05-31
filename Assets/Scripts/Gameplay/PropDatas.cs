@@ -72,6 +72,9 @@ public struct OnOfferData {
     public float durOn;
     public float durOff;
     public float startOffset;
+
+    // Getters (Public)
+    public bool IsUsed { get { return durOff > 0; } }
     
     //public OnOfferData() {
     //    durOn = 0.3f;

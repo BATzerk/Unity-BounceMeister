@@ -43,7 +43,7 @@ public class CameraBounds : Prop {
 	// ----------------------------------------------------------------
 	//  Serializing
 	// ----------------------------------------------------------------
-	override public PropData SerializeAsData() {
+	override public PropData ToData() {
         CameraBoundsData data = new CameraBoundsData {
             myRect = RectLocal
         };

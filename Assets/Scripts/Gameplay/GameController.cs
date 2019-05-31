@@ -119,7 +119,7 @@ public class GameController : MonoBehaviour {
         // TEMP HACK remember Snacks we've got.
         List<Edible> edibles = Player.Temp_GetEdiblesHolding();
 
-        PlayerData playerData = Player.SerializeAsData() as PlayerData;
+        PlayerData playerData = Player.ToData() as PlayerData;
         playerData.type = _type;
         MakePlayer(playerData);
         GameManagers.Instance.EventManager.OnSwapPlayerType();
@@ -187,7 +187,7 @@ public class GameController : MonoBehaviour {
             int sideEntering = Sides.GetOpposite(sideEscaped);
             Vector2 posExited = Player.PosGlobal;
             
-            PlayerData pd = Player.SerializeAsData() as PlayerData; // Remember Player's physical properties (e.g. vel) so we can preserve 'em.
+            PlayerData pd = Player.ToData() as PlayerData; // Remember Player's physical properties (e.g. vel) so we can preserve 'em.
             pd.pos = GetPlayerStartingPosFromPrevExitPos(nextLD, sideEntering, posExited);
             if (sideEntering == Sides.B) { // Entering from bottom?? Give min y-vel to boost us into the room!
                 pd.vel = new Vector2(pd.vel.x, Mathf.Max(pd.vel.y, 0.6f));
