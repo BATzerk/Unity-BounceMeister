@@ -60,7 +60,6 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] public GameObject Snack;
 	[SerializeField] public GameObject Spikes;
 	[SerializeField] public GameObject ToggleGround;
-    [SerializeField] public GameObject TravelingPlatform;
 	[SerializeField] public GameObject Turret;
 	[SerializeField] public GameObject TurretBullet;
     [SerializeField] public GameObject Veil;

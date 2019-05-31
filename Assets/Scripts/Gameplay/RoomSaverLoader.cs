@@ -33,7 +33,6 @@ static public class RoomSaverLoader {
     const string SNACK = "Snack";
     const string SPIKES = "Spikes";
     const string TOGGLE_GROUND = "ToggleGround";
-    const string TRAVELING_PLATFORM = "TravelingPlatform";
     const string TURRET = "Turret";
     const string VEIL = "Veil";
 	// Properties
@@ -168,13 +167,6 @@ static public class RoomSaverLoader {
                 ToggleGroundData d = propData as ToggleGroundData;
                 AddPropFieldsToFS(propData, "myRect", "startsOn", "togFromContact", "togFromAction");
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
-                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-            }
-            else if (type == typeof(TravelingPlatformData)) {
-                TravelingPlatformData d = propData as TravelingPlatformData;
-                AddPropFieldsToFS(propData, "myRect", "locOffset", "speed", "posA", "posB");
-                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
-                if (!d.canDropThru) { fs += ";canDropThru:" + d.canDropThru; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
             }
             else {
@@ -414,7 +406,6 @@ static public class RoomSaverLoader {
             case SNACK: return new SnackData();
             case SPIKES: return new SpikesData();
             case TOGGLE_GROUND: return new ToggleGroundData();
-            case TRAVELING_PLATFORM: return new TravelingPlatformData();
             case TURRET: return new TurretData();
             case VEIL: return new VeilData();
             default: return null;

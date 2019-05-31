@@ -11,7 +11,7 @@ public class EditModeController : MonoBehaviour {
     private const string WindowName_Game = "Game"; // And Edit window is "Scene".
     //private const string WindowName_Scene = "Scene"; // And Game window is "Game".
     // Components
-    private GameController gameController; // set in Awake.
+    private GameController gameController=null; // set in Awake.
     // Properties
     private bool isGameWindowFocus;
     private bool isSettingPlayerPos; // TRUE when we right-click to teleport the Player around the Room.
@@ -26,7 +26,7 @@ public class EditModeController : MonoBehaviour {
 
 
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
     // ----------------------------------------------------------------
     //  Awake / Destroy
     // ----------------------------------------------------------------
@@ -137,6 +137,7 @@ public class EditModeController : MonoBehaviour {
     }
 
     private void UpdateCurrWindow() {
+        #if UNITY_EDITOR
         if (UnityEditor.EditorWindow.focusedWindow != null) { // If there IS a focused window (e.g. not stopping the game in Unity Editor)...
             string window = UnityEditor.EditorWindow.focusedWindow.titleContent.text;
             if (currWindow != window) {
@@ -145,6 +146,7 @@ public class EditModeController : MonoBehaviour {
                 currWindow = window;
             }
         }
+        #endif
     }
 
     private void UpdateSettingPlayerPos() {
@@ -216,14 +218,14 @@ public class EditModeController : MonoBehaviour {
         }
     }
 
-#else
-    // ----------------------------------------------------------------
-    //  Awake
-    // ----------------------------------------------------------------
-    private void Awake() {
-        Destroy(this);
-        return;
-    }
+//#else
+    //// ----------------------------------------------------------------
+    ////  Awake
+    //// ----------------------------------------------------------------
+    //private void Awake() {
+    //    Destroy(this);
+    //    return;
+    //}
 
-#endif
+//#endif
 }

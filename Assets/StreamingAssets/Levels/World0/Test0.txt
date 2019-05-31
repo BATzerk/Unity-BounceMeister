@@ -1,12 +1,9 @@
 roomProperties posGlobal:(56.0, 204.0);designerFlag:0;isClustStart:True
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Buzzsaw pos:(5.0, 0.0);size:(3.0, 3.0);travelMind:(-14,11,5,0, 2, 0)
-Buzzsaw pos:(-4.8, 5.7);size:(3.0, 3.0);travelMind:(-14,11,5,0, 1, 0)
-Ground myRect:(x:0.00, y:-16.00, width:52.00, height:8.00)
-Ground myRect:(x:0.00, y:16.50, width:52.00, height:7.00)
 Ground myRect:(x:-21.00, y:1.00, width:10.00, height:38.00)
-Laser pos:(14.5, -6.5);rotation:0
+Ground myRect:(x:0.00, y:16.50, width:52.00, height:7.00)
+Ground myRect:(x:0.00, y:-16.00, width:52.00, height:8.00)
+Platform myRect:(x:-4.34, y:0.00, width:5.00, height:1.00);travelMind:(-5,0,5,0, 2, 0)
 PlayerStart pos:(-13.0, -11.0)
-Snack pos:(-5.0, 0.0);playerType:Any;travelMind:(5,0,-5,0, 2, 0)
-Spikes myRect:(x:9.00, y:-11.50, width:6.00, height:1.00);rotation:0;onOffer:(0.8, 1, 0)
+TravelingPlatform myRect:(x:9.85, y:-8.00, width:6.00, height:1.00);locOffset:0;speed:1;posA:(0.0, -8.0);posB:(10.0, -8.0)
 

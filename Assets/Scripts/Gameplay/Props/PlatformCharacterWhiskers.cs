@@ -24,7 +24,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     private bool[] onSurfaces; // index is side.
 	private float[,] surfaceDists; // by side,index. This is *all* whisker data.
 	private int[] minDistsIndexes; // by side. WHICH whisker at this side is the closest!
-    private float[] collSpeedsRel; // by side. The (highest) speed a collidable's moving TOWARDS me. Usually 0's, except for TravelingPlatforms.
+    private float[] collSpeedsRel; // by side. The (highest) speed a collidable's moving TOWARDS me. Usually 0's, except for TravelMinds.
     private RaycastHit2D h; // out here so we don't make a ton every frame.
     private RaycastHit2D[] hits; // out here so we don't make a ton every frame.
 	private Vector2[] whiskerDirs;
@@ -39,15 +39,6 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
         }
         return null;
     }
-    //public TravelingPlatform TEMP_GetTravelingPlatformOn() {
-    //    for (int i=0; i<NumWhiskersPerSide; i++) {
-    //        Collider2D coll = collidersAroundMe[Sides.B,i];
-    //        if (coll == null) { continue; }
-    //        //if (LayerUtils.IsLayer(coll.gameObject, Layers.Platform)) { return coll.GetComponentInParent<TravelingPlatform>(); }
-    //        if (LayerUtils.IsLayer(coll.gameObject, Layers.Platform)) { return coll.GetComponent<TravelingPlatform>(); }
-    //    }
-    //    return null;
-    //}
 
     private Vector2 charSize { get { return myCharacter.Size; } }
     private RaycastHit2D[] GetRaycast(int side, int wi) {

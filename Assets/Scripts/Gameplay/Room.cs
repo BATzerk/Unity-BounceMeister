@@ -124,10 +124,6 @@ public class Room : MonoBehaviour {
                 Platform newProp = Instantiate(rh.Platform).GetComponent<Platform>();
                 newProp.Initialize(this, propData as PlatformData);
             }
-            else if (pt == typeof(TravelingPlatformData)) {
-                TravelingPlatform newProp = Instantiate(rh.TravelingPlatform).GetComponent<TravelingPlatform>();
-                newProp.Initialize(this, propData as TravelingPlatformData);
-            }
             else if (pt == typeof(GroundData)) {
                 Ground newProp = Instantiate(rh.Ground).GetComponent<Ground>();
                 newProp.Initialize(this, propData as GroundData);

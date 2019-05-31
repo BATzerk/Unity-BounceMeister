@@ -112,7 +112,7 @@ public class PlatformCharacter : Collidable {
         if (IsGrounded()) {
             Collidable obj = myWhiskers.TEMP_GetFloorCollidable();
             if (obj != null) {
-                pos += obj.vel;// TODO: If we like TravelingPlatforms, then improve. Confirm this is a sensible way to move Character on a Platform appropriately (it's a neat little challenge).
+                pos += obj.vel;// TODO: Confirm this is a sensible way to move Character on a Platform appropriately (it's a neat little challenge).
             }
         }
     }
