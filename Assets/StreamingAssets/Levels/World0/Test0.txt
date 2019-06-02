@@ -3,7 +3,6 @@ CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Ground myRect:(x:-21.00, y:1.00, width:10.00, height:38.00)
 Ground myRect:(x:0.00, y:16.50, width:52.00, height:7.00)
 Ground myRect:(x:0.00, y:-16.00, width:52.00, height:8.00)
-Platform myRect:(x:-4.34, y:0.00, width:5.00, height:1.00);travelMind:(-5,0,5,0, 2, 0)
+Platform myRect:(x:4.98, y:0.00, width:5.00, height:1.00);travelMind:(-5,0,5,0, 2, 0)
 PlayerStart pos:(-13.0, -11.0)
-TravelingPlatform myRect:(x:9.85, y:-8.00, width:6.00, height:1.00);locOffset:0;speed:1;posA:(0.0, -8.0);posB:(10.0, -8.0)
 
