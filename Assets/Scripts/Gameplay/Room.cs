@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Room : MonoBehaviour {
     // Components
     [SerializeField] private RoomGizmos roomGizmos = null;
+    [SerializeField] private RoomShutters shutters=null;
     // Properties
     private GateChannel[] gateChannels;
     private List<CharBarrel> charBarrels = new List<CharBarrel>();
@@ -211,6 +212,7 @@ public class Room : MonoBehaviour {
         // For development, add bounds so we don't fall out of unconnected rooms!
         AutoAddSilentBoundaries();
         roomGizmos.Initialize(this);
+        shutters.Initialize(this);
     }
 
     /** Slightly sloppy, whatever-it-takes housekeeping to allow us to start up the game with a novel room and edit/play/save it right off the bat. */
@@ -246,11 +248,12 @@ public class Room : MonoBehaviour {
                 col.transform.localScale = Vector3.one;
                 col.transform.localEulerAngles = Vector3.zero;
                 col.gameObject.layer = LayerMask.NameToLayer("Ground"); // so our feet stop on it, yanno.
-                col.name = "Invisibounds";
-                // Determine the collider's rect, ok?
+                col.name = "Invisibounds" + rod.side;
+                // Determine the collider's rect, ok? Promise?
+                float thickness = 10f;
                 Rect rect = new Rect {
-                    size = GetInvisiboundSize(rod),
-                    center = rod.posCenter
+                    size = GetInvisiboundSize(rod, thickness),
+                    center = rod.posCenter + MathUtils.GetDir(rod.side)*thickness*0.5f,
                 };
                 // Make it happen!
                 col.transform.localPosition = rect.center;
@@ -258,8 +261,7 @@ public class Room : MonoBehaviour {
             }
         }
     }
-    private Vector2 GetInvisiboundSize(RoomOpening lo) {
-        float thickness = 1f;
+    private Vector2 GetInvisiboundSize(RoomOpening lo, float thickness) {
         if (lo.side == Sides.L || lo.side == Sides.R) { return new Vector2(thickness, lo.length); }
         return new Vector2(lo.length, thickness);
     }

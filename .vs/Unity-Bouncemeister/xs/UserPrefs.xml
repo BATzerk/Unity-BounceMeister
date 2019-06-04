@@ -1,9 +1,9 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/GateButton.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Room.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="299" Column="94" />
-      <File FileName="Assets/Scripts/Gameplay/CharSwapController.cs" Line="80" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/CharSwapController.cs" Line="16" Column="62" />
       <File FileName="Assets/Scripts/Gameplay/GameTimeController.cs" Line="69" Column="33" />
       <File FileName="Assets/Scripts/Managers/EventManager.cs" Line="60" Column="32" />
       <File FileName="Assets/Scripts/Gameplay/CharLineup.cs" Line="45" Column="17" />
@@ -11,7 +11,9 @@
       <File FileName="Assets/Scripts/Common/Controllers/InputController.cs" Line="220" Column="41" />
       <File FileName="Assets/Scripts/Gameplay/GameCameraController.cs" Line="156" Column="1" />
       <File FileName="Assets/Scripts/Gameplay/GameCameraScreenShake.cs" Line="15" Column="48" />
-      <File FileName="Assets/Scripts/Gameplay/Props/GateButton.cs" Line="54" Column="54" />
+      <File FileName="Assets/Scripts/Gameplay/Props/GateButton.cs" Line="34" Column="27" />
+      <File FileName="Assets/Scripts/Gameplay/RoomShutters.cs" Line="12" Column="32" />
+      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="8" Column="52" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -1,8 +1,8 @@
 roomProperties posGlobal:(56.0, 204.0);designerFlag:0;isClustStart:True
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-21.00, y:1.00, width:10.00, height:38.00)
-Ground myRect:(x:0.00, y:16.50, width:52.00, height:7.00)
-Ground myRect:(x:0.00, y:-16.00, width:52.00, height:8.00)
-Platform myRect:(x:4.98, y:0.00, width:5.00, height:1.00);travelMind:(-5,0,5,0, 2, 0)
+CameraBounds myRect:(x:-26.00, y:-19.00, width:31.00, height:38.00)
+Ground myRect:(x:-21.00, y:-8.50, width:10.00, height:19.00)
+Ground myRect:(x:-18.00, y:16.50, width:16.00, height:7.00)
+Ground myRect:(x:9.50, y:-16.00, width:33.00, height:8.00)
+Platform myRect:(x:-1.14, y:0.00, width:5.00, height:1.00);travelMind:(-5,0,5,0, 2, 0)
 PlayerStart pos:(-13.0, -11.0)
 
