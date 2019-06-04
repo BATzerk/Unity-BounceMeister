@@ -8,6 +8,7 @@ public class Turret : Prop {
     // Properties
     [SerializeField] private float interval = 1; // bullet interval in SECONDS.
     [SerializeField] private float speed = 0.05f; // bullet speed per FRAME.
+    [SerializeField] private float startOffset = 0f; // delay before first bullet.
     private float timeWhenShoot;
     private Vector3 bodyScaleNeutral;
 
@@ -29,7 +30,9 @@ public class Turret : Prop {
 
         this.interval = data.interval;
         this.speed = data.speed;
-        SetTimeWhenShoot(Time.time);// + interval);
+        this.startOffset = data.startOffset;
+        
+        SetTimeWhenShoot(Time.time + startOffset);
     }
     override protected void OnCreatedInEditor() {
         base.OnCreatedInEditor();
@@ -92,6 +95,7 @@ public class Turret : Prop {
             rotation = rotation,
             interval = interval,
             speed = speed,
+            startOffset = startOffset,
             travelMind = new TravelMindData(travelMind),
         };
     }

@@ -7,6 +7,7 @@ public class TurretBullet : MonoBehaviour {
     // Constants
     const float MaxLifetime = 20; // in SECONDS.
     // Properties
+    private bool isDead = false;
     private Vector2 vel;
     private float timeBorn; // in SECONDS.
     private Rect dieBounds; // we die if we EXIT these bounds.
@@ -36,6 +37,7 @@ public class TurretBullet : MonoBehaviour {
     //  FixedUpdate
     // ----------------------------------------------------------------
     private void FixedUpdate() {
+        if (isDead) { return; } // Safety check.
         ApplyVel();
         MaybeDie();
     }
@@ -54,7 +56,14 @@ public class TurretBullet : MonoBehaviour {
     //  Doers
     // ----------------------------------------------------------------
     private void Die() {
-        // TODO: A little particle effect.
+        if (isDead) { return; } // Safety check.
+        isDead = true;
+        // Add a particle burst!
+        GameObject burst = Instantiate(ResourcesHandler.Instance.TurretBulletBurst);
+        GameUtils.ParentAndReset(burst.gameObject, this.transform.parent);
+        burst.transform.localPosition = pos;
+        Destroy(burst, 3); // destroy it when it's done.
+        // Destroy meee.
         Destroy(this.gameObject);
     }
 

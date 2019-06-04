@@ -40,6 +40,8 @@ public class GameCameraScreenShake : MonoBehaviour {
         //posYVolVel = 0;
         rotVol = 0;
         rotVolVel = 0;
+        ShakePos = Vector2.zero;
+        ShakeRot = 0;
     }
     
     

@@ -161,9 +161,6 @@ abstract public class Player : PlatformCharacter {
 		camBoundsLocal.position -= new Vector2(boundsBloat,boundsBloat);
         
         GameManagers.Instance.DataManager.UnlockPlayerType(PlayerType()); // TEMP: Also unlock this PlayerType here (and only here).
-        
-        // Dispatch event!
-        GameManagers.Instance.EventManager.OnPlayerInit(this);
     }
 
  //   override protected void SetSize(Vector2 _size) {

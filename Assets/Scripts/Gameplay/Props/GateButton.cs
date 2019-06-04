@@ -31,6 +31,7 @@ public class GateButton : Prop {
 		sr_body.color = bodyColor;
         sr_aura.color = Color.Lerp(bodyColor, Color.white, 0.3f);
         SetIsPressed(MyChannel.IsUnlocked);
+        UpdateAuraAlpha();
 	}
 
 
@@ -50,6 +51,9 @@ public class GateButton : Prop {
 
 
     private void Update() {
+        UpdateAuraAlpha();
+    }
+    private void UpdateAuraAlpha() {
         float auraAlpha = isPressed ? 0.1f : MathUtils.SinRange(0.3f,0.5f, Time.time*4-(pos.x+pos.y)*0.2f);
         GameUtils.SetSpriteAlpha(sr_aura, auraAlpha);
     }

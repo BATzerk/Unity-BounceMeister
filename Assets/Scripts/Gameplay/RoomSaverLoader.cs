@@ -100,9 +100,13 @@ static public class RoomSaverLoader {
             else if (type == typeof(LiftData)) { AddPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
             else if (type == typeof(PlayerStartData)) { AddPropFieldsToFS(propData, "pos"); }
             else if (type == typeof(SnackData)) { AddPropFieldsToFS(propData, "pos", "playerType"); }
-            else if (type == typeof(TurretData)) { AddPropFieldsToFS(propData, "pos", "rotation", "interval", "speed"); }
             else if (type == typeof(VeilData)) { AddPropFieldsToFS(propData, "myRect"); }
             // Props with optional params
+            else if (type == typeof(TurretData)) {
+                TurretData d = propData as TurretData;
+                AddPropFieldsToFS(propData, "pos", "rotation", "interval", "speed");
+                if (d.startOffset > 0) { fs += ";startOffset:" + d.startOffset; }
+            }
             else if (type == typeof(SpikesData)) {
                 SpikesData d = propData as SpikesData;
                 AddPropFieldsToFS(propData, "myRect", "rotation");

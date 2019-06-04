@@ -43,6 +43,10 @@ public class EditModePropHelper : MonoBehaviour {
     //  Update
     // ----------------------------------------------------------------
     private void Update() {
+        //// Control + G = Add a Ground
+        //if (InputController.IsEditorKey_Control && 
+        
+        // Auto-rotate spikes
         bool doAutoRotateSpikes = !InputController.IsEditorKey_Control;
         if (doAutoRotateSpikes) { // DO auto-rotate updates!
             UpdateSpikesSelRef();

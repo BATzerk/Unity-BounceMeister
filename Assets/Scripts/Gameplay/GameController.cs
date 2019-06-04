@@ -4,33 +4,18 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
     // Components
+    [SerializeField] private CharSwapController charSwapController=null;
     [SerializeField] private GameTimeController gameTimeController=null;
     // References
     [SerializeField] private Transform tf_world=null;
-	public Player Player { get; private set; }
-	public Room CurrRoom { get; private set; }
+    public Player Player { get; private set; }
+    public Room CurrRoom { get; private set; }
 
     // Getters
     public GameTimeController GameTimeController { get { return gameTimeController; } }
-    private CharLineup charLineup { get { return dm.CharLineup; } }
 	private DataManager dm { get { return GameManagers.Instance.DataManager; } }
 	private EventManager eventManager { get { return GameManagers.Instance.EventManager; } }
-    private bool CanCyclePlayerType() {
-        if (!CurrRoom.Player.IsGrounded()) { return false; } // Not grounded? Can't cycle.
-        if (CurrRoom.MyClusterData!=null && CurrRoom.MyClusterData.IsCharTrial) { return false; } // Char Trial? No cycling.
-        return charLineup.CanCyclePlayerType(); // Ask CharLineup.
-    }
     
-    
-    private bool Temp_IsTrialEnd(Room _room) {
-        return _room.RoomKey.EndsWith("TrialEnd", System.StringComparison.Ordinal);
-    }
-    private PlayerTypes Temp_GetTrialEndPlayerType(Room _room) {
-        string rk = _room.RoomKey;
-        string typeStr = rk.Substring(0, rk.IndexOf("TrialEnd", System.StringComparison.Ordinal));
-        return PlayerTypeHelper.TypeFromString(typeStr);
-    }
-
 
 
 	// ----------------------------------------------------------------
@@ -112,8 +97,8 @@ public class GameController : MonoBehaviour {
 		Player.Initialize(CurrRoom, playerData);
         // Save lastPlayedType!
         PlayerTypeHelper.SaveLastPlayedType(Player.PlayerType());
-        // Tell CharLineup.
-        charLineup.OnSetCurrPlayerType(playerData.type);
+        // Dispatch event!
+        GameManagers.Instance.EventManager.OnSetPlayerType(Player);
 	}
     public void SetPlayerType(PlayerTypes _type) {
         // TEMP HACK remember Snacks we've got.
@@ -127,13 +112,6 @@ public class GameController : MonoBehaviour {
         // Put Snacks back on da Player
         Player.Temp_SetEdiblesHolding(edibles);
     }
-    private void MaybeCyclePlayerType() {
-        if (CanCyclePlayerType()) { // If we can...!
-            PlayerTypes nextType = charLineup.GetNextPlayerType();
-            SetPlayerType(nextType);
-        }
-    }
-
 
 	private void DestroyRoom() {
 		if (CurrRoom != null) { Destroy(CurrRoom.gameObject); }
@@ -212,10 +190,8 @@ public class GameController : MonoBehaviour {
         }
         // Otherwise...
         else {
-            // TEMP HACK: Finished Trial? Unlock this PlayerType!
-            if (Temp_IsTrialEnd(rd.MyRoom)) {
-                charLineup.AddPlayerType(Temp_GetTrialEndPlayerType(rd.MyRoom));
-            }
+            // TEMP HACK: Tell CharSwapController, in case it's a Trial end.
+            charSwapController.Temp_OnPlayerTouchRoomDoor(rd);
             GoToRoomDoorRoom(rd);
         }
     }
@@ -287,16 +263,16 @@ public class GameController : MonoBehaviour {
 
         // ALT + __ = Toggle/Switch Characters
 		if (isKey_alt) {
-            if (Input.GetKeyDown(KeyCode.C)) { Debug_TogPlayerInLineup(PlayerTypes.Clinga); }
-            else if (Input.GetKeyDown(KeyCode.D)) { Debug_TogPlayerInLineup(PlayerTypes.Dilata); }
-            else if (Input.GetKeyDown(KeyCode.F)) { Debug_TogPlayerInLineup(PlayerTypes.Flatline); }
-            else if (Input.GetKeyDown(KeyCode.I)) { Debug_TogPlayerInLineup(PlayerTypes.Flippa); }
-            else if (Input.GetKeyDown(KeyCode.J)) { Debug_TogPlayerInLineup(PlayerTypes.Jetta); }
-            else if (Input.GetKeyDown(KeyCode.U)) { Debug_TogPlayerInLineup(PlayerTypes.Jumpa); }
-            else if (Input.GetKeyDown(KeyCode.N)) { Debug_TogPlayerInLineup(PlayerTypes.Neutrala); }
-            else if (Input.GetKeyDown(KeyCode.P)) { Debug_TogPlayerInLineup(PlayerTypes.Plunga); }
-            else if (Input.GetKeyDown(KeyCode.S)) { Debug_TogPlayerInLineup(PlayerTypes.Slippa); }
-            else if (Input.GetKeyDown(KeyCode.W)) { Debug_TogPlayerInLineup(PlayerTypes.Warpa); }
+            if (Input.GetKeyDown(KeyCode.C)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Clinga); }
+            else if (Input.GetKeyDown(KeyCode.D)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Dilata); }
+            else if (Input.GetKeyDown(KeyCode.F)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Flatline); }
+            else if (Input.GetKeyDown(KeyCode.I)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Flippa); }
+            else if (Input.GetKeyDown(KeyCode.J)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Jetta); }
+            else if (Input.GetKeyDown(KeyCode.U)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Jumpa); }
+            else if (Input.GetKeyDown(KeyCode.N)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Neutrala); }
+            else if (Input.GetKeyDown(KeyCode.P)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Plunga); }
+            else if (Input.GetKeyDown(KeyCode.S)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Slippa); }
+            else if (Input.GetKeyDown(KeyCode.W)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Warpa); }
         }
         // SHIFT + C = Toggle IgnoreColorTheme.
         if (isKey_shift && Input.GetKeyDown(KeyCode.C)) {
@@ -311,7 +287,7 @@ public class GameController : MonoBehaviour {
             }
             // Cycle PlayerType!
             else if (InputController.Instance.IsCycleChar_Press) {
-                MaybeCyclePlayerType();
+                charSwapController.OnButton_CycleChar();
             }
 
             // Room-Jumping
@@ -320,7 +296,7 @@ public class GameController : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.Quote))        { Debug_JumpToRoomAtSide(Sides.B); return; }
             else if (Input.GetKeyDown(KeyCode.LeftBracket))  { Debug_JumpToRoomAtSide(Sides.L); return; }
             // Scene Changing
-            else if (Input.GetKeyDown(KeyCode.Return)) { SceneHelper.ReloadScene(); return; }
+            else if (Input.GetKeyDown(KeyCode.Return)) { StartGameAtRoom(CurrRoom.MyRoomData); return; }
             else if (Input.GetKeyDown(KeyCode.C)) { SceneHelper.OpenScene(SceneNames.ClustSelect); return; }
             else if (Input.GetKeyDown(KeyCode.M)) { SceneHelper.OpenScene(SceneNames.MapEditor); return; }
             else if (Input.GetKeyDown(KeyCode.J)) { SceneHelper.OpenScene(SceneNames.RoomJump); return; }
@@ -344,7 +320,7 @@ public class GameController : MonoBehaviour {
 	}
     private IEnumerator Coroutine_ReloadSceneDelayed() {
         yield return new WaitForSeconds(1f);//Realtime
-        SceneHelper.ReloadScene();
+        StartGameAtRoom(CurrRoom.MyRoomData);
     }
 
 
@@ -361,15 +337,6 @@ public class GameController : MonoBehaviour {
         }
     }
 #endif
-    private void Debug_TogPlayerInLineup(PlayerTypes pt) {
-        if (!charLineup.Lineup.Contains(pt)) {
-            SetPlayerType(pt);
-            charLineup.AddPlayerType(pt);
-        }
-        else {
-            charLineup.Debug_RemovePlayerType(pt);
-        }
-    }
     private void Debug_JumpToRoomAtSide(int side) {
         OnPlayerEscapeRoomBounds(side); // Pretend the player just exited in this direction.
         Player.SetPosLocal(CurrRoom.Debug_PlayerStartPosLocal()); // just put the player at the PlayerStart.

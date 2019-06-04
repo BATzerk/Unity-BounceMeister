@@ -62,6 +62,7 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject ToggleGround;
 	[SerializeField] public GameObject Turret;
 	[SerializeField] public GameObject TurretBullet;
+    [SerializeField] public GameObject TurretBulletBurst;
     [SerializeField] public GameObject Veil;
 
 

@@ -23,11 +23,11 @@ public class Snack : Edible {
     }
     private void Awake() {
         // Add event listeners!
-        GameManagers.Instance.EventManager.PlayerInitEvent += OnPlayerInit;
+        GameManagers.Instance.EventManager.SetPlayerType += OnSetPlayerType;
     }
     private void OnDestroy() {
         // Remove event listeners!
-        GameManagers.Instance.EventManager.PlayerInitEvent -= OnPlayerInit;
+        GameManagers.Instance.EventManager.SetPlayerType -= OnSetPlayerType;
     }
     public void Initialize(Room _myRoom, SnackData data, int myIndex) {
         base.BaseInitialize(_myRoom, data);
@@ -87,7 +87,7 @@ public class Snack : Edible {
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    private void OnPlayerInit(Player player) {
+    private void OnSetPlayerType(Player player) {
         UpdatePresence();
     }
     override public void GetEaten() {

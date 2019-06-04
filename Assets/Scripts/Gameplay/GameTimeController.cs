@@ -6,7 +6,9 @@ using UnityEngine;
  * I manage pausing, slow-mo, edit-mode-pausing, etc. */
 public class GameTimeController : MonoBehaviour {
     // Components
+    [SerializeField] private CharSwapController charSwapController=null;
     [SerializeField] private EditModeController editModeController=null;
+    [SerializeField] private GameController gameController=null;
     // Properties
     public bool IsPaused { get; private set; }
     public bool IsFastMo { get; private set; }
@@ -27,11 +29,13 @@ public class GameTimeController : MonoBehaviour {
         // Add event listeners!
         GameManagers.Instance.EventManager.StartRoomEvent += OnStartRoom;
         GameManagers.Instance.EventManager.SetIsEditModeEvent += OnSetIsEditMode;
+        GameManagers.Instance.EventManager.SetIsCharSwappingEvent += OnSetIsCharSwapping;
     }
     private void OnDestroy() {
         // Remove event listeners!
         GameManagers.Instance.EventManager.StartRoomEvent -= OnStartRoom;
         GameManagers.Instance.EventManager.SetIsEditModeEvent -= OnSetIsEditMode;
+        GameManagers.Instance.EventManager.SetIsCharSwappingEvent -= OnSetIsCharSwapping;
     }
 
 
@@ -43,6 +47,9 @@ public class GameTimeController : MonoBehaviour {
         UpdateTimeScale();
     }
     private void OnSetIsEditMode(bool isEditMode) {
+        UpdateTimeScale();
+    }
+    private void OnSetIsCharSwapping(bool isSwapping) {
         UpdateTimeScale();
     }
 
@@ -88,6 +95,7 @@ public class GameTimeController : MonoBehaviour {
     // ----------------------------------------------------------------
     private void UpdateTimeScale() {
         if (IsExecutingOneFUStep) { Time.timeScale = 1; }
+        else if (charSwapController.IsCharSwapping) { Time.timeScale = 0; }
         else if (IsPaused) { Time.timeScale = 0; }
         else if (editModeController.IsEditMode && GameProperties.DoPauseInEditMode) { Time.timeScale = 0; }
         else if (IsSlowMo) { Time.timeScale = 0.2f; }

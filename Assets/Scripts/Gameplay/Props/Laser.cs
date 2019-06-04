@@ -10,6 +10,7 @@ public class Laser : Prop, IOnOffable {
     [SerializeField] private LayerMask lm_beamStops=new LayerMask();
     [SerializeField] private SpriteRenderer sr_beam=null;
     [SerializeField] private SpriteRenderer sr_beamGlow=null;
+    [SerializeField] private ParticleSystem ps_beamEnd=null; // the grinding particles at the surface we're hitting.
     //[SerializeField] private Transform tf_sourceBox=null;
     // References
     private RaycastHit2D hit; // cached for optimization.
@@ -66,6 +67,7 @@ public class Laser : Prop, IOnOffable {
             LeanTween.alpha(sr_beam.gameObject, 0.02f, 0.1f).setEaseOutQuad(); // fade out quickly.
         }
         sr_beamGlow.enabled = isOn;
+        GameUtils.SetParticleSystemEmissionEnabled(ps_beamEnd, isOn);
     }
     override protected void OnCreatedInEditor() {
         base.OnCreatedInEditor();
@@ -109,6 +111,7 @@ public class Laser : Prop, IOnOffable {
         sr_beamGlow.transform.localPosition = beamRect.center;// + new Vector2(-1.5f, 0);
         //bc_beam.size = beamRect.size;
         //bc_beam.offset = beamRect.center;
+        ps_beamEnd.transform.localPosition = new Vector3(0, beamLength, 0);
     }
     
 

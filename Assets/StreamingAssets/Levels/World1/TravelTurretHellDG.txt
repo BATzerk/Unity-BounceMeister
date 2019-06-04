@@ -1,0 +1,11 @@
+roomProperties posGlobal:(286.0, 1510.0);designerFlag:0
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+DamageableGround myRect:(x:0.00, y:3.50, width:4.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
+DamageableGround myRect:(x:0.00, y:-4.50, width:4.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
+Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
+Ground myRect:(x:20.50, y:-3.00, width:11.00, height:22.00)
+Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
+Ground myRect:(x:0.00, y:17.00, width:52.00, height:6.00)
+Ground myRect:(x:-20.50, y:4.00, width:11.00, height:24.00)
+PlayerStart pos:(-16.0, -13.0)
+Turret pos:(12.4, 14.0);rotation:180;interval:0.25;speed:0.35;travelMind:(-14,14,14,14, 2.5, 0)

@@ -26,6 +26,7 @@ public class RoomTileContents : MonoBehaviour {
     // Getters (Private)
     private ResourcesHandler rh { get { return ResourcesHandler.Instance; } }
     private MapEditorSettings editorSettings { get { return myRoomTile.MapEditor.MySettings; } }
+    private float mapScale { get { return myRoomTile.MapEditor.MapScale; } }
 
 
     // ================================================================
@@ -117,14 +118,6 @@ public class RoomTileContents : MonoBehaviour {
 		return sr;
 	}
 
-    public void RefreshAllVisuals() {
-        designerFlag.gameObject.SetActive (editorSettings.DoShowDesignerFlags);
-		t_roomName.gameObject.SetActive (editorSettings.DoShowRoomNames);
-		go_props.SetActive (editorSettings.DoShowRoomProps);
-        RefreshColors();
-		SetMaskEnabled(editorSettings.DoMaskRoomContents);
-	}
-
 	//public void SetTextPosY(float yPos) {
 	//	t_roomName.transform.localPosition = new Vector3 (t_roomName.transform.localPosition.x, yPos, t_roomName.transform.localPosition.z);
 	//}
@@ -158,10 +151,9 @@ public class RoomTileContents : MonoBehaviour {
 	//public void Hide () {
 	//	this.gameObject.SetActive (false);
 	//}
-	public void MaybeInitContent(float mapScale) {
+	public void MaybeInitContent() {
 		if (!hasInitializedContent) {
 			InitializeContent();
-            OnMapScaleChanged(mapScale);
 		}
 	}
 
@@ -172,23 +164,23 @@ public class RoomTileContents : MonoBehaviour {
 			sr.maskInteraction = maskInteraction;
 		}
 	}
-
-
-	public void OnMapScaleChanged (float mapScale) {
-		t_roomName.fontSize = 40 + (int)(34f/mapScale);
-		// If our text is too small to read, don't even show it! (NOTE: Our text will be hardest to read when it's HUGEST, because our RoomTile will be so small on the screen.)
-		if (mapScale < 0.8f) {//roomNameText.fontSize > 800) {
-			t_roomName.gameObject.SetActive (false);
-		}
-		else {
-			t_roomName.gameObject.SetActive (editorSettings.DoShowRoomNames);
-		}
-	}
+    
+	public void OnMapScaleChanged () {
+        UpdateRoomNameText();
+    }
 	
 	public void ApplyPosAndSize (Rect rect) {
 		designerFlag.ApplyPosAndSize (rect); // Just pass this along to my designerFlag.
 	}
 
+
+    public void RefreshAllVisuals() {
+        designerFlag.gameObject.SetActive (editorSettings.DoShowDesignerFlags);
+        UpdateRoomNameText();
+        go_props.SetActive (editorSettings.DoShowRoomProps);
+        RefreshColors();
+        SetMaskEnabled(editorSettings.DoMaskRoomContents);
+    }
     public void RefreshColors() {
         if (!hasInitializedContent) { return; } // Haven't initted content? Do nothin'.
         // Grounds
@@ -212,6 +204,11 @@ public class RoomTileContents : MonoBehaviour {
         for (int i=0; i<srs_openings.Count; i++) {
             srs_openings[i].color = GetOpeningColor(myRD.Openings[i]);
         }
+    }
+    private void UpdateRoomNameText() {
+        t_roomName.fontSize = 40 + (int)(34f/mapScale);
+        bool doShowText = mapScale>0.8f && editorSettings.DoShowRoomNames; // If our text is too small to read, don't even show it! (NOTE: Our text will be hardest to read when it's HUGEST, because our RoomTile will be so small on the screen.)
+        t_roomName.gameObject.SetActive (doShowText);
     }
 
 

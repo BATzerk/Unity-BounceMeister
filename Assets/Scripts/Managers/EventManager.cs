@@ -22,6 +22,7 @@ public class EventManager {
     public event NoParamAction PlayerUseBatteryEvent;
     public event NoParamAction SnackCountGameChangedEvent;
     public event NoParamAction SwapPlayerTypeEvent;
+    public event BoolAction SetIsCharSwappingEvent;
     public event BoolAction SetIsEditModeEvent;
     public event BoolAction SetPausedEvent;
     public event CoinAction CoinCollectedEvent;
@@ -29,7 +30,7 @@ public class EventManager {
     public event IntAction PlayerEscapeRoomBoundsEvent;
     public event IntAction MapEditorSetCurrWorldEvent;
     public event PlayerAction PlayerDieEvent;
-    public event PlayerAction PlayerInitEvent;
+    public event PlayerAction SetPlayerType;
     public event PlayerAction PlayerJumpEvent;
     public event PlayerAction PlayerStartHoverEvent;
 //	public event PlayerAction PlayerSpendPlungeEvent;
@@ -56,7 +57,7 @@ public class EventManager {
     
     public void OnPlayerEscapeRoomBounds(int side) { if (PlayerEscapeRoomBoundsEvent!=null) { PlayerEscapeRoomBoundsEvent(side); } }
 	public void OnPlayerDie(Player player) { if (PlayerDieEvent!=null) { PlayerDieEvent(player); } }
-    public void OnPlayerInit(Player player) { if (PlayerInitEvent!=null) { PlayerInitEvent(player); } }
+    public void OnSetPlayerType(Player player) { if (SetPlayerType!=null) { SetPlayerType(player); } }
     public void OnPlayerJump(Player player) { if (PlayerJumpEvent!=null) { PlayerJumpEvent(player); } }
     public void OnPlayerUseBattery() { if (PlayerUseBatteryEvent!=null) { PlayerUseBatteryEvent(); } }
     public void OnPlayerStartHover(Player player) { if (PlayerStartHoverEvent!=null) { PlayerStartHoverEvent(player); } }
@@ -66,6 +67,7 @@ public class EventManager {
     public void OnPlayerTouchExitInfoSign(InfoSign infoSign) { if (PlayerTouchExitInfoSignEvent!=null) { PlayerTouchExitInfoSignEvent(infoSign); } }
 	public void OnPlayerRechargePlunge(Player player) { if (PlayerRechargePlungeEvent!=null) { PlayerRechargePlungeEvent(player); } }
 	public void OnPlayerWallKick(Player player) { if (PlayerWallKickEvent!=null) { PlayerWallKickEvent(player); } }
+    public void OnSetIsCharSwapping(bool isSwapping) { if (SetIsCharSwappingEvent!=null) { SetIsCharSwappingEvent(isSwapping); } }
     public void OnSwapPlayerType() { if (SwapPlayerTypeEvent!=null) { SwapPlayerTypeEvent(); } }
 
 

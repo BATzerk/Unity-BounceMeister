@@ -87,6 +87,7 @@ public class InputController : MonoBehaviour {
     //public bool IsLRelease { get; private set; }
     //public bool IsRRelease { get; private set; }
     public Vector2 LeftStick { get; private set; }
+    public Vector2 LeftStickRaw { get; private set; }
     //private Vector2 pLeftStick;
     //public static bool IsButtonDown_Down { get; private set; }
     //public static bool IsButtonDown_Held { get; private set; }
@@ -209,10 +210,14 @@ public class InputController : MonoBehaviour {
         LeftStick += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if (Mathf.Abs(LeftStick.x) < 0.1f) { LeftStick = new Vector2(0, LeftStick.y); } // TEST! Add dead zone.
         
+        LeftStickRaw = new Vector2(ad.LeftStickX, ad.LeftStickY);
+        LeftStickRaw += new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        
         // In editor? Disregard input if ALT or CONTROL keys are down!
         #if UNITY_EDITOR
         if (IsKey_alt || IsKey_control) {
             LeftStick = Vector2.zero;
+            LeftStickRaw = Vector2.zero;
         }
         #endif
         

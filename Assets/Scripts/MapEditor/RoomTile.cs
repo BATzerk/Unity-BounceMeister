@@ -119,7 +119,7 @@ public class RoomTile : MonoBehaviour {
 	}
 	public void Show() {
         this.gameObject.SetActive(true);
-        contents.MaybeInitContent(MapEditor.MapScale);
+        contents.MaybeInitContent();
 
 		RefreshAllVisuals ();
 	}
@@ -199,7 +199,7 @@ public class RoomTile : MonoBehaviour {
 	//  Events
 	// ================================================================
 	public void OnMapScaleChanged() {
-		contents.OnMapScaleChanged(MapEditor.MapScale);
+		contents.OnMapScaleChanged();
 	}
 	public void OnMouseEnterBodyCollider() {
 		IsMouseOverMe = true;

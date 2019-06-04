@@ -250,6 +250,7 @@ public class SpikesData : PropData {
 public class TurretData : PropData {
     public float interval;
     public float speed;
+    public float startOffset;
 }
 
 public class VeilData : PropData {
