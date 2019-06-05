@@ -1,11 +1,12 @@
-roomProperties posGlobal:(334.0, 1532.0);designerFlag:0
+roomProperties posGlobal:(446.0, 1574.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-DamageableGround myRect:(x:0.00, y:3.50, width:4.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
-DamageableGround myRect:(x:0.00, y:-4.50, width:4.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
-Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
-Ground myRect:(x:20.50, y:-3.00, width:11.00, height:22.00)
-Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
-Ground myRect:(x:0.00, y:17.00, width:52.00, height:6.00)
-Ground myRect:(x:-20.50, y:4.00, width:11.00, height:24.00)
-PlayerStart pos:(-16.0, -13.0)
-Turret pos:(12.4, 14.0);rotation:180;interval:0.25;speed:0.35;travelMind:(-14,14,14,14, 2.5, 0)
+DamageableGround myRect:(x:0.00, y:3.50, width:6.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
+DamageableGround myRect:(x:0.00, y:-4.50, width:6.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
+Ground myRect:(x:0.00, y:-16.50, width:52.00, height:7.00)
+Ground myRect:(x:20.50, y:-4.50, width:11.00, height:21.00)
+Ground myRect:(x:0.00, y:-16.50, width:52.00, height:7.00)
+Ground myRect:(x:0.00, y:17.50, width:52.00, height:5.00)
+Ground myRect:(x:-20.50, y:5.00, width:11.00, height:24.00)
+Ground myRect:(x:20.50, y:15.00, width:11.00, height:2.00)
+PlayerStart pos:(-16.0, -12.0)
+Turret pos:(2.0, 15.0);rotation:180;interval:0.25;speed:0.35;travelMind:(-14,15,14,15, 2.5, 0)

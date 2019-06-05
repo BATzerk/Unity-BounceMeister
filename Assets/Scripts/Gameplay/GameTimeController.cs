@@ -15,8 +15,10 @@ public class GameTimeController : MonoBehaviour {
     public bool IsSlowMo { get; private set; }
     public bool IsExecutingOneFUStep { get; private set; } // if TRUE, then at the end of FixedUpdate, we'll pause the game and this will be set to false.
     private float tsFromPlayer; // 1 by default. How much this Player affects TimeScale. (E.g. Flatline slows time when going fast.)
+    public static float RoomScale { get; private set; } // Additional timeScale applied to all Props (except Player).
     
     // Getters
+    public static float RoomDeltaTime { get { return Time.deltaTime * RoomScale; } }
     //private bool IsManuallyControllingTime() {
     //    return IsPaused || IsSlowMo || IsExecutingOneFUStep;
     //}
@@ -27,29 +29,34 @@ public class GameTimeController : MonoBehaviour {
     // ----------------------------------------------------------------
     private void Awake() {
         // Add event listeners!
-        GameManagers.Instance.EventManager.StartRoomEvent += OnStartRoom;
+        //GameManagers.Instance.EventManager.StartRoomEvent += OnStartRoom;
         GameManagers.Instance.EventManager.SetIsEditModeEvent += OnSetIsEditMode;
         GameManagers.Instance.EventManager.SetIsCharSwappingEvent += OnSetIsCharSwapping;
+        GameManagers.Instance.EventManager.SetPlayerType += OnSetPlayerType;
     }
     private void OnDestroy() {
         // Remove event listeners!
-        GameManagers.Instance.EventManager.StartRoomEvent -= OnStartRoom;
+        //GameManagers.Instance.EventManager.StartRoomEvent -= OnStartRoom;
         GameManagers.Instance.EventManager.SetIsEditModeEvent -= OnSetIsEditMode;
         GameManagers.Instance.EventManager.SetIsCharSwappingEvent -= OnSetIsCharSwapping;
+        GameManagers.Instance.EventManager.SetPlayerType -= OnSetPlayerType;
     }
 
 
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    private void OnStartRoom(Room room) {
-        tsFromPlayer = 1;
-        UpdateTimeScale();
-    }
+    //private void OnStartRoom(Room room) {
+    //}
     private void OnSetIsEditMode(bool isEditMode) {
         UpdateTimeScale();
     }
     private void OnSetIsCharSwapping(bool isSwapping) {
+        UpdateTimeScale();
+    }
+    private void OnSetPlayerType(Player player) {
+        RoomScale = 1;
+        tsFromPlayer = 1;
         UpdateTimeScale();
     }
 
@@ -124,6 +131,11 @@ public class GameTimeController : MonoBehaviour {
     public void OnDilataSetIsDilatingTime(bool val) {
         if (!val) { tsFromPlayer = 1; } // Not dilating? Reset tsFromPlayer.
         UpdateTimeScale();
+    }
+    public void OnNeutralaSetIsRoomFrozen(bool val) {
+        //tsFromPlayer = val ? 0.1f : 1f;
+        //UpdateTimeScale();
+        RoomScale = val ? 0 : 1;
     }
     //private void FixedUpdate() {
     //    // If we planned on executing a single FixedUpdate step, good, we've done it! Freeze time again.

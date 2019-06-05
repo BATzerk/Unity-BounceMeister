@@ -42,7 +42,7 @@ public class TurretBullet : MonoBehaviour {
         MaybeDie();
     }
     private void ApplyVel() {
-        pos += vel;
+        pos += vel * GameTimeController.RoomScale;
     }
     private void MaybeDie() {
         if (Time.time > timeBorn+MaxLifetime // outta time?

@@ -1,19 +1,17 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Room.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/DamageableGround.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="299" Column="94" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="296" Column="75" />
       <File FileName="Assets/Scripts/Gameplay/CharSwapController.cs" Line="16" Column="62" />
-      <File FileName="Assets/Scripts/Gameplay/GameTimeController.cs" Line="69" Column="33" />
-      <File FileName="Assets/Scripts/Managers/EventManager.cs" Line="60" Column="32" />
-      <File FileName="Assets/Scripts/Gameplay/CharLineup.cs" Line="45" Column="17" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="163" Column="133" />
-      <File FileName="Assets/Scripts/Common/Controllers/InputController.cs" Line="220" Column="41" />
-      <File FileName="Assets/Scripts/Gameplay/GameCameraController.cs" Line="156" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/GameCameraScreenShake.cs" Line="15" Column="48" />
-      <File FileName="Assets/Scripts/Gameplay/Props/GateButton.cs" Line="34" Column="27" />
-      <File FileName="Assets/Scripts/Gameplay/RoomShutters.cs" Line="12" Column="32" />
-      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="8" Column="52" />
+      <File FileName="Assets/Scripts/Gameplay/GameTimeController.cs" Line="58" Column="23" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Neutrala.cs" Line="46" Column="55" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PropTravelMind.cs" Line="49" Column="72" />
+      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PropOnOffer.cs" Line="69" Column="10" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Turret.cs" Line="71" Column="41" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Laser.cs" Line="98" Column="65" />
+      <File FileName="Assets/Scripts/Gameplay/Props/DamageableGround.cs" Line="12" Column="41" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

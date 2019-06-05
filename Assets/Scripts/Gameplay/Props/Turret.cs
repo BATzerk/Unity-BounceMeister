@@ -9,7 +9,7 @@ public class Turret : Prop {
     [SerializeField] private float interval = 1; // bullet interval in SECONDS.
     [SerializeField] private float speed = 0.05f; // bullet speed per FRAME.
     [SerializeField] private float startOffset = 0f; // delay before first bullet.
-    private float timeWhenShoot;
+    private float timeUntilShoot; // counts down to 0, in SECONDS.
     private Vector3 bodyScaleNeutral;
 
     // Getters
@@ -32,11 +32,11 @@ public class Turret : Prop {
         this.speed = data.speed;
         this.startOffset = data.startOffset;
         
-        SetTimeWhenShoot(Time.time + startOffset);
+        SetTimeUntilShoot(startOffset);
     }
     override protected void OnCreatedInEditor() {
         base.OnCreatedInEditor();
-        SetTimeWhenShoot(Time.time);// + interval);
+        SetTimeUntilShoot(0);// + interval);
     }
 
 
@@ -45,11 +45,12 @@ public class Turret : Prop {
     //  FixedUpdate
     // ----------------------------------------------------------------
     private void FixedUpdate() {
+        timeUntilShoot -= GameTimeController.RoomDeltaTime;
         MaybeShoot();
     }
 
     private void MaybeShoot() {
-        if (Time.time >= timeWhenShoot) {
+        if (timeUntilShoot <= 0) {
             Shoot();
         }
     }
@@ -58,8 +59,8 @@ public class Turret : Prop {
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
-    private void SetTimeWhenShoot(float _time) {
-        timeWhenShoot = _time;
+    private void SetTimeUntilShoot(float _time) {
+        timeUntilShoot = _time;
         // Prep pre-shoot tween!
         float delay = Mathf.Max(0, interval-0.2f);
         Invoke("PreShootTween", delay);
@@ -76,7 +77,7 @@ public class Turret : Prop {
         LeanTween.scale(sr_body.gameObject, bodyScaleNeutral, 0.4f).setEaseOutQuart();
 
         // Plan next shot!
-        SetTimeWhenShoot(timeWhenShoot + interval);
+        SetTimeUntilShoot(timeUntilShoot + interval);
     }
     private void PreShootTween() {
         const float dur = 0.15f;

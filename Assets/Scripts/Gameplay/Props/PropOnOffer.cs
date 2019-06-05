@@ -62,7 +62,7 @@ public class PropOnOffer : MonoBehaviour {
         // Safety check for edit-mode.
         if (myProp == null) { myProp = GetComponent<IOnOffable>(); }
         
-        timeUntilToggle -= Time.deltaTime;
+        timeUntilToggle -= GameTimeController.RoomDeltaTime;
         // ALMOST back ON?
         if (!myProp.IsOn() && timeUntilToggle < 0.25f) {
             myProp.UpdateAlmostOn(timeUntilToggle);

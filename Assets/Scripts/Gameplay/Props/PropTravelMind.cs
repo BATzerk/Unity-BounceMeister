@@ -60,7 +60,7 @@ public class PropTravelMind : MonoBehaviour {
         myProp.SetVel(Pos - prevPos);
     }
     private void ApplyPos() {
-        oscLoc += Time.deltaTime * Speed;
+        oscLoc += GameTimeController.RoomDeltaTime * Speed;
         float loc = MathUtils.Sin01(oscLoc);
         myProp.SetPos(Vector2.Lerp(PosA,PosB, loc));
     }

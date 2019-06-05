@@ -136,6 +136,7 @@ public class DamageableGround : BaseGround {
     private void CancelPlanTurnOn() {
         if (c_planTurnOn != null) { StopCoroutine(c_planTurnOn); }
     }
+    // TODO: Add GameTimeController.RoomScale!
     private IEnumerator Coroutine_PlanTurnOn() {
         float timeWhenReady = Time.time + regenTime;
         

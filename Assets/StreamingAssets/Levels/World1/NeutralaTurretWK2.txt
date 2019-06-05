@@ -1,4 +1,4 @@
-roomProperties posGlobal:(220.0, 1768.0);designerFlag:4
+roomProperties posGlobal:(974.0, 2010.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:32.00, height:38.00)
 Ground myRect:(x:-10.00, y:17.00, width:32.00, height:6.00)
 Ground myRect:(x:-0.50, y:-6.50, width:13.00, height:27.00)
@@ -7,4 +7,3 @@ Ground myRect:(x:-19.50, y:4.50, width:13.00, height:25.00)
 PlayerStart pos:(-10.0, -13.0)
 Turret pos:(-12.5, -14.5);rotation:0;interval:1;speed:0.25;startOffset:0.5
 Turret pos:(-7.5, -14.5);rotation:0;interval:1;speed:0.25
-
