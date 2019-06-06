@@ -71,10 +71,10 @@ public class PropTravelMind : MonoBehaviour {
     //  Editing
     // ----------------------------------------------------------------
     public void Debug_SetPosA() {
-        PosA = MathUtils.Round(myProp.GetPos());
+        PosA = MathUtils.HalfRound(myProp.GetPos());
     }
     public void Debug_SetPosB() {
-        PosB = MathUtils.Round(myProp.GetPos());
+        PosB = MathUtils.HalfRound(myProp.GetPos());
     }
     public void FlipHorz() {
         PosA = new Vector2(-PosA.x, PosA.y);

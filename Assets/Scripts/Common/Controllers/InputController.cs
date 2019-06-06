@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using InControl;
 
 
@@ -10,6 +11,17 @@ using UnityEditor;
 public static class EditorInputController {
     // Properties
     private static Prop propSel;
+    
+    // Getters
+    private static List<Prop> GetPropsSelected() {
+        List<Prop> list = new List<Prop>();
+        foreach (GameObject go in Selection.gameObjects) {
+            Prop prop = go.GetComponent<Prop>();
+            if (prop != null) { list.Add(prop); }
+        }
+        return list;
+    }
+
 
 
     static EditorInputController() {
@@ -25,12 +37,23 @@ public static class EditorInputController {
         int controlID = GUIUtility.GetControlID(FocusType.Passive);
 
         InputController.IsEditorKey_Control = Event.current.modifiers == EventModifiers.Control;
+        InputController.IsEditorKey_Shift = Event.current.modifiers == EventModifiers.Shift;
 
         propSel = Selection.activeGameObject==null ? null : Selection.activeGameObject.GetComponent<Prop>();
-
-        // CONTROL + ___....
-        if (InputController.IsEditorKey_Control) {
-            if (Event.current.GetTypeForControl(controlID) == EventType.KeyDown) {
+        
+        if (Event.current.GetTypeForControl(controlID) == EventType.KeyDown) {
+            // CONTROL + ___....
+            if (InputController.IsEditorKey_Control) {
+                // CONTROL + A = Set PropSelected TravelMind PosA!
+                if (Event.current.keyCode == KeyCode.A) {
+                    PropSelTravelMindSetPosA();
+                    Event.current.Use(); // Use the event here.
+                }
+                // CONTROL + B = Set PropSelected TravelMind PosB!
+                if (Event.current.keyCode == KeyCode.B) {
+                    PropSelTravelMindSetPosB();
+                    Event.current.Use(); // Use the event here.
+                }
                 // CONTROL + R = Selected Prop: Rotate!
                 if (Event.current.keyCode == KeyCode.R) {
                     PropSelRotateCW();
@@ -47,7 +70,37 @@ public static class EditorInputController {
                     Event.current.Use(); // Use the event here.
                 }
             }
+            // SHIFT + ...
+            if (InputController.IsEditorKey_Shift) {
+                // SHIFT + X = Flip Horizontal!
+                if (Event.current.keyCode == KeyCode.X) {
+                    FlipPropsSelHorz();
+                    Event.current.Use(); // Use the event here.
+                }
+                // SHIFT + Y = Flip Vertical!
+                else if (Event.current.keyCode == KeyCode.Y) {
+                    FlipPropsSelVert();
+                    Event.current.Use(); // Use the event here.
+                }
+                // SHIFT + [ARROW KEYS] = Move Props selected!
+                if (Event.current.keyCode == KeyCode.LeftArrow)  { MovePropsSel(Vector2Int.L); Event.current.Use(); }
+                else if (Event.current.keyCode == KeyCode.RightArrow) { MovePropsSel(Vector2Int.R); Event.current.Use(); }
+                else if (Event.current.keyCode == KeyCode.DownArrow)  { MovePropsSel(Vector2Int.B); Event.current.Use(); }
+                else if (Event.current.keyCode == KeyCode.UpArrow)    { MovePropsSel(Vector2Int.T); Event.current.Use(); }
+            }
         }
+    }
+    private static void FlipPropsSelHorz() {
+        foreach (Prop prop in GetPropsSelected()) { prop.FlipHorz(); }
+    }
+    private static void FlipPropsSelVert() {
+        foreach (Prop prop in GetPropsSelected()) { prop.FlipVert(); }
+    }
+    public static void MovePropsSel(Vector2Int dir) {
+        MovePropsSel(dir * GameProperties.UnitSize);
+    }
+    private static void MovePropsSel(Vector2 delta) {
+        foreach (Prop prop in GetPropsSelected()) { prop.Move(delta); }
     }
     
     private static void PropSelRotateCW() {
@@ -61,6 +114,14 @@ public static class EditorInputController {
     private static void PropSelToggleTravelMind() {
         if (propSel == null) { return; } // Safety check.
         propSel.ToggleHasTravelMind();
+    }
+    private static void PropSelTravelMindSetPosA() {
+        if (propSel == null || !propSel.HasTravelMind()) { return; } // Safety check.
+        propSel.GetComponent<PropTravelMind>().Debug_SetPosA();
+    }
+    private static void PropSelTravelMindSetPosB() {
+        if (propSel == null || !propSel.HasTravelMind()) { return; } // Safety check.
+        propSel.GetComponent<PropTravelMind>().Debug_SetPosB();
     }
 }
 #endif
@@ -135,6 +196,7 @@ public class InputController : MonoBehaviour {
     static public bool IsKeyDown_shift { get { return Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift); } }
 
     static public bool IsEditorKey_Control; // Assigned by EditorInputController.
+    static public bool IsEditorKey_Shift; // Assigned by EditorInputController.
 
 
 

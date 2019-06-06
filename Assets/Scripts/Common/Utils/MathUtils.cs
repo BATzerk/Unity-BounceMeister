@@ -48,6 +48,10 @@ public static class MathUtils {
     static public float RoundTo3DPs(float _value) {
         return Mathf.Round(_value * 1000f) / 1000f;
     }
+    /// Rounds to 0, 0.5, 1, 1.5, 2, 2.5, etc.
+    public static float HalfRound(float val) {
+        return Mathf.Round(val*2f) * 0.5f;
+    }
 
     /// Maps Cos from (-1 to 1) to (0 to 1); also offsets so 0 returns 1.
     static public float Cos01(float val) { return (1-Mathf.Sin(val)) * 0.5f; }
@@ -96,6 +100,9 @@ public static class MathUtils {
     }
     public static Vector2 Round(Vector2 v) {
         return new Vector2(Mathf.Round(v.x), Mathf.Round(v.y));
+    }
+    public static Vector2 HalfRound(Vector2 v) {
+        return new Vector2(HalfRound(v.x), HalfRound(v.y));
     }
 
     static public float GetAngleRad(Vector2 vector) { return Mathf.Atan2(-vector.x, vector.y); }

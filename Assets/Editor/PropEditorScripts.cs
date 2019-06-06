@@ -12,46 +12,46 @@ using UnityEditor;
 //    }
 //}
 
-[CustomEditor(typeof(Buzzsaw))]
-public class BuzzsawEditor : Editor {
-    // References
-    private Buzzsaw myProp;
-    public override void OnInspectorGUI() {
-        base.OnInspectorGUI();
-        if (myProp == null) { myProp = (Buzzsaw)target; }
-        if (!myProp.HasTravelMind()) {
-            if (GUILayout.Button("Add TravelMind")) {
-                myProp.AddTravelMind(TravelMindData.Default);
-            }
-        }
-        else {
-            if (GUILayout.Button("Remove TravelMind")) {
-                myProp.RemoveTravelMind();
-            }
-        }
-    }
-}
+//[CustomEditor(typeof(Buzzsaw))]
+//public class BuzzsawEditor : Editor {
+//    // References
+//    private Buzzsaw myProp;
+//    public override void OnInspectorGUI() {
+//        base.OnInspectorGUI();
+//        if (myProp == null) { myProp = (Buzzsaw)target; }
+//        if (!myProp.HasTravelMind()) {
+//            if (GUILayout.Button("Add TravelMind")) {
+//                myProp.AddDefaultTravelMind();
+//            }
+//        }
+//        else {
+//            if (GUILayout.Button("Remove TravelMind")) {
+//                myProp.RemoveTravelMind();
+//            }
+//        }
+//    }
+//}
 
 
-[CustomEditor(typeof(Ground))]
-public class GroundEditor : Editor {
-    // References
-    private Ground myProp;
-    public override void OnInspectorGUI() {
-        base.OnInspectorGUI();
-        if (myProp == null) { myProp = (Ground)target; }
-        if (!myProp.HasTravelMind()) {
-            if (GUILayout.Button("Add TravelMind")) {
-                myProp.AddTravelMind(TravelMindData.Default);
-            }
-        }
-        else {
-            if (GUILayout.Button("Remove TravelMind")) {
-                myProp.RemoveTravelMind();
-            }
-        }
-    }
-}
+//[CustomEditor(typeof(Ground))]
+//public class GroundEditor : Editor {
+//    // References
+//    private Ground myProp;
+//    public override void OnInspectorGUI() {
+//        base.OnInspectorGUI();
+//        if (myProp == null) { myProp = (Ground)target; }
+//        if (!myProp.HasTravelMind()) {
+//            if (GUILayout.Button("Add TravelMind")) {
+//                myProp.AddDefaultTravelMind();
+//            }
+//        }
+//        else {
+//            if (GUILayout.Button("Remove TravelMind")) {
+//                myProp.RemoveTravelMind();
+//            }
+//        }
+//    }
+//}
 
 
 [CustomEditor(typeof(Laser))]
@@ -77,22 +77,22 @@ public class LaserEditor : Editor {
 }
 
 
-[CustomEditor(typeof(PropTravelMind))]
-public class PropTravelMindEditor : Editor {
-    // References
-    private PropTravelMind myTravelMind;
+//[CustomEditor(typeof(PropTravelMind))]
+//public class PropTravelMindEditor : Editor {
+//    // References
+//    private PropTravelMind myTravelMind;
     
-    public override void OnInspectorGUI() {
-        base.OnInspectorGUI();
-        if (myTravelMind == null) { myTravelMind = (PropTravelMind)target; }
-        if (GUILayout.Button("Set Pos A")) {
-            myTravelMind.Debug_SetPosA();
-        }
-        if (GUILayout.Button("Set Pos B")) {
-            myTravelMind.Debug_SetPosB();
-        }
-    }
-}
+//    public override void OnInspectorGUI() {
+//        base.OnInspectorGUI();
+//        if (myTravelMind == null) { myTravelMind = (PropTravelMind)target; }
+//        if (GUILayout.Button("Set Pos A")) {
+//            myTravelMind.Debug_SetPosA();
+//        }
+//        if (GUILayout.Button("Set Pos B")) {
+//            myTravelMind.Debug_SetPosB();
+//        }
+//    }
+//}
 
 
 [CustomEditor(typeof(Spikes))]

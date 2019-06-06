@@ -1,4 +1,4 @@
-roomProperties posGlobal:(340.0, 778.0);designerFlag:4
+roomProperties posGlobal:(288.0, 778.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 DispGround myRect:(x:-6.50, y:-8.00, width:7.00, height:2.00);doRegen:True;dieFromPlayerLeave:True
 GateButton pos:(2.5, -8.0);channelID:0

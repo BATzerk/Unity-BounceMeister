@@ -10,7 +10,7 @@ public class PropData {
 }
 
 public struct TravelMindData {
-    static public readonly TravelMindData Default = new TravelMindData(new Vector2(-5,0), new Vector2(5,0), 2, 0);
+    //static public readonly TravelMindData Default = new TravelMindData(new Vector2(-5,0), new Vector2(5,0), 2, 0);
     public float locOffset;
     public float speed;
     public Vector2 posA;

@@ -54,25 +54,32 @@ public sealed class Ground : BaseGround, ITravelable {
 
 
     public override void Move(Vector2 delta) {
-        Rect pr = MyRectBL(); // prev MyRect (bottom-left aligned).
-        Rect nr = MyRectBL(); // new MyRect (bottom-left aligned).
-        nr.position += delta; // Move.
-        
-        // INCREASE size.
-        Rect camBounds = MyRoom.GetCameraBoundsLocal();
-        Rect bA = MathUtils.BloatRect(camBounds, -0.8f); // bloated inward
-        Rect bB = MathUtils.BloatRect(camBounds,  0.8f); // bloated outward
-        if (pr.xMin<=bA.xMin && nr.xMin>=bB.xMin) { nr.xMin = bB.xMin; }
-        if (pr.xMax>=bA.xMax && nr.xMax<=bB.xMax) { nr.xMax = bB.xMax; }
-        if (pr.yMin<=bA.yMin && nr.yMin>=bB.yMin) { nr.yMin = bB.yMin; }
-        if (pr.yMax>=bA.yMax && nr.yMax<=bB.yMax) { nr.yMax = bB.yMax; }
-        
-        // DECREASE size.
-        nr = TrimmedRectToRoomBounds(nr, MyRoom); // finally, cut off the sides that aren't in bounds!
-        
-        // Return!
-        nr.position = nr.center; // offset to CENTER aligned.
-        SetMyRect(nr);
+        // NO TravelMind? Trim/bloat me to fit within Room!
+        if (!HasTravelMind()) {
+            Rect pr = MyRectBL(); // prev MyRect (bottom-left aligned).
+            Rect nr = MyRectBL(); // new MyRect (bottom-left aligned).
+            nr.position += delta; // Move.
+            
+            // INCREASE size.
+            Rect camBounds = MyRoom.GetCameraBoundsLocal();
+            Rect bA = MathUtils.BloatRect(camBounds, -0.8f); // bloated inward
+            Rect bB = MathUtils.BloatRect(camBounds,  0.8f); // bloated outward
+            if (pr.xMin<=bA.xMin && nr.xMin>=bB.xMin) { nr.xMin = bB.xMin; }
+            if (pr.xMax>=bA.xMax && nr.xMax<=bB.xMax) { nr.xMax = bB.xMax; }
+            if (pr.yMin<=bA.yMin && nr.yMin>=bB.yMin) { nr.yMin = bB.yMin; }
+            if (pr.yMax>=bA.yMax && nr.yMax<=bB.yMax) { nr.yMax = bB.yMax; }
+            
+            // DECREASE size.
+            nr = TrimmedRectToRoomBounds(nr, MyRoom); // finally, cut off the sides that aren't in bounds!
+            
+            // Return!
+            nr.position = nr.center; // offset to CENTER aligned.
+            SetMyRect(nr);
+        }
+        // YES TravelMind! Just use base Move.
+        else {
+            base.Move(delta);
+        }
     }
 
 

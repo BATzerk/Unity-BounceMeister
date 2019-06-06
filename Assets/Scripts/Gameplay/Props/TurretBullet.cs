@@ -9,7 +9,7 @@ public class TurretBullet : MonoBehaviour {
     // Properties
     private bool isDead = false;
     private Vector2 vel;
-    private float timeBorn; // in SECONDS.
+    private float timeUntilDie; // in SECONDS.
     private Rect dieBounds; // we die if we EXIT these bounds.
 
     // Getters / Setters
@@ -27,8 +27,7 @@ public class TurretBullet : MonoBehaviour {
 
         this.pos = myTurret.PosLocal;
         this.vel = MathUtils.GetVectorFromDeg(myTurret.rotation) * myTurret.Speed;
-        //this.GetComponent<Rigidbody2D>().velocity = this.vel * 30;//QQQ hacks
-        timeBorn = Time.time;
+        timeUntilDie = MaxLifetime;
         // Make our dieBounds a bit outside of the room.
         dieBounds = MathUtils.BloatRect(myRoom.GetCameraBoundsLocal(), 6);
     }
@@ -39,13 +38,14 @@ public class TurretBullet : MonoBehaviour {
     private void FixedUpdate() {
         if (isDead) { return; } // Safety check.
         ApplyVel();
+        timeUntilDie -= GameTimeController.RoomDeltaTime;
         MaybeDie();
     }
     private void ApplyVel() {
         pos += vel * GameTimeController.RoomScale;
     }
     private void MaybeDie() {
-        if (Time.time > timeBorn+MaxLifetime // outta time?
+        if (timeUntilDie <= 0 // outta time?
         || !dieBounds.Contains(pos)) { // outta bounds?
             Die();
         }
@@ -71,11 +71,11 @@ public class TurretBullet : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Physics Events
     // ----------------------------------------------------------------
-    private void OnTriggerEnter2D(Collider2D collider) {
+    private void OnTriggerEnter2D(Collider2D coll) {
         // IGNORE all collsions for first moment after birth.
-        if (Time.time < timeBorn+0.1f) { return; }
+        if (timeUntilDie>MaxLifetime-0.1f) { return; }
         // Ground?? Die!
-        if (LayerUtils.IsLayer(collider.gameObject, Layers.Ground)) {
+        if (LayerUtils.IsLayer(coll.gameObject, Layers.Ground)) {
             Die();
         }
     }

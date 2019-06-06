@@ -60,12 +60,14 @@ public class Spikes : Collidable, IOnOffable {
 	// ----------------------------------------------------------------
 	public void Initialize(Room _myRoom, SpikesData data) {
 		base.BaseInitialize(_myRoom, data);
+        bodySprite.size = data.myRect.size;
+        bodySprite.color = Colors.Spikes(WorldIndex);
+        
+        if (!HasTravelMind()) {
+            this.transform.localPosition = data.myRect.position;
+        }
         
         if (data.onOffer.durOff > 0) { AddOnOffer(data.onOffer); }
-
-		bodySprite.size = data.myRect.size;
-		bodySprite.transform.localPosition = data.myRect.position;
-        bodySprite.color = Colors.Spikes(WorldIndex);
 	}
 
 

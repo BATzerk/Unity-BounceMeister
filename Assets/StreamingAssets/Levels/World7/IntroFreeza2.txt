@@ -1,0 +1,36 @@
+roomProperties posGlobal:(228.0, 850.0);designerFlag:3
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+Ground myRect:(x:-21.00, y:-15.50, width:10.00, height:9.00)
+Ground myRect:(x:9.50, y:13.00, width:15.00, height:2.00)
+Ground myRect:(x:-17.00, y:-10.00, width:2.00, height:4.00)
+Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
+Ground myRect:(x:21.50, y:-15.50, width:9.00, height:9.00)
+Ground myRect:(x:24.00, y:9.00, width:4.00, height:22.00)
+Ground myRect:(x:-23.00, y:8.50, width:6.00, height:23.00)
+Ground myRect:(x:18.00, y:-10.00, width:2.00, height:4.00)
+Ground myRect:(x:0.00, y:16.50, width:52.00, height:7.00)
+Ground myRect:(x:-8.50, y:13.00, width:15.00, height:2.00)
+Ground myRect:(x:0.50, y:-12.00, width:3.00, height:8.00)
+Platform myRect:(x:-8.50, y:-8.50, width:15.00, height:1.00)
+Platform myRect:(x:9.50, y:-8.50, width:15.00, height:1.00)
+PlayerStart pos:(-20.0, -10.0)
+Turret pos:(7.5, -14.5);rotation:0;interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(15.5, -14.5);rotation:0;interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(5.5, -14.5);rotation:0;interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(3.5, -14.5);rotation:0;interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(5.5, -14.5);rotation:0;interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(-8.5, -14.5);rotation:0;interval:0.4;speed:0.22
+Turret pos:(-12.5, -14.5);rotation:0;interval:0.4;speed:0.22
+Turret pos:(9.5, -14.5);rotation:0;interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(-2.5, -14.5);rotation:0;interval:0.4;speed:0.22
+Turret pos:(-2.5, -14.5);rotation:0;interval:0.4;speed:0.22
+Turret pos:(-10.5, -14.5);rotation:0;interval:0.4;speed:0.22
+Turret pos:(13.5, -14.5);rotation:0;interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(-6.5, -14.5);rotation:0;interval:0.4;speed:0.22
+Turret pos:(-12.5, -14.5);rotation:0;interval:0.4;speed:0.22
+Turret pos:(-6.5, -14.5);rotation:0;interval:0.4;speed:0.22
+Turret pos:(-4.5, -14.5);rotation:0;interval:0.4;speed:0.22
+Turret pos:(11.5, -14.5);rotation:0;interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(11.5, -14.5);rotation:0;interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(-14.5, -14.5);rotation:0;interval:0.4;speed:0.22
+Turret pos:(15.5, -14.5);rotation:0;interval:0.4;speed:0.22;startOffset:0.2

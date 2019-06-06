@@ -1,24 +1,24 @@
-roomProperties posGlobal:(424.0, 1064.0);designerFlag:3
+roomProperties posGlobal:(382.0, 790.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:16.00, y:-0.50, width:10.00, height:9.00)
-Ground myRect:(x:-23.50, y:-10.50, width:5.00, height:5.00);isPlayerRespawn:True
-Ground myRect:(x:-15.00, y:-2.00, width:8.00, height:6.00)
-Ground myRect:(x:0.00, y:-0.50, width:8.00, height:9.00)
-Ground myRect:(x:8.00, y:1.50, width:10.00, height:3.00)
-Ground myRect:(x:-18.50, y:2.00, width:15.00, height:6.00)
-Ground myRect:(x:0.00, y:11.50, width:52.00, height:17.00)
-Ground myRect:(x:24.00, y:-14.00, width:4.00, height:12.00);isPlayerRespawn:True
-Ground myRect:(x:18.50, y:0.00, width:15.00, height:8.00)
-Ground myRect:(x:0.00, y:-14.50, width:52.00, height:11.00);isPlayerRespawn:True
-PlayerStart pos:(0.5, -8.0)
-Snack pos:(7.5, -1.0);playerType:Any
-Snack pos:(-7.5, 1.5);playerType:Any
-Spikes myRect:(x:13.00, y:-5.50, width:4.00, height:1.00);rotation:180
-Spikes myRect:(x:-12.50, y:-5.50, width:3.00, height:1.00);rotation:180
-Spikes myRect:(x:0.00, y:-5.50, width:8.00, height:1.00);rotation:180
-Spikes myRect:(x:-4.50, y:-1.00, width:8.00, height:1.00);rotation:90
-Spikes myRect:(x:-10.50, y:-1.00, width:8.00, height:1.00);rotation:270
-Spikes myRect:(x:-7.50, y:2.50, width:9.00, height:1.00);rotation:180
-Spikes myRect:(x:7.50, y:-0.50, width:9.00, height:1.00);rotation:180
-Spikes myRect:(x:4.50, y:-2.00, width:6.00, height:1.00);rotation:270
-Spikes myRect:(x:10.50, y:-2.00, width:6.00, height:1.00);rotation:90
+Ground myRect:(x:0.00, y:12.00, width:52.00, height:16.00)
+Ground myRect:(x:-18.50, y:3.00, width:15.00, height:6.00)
+Ground myRect:(x:24.00, y:-13.50, width:4.00, height:13.00);isPlayerRespawn:True
+Ground myRect:(x:0.00, y:-14.00, width:52.00, height:12.00);isPlayerRespawn:True
+Ground myRect:(x:18.50, y:1.00, width:15.00, height:8.00)
+Ground myRect:(x:-23.50, y:-9.50, width:5.00, height:5.00);isPlayerRespawn:True
+Ground myRect:(x:16.00, y:0.50, width:10.00, height:9.00)
+Ground myRect:(x:-15.00, y:-1.00, width:8.00, height:6.00)
+Ground myRect:(x:8.00, y:2.50, width:10.00, height:3.00)
+Ground myRect:(x:0.00, y:0.50, width:8.00, height:9.00)
+PlayerStart pos:(0.0, -7.0)
+Snack pos:(-8.0, 3.0);playerType:Any
+Snack pos:(8.0, 0.0);playerType:Any
+Spikes myRect:(x:7.50, y:0.50, width:9.00, height:1.00);rotation:180
+Spikes myRect:(x:-7.50, y:3.50, width:9.00, height:1.00);rotation:180
+Spikes myRect:(x:10.50, y:-1.00, width:6.00, height:1.00);rotation:90
+Spikes myRect:(x:4.50, y:-1.00, width:6.00, height:1.00);rotation:270
+Spikes myRect:(x:-10.50, y:0.00, width:8.00, height:1.00);rotation:270
+Spikes myRect:(x:-12.50, y:-4.50, width:3.00, height:1.00);rotation:180
+Spikes myRect:(x:13.00, y:-4.50, width:4.00, height:1.00);rotation:180
+Spikes myRect:(x:-4.50, y:0.00, width:8.00, height:1.00);rotation:90
+Spikes myRect:(x:0.00, y:-4.50, width:8.00, height:1.00);rotation:180

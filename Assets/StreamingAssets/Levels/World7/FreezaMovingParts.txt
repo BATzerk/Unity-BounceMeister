@@ -1,0 +1,18 @@
+roomProperties posGlobal:(570.0, 932.0);designerFlag:3
+CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+Ground myRect:(x:-23.50, y:5.50, width:5.00, height:23.00)
+Ground myRect:(x:-13.00, y:0.47, width:6.00, height:12.00);travelMind:(-13,-6,-13,6, 10, 0);travelMind:(-13,-6,-13,6, 10, 0)
+Ground myRect:(x:9.00, y:-0.47, width:4.00, height:12.00);travelMind:(9,6,9,-6, 10, 0);travelMind:(9,6,9,-6, 10, 0)
+Ground myRect:(x:0.00, y:-16.50, width:52.00, height:7.00)
+Ground myRect:(x:24.00, y:5.50, width:4.00, height:23.00)
+Ground myRect:(x:-2.00, y:0.47, width:6.00, height:12.00);travelMind:(-2,-6,-2,6, 10, 0);travelMind:(-2,-6,-2,6, 10, 0)
+Ground myRect:(x:0.00, y:16.50, width:52.00, height:7.00)
+Ground myRect:(x:3.00, y:3.50, width:8.00, height:3.00)
+Ground myRect:(x:6.00, y:-4.00, width:2.00, height:18.00)
+PlayerStart pos:(-19.0, -12.0)
+Spikes myRect:(x:9.00, y:6.03, width:4.00, height:1.00);rotation:0;travelMind:(9,12.5,9,0.5, 10, 0)
+Spikes myRect:(x:-20.50, y:5.00, width:22.00, height:1.00);rotation:270
+Spikes myRect:(x:-2.00, y:-6.03, width:6.00, height:1.00);rotation:180;travelMind:(-2,-12.5,-2,-0.5, 10, 0)
+Spikes myRect:(x:-10.00, y:12.50, width:28.00, height:1.00);rotation:180
+Spikes myRect:(x:-13.00, y:-6.03, width:6.00, height:1.00);rotation:180;travelMind:(-13,-12.5,-13,-0.5, 10, 0)
+Turret pos:(17.5, 13.5);rotation:180;interval:1;speed:0.2

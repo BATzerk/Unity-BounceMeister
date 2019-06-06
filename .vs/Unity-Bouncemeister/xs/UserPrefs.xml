@@ -1,17 +1,17 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/UI/MiniMapRoomTile.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Editor/PropEditorScripts.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="264" Column="47" />
-      <File FileName="Assets/Scripts/Gameplay/GameTimeController.cs" Line="22" Column="35" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Freeza.cs" Line="20" Column="71" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/FreezaBody.cs" Line="11" Column="41" />
-      <File FileName="Assets/Scripts/Gameplay/UI/GameUI.cs" Line="78" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/Props/DispGround.cs" Line="76" Column="72" />
-      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="298" Column="60" />
-      <File FileName="Assets/Scripts/MapEditor/RoomTileContents.cs" Line="8" Column="72" />
-      <File FileName="Assets/Scripts/ClustSel/RoomViewContents.cs" Line="10" Column="70" />
-      <File FileName="Assets/Scripts/Gameplay/UI/MiniMapRoomTile.cs" Line="11" Column="43" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="375" Column="49" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PropTravelMind.cs" Line="73" Column="34" />
+      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="140" Column="49" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Spikes.cs" Line="46" Column="53" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Ground.cs" Line="75" Column="9" />
+      <File FileName="Assets/Scripts/Gameplay/Props/BaseGround.cs" Line="45" Column="6" />
+      <File FileName="Assets/Scripts/Gameplay/EditModeController.cs" Line="212" Column="83" />
+      <File FileName="Assets/Scripts/Common/Controllers/InputController.cs" Line="93" Column="59" />
+      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="327" Column="6" />
+      <File FileName="Assets/Editor/PropEditorScripts.cs" Line="79" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

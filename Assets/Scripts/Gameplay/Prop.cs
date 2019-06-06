@@ -37,6 +37,15 @@ abstract public class Prop : MonoBehaviour, ITravelable {
     // Travelable Stuff
     protected PropTravelMind travelMind { get; private set; } // added in Initialize.
     public bool HasTravelMind() { return travelMind != null; }
+    public void AddDefaultTravelMind() {
+        TravelMindData tmd = new TravelMindData {
+            posA = pos,
+            posB = pos,
+            speed = 2f,
+            locOffset = 0
+        };
+        AddTravelMind(tmd);
+    }
     public void AddTravelMind(TravelMindData data) {
         if (travelMind != null) { return; } // Safety check.
         travelMind = gameObject.AddComponent<PropTravelMind>();
@@ -51,7 +60,7 @@ abstract public class Prop : MonoBehaviour, ITravelable {
     }
     public void ToggleHasTravelMind() {
         if (HasTravelMind()) { RemoveTravelMind(); }
-        else { AddTravelMind(TravelMindData.Default); }
+        else { AddDefaultTravelMind(); }
     }
 
     public Vector2 GetPos() { return pos; }
