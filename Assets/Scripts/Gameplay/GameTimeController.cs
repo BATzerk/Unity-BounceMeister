@@ -18,6 +18,7 @@ public class GameTimeController : MonoBehaviour {
     public static float RoomScale { get; private set; } // Additional timeScale applied to all Props (except Player).
     
     // Getters
+    public static bool IsRoomFrozen { get { return RoomScale < 0.01f; } }
     public static float RoomDeltaTime { get { return Time.deltaTime * RoomScale; } }
     //private bool IsManuallyControllingTime() {
     //    return IsPaused || IsSlowMo || IsExecutingOneFUStep;

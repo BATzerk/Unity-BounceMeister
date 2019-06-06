@@ -75,8 +75,7 @@ public class GameUI : MonoBehaviour {
         go_infoSignText.SetActive(false);
     }
     private void OnSetRoomTimeScale(float roomTimeScale) {
-        bool isFrozen = roomTimeScale <= 0.01f;
-        go_roomFrozenOverlay.SetActive(isFrozen);
+        go_roomFrozenOverlay.SetActive(GameTimeController.IsRoomFrozen);
     }
 
 

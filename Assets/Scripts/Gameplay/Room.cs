@@ -11,6 +11,7 @@ public class Room : MonoBehaviour {
     private List<CharBarrel> charBarrels = new List<CharBarrel>();
     private List<Gem> gems = new List<Gem>();
     private List<Snack> snacks = new List<Snack>();
+    public float RoomTime { get; private set; } // Updated every FixedUpdate. In SECONDS, how much room-scaled time's elapsed.
     // References
     private GameController gameControllerRef;
     public RoomData MyRoomData { get; private set; }
@@ -289,6 +290,14 @@ public class Room : MonoBehaviour {
     public void OnPlayerExitMe() {
         // Tell all GateChannels!
         for (int i=0; i<gateChannels.Length; i++) { gateChannels[i].OnPlayerExitMyRoom(); }
+    }
+
+
+    // ----------------------------------------------------------------
+    //  FixedUpdate
+    // ----------------------------------------------------------------
+    private void FixedUpdate() {
+        RoomTime += GameTimeController.RoomDeltaTime;
     }
 
 

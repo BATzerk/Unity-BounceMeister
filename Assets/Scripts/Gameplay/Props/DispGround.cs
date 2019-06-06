@@ -80,6 +80,7 @@ public class DispGround : BaseGround {
 		}
 	}
 	override public void OnCharacterTouchMe(int charSide, PlatformCharacter character) {
+        if (GameTimeController.IsRoomFrozen) { return; } // Room's frozen? Ignore character touch!
         //if (charSide != Sides.B && MyRect.size.y==1) { return; } // Currently, we ONLY care about FEET if we're thin. Kinda a test.
         if (character is Player) {
             playerTouchingMe = character as Player;
@@ -100,6 +101,10 @@ public class DispGround : BaseGround {
         }
     }
 	override public void OnCharacterLeaveMe(int charSide, PlatformCharacter character) {
+        // Room's frozen, AND there was no Player registered touching me? Do nothin'!
+        if (GameTimeController.IsRoomFrozen && playerTouchingMe==null) {
+            return;
+        }
 		//if (charSide != Sides.B && MyRect.size.y==1) { return; } // Currently, we ONLY care about FEET if we're thin. Kinda a test.
 		if (dieFromPlayerLeave && character is Player) {
 			TurnOff();
@@ -142,17 +147,17 @@ public class DispGround : BaseGround {
     private void CancelPlanTurnOn() {
         if (c_planTurnOn != null) { StopCoroutine(c_planTurnOn); }
     }
-    // TODO: Add GameTimeController.RoomScale!
     private IEnumerator Coroutine_PlanTurnOn() {
-        float timeWhenReady = Time.time + regenTime;
+        float timeUntilReady = regenTime;
         
-        // Flash stroke for last moment before regen!
-        yield return new WaitForSeconds(regenTime-0.5f);
-        
-        while (Time.time < timeWhenReady) {
-            float timeLeft = timeWhenReady - Time.time;
-            float strokeAlpha = MathUtils.SinRange(1,0.35f, timeLeft*40);
-            GameUtils.SetSpriteAlpha(sr_stroke, strokeAlpha);
+        while (timeUntilReady > 0) {
+            // Countdown.
+            timeUntilReady -= GameTimeController.RoomDeltaTime;
+            // Flash stroke for last half-second!
+            if (timeUntilReady < 0.5f) {
+                float strokeAlpha = MathUtils.SinRange(1,0.35f, timeUntilReady*40);
+                GameUtils.SetSpriteAlpha(sr_stroke, strokeAlpha);
+            }
             yield return null;
         }
         
@@ -214,7 +219,7 @@ public class DispGround : BaseGround {
 	private void Update() {
 		if (isOn) {
             if (dieFromPlayerLeave && playerTouchingMe != null) {
-			    float alpha = MathUtils.SinRange(0.45f,0.8f, Time.time*10f);
+			    float alpha = MathUtils.SinRange(0.45f,0.8f, MyRoom.RoomTime*10f);
 			    GameUtils.SetSpriteAlpha (bodySprite, alpha);
 		    }
         }
