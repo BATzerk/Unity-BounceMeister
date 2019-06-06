@@ -1,17 +1,15 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/DamageableGround.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/UI/GameUI.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="296" Column="75" />
-      <File FileName="Assets/Scripts/Gameplay/CharSwapController.cs" Line="16" Column="62" />
-      <File FileName="Assets/Scripts/Gameplay/GameTimeController.cs" Line="58" Column="23" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Neutrala.cs" Line="46" Column="55" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PropTravelMind.cs" Line="49" Column="72" />
-      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PropOnOffer.cs" Line="69" Column="10" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Turret.cs" Line="71" Column="41" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Laser.cs" Line="98" Column="65" />
-      <File FileName="Assets/Scripts/Gameplay/Props/DamageableGround.cs" Line="12" Column="41" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="263" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/GameTimeController.cs" Line="71" Column="62" />
+      <File FileName="Assets/Scripts/Gameplay/Props/DamageableGround.cs" Line="126" Column="24" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Freeza.cs" Line="39" Column="22" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/FreezaBody.cs" Line="11" Column="41" />
+      <File FileName="Assets/Scripts/Gameplay/UI/GameUI.cs" Line="44" Column="52" />
+      <File FileName="Assets/Scripts/Gameplay/UI/MiniMap.cs" Line="16" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" Line="21" Column="85" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

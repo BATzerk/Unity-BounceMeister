@@ -55,7 +55,8 @@ public class GameTimeController : MonoBehaviour {
         UpdateTimeScale();
     }
     private void OnSetPlayerType(Player player) {
-        RoomScale = 1;
+        // Reset time values.
+        SetRoomScale(1);
         tsFromPlayer = 1;
         UpdateTimeScale();
     }
@@ -63,8 +64,12 @@ public class GameTimeController : MonoBehaviour {
 
 
     // ----------------------------------------------------------------
-    //  Doers (Public)
+    //  Doers
     // ----------------------------------------------------------------
+    private void SetRoomScale(float val) {
+        RoomScale = val;
+        GameManagers.Instance.EventManager.OnSetRoomTimeScale(RoomScale);
+    }
     private void SetIsPaused(bool val) {
         IsPaused = val;
         UpdateTimeScale();
@@ -132,10 +137,10 @@ public class GameTimeController : MonoBehaviour {
         if (!val) { tsFromPlayer = 1; } // Not dilating? Reset tsFromPlayer.
         UpdateTimeScale();
     }
-    public void OnNeutralaSetIsRoomFrozen(bool val) {
+    public void OnFreezaSetIsRoomFrozen(bool val) {
         //tsFromPlayer = val ? 0.1f : 1f;
         //UpdateTimeScale();
-        RoomScale = val ? 0 : 1;
+        SetRoomScale(val ? 0 : 1);
     }
     //private void FixedUpdate() {
     //    // If we planned on executing a single FixedUpdate step, good, we've done it! Freeze time again.

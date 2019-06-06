@@ -29,12 +29,14 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] private GameObject Dilata=null;
     [SerializeField] private GameObject Flatline=null;
     [SerializeField] private GameObject Flippa=null;
+    [SerializeField] private GameObject Freeza=null;
     [SerializeField] private GameObject Jetta=null;
     [SerializeField] private GameObject Jumpa=null;
     [SerializeField] private GameObject Limo=null;
     [SerializeField] private GameObject Neutrala=null;
     [SerializeField] private GameObject Plunga=null;
     [SerializeField] private GameObject Slippa=null;
+    [SerializeField] private GameObject Testa=null;
     [SerializeField] private GameObject Warpa=null;
 
     [SerializeField] public GameObject Battery;
@@ -73,12 +75,14 @@ public class ResourcesHandler : MonoBehaviour {
             case PlayerTypes.Dilata: return Dilata;
             case PlayerTypes.Flatline: return Flatline;
             case PlayerTypes.Flippa: return Flippa;
+            case PlayerTypes.Freeza: return Freeza;
             case PlayerTypes.Jetta: return Jetta;
             case PlayerTypes.Jumpa: return Jumpa;
             case PlayerTypes.Limo: return Limo;
             case PlayerTypes.Neutrala: return Neutrala;
             case PlayerTypes.Plunga: return Plunga;
             case PlayerTypes.Slippa: return Slippa;
+            case PlayerTypes.Testa: return Testa;
             case PlayerTypes.Warpa: return Warpa;
             default:
                 Debug.LogError("Whoa! Player type totally not recognized: " + type);

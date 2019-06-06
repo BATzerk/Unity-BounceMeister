@@ -267,11 +267,13 @@ public class GameController : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.D)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Dilata); }
             else if (Input.GetKeyDown(KeyCode.F)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Flatline); }
             else if (Input.GetKeyDown(KeyCode.I)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Flippa); }
+            else if (Input.GetKeyDown(KeyCode.R)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Freeza); }
             else if (Input.GetKeyDown(KeyCode.J)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Jetta); }
             else if (Input.GetKeyDown(KeyCode.U)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Jumpa); }
             else if (Input.GetKeyDown(KeyCode.N)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Neutrala); }
             else if (Input.GetKeyDown(KeyCode.P)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Plunga); }
             else if (Input.GetKeyDown(KeyCode.S)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Slippa); }
+            else if (Input.GetKeyDown(KeyCode.T)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Testa); }
             else if (Input.GetKeyDown(KeyCode.W)) { charSwapController.Debug_TogPlayerInLineup(PlayerTypes.Warpa); }
         }
         // SHIFT + C = Toggle IgnoreColorTheme.

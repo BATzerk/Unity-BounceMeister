@@ -7,7 +7,7 @@ abstract public class PlayerBody : MonoBehaviour {
     [SerializeField] private GameObject go_wallSliding=null;
     [SerializeField] private ParticleSystem ps_dieBurst=null;
     [SerializeField] private SpriteRenderer sr_body=null;
-    protected PlayerBodyEyes eyes=null;//[SerializeField] 
+    protected PlayerBodyEyes eyes=null;
 	// Properties
 	protected Color c_bodyNeutral = Color.magenta;
 	private Color bodyColor;
@@ -23,12 +23,14 @@ abstract public class PlayerBody : MonoBehaviour {
             case PlayerTypes.Dilata: return new ColorHSB(190/360f, 0.67f, 0.87f).ToColor();
             case PlayerTypes.Flatline: return new ColorHSB(160/360f, 0.67f, 0.87f).ToColor();
             case PlayerTypes.Flippa: return new ColorHSB(330/360f, 0.8f, 0.82f).ToColor();
+            case PlayerTypes.Freeza: return new ColorHSB(188/360f, 0.37f, 0.98f).ToColor();
             case PlayerTypes.Jetta: return new ColorHSB(290/360f, 0.7f, 0.7f).ToColor();
             case PlayerTypes.Jumpa: return new ColorHSB(100/360f, 0.6f, 0.7f).ToColor();
             case PlayerTypes.Limo: return new ColorHSB(140/360f, 0.05f, 0.5f).ToColor();
             case PlayerTypes.Neutrala: return new ColorHSB(100/360f, 0.1f, 0.6f).ToColor();
             case PlayerTypes.Plunga: return new Color255(25, 175, 181).ToColor();
             case PlayerTypes.Slippa: return new Color255(220, 160, 40).ToColor();
+            case PlayerTypes.Testa: return new ColorHSB(0.4f, 0.1f, 0.9f).ToColor();
             case PlayerTypes.Warpa: return new ColorHSB(250/360f, 0.5f, 0.9f).ToColor();
             default: Debug.LogWarning("PlayerBody color not defined: " + playerType + "."); return Color.magenta; // Oops.
         }
@@ -97,6 +99,7 @@ abstract public class PlayerBody : MonoBehaviour {
 		// Cheap way to get a particle burst: Just chuck my ParticleSystem onto my Player's parent transform the moment before we're destroyed!
 		ps_dieBurst.gameObject.SetActive(true);
 		ps_dieBurst.transform.SetParent(myBasePlayer.transform.parent);
+        GameUtils.SetParticleSystemStartColor(ps_dieBurst, bodyColor);
 		ps_dieBurst.Emit(40);
 //		print("Enabled? " + ps_dieBurst.inheritVelocity.enabled);
 		//// Give all the particles the velocity of my Player!

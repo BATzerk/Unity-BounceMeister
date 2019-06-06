@@ -26,6 +26,7 @@ public class EventManager {
     public event BoolAction SetIsEditModeEvent;
     public event BoolAction SetPausedEvent;
     public event CoinAction CoinCollectedEvent;
+    public event FloatAction SetRoomTimeScaleEvent;
     public event RoomAction StartRoomEvent;
     public event IntAction PlayerEscapeRoomBoundsEvent;
     public event IntAction MapEditorSetCurrWorldEvent;
@@ -58,6 +59,7 @@ public class EventManager {
     public void OnPlayerEscapeRoomBounds(int side) { if (PlayerEscapeRoomBoundsEvent!=null) { PlayerEscapeRoomBoundsEvent(side); } }
 	public void OnPlayerDie(Player player) { if (PlayerDieEvent!=null) { PlayerDieEvent(player); } }
     public void OnSetPlayerType(Player player) { if (SetPlayerType!=null) { SetPlayerType(player); } }
+    public void OnSetRoomTimeScale(float scale) { if (SetRoomTimeScaleEvent!=null) { SetRoomTimeScaleEvent(scale); } }
     public void OnPlayerJump(Player player) { if (PlayerJumpEvent!=null) { PlayerJumpEvent(player); } }
     public void OnPlayerUseBattery() { if (PlayerUseBatteryEvent!=null) { PlayerUseBatteryEvent(); } }
     public void OnPlayerStartHover(Player player) { if (PlayerStartHoverEvent!=null) { PlayerStartHoverEvent(player); } }

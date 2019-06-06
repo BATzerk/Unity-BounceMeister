@@ -215,7 +215,7 @@ public static class GameUtils {
         m = particleSystem.emission;
         m.enabled = isEnabled;
     }
-    public static void SetParticleSystemColor (ParticleSystem ps, Color _color) {
+    public static void SetParticleSystemStartColor (ParticleSystem ps, Color _color) {
         ParticleSystem.MainModule m = ps.main;
         m.startColor = _color;
     }

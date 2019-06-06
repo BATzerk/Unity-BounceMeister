@@ -13,7 +13,7 @@ public class MiniMap : MonoBehaviour {
     [SerializeField] private RectTransform rt_tiles=null;
     private Dictionary<string,MiniMapRoomTile> tiles; // roomKey is key.
     // Properties
-    private const float mapScale = 0.5f;//0.8f; // NOTE: Unity units to Screen units automatically makes rooms way smaller (1 Unity unit is 1 pixel).
+    private const float mapScale = 0.2f;//0.5f; // SMALLER is smaller tiles. // NOTE: Unity units to Screen units automatically makes rooms way smaller (1 Unity unit is 1 pixel).
     private Vector2 mapPosTarget;
     // References
     private Room currRoom;
