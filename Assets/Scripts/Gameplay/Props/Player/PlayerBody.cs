@@ -99,20 +99,21 @@ abstract public class PlayerBody : MonoBehaviour {
 		// Cheap way to get a particle burst: Just chuck my ParticleSystem onto my Player's parent transform the moment before we're destroyed!
 		ps_dieBurst.gameObject.SetActive(true);
 		ps_dieBurst.transform.SetParent(myBasePlayer.transform.parent);
-        GameUtils.SetParticleSystemStartColor(ps_dieBurst, bodyColor);
-		ps_dieBurst.Emit(40);
+        GameUtils.SetParticleSystemStartColor(ps_dieBurst, c_bodyNeutral);
+		ps_dieBurst.Emit(24);
 //		print("Enabled? " + ps_dieBurst.inheritVelocity.enabled);
-		//// Give all the particles the velocity of my Player!
-		//ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ps_dieBurst.particleCount];
-		//ps_dieBurst.GetParticles(particles);
-		//for (int i=0; i<particles.Length; i++) {
-		//	ParticleSystem.Particle particle = particles[i];
-		//	float velScale = Random.Range(6f, 12f);
-		//	particle.velocity += new Vector3(myPlayer.Vel.x, myPlayer.Vel.y, 0) * velScale;
-		//	particles[i] = particle;
-		//}
-		//// Set the array back to the particleSystem
-		//ps_dieBurst.SetParticles(particles, particles.Length);
+		// Give all the particles the velocity of my Player!
+		ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ps_dieBurst.particleCount];
+		ps_dieBurst.GetParticles(particles);
+		for (int i=0; i<particles.Length; i++) {
+			ParticleSystem.Particle particle = particles[i];
+			float velScale = Random.Range(-15f, 60f);
+			particle.velocity += new Vector3(myBasePlayer.vel.x, myBasePlayer.vel.y, 0) * velScale;
+            particle.velocity += new Vector3(Random.Range(-1,1), Random.Range(-1,1)) * 6f; // more randomness
+			particles[i] = particle;
+		}
+		// Set the array back to the particleSystem
+		ps_dieBurst.SetParticles(particles, particles.Length);
 	}
 
     public void OnStartWallSlide() {
