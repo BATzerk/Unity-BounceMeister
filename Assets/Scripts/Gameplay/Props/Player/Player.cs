@@ -599,8 +599,8 @@ abstract public class Player : PlatformCharacter {
         //if (!IsGrounded()) { return false; } // Not on ground? Can't hop.
         Collidable collOn = myWhiskers.TEMP_GetFloorCollidable();
         if (collOn!=null) {
-            DamageableGround dg = collOn as DamageableGround;
-            if (dg != null && dg.DieFromPlayerLeave) { return false; } // DamageableGround that'll disappear if we leave it? Don't hop!
+            DispGround dg = collOn as DispGround;
+            if (dg != null && dg.DieFromPlayerLeave) { return false; } // DispGround that'll disappear if we leave it? Don't hop!
         }
         return true; // Looks good!
     }

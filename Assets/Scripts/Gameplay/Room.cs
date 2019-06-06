@@ -104,9 +104,9 @@ public class Room : MonoBehaviour {
                 Crate newProp = Instantiate(rh.Crate).GetComponent<Crate>();
                 newProp.Initialize(this, propData as CrateData);
             }
-            else if (pt == typeof(DamageableGroundData)) {
-                DamageableGround newProp = Instantiate(rh.DamageableGround).GetComponent<DamageableGround>();
-                newProp.Initialize(this, propData as DamageableGroundData);
+            else if (pt == typeof(DispGroundData)) {
+                DispGround newProp = Instantiate(rh.DispGround).GetComponent<DispGround>();
+                newProp.Initialize(this, propData as DispGroundData);
             }
             else if (pt == typeof(EnemyData)) {
                 Enemy newProp = Instantiate(rh.Enemy).GetComponent<Enemy>();

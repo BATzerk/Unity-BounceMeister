@@ -50,12 +50,12 @@ public class RoomViewContents : MonoBehaviour {
                 Color color = new Color255(100,130,90).ToColor();//Ground.GetBodyColor(pd, myRD.WorldIndex);
                 AddImage("Ground", rh.s_ground, rt_props, pd.myRect.position, pd.myRect.size, color);
             }
-            // -- DamageableGrounds --
-            else if (propData.GetType() == typeof(DamageableGroundData)) {
-                DamageableGroundData pd = propData as DamageableGroundData;
-                Color color = DamageableGround.GetBodyColor(pd);
+            // -- DispGrounds --
+            else if (propData.GetType() == typeof(DispGroundData)) {
+                DispGroundData pd = propData as DispGroundData;
+                Color color = DispGround.GetBodyColor(pd);
                 color = new Color(color.r,color.g,color.b, color.a*0.6f); // alpha it out a bit, to taste.
-                AddImage("DamageableGround", rh.s_ground, rt_props, pd.myRect.position, pd.myRect.size, color);
+                AddImage("DispGround", rh.s_ground, rt_props, pd.myRect.position, pd.myRect.size, color);
             }
             // -- Batteries --
             else if (propData.GetType() == typeof(BatteryData)) {

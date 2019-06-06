@@ -34,7 +34,8 @@ public class JettaBody : PlayerBody {
     // ----------------------------------------------------------------
     private void SizeFillSprite(float percentFull) {
         float _height = percentFull * FillHeightFull;
-        GameUtils.SizeSpriteRenderer(sr_jetFill, FillWidth,_height);
+        sr_jetFill.size = new Vector2(FillWidth, _height);
+        //GameUtils.SizeSpriteRenderer(sr_jetFill, FillWidth,_height);
         sr_jetFill.transform.localPosition = new Vector3(0, (-FillHeightFull+_height)*0.5f);
     }
     

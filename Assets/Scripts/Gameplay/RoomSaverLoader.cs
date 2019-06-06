@@ -17,7 +17,7 @@ static public class RoomSaverLoader {
     const string CHAR_BARREL = "CharBarrel";
     const string CHAR_UNLOCK_ORB = "CharUnlockOrb";
 	const string CRATE = "Crate";
-	const string DAMAGEABLE_GROUND = "DamageableGround";
+	const string DISP_GROUND = "DispGround";
     const string ENEMY = "Enemy";
     const string GATE = "Gate";
 	const string GATE_BUTTON = "GateButton";
@@ -123,12 +123,12 @@ static public class RoomSaverLoader {
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
             }
-			else if (type == typeof(DamageableGroundData)) {
-				DamageableGroundData d = propData as DamageableGroundData;
+			else if (type == typeof(DispGroundData)) {
+				DispGroundData d = propData as DispGroundData;
 				AddPropFieldsToFS(propData, "myRect", "doRegen");
                 if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
                 if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-                if (d.regenTime!=DamageableGround.RegenTimeDefault) { fs += ";regenTime:" + d.regenTime; }
+                if (d.regenTime!=DispGround.RegenTimeDefault) { fs += ";regenTime:" + d.regenTime; }
                 if (d.dieFromBounce) { fs += ";dieFromBounce:" + d.dieFromBounce; }
                 if (d.dieFromPlayerLeave) { fs += ";dieFromPlayerLeave:" + d.dieFromPlayerLeave; }
                 if (d.dieFromVel) { fs += ";dieFromVel:" + d.dieFromVel; }
@@ -394,7 +394,7 @@ static public class RoomSaverLoader {
             case CHAR_BARREL: return new CharBarrelData();
             case CHAR_UNLOCK_ORB: return new CharUnlockOrbData();
             case CRATE: return new CrateData();
-            case DAMAGEABLE_GROUND: return new DamageableGroundData();
+            case DISP_GROUND: return new DispGroundData();
             case ENEMY: return new EnemyData();
             case GATE: return new GateData();
             case GATE_BUTTON: return new GateButtonData();

@@ -1,9 +1,9 @@
-roomProperties posGlobal:(694.0, 344.0);designerFlag:2
+﻿roomProperties posGlobal:(694.0, 344.0);designerFlag:2
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 Buzzsaw size:(3.0, 3.0);travelMind:(-22.0, 12.0,-22.0, -8.0, 0.91,0)
 Buzzsaw size:(3.0, 3.0);travelMind:(-14.0, -3.0,-2.0, -3.0,2,0)
 Buzzsaw size:(3.0, 3.0);travelMind:(-2.0, 3.0,-14.0, 3.0,2,0)
-DamageableGround myRect:(x:14.00, y:7.50, width:6.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
+DispGround myRect:(x:14.00, y:7.50, width:6.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
 Ground myRect:(x:15.00, y:-2.00, width:8.00, height:2.00)
 Ground myRect:(x:-12.50, y:14.50, width:23.00, height:3.00)
 Ground myRect:(x:8.50, y:-19.00, width:35.00, height:4.00);isPlayerRespawn:True

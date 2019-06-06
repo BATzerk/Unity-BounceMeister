@@ -1,9 +1,9 @@
 ﻿roomProperties posGlobal:(-244.0, 338.0);designerFlag:3
 CameraBounds myRect:(x:-25.00, y:-19.00, width:65.00, height:38.00)
-DamageableGround myRect:(x:9.00, y:-3.50, width:22.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False
-DamageableGround myRect:(x:27.00, y:-12.50, width:4.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False
-DamageableGround myRect:(x:33.50, y:5.50, width:1.00, height:11.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False
-DamageableGround myRect:(x:26.50, y:5.50, width:3.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False
+DispGround myRect:(x:9.00, y:-3.50, width:22.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False
+DispGround myRect:(x:27.00, y:-12.50, width:4.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False
+DispGround myRect:(x:33.50, y:5.50, width:1.00, height:11.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False
+DispGround myRect:(x:26.50, y:5.50, width:3.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False;doRegen:False
 Ground myRect:(x:35.00, y:-16.50, width:6.00, height:5.00)
 Ground myRect:(x:7.00, y:-18.50, width:66.00, height:3.00)
 Ground myRect:(x:21.00, y:16.50, width:4.00, height:7.00)

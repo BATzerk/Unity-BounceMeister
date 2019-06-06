@@ -1,6 +1,6 @@
-roomProperties posGlobal:(682.0, 412.0);designerFlag:4
+﻿roomProperties posGlobal:(682.0, 412.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-DamageableGround myRect:(x:4.50, y:-1.00, width:5.00, height:20.00);doRegen:True;mayPlayerEat:False;regenTime:1.7;dieFromPlayerLeave:True
+DispGround myRect:(x:4.50, y:-1.00, width:5.00, height:20.00);doRegen:True;mayPlayerEat:False;regenTime:1.7;dieFromPlayerLeave:True
 GateButton pos:(-14.0, 1.5);channelID:0
 Gate myRect:(x:11.00, y:-6.00, width:4.00, height:6.00);channelID:0
 Ground myRect:(x:17.00, y:4.00, width:18.00, height:14.00)

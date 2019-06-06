@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//[ExecuteInEditMode]
-public class DamageableGroundTiler : MonoBehaviour {
+public class DispGroundTiler : MonoBehaviour {
     // Components
-    [SerializeField] private DamageableGround myGround=null;
+    [SerializeField] private DispGround myGround=null;
 
     public void Initialize() {
         UpdateTiling();

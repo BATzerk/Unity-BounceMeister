@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageableGround : BaseGround {
+public class DispGround : BaseGround {
     // Constants
     public const float RegenTimeDefault = 2.2f;
     const float BreakVel = 0.6f; // how hard Player must hit me for me to break.
     // Components
     [SerializeField] public BoxCollider2D MyCollider=null;
     [SerializeField] private SpriteRenderer sr_stroke=null;
-    [SerializeField] private DamageableGroundTiler tiler=null; // this guy correctly updates my sprite and collider tilings!
+    [SerializeField] private DispGroundTiler tiler=null; // this guy correctly updates my sprite and collider tilings!
     // Properties
 	[SerializeField] private bool doRegen = true; // if TRUE, I'll come back after a moment!
     [SerializeField] private bool dieFromBounce = false;
@@ -28,7 +28,7 @@ public class DamageableGround : BaseGround {
     public bool DieFromPlayerLeave { get { return dieFromPlayerLeave; } }
     public SpriteRenderer BodySprite { get { return bodySprite; } }
     public SpriteRenderer sr_Stroke { get { return sr_stroke; } }
-    static public Color GetBodyColor(DamageableGroundData data) {
+    static public Color GetBodyColor(DispGroundData data) {
         if (data.dieFromBounce) { return ColorUtils.HexToColor("468EBA"); }
         else if (data.dieFromPlayerLeave) {
             if (data.doRegen) { return ColorUtils.HexToColor("8F6BA4"); }
@@ -42,7 +42,7 @@ public class DamageableGround : BaseGround {
     // ----------------------------------------------------------------
     //  Initialize
     // ----------------------------------------------------------------
-    public void Initialize(Room _myRoom, DamageableGroundData data) {
+    public void Initialize(Room _myRoom, DispGroundData data) {
 		base.BaseGroundInitialize(_myRoom, data);
 
 		doRegen = data.doRegen;
@@ -62,6 +62,12 @@ public class DamageableGround : BaseGround {
 
         // Start on.
         SetIsOn(true);
+    }
+    protected override void OnCreatedInEditor() {
+        base.OnCreatedInEditor();
+        // Do standard paperwork so I can look good right away.
+        DispGroundData data = ToData() as DispGroundData;
+        Initialize(MyRoom, data);
     }
 
 
@@ -219,7 +225,7 @@ public class DamageableGround : BaseGround {
 	//  Serializing
 	// ----------------------------------------------------------------
     override public PropData ToData() {
-        DamageableGroundData data = new DamageableGroundData {
+        DispGroundData data = new DispGroundData {
             myRect = MyRect(),
             mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,

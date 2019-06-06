@@ -1,4 +1,4 @@
-roomProperties posGlobal:(636.0, -274.0);designerFlag:3
+﻿roomProperties posGlobal:(636.0, -274.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 ToggleGround myRect:(x:16.00, y:-10.00, width:2.00, height:14.00);startsOn:False
 ToggleGround myRect:(x:-2.00, y:-16.00, width:4.00, height:2.00);startsOn:True
@@ -7,4 +7,4 @@ PlayerStart pos:(-11.9, -12.1)
 Ground myRect:(x:4.00, y:-19.00, width:26.00, height:2.00)
 Ground myRect:(x:-11.00, y:-17.00, width:8.00, height:6.00)
 Gem pos:(13.5, -7.5);type:1
-DamageableGround myRect:(x:9.00, y:-15.50, width:4.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
+DispGround myRect:(x:9.00, y:-15.50, width:4.00, height:1.00);doRegen:True;dieFromPlayerLeave:True

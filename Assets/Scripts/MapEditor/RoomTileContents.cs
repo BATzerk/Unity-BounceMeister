@@ -74,12 +74,12 @@ public class RoomTileContents : MonoBehaviour {
                 groundDatas.Add(pd); // also add it to my ref list!
 				srs_grounds.Add(AddSpriteRenderer("Ground", rh.s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, Color.white));//WHY POSITION? why not center?
 			}
-			// -- DamageableGrounds --
-			else if (propData.GetType() == typeof(DamageableGroundData)) {
-                DamageableGroundData pd = propData as DamageableGroundData;
-				Color color = DamageableGround.GetBodyColor(pd);
+			// -- DispGrounds --
+			else if (propData.GetType() == typeof(DispGroundData)) {
+                DispGroundData pd = propData as DispGroundData;
+				Color color = DispGround.GetBodyColor(pd);
                 color = new Color(color.r,color.g,color.b, color.a*0.6f); // alpha it out a bit, to taste.
-                AddSpriteRenderer("DamageableGround", rh.s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, color);
+                AddSpriteRenderer("DispGround", rh.s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, color);
 			}
             // -- Gems --
             else if (propData.GetType() == typeof(GemData)) {

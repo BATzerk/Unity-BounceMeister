@@ -186,12 +186,12 @@ public class ToggleGroundData : BaseGroundData {
     public bool togFromContact=false;
     public bool togFromAction=true;
 }
-public class DamageableGroundData : BaseGroundData {
+public class DispGroundData : BaseGroundData {
 	public bool doRegen;
 	public bool dieFromBounce;
 	public bool dieFromPlayerLeave;
     public bool dieFromVel;
-    public float regenTime = DamageableGround.RegenTimeDefault;
+    public float regenTime = DispGround.RegenTimeDefault;
 }
 //public class ConditionalGroundData : BaseGroundData {
 //	public bool isOffWhenPlungeSpent;

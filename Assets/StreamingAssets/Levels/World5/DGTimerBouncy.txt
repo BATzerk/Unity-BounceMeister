@@ -1,4 +1,4 @@
-roomProperties posGlobal:(276.0, 1084.0);designerFlag:4
+﻿roomProperties posGlobal:(276.0, 1084.0);designerFlag:4
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 PlayerStart pos:(-22.9, -10.9)
 Ground myRect:(x:0.00, y:-16.50, width:52.00, height:7.00)
@@ -16,7 +16,7 @@ Ground myRect:(x:-6.00, y:-6.50, width:8.00, height:1.00);isBouncy:True
 Spikes myRect:(x:17.00, y:12.50, width:6.00, height:1.00);rotation:180
 Ground myRect:(x:17.00, y:15.00, width:6.00, height:4.00)
 Ground myRect:(x:-21.00, y:7.00, width:10.00, height:18.00)
-DamageableGround myRect:(x:17.50, y:3.50, width:1.00, height:17.00);doRegen:True;dieFromPlayerLeave:True
+DispGround myRect:(x:17.50, y:3.50, width:1.00, height:17.00);doRegen:True;dieFromPlayerLeave:True
 Ground myRect:(x:13.50, y:3.50, width:1.00, height:7.00)
 Ground myRect:(x:15.00, y:-9.50, width:6.00, height:7.00)
 Spikes myRect:(x:11.50, y:-10.00, width:8.00, height:1.00);rotation:90
@@ -24,7 +24,7 @@ Spikes myRect:(x:14.50, y:3.50, width:7.00, height:1.00);rotation:270
 Spikes myRect:(x:12.50, y:3.50, width:7.00, height:1.00);rotation:90
 Ground myRect:(x:-10.00, y:6.50, width:2.00, height:1.00)
 Spikes myRect:(x:-15.50, y:7.00, width:18.00, height:1.00);rotation:270
-DamageableGround myRect:(x:-14.50, y:7.00, width:1.00, height:16.00);doRegen:True;dieFromPlayerLeave:True
+DispGround myRect:(x:-14.50, y:7.00, width:1.00, height:16.00);doRegen:True;dieFromPlayerLeave:True
 Ground myRect:(x:22.00, y:-9.50, width:8.00, height:9.00)
 Spikes myRect:(x:18.50, y:7.00, width:14.00, height:1.00);rotation:90
 Spikes myRect:(x:16.00, y:-5.50, width:8.00, height:1.00);rotation:0

@@ -1,9 +1,9 @@
-roomProperties posGlobal:(-242.0, 468.0);designerFlag:3
+﻿roomProperties posGlobal:(-242.0, 468.0);designerFlag:3
 CameraBounds myRect:(x:-28.00, y:-19.00, width:50.00, height:38.00)
-DamageableGround myRect:(x:291.00, y:174.50, width:4.00, height:1.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
-DamageableGround myRect:(x:292.00, y:163.50, width:6.00, height:1.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
-DamageableGround myRect:(x:-8.00, y:-4.50, width:6.00, height:1.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DamageableGround myRect:(x:-9.00, y:5.50, width:4.00, height:1.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
+DispGround myRect:(x:291.00, y:174.50, width:4.00, height:1.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
+DispGround myRect:(x:292.00, y:163.50, width:6.00, height:1.00);doRegen:True;mayPlayerEat:False;dieFromPlayerLeave:True
+DispGround myRect:(x:-8.00, y:-4.50, width:6.00, height:1.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
+DispGround myRect:(x:-9.00, y:5.50, width:4.00, height:1.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
 Ground myRect:(x:8.50, y:-18.50, width:29.00, height:3.00)
 Ground myRect:(x:16.50, y:9.50, width:15.00, height:7.00);isPlayerRespawn:True
 Ground myRect:(x:20.50, y:-3.00, width:5.00, height:28.00)
