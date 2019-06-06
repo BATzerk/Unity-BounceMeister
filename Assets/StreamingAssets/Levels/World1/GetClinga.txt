@@ -1,4 +1,4 @@
-roomProperties posGlobal:(52.0, 756.0);designerFlag:3
+roomProperties posGlobal:(88.0, 1058.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 CharUnlockOrb pos:(-2.5, -10.5);myCharName:Clinga
 Ground myRect:(x:-24.00, y:1.50, width:4.00, height:37.00)

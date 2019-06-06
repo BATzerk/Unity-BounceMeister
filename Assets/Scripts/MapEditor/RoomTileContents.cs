@@ -7,7 +7,7 @@ public class RoomTileContents : MonoBehaviour {
 	// Constants
     static private readonly Vector2 BatteryIconSize = new Vector2(2,2);
     static private readonly Vector2 GemIconSize = new Vector2(3,3);
-    static private readonly Vector2 SnackIconSize = new Vector2(5,5);
+    static private readonly Vector2 SnackIconSize = new Vector2(8,8);
 	// Components
 	[SerializeField] private GameObject go_openings=null; // room-openings sprites.
 	[SerializeField] private GameObject go_props=null;

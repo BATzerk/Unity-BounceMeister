@@ -1,4 +1,4 @@
-roomProperties posGlobal:(526.0, 592.0);designerFlag:3
+roomProperties posGlobal:(444.0, 796.0);designerFlag:3
 CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
 GateButton pos:(-3.5, -10.0);channelID:0
 GateButton pos:(7.5, -10.0);channelID:0

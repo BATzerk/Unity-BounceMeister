@@ -7,8 +7,8 @@ namespace ClustSelNamespace {
 public class RoomViewContents : MonoBehaviour {
     // Constants
     static private readonly Vector2 BatteryIconSize = new Vector2(5,5);
-    static private readonly Vector2 GemIconSize = new Vector2(5,5);
-    static private readonly Vector2 SnackIconSize = new Vector2(12,12);
+    static private readonly Vector2 GemIconSize = new Vector2(12,12);
+    static private readonly Vector2 SnackIconSize = new Vector2(16,16);
     // Components
     [SerializeField] private RectTransform rt_props=null;
     // References
