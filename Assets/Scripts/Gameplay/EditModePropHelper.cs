@@ -5,14 +5,17 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+[RequireComponent(typeof(GameController))]
 public class EditModePropHelper : MonoBehaviour {
 #if UNITY_EDITOR
     // Properties
-    private Vector3 spikesSelPos; // when this changes, we update spikesSel rotation!
+    private bool doAutoRotateSpikes; // updated every frame, based on keyboard input.
+    private Vector3 propSelPos; // so we know when it changes!
     // References
     private GameController gameController; // set in Awake.
     private List<GroundSideRect> groundSides;
     private Spikes spikesSel;
+    private Prop propSel;
     
     // Getters (Private)
     private Room currRoom { get { return gameController.CurrRoom; } }
@@ -43,52 +46,61 @@ public class EditModePropHelper : MonoBehaviour {
     //  Update
     // ----------------------------------------------------------------
     private void Update() {
+        doAutoRotateSpikes = !InputController.IsEditorKey_Control;
+        
+        UpdatePropSelRef();
+        CheckPropSelPosChanged();
+        
         //// Control + G = Add a Ground
         //if (InputController.IsEditorKey_Control && 
-        
-        // Auto-rotate spikes
-        bool doAutoRotateSpikes = !InputController.IsEditorKey_Control;
-        if (doAutoRotateSpikes) { // DO auto-rotate updates!
-            UpdateSpikesSelRef();
-            CheckSpikesSelPosChanged();
-        }
     }
-    private void UpdateSpikesSelRef() {
-        Spikes _spikes = null;
+    private void UpdatePropSelRef() {
+        Prop prop = null;
         if (Selection.activeGameObject != null) {
-            _spikes = Selection.activeGameObject.GetComponent<Spikes>();
+            prop = Selection.activeGameObject.GetComponent<Prop>();
         }
         // It's changed??
-        if (spikesSel != _spikes) {
-            if (_spikes == null) { NullifySpikesSel(); }
-            else { SetSpikesSel(_spikes); }
+        if (propSel != prop) {
+            if (prop == null) { NullifyPropSel(); }
+            else { SetPropSel(prop); }
         }
     }
-    private void CheckSpikesSelPosChanged() {
-        if (spikesSel!=null && spikesSel.transform.localPosition!=spikesSelPos) {
-            OnSpikesSelPosChanged();
+    private void CheckPropSelPosChanged() {
+        if (propSel!=null && propSel.transform.localPosition!=propSelPos) {
+            OnPropSelPosChanged();
         }
     }
 
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    private void OnSpikesSelPosChanged() {
-        spikesSelPos = spikesSel.transform.localPosition;
-        AutoRotateSpikesSel();
+    private void OnPropSelPosChanged() {
+        // TravelMind?
+        if (propSel.HasTravelMind()) {
+            propSel.Debug_ShiftPosesFromEditorMovement();
+        }
+        // Spikes?
+        if (doAutoRotateSpikes) {
+            AutoRotateSpikesSel();
+        }
+        propSelPos = propSel.transform.localPosition;
     }
     
 
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
-    private void NullifySpikesSel() {
+    private void NullifyPropSel() {
+        propSel = null;
         spikesSel = null;
     }
-    private void SetSpikesSel(Spikes _spikes) {
-        spikesSel = _spikes;
-        spikesSelPos = spikesSel.transform.localPosition; // also reset this, so we don't rotate until we move it.
-        RefreshGroundSides();
+    private void SetPropSel(Prop _prop) {
+        propSel = _prop;
+        spikesSel = propSel as Spikes;
+        propSelPos = propSel.transform.localPosition;
+        if (spikesSel != null) {
+            RefreshGroundSides();
+        }
     }
     private void RefreshGroundSides() {
         groundSides = new List<GroundSideRect>();

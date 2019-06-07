@@ -1,0 +1,15 @@
+Edit-mode Controls:
+
+Editor Window (with Prop Selected)
+CTRL + R = Rotate 90 degrees
+CTRL + T = Add/remove TravelMind
+CTRL + A = Set TravelMind PosA
+CTRL + B = Set TravelMind PosB
+
+Game Window
+CTRL + N = New Room
+CTRL + D = Duplicate curr Room
+CTRL + K = Open curr Room text file
+CTRL + SHIFT + X = Flip Horz
+CTRL + SHIFT + Y = Flip Vert
+CTRL + SHIFT + [arrow key] = Move all Props

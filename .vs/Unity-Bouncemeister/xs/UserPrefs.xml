@@ -1,17 +1,15 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Editor/PropEditorScripts.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Ground.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="375" Column="49" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PropTravelMind.cs" Line="73" Column="34" />
-      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="140" Column="49" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Spikes.cs" Line="46" Column="53" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="3" Column="19" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PropTravelMind.cs" Line="73" Column="5" />
+      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="66" Column="32" />
       <File FileName="Assets/Scripts/Gameplay/Props/Ground.cs" Line="75" Column="9" />
       <File FileName="Assets/Scripts/Gameplay/Props/BaseGround.cs" Line="45" Column="6" />
       <File FileName="Assets/Scripts/Gameplay/EditModeController.cs" Line="212" Column="83" />
-      <File FileName="Assets/Scripts/Common/Controllers/InputController.cs" Line="93" Column="59" />
-      <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="327" Column="6" />
-      <File FileName="Assets/Editor/PropEditorScripts.cs" Line="79" Column="1" />
+      <File FileName="Assets/Scripts/Gameplay/EditorInputController.cs" Line="66" Column="64" />
+      <File FileName="Assets/Scripts/Gameplay/EditModePropHelper.cs" Line="81" Column="46" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -9,22 +9,41 @@ public class PropTravelMind : MonoBehaviour {
     [SerializeField] public float Speed = 1;
     [SerializeField] public float LocOffset = 0;
     private float oscLoc;
+    private Vector2 myRoomPos; // global pos of my room. For Gizmos.
     // References
-    private ITravelable myProp; // assigned in Initialize.
+    private ITravelable myTravelable; // assigned in Initialize.
     
+    // Serializing
     public TravelMindData ToData() {
         return new TravelMindData(this);
     }
     
     // Getters
-    private Vector2 Pos { get { return myProp.GetPos(); } }
+    private Vector2 Pos { get { return myTravelable.GetPos(); } }
+    private Vector2 GetCurrPos() {
+        float loc = MathUtils.Sin01(oscLoc);
+        return Vector2.Lerp(PosA,PosB, loc);
+    }
     
-    
+    public void Debug_ShiftPosesFromEditorMovement() {
+        Vector2 delta = Pos - GetCurrPos(); // how far are we from where we're SUPPOSED to be?
+        PosA = MathUtils.HalfRound(PosA + delta);
+        PosB = MathUtils.HalfRound(PosB + delta);
+        ApplyPos();
+    }
+
+
     // ----------------------------------------------------------------
     //  Initialize
     // ----------------------------------------------------------------
-    public void Initialize(ITravelable myProp, TravelMindData data) {
-        this.myProp = myProp;
+    private void Awake() {
+        myTravelable = GetComponent<ITravelable>();
+        Prop myProp = GetComponent<Prop>();
+        if (myProp != null) {
+            myRoomPos = myProp.MyRoom.PosGlobal;
+        }
+    }
+    public void Initialize(TravelMindData data) {
         PosA = data.posA;
         PosB = data.posB;
         Speed = data.speed;
@@ -32,7 +51,7 @@ public class PropTravelMind : MonoBehaviour {
         
         oscLoc = LocOffset; // start with my desired offset!
         
-        ApplyPos();
+        StepPos();
         
         // Move this component just under my Script, for easiness.
         #if UNITY_EDITOR
@@ -50,19 +69,18 @@ public class PropTravelMind : MonoBehaviour {
     //  FixedUpdate
     // ----------------------------------------------------------------
     private void FixedUpdate() {
-        // Safety check for edit-mode.
-        if (myProp == null) { myProp = GetComponent<ITravelable>(); }
-        
         Vector2 prevPos = Pos;
 
+        StepPos();
         ApplyPos();
 
-        myProp.SetVel(Pos - prevPos);
+        myTravelable.SetVel(Pos - prevPos);
+    }
+    private void StepPos() {
+        oscLoc += GameTimeController.RoomDeltaTime * Speed;
     }
     private void ApplyPos() {
-        oscLoc += GameTimeController.RoomDeltaTime * Speed;
-        float loc = MathUtils.Sin01(oscLoc);
-        myProp.SetPos(Vector2.Lerp(PosA,PosB, loc));
+        myTravelable.SetPos(GetCurrPos());
     }
     
     
@@ -71,10 +89,10 @@ public class PropTravelMind : MonoBehaviour {
     //  Editing
     // ----------------------------------------------------------------
     public void Debug_SetPosA() {
-        PosA = MathUtils.HalfRound(myProp.GetPos());
+        PosA = MathUtils.HalfRound(myTravelable.GetPos());
     }
     public void Debug_SetPosB() {
-        PosB = MathUtils.HalfRound(myProp.GetPos());
+        PosB = MathUtils.HalfRound(myTravelable.GetPos());
     }
     public void FlipHorz() {
         PosA = new Vector2(-PosA.x, PosA.y);
@@ -88,6 +106,13 @@ public class PropTravelMind : MonoBehaviour {
         PosA += delta;
         PosB += delta;
     }
-    
-    
+
+    // ----------------------------------------------------------------
+    //  Gizmos
+    // ----------------------------------------------------------------
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.gray;
+        Gizmos.DrawLine(PosA+myRoomPos, PosB+myRoomPos);
+    }
+
 }

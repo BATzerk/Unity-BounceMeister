@@ -49,7 +49,7 @@ abstract public class Prop : MonoBehaviour, ITravelable {
     public void AddTravelMind(TravelMindData data) {
         if (travelMind != null) { return; } // Safety check.
         travelMind = gameObject.AddComponent<PropTravelMind>();
-        travelMind.Initialize(this, data);
+        travelMind.Initialize(data);
         DisableSnappingScript();
     }
     public void RemoveTravelMind() {
@@ -61,6 +61,9 @@ abstract public class Prop : MonoBehaviour, ITravelable {
     public void ToggleHasTravelMind() {
         if (HasTravelMind()) { RemoveTravelMind(); }
         else { AddDefaultTravelMind(); }
+    }
+    public void Debug_ShiftPosesFromEditorMovement() {
+        travelMind.Debug_ShiftPosesFromEditorMovement();
     }
 
     public Vector2 GetPos() { return pos; }
