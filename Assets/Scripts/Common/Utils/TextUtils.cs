@@ -132,15 +132,15 @@ public class TextUtils {
         int indexOfComma = str.IndexOf (',');
         string xString = str.Substring (0, indexOfComma);
         string yString = str.Substring (indexOfComma+2); // starting after ", ".
-        //      try { // test
-        float x = ParseFloat (xString);
-        float y = ParseFloat (yString);
-        return new Vector2 (x,y);
-        //      }
-        //      catch {
-        //          Debug.Log ("Error parsing Vector2 string. x: " + xString + ", y: " + yString);
-        //          return new Vector2 (0,0);
-        //      }
+        try { // TEST
+            float x = ParseFloat (xString);
+            float y = ParseFloat (yString);
+            return new Vector2 (x,y);
+        }
+        catch {
+            Debug.Log ("Error parsing Vector2 string. x: \"" + xString + "\", y: \"" + yString+"\"");
+            return Vector2Extensions.NaN;
+        }
     }
 //  // This function parses a string AS FORMATTED by Vector2's ToString() function.
 //  static public Vector2 GetVector2FromString (string str) {

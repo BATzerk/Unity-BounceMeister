@@ -13,13 +13,17 @@ public class Lift : Prop {
 
 	// Getters
 	private float angle { get { return transform.localEulerAngles.z * Mathf.Deg2Rad; } }
-	private Rect MyRect {
-		get {
-			Vector2 _pos = sr_body.transform.localPosition;
-			Vector2 size = sr_body.size;
-			return new Rect(_pos, size);
-		}
-	}
+    private Vector2 Size {
+        get { return sr_body.size; }
+        set { sr_body.size = value; }
+    }
+    //private Rect MyRect {
+    //    get {
+    //        Vector2 _pos = sr_body.transform.localPosition;
+    //        Vector2 size = sr_body.size;
+    //        return new Rect(_pos, size);
+    //    }
+    //}
 //	protected bool IsCharacter(Collision2D col) {
 //		return col.gameObject.GetComponent<PlatformCharacter>() != null;
 //	}
@@ -38,9 +42,7 @@ public class Lift : Prop {
 	public void Initialize(Room _myRoom, LiftData data) {
 		base.BaseInitialize(_myRoom, data);
         strength = data.strength;
-
-		sr_body.size = data.myRect.size;
-		sr_body.transform.localPosition = data.myRect.position;
+		Size = data.size;
 
         Force = new Vector2(-Mathf.Sin(angle), Mathf.Cos(angle)) * strength;
     }
@@ -112,7 +114,8 @@ public class Lift : Prop {
 	// ----------------------------------------------------------------
     override public PropData ToData() {
         return new LiftData {
-            myRect = MyRect,
+            pos = pos,
+            size = Size,
             rotation = rotation,
             strength = strength,
             travelMind = new TravelMindData(travelMind),

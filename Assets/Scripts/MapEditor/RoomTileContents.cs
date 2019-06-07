@@ -72,14 +72,14 @@ public class RoomTileContents : MonoBehaviour {
 			else if (propData.GetType() == typeof(GroundData)) {
 				GroundData pd = propData as GroundData;
                 groundDatas.Add(pd); // also add it to my ref list!
-				srs_grounds.Add(AddSpriteRenderer("Ground", rh.s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, Color.white));//WHY POSITION? why not center?
+				srs_grounds.Add(AddSpriteRenderer("Ground", rh.s_ground, go_props, pd.pos, pd.size, 1, Color.white));//WHY POSITION? why not center?
 			}
 			// -- DispGrounds --
 			else if (propData.GetType() == typeof(DispGroundData)) {
                 DispGroundData pd = propData as DispGroundData;
 				Color color = DispGround.GetBodyColor(pd);
                 color = new Color(color.r,color.g,color.b, color.a*0.6f); // alpha it out a bit, to taste.
-                AddSpriteRenderer("DispGround", rh.s_ground, go_props, pd.myRect.position, pd.myRect.size, 1, color);
+                AddSpriteRenderer("DispGround", rh.s_ground, go_props, pd.pos, pd.size, 1, color);
 			}
             // -- Gems --
             else if (propData.GetType() == typeof(GemData)) {
@@ -97,9 +97,9 @@ public class RoomTileContents : MonoBehaviour {
 			else if (propData.GetType() == typeof(SpikesData)) {
 				SpikesData spikesData = propData as SpikesData;
                 Color color = Colors.Spikes(myRD.WorldIndex);// new Color(0.7f,0.1f,0f, 0.6f);
-				SpriteRenderer newSprite = AddSpriteRenderer("Spikes", rh.s_spikes, go_props, spikesData.myRect.position, Vector2.one, 0, color);
+				SpriteRenderer newSprite = AddSpriteRenderer("Spikes", rh.s_spikes, go_props, spikesData.pos, Vector2.one, 0, color);
 				newSprite.drawMode = SpriteDrawMode.Tiled;
-				newSprite.size = spikesData.myRect.size;
+				newSprite.size = spikesData.size;
 				newSprite.transform.localEulerAngles = new Vector3(0, 0, spikesData.rotation);
 			}
 		}

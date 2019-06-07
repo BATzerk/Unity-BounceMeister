@@ -56,8 +56,8 @@ public sealed class Ground : BaseGround, ITravelable {
     public override void Move(Vector2 delta) {
         // NO TravelMind? Trim/bloat me to fit within Room!
         if (!HasTravelMind()) {
-            Rect pr = MyRectBL(); // prev MyRect (bottom-left aligned).
-            Rect nr = MyRectBL(); // new MyRect (bottom-left aligned).
+            Rect pr = GetMyRectBL(); // prev MyRect (bottom-left aligned).
+            Rect nr = GetMyRectBL(); // new MyRect (bottom-left aligned).
             nr.position += delta; // Move.
             
             // INCREASE size.
@@ -74,7 +74,9 @@ public sealed class Ground : BaseGround, ITravelable {
             
             // Return!
             nr.position = nr.center; // offset to CENTER aligned.
-            SetMyRect(nr);
+            SetSize(nr.size);
+            SetPos(nr.position);
+            //SetMyRect(nr);
         }
         // YES TravelMind! Just use base Move.
         else {
@@ -88,7 +90,8 @@ public sealed class Ground : BaseGround, ITravelable {
     // ----------------------------------------------------------------
     override public PropData ToData() {
         GroundData data = new GroundData {
-            myRect = MyRect(),
+            pos = pos,
+            size = Size(),
             mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
             isBouncy = isBouncy,

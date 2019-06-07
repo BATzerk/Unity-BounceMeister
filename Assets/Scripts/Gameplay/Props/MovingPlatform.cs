@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// NOTE: NOT used!
+/**
 public class MovingPlatform : MonoBehaviour {
     // Components
     [SerializeField] private Transform tf_a;
@@ -71,3 +71,4 @@ public class MovingPlatform : MonoBehaviour {
 	}
 
 }
+*/

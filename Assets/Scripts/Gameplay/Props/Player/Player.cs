@@ -514,7 +514,7 @@ abstract public class Player : PlatformCharacter {
     }
     /// Intelligently sets what GroundedRespawnPos SHOULD be based on our position relative to this Ground. I.e. not on its edge, or in the air.
     private void SetGroundedRespawnPos(BaseGround ground) {
-        Rect gr = ground.MyRect();
+        Rect gr = ground.GetMyRect();
         float marginX = 2f; // how much farther from the edge we wanna prevent spawning from.
         marginX = Mathf.Min(marginX, gr.width*0.5f); // limit marginX for small grounds/platforms.
         float posX = pos.x;

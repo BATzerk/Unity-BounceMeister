@@ -72,7 +72,8 @@ public sealed class ConditionalGround : BaseGround {
     // ----------------------------------------------------------------
     override public PropData ToData() { // NOTE: Just here to pacify errors. This class isn't used in the game yet.
         GroundData data = new GroundData {
-            myRect = MyRect(),
+            pos = pos,
+            size = Size(),
             travelMind = new TravelMindData(travelMind),
         };
         return data;

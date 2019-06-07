@@ -64,7 +64,8 @@ public class Gate : BaseGround {
 	// ----------------------------------------------------------------
     override public PropData ToData() {
         GateData data = new GateData {
-            myRect = MyRect(),
+            pos = pos,
+            size = Size(),
             mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
             channelID = channelID,

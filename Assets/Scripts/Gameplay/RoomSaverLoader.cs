@@ -84,101 +84,16 @@ static public class RoomSaverLoader {
 		// Room Properties
 		AddFSLine(GetRoomPropertiesLine(rd));
 
-		AddPropFieldsToFS(rd.cameraBoundsData, "myRect");
+        //fs += GetPropName(rd.cameraBoundsData) + " ";
+        //fs += GetPropPropertiesLine(rd.cameraBoundsData);
+        fs += "CameraBounds myRect:" + rd.cameraBoundsData.myRect;
         AddFSLineBreak();
 
 		foreach (PropData propData in rd.allPropDatas) {
-			Type type = propData.GetType();
-			if (type == typeof(BatteryData)) { AddPropFieldsToFS(propData, "pos"); }
-            else if (type == typeof(BuzzsawData)) { AddPropFieldsToFS(propData, "pos", "size"); }
-            else if (type == typeof(CharBarrelData)) { AddPropFieldsToFS(propData, "pos", "otherCharName"); }
-            else if (type == typeof(CharUnlockOrbData)) { AddPropFieldsToFS(propData, "pos", "myCharName"); }
-            else if (type == typeof(EnemyData)) { AddPropFieldsToFS(propData, "pos"); }
-            else if (type == typeof(GateButtonData)) { AddPropFieldsToFS(propData, "pos", "channelID"); }
-			else if (type == typeof(GemData)) { AddPropFieldsToFS(propData, "pos", "type"); }
-            else if (type == typeof(RoomDoorData)) { AddPropFieldsToFS(propData, "pos", "myID", "worldToIndex", "roomToKey", "doorToID"); }
-            else if (type == typeof(LiftData)) { AddPropFieldsToFS(propData, "myRect", "rotation", "strength"); }
-            else if (type == typeof(PlayerStartData)) { AddPropFieldsToFS(propData, "pos"); }
-            else if (type == typeof(SnackData)) { AddPropFieldsToFS(propData, "pos", "playerType"); }
-            else if (type == typeof(VeilData)) { AddPropFieldsToFS(propData, "myRect"); }
-            // Props with optional params
-            else if (type == typeof(TurretData)) {
-                TurretData d = propData as TurretData;
-                AddPropFieldsToFS(propData, "pos", "rotation", "interval", "speed");
-                if (d.startOffset > 0) { fs += ";startOffset:" + d.startOffset; }
-            }
-            else if (type == typeof(SpikesData)) {
-                SpikesData d = propData as SpikesData;
-                AddPropFieldsToFS(propData, "myRect", "rotation");
-                if (d.onOffer.IsUsed) { fs += ";onOffer:" + d.onOffer.ToString(); }
-            }
-            else if (type == typeof(LaserData)) {
-                LaserData d = propData as LaserData;
-                AddPropFieldsToFS(propData, "pos", "rotation");
-                if (d.onOffer.IsUsed) { fs += ";onOffer:" + d.onOffer.ToString(); }
-            }
-            else if (type == typeof(CrateData)) {
-                CrateData d = propData as CrateData;
-                AddPropFieldsToFS(propData, "myRect", "hitsUntilBreak", "numCoinsInMe");
-                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
-                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-            }
-			else if (type == typeof(DispGroundData)) {
-				DispGroundData d = propData as DispGroundData;
-				AddPropFieldsToFS(propData, "myRect", "doRegen");
-                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
-                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-                if (d.regenTime!=DispGround.RegenTimeDefault) { fs += ";regenTime:" + d.regenTime; }
-                if (d.dieFromBounce) { fs += ";dieFromBounce:" + d.dieFromBounce; }
-                if (d.dieFromPlayerLeave) { fs += ";dieFromPlayerLeave:" + d.dieFromPlayerLeave; }
-                if (d.dieFromVel) { fs += ";dieFromVel:" + d.dieFromVel; }
-			}
-			else if (type == typeof(GateData)) {
-				GateData d = propData as GateData;
-				AddPropFieldsToFS(propData, "myRect", "channelID");
-				if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
-                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-			}
-			else if (type == typeof(GroundData)) {
-				GroundData d = propData as GroundData;
-				AddPropFieldsToFS(propData, "myRect");
-                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
-                if (d.isBouncy) { fs += ";isBouncy:" + d.isBouncy; }
-                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-                if (!d.mayBounce) { fs += ";mayBounce:" + d.mayBounce; }
-                if (!d.doRechargePlayer) { fs += ";doRechargePlayer:" + d.doRechargePlayer; }
-                if (d.travelMind.IsUsed) { fs += ";travelMind:" + d.travelMind.ToString(); }
-			}
-            else if (type == typeof(InfoSignData)) {
-                InfoSignData d = propData as InfoSignData;
-                AddPropFieldsToFS(propData, "pos", "myText");
-                if (!Mathf.Approximately(d.rotation, 0)) { fs += ";rotation:" + Mathf.Round(d.rotation); }
-            }
-            else if (type == typeof(PlatformData)) {
-                PlatformData d = propData as PlatformData;
-                AddPropFieldsToFS(propData, "myRect");
-                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
-                if (!d.canDropThru) { fs += ";canDropThru:" + d.canDropThru; }
-                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-            }
-            else if (type == typeof(ProgressGateData)) {
-                ProgressGateData d = propData as ProgressGateData;
-                AddPropFieldsToFS(propData, "myRect", "numSnacksReq");
-                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
-                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-            }
-            else if (type == typeof(ToggleGroundData)) {
-                ToggleGroundData d = propData as ToggleGroundData;
-                AddPropFieldsToFS(propData, "myRect", "startsOn", "togFromContact", "togFromAction");
-                if (!d.mayPlayerEat) { fs += ";mayPlayerEat:" + d.mayPlayerEat; }
-                if (d.isPlayerRespawn) { fs += ";isPlayerRespawn:" + d.isPlayerRespawn; }
-            }
-            else {
-                Debug.LogWarning("Prop in Room not recognized for serialization: " + type);
-            }
-            // Things ALL Props can have...
-            if (propData.travelMind.IsUsed) { fs += ";travelMind:" + propData.travelMind.ToString(); }
-
+            propData.rotation = Mathf.Round(propData.rotation);// hacky? Round rotation so it's not like "90.000001".
+            
+            fs += GetPropName(propData) + " ";
+            fs += GetPropPropertiesLine(propData);
             AddFSLineBreak();
 		}
 
@@ -188,20 +103,6 @@ static public class RoomSaverLoader {
 		// Save it!
 		SaveRoomFileFromStringArray(worldIndex, roomKey, roomFileArray);
 
-//		// FINALLY, go ahead and update the RoomLinks and the SEPARATE _RoomLinks.txt file. :)
-//		for (int i=0; i<l.streets.Count; i++) {
-//			Street street = l.streets[i];
-//			if (street is SegueStreet) {
-//				SegueStreet segueStreet = (SegueStreet) street;
-//				Vector2 connectingPos = segueStreet.StartPos;
-//				int roomLinkID = segueStreet.RoomLinkID;
-//				RoomLinkData roomLinkData = l.WorldDataRef.GetRoomLinkDataConnectingRooms(l.RoomKey, segueStreet.OtherRoomKey, roomLinkID);
-//				roomLinkData.SetConnectingPos(l.RoomKey, connectingPos);
-//				//				l.WorldDataRef.UpdateRoomLinkInFile(l.RoomKey, segueStreet.RoomLinkRef, );
-//			}
-//		}
-//		l.WorldDataRef.ResaveRoomLinksFile();
-
 		// We're done saving! Now that we've got the updated saved text file, reload the corresponding RoomData.
 		rd.MyWorldData.ReloadRoomData(roomKey);
 
@@ -209,18 +110,98 @@ static public class RoomSaverLoader {
 //		GameManagers.Instance.DataManager.mostRecentlySavedRoom_worldIndex = WorldIndex;
 //		GameManagers.Instance.DataManager.mostRecentlySavedRoom_roomKey = roomKey;
 	}
+    
 
-	static private string GetPropName(PropData data) {
-		string dataName = data.GetType().ToString();
-		return dataName.Substring(0, dataName.Length-4); // cut out the "Data" part!
-	}
+    static private string GetPropName(PropData data) {
+        string dataName = data.GetType().ToString();
+        return dataName.Substring(0, dataName.Length-4); // cut out the "Data" part!
+    }
+    static private string GetPropPropertiesLine(PropData propData) {
+        List<string> propertyNames = GetPropPropertyNamesToSave(propData);
+        return GetPropFieldsAsString(propData, propertyNames);
+    }
+    
+    static private List<string> GetPropPropertyNamesToSave(PropData propData) {
+        List<string> ps = new List<string>(); // property names!
+        // YES travelMind?? Add that!
+        if (propData.travelMind.IsUsed) { ps.Add("travelMind"); }
+        // NO TravelMind?? Add pos!
+        else { ps.Add("pos"); }
+        if (!Mathf.Approximately(propData.rotation, 0)) { ps.Add("rotation"); }
+        // BaseGroundData?
+        if (propData is BaseGroundData) {
+            ps.Add("size");
+            BaseGroundData d = propData as BaseGroundData;
+            if (!d.mayPlayerEat) { ps.Add("mayPlayerEat"); }
+            if (d.isPlayerRespawn) { ps.Add("isPlayerRespawn"); }
+        }
+        
+        Type type = propData.GetType();
+        if (type == typeof(BatteryData)) { }
+        else if (type == typeof(BuzzsawData)) { ps.Add("size"); }
+        else if (type == typeof(CharBarrelData)) { ps.Add("otherCharName"); }
+        else if (type == typeof(CharUnlockOrbData)) { ps.Add("myCharName"); }
+        else if (type == typeof(CrateData)) { ps.Add("hitsUntilBreak"); ps.Add("numCoinsInMe"); }
+        else if (type == typeof(EnemyData)) { }
+        else if (type == typeof(GateData)) { ps.Add("channelID"); }
+        else if (type == typeof(GateButtonData)) { ps.Add("channelID"); }
+        else if (type == typeof(GemData)) { ps.Add("type"); }
+        else if (type == typeof(InfoSignData)) { ps.Add("myText"); }
+        else if (type == typeof(LiftData)) { ps.Add("size"); ps.Add("strength"); }
+        else if (type == typeof(PlayerStartData)) { }
+        else if (type == typeof(ProgressGateData)) { ps.Add("numSnacksReq"); }
+        else if (type == typeof(RoomDoorData)) { ps.Add("myID"); ps.Add("worldToIndex"); ps.Add("roomToKey"); ps.Add("doorToID"); }
+        else if (type == typeof(SnackData)) { ps.Add("playerType"); }
+        else if (type == typeof(VeilData)) { ps.Add("size"); }
+        // Props with optional params
+        else if (type == typeof(TurretData)) {
+            TurretData d = propData as TurretData;
+            ps.Add("interval");
+            ps.Add("speed");
+            if (d.startOffset > 0) { ps.Add("startOffset"); }
+        }
+        else if (type == typeof(SpikesData)) {
+            SpikesData d = propData as SpikesData;
+            ps.Add("size");
+            if (d.onOffer.IsUsed) { ps.Add("onOffer"); }
+        }
+        else if (type == typeof(LaserData)) {
+            LaserData d = propData as LaserData;
+            if (d.onOffer.IsUsed) { ps.Add("onOffer"); }
+        }
+        else if (type == typeof(DispGroundData)) {
+            DispGroundData d = propData as DispGroundData;
+            ps.Add("doRegen");
+            if (d.regenTime!=DispGround.RegenTimeDefault) { ps.Add("regenTime"); }
+            if (d.dieFromBounce) { ps.Add("dieFromBounce"); }
+            if (d.dieFromPlayerLeave) { ps.Add("dieFromPlayerLeave"); }
+            if (d.dieFromVel) { ps.Add("dieFromVel"); }
+        }
+        else if (type == typeof(GroundData)) {
+            GroundData d = propData as GroundData;
+            if (d.isBouncy) { ps.Add("isBouncy"); }
+            if (!d.mayBounce) { ps.Add("mayBounce"); }
+            if (!d.doRechargePlayer) { ps.Add("doRechargePlayer"); }
+        }
+        else if (type == typeof(PlatformData)) {
+            PlatformData d = propData as PlatformData;
+            if (!d.canDropThru) { ps.Add("canDropThru"); }
+        }
+        else if (type == typeof(ToggleGroundData)) {
+            ps.Add("startsOn");
+            ps.Add("togFromContact");
+            ps.Add("togFromAction");
+        }
+        else {
+            Debug.LogWarning("Prop in Room not recognized for serialization: " + type);
+        }
+        return ps;
+    }
 
-	/** Use this when we want to tack on optional params after, within the same line. */
-	static private void AddPropFieldsToFS(PropData data, params string[] fieldNames) {
-		// Create and add the line to fileString!
-		string propName = GetPropName(data);
-		AddFS (propName + " " + GetPropFieldsAsString(data, fieldNames));
-	}
+	///** Use this when we want to tack on optional params after, within the same line. */
+	//static private void AddPropFieldsToFS(PropData data, params string[] fieldNames) {
+	//	fs += GetPropFieldsAsString(data, fieldNames);
+	//}
 	///** Use this when this prop has no optional params. */
 	//static private void AddAllPropFieldsToFS(PropData data, params string[] fieldNames) {
 	//	// Create and add the line to fileString!
@@ -234,27 +215,41 @@ static public class RoomSaverLoader {
     //        AddFS(";startOffset:"+data.startOffset);
     //    }
     //}
-	static private string GetPropFieldsAsString(PropData data, params string[] fieldNames) {
-        //// Round rotation (so we don't get like "90.000001").
-        //data.rotation = MathUtils.RoundTo2DPs(data.rotation);
-		// Prepare the string to be added.
-		string returnString = "";
-		Type classType = data.GetType ();
-		for (int i=0; i<fieldNames.Length; i++) {
-			FieldInfo fieldInfo = GetFieldInfoFromClass (classType, fieldNames[i]);
-			// Don't proceed if this field doesn't exist.
-			if (fieldInfo == null) {
-				Debug.LogWarning("We're trying to save a prop with a field its class (or superclasses) doesn't have: " + classType + ", " + fieldNames[i]);
-				continue;
-			}
-			returnString += fieldNames[i] + ":"; // start it with, like, "startPos:"
-			returnString += GetFieldValueAsString(fieldInfo, data); // Add the actual value!
-			if (i<fieldNames.Length-1) { // If this is NOT the last value, add a semicolon to separate us from the next value!
-				returnString += ";";
-			}
-		}
-		return returnString;
-	}
+    /// Returns e.g. "pos:(0,10);size:(8,1);strength:4"
+    static private string GetPropFieldsAsString(PropData data, List<string> fieldNames) {
+        string str = "";
+        Type classType = data.GetType();
+        for (int i=0; i<fieldNames.Count; i++) {
+            FieldInfo fieldInfo = GetFieldInfoFromClass (classType, fieldNames[i]);
+            if (fieldInfo == null) { // Safety check.
+                Debug.LogWarning("We're trying to save a prop with a field its class (or superclasses) doesn't have: " + classType + ", " + fieldNames[i]);
+                continue;
+            }
+            str += fieldNames[i] + ":"; // start it with, like, "startPos:"
+            str += GetFieldValueAsString(fieldInfo, data); // Add the actual value!
+            if (i<fieldNames.Count-1) { str += ";"; } // Semicolon to separate each field.
+        }
+        return str;
+    }
+	//static private string GetPropFieldsAsString(PropData data, params string[] fieldNames) {
+	//	// Prepare the string to be added.
+	//	string returnString = "";
+	//	Type classType = data.GetType ();
+	//	for (int i=0; i<fieldNames.Length; i++) {
+	//		FieldInfo fieldInfo = GetFieldInfoFromClass (classType, fieldNames[i]);
+	//		// Don't proceed if this field doesn't exist.
+	//		if (fieldInfo == null) {
+	//			Debug.LogWarning("We're trying to save a prop with a field its class (or superclasses) doesn't have: " + classType + ", " + fieldNames[i]);
+	//			continue;
+	//		}
+	//		returnString += fieldNames[i] + ":"; // start it with, like, "startPos:"
+	//		returnString += GetFieldValueAsString(fieldInfo, data); // Add the actual value!
+	//		if (i<fieldNames.Length-1) { // If this is NOT the last value, add a semicolon to separate us from the next value!
+	//			returnString += ";";
+	//		}
+	//	}
+	//	return returnString;
+	//}
 	static private FieldInfo GetFieldInfoFromClass(Type classType, string fieldName) {
 		const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
 		FieldInfo fieldInfo = classType.GetField(fieldName, flags);

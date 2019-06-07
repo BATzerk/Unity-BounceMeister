@@ -74,6 +74,7 @@ public class TurretBullet : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D coll) {
         // IGNORE all collsions for first moment after birth.
         if (timeUntilDie>MaxLifetime-0.1f) { return; }
+        if (coll.isTrigger) { return; } // Ignore if THEY're a trigger too (i.e. DispGround and ToggleGround).
         // Ground?? Die!
         if (LayerUtils.IsLayer(coll.gameObject, Layers.Ground)) {
             Die();

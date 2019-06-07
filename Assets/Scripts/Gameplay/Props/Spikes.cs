@@ -9,13 +9,17 @@ public class Spikes : Collidable, IOnOffable {
     [SerializeField] private SpriteRenderer bodySprite=null;
 
 	// Getters
-	private Rect MyRect {
-		get {
-			Vector2 center = bodySprite.transform.localPosition;
-			Vector2 size = bodySprite.size;
-			return new Rect(center, size);
-		}
-	}
+	//private Rect MyRect {
+	//	get {
+	//		Vector2 center = bodySprite.transform.localPosition;
+	//		Vector2 size = bodySprite.size;
+	//		return new Rect(center, size);
+	//	}
+	//}
+    private Vector2 Size {
+        get { return bodySprite.size; }
+        set { bodySprite.size = value; }
+    }
     
     // OnOffer Stuff
     private bool isOn;
@@ -60,12 +64,8 @@ public class Spikes : Collidable, IOnOffable {
 	// ----------------------------------------------------------------
 	public void Initialize(Room _myRoom, SpikesData data) {
 		base.BaseInitialize(_myRoom, data);
-        bodySprite.size = data.myRect.size;
+        Size = data.size;
         bodySprite.color = Colors.Spikes(WorldIndex);
-        
-        if (!HasTravelMind()) {
-            this.transform.localPosition = data.myRect.position;
-        }
         
         if (data.onOffer.durOff > 0) { AddOnOffer(data.onOffer); }
 	}
@@ -97,7 +97,8 @@ public class Spikes : Collidable, IOnOffable {
 	// ----------------------------------------------------------------
     override public PropData ToData() {
         SpikesData data = new SpikesData {
-            myRect = MyRect,
+            pos = pos,
+            size = Size,
             rotation = rotation,
             onOffer = new OnOfferData(onOffer),
             travelMind = new TravelMindData(travelMind),

@@ -37,7 +37,7 @@ public class RoomViewContents : MonoBehaviour {
             if (propData.GetType() == typeof(SpikesData)) {
                 SpikesData spikesData = propData as SpikesData;
                 Color color = Colors.Spikes(myRD.WorldIndex);// new Color(0.7f,0.1f,0f, 0.6f);
-                Image newObj = AddImage("Spikes", rh.s_spikes, rt_props, spikesData.myRect.position, spikesData.myRect.size, color);
+                Image newObj = AddImage("Spikes", rh.s_spikes, rt_props, spikesData.pos, spikesData.size, color);
                 newObj.transform.localEulerAngles = new Vector3(0, 0, spikesData.rotation);
                 newObj.type = Image.Type.Tiled;
                 newObj.transform.localScale = Vector3.one / 100f; // kinda hacky-ish.
@@ -48,14 +48,14 @@ public class RoomViewContents : MonoBehaviour {
             else if (propData.GetType() == typeof(GroundData)) {
                 GroundData pd = propData as GroundData;
                 Color color = new Color255(100,130,90).ToColor();//Ground.GetBodyColor(pd, myRD.WorldIndex);
-                AddImage("Ground", rh.s_ground, rt_props, pd.myRect.position, pd.myRect.size, color);
+                AddImage("Ground", rh.s_ground, rt_props, pd.pos, pd.size, color);
             }
             // -- DispGrounds --
             else if (propData.GetType() == typeof(DispGroundData)) {
                 DispGroundData pd = propData as DispGroundData;
                 Color color = DispGround.GetBodyColor(pd);
                 color = new Color(color.r,color.g,color.b, color.a*0.6f); // alpha it out a bit, to taste.
-                AddImage("DispGround", rh.s_ground, rt_props, pd.myRect.position, pd.myRect.size, color);
+                AddImage("DispGround", rh.s_ground, rt_props, pd.pos, pd.size, color);
             }
             // -- Batteries --
             else if (propData.GetType() == typeof(BatteryData)) {

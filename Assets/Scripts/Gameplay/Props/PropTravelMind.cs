@@ -51,7 +51,7 @@ public class PropTravelMind : MonoBehaviour {
         
         oscLoc = LocOffset; // start with my desired offset!
         
-        StepPos();
+        ApplyPos();
         
         // Move this component just under my Script, for easiness.
         #if UNITY_EDITOR

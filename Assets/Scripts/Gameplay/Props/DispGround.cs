@@ -231,7 +231,8 @@ public class DispGround : BaseGround {
 	// ----------------------------------------------------------------
     override public PropData ToData() {
         DispGroundData data = new DispGroundData {
-            myRect = MyRect(),
+            pos = pos,
+            size = Size(),
             mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
             doRegen = doRegen,

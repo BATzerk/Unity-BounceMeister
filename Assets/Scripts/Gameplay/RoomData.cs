@@ -193,8 +193,8 @@ public class RoomData {
     
     private bool IsGround(Rect searchRect) {
         for (int i=0; i<groundDatas.Count; i++) {
-            // Use top-left aligned ground rect.
-            Rect groundRect = groundDatas[i].MyRectTLAligned();
+            Rect groundRect = new Rect(groundDatas[i].pos, groundDatas[i].size);
+            groundRect.position -= groundRect.size*0.5f; // Use top-left aligned ground rect.
             if (groundRect.Overlaps(searchRect)) { return true; }
         }
         return false;

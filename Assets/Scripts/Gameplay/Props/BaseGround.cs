@@ -17,51 +17,59 @@ abstract public class BaseGround : Collidable {
     public bool MayPlayerEatHere { get { return mayPlayerEat; } }
     public bool IsPlayerRespawn { get { return isPlayerRespawn; } }
     // Getters (Private)
-    public Rect MyRect() {
-		Vector2 center = bodySprite.transform.localPosition;
-		Vector2 size;
-		if (bodySprite.drawMode == SpriteDrawMode.Simple) { // Simple draw mode? Ok, use my SCALE.
-			size = bodySprite.transform.localScale;
-		}
-		else { // Tiled draw mode? Ok, use the SPRITE SIZE.
-			size = bodySprite.size;
-		}
-		return new Rect(center, size);
-	}
+    public Vector2 Size() {
+        if (bodySprite.drawMode == SpriteDrawMode.Simple) { // Simple draw mode? Ok, use my SCALE.
+            return bodySprite.transform.localScale;
+        }
+        else { // Tiled draw mode? Ok, use the SPRITE SIZE.
+            return bodySprite.size;
+        }
+    }
+    protected void SetSize(Vector2 _size) {
+        if (bodySprite.drawMode == SpriteDrawMode.Simple) { // Simple draw mode? Ok, use my SCALE.
+            bodySprite.transform.localScale = _size;
+        }
+        else { // Tiled draw mode? Ok, use the SPRITE SIZE.
+            bodySprite.size = _size;
+        }
+    }
+    
+    public Rect GetMyRect() { return new Rect(pos, Size()); }
     /// Returns bottom-left aligned Rect.
-    public Rect MyRectBL() {
-        Rect r = MyRect();
+    public Rect GetMyRectBL() {
+        Rect r = GetMyRect();
         r.center = r.position;
         return r;
     }
-    protected void SetMyRect(Rect r) {
-        if (bodySprite.drawMode == SpriteDrawMode.Simple) { // Simple draw mode? Ok, use my SCALE.
-            bodySprite.transform.localScale = r.size;
-        }
-        else { // Tiled draw mode? Ok, use the SPRITE SIZE.
-            bodySprite.size = r.size;
-        }
-        bodySprite.transform.localPosition = r.position;
-    }
+    //protected void SetMyRect(Rect r) {
+    //    bodySprite.transform.localPosition = r.position;
+    //}
 
 
 	// ----------------------------------------------------------------
 	//  Start
 	// ----------------------------------------------------------------
-	override protected void Start() {
-        base.Start();
-		// TEMP! For room transitioning.
-		if (bodySprite==null) {
-			bodySprite = GetComponent<SpriteRenderer>();
-		}
-	}
+	//override protected void Start() {
+ //       base.Start();
+	//	// TEMP! For room transitioning.
+	//	if (bodySprite==null) {
+	//		bodySprite = GetComponent<SpriteRenderer>();
+	//	}
+	//}
 	protected void BaseGroundInitialize(Room _myRoom, BaseGroundData data) {
+        // TEMP: For room file transitioning!! TODO: Remove this. Search and replace all files will work.
+        if (data.myRect != Rect.zero) {
+            data.pos = data.myRect.position;
+            data.size = data.myRect.size;
+        }
+        
+        
 		base.BaseInitialize(_myRoom, data);
 
 		mayPlayerEat = data.mayPlayerEat;
         isPlayerRespawn = data.isPlayerRespawn;
         
-        SetMyRect(data.myRect);
+        SetSize(data.size);
 	}
 
 

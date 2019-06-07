@@ -107,7 +107,7 @@ public class EditModePropHelper : MonoBehaviour {
         Ground[] grounds = currRoom.GetComponentsInChildren<Ground>();
         foreach (Ground g in grounds) {
             for (int side=0; side<4; side++) {
-                groundSides.Add(new GroundSideRect(side, g.MyRectBL()));
+                groundSides.Add(new GroundSideRect(side, g.GetMyRectBL()));
             }
         }
     }

@@ -104,7 +104,8 @@ public sealed class ToggleGround : BaseGround {
 	// ----------------------------------------------------------------
     override public PropData ToData() {
         ToggleGroundData data = new ToggleGroundData {
-            myRect = MyRect(),
+            pos = pos,
+            size = Size(),
             mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
             startsOn = startsOn,

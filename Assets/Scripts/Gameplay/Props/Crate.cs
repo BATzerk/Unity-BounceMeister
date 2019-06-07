@@ -78,7 +78,8 @@ public class Crate : BaseGround {
 	// ----------------------------------------------------------------
     override public PropData ToData() {
         CrateData data = new CrateData {
-            myRect = MyRect(),
+            pos = pos,
+            size = Size(),
             hitsUntilBreak = hitsUntilBreak,
             numCoinsInMe = numCoinsInMe,
             travelMind = new TravelMindData(travelMind),

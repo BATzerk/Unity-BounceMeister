@@ -138,7 +138,8 @@ public class ProgressGate : BaseGround {
     // ----------------------------------------------------------------
     override public PropData ToData() {
         ProgressGateData data = new ProgressGateData {
-            myRect = MyRect(),
+            pos = pos,
+            size = Size(),
             //numGemsReq = numGemsReq,
             numSnacksReq = numSnacksReq,
             travelMind = new TravelMindData(travelMind),

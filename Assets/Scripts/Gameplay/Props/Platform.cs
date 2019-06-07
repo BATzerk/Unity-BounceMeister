@@ -34,7 +34,8 @@ public class Platform : BaseGround {
     // ----------------------------------------------------------------
     override public PropData ToData() {
         PlatformData data = new PlatformData {
-            myRect = MyRect(),
+            pos = pos,
+            size = Size(),
             mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
             canDropThru = canDropThru,

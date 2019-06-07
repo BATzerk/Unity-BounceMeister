@@ -162,12 +162,13 @@ public class GemData : PropData {
 }
 
 public class BaseGroundData : PropData {
-	public Rect myRect;
+	public Rect myRect;// TODO: Remove this!!
+    public Vector2 size;
 	public bool mayPlayerEat=true;
     public bool isPlayerRespawn=false;
-    public Rect MyRectTLAligned() {
-        return new Rect(myRect.position-myRect.size*0.5f, myRect.size);
-    }
+    //public Rect MyRectTLAligned() {
+    //    return new Rect(myRect.position-myRect.size*0.5f, myRect.size);
+    //}
 }
 public class CrateData : BaseGroundData {
 	public int hitsUntilBreak;
@@ -212,13 +213,12 @@ public class RoomDoorData : PropData {
 }
 
 public class LaserData : PropData {
-    //public Rect myRect=new Rect();
     public OnOfferData onOffer;
 }
 
 public class LiftData : PropData {
     public float strength;
-    public Rect myRect=new Rect();
+    public Vector2 size;
 }
 
 public class PlayerData : PropData {
@@ -243,7 +243,7 @@ public class SnackData : PropData {
 }
 
 public class SpikesData : PropData {
-	public Rect myRect=new Rect();
+    public Vector2 size;
     public OnOfferData onOffer;
 }
 
@@ -254,7 +254,7 @@ public class TurretData : PropData {
 }
 
 public class VeilData : PropData {
-    public Rect myRect=new Rect();
+    public Vector2 size;
 }
 
 

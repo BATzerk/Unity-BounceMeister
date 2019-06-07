@@ -11,11 +11,15 @@ public class Veil : Prop {
     private int myIndex; // for saving.
     
     // Getters
-    private Rect MyRect {
-        get {
-            return new Rect(sr_body.transform.localPosition, sr_body.size);
-        }
+    private Vector2 Size {
+        get { return sr_body.size; }
+        set { sr_body.size = value; }
     }
+    //private Rect MyRect {
+    //    get {
+    //        return new Rect(sr_body.transform.localPosition, sr_body.size);
+    //    }
+    //}
 
 
     // ----------------------------------------------------------------
@@ -24,10 +28,7 @@ public class Veil : Prop {
     public void Initialize(Room _myRoom, VeilData data, int myIndex) {
         base.BaseInitialize(_myRoom, data);
         this.myIndex = myIndex;
-        
-        // Size/pos me, broh!
-        sr_body.size = data.myRect.size;
-        sr_body.transform.localPosition = data.myRect.position;
+        Size = data.size;
         
         // Color me right-o.
         sr_body.color = Colors.GroundBaseColor(WorldIndex);
@@ -74,7 +75,8 @@ public class Veil : Prop {
     // ----------------------------------------------------------------
     override public PropData ToData() {
         VeilData data = new VeilData {
-            myRect = MyRect,
+            pos = pos,
+            size = Size,
             travelMind = new TravelMindData(travelMind),
         };
         return data;
