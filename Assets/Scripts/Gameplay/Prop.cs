@@ -14,6 +14,7 @@ abstract public class Prop : MonoBehaviour, ITravelable {
 	// Getters
     protected string RoomKey { get { return MyRoom.RoomKey; } }
     protected int WorldIndex { get { return MyRoom.WorldIndex; } }
+    protected int FramesAlive { get { return Time.frameCount - FrameCountWhenBorn; } }
 	public Vector2 PosLocal { get { return pos; } }
 	public Vector2 PosGlobal {
 		get {

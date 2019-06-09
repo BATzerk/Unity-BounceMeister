@@ -739,7 +739,7 @@ public class MapEditor : MonoBehaviour {
 	private void OnMouseDoubleClicked() {
 		// Am I over any room?? Load it!!
         RoomTile tileOver = GetVisibleTileAtPoint(MousePosWorld);
-        if (tileOver != null && tileOver.IsMouseOverMe) {//hacky with IsMouseOverMe. Technically means that mouse is over its COLLIDer.
+        if (tileOver != null && tileOver.IsMouseOverBodyColl) { // also check our mouse is directly over this tile's body collider.
 			SceneHelper.OpenGameplayScene(tileOver.WorldIndex, tileOver.RoomKey);
 		}
 	}

@@ -88,10 +88,6 @@ namespace ClustSelNamespace {
         //  Doers
         // ----------------------------------------------------------------
         private void RefreshVisuals() {
-            //PlayerTypes tempPlayerType=PlayerTypes.Any; // TEMP HACK!!
-            //if (myClustData.WorldIndex==1) { tempPlayerType = PlayerTypes.Plunga; }
-            //else if (myClustData.WorldIndex==2) { tempPlayerType = PlayerTypes.Flatline; }
-        
             // Values.
             int totalSnacksEaten = GameManagers.Instance.DataManager.SnackCountGame.Eaten_All;
             canUnlockMe = !myClustData.IsUnlocked && totalSnacksEaten>=myClustData.NumSnacksReq;

@@ -109,10 +109,10 @@ public class PlatformCharacter : Collidable {
 		}
 	}
     virtual protected void ApplyVelFromSurfaces() {
-        if (IsGrounded()) {
+        if (IsGrounded()) { // TODO: Do for ALL sides! Not just feet!
             Collidable obj = myWhiskers.TEMP_GetFloorCollidable();
             if (obj != null) {
-                pos += obj.vel;// TODO: Confirm this is a sensible way to move Character on a Platform appropriately (it's a neat little challenge).
+                pos += obj.vel;
             }
         }
     }

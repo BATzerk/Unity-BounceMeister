@@ -61,7 +61,11 @@ public class Room : MonoBehaviour {
         rd.SetDesignerFlag(MyRoomData.DesignerFlag);
         rd.SetIsSecret(MyRoomData.IsSecret);
         rd.isClustStart = MyRoomData.isClustStart;
-        //rd.hasPlayerBeenHere = hasPlayerBeenHere;
+        //rd.HasPlayerBeenHere = MyRoomData.HasPlayerBeenHere;
+
+        // Find CameraBounds manually.
+        CameraBounds cameraBounds = GetComponentInChildren<CameraBounds>();
+        if (cameraBounds != null) { rd.cameraBoundsData = cameraBounds.ToData() as CameraBoundsData; }
 
         // -- Props --
         Prop[] allProps = FindObjectsOfType<Prop>();
@@ -71,10 +75,6 @@ public class Room : MonoBehaviour {
         }
         // Reverse the propDatas list so it's saved in the same order each time. (Kinda weird, but this is the easy solution.)
         rd.allPropDatas.Reverse();
-
-        // HACKy-ish: Find CameraBounds manually.
-        CameraBounds cameraBounds = FindObjectOfType<CameraBounds>();
-        if (cameraBounds != null) { rd.cameraBoundsData = cameraBounds.ToData() as CameraBoundsData; }
 
         return rd;
     }
@@ -214,35 +214,12 @@ public class Room : MonoBehaviour {
         AddHardcodedRoomElements();
 
         // For development, add bounds so we don't fall out of unconnected rooms!
-        AutoAddSilentBoundaries();
+        AutoAddInvisibounds();
         roomGizmos.Initialize(this);
         shutters.Initialize(this);
     }
-
-    /** Slightly sloppy, whatever-it-takes housekeeping to allow us to start up the game with a novel room and edit/play/save it right off the bat. */
-    public void InitializeAsPremadeRoom(GameController _gameControllerRef) {
-        gameControllerRef = _gameControllerRef;
-
-        // TEMP totes hacky, yo.
-        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        MyRoomData = new RoomData(dataManager.CurrWorldData, sceneName); // NOTE! Be careful; we can easily overwrite rooms like this.
-        MyRoomData = ToData();
-
-        // Initialize things!
-        // Player
-        PlayerData playerData = new PlayerData();
-        PlayerStart playerStart = FindObjectOfType<PlayerStart>();
-        if (playerStart != null) {
-            playerData.pos = playerStart.PosLocal;
-        }
-        playerRef.Initialize(this, playerData);
-        // CameraBounds
-        if (FindObjectOfType<CameraBounds>() == null) {
-            CameraBounds cameraBounds = Instantiate(ResourcesHandler.Instance.CameraBounds).GetComponent<CameraBounds>();
-            cameraBounds.Initialize(this, cameraBounds.ToData() as CameraBoundsData); // Strange and hacky: It initializes itself as what it already is. Just to go through other paperwork.
-        }
-    }
-    private void AutoAddSilentBoundaries() {
+    
+    private void AutoAddInvisibounds() {
         for (int i = 0; i < MyRoomData.Openings.Count; i++) {
             // No room here?? Protect me with an InvisiBounds!
             RoomOpening rod = MyRoomData.Openings[i];

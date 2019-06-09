@@ -14,7 +14,7 @@ static public class GameProperties {
     // Gameplay
     public const float UnitSize = 1f; // Grid-snap units! In Unity units.
     
-    public const int TEMP_TrialsWorldIndex = 7; // TEMP HACK they're all in W7.
+    public const int TEMP_TrialsWorldIndex = 7; // TEMP all Trials all in W7 for now.
     
     // Rooms!
     public const int NUM_WORLDS = 8; // including World 0 for testing.

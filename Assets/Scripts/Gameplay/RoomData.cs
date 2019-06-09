@@ -149,7 +149,7 @@ public class RoomData {
     private void AddRoomOpeningsAtSide(int side) {
         // CANDO: #optimization. ONLY add Grounds that are on the sides.
         float searchUnit = 1; // how granular our searches are. The smaller this value, the more steps we take along sides of the room.
-        Rect bl = BoundsLocalBL; // TODO: Test this!
+        Rect bl = BoundsLocalBL;
         // Determine where we start search, and what dir to go.
         float sideLength=0;
         Vector2 cornerPos=Vector2.zero; // default to whatever.

@@ -101,16 +101,16 @@ public class GameController : MonoBehaviour {
         GameManagers.Instance.EventManager.OnSetPlayerType(Player);
 	}
     public void SetPlayerType(PlayerTypes _type) {
-        // TEMP HACK remember Snacks we've got.
-        List<Edible> edibles = Player.Temp_GetEdiblesHolding();
+        // Remember Snacks we've got.
+        List<Edible> edibles = Player.GetEdiblesHolding();
 
         PlayerData playerData = Player.ToData() as PlayerData;
         playerData.type = _type;
         MakePlayer(playerData);
         GameManagers.Instance.EventManager.OnSwapPlayerType();
 
-        // Put Snacks back on da Player
-        Player.Temp_SetEdiblesHolding(edibles);
+        // Put Snacks back on da Player.
+        Player.SetEdiblesHolding(edibles);
     }
 
 	private void DestroyRoom() {

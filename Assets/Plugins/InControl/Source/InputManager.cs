@@ -466,7 +466,7 @@ namespace InControl
 
 		static void UpdateCurrentTime()
 		{
-			// Have to do this hack since Time.realtimeSinceStartup is not set until AFTER Awake().
+			// Have to do this ha ck since Time.realtimeSinceStartup is not set until AFTER Awake().
 			if (initialTime < float.Epsilon)
 			{
 				initialTime = Time.realtimeSinceStartup;

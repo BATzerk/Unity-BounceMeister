@@ -89,7 +89,7 @@ static public class RoomSaverLoader {
         AddFSLineBreak();
 
 		foreach (PropData propData in rd.allPropDatas) {
-            propData.rotation = Mathf.Round(propData.rotation);// hacky? Round rotation so it's not like "90.000001".
+            propData.rotation = Mathf.Round(propData.rotation); // Round rotation so it's not like "90.000001".
             
             fs += GetPropName(propData) + " ";
             fs += GetPropPropertiesLine(propData);

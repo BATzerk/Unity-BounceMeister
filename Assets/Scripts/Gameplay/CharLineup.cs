@@ -55,12 +55,11 @@ public class CharLineup {
     // ----------------------------------------------------------------
     public void AddPlayerType(PlayerTypes pt) {
         Lineup.Add(pt);
-        // HACK TEMP remove Neutrala.
+        // TEMP: For now, auto-remove Neutrala.
         if (pt!=PlayerTypes.Neutrala && Lineup.Contains(PlayerTypes.Neutrala)) {
             Lineup.Remove(PlayerTypes.Neutrala);
         }
         SaveLineup();
-        //GameManagers.Instance.EventManager.On
     }
     public void Debug_RemovePlayerType(PlayerTypes pt) {
         Lineup.Remove(pt);

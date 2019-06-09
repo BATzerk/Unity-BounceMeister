@@ -54,10 +54,9 @@ abstract public class Player : PlatformCharacter {
     private float timeLastBounced=Mathf.NegativeInfinity;
     public int DirFacing { get; private set; }
 	protected int wallSlideDir { get; private set; } // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
-	private int hackTEMP_framesAlive=0;
     private Vector2 pLeftStick; // previous InputController LeftStick.
 	protected Vector2 pvel { get; private set; } // previous velocity.
-    protected Vector2 ppvel { get; private set; } // HACKY workaround for getting vel from hitting a wall. ppvel is ACTUALLY how fast we were going before we hit the wall.
+    protected Vector2 ppvel { get; private set; } // HACKY workaround for getting vel from hitting a wall. ppvel is ACTUALLY how fast we were going before we hit the wall. ANY use of ppv is a haack.
     // References
     private Rect camBoundsLocal; // for detecting when we exit the room!
 	private List<Edible> ediblesHolding = new List<Edible>(); // like in Celeste. I hold Edibles (i.e. Gem, Snack) until I'm standing somewhere safe to "eat" (aka collect) them.
@@ -125,14 +124,13 @@ abstract public class Player : PlatformCharacter {
     public void SetDirFacing(int _dir) {
         DirFacing = _dir;
     }
-
-    // Debug
-    public List<Edible> Temp_GetEdiblesHolding() { return ediblesHolding; }
-    public void Temp_SetEdiblesHolding(List<Edible> _edibles) {
+    public List<Edible> GetEdiblesHolding() { return ediblesHolding; }
+    public void SetEdiblesHolding(List<Edible> _edibles) {
         for (int i=0; i<_edibles.Count; i++) {
             OnTouchEdible(_edibles[i]);
         }
     }
+
  //   private void OnDrawGizmos() {
 	//	if (myRoom==null) { return; }
 	//	Gizmos.color = Color.cyan;
@@ -308,7 +306,7 @@ abstract public class Player : PlatformCharacter {
 		maxYSinceGround = Mathf.Max(maxYSinceGround, pos.y);
 	}
 	private void UpdateExitedRoom() {
-		if (hackTEMP_framesAlive++ < 10) { return; } // This is a hack.
+		if (FramesAlive < 10) { return; } // Fudgey safety check: Don't check if we've exited a room for the first few frames.
 		// I'm outside the room!
 		if (!camBoundsLocal.Contains(PosLocal)) {
 			int sideEscaped = MathUtils.GetSidePointIsOn(camBoundsLocal, PosLocal);
@@ -543,7 +541,6 @@ abstract public class Player : PlatformCharacter {
         else {
             // Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
             float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
-            //distToRestore -= 0.4f; // hacky fudge: we're getting too much height back.
             distToRestore += ExtraBounceDistToRestore(); // Give us __ more height than we started with.
             float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
             yVel *= 0.982f; // hacky fudge: we're getting too much height back.
@@ -558,7 +555,7 @@ abstract public class Player : PlatformCharacter {
     }
     virtual protected void BounceOffCollidable_Down(Collidable collidable) {
         timeLastBounced = Time.time;
-        SetVel(new Vector2(vel.x, -Mathf.Abs(ppvel.y))); // Hacky with ppvel.
+        SetVel(new Vector2(vel.x, -Mathf.Abs(ppvel.y)));
         // Inform the collidable!!
         if (collidable != null) {
             collidable.OnPlayerBounceOnMe(this);
@@ -567,7 +564,7 @@ abstract public class Player : PlatformCharacter {
 	private void BounceOffCollidable_Side(Collidable collidable) {
         timeLastBounced = Time.time;
         timeLastWallKicked = Time.time;
-		SetVel(new Vector2(-ppvel.x, Mathf.Max(ppvel.y, Mathf.Abs(ppvel.x)+0.1f))); // Hacky with ppvel.
+		SetVel(new Vector2(-ppvel.x, Mathf.Max(ppvel.y, Mathf.Abs(ppvel.x)+0.1f)));
 		// Inform the collidable!!
 		if (collidable != null) {
 			collidable.OnPlayerBounceOnMe(this);

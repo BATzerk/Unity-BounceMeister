@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerWhiskers : PlatformCharacterWhiskers {
-	//Layers.Default, 
 	override protected string[] GetLayerMaskNames_LRTB() {
 		return new string[]{Layers.Ground, Layers.Obstacle, Layers.Enemy};
 	}

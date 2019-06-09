@@ -53,7 +53,7 @@ public class Flatline : Player {
     
     private bool MayStartHover() {
         return !IsHovering // I'm not ALREADY hovering?
-            && Time.frameCount > FrameCountWhenBorn+3 // Don't allow hovering for the first few frames of my life.
+            && FramesAlive < 2 // Don't allow hovering for the first few frames of my life.
             && !IsGrounded() // FEET touching nothing?
             //&& !isTouchingWall() // ARMS touching nothing?
             && !IsInLift // NOT in a Lift?

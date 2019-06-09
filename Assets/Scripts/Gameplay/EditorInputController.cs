@@ -78,11 +78,6 @@ public static class EditorInputController {
                     FlipPropsSelVert();
                     Event.current.Use(); // Use the event here.
                 }
-                // SHIFT + [ARROW KEYS] = Move Props selected! TODO: Fix this. It don't work.
-                if (Event.current.keyCode == KeyCode.LeftArrow)  { MovePropsSel(Vector2Int.L); Event.current.Use(); }
-                else if (Event.current.keyCode == KeyCode.RightArrow) { MovePropsSel(Vector2Int.R); Event.current.Use(); }
-                else if (Event.current.keyCode == KeyCode.DownArrow)  { MovePropsSel(Vector2Int.B); Event.current.Use(); }
-                else if (Event.current.keyCode == KeyCode.UpArrow)    { MovePropsSel(Vector2Int.T); Event.current.Use(); }
             }
         }
     }

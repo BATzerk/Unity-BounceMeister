@@ -171,7 +171,7 @@ namespace InControl
 
 			if (!isReady)
 			{
-				// This little hack is necessary because right after Unity starts up,
+				// This little ha ck is necessary because right after Unity starts up,
 				// cameras don't seem to have a correct projection matrix until after
 				// their first update or around that time. So we basically need to
 				// wait until the end of the first frame before everything is quite ready.

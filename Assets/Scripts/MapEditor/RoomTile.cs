@@ -4,7 +4,7 @@ using System.Collections;
 namespace MapEditorNamespace {
 public class RoomTile : MonoBehaviour {
 	// Properties
-	public bool IsMouseOverMe { get; private set; }
+	public bool IsMouseOverBodyColl { get; private set; }
 	private bool isInSelectionRect; // true if my center's inside the RoomTileSelectionRect!
 	public bool IsSelected { get; private set; } // true when we're clicked on to be dragged about!
 //	private Rect myRect; // the clickable and displaying area.
@@ -110,7 +110,7 @@ public class RoomTile : MonoBehaviour {
 	public void Hide() {
         this.gameObject.SetActive(false);
         //OnDeselected();
-        IsMouseOverMe = false;
+        IsMouseOverBodyColl = false;
         //IsDragReadyMouseOverMe = false; // Deselect me from mouse-over just in case.
         //contents.Hide ();
 
@@ -176,7 +176,7 @@ public class RoomTile : MonoBehaviour {
 
 	public void UpdateBorderColor() {
         // Drag-ready mouse over me!
-        if (IsMouseOverMe) {//MapEditor.CanSelectARoomTile()) {
+        if (IsMouseOverBodyColl) {//MapEditor.CanSelectARoomTile()) {
             sr_border.color = new Color(0.5f,0.95f,1, 0.6f);
             sr_border.sprite = s_borderThick;
         }
@@ -203,10 +203,10 @@ public class RoomTile : MonoBehaviour {
 		contents.OnMapScaleChanged();
 	}
 	public void OnMouseEnterBodyCollider() {
-		IsMouseOverMe = true;
+		IsMouseOverBodyColl = true;
 	}
 	public void OnMouseExitBodyCollider() {
-		IsMouseOverMe = false;
+		IsMouseOverBodyColl = false;
 	}
 
 	public void OnSelected(Vector3 _mousePosWorld) {
@@ -221,11 +221,6 @@ public class RoomTile : MonoBehaviour {
 
 
 	private void RegisterMouseInput() {
-		//// Clicked me??
-		//if (IsMouseOverMe && Input.GetMouseButtonDown (0)) {
-		//	MapEditor.OnClickRoomTile(this);
-		//}
-		
 		// Dragging me??
 		if (IsSelected && MapEditor.IsDraggingSelectedRoomTiles()) {
 			// Update my RoomData's PosGlobal!!
