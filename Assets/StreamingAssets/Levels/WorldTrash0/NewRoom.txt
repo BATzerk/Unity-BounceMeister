@@ -1,0 +1,8 @@
+roomProperties posGlobal:(256.0, 252.0);designerFlag:0
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(-24.0, 5.0);size:(4.0, 22.0)
+Ground pos:(0.0, -18.0);size:(52.0, 4.0);mayPlayerEat:False
+Ground pos:(24.0, 0.0);size:(4.0, 32.0)
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+PlayerStart pos:(-20.0, -14.0)
+Snack pos:(-9.5, -13.0);playerType:Plunga

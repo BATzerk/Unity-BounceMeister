@@ -21,13 +21,11 @@ public class RoomTileDesignerFlag : MonoBehaviour {
 	public void UpdateDesignerFlagButtonVisuals() {
 		flagSprite.sprite = designerFlagSprites [roomTileRef.MyRoomData.DesignerFlag];
 	}
-	public void ApplyPosAndSize (Rect rect) {
+	public void ApplyPosAndSize (Rect boundsBL) {
 		const float w = 16;
 		const float h = 16;
-//		float x = tileX - (tileW-w)*0.5f;
-//		float y = tileY + (tileH-h)*0.5f;
-		float x = rect.center.x - (rect.size.x-w)*0.5f;
-		float y = rect.center.y + (rect.size.y-h)*0.5f;
+		float x = boundsBL.center.x - (boundsBL.size.x-w)*0.5f;
+		float y = boundsBL.center.y + (boundsBL.size.y-h)*0.5f;
 		this.transform.localPosition = new Vector3 (x, y, -1); // Move closer to camera than the main contents' bodyCollider.
 		GameUtils.SizeSpriteRenderer (flagSprite, w,h, true);
 	}

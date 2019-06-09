@@ -1,12 +1,13 @@
 roomProperties posGlobal:(458.0, 2104.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-DispGround myRect:(x:0.00, y:3.50, width:6.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
-DispGround myRect:(x:0.00, y:-4.50, width:6.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
-Ground myRect:(x:0.00, y:-16.50, width:52.00, height:7.00)
-Ground myRect:(x:20.50, y:-4.50, width:11.00, height:21.00)
-Ground myRect:(x:0.00, y:-16.50, width:52.00, height:7.00)
-Ground myRect:(x:0.00, y:17.50, width:52.00, height:5.00)
-Ground myRect:(x:-20.50, y:5.00, width:11.00, height:24.00)
-Ground myRect:(x:20.50, y:15.00, width:11.00, height:2.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+DispGround pos:(0.0, 3.5);size:(6.0, 1.0);doRegen:True;dieFromPlayerLeave:True
+DispGround pos:(0.0, -4.5);size:(6.0, 1.0);doRegen:True;dieFromPlayerLeave:True
+Ground pos:(0.0, -16.5);size:(52.0, 7.0)
+Ground pos:(20.5, -4.5);size:(11.0, 21.0)
+Ground pos:(0.0, -16.5);size:(52.0, 7.0)
+Ground pos:(0.0, 17.5);size:(52.0, 5.0)
+Ground pos:(-20.5, 5.0);size:(11.0, 24.0)
+Ground pos:(20.5, 15.0);size:(11.0, 2.0)
 PlayerStart pos:(-16.0, -12.0)
-Turret pos:(2.0, 15.0);rotation:180;interval:0.25;speed:0.35;travelMind:(-14,15,14,15, 2.5, 0)
+Turret travelMind:(-14,15,14,15, 2.5, 0);rotation:180;interval:0.25;speed:0.35
+

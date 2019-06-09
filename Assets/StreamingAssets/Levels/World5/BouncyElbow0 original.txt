@@ -1,25 +1,26 @@
 roomProperties posGlobal:(-280.0, 828.0);designerFlag:2
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(-22.2, 15.8)
-Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
-Ground myRect:(x:-24.50, y:2.00, width:3.00, height:36.00)
-Ground myRect:(x:24.50, y:-5.50, width:3.00, height:21.00)
-Ground myRect:(x:4.50, y:17.50, width:43.00, height:5.00)
-Ground myRect:(x:24.00, y:14.00, width:4.00, height:8.00)
-Ground myRect:(x:-6.50, y:11.00, width:21.00, height:8.00)
-Ground myRect:(x:7.00, y:4.50, width:6.00, height:11.00)
-Platform myRect:(x:-20.00, y:14.50, width:6.00, height:1.00)
-Ground myRect:(x:-16.50, y:18.50, width:3.00, height:3.00)
-Gate myRect:(x:23.00, y:7.50, width:2.00, height:5.00);channelID:3
-Ground myRect:(x:-15.50, y:11.50, width:3.00, height:7.00)
-Ground myRect:(x:-6.50, y:0.50, width:21.00, height:1.00)
-Ground myRect:(x:11.50, y:-13.50, width:7.00, height:1.00);isBouncy:True
-Spikes myRect:(x:0.00, y:-13.50, width:46.00, height:1.00);rotation:0
-Spikes myRect:(x:-6.50, y:1.50, width:21.00, height:1.00);rotation:0
-Spikes myRect:(x:-6.50, y:6.50, width:21.00, height:1.00);rotation:180
-Spikes myRect:(x:-17.50, y:8.50, width:3.00, height:1.00);rotation:90
-Spikes myRect:(x:-17.50, y:0.50, width:1.00, height:1.00);rotation:90
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 GateButton pos:(2.0, 4.0);channelID:3
-Ground myRect:(x:-6.50, y:-13.50, width:7.00, height:1.00);isBouncy:True
-Platform myRect:(x:13.00, y:-0.50, width:6.00, height:1.00)
-Platform myRect:(x:20.00, y:4.50, width:6.00, height:1.00)
+Gate pos:(23.0, 7.5);size:(2.0, 5.0);channelID:3
+Ground pos:(-24.5, 2.0);size:(3.0, 36.0)
+Ground pos:(24.5, -5.5);size:(3.0, 21.0)
+Ground pos:(4.5, 17.5);size:(43.0, 5.0)
+Ground pos:(-6.5, 11.0);size:(21.0, 8.0)
+Ground pos:(7.0, 4.5);size:(6.0, 11.0)
+Ground pos:(24.0, 14.0);size:(4.0, 8.0)
+Ground pos:(-16.5, 18.5);size:(3.0, 3.0)
+Ground pos:(0.0, -17.0);size:(52.0, 6.0)
+Ground pos:(-15.5, 11.5);size:(3.0, 7.0)
+Ground pos:(-6.5, 0.5);size:(21.0, 1.0)
+Ground pos:(11.5, -13.5);size:(7.0, 1.0);isBouncy:True
+Ground pos:(-6.5, -13.5);size:(7.0, 1.0);isBouncy:True
+Platform pos:(20.0, 4.5);size:(6.0, 1.0)
+Platform pos:(13.0, -0.5);size:(6.0, 1.0)
+Platform pos:(-20.0, 14.5);size:(6.0, 1.0)
+PlayerStart pos:(-22.2, 15.8)
+Spikes pos:(-17.5, 8.5);rotation:90;size:(3.0, 1.0)
+Spikes pos:(-6.5, 6.5);rotation:180;size:(21.0, 1.0)
+Spikes pos:(0.0, -13.5);size:(46.0, 1.0)
+Spikes pos:(-17.5, 0.5);rotation:90;size:(1.0, 1.0)
+Spikes pos:(-6.5, 1.5);size:(21.0, 1.0)
+

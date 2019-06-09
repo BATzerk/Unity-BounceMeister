@@ -1,17 +1,17 @@
-﻿roomProperties posGlobal:(240.0, 916.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-21.00, y:5.00, width:10.00, height:22.00)
-Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:-14.50, y:-14.00, width:23.00, height:4.00)
-Ground myRect:(x:1.50, y:-13.00, width:7.00, height:2.00);isBouncy:True
-Ground myRect:(x:24.00, y:4.50, width:4.00, height:23.00)
-Ground myRect:(x:20.00, y:8.50, width:12.00, height:15.00)
-Ground myRect:(x:15.00, y:-10.00, width:2.00, height:10.00)
-Ground myRect:(x:16.00, y:-14.00, width:20.00, height:4.00)
-Ground myRect:(x:21.00, y:0.50, width:2.00, height:1.00);mayBounce:False
-Ground myRect:(x:-24.50, y:-13.50, width:3.00, height:5.00)
-Platform myRect:(x:19.00, y:-6.50, width:6.00, height:1.00)
+roomProperties posGlobal:(240.0, 916.0);designerFlag:4
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(-21.0, 5.0);size:(10.0, 22.0)
+Ground pos:(0.0, -17.0);size:(52.0, 6.0)
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(-14.5, -14.0);size:(23.0, 4.0)
+Ground pos:(1.5, -13.0);size:(7.0, 2.0);isBouncy:True
+Ground pos:(24.0, 4.5);size:(4.0, 23.0)
+Ground pos:(20.0, 8.5);size:(12.0, 15.0)
+Ground pos:(15.0, -10.0);size:(2.0, 10.0)
+Ground pos:(16.0, -14.0);size:(20.0, 4.0)
+Ground pos:(21.0, 0.5);size:(2.0, 1.0);mayBounce:False
+Ground pos:(-24.5, -13.5);size:(3.0, 5.0)
+Platform pos:(19.0, -6.5);size:(6.0, 1.0)
 PlayerStart pos:(-19.5, -10.5)
-Spikes myRect:(x:13.50, y:-8.50, width:7.00, height:1.00);rotation:90
+Spikes pos:(13.5, -8.5);rotation:90;size:(7.0, 1.0)
 

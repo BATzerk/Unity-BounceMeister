@@ -1,16 +1,17 @@
 roomProperties posGlobal:(786.0, 610.0);designerFlag:2
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(22.2, 3.9)
-Ground myRect:(x:-0.50, y:-17.00, width:53.00, height:6.00)
-Ground myRect:(x:23.00, y:-9.50, width:6.00, height:21.00)
-Ground myRect:(x:-24.50, y:-1.50, width:5.00, height:37.00)
-Ground myRect:(x:-1.50, y:17.00, width:51.00, height:6.00)
-Ground myRect:(x:21.00, y:-9.00, width:2.00, height:24.00)
-Spikes myRect:(x:-2.00, y:-13.50, width:50.00, height:1.00);rotation:0
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 Battery pos:(-10.5, 3.0)
-Ground myRect:(x:3.00, y:11.50, width:42.00, height:13.00)
-Ground myRect:(x:24.50, y:12.50, width:3.00, height:15.00)
-Platform myRect:(x:-20.50, y:3.50, width:3.00, height:1.00);mayPlayerEat:False
-ToggleGround myRect:(x:0.00, y:-4.00, width:2.00, height:18.00);startsOn:True;togFromContact:False;togFromAction:True
-Ground myRect:(x:-18.50, y:5.50, width:1.00, height:23.00)
+Ground pos:(-0.5, -17.0);size:(53.0, 6.0)
+Ground pos:(23.0, -9.5);size:(6.0, 21.0)
+Ground pos:(-1.5, 17.0);size:(51.0, 6.0)
+Ground pos:(-24.5, -1.5);size:(5.0, 37.0)
+Ground pos:(3.0, 11.5);size:(42.0, 13.0)
+Ground pos:(21.0, -9.0);size:(2.0, 24.0)
+Ground pos:(24.5, 12.5);size:(3.0, 15.0)
+Ground pos:(-18.5, 5.5);size:(1.0, 23.0)
+Platform pos:(-20.5, 3.5);size:(3.0, 1.0);mayPlayerEat:False
+PlayerStart pos:(22.2, 3.9)
 Snack pos:(-20.5, 6.0);playerType:Flatline
+Spikes pos:(-2.0, -13.5);size:(50.0, 1.0)
+ToggleGround pos:(0.0, -4.0);size:(2.0, 18.0);startsOn:True;togFromContact:False;togFromAction:True
+

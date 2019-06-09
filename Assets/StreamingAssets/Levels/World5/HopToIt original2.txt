@@ -1,33 +1,34 @@
 roomProperties posGlobal:(842.0, -238.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(18.5, 6.5)
-Ground myRect:(x:-19.00, y:-7.50, width:8.00, height:23.00)
-Ground myRect:(x:1.00, y:18.00, width:48.00, height:4.00)
-Ground myRect:(x:-7.00, y:-15.00, width:6.00, height:2.00);mayPlayerEat:False;isBouncy:True
-Ground myRect:(x:21.50, y:-7.50, width:9.00, height:25.00)
-Ground myRect:(x:1.00, y:-18.00, width:48.00, height:4.00)
-Ground myRect:(x:-19.00, y:13.00, width:8.00, height:6.00)
-Spikes myRect:(x:-14.00, y:-10.50, width:6.00, height:1.00);rotation:0
-Ground myRect:(x:-14.00, y:-13.50, width:6.00, height:5.00)
-Ground myRect:(x:15.00, y:-14.00, width:10.00, height:6.00)
-Platform myRect:(x:15.50, y:4.50, width:3.00, height:1.00);isPlayerRespawn:True
-Gate myRect:(x:-17.00, y:7.00, width:2.00, height:6.00);channelID:3
-Ground myRect:(x:19.50, y:15.50, width:9.00, height:9.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 GateButton pos:(-7.0, -12.5);channelID:3
-Ground myRect:(x:5.00, y:-13.00, width:8.00, height:2.00);mayPlayerEat:False;isBouncy:True
-Spikes myRect:(x:-1.50, y:-10.50, width:3.00, height:1.00);rotation:0
-Ground myRect:(x:-1.50, y:-13.50, width:3.00, height:5.00)
-Ground myRect:(x:3.50, y:-4.50, width:15.00, height:1.00)
-Spikes myRect:(x:3.50, y:-3.50, width:15.00, height:1.00);rotation:0
-Spikes myRect:(x:3.50, y:-5.50, width:15.00, height:1.00);rotation:180
 GateButton pos:(4.5, -10.5);channelID:3
-Spikes myRect:(x:13.50, y:-10.50, width:7.00, height:1.00);rotation:0
-Lift myRect:(x:16.00, y:-2.00, width:2.00, height:12.00);rotation:0;strength:0.05
-Spikes myRect:(x:0.50, y:-13.50, width:5.00, height:1.00);rotation:270
-Spikes myRect:(x:-10.50, y:-13.50, width:5.00, height:1.00);rotation:270
-Spikes myRect:(x:-3.50, y:-13.50, width:5.00, height:1.00);rotation:90
-Spikes myRect:(x:9.50, y:-13.50, width:5.00, height:1.00);rotation:90
-Ground myRect:(x:24.00, y:14.50, width:4.00, height:11.00)
-Ground myRect:(x:-23.50, y:0.00, width:5.00, height:40.00)
+Gate pos:(-17.0, 7.0);size:(2.0, 6.0);channelID:3
+Ground pos:(-19.0, -7.5);size:(8.0, 23.0)
+Ground pos:(-7.0, -15.0);size:(6.0, 2.0);mayPlayerEat:False;isBouncy:True
+Ground pos:(1.0, -18.0);size:(48.0, 4.0)
+Ground pos:(1.0, 18.0);size:(48.0, 4.0)
+Ground pos:(15.0, -14.0);size:(10.0, 6.0)
+Ground pos:(-19.0, 13.0);size:(8.0, 6.0)
+Ground pos:(-14.0, -13.5);size:(6.0, 5.0)
+Ground pos:(21.5, -7.5);size:(9.0, 25.0)
+Ground pos:(-1.5, -13.5);size:(3.0, 5.0)
+Ground pos:(19.5, 15.5);size:(9.0, 9.0)
+Ground pos:(5.0, -13.0);size:(8.0, 2.0);mayPlayerEat:False;isBouncy:True
+Ground pos:(-23.5, 0.0);size:(5.0, 40.0)
+Ground pos:(24.0, 14.5);size:(4.0, 11.0)
+Ground pos:(3.5, -4.5);size:(15.0, 1.0)
+Ground pos:(5.0, -17.0);size:(10.0, 6.0)
+Lift pos:(16.0, -2.0);size:(2.0, 12.0);strength:0.05
+Platform pos:(15.5, 4.5);size:(3.0, 1.0);isPlayerRespawn:True
+PlayerStart pos:(18.5, 6.5)
 Snack pos:(-20.0, 5.5);playerType:Flatline
-Ground myRect:(x:5.00, y:-17.00, width:10.00, height:6.00)
+Spikes pos:(-10.5, -13.5);rotation:270;size:(5.0, 1.0)
+Spikes pos:(3.5, -5.5);rotation:180;size:(15.0, 1.0)
+Spikes pos:(-14.0, -10.5);size:(6.0, 1.0)
+Spikes pos:(0.5, -13.5);rotation:270;size:(5.0, 1.0)
+Spikes pos:(3.5, -3.5);size:(15.0, 1.0)
+Spikes pos:(9.5, -13.5);rotation:90;size:(5.0, 1.0)
+Spikes pos:(-3.5, -13.5);rotation:90;size:(5.0, 1.0)
+Spikes pos:(13.5, -10.5);size:(7.0, 1.0)
+Spikes pos:(-1.5, -10.5);size:(3.0, 1.0)
+

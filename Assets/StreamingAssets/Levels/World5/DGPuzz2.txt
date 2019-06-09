@@ -1,14 +1,15 @@
-﻿roomProperties posGlobal:(394.0, 484.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-DispGround myRect:(x:5.50, y:-6.50, width:3.00, height:19.00);doRegen:True;mayPlayerEat:False;regenTime:3;dieFromPlayerLeave:True
-Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
-Ground myRect:(x:-23.00, y:2.50, width:6.00, height:27.00)
-Ground myRect:(x:-16.00, y:5.00, width:8.00, height:14.00)
-Ground myRect:(x:0.00, y:15.00, width:52.00, height:10.00)
-Ground myRect:(x:5.50, y:11.50, width:3.00, height:17.00)
-Ground myRect:(x:18.50, y:-9.00, width:15.00, height:16.00)
-Ground myRect:(x:23.00, y:9.50, width:6.00, height:3.00)
-Ground myRect:(x:-11.00, y:-2.00, width:30.00, height:2.00)
+roomProperties posGlobal:(394.0, 484.0);designerFlag:4
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+DispGround pos:(5.5, -6.5);size:(3.0, 19.0);mayPlayerEat:False;doRegen:True;regenTime:3;dieFromPlayerLeave:True
+Ground pos:(0.0, -18.0);size:(52.0, 4.0)
+Ground pos:(-23.0, 2.5);size:(6.0, 27.0)
+Ground pos:(-16.0, 5.0);size:(8.0, 14.0)
+Ground pos:(0.0, 15.0);size:(52.0, 10.0)
+Ground pos:(5.5, 11.5);size:(3.0, 17.0)
+Ground pos:(18.5, -9.0);size:(15.0, 16.0)
+Ground pos:(23.0, 9.5);size:(6.0, 3.0)
+Ground pos:(-11.0, -2.0);size:(30.0, 2.0)
 PlayerStart pos:(-20.0, -14.0)
-Spikes myRect:(x:-19.50, y:-3.00, width:16.00, height:1.00);rotation:270
-Veil myRect:(x:-4.00, y:4.50, width:16.00, height:11.00)
+Spikes pos:(-19.5, -3.0);rotation:270;size:(16.0, 1.0)
+Veil pos:(-4.0, 4.5);size:(16.0, 11.0)
+

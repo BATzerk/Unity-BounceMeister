@@ -82,7 +82,7 @@ public class RoomViewContents : MonoBehaviour {
     }
 
     private Image AddImage(string goName, Sprite sprite, RectTransform tf_parent, Vector2 pos, Vector2 size, Color color) {
-        pos -= myRD.cameraBoundsData.myRect.center; // hack-y. Works around the rooms' local/global alignment mismatch.
+        pos -= myRD.cameraBoundsData.pos; // hack-y. Works around the rooms' local/global alignment mismatch.
         GameObject iconGO = new GameObject ();
         Image img = iconGO.AddComponent<Image> ();
         img.name = goName;

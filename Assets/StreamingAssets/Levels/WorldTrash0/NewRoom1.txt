@@ -1,0 +1,14 @@
+roomProperties posGlobal:(362.0, 246.0);designerFlag:0;isClustStart:True
+CameraBounds pos:(6.0, 0.0);size:(64.0, 38.0)
+DispGround pos:(3.0, -8.5);size:(4.0, 1.0);doRegen:True;dieFromPlayerLeave:True
+Ground pos:(6.0, 18.0);size:(64.0, 4.0)
+Ground pos:(-12.5, -13.0);size:(23.0, 8.0)
+Ground pos:(36.0, 6.5);size:(4.0, 19.0)
+Ground pos:(6.0, -15.0);size:(64.0, 10.0)
+Ground pos:(-24.0, 0.0);size:(4.0, 32.0)
+Platform pos:(-19.0, 7.5);size:(6.0, 1.0)
+PlayerStart pos:(-5.5, -7.2)
+ProgressGate pos:(-15.0, -7.0);size:(4.0, 4.0);numSnacksReq:1
+Snack pos:(6.0, -2.5);playerType:Plunga
+Snack pos:(0.0, 0.0);playerType:Plunga
+

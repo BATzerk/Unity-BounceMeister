@@ -1,15 +1,16 @@
 roomProperties posGlobal:(124.0, 364.0);designerFlag:2
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-14.50, y:18.00, width:23.00, height:4.00)
-Ground myRect:(x:22.50, y:3.00, width:7.00, height:26.00)
-Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
-Ground myRect:(x:-24.00, y:3.00, width:4.00, height:26.00)
-Ground myRect:(x:14.50, y:18.00, width:23.00, height:4.00)
-PlayerStart pos:(-17.2, -3.5)
-Platform myRect:(x:312.00, y:148.50, width:6.00, height:1.00)
-Ground myRect:(x:-5.00, y:2.50, width:34.00, height:7.00)
-Ground myRect:(x:19.00, y:1.50, width:14.00, height:5.00)
-Gate myRect:(x:21.00, y:-13.00, width:4.00, height:6.00);channelID:0
-GateButton pos:(15.5, 6.5);channelID:0
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 CharBarrel pos:(5.0, -13.5);otherCharName:Slippa
-Ground myRect:(x:-4.00, y:14.50, width:2.00, height:11.00)
+GateButton pos:(15.5, 6.5);channelID:0
+Gate pos:(21.0, -13.0);size:(4.0, 6.0);channelID:0
+Ground pos:(-14.5, 18.0);size:(23.0, 4.0)
+Ground pos:(22.5, 3.0);size:(7.0, 26.0)
+Ground pos:(-24.0, 3.0);size:(4.0, 26.0)
+Ground pos:(14.5, 18.0);size:(23.0, 4.0)
+Ground pos:(19.0, 1.5);size:(14.0, 5.0)
+Ground pos:(-5.0, 2.5);size:(34.0, 7.0)
+Ground pos:(0.0, -18.0);size:(52.0, 4.0)
+Ground pos:(-4.0, 14.5);size:(2.0, 11.0)
+Platform pos:(312.0, 148.5);size:(6.0, 1.0)
+PlayerStart pos:(-17.2, -3.5)
+

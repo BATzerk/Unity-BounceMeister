@@ -28,9 +28,12 @@ public class Room : MonoBehaviour {
     public Rect GetCameraBoundsLocal() {
         CameraBounds cameraBounds = GetComponentInChildren<CameraBounds>();
         if (cameraBounds != null) {
-            return new Rect(cameraBounds.RectLocal);
+            return new Rect() {
+                size = cameraBounds.Size,
+                center = cameraBounds.PosLocal,
+            };
         }
-        return new Rect(0, 0, 20, 20);
+        return new Rect(0,0, 20,20);
     }
     public Rect GetCameraBoundsGlobal() {
         Rect rLocal = GetCameraBoundsLocal();

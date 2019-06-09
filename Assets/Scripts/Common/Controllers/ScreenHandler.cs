@@ -27,7 +27,7 @@ public class ScreenHandler : MonoBehaviour {
 	// ----------------------------------------------------------------
 	private void Awake () {
 		// Set application values
-		Application.targetFrameRate = GameVisualProperties.TARGET_FRAME_RATE;
+		Application.targetFrameRate = GameProperties.TARGET_FRAME_RATE;
 
 		// Update the screen size right away! If you know what I mean ;)
 		OnScreenSizeChanged ();

@@ -13,7 +13,7 @@ public class Warpa : Player {
         return true;
     }
     private Vector2 GetWarpPos() {
-        Rect r = MyRoom.MyRoomData.BoundsLocal;
+        Rect r = MyRoom.MyRoomData.BoundsLocalBL;
         return new Vector2(Random.Range(r.xMin,r.xMax), Random.Range(r.yMin,r.yMax));
     }
 

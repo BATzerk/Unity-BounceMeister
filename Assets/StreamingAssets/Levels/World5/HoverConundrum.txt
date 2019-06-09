@@ -1,20 +1,21 @@
 roomProperties posGlobal:(-100.0, 714.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(-19.4, 8.9)
-Ground myRect:(x:-24.50, y:-6.50, width:3.00, height:27.00);isPlayerRespawn:True
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:9.50, y:-13.00, width:19.00, height:2.00);mayPlayerEat:False;isBouncy:True
-Ground myRect:(x:23.50, y:-1.50, width:5.00, height:37.00);isPlayerRespawn:True
-Ground myRect:(x:-22.50, y:14.00, width:7.00, height:4.00);isPlayerRespawn:True
-Spikes myRect:(x:-13.50, y:-5.00, width:20.00, height:1.00);rotation:270
-Ground myRect:(x:-16.50, y:-3.50, width:5.00, height:21.00);isPlayerRespawn:True
-Spikes myRect:(x:-8.50, y:-11.50, width:15.00, height:1.00);rotation:0
-Spikes myRect:(x:20.50, y:1.50, width:29.00, height:1.00);rotation:90
-Ground myRect:(x:-9.50, y:-16.00, width:17.00, height:8.00);isPlayerRespawn:True
-Ground myRect:(x:21.50, y:-13.00, width:3.00, height:2.00);isPlayerRespawn:True
-Ground myRect:(x:4.50, y:-17.00, width:35.00, height:6.00);isPlayerRespawn:True
-Platform myRect:(x:-21.00, y:6.50, width:4.00, height:1.00)
-Platform myRect:(x:-20.50, y:-17.50, width:5.00, height:1.00)
-Lift myRect:(x:-22.00, y:-12.00, width:2.00, height:10.00);rotation:0;strength:0.08
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 GateButton pos:(3.5, 8.5);channelID:0
-Gate myRect:(x:-21.00, y:5.00, width:4.00, height:4.00);channelID:0
+Gate pos:(-21.0, 5.0);size:(4.0, 4.0);channelID:0
+Ground pos:(9.5, -13.0);size:(19.0, 2.0);mayPlayerEat:False;isBouncy:True
+Ground pos:(23.5, -1.5);size:(5.0, 37.0);isPlayerRespawn:True
+Ground pos:(-22.5, 14.0);size:(7.0, 4.0);isPlayerRespawn:True
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(-24.5, -6.5);size:(3.0, 27.0);isPlayerRespawn:True
+Ground pos:(-16.5, -3.5);size:(5.0, 21.0);isPlayerRespawn:True
+Ground pos:(-9.5, -16.0);size:(17.0, 8.0);isPlayerRespawn:True
+Ground pos:(21.5, -13.0);size:(3.0, 2.0);isPlayerRespawn:True
+Ground pos:(4.5, -17.0);size:(35.0, 6.0);isPlayerRespawn:True
+Lift pos:(-22.0, -12.0);size:(2.0, 10.0);strength:0.08
+Platform pos:(-20.5, -17.5);size:(5.0, 1.0)
+Platform pos:(-21.0, 6.5);size:(4.0, 1.0)
+PlayerStart pos:(-19.4, 8.9)
+Spikes pos:(20.5, 1.5);rotation:90;size:(29.0, 1.0)
+Spikes pos:(-8.5, -11.5);size:(15.0, 1.0)
+Spikes pos:(-13.5, -5.0);rotation:270;size:(20.0, 1.0)
+

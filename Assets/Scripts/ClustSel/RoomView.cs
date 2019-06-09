@@ -23,10 +23,10 @@ namespace ClustSelNamespace {
             GameUtils.ParentAndReset(this.gameObject, tf_parent);
             this.gameObject.name = "RoomView " + myRoomData.RoomKey;
             
-            myRectTransform.sizeDelta = myRoomData.BoundsLocal.size;// * scale;
+            myRectTransform.sizeDelta = myRoomData.Size;// * scale;
             
             Vector2 pos = myRoomData.PosGlobal - myClustData.BoundsGlobal.center;
-            pos += myRoomData.cameraBoundsData.myRect.center; // hack-y! Just getting to work for now. Works around the rooms' local/global alignment mismatch.
+            pos += myRoomData.cameraBoundsData.pos; // hack-y! Just getting to work for now. Works around the rooms' local/global alignment mismatch.
             myRectTransform.anchoredPosition = pos;// * scale;
             
             contents.Initialize(this);

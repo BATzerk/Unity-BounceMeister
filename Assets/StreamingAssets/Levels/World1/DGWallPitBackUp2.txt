@@ -1,26 +1,27 @@
 roomProperties posGlobal:(890.0, 614.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-DispGround myRect:(x:-7.50, y:-1.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:0.50, y:4.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:0.50, y:1.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:-7.50, y:1.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:-7.50, y:4.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:-7.50, y:-4.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:0.50, y:-4.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:-7.50, y:-7.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:0.50, y:-7.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:0.50, y:-1.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:0.50, y:-10.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:-7.50, y:-10.50, width:3.00, height:3.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:19.00, y:-4.50, width:14.00, height:23.00)
-Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
-Ground myRect:(x:-19.50, y:-5.00, width:13.00, height:22.00)
-Ground myRect:(x:16.50, y:4.00, width:11.00, height:6.00)
-Ground myRect:(x:-19.00, y:3.00, width:14.00, height:6.00)
-Ground myRect:(x:-13.00, y:6.00, width:6.00, height:2.00)
-Ground myRect:(x:12.50, y:6.00, width:19.00, height:2.00)
-Platform myRect:(x:-3.50, y:6.50, width:13.00, height:1.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+DispGround pos:(-7.5, -1.5);size:(3.0, 3.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(0.5, 4.5);size:(3.0, 3.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(0.5, 1.5);size:(3.0, 3.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(-7.5, 1.5);size:(3.0, 3.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(-7.5, 4.5);size:(3.0, 3.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(-7.5, -4.5);size:(3.0, 3.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(0.5, -4.5);size:(3.0, 3.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(-7.5, -7.5);size:(3.0, 3.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(0.5, -7.5);size:(3.0, 3.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(0.5, -1.5);size:(3.0, 3.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(0.5, -10.5);size:(3.0, 3.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(-7.5, -10.5);size:(3.0, 3.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(19.0, -4.5);size:(14.0, 23.0)
+Ground pos:(0.0, -18.0);size:(52.0, 4.0)
+Ground pos:(-19.5, -5.0);size:(13.0, 22.0)
+Ground pos:(16.5, 4.0);size:(11.0, 6.0)
+Ground pos:(-19.0, 3.0);size:(14.0, 6.0)
+Ground pos:(-13.0, 6.0);size:(6.0, 2.0)
+Ground pos:(12.5, 6.0);size:(19.0, 2.0)
+Platform pos:(-3.5, 6.5);size:(13.0, 1.0)
 PlayerStart pos:(-8.0, 8.0)
 Snack pos:(10.0, -4.0);playerType:Any
-Spikes myRect:(x:0.00, y:-15.50, width:44.00, height:1.00);rotation:0
+Spikes pos:(0.0, -15.5);size:(44.0, 1.0)
+

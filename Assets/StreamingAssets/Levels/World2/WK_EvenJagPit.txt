@@ -1,26 +1,27 @@
 roomProperties posGlobal:(402.0, -276.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Spikes myRect:(x:8.50, y:1.50, width:1.00, height:1.00);rotation:270
-Spikes myRect:(x:8.50, y:-3.50, width:1.00, height:1.00);rotation:270
-Spikes myRect:(x:8.50, y:-8.50, width:1.00, height:1.00);rotation:270
-Spikes myRect:(x:-1.50, y:-6.00, width:22.00, height:1.00);rotation:90
-Spikes myRect:(x:-16.50, y:0.00, width:34.00, height:1.00);rotation:270
-Spikes myRect:(x:-9.00, y:-16.50, width:16.00, height:1.00);rotation:0
-PlayerStart pos:(15.1, 8.9)
-Platform myRect:(x:3.00, y:12.50, width:2.00, height:1.00)
-Ground myRect:(x:1.00, y:16.00, width:2.00, height:8.00)
-Ground myRect:(x:16.00, y:-17.50, width:20.00, height:5.00);mayPlayerEat:False
-Ground myRect:(x:16.50, y:16.50, width:19.00, height:7.00)
-Ground myRect:(x:16.00, y:-2.00, width:4.00, height:18.00)
-Ground myRect:(x:22.50, y:-14.00, width:7.00, height:12.00)
-Ground myRect:(x:3.50, y:-5.50, width:9.00, height:23.00)
-Ground myRect:(x:20.00, y:-3.00, width:12.00, height:16.00)
-Ground myRect:(x:0.00, y:-18.50, width:52.00, height:3.00);mayPlayerEat:False
-Ground myRect:(x:-12.00, y:18.50, width:28.00, height:3.00)
-Ground myRect:(x:-21.50, y:0.50, width:9.00, height:35.00)
-Ground myRect:(x:1.00, y:5.00, width:6.00, height:2.00)
-Gem pos:(17.0, -13.0);type:0
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+DispGround pos:(-9.0, -14.5);size:(12.0, 1.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(-9.0, -0.5);size:(12.0, 1.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(-9.0, -7.5);size:(12.0, 1.0);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
 Gem pos:(-9.0, -12.5);type:1
-DispGround myRect:(x:-9.00, y:-7.50, width:12.00, height:1.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:-9.00, y:-0.50, width:12.00, height:1.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
-DispGround myRect:(x:-9.00, y:-14.50, width:12.00, height:1.00);doRegen:False;mayPlayerEat:False;dieFromPlayerLeave:True
+Gem pos:(17.0, -13.0);type:0
+Ground pos:(16.0, -17.5);size:(20.0, 5.0);mayPlayerEat:False
+Ground pos:(-12.0, 18.5);size:(28.0, 3.0)
+Ground pos:(1.0, 16.0);size:(2.0, 8.0)
+Ground pos:(16.5, 16.5);size:(19.0, 7.0)
+Ground pos:(16.0, -2.0);size:(4.0, 18.0)
+Ground pos:(-21.5, 0.5);size:(9.0, 35.0)
+Ground pos:(3.5, -5.5);size:(9.0, 23.0)
+Ground pos:(20.0, -3.0);size:(12.0, 16.0)
+Ground pos:(22.5, -14.0);size:(7.0, 12.0)
+Ground pos:(1.0, 5.0);size:(6.0, 2.0)
+Ground pos:(0.0, -18.5);size:(52.0, 3.0);mayPlayerEat:False
+Platform pos:(3.0, 12.5);size:(2.0, 1.0)
+PlayerStart pos:(15.1, 8.9)
+Spikes pos:(-9.0, -16.5);size:(16.0, 1.0)
+Spikes pos:(-16.5, 0.0);rotation:270;size:(34.0, 1.0)
+Spikes pos:(-1.5, -6.0);rotation:90;size:(22.0, 1.0)
+Spikes pos:(8.5, -8.5);rotation:270;size:(1.0, 1.0)
+Spikes pos:(8.5, -3.5);rotation:270;size:(1.0, 1.0)
+Spikes pos:(8.5, 1.5);rotation:270;size:(1.0, 1.0)
+

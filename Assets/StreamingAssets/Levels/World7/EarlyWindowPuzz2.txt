@@ -1,17 +1,18 @@
 roomProperties posGlobal:(166.0, 986.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-6.50, y:1.50, width:3.00, height:25.00)
-Ground myRect:(x:-7.00, y:-17.50, width:14.00, height:5.00);mayPlayerEat:False
-Ground myRect:(x:-16.50, y:16.50, width:19.00, height:7.00)
-Ground myRect:(x:-19.50, y:-6.50, width:13.00, height:23.00)
-Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00);mayPlayerEat:False
-Ground myRect:(x:10.50, y:5.00, width:31.00, height:20.00)
-Ground myRect:(x:0.00, y:17.00, width:52.00, height:6.00)
-Ground myRect:(x:-14.00, y:-6.00, width:2.00, height:24.00)
-Ground myRect:(x:9.50, y:-17.00, width:7.00, height:6.00);mayPlayerEat:False
-Ground myRect:(x:22.50, y:-11.00, width:7.00, height:14.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(-6.5, 1.5);size:(3.0, 25.0)
+Ground pos:(-7.0, -17.5);size:(14.0, 5.0);mayPlayerEat:False
+Ground pos:(-16.5, 16.5);size:(19.0, 7.0)
+Ground pos:(-19.5, -6.5);size:(13.0, 23.0)
+Ground pos:(0.0, -18.0);size:(52.0, 4.0);mayPlayerEat:False
+Ground pos:(10.5, 5.0);size:(31.0, 20.0)
+Ground pos:(0.0, 17.0);size:(52.0, 6.0)
+Ground pos:(-14.0, -6.0);size:(2.0, 24.0)
+Ground pos:(9.5, -17.0);size:(7.0, 6.0);mayPlayerEat:False
+Ground pos:(22.5, -11.0);size:(7.0, 14.0)
 PlayerStart pos:(-20.0, 6.0)
 Snack pos:(9.0, -13.0);playerType:Any
-Spikes myRect:(x:7.50, y:-15.50, width:23.00, height:1.00);rotation:0
-Turret pos:(-12.5, -15.5);rotation:0;interval:0.15;speed:0.2;startOffset:1
+Spikes pos:(7.5, -15.5);size:(23.0, 1.0)
+Turret pos:(-12.5, -15.5);interval:0.15;speed:0.2;startOffset:1
 Turret pos:(-8.5, 12.5);rotation:180;interval:0.15;speed:0.2;startOffset:1
+

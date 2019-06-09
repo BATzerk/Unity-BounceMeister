@@ -1,19 +1,20 @@
 roomProperties posGlobal:(202.0, 834.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:22.50, y:1.50, width:7.00, height:37.00)
-Ground myRect:(x:5.00, y:-18.00, width:42.00, height:4.00)
-Ground myRect:(x:-15.00, y:7.00, width:12.00, height:4.00)
-Ground myRect:(x:-24.00, y:-13.00, width:6.00, height:14.00)
-Ground myRect:(x:-12.50, y:-11.00, width:7.00, height:10.00)
-Ground myRect:(x:6.00, y:18.50, width:40.00, height:3.00)
-Ground myRect:(x:-14.50, y:16.50, width:3.00, height:7.00)
-Ground myRect:(x:-23.50, y:9.50, width:7.00, height:21.00)
-Platform myRect:(x:-18.50, y:-17.50, width:5.00, height:1.00)
-Platform myRect:(x:-18.50, y:-6.50, width:5.00, height:1.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(22.5, 1.5);size:(7.0, 37.0)
+Ground pos:(5.0, -18.0);size:(42.0, 4.0)
+Ground pos:(-15.0, 7.0);size:(12.0, 4.0)
+Ground pos:(-24.0, -13.0);size:(6.0, 14.0)
+Ground pos:(-12.5, -11.0);size:(7.0, 10.0)
+Ground pos:(6.0, 18.5);size:(40.0, 3.0)
+Ground pos:(-14.5, 16.5);size:(3.0, 7.0)
+Ground pos:(-23.5, 9.5);size:(7.0, 21.0)
+Platform pos:(-18.5, -17.5);size:(5.0, 1.0)
+Platform pos:(-18.5, -6.5);size:(5.0, 1.0)
 PlayerStart pos:(-14.0, -4.9)
-Spikes myRect:(x:5.00, y:-15.50, width:34.00, height:1.00);rotation:0
-Spikes myRect:(x:18.50, y:0.00, width:36.00, height:1.00);rotation:90
-ToggleGround myRect:(x:-1.00, y:-6.50, width:4.00, height:1.00);startsOn:False
-ToggleGround myRect:(x:-1.00, y:-13.50, width:4.00, height:1.00);startsOn:True
-ToggleGround myRect:(x:8.00, y:-2.50, width:4.00, height:1.00);startsOn:True
-ToggleGround myRect:(x:8.00, y:4.50, width:4.00, height:1.00);startsOn:False
+Spikes pos:(5.0, -15.5);size:(34.0, 1.0)
+Spikes pos:(18.5, 0.0);rotation:90;size:(36.0, 1.0)
+ToggleGround pos:(-1.0, -6.5);size:(4.0, 1.0);startsOn:False;togFromContact:False;togFromAction:True
+ToggleGround pos:(-1.0, -13.5);size:(4.0, 1.0);startsOn:True;togFromContact:False;togFromAction:True
+ToggleGround pos:(8.0, -2.5);size:(4.0, 1.0);startsOn:True;togFromContact:False;togFromAction:True
+ToggleGround pos:(8.0, 4.5);size:(4.0, 1.0);startsOn:False;togFromContact:False;togFromAction:True
+

@@ -1,22 +1,23 @@
 roomProperties posGlobal:(510.0, 2126.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:11.50, y:-10.50, width:7.00, height:3.00)
-Ground myRect:(x:-3.00, y:-2.50, width:14.00, height:25.00)
-Ground myRect:(x:16.00, y:-11.50, width:12.00, height:1.00)
-Ground myRect:(x:17.00, y:-15.50, width:18.00, height:9.00)
-Ground myRect:(x:2.50, y:3.00, width:25.00, height:14.00)
-Ground myRect:(x:-21.00, y:2.50, width:10.00, height:25.00)
-Ground myRect:(x:-17.50, y:-11.00, width:3.00, height:4.00)
-Ground myRect:(x:-8.50, y:-17.50, width:25.00, height:5.00)
-Ground myRect:(x:-11.00, y:-18.00, width:30.00, height:4.00)
-Ground myRect:(x:22.50, y:2.50, width:7.00, height:29.00)
-Ground myRect:(x:0.00, y:17.50, width:52.00, height:5.00)
-Platform myRect:(x:6.00, y:-9.50, width:4.00, height:1.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(11.5, -10.5);size:(7.0, 3.0)
+Ground pos:(-3.0, -2.5);size:(14.0, 25.0)
+Ground pos:(16.0, -11.5);size:(12.0, 1.0)
+Ground pos:(17.0, -15.5);size:(18.0, 9.0)
+Ground pos:(2.5, 3.0);size:(25.0, 14.0)
+Ground pos:(-21.0, 2.5);size:(10.0, 25.0)
+Ground pos:(-17.5, -11.0);size:(3.0, 4.0)
+Ground pos:(-8.5, -17.5);size:(25.0, 5.0)
+Ground pos:(-11.0, -18.0);size:(30.0, 4.0)
+Ground pos:(22.5, 2.5);size:(7.0, 29.0)
+Ground pos:(0.0, 17.5);size:(52.0, 5.0)
+Platform pos:(6.0, -9.5);size:(4.0, 1.0)
 PlayerStart pos:(-20.0, -14.0)
-Spikes myRect:(x:-10.50, y:-3.00, width:26.00, height:1.00);rotation:90
-Spikes myRect:(x:2.50, y:10.50, width:25.00, height:1.00);rotation:0
-Spikes myRect:(x:16.50, y:-10.50, width:9.00, height:1.00);rotation:0
-Spikes myRect:(x:15.50, y:3.00, width:14.00, height:1.00);rotation:270
+Spikes pos:(-10.5, -3.0);rotation:90;size:(26.0, 1.0)
+Spikes pos:(2.5, 10.5);size:(25.0, 1.0)
+Spikes pos:(16.5, -10.5);size:(9.0, 1.0)
+Spikes pos:(15.5, 3.0);rotation:270;size:(14.0, 1.0)
 Turret pos:(-16.5, 14.5);rotation:270;interval:1;speed:0.2;startOffset:0.2
 Turret pos:(18.5, 15.5);rotation:180;interval:1;speed:0.2;startOffset:0.6
-Turret pos:(-15.5, -15.5);rotation:0;interval:1;speed:0.2;startOffset:0.2
+Turret pos:(-15.5, -15.5);interval:1;speed:0.2;startOffset:0.2
+

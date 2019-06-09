@@ -1,16 +1,17 @@
 roomProperties posGlobal:(466.0, -198.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-23.50, y:-2.00, width:5.00, height:32.00)
-Ground myRect:(x:2.50, y:-6.50, width:3.00, height:7.00)
-Ground myRect:(x:21.50, y:5.50, width:9.00, height:23.00)
-Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
-Ground myRect:(x:11.00, y:8.00, width:20.00, height:4.00)
-Ground myRect:(x:5.00, y:15.00, width:42.00, height:10.00)
-Ground myRect:(x:0.00, y:18.50, width:52.00, height:3.00)
-Ground myRect:(x:-5.50, y:4.00, width:3.00, height:28.00)
-Ground myRect:(x:13.50, y:-4.50, width:25.00, height:9.00)
-Platform myRect:(x:-18.50, y:13.50, width:5.00, height:1.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(-23.5, -2.0);size:(5.0, 32.0)
+Ground pos:(2.5, -6.5);size:(3.0, 7.0)
+Ground pos:(21.5, 5.5);size:(9.0, 23.0)
+Ground pos:(0.0, -17.0);size:(52.0, 6.0)
+Ground pos:(11.0, 8.0);size:(20.0, 4.0)
+Ground pos:(5.0, 15.0);size:(42.0, 10.0)
+Ground pos:(0.0, 18.5);size:(52.0, 3.0)
+Ground pos:(-5.5, 4.0);size:(3.0, 28.0)
+Ground pos:(13.5, -4.5);size:(25.0, 9.0)
+Platform pos:(-18.5, 13.5);size:(5.0, 1.0)
 PlayerStart pos:(-17.5, -12.0)
-ProgressGate myRect:(x:9.00, y:3.00, width:6.00, height:6.00);numSnacksReq:2
+ProgressGate pos:(9.0, 3.0);size:(6.0, 6.0);numSnacksReq:2
 RoomDoor pos:(16.0, 1.0);myID:0;worldToIndex:-1;roomToKey:Clust1Start;doorToID:0
 Snack pos:(-1.5, 9.0);playerType:Plunga
+

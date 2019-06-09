@@ -1,26 +1,27 @@
 roomProperties posGlobal:(176.0, 850.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:0.00, y:16.50, width:52.00, height:7.00)
-Ground myRect:(x:0.50, y:-11.50, width:23.00, height:3.00)
-Ground myRect:(x:0.00, y:-15.50, width:52.00, height:9.00)
-Ground myRect:(x:-22.00, y:8.50, width:8.00, height:23.00)
-Ground myRect:(x:22.50, y:9.00, width:7.00, height:22.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(0.0, 16.5);size:(52.0, 7.0)
+Ground pos:(0.5, -11.5);size:(23.0, 3.0)
+Ground pos:(0.0, -15.5);size:(52.0, 9.0)
+Ground pos:(-22.0, 8.5);size:(8.0, 23.0)
+Ground pos:(22.5, 9.0);size:(7.0, 22.0)
 InfoSign pos:(-16.0, -11.0);myText:SHIFT to Freeze.
 PlayerStart pos:(-19.0, -9.0)
-Turret pos:(7.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(1.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(1.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(7.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(-4.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(7.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(7.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(-6.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(-4.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(3.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(9.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(-8.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(-2.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(5.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(-0.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(9.5, -10.5);rotation:0;interval:0.4;speed:0.5
-Turret pos:(5.5, -10.5);rotation:0;interval:0.4;speed:0.5
+Turret pos:(7.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(1.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(1.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(7.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(-4.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(7.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(7.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(-6.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(-4.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(3.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(9.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(-8.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(-2.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(5.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(-0.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(9.5, -10.5);interval:0.4;speed:0.5
+Turret pos:(5.5, -10.5);interval:0.4;speed:0.5
+

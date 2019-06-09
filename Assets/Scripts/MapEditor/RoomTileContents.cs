@@ -41,14 +41,12 @@ public class RoomTileContents : MonoBehaviour {
 	}
 	private void InitializeContent () {
 		// Set the mask's pos/size!
-		propsMask.transform.localPosition = myRD.BoundsLocal.center;
-		GameUtils.SizeSpriteMask (propsMask, myRD.BoundsLocal.size);
+		propsMask.transform.localPosition = myRD.BoundsLocalBL.center;
+		GameUtils.SizeSpriteMask (propsMask, myRD.Size);
 
 		// Set text string!
 		t_roomName.text = myRD.RoomKey;
-        Vector2 textPos = -myRD.BoundsLocal.size*0.5f; // bottom-left align.
-        textPos += myRD.cameraBoundsData.myRect.center; // hacky offset for inconsistent global/local bounds alignment.
-		t_roomName.transform.localPosition = textPos;
+		t_roomName.transform.localPosition = new Vector2(myRD.BoundsLocalBL.xMin, myRD.BoundsLocalBL.yMin); // bottom-left align.
 //		if (GameManagers.Instance.DataManager.mostRecentlySavedRoom_worldIndex == worldDataRef.WorldIndex && GameManagers.Instance.DataManager.mostRecentlySavedRoom_roomKey==roomTileRef.RoomKey) {
 //			roomNameText.color = new Color(1, 0.8f, 0.2f); // If I'm the most recently saved room, make me stand out! :)
 //		}

@@ -90,8 +90,7 @@ public class MapEditor : MonoBehaviour {
 		for (int i=CurrWorldRoomTiles.Count-1; i>=0; --i) { // loop thru backwards so we click NEWER tiles before older ones.
             RoomTile tile = CurrWorldRoomTiles[i];
             if (!tile.IsFullyVisible) { continue; } // Tile's not available?? Skip it!
-			Rect boundsGlobal = tile.BoundsGlobal;
-			if (boundsGlobal.Contains(point+boundsGlobal.size*0.5f)) { // Note: convert back to center-aligned. SIGH. I would love to just make room's rect corner-aligned. Avoid any ambiguity.
+			if (tile.BoundsGlobalBL.Contains(point)) {
 				return tile;
 			}
 		}
@@ -125,9 +124,20 @@ public class MapEditor : MonoBehaviour {
 		#if UNITY_EDITOR
 		UnityEditor.AssetDatabase.Refresh();
 		#endif
-
-//		// Set the whole map's scale to be the same as how the game's scale works.
-//		this.transform.localScale = new Vector3 (GameProperties.WORLD_SCALE, GameProperties.WORLD_SCALE, 1);
+        
+        //// QQQ TEST!!!
+        //for (int wi=1; wi<8; wi++) {
+        //    foreach (RoomData rd in dataManager.GetWorldData(wi).roomDatas.Values) {
+        //        //rd.cameraBoundsData.pos += rd.cameraBoundsData.size*0.5f;
+        //        //rd.SetPosGlobal(rd.PosGlobal);
+        //        for (int i=rd.allPropDatas.Count-1; i>=0; --i) {
+        //            if (rd.allPropDatas[i] is CameraBoundsData) {
+        //                rd.allPropDatas.RemoveAt(i);
+        //            }
+        //        }
+        //        RoomSaverLoader.SaveRoomFile(rd);
+        //    }
+        //}
 
 		// Make the worldLayerGOs and RoomTiles only once.
 		MakeWorldLayerGOs();
@@ -140,6 +150,12 @@ public class MapEditor : MonoBehaviour {
 		// Set current world
 		SetCurrWorld(SaveStorage.GetInt(SaveKeys.LastPlayedWorldIndex));
 	}
+    
+        //string returnString = ROOM_PROPERTIES + " ";
+        //returnString += "pos:" + rd.PosGlobal;
+        //returnString += ";size:" + rd.Size;
+        //returnString += ";camBoundsPos:" + rd.CameraBoundsPos;
+        //returnString += ";designerFlag:" + rd.DesignerFlag;
 
 	private void SetCurrWorld (int _worldIndex) {
 		if (_worldIndex >= GameProperties.NUM_WORLDS) { return; } // Don't crash da game, bruddah.
@@ -147,24 +163,21 @@ public class MapEditor : MonoBehaviour {
 		// Deselect any tiles that might be selected!
 		DeselectAllRoomTiles();
 
-		// If we're CHANGING the currentWorld...!!
-		//if (currWorldIndex != _worldIndex) {
-			// Tell all the tiles in the world we already were to hide their stuff!
-			if (currWorldIndex != -1) {
-				for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
-					CurrWorldRoomTiles[i].Hide();
-				}
+		// Tell all the tiles in the world we already were to hide their stuff!
+		if (currWorldIndex != -1) {
+			for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
+				CurrWorldRoomTiles[i].Hide();
 			}
-			currWorldIndex = _worldIndex;
-            SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, currWorldIndex);
-        //}
+		}
+		currWorldIndex = _worldIndex;
+        SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, currWorldIndex);
         
         // Tell all the tiles in the NEW world to show their stuff!
         for (int i=0; i<CurrWorldRoomTiles.Count; i++) {
             CurrWorldRoomTiles[i].Show();
         }
         
-        // Dispatch hevent!
+        // Dispatch heevent!
         GameManagers.Instance.EventManager.OnMapEditorSetCurrWorld(currWorldIndex);
 	}
     

@@ -1,19 +1,20 @@
 roomProperties posGlobal:(530.0, 928.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:41.00, height:38.00)
-DispGround myRect:(x:-4.50, y:-6.50, width:1.00, height:9.00);doRegen:True;dieFromPlayerLeave:True
-DispGround myRect:(x:1.50, y:-6.50, width:1.00, height:9.00);doRegen:True;dieFromPlayerLeave:True
-Ground myRect:(x:-6.50, y:-3.00, width:3.00, height:2.00)
-Ground myRect:(x:-1.50, y:-14.00, width:21.00, height:4.00)
-Ground myRect:(x:-10.50, y:-3.00, width:7.00, height:4.00)
-Ground myRect:(x:11.50, y:-14.50, width:7.00, height:11.00)
-Ground myRect:(x:3.00, y:-3.00, width:2.00, height:2.00)
-Ground myRect:(x:-1.50, y:-3.00, width:5.00, height:2.00)
-Ground myRect:(x:-22.00, y:-8.00, width:8.00, height:14.00)
-Ground myRect:(x:-19.50, y:11.50, width:13.00, height:9.00)
-Ground myRect:(x:-5.50, y:-17.50, width:41.00, height:5.00)
-Ground myRect:(x:-5.50, y:14.50, width:41.00, height:11.00)
-Ground myRect:(x:5.00, y:5.50, width:2.00, height:19.00)
-Ground myRect:(x:9.50, y:6.50, width:11.00, height:17.00)
+CameraBounds pos:(-5.5, 0.0);size:(41.0, 38.0)
+DispGround pos:(-4.5, -6.5);size:(1.0, 9.0);doRegen:True;dieFromPlayerLeave:True
+DispGround pos:(1.5, -6.5);size:(1.0, 9.0);doRegen:True;dieFromPlayerLeave:True
+Ground pos:(-6.5, -3.0);size:(3.0, 2.0)
+Ground pos:(-1.5, -14.0);size:(21.0, 4.0)
+Ground pos:(-10.5, -3.0);size:(7.0, 4.0)
+Ground pos:(11.5, -14.5);size:(7.0, 11.0)
+Ground pos:(3.0, -3.0);size:(2.0, 2.0)
+Ground pos:(-1.5, -3.0);size:(5.0, 2.0)
+Ground pos:(-22.0, -8.0);size:(8.0, 14.0)
+Ground pos:(-19.5, 11.5);size:(13.0, 9.0)
+Ground pos:(-5.5, -17.5);size:(41.0, 5.0)
+Ground pos:(-5.5, 14.5);size:(41.0, 11.0)
+Ground pos:(5.0, 5.5);size:(2.0, 19.0)
+Ground pos:(9.5, 6.5);size:(11.0, 17.0)
 Laser pos:(8.5, -11.5);rotation:90;onOffer:(1.6, 0.4, 0)
 PlayerStart pos:(-20.0, 0.0)
-Spikes myRect:(x:-11.00, y:-14.50, width:14.00, height:1.00);rotation:0
+Spikes pos:(-11.0, -14.5);size:(14.0, 1.0)
+

@@ -63,8 +63,7 @@ public class RoomClusterData {
     public void RefreshBounds() {
         BoundsGlobal = Rect.zero;
         foreach (RoomData rd in rooms) {
-            Rect roomBounds = new Rect(rd.BoundsGlobal.position-rd.BoundsGlobal.size*0.5f, rd.BoundsGlobal.size); // AWKWARD offset for centered-ness.
-            BoundsGlobal = MathUtils.GetCompoundRect(BoundsGlobal, roomBounds);
+            BoundsGlobal = MathUtils.GetCompoundRect(BoundsGlobal, rd.BoundsGlobalBL);
         }
     }
     public void RefreshSnackCount() {

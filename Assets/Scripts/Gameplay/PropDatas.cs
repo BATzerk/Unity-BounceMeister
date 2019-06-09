@@ -140,7 +140,7 @@ public class BuzzsawData : PropData {
     public Vector2 size;
 }
 public class CameraBoundsData : PropData {
-	public Rect myRect=new Rect();
+    public Vector2 size;
 }
 public class CharBarrelData : PropData {
     public string otherCharName;
@@ -162,7 +162,6 @@ public class GemData : PropData {
 }
 
 public class BaseGroundData : PropData {
-	public Rect myRect;// TODO: Remove this!!
     public Vector2 size;
 	public bool mayPlayerEat=true;
     public bool isPlayerRespawn=false;

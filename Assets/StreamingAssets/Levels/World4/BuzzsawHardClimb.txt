@@ -1,13 +1,14 @@
 roomProperties posGlobal:(1174.0, 596.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Buzzsaw size:(3.0, 3.0);travelMind:(11.0, 6.0, 11.0, -11.0, 1.2,0)
-Buzzsaw size:(3.0, 3.0);travelMind:(6.0, -12.0, 6.0, 6.0, -0.4,1.2)
-Ground myRect:(x:21.00, y:16.00, width:10.00, height:8.00)
-Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00);isPlayerRespawn:True
-Ground myRect:(x:18.50, y:-2.50, width:15.00, height:21.00)
-Ground myRect:(x:-11.00, y:4.00, width:26.00, height:32.00)
-Ground myRect:(x:0.00, y:18.50, width:52.00, height:3.00)
-Ground myRect:(x:19.00, y:-4.00, width:14.00, height:24.00)
-Ground myRect:(x:1.00, y:-2.50, width:10.00, height:21.00)
-Ground myRect:(x:-24.00, y:2.00, width:4.00, height:36.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Buzzsaw travelMind:(11,6,11,-11, 1.2, 0);size:(3.0, 3.0)
+Buzzsaw travelMind:(6,-12,6,6, -0.4, 1.2);size:(3.0, 3.0)
+Ground pos:(21.0, 16.0);size:(10.0, 8.0)
+Ground pos:(0.0, -18.0);size:(52.0, 4.0);isPlayerRespawn:True
+Ground pos:(18.5, -2.5);size:(15.0, 21.0)
+Ground pos:(-11.0, 4.0);size:(26.0, 32.0)
+Ground pos:(0.0, 18.5);size:(52.0, 3.0)
+Ground pos:(19.0, -4.0);size:(14.0, 24.0)
+Ground pos:(1.0, -2.5);size:(10.0, 21.0)
+Ground pos:(-24.0, 2.0);size:(4.0, 36.0)
 PlayerStart pos:(6.0, -15.0)
+

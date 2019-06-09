@@ -1,29 +1,29 @@
 roomProperties posGlobal:(798.0, 420.0);designerFlag:2
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Buzzsaw size:(3.0, 3.0);travelMind:(8.0, 10.0,8.0, -10.0, 1,0)
-Buzzsaw size:(3.0, 3.0);travelMind:(5.0, 10.0,5.0, -10.0, 1,0)
-Buzzsaw size:(3.0, 3.0);travelMind:(-7.0, 6.0,4.0, 6.0, 1,0)
-Buzzsaw size:(3.0, 3.0);travelMind:(-7.0, 3.0,4.0, 3.0, 1,0)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Buzzsaw travelMind:(5,10,5,-10, 1, 0);size:(3.0, 3.0)
+Buzzsaw travelMind:(8,10,8,-10, 1, 0);size:(3.0, 3.0)
+Buzzsaw travelMind:(-7,6,4,6, 1, 0);size:(3.0, 3.0)
+Buzzsaw travelMind:(-7,3,4,3, 1, 0);size:(3.0, 3.0)
 GateButton pos:(6.5, 14.0);channelID:0
 GateButton pos:(-20.5, 10.5);channelID:0
 GateButton pos:(-3.5, -4.0);channelID:0
 GateButton pos:(19.0, -4.5);channelID:0
-Gate myRect:(x:15.00, y:-13.50, width:4.00, height:5.00);channelID:0
-Ground myRect:(x:-6.50, y:-7.50, width:13.00, height:3.00)
-Ground myRect:(x:-24.00, y:5.00, width:4.00, height:28.00)
-Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
-Ground myRect:(x:24.00, y:1.00, width:4.00, height:34.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:21.00, y:13.50, width:10.00, height:5.00)
-Ground myRect:(x:-18.50, y:7.50, width:13.00, height:3.00)
-Ground myRect:(x:14.50, y:-3.50, width:3.00, height:15.00)
-Ground myRect:(x:18.00, y:-9.50, width:10.00, height:3.00)
-Ground myRect:(x:6.50, y:0.00, width:3.00, height:24.00)
-Ground myRect:(x:-1.50, y:4.50, width:13.00, height:3.00)
+Gate pos:(15.0, -13.5);size:(4.0, 5.0);channelID:0
+Ground pos:(-6.5, -7.5);size:(13.0, 3.0)
+Ground pos:(-24.0, 5.0);size:(4.0, 28.0)
+Ground pos:(0.0, -18.0);size:(52.0, 4.0)
+Ground pos:(24.0, 1.0);size:(4.0, 34.0)
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(21.0, 13.5);size:(10.0, 5.0)
+Ground pos:(-18.5, 7.5);size:(13.0, 3.0)
+Ground pos:(14.5, -3.5);size:(3.0, 15.0)
+Ground pos:(18.0, -9.5);size:(10.0, 3.0)
+Ground pos:(6.5, 0.0);size:(3.0, 24.0)
+Ground pos:(-1.5, 4.5);size:(13.0, 3.0)
 PlayerStart pos:(-20.0, -14.0)
 Snack pos:(19.5, -14.0);playerType:Any
-Spikes myRect:(x:-15.00, y:9.50, width:6.00, height:1.00);rotation:0
-Spikes myRect:(x:2.00, y:6.50, width:6.00, height:1.00);rotation:0
-Spikes myRect:(x:-10.00, y:-5.50, width:6.00, height:1.00);rotation:0
-Spikes myRect:(x:17.50, y:-7.50, width:9.00, height:1.00);rotation:0
+Spikes pos:(-15.0, 9.5);size:(6.0, 1.0)
+Spikes pos:(2.0, 6.5);size:(6.0, 1.0)
+Spikes pos:(-10.0, -5.5);size:(6.0, 1.0)
+Spikes pos:(17.5, -7.5);size:(9.0, 1.0)
 

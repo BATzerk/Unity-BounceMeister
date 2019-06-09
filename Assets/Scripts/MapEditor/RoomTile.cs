@@ -31,9 +31,10 @@ public class RoomTile : MonoBehaviour {
     public int WorldIndex { get { return MyRoomData.WorldIndex; } }
 	public string RoomKey { get { return MyRoomData.RoomKey; } }
 	//	public Rect PlacematRect { get { return new Rect (x-w*0.5f,y-h*0.5f, w,h); } }
-	public Rect BoundsGlobal { get { return MyRoomData.BoundsGlobal; } }
-	public Rect BoundsLocal { get { return MyRoomData.BoundsLocal; } }
-	private Vector2 Pos { get { return MyRoomData.PosGlobal; } }
+	public  Rect BoundsGlobalBL { get { return MyRoomData.BoundsGlobalBL; } }
+	private Rect BoundsLocalBL { get { return MyRoomData.BoundsLocalBL; } }
+    private Vector2 Pos { get { return MyRoomData.PosGlobal; } }
+    private Vector2 Size { get { return MyRoomData.Size; } }
  //   public bool IsDragReadyMouseOverMe {
 	//	get { return isDragReadyMouseOverMe; }
 	//	private set {
@@ -60,7 +61,7 @@ public class RoomTile : MonoBehaviour {
 		MapEditor = _mapEditorRef;
 		MyRoomData = _myRoomData;
         GameUtils.ParentAndReset(this.gameObject, tf_parent);
-		this.gameObject.name = "RoomTile " + MyRoomData.RoomKey;
+		this.gameObject.name = MyRoomData.RoomKey;
 //		SetPosAndSizeValues ();
 
 		contents.Initialize (this);
@@ -147,14 +148,14 @@ public class RoomTile : MonoBehaviour {
 	}
 	private void ApplySize() {
 		// backing and border
-		GameUtils.SizeSpriteRenderer (sr_backing, BoundsLocal.size.x,BoundsLocal.size.y);
-		sr_border.size = BoundsLocal.size;
-		sr_backing.transform.localPosition = BoundsLocal.center;
-		sr_border.transform.localPosition = BoundsLocal.center;
+		GameUtils.SizeSpriteRenderer (sr_backing, Size.x,Size.y);
+		sr_border.size = Size;
+		sr_backing.transform.localPosition = BoundsLocalBL.center;
+		sr_border.transform.localPosition = BoundsLocalBL.center;
 		// bodyCollider
-		bodyCollider.UpdatePosAndSize (BoundsLocal);
+		bodyCollider.UpdatePosAndSize (BoundsLocalBL);
 		// Contents may be hot
-		contents.ApplyPosAndSize (BoundsLocal);
+		contents.ApplyPosAndSize (BoundsLocalBL);
 		//// roomNameText
 		//contents.SetTextPosY (0);//MyRect.size.y*0.5f);
 	}

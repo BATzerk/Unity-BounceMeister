@@ -1,23 +1,24 @@
 roomProperties posGlobal:(174.0, 90.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-11.00, y:18.00, width:30.00, height:4.00)
-Ground myRect:(x:24.00, y:-13.00, width:4.00, height:14.00);isPlayerRespawn:True
-Ground myRect:(x:-24.00, y:-7.00, width:4.00, height:18.00)
-Ground myRect:(x:-4.00, y:-18.00, width:44.00, height:4.00)
-Ground myRect:(x:18.00, y:-8.00, width:8.00, height:4.00);isPlayerRespawn:True
-Ground myRect:(x:4.50, y:-11.50, width:9.00, height:11.00)
-Ground myRect:(x:-24.00, y:14.00, width:4.00, height:14.00)
-Ground myRect:(x:17.50, y:18.00, width:17.00, height:4.00)
-Ground myRect:(x:24.00, y:8.50, width:4.00, height:17.00)
-Ground myRect:(x:-15.00, y:-8.00, width:22.00, height:20.00);isPlayerRespawn:True
-Ground myRect:(x:4.50, y:6.00, width:9.00, height:8.00);isPlayerRespawn:True
-Platform myRect:(x:11.50, y:-6.50, width:5.00, height:1.00);canDropThru:False;isPlayerRespawn:True
-Platform myRect:(x:20.00, y:-18.50, width:4.00, height:1.00)
-Platform myRect:(x:6.50, y:16.50, width:5.00, height:1.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(-11.0, 18.0);size:(30.0, 4.0)
+Ground pos:(24.0, -13.0);size:(4.0, 14.0);isPlayerRespawn:True
+Ground pos:(-24.0, -7.0);size:(4.0, 18.0)
+Ground pos:(-4.0, -18.0);size:(44.0, 4.0)
+Ground pos:(18.0, -8.0);size:(8.0, 4.0);isPlayerRespawn:True
+Ground pos:(4.5, -11.5);size:(9.0, 11.0)
+Ground pos:(-24.0, 14.0);size:(4.0, 14.0)
+Ground pos:(17.5, 18.0);size:(17.0, 4.0)
+Ground pos:(24.0, 8.5);size:(4.0, 17.0)
+Ground pos:(-15.0, -8.0);size:(22.0, 20.0);isPlayerRespawn:True
+Ground pos:(4.5, 6.0);size:(9.0, 8.0);isPlayerRespawn:True
+Platform pos:(11.5, -6.5);size:(5.0, 1.0);isPlayerRespawn:True;canDropThru:False
+Platform pos:(20.0, -18.5);size:(4.0, 1.0)
+Platform pos:(6.5, 16.5);size:(5.0, 1.0)
 PlayerStart pos:(-6.8, 3.2)
-Snack pos:(11.0, -14.0)
-Snack pos:(16.5, -14.0)
-Snack pos:(-2.0, 6.0)
-Snack pos:(11.0, 6.0)
-Snack pos:(4.5, 12.0)
-Snack pos:(-2.0, -14.5)
+Snack pos:(11.0, -14.0);playerType:Plunga
+Snack pos:(16.5, -14.0);playerType:Plunga
+Snack pos:(-2.0, 6.0);playerType:Plunga
+Snack pos:(11.0, 6.0);playerType:Plunga
+Snack pos:(4.5, 12.0);playerType:Plunga
+Snack pos:(-2.0, -14.5);playerType:Plunga
+

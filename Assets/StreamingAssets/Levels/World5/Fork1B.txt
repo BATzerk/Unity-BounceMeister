@@ -1,19 +1,20 @@
 roomProperties posGlobal:(364.0, 310.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-PlayerStart pos:(-21.5, 7.8)
-Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
-Ground myRect:(x:-15.50, y:2.00, width:21.00, height:8.00)
-Ground myRect:(x:-23.00, y:15.50, width:6.00, height:9.00)
-Ground myRect:(x:1.00, y:10.50, width:14.00, height:19.00)
-Ground myRect:(x:-18.50, y:-13.50, width:15.00, height:13.00)
-Ground myRect:(x:20.00, y:6.50, width:12.00, height:27.00)
-Platform myRect:(x:1.00, y:-5.50, width:6.00, height:1.00)
-Snack pos:(11.0, -3.5);playerType:Flatline
-Ground myRect:(x:-3.50, y:-3.00, width:3.00, height:10.00)
-Ground myRect:(x:9.50, y:-6.00, width:11.00, height:2.00)
-Ground myRect:(x:-9.50, y:-12.50, width:7.00, height:3.00)
-Gate myRect:(x:-9.00, y:12.00, width:6.00, height:2.00);channelID:1
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 GateButton pos:(-8.0, -5.5);channelID:1
-Platform myRect:(x:-8.00, y:-7.50, width:6.00, height:1.00)
-Ground myRect:(x:-19.00, y:12.00, width:14.00, height:2.00)
-Ground myRect:(x:-7.00, y:18.50, width:14.00, height:3.00)
+Gate pos:(-9.0, 12.0);size:(6.0, 2.0);channelID:1
+Ground pos:(-7.0, 18.5);size:(14.0, 3.0)
+Ground pos:(0.0, -17.0);size:(52.0, 6.0)
+Ground pos:(-23.0, 15.5);size:(6.0, 9.0)
+Ground pos:(1.0, 10.5);size:(14.0, 19.0)
+Ground pos:(-18.5, -13.5);size:(15.0, 13.0)
+Ground pos:(-15.5, 2.0);size:(21.0, 8.0)
+Ground pos:(-19.0, 12.0);size:(14.0, 2.0)
+Ground pos:(-3.5, -3.0);size:(3.0, 10.0)
+Ground pos:(-9.5, -12.5);size:(7.0, 3.0)
+Ground pos:(20.0, 6.5);size:(12.0, 27.0)
+Ground pos:(9.5, -6.0);size:(11.0, 2.0)
+Platform pos:(1.0, -5.5);size:(6.0, 1.0)
+Platform pos:(-8.0, -7.5);size:(6.0, 1.0)
+PlayerStart pos:(-21.5, 7.8)
+Snack pos:(11.0, -3.5);playerType:Flatline
+

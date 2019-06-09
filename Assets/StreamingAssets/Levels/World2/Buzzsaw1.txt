@@ -1,23 +1,24 @@
 roomProperties posGlobal:(594.0, 1364.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Buzzsaw size:(3.0, 3.0);travelMind:(-11,-14,11,-14, 1, 0)
-Buzzsaw size:(3.0, 3.0);travelMind:(-11,7,11,7, 2, 3.14159)
-Buzzsaw size:(3.0, 3.0);travelMind:(-11,7,11,7, 2, 0)
-Buzzsaw size:(3.0, 3.0);travelMind:(-11,-3,11,-3, 1.5, 0)
-Ground myRect:(x:-2.50, y:-4.50, width:39.00, height:3.00)
-Ground myRect:(x:19.00, y:-14.00, width:14.00, height:6.00)
-Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
-Ground myRect:(x:-19.00, y:-15.00, width:14.00, height:4.00);isPlayerRespawn:True
-Ground myRect:(x:-24.00, y:1.50, width:4.00, height:33.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:2.50, y:5.50, width:39.00, height:3.00)
-Ground myRect:(x:-18.00, y:-3.00, width:12.00, height:4.00)
-Ground myRect:(x:14.50, y:-3.00, width:5.00, height:4.00);isPlayerRespawn:True
-Ground myRect:(x:24.00, y:-3.50, width:4.00, height:23.00)
-Ground myRect:(x:-14.50, y:7.00, width:5.00, height:6.00);isPlayerRespawn:True
-Ground myRect:(x:19.00, y:7.00, width:14.00, height:6.00);isPlayerRespawn:True
-Platform myRect:(x:-19.50, y:9.50, width:5.00, height:1.00);isPlayerRespawn:True
-Platform myRect:(x:19.50, y:-1.50, width:5.00, height:1.00);isPlayerRespawn:True
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Buzzsaw travelMind:(-11,7,11,7, 2, 3.14159);size:(3.0, 3.0)
+Buzzsaw travelMind:(-11,-14,11,-14, 1, 0);size:(3.0, 3.0)
+Buzzsaw travelMind:(-11,7,11,7, 2, 0);size:(3.0, 3.0)
+Buzzsaw travelMind:(-11,-3,11,-3, 1.5, 0);size:(3.0, 3.0)
+Ground pos:(-2.5, -4.5);size:(39.0, 3.0)
+Ground pos:(19.0, -14.0);size:(14.0, 6.0)
+Ground pos:(0.0, -17.0);size:(52.0, 6.0)
+Ground pos:(-19.0, -15.0);size:(14.0, 4.0);isPlayerRespawn:True
+Ground pos:(-24.0, 1.5);size:(4.0, 33.0)
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(2.5, 5.5);size:(39.0, 3.0)
+Ground pos:(-18.0, -3.0);size:(12.0, 4.0)
+Ground pos:(14.5, -3.0);size:(5.0, 4.0);isPlayerRespawn:True
+Ground pos:(24.0, -3.5);size:(4.0, 23.0)
+Ground pos:(-14.5, 7.0);size:(5.0, 6.0);isPlayerRespawn:True
+Ground pos:(19.0, 7.0);size:(14.0, 6.0);isPlayerRespawn:True
+Platform pos:(-19.5, 9.5);size:(5.0, 1.0);isPlayerRespawn:True
+Platform pos:(19.5, -1.5);size:(5.0, 1.0);isPlayerRespawn:True
 PlayerStart pos:(-17.0, -12.0)
-Spikes myRect:(x:0.00, y:-2.50, width:6.00, height:1.00);rotation:0
-Spikes myRect:(x:0.00, y:7.50, width:2.00, height:1.00);rotation:0
+Spikes pos:(0.0, -2.5);size:(6.0, 1.0)
+Spikes pos:(0.0, 7.5);size:(2.0, 1.0)
+

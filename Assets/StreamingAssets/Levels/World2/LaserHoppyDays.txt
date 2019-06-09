@@ -1,20 +1,21 @@
 roomProperties posGlobal:(592.0, 1910.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:-22.50, y:9.00, width:7.00, height:2.00)
-Ground myRect:(x:6.00, y:7.00, width:40.00, height:18.00)
-Ground myRect:(x:-23.00, y:-3.00, width:6.00, height:26.00)
-Ground myRect:(x:22.50, y:-15.00, width:7.00, height:10.00)
-Ground myRect:(x:-0.50, y:-16.00, width:51.00, height:8.00)
-Ground myRect:(x:-12.50, y:-4.00, width:3.00, height:10.00)
-Ground myRect:(x:0.50, y:-5.00, width:3.00, height:8.00)
-Ground myRect:(x:12.50, y:-5.00, width:3.00, height:8.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(-22.5, 9.0);size:(7.0, 2.0)
+Ground pos:(6.0, 7.0);size:(40.0, 18.0)
+Ground pos:(-23.0, -3.0);size:(6.0, 26.0)
+Ground pos:(22.5, -15.0);size:(7.0, 10.0)
+Ground pos:(-0.5, -16.0);size:(51.0, 8.0)
+Ground pos:(-12.5, -4.0);size:(3.0, 10.0)
+Ground pos:(0.5, -5.0);size:(3.0, 8.0)
+Ground pos:(12.5, -5.0);size:(3.0, 8.0)
 Laser pos:(-19.5, -11.5);rotation:270;onOffer:(0.2, 1.4, 0)
-Platform myRect:(x:-16.50, y:9.50, width:5.00, height:1.00);isPlayerRespawn:True
+Platform pos:(-16.5, 9.5);size:(5.0, 1.0);isPlayerRespawn:True
 PlayerStart pos:(-22.0, 11.0)
-Spikes myRect:(x:-10.50, y:-5.00, width:8.00, height:1.00);rotation:270
-Spikes myRect:(x:-19.50, y:-1.00, width:20.00, height:1.00);rotation:270
-Spikes myRect:(x:2.50, y:-5.00, width:8.00, height:1.00);rotation:270
-Spikes myRect:(x:0.00, y:-2.50, width:22.00, height:1.00);rotation:180
-Spikes myRect:(x:10.50, y:-5.00, width:8.00, height:1.00);rotation:90
-Spikes myRect:(x:-1.50, y:-5.00, width:8.00, height:1.00);rotation:90
+Spikes pos:(-10.5, -5.0);rotation:270;size:(8.0, 1.0)
+Spikes pos:(-19.5, -1.0);rotation:270;size:(20.0, 1.0)
+Spikes pos:(2.5, -5.0);rotation:270;size:(8.0, 1.0)
+Spikes pos:(0.0, -2.5);rotation:180;size:(22.0, 1.0)
+Spikes pos:(10.5, -5.0);rotation:90;size:(8.0, 1.0)
+Spikes pos:(-1.5, -5.0);rotation:90;size:(8.0, 1.0)
+

@@ -1,0 +1,7 @@
+roomProperties posGlobal:(26.0, 20.0);designerFlag:0;isClustStart:True
+CameraBounds pos:(16.0, 0.0);size:(84.0, 38.0)
+Ground pos:(-21.0, -9.0);size:(10.0, 20.0)
+Ground pos:(16.0, -15.5);size:(84.0, 7.0)
+PlayerStart pos:(-12.5, -11.0)
+ProgressGate pos:(9.0, -8.0);size:(4.0, 4.0);numSnacksReq:8
+Spikes pos:(-11.0, -6.5);size:(6.0, 1.0)

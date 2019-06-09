@@ -1,8 +1,9 @@
 roomProperties posGlobal:(590.0, 382.0);designerFlag:0
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:22.50, y:3.50, width:7.00, height:25.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:-24.00, y:0.00, width:4.00, height:32.00)
-Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(22.5, 3.5);size:(7.0, 25.0)
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(-24.0, 0.0);size:(4.0, 32.0)
+Ground pos:(0.0, -18.0);size:(52.0, 4.0)
 InfoSign pos:(-0.5, -16.0);myText:Press TAB to cycle character!
 PlayerStart pos:(-20.0, -14.0)
+

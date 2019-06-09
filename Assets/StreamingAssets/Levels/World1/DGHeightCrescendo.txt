@@ -1,18 +1,19 @@
 roomProperties posGlobal:(356.0, 1792.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-DispGround myRect:(x:-9.50, y:-10.50, width:5.00, height:1.00);doRegen:False;dieFromPlayerLeave:True
-DispGround myRect:(x:-9.50, y:-12.50, width:5.00, height:1.00);doRegen:False;dieFromPlayerLeave:True
-DispGround myRect:(x:10.50, y:-12.50, width:5.00, height:1.00);doRegen:False;dieFromPlayerLeave:True
-DispGround myRect:(x:10.50, y:1.50, width:5.00, height:1.00);doRegen:False;dieFromPlayerLeave:True
-DispGround myRect:(x:0.50, y:-4.50, width:5.00, height:1.00);doRegen:False;dieFromPlayerLeave:True
-DispGround myRect:(x:0.50, y:-12.50, width:5.00, height:1.00);doRegen:False;dieFromPlayerLeave:True
-Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
-Ground myRect:(x:-21.00, y:-16.00, width:10.00, height:8.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:-21.00, y:6.00, width:10.00, height:22.00)
-Ground myRect:(x:21.00, y:-3.50, width:10.00, height:21.00)
-Ground myRect:(x:21.50, y:15.50, width:9.00, height:5.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+DispGround pos:(-9.5, -10.5);size:(5.0, 1.0);doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(-9.5, -12.5);size:(5.0, 1.0);doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(10.5, -12.5);size:(5.0, 1.0);doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(10.5, 1.5);size:(5.0, 1.0);doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(0.5, -4.5);size:(5.0, 1.0);doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(0.5, -12.5);size:(5.0, 1.0);doRegen:False;dieFromPlayerLeave:True
+Ground pos:(0.0, -17.0);size:(52.0, 6.0)
+Ground pos:(-21.0, -16.0);size:(10.0, 8.0)
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(-21.0, 6.0);size:(10.0, 22.0)
+Ground pos:(21.0, -3.5);size:(10.0, 21.0)
+Ground pos:(21.5, 15.5);size:(9.0, 5.0)
 PlayerStart pos:(-18.5, -11.0)
 Snack pos:(18.5, 8.5);playerType:Any
-Spikes myRect:(x:0.00, y:-13.50, width:34.00, height:1.00);rotation:0
-Spikes myRect:(x:15.50, y:-7.50, width:29.00, height:1.00);rotation:90
+Spikes pos:(0.0, -13.5);size:(34.0, 1.0)
+Spikes pos:(15.5, -7.5);rotation:90;size:(29.0, 1.0)
+

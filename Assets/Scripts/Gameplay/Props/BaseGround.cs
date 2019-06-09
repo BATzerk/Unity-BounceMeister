@@ -57,18 +57,10 @@ abstract public class BaseGround : Collidable {
 	//	}
 	//}
 	protected void BaseGroundInitialize(Room _myRoom, BaseGroundData data) {
-        // TEMP: For room file transitioning!! TODO: Remove this. Search and replace all files will work.
-        if (data.myRect != Rect.zero) {
-            data.pos = data.myRect.position;
-            data.size = data.myRect.size;
-        }
-        
-        
 		base.BaseInitialize(_myRoom, data);
 
 		mayPlayerEat = data.mayPlayerEat;
         isPlayerRespawn = data.isPlayerRespawn;
-        
         SetSize(data.size);
 	}
 

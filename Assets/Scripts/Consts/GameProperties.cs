@@ -2,6 +2,8 @@
 using System.Collections;
 
 static public class GameProperties {
+    // Program Properties
+    public const int TARGET_FRAME_RATE = 60;
     // Editor
     public const bool DoPauseInEditMode = true; // if TRUE, we'll automatically pause gameplay while editing a room in Gameplay Scene.
     public static bool IsEditModeAvailable {

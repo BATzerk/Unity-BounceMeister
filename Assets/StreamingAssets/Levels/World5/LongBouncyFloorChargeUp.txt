@@ -1,24 +1,25 @@
 roomProperties posGlobal:(-330.0, 752.0);designerFlag:1
-CameraBounds myRect:(x:-26.00, y:-19.00, width:101.00, height:38.00)
+CameraBounds pos:(24.5, 0.0);size:(101.0, 38.0)
+Ground pos:(-22.0, -6.5);size:(8.0, 25.0);isPlayerRespawn:True
+Ground pos:(21.5, -13.0);size:(79.0, 2.0);mayPlayerEat:False;isBouncy:True
+Ground pos:(-21.5, -5.5);size:(7.0, 27.0);isPlayerRespawn:True
+Ground pos:(68.0, -8.5);size:(14.0, 23.0);isPlayerRespawn:True
+Ground pos:(24.5, -17.0);size:(101.0, 6.0);isPlayerRespawn:True
+Ground pos:(24.5, 18.0);size:(101.0, 4.0)
+Ground pos:(41.5, -13.0);size:(9.0, 2.0);isPlayerRespawn:True
+Ground pos:(-22.5, 13.0);size:(7.0, 6.0);isPlayerRespawn:True
+Ground pos:(-16.0, -4.0);size:(4.0, 22.0);isPlayerRespawn:True
+Ground pos:(-12.0, -13.0);size:(6.0, 2.0);isPlayerRespawn:True
+Ground pos:(56.5, -13.0);size:(9.0, 2.0);isPlayerRespawn:True
+Ground pos:(67.5, 2.5);size:(15.0, 1.0);isPlayerRespawn:True
+Ground pos:(9.5, -13.0);size:(17.0, 2.0);isPlayerRespawn:True
+Platform pos:(57.5, 2.5);size:(5.0, 1.0)
 PlayerStart pos:(-19.4, 8.9)
-Ground myRect:(x:-22.00, y:-6.50, width:8.00, height:25.00);isPlayerRespawn:True
-Ground myRect:(x:24.50, y:18.00, width:101.00, height:4.00)
-Ground myRect:(x:21.50, y:-13.00, width:79.00, height:2.00);mayPlayerEat:False;isBouncy:True
-Spikes myRect:(x:-18.50, y:13.00, width:6.00, height:1.00);rotation:270
-Ground myRect:(x:68.00, y:-8.50, width:14.00, height:23.00);isPlayerRespawn:True
-Ground myRect:(x:24.50, y:-17.00, width:101.00, height:6.00);isPlayerRespawn:True
-Ground myRect:(x:-21.50, y:-5.50, width:7.00, height:27.00);isPlayerRespawn:True
-Ground myRect:(x:-22.50, y:13.00, width:7.00, height:6.00);isPlayerRespawn:True
-Spikes myRect:(x:-16.00, y:7.50, width:4.00, height:1.00);rotation:0
-Ground myRect:(x:-16.00, y:-4.00, width:4.00, height:22.00);isPlayerRespawn:True
-Spikes myRect:(x:9.50, y:-11.50, width:17.00, height:1.00);rotation:0
-Spikes myRect:(x:56.50, y:-11.50, width:9.00, height:1.00);rotation:0
-Spikes myRect:(x:-13.50, y:-11.50, width:9.00, height:1.00);rotation:0
-Spikes myRect:(x:41.50, y:-11.50, width:9.00, height:1.00);rotation:0
-Spikes myRect:(x:60.50, y:-5.00, width:16.00, height:1.00);rotation:90
-Ground myRect:(x:-12.00, y:-13.00, width:6.00, height:2.00);isPlayerRespawn:True
-Ground myRect:(x:9.50, y:-13.00, width:17.00, height:2.00);isPlayerRespawn:True
-Ground myRect:(x:41.50, y:-13.00, width:9.00, height:2.00);isPlayerRespawn:True
-Ground myRect:(x:56.50, y:-13.00, width:9.00, height:2.00);isPlayerRespawn:True
-Ground myRect:(x:67.50, y:2.50, width:15.00, height:1.00);isPlayerRespawn:True
-Platform myRect:(x:57.50, y:2.50, width:5.00, height:1.00)
+Spikes pos:(60.5, -5.0);rotation:90;size:(16.0, 1.0)
+Spikes pos:(41.5, -11.5);size:(9.0, 1.0)
+Spikes pos:(-13.5, -11.5);size:(9.0, 1.0)
+Spikes pos:(-16.0, 7.5);size:(4.0, 1.0)
+Spikes pos:(-18.5, 13.0);rotation:270;size:(6.0, 1.0)
+Spikes pos:(56.5, -11.5);size:(9.0, 1.0)
+Spikes pos:(9.5, -11.5);size:(17.0, 1.0)
+

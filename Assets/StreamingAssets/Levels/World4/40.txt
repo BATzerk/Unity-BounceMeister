@@ -1,37 +1,37 @@
-﻿roomProperties posGlobal:(694.0, 344.0);designerFlag:2
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Buzzsaw size:(3.0, 3.0);travelMind:(-22.0, 12.0,-22.0, -8.0, 0.91,0)
-Buzzsaw size:(3.0, 3.0);travelMind:(-14.0, -3.0,-2.0, -3.0,2,0)
-Buzzsaw size:(3.0, 3.0);travelMind:(-2.0, 3.0,-14.0, 3.0,2,0)
-DispGround myRect:(x:14.00, y:7.50, width:6.00, height:1.00);doRegen:True;dieFromPlayerLeave:True
-Ground myRect:(x:15.00, y:-2.00, width:8.00, height:2.00)
-Ground myRect:(x:-12.50, y:14.50, width:23.00, height:3.00)
-Ground myRect:(x:8.50, y:-19.00, width:35.00, height:4.00);isPlayerRespawn:True
-Ground myRect:(x:24.50, y:0.50, width:3.00, height:7.00)
-Ground myRect:(x:-8.00, y:-18.00, width:2.00, height:4.00)
-Ground myRect:(x:20.50, y:10.50, width:5.00, height:11.00)
-Ground myRect:(x:21.50, y:-16.00, width:9.00, height:12.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:-6.00, y:-16.00, width:2.00, height:4.00)
-Ground myRect:(x:-20.50, y:-18.00, width:11.00, height:4.00);isPlayerRespawn:True
-Ground myRect:(x:-24.00, y:3.50, width:4.00, height:25.00)
-Ground myRect:(x:-8.00, y:-4.00, width:14.00, height:2.00)
-Ground myRect:(x:16.50, y:5.00, width:15.00, height:2.00)
-Ground myRect:(x:-8.00, y:4.00, width:14.00, height:2.00)
-Ground myRect:(x:16.50, y:16.50, width:15.00, height:3.00)
-Ground myRect:(x:24.50, y:7.50, width:3.00, height:21.00)
-Ground myRect:(x:-3.50, y:-14.00, width:7.00, height:2.00)
+roomProperties posGlobal:(694.0, 344.0);designerFlag:2
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Buzzsaw travelMind:(-22,12,-22,-8, 0.91, 0);size:(3.0, 3.0)
+Buzzsaw travelMind:(-2,3,-14,3, 2, 0);size:(3.0, 3.0)
+Buzzsaw travelMind:(-14,-3,-2,-3, 2, 0);size:(3.0, 3.0)
+DispGround pos:(14.0, 7.5);size:(6.0, 1.0);doRegen:True;dieFromPlayerLeave:True
+Ground pos:(15.0, -2.0);size:(8.0, 2.0)
+Ground pos:(-12.5, 14.5);size:(23.0, 3.0)
+Ground pos:(8.5, -19.0);size:(35.0, 4.0);isPlayerRespawn:True
+Ground pos:(24.5, 0.5);size:(3.0, 7.0)
+Ground pos:(-8.0, -18.0);size:(2.0, 4.0)
+Ground pos:(20.5, 10.5);size:(5.0, 11.0)
+Ground pos:(21.5, -16.0);size:(9.0, 12.0)
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(-6.0, -16.0);size:(2.0, 4.0)
+Ground pos:(-20.5, -18.0);size:(11.0, 4.0);isPlayerRespawn:True
+Ground pos:(-24.0, 3.5);size:(4.0, 25.0)
+Ground pos:(-8.0, -4.0);size:(14.0, 2.0)
+Ground pos:(16.5, 5.0);size:(15.0, 2.0)
+Ground pos:(-8.0, 4.0);size:(14.0, 2.0)
+Ground pos:(16.5, 16.5);size:(15.0, 3.0)
+Ground pos:(24.5, 7.5);size:(3.0, 21.0)
+Ground pos:(-3.5, -14.0);size:(7.0, 2.0)
 InfoSign pos:(14.0, 8.0);myText:Did you know? Most people WANT to be approached! Everyone loves compliments.
-Lift myRect:(x:4.00, y:-9.00, width:8.00, height:12.00);rotation:0;strength:0.08
-Platform myRect:(x:-12.00, y:-16.50, width:6.00, height:1.00);isPlayerRespawn:True
-Platform myRect:(x:21.00, y:-1.50, width:4.00, height:1.00)
-Platform myRect:(x:312.00, y:148.50, width:6.00, height:1.00)
+Lift pos:(4.0, -9.0);size:(8.0, 12.0);strength:0.08
+Platform pos:(-12.0, -16.5);size:(6.0, 1.0);isPlayerRespawn:True
+Platform pos:(21.0, -1.5);size:(4.0, 1.0)
+Platform pos:(312.0, 148.5);size:(6.0, 1.0)
 PlayerStart pos:(23.5, -9.0)
 Snack pos:(-18.0, 7.5);playerType:Any
-Spikes myRect:(x:7.00, y:-16.50, width:24.00, height:1.00);rotation:0
-Spikes myRect:(x:16.50, y:6.50, width:15.00, height:1.00);rotation:0
-Spikes myRect:(x:-8.00, y:-5.50, width:14.00, height:1.00);rotation:180
-Spikes myRect:(x:-12.50, y:12.50, width:23.00, height:1.00);rotation:180
-Spikes myRect:(x:16.50, y:14.50, width:15.00, height:1.00);rotation:180
-Spikes myRect:(x:-8.00, y:5.50, width:14.00, height:1.00);rotation:0
+Spikes pos:(7.0, -16.5);size:(24.0, 1.0)
+Spikes pos:(16.5, 6.5);size:(15.0, 1.0)
+Spikes pos:(-8.0, -5.5);rotation:180;size:(14.0, 1.0)
+Spikes pos:(-12.5, 12.5);rotation:180;size:(23.0, 1.0)
+Spikes pos:(16.5, 14.5);rotation:180;size:(15.0, 1.0)
+Spikes pos:(-8.0, 5.5);size:(14.0, 1.0)
 

@@ -1,6 +1,6 @@
-roomProperties posGlobal:(42.0, 520.0);designerFlag:0
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:22.00, y:1.00, width:8.00, height:42.00)
-Ground myRect:(x:0.00, y:-17.50, width:52.00, height:5.00)
-Platform myRect:(x:8.00, y:-0.50, width:6.00, height:1.00)
+roomProperties posGlobal:(60.0, 288.0);designerFlag:0
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(22.0, 1.0);size:(8.0, 42.0)
+Ground pos:(0.0, -17.5);size:(52.0, 5.0)
+Platform pos:(8.0, -0.5);size:(6.0, 1.0)
 PlayerStart pos:(0.0, -3.0)

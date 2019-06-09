@@ -1,9 +1,9 @@
-roomProperties posGlobal:(268.0, -52.0);designerFlag:0
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-22.50, y:-9.00, width:7.00, height:22.00)
-Ground myRect:(x:0.00, y:-16.50, width:52.00, height:7.00)
-Ground myRect:(x:23.00, y:-1.00, width:6.00, height:38.00)
-Ground myRect:(x:0.00, y:15.00, width:52.00, height:10.00)
-Ground myRect:(x:-13.00, y:-4.00, width:4.00, height:12.00)
-Platform myRect:(x:-17.00, y:1.50, width:4.00, height:1.00);canDropThru:False
+﻿roomProperties posGlobal:(268.0, -52.0);designerFlag:0
+CameraBounds pos:(-26.00, -19.00);size:(52.00, 38.00)
+Ground pos:(-22.50, -9.00);size:(7.00, 22.00)
+Ground pos:(0.00, -16.50);size:(52.00, 7.00)
+Ground pos:(23.00, -1.00);size:(6.00, 38.00)
+Ground pos:(0.00, 15.00);size:(52.00, 10.00)
+Ground pos:(-13.00, -4.00);size:(4.00, 12.00)
+Platform pos:(-17.00, 1.50);size:(4.00, 1.00);canDropThru:False
 PlayerStart pos:(-22.5, 3.0)

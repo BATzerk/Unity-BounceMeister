@@ -10,17 +10,18 @@ public class CameraBounds : Prop {
     [SerializeField] private SpriteRenderer bodySprite=null;
 
 	// Getters (Private)
-	public Rect RectLocal { // Note that we save/load our Rect locally, not globally. (Otherwise we'd be wonked when rooms are moved.)
-		get {
-			Rect newRect = new Rect();
-			newRect.size = bodySprite.size;
-			newRect.center = bodySprite.transform.localPosition;
-//			if (myRoom != null) { // Only need this check for premade rooms.
-//				newRect.center += myRoom.PosGlobal; // Add my room's pos too!
-//			}
-			return newRect;
-		}
-	}
+    public Vector2 Size {
+        get { return bodySprite.size; }
+        private set { bodySprite.size = value; }
+    }
+	//public Rect RectLocal { // Note that we save/load our Rect locally, not globally. (Otherwise we'd be wonked when rooms are moved.)
+	//	get {
+	//		Rect newRect = new Rect();
+	//		newRect.size = bodySprite.size;
+	//		newRect.center = bodySprite.transform.localPosition;
+	//		return newRect;
+	//	}
+	//}
 
 
 
@@ -34,9 +35,7 @@ public class CameraBounds : Prop {
 	}
 	public void Initialize(Room _myRoom, CameraBoundsData data) {
 		base.BaseInitialize(_myRoom, data);
-
-		bodySprite.size = data.myRect.size;
-		bodySprite.transform.localPosition = data.myRect.center;
+		bodySprite.size = data.size;
 	}
 
 
@@ -45,7 +44,8 @@ public class CameraBounds : Prop {
 	// ----------------------------------------------------------------
 	override public PropData ToData() {
         CameraBoundsData data = new CameraBoundsData {
-            myRect = RectLocal
+            pos = pos,
+            size = Size,
         };
         return data;
 	}

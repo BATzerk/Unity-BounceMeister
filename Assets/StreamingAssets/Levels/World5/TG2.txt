@@ -1,20 +1,21 @@
 roomProperties posGlobal:(170.0, 1904.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(0.0, -17.0);size:(52.0, 6.0)
+Ground pos:(-21.0, -4.0);size:(10.0, 24.0)
+Ground pos:(24.0, -6.0);size:(4.0, 20.0)
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(1.0, 16.0);size:(18.0, 4.0)
+Ground pos:(-8.0, 5.0);size:(4.0, 26.0)
+Ground pos:(18.0, 14.0);size:(16.0, 4.0)
+Ground pos:(9.0, 11.5);size:(2.0, 17.0)
+Ground pos:(19.5, -1.5);size:(7.0, 11.0)
+Platform pos:(-3.0, 4.5);size:(6.0, 1.0)
+Platform pos:(-13.0, 7.5);size:(6.0, 1.0)
+Platform pos:(5.0, 3.5);size:(6.0, 1.0)
+Platform pos:(13.0, 3.5);size:(6.0, 1.0)
 PlayerStart pos:(-23.8, 9.5)
-Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
-Ground myRect:(x:-21.00, y:-4.00, width:10.00, height:24.00)
-Ground myRect:(x:24.00, y:-6.00, width:4.00, height:20.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:-8.00, y:5.00, width:4.00, height:26.00)
-Spikes myRect:(x:2.50, y:-13.50, width:43.00, height:1.00);rotation:0
-Ground myRect:(x:19.50, y:-1.50, width:7.00, height:11.00)
-Platform myRect:(x:-13.00, y:7.50, width:6.00, height:1.00)
-ToggleGround myRect:(x:1.00, y:-4.00, width:2.00, height:18.00);startsOn:True;togFromContact:False;togFromAction:True
-Platform myRect:(x:-3.00, y:4.50, width:6.00, height:1.00)
-Spikes myRect:(x:-5.50, y:-2.00, width:12.00, height:1.00);rotation:270
-Spikes myRect:(x:21.50, y:-10.50, width:9.00, height:1.00);rotation:90
-Ground myRect:(x:9.00, y:11.50, width:2.00, height:17.00)
-Platform myRect:(x:13.00, y:3.50, width:6.00, height:1.00)
-Ground myRect:(x:1.00, y:16.00, width:18.00, height:4.00)
-Ground myRect:(x:18.00, y:14.00, width:16.00, height:4.00)
-Platform myRect:(x:5.00, y:3.50, width:6.00, height:1.00)
+Spikes pos:(21.5, -10.5);rotation:90;size:(9.0, 1.0)
+Spikes pos:(-5.5, -2.0);rotation:270;size:(12.0, 1.0)
+Spikes pos:(2.5, -13.5);size:(43.0, 1.0)
+ToggleGround pos:(1.0, -4.0);size:(2.0, 18.0);startsOn:True;togFromContact:False;togFromAction:True
+

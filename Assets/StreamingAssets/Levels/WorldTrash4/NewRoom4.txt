@@ -1,14 +1,14 @@
-roomProperties posGlobal:(82.0, 536.0);designerFlag:2
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-24.00, y:4.50, width:4.00, height:31.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:24.00, y:6.00, width:4.00, height:22.00)
-Ground myRect:(x:-21.00, y:-18.00, width:10.00, height:4.00)
-Ground myRect:(x:0.00, y:-18.00, width:24.00, height:4.00)
-Ground myRect:(x:21.00, y:-15.00, width:10.00, height:10.00)
-Lift myRect:(x:-5.00, y:-7.00, width:4.00, height:14.00);rotation:0;strength:0.08
-Platform myRect:(x:-13.00, y:-16.50, width:2.00, height:1.00)
-Platform myRect:(x:-15.00, y:-18.50, width:2.00, height:1.00)
-Platform myRect:(x:13.00, y:-16.50, width:2.00, height:1.00)
-Platform myRect:(x:15.00, y:-18.50, width:2.00, height:1.00)
+﻿roomProperties posGlobal:(82.0, 536.0);designerFlag:2
+CameraBounds pos:(-26.00, -19.00);size:(52.00, 38.00)
+Ground pos:(-24.00, 4.50);size:(4.00, 31.00)
+Ground pos:(0.00, 18.00);size:(52.00, 4.00)
+Ground pos:(24.00, 6.00);size:(4.00, 22.00)
+Ground pos:(-21.00, -18.00);size:(10.00, 4.00)
+Ground pos:(0.00, -18.00);size:(24.00, 4.00)
+Ground pos:(21.00, -15.00);size:(10.00, 10.00)
+Lift pos:(-5.00, -7.00);size:(4.00, 14.00);rotation:0;strength:0.08
+Platform pos:(-13.00, -16.50);size:(2.00, 1.00)
+Platform pos:(-15.00, -18.50);size:(2.00, 1.00)
+Platform pos:(13.00, -16.50);size:(2.00, 1.00)
+Platform pos:(15.00, -18.50);size:(2.00, 1.00)
 PlayerStart pos:(-13.2, -14.0)

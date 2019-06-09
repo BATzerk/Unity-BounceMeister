@@ -1,20 +1,20 @@
 roomProperties posGlobal:(44.0, 90.0);designerFlag:3;isClustStart:True
-CameraBounds myRect:(x:-26.00, y:-19.00, width:94.00, height:38.00)
+CameraBounds pos:(21.0, 0.0);size:(94.0, 38.0)
 CharBarrel pos:(-16.5, 10.5);otherCharName:Flatline
-Ground myRect:(x:46.00, y:1.50, width:2.00, height:19.00)
-Ground myRect:(x:32.00, y:-8.50, width:16.00, height:3.00)
-Ground myRect:(x:-16.00, y:18.50, width:10.00, height:3.00)
-Ground myRect:(x:61.00, y:-5.00, width:14.00, height:18.00)
-Ground myRect:(x:20.50, y:-12.50, width:7.00, height:11.00);isPlayerRespawn:True
-Ground myRect:(x:28.00, y:15.50, width:80.00, height:9.00)
-Ground myRect:(x:21.00, y:-16.50, width:94.00, height:7.00);isPlayerRespawn:True
-Ground myRect:(x:0.50, y:-16.50, width:5.00, height:11.00)
-Ground myRect:(x:-23.50, y:3.50, width:5.00, height:33.00)
+Ground pos:(46.0, 1.5);size:(2.0, 19.0)
+Ground pos:(32.0, -8.5);size:(16.0, 3.0)
+Ground pos:(-16.0, 18.5);size:(10.0, 3.0)
+Ground pos:(61.0, -5.0);size:(14.0, 18.0)
+Ground pos:(20.5, -12.5);size:(7.0, 11.0);isPlayerRespawn:True
+Ground pos:(28.0, 15.5);size:(80.0, 9.0)
+Ground pos:(21.0, -16.5);size:(94.0, 7.0);isPlayerRespawn:True
+Ground pos:(0.5, -16.5);size:(5.0, 11.0)
+Ground pos:(-23.5, 3.5);size:(5.0, 33.0)
 InfoSign pos:(0.5, -11.0);myText:You are Flatline. Hi, Flatline!
-Platform myRect:(x:52.00, y:3.50, width:4.00, height:1.00)
+Platform pos:(52.0, 3.5);size:(4.0, 1.0)
 PlayerStart pos:(-17.0, 14.5)
-Spikes myRect:(x:-12.50, y:14.50, width:7.00, height:1.00);rotation:90
-Spikes myRect:(x:-20.50, y:13.00, width:10.00, height:1.00);rotation:270
-Spikes myRect:(x:44.50, y:2.00, width:20.00, height:1.00);rotation:90
-Spikes myRect:(x:47.50, y:2.00, width:20.00, height:1.00);rotation:270
+Spikes pos:(-12.5, 14.5);rotation:90;size:(7.0, 1.0)
+Spikes pos:(-20.5, 13.0);rotation:270;size:(10.0, 1.0)
+Spikes pos:(44.5, 2.0);rotation:90;size:(20.0, 1.0)
+Spikes pos:(47.5, 2.0);rotation:270;size:(20.0, 1.0)
 

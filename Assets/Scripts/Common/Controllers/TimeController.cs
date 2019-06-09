@@ -16,8 +16,8 @@ public class TimeController : MonoBehaviour {
 	//  Update
 	// ----------------------------------------------------------------
 	private void Update () {
-		frameTimeScale = GameVisualProperties.TARGET_FRAME_RATE * Time.deltaTime;
-		frameTimeScaleUnscaled = GameVisualProperties.TARGET_FRAME_RATE * Time.unscaledDeltaTime;
+		frameTimeScale = GameProperties.TARGET_FRAME_RATE * Time.deltaTime;
+		frameTimeScaleUnscaled = GameProperties.TARGET_FRAME_RATE * Time.unscaledDeltaTime;
 	}
 
 

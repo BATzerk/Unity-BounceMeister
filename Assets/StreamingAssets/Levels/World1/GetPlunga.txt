@@ -1,9 +1,10 @@
 roomProperties posGlobal:(296.0, 154.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 CharUnlockOrb pos:(0.5, -5.5);myCharName:Plunga
-Ground myRect:(x:-24.00, y:6.50, width:4.00, height:19.00)
-Ground myRect:(x:24.00, y:0.00, width:4.00, height:32.00)
-Ground myRect:(x:0.00, y:-15.00, width:52.00, height:10.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:0.50, y:-11.00, width:19.00, height:8.00)
+Ground pos:(-24.0, 6.5);size:(4.0, 19.0)
+Ground pos:(24.0, 0.0);size:(4.0, 32.0)
+Ground pos:(0.0, -15.0);size:(52.0, 10.0)
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(0.5, -11.0);size:(19.0, 8.0)
 PlayerStart pos:(-2.5, 2.5)
+

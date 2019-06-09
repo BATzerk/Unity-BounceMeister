@@ -84,9 +84,8 @@ static public class RoomSaverLoader {
 		// Room Properties
 		AddFSLine(GetRoomPropertiesLine(rd));
 
-        //fs += GetPropName(rd.cameraBoundsData) + " ";
-        //fs += GetPropPropertiesLine(rd.cameraBoundsData);
-        fs += "CameraBounds myRect:" + rd.cameraBoundsData.myRect;
+        fs += GetPropName(rd.cameraBoundsData) + " ";
+        fs += GetPropPropertiesLine(rd.cameraBoundsData);
         AddFSLineBreak();
 
 		foreach (PropData propData in rd.allPropDatas) {
@@ -139,6 +138,7 @@ static public class RoomSaverLoader {
         Type type = propData.GetType();
         if (type == typeof(BatteryData)) { }
         else if (type == typeof(BuzzsawData)) { ps.Add("size"); }
+        else if (type == typeof(CameraBoundsData)) { ps.Add("size"); }
         else if (type == typeof(CharBarrelData)) { ps.Add("otherCharName"); }
         else if (type == typeof(CharUnlockOrbData)) { ps.Add("myCharName"); }
         else if (type == typeof(CrateData)) { ps.Add("hitsUntilBreak"); ps.Add("numCoinsInMe"); }
@@ -412,8 +412,8 @@ static public class RoomSaverLoader {
     }
 	static public void AddEmptyRoomElements(ref RoomData rd) {
 		CameraBoundsData cameraBoundsData = new CameraBoundsData();
-		cameraBoundsData.myRect = new Rect(-26,-19, 52,38);
-		cameraBoundsData.pos = cameraBoundsData.myRect.center;
+		cameraBoundsData.size = new Vector2(52, 38);
+		cameraBoundsData.pos = Vector2.zero;
         rd.cameraBoundsData = cameraBoundsData;
         rd.AddPropData(cameraBoundsData);
 
@@ -423,14 +423,15 @@ static public class RoomSaverLoader {
 
 		Rect[] groundRects = {
 			new Rect(0,-17, 52,6),
-			new Rect(-24,0, 4,32),
-			new Rect(24,0, 4,32),
+			new Rect(-24,0, 4,38),
+			new Rect(24,0, 4,38),
 			new Rect(0,18, 52,4),
 		};
 		foreach (Rect rect in groundRects) {
-			GroundData newGroundData = new GroundData();
-			newGroundData.myRect = rect;
-			newGroundData.pos = rect.center;
+            GroundData newGroundData = new GroundData {
+                size = rect.size,
+                pos = rect.center
+            };
             rd.AddPropData(newGroundData);
 		}
 	}

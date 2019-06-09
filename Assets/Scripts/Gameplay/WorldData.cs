@@ -35,16 +35,16 @@ public class WorldData {
         return new Vector2 (SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosX), SaveStorage.GetFloat (SaveKeys.MapEditor_CameraPosY));
     }
 
-    /** Creates and returns a rect that's JUST made up of these rooms. */
-    public Rect GetBoundsOfRooms (string[] _roomKeys) {
-        Rect returnRect = new Rect (0,0, 0,0);
-        for (int i=0; i<_roomKeys.Length; i++) {
-            RoomData rd = GetRoomData (_roomKeys [i]);
-            if (rd == null) { Debug.LogError ("Oops! This room doesn't exist in this world! " + _roomKeys[i] + ", world " + worldIndex); continue; }
-            returnRect = MathUtils.GetCompoundRect (returnRect, rd.BoundsGlobal);
-        }
-        return returnRect;
-    }
+    ///** Creates and returns a rect that's JUST made up of these rooms. */
+    //public Rect GetBoundsOfRooms (string[] _roomKeys) {
+    //    Rect returnRect = new Rect (0,0, 0,0);
+    //    for (int i=0; i<_roomKeys.Length; i++) {
+    //        RoomData rd = GetRoomData (_roomKeys [i]);
+    //        if (rd == null) { Debug.LogError ("Oops! This room doesn't exist in this world! " + _roomKeys[i] + ", world " + worldIndex); continue; }
+    //        returnRect = MathUtils.GetCompoundRect (returnRect, rd.BoundsGlobalBL);
+    //    }
+    //    return returnRect;
+    //}
     
 
     public RoomData GetRoomNeighbor(RoomData originLD, RoomOpening opening) {
@@ -75,20 +75,17 @@ public class WorldData {
     }
     public RoomData GetRoomWithPoint(Vector2 point) {
         foreach (RoomData rd in roomDatas.Values) {
-            // HACK Temp conversion business
-            Rect bounds = new Rect(rd.BoundsGlobal);
-            bounds.position -= bounds.size*0.5f;
-            if (bounds.Contains(point)) { return rd; }
+            if (rd.BoundsGlobalBL.Contains(point)) { return rd; }
         }
         return null; // Nah, nobody here.
     }
     /// Takes a LOCAL pos, and sets its x or y to the exact provided side of this room. E.g. Room's 500 tall, and pass in (0,0) and side Top: will return (0,250).
     public Vector2 LockPosOnRoomEdge(RoomData rd, Vector2 pos, int side) {
         switch (side) {
-            case Sides.B: return new Vector2(pos.x, rd.BoundsLocal.yMin);
-            case Sides.T: return new Vector2(pos.x, rd.BoundsLocal.yMax);
-            case Sides.L: return new Vector2(rd.BoundsLocal.xMin, pos.y);
-            case Sides.R: return new Vector2(rd.BoundsLocal.xMax, pos.y);
+            case Sides.B: return new Vector2(pos.x, rd.BoundsLocalBL.yMin);
+            case Sides.T: return new Vector2(pos.x, rd.BoundsLocalBL.yMax);
+            case Sides.L: return new Vector2(rd.BoundsLocalBL.xMin, pos.y);
+            case Sides.R: return new Vector2(rd.BoundsLocalBL.xMax, pos.y);
             default: Debug.LogError("Side not recongized: " + side); return pos; // Hmm.
         }
     }
@@ -163,12 +160,12 @@ public class WorldData {
 //		MathUtils.RoundRectValuesToEvenInts (ref boundsRectPlayableRooms);
 	}
 	private void AddRoomBoundsToWorldBoundsRects (RoomData rd) {
-		Rect ldBounds = rd.BoundsGlobal;
+		Rect roomBounds = rd.BoundsGlobalBL;
 		// Add ALL rooms to the allRooms list.
-		BoundsRectAllRooms = MathUtils.GetCompoundRect (BoundsRectAllRooms, ldBounds);
+		BoundsRectAllRooms = MathUtils.GetCompoundRect (BoundsRectAllRooms, roomBounds);
 		// Only add rooms IN CLUSTERS for the playableRooms list.
 		if (rd.IsInCluster) {
-			BoundsRectPlayableRooms = MathUtils.GetCompoundRect (BoundsRectPlayableRooms, ldBounds);
+			BoundsRectPlayableRooms = MathUtils.GetCompoundRect (BoundsRectPlayableRooms, roomBounds);
 		}
 	}
 //	/** Once we know where the center of the playable world is, set the posWorld value for all my rooms! */

@@ -1,13 +1,14 @@
 roomProperties posGlobal:(118.0, 1912.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(18.5, -1.5);size:(17.0, 3.0)
+Ground pos:(-18.5, -11.0);size:(15.0, 22.0);isPlayerRespawn:True
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(0.5, -11.5);size:(53.0, 19.0)
+Ground pos:(25.0, 12.0);size:(2.0, 8.0)
+Ground pos:(-23.0, 12.0);size:(6.0, 8.0)
 PlayerStart pos:(-20.6, 0.9)
-Ground myRect:(x:-18.50, y:-11.00, width:15.00, height:22.00);isPlayerRespawn:True
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:18.50, y:-1.50, width:17.00, height:3.00)
-ToggleGround myRect:(x:0.00, y:8.00, width:6.00, height:16.00);startsOn:False;togFromContact:False;togFromAction:True
-Ground myRect:(x:0.50, y:-11.50, width:53.00, height:19.00)
-Spikes myRect:(x:-0.50, y:-1.50, width:27.00, height:1.00);rotation:0
-Ground myRect:(x:-23.00, y:12.00, width:6.00, height:8.00)
-Ground myRect:(x:25.00, y:12.00, width:2.00, height:8.00)
-Spikes myRect:(x:9.50, y:-2.00, width:4.00, height:1.00);rotation:90
-Spikes myRect:(x:-10.50, y:-2.00, width:4.00, height:1.00);rotation:270
+Spikes pos:(-0.5, -1.5);size:(27.0, 1.0)
+Spikes pos:(-10.5, -2.0);rotation:270;size:(4.0, 1.0)
+Spikes pos:(9.5, -2.0);rotation:90;size:(4.0, 1.0)
+ToggleGround pos:(0.0, 8.0);size:(6.0, 16.0);startsOn:False;togFromContact:False;togFromAction:True
+

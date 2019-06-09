@@ -1,23 +1,24 @@
-﻿roomProperties posGlobal:(548.0, -312.0);designerFlag:1
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+roomProperties posGlobal:(548.0, -312.0);designerFlag:1
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+DispGround pos:(7.5, -4.5);size:(1.0, 17.0);doRegen:True;dieFromPlayerLeave:True
+Ground pos:(-19.5, 2.0);size:(13.0, 36.0)
+Ground pos:(24.5, -1.0);size:(3.0, 8.0)
+Ground pos:(0.0, -17.0);size:(52.0, 6.0)
+Ground pos:(10.0, 17.5);size:(32.0, 5.0)
+Ground pos:(9.5, 10.0);size:(33.0, 10.0)
+Ground pos:(17.5, 2.5);size:(17.0, 11.0)
+Ground pos:(-6.5, 18.5);size:(3.0, 3.0)
+Ground pos:(-5.5, 11.5);size:(3.0, 7.0)
+Ground pos:(-0.5, -3.0);size:(13.0, 2.0)
+Ground pos:(17.0, -16.5);size:(18.0, 7.0)
+Platform pos:(-10.0, 14.5);size:(6.0, 1.0)
 PlayerStart pos:(-12.2, 15.8)
-Ground myRect:(x:0.00, y:-17.00, width:52.00, height:6.00)
-Ground myRect:(x:-19.50, y:2.00, width:13.00, height:36.00)
-Ground myRect:(x:24.50, y:-1.00, width:3.00, height:8.00)
-Ground myRect:(x:10.00, y:17.50, width:32.00, height:5.00)
-Ground myRect:(x:9.50, y:10.00, width:33.00, height:10.00)
-Ground myRect:(x:17.50, y:2.50, width:17.00, height:11.00)
-Platform myRect:(x:-10.00, y:14.50, width:6.00, height:1.00)
-Ground myRect:(x:-6.50, y:18.50, width:3.00, height:3.00)
-Ground myRect:(x:-5.50, y:11.50, width:3.00, height:7.00)
-Ground myRect:(x:-0.50, y:-3.00, width:13.00, height:2.00)
-Spikes myRect:(x:0.00, y:-13.50, width:46.00, height:1.00);rotation:0
-Spikes myRect:(x:-0.50, y:-1.50, width:13.00, height:1.00);rotation:0
-Spikes myRect:(x:1.00, y:4.50, width:16.00, height:1.00);rotation:180
-Spikes myRect:(x:-7.50, y:6.50, width:3.00, height:1.00);rotation:90
-Spikes myRect:(x:-7.50, y:-3.00, width:2.00, height:1.00);rotation:90
-Ground myRect:(x:17.00, y:-16.50, width:18.00, height:7.00)
-Spikes myRect:(x:-0.50, y:-4.50, width:13.00, height:1.00);rotation:180
-Spikes myRect:(x:6.50, y:-3.00, width:2.00, height:1.00);rotation:270
-DispGround myRect:(x:7.50, y:-4.50, width:1.00, height:17.00);doRegen:True;dieFromPlayerLeave:True
-Spikes myRect:(x:8.50, y:1.50, width:9.00, height:1.00);rotation:90
+Spikes pos:(1.0, 4.5);rotation:180;size:(16.0, 1.0)
+Spikes pos:(0.0, -13.5);size:(46.0, 1.0)
+Spikes pos:(-7.5, 6.5);rotation:90;size:(3.0, 1.0)
+Spikes pos:(-7.5, -3.0);rotation:90;size:(2.0, 1.0)
+Spikes pos:(-0.5, -4.5);rotation:180;size:(13.0, 1.0)
+Spikes pos:(8.5, 1.5);rotation:90;size:(9.0, 1.0)
+Spikes pos:(-0.5, -1.5);size:(13.0, 1.0)
+Spikes pos:(6.5, -3.0);rotation:270;size:(2.0, 1.0)
+

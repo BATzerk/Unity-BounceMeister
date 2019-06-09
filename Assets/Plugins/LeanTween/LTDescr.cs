@@ -1549,15 +1549,15 @@ public class LTDescr
 			val = 1 / valM / valM * val * val;
 		} else if (val < (valN = 1 - .75f * this.overshoot / 2.75f)) {
 			val -= (valM + valN) / 2;
-			// first bounce, height: 1/4
+			// first bounce,  1/4
 			val = 7.5625f * val * val + 1 - .25f * this.overshoot * this.overshoot;
 		} else if (val < (valM = 1 - .25f * this.overshoot / 2.75f)) {
 			val -= (valM + valN) / 2;
-			// second bounce, height: 1/16
+			// second bounce,  1/16
 			val = 7.5625f * val * val + 1 - .0625f * this.overshoot * this.overshoot;
 		} else { // valN = 1
 			val -= (valM + 1) / 2;
-			// third bounce, height: 1/64
+			// third bounce,  1/64
 			val = 7.5625f * val * val + 1 - .015625f * this.overshoot * this.overshoot;
 		}
 		return this.diff * val + this.from;

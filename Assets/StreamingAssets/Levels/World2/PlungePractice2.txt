@@ -1,20 +1,21 @@
 roomProperties posGlobal:(490.0, -236.0);designerFlag:3
-CameraBounds myRect:(x:-25.00, y:-19.00, width:56.00, height:38.00)
-DispGround myRect:(x:10.50, y:-14.50, width:7.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;doRegen:False
-DispGround myRect:(x:-7.50, y:-14.50, width:7.00, height:1.00);dieFromBounce:False;dieFromPlayerLeave:True;doRegen:False
-Gem pos:(164.5, -139.5)
-Gem pos:(164.0, -140.0)
-Ground myRect:(x:21.00, y:9.50, width:6.00, height:5.00)
-Ground myRect:(x:29.00, y:16.50, width:6.00, height:3.00)
-Ground myRect:(x:3.00, y:-19.00, width:58.00, height:4.00)
-Ground myRect:(x:3.00, y:19.00, width:58.00, height:2.00)
-Ground myRect:(x:-20.50, y:-10.50, width:11.00, height:17.00)
-Ground myRect:(x:-7.50, y:12.00, width:3.00, height:16.00)
-Ground myRect:(x:10.50, y:12.00, width:3.00, height:16.00)
-Ground myRect:(x:19.50, y:-2.50, width:3.00, height:29.00)
-Ground myRect:(x:0.50, y:17.00, width:17.00, height:4.00)
-Ground myRect:(x:25.50, y:-5.00, width:13.00, height:24.00)
-Platform myRect:(x:1.50, y:-4.50, width:5.00, height:1.00)
+CameraBounds pos:(3.0, 0.0);size:(56.0, 38.0)
+DispGround pos:(10.5, -14.5);size:(7.0, 1.0);doRegen:False;dieFromPlayerLeave:True
+DispGround pos:(-7.5, -14.5);size:(7.0, 1.0);doRegen:False;dieFromPlayerLeave:True
+Gem pos:(164.5, -139.5);type:0
+Gem pos:(164.0, -140.0);type:0
+Ground pos:(21.0, 9.5);size:(6.0, 5.0)
+Ground pos:(29.0, 16.5);size:(6.0, 3.0)
+Ground pos:(3.0, -19.0);size:(58.0, 4.0)
+Ground pos:(3.0, 19.0);size:(58.0, 2.0)
+Ground pos:(-20.5, -10.5);size:(11.0, 17.0)
+Ground pos:(-7.5, 12.0);size:(3.0, 16.0)
+Ground pos:(10.5, 12.0);size:(3.0, 16.0)
+Ground pos:(19.5, -2.5);size:(3.0, 29.0)
+Ground pos:(0.5, 17.0);size:(17.0, 4.0)
+Ground pos:(25.5, -5.0);size:(13.0, 24.0)
+Platform pos:(1.5, -4.5);size:(5.0, 1.0)
 PlayerStart pos:(-20.5, 0.0)
-Spikes myRect:(x:1.50, y:-16.50, width:37.00, height:1.00);rotation:0
-Spikes myRect:(x:1.00, y:14.50, width:16.00, height:1.00);rotation:180
+Spikes pos:(1.5, -16.5);size:(37.0, 1.0)
+Spikes pos:(1.0, 14.5);rotation:180;size:(16.0, 1.0)
+

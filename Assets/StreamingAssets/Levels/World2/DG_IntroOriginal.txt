@@ -1,24 +1,25 @@
 roomProperties posGlobal:(554.0, -236.0);designerFlag:3
-CameraBounds myRect:(x:-25.00, y:-19.00, width:68.00, height:38.00)
-DispGround myRect:(x:37.00, y:1.00, width:4.00, height:2.00);doRegen:True;mayPlayerEat:False;dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False
-DispGround myRect:(x:16.00, y:-7.00, width:6.00, height:2.00);doRegen:True;mayPlayerEat:False;dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False
-DispGround myRect:(x:2.00, y:13.00, width:6.00, height:6.00);doRegen:True;mayPlayerEat:False;dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False
-DispGround myRect:(x:24.00, y:-13.00, width:6.00, height:2.00);doRegen:True;mayPlayerEat:False;dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False
-DispGround myRect:(x:8.00, y:-1.00, width:6.00, height:2.00);doRegen:True;mayPlayerEat:False;dieFromBounce:False;dieFromPlayerLeave:True;dieFromVel:False
-Ground myRect:(x:33.50, y:2.50, width:3.00, height:19.00)
-Ground myRect:(x:41.00, y:-7.50, width:4.00, height:19.00)
-Ground myRect:(x:33.50, y:-14.50, width:11.00, height:5.00)
-Ground myRect:(x:-24.00, y:16.50, width:4.00, height:7.00)
-Ground myRect:(x:-7.00, y:-5.50, width:22.00, height:29.00)
-Ground myRect:(x:2.00, y:7.00, width:6.00, height:6.00)
-Ground myRect:(x:27.00, y:13.50, width:32.00, height:13.00)
-Ground myRect:(x:-11.00, y:-7.00, width:30.00, height:26.00)
-Ground myRect:(x:35.50, y:-16.00, width:15.00, height:8.00)
-Ground myRect:(x:0.50, y:18.00, width:53.00, height:4.00)
-Ground myRect:(x:6.50, y:-18.00, width:65.00, height:4.00)
+CameraBounds pos:(9.0, 0.0);size:(68.0, 38.0)
+DispGround pos:(37.0, 1.0);size:(4.0, 2.0);mayPlayerEat:False;doRegen:True;dieFromPlayerLeave:True
+DispGround pos:(16.0, -7.0);size:(6.0, 2.0);mayPlayerEat:False;doRegen:True;dieFromPlayerLeave:True
+DispGround pos:(2.0, 13.0);size:(6.0, 6.0);mayPlayerEat:False;doRegen:True;dieFromPlayerLeave:True
+DispGround pos:(24.0, -13.0);size:(6.0, 2.0);mayPlayerEat:False;doRegen:True;dieFromPlayerLeave:True
+DispGround pos:(8.0, -1.0);size:(6.0, 2.0);mayPlayerEat:False;doRegen:True;dieFromPlayerLeave:True
+Ground pos:(33.5, 2.5);size:(3.0, 19.0)
+Ground pos:(41.0, -7.5);size:(4.0, 19.0)
+Ground pos:(33.5, -14.5);size:(11.0, 5.0)
+Ground pos:(-24.0, 16.5);size:(4.0, 7.0)
+Ground pos:(-7.0, -5.5);size:(22.0, 29.0)
+Ground pos:(2.0, 7.0);size:(6.0, 6.0)
+Ground pos:(27.0, 13.5);size:(32.0, 13.0)
+Ground pos:(-11.0, -7.0);size:(30.0, 26.0)
+Ground pos:(35.5, -16.0);size:(15.0, 8.0)
+Ground pos:(0.5, 18.0);size:(53.0, 4.0)
+Ground pos:(6.5, -18.0);size:(65.0, 4.0)
 PlayerStart pos:(-3.9, 10.3)
-Spikes myRect:(x:31.50, y:0.00, width:14.00, height:1.00);rotation:90
-Spikes myRect:(x:21.50, y:6.50, width:21.00, height:1.00);rotation:180
-Spikes myRect:(x:4.50, y:-8.00, width:26.00, height:1.00);rotation:270
-Spikes myRect:(x:27.50, y:-14.00, width:4.00, height:1.00);rotation:90
-Spikes myRect:(x:16.00, y:-15.50, width:26.00, height:1.00);rotation:0
+Spikes pos:(31.5, 0.0);rotation:90;size:(14.0, 1.0)
+Spikes pos:(21.5, 6.5);rotation:180;size:(21.0, 1.0)
+Spikes pos:(4.5, -8.0);rotation:270;size:(26.0, 1.0)
+Spikes pos:(27.5, -14.0);rotation:90;size:(4.0, 1.0)
+Spikes pos:(16.0, -15.5);size:(26.0, 1.0)
+

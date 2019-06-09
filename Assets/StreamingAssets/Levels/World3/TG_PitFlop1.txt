@@ -1,19 +1,20 @@
 roomProperties posGlobal:(202.0, 796.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-ToggleGround myRect:(x:-2.00, y:-8.50, width:6.00, height:1.00);startsOn:False;mayPlayerEat:False
-ToggleGround myRect:(x:5.00, y:-8.50, width:6.00, height:1.00);startsOn:True;mayPlayerEat:False
-ToggleGround myRect:(x:-2.00, y:3.50, width:6.00, height:1.00);startsOn:True;mayPlayerEat:False
-ToggleGround myRect:(x:5.00, y:-2.50, width:6.00, height:1.00);startsOn:False;mayPlayerEat:False
-Spikes myRect:(x:6.50, y:-15.50, width:29.00, height:1.00);rotation:0
-PlayerStart pos:(-11.0, -4.2)
-Platform myRect:(x:-15.50, y:-17.50, width:5.00, height:1.00)
-Platform myRect:(x:-15.50, y:-8.50, width:5.00, height:1.00)
-Ground myRect:(x:-22.50, y:-5.00, width:9.00, height:30.00)
-Ground myRect:(x:7.00, y:-18.00, width:40.00, height:4.00)
-Ground myRect:(x:6.00, y:19.00, width:42.00, height:2.00)
-Ground myRect:(x:-23.50, y:15.00, width:5.00, height:10.00)
-Ground myRect:(x:22.00, y:0.50, width:8.00, height:37.00)
-Ground myRect:(x:-10.50, y:-13.00, width:5.00, height:10.00)
-Ground myRect:(x:-14.00, y:9.00, width:14.00, height:2.00)
-Ground myRect:(x:-14.00, y:17.50, width:4.00, height:5.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 Gem pos:(14.5, 14.5);type:1
+Ground pos:(-14.0, 17.5);size:(4.0, 5.0)
+Ground pos:(-14.0, 9.0);size:(14.0, 2.0)
+Ground pos:(-10.5, -13.0);size:(5.0, 10.0)
+Ground pos:(22.0, 0.5);size:(8.0, 37.0)
+Ground pos:(-23.5, 15.0);size:(5.0, 10.0)
+Ground pos:(6.0, 19.0);size:(42.0, 2.0)
+Ground pos:(7.0, -18.0);size:(40.0, 4.0)
+Ground pos:(-22.5, -5.0);size:(9.0, 30.0)
+Platform pos:(-15.5, -8.5);size:(5.0, 1.0)
+Platform pos:(-15.5, -17.5);size:(5.0, 1.0)
+PlayerStart pos:(-11.0, -4.2)
+Spikes pos:(6.5, -15.5);size:(29.0, 1.0)
+ToggleGround pos:(5.0, -2.5);size:(6.0, 1.0);mayPlayerEat:False;startsOn:False;togFromContact:False;togFromAction:True
+ToggleGround pos:(-2.0, 3.5);size:(6.0, 1.0);mayPlayerEat:False;startsOn:True;togFromContact:False;togFromAction:True
+ToggleGround pos:(5.0, -8.5);size:(6.0, 1.0);mayPlayerEat:False;startsOn:True;togFromContact:False;togFromAction:True
+ToggleGround pos:(-2.0, -8.5);size:(6.0, 1.0);mayPlayerEat:False;startsOn:False;togFromContact:False;togFromAction:True
+

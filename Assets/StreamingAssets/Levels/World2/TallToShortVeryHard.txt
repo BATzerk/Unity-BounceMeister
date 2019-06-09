@@ -1,25 +1,26 @@
 roomProperties posGlobal:(272.0, 1834.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:20.00, y:-15.00, width:12.00, height:4.00);mayPlayerEat:False
-Ground myRect:(x:14.50, y:19.00, width:23.00, height:2.00);mayPlayerEat:False
-Ground myRect:(x:16.00, y:9.00, width:20.00, height:2.00);isPlayerRespawn:True
-Ground myRect:(x:10.50, y:7.50, width:7.00, height:1.00);mayPlayerEat:False
-Ground myRect:(x:1.00, y:12.00, width:4.00, height:10.00);mayPlayerEat:False
-Ground myRect:(x:-6.50, y:-12.00, width:13.00, height:8.00);mayPlayerEat:False
-Ground myRect:(x:-3.50, y:9.50, width:5.00, height:13.00);mayPlayerEat:False
-Ground myRect:(x:-11.50, y:18.00, width:29.00, height:4.00);mayPlayerEat:False
-Ground myRect:(x:20.00, y:-2.50, width:12.00, height:21.00);mayPlayerEat:False
-Ground myRect:(x:-18.00, y:-7.00, width:16.00, height:24.00);mayPlayerEat:False;isPlayerRespawn:True
-Ground myRect:(x:0.00, y:-18.00, width:52.00, height:4.00)
-Ground myRect:(x:11.00, y:-13.00, width:6.00, height:6.00);mayPlayerEat:False
-Lift myRect:(x:4.00, y:-6.00, width:2.00, height:16.00);rotation:0;strength:0.07
-Lift myRect:(x:-4.00, y:-2.00, width:8.00, height:2.00);rotation:0;strength:0.08
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(20.0, -15.0);size:(12.0, 4.0);mayPlayerEat:False
+Ground pos:(14.5, 19.0);size:(23.0, 2.0);mayPlayerEat:False
+Ground pos:(16.0, 9.0);size:(20.0, 2.0);isPlayerRespawn:True
+Ground pos:(10.5, 7.5);size:(7.0, 1.0);mayPlayerEat:False
+Ground pos:(1.0, 12.0);size:(4.0, 10.0);mayPlayerEat:False
+Ground pos:(-6.5, -12.0);size:(13.0, 8.0);mayPlayerEat:False
+Ground pos:(-3.5, 9.5);size:(5.0, 13.0);mayPlayerEat:False
+Ground pos:(-11.5, 18.0);size:(29.0, 4.0);mayPlayerEat:False
+Ground pos:(20.0, -2.5);size:(12.0, 21.0);mayPlayerEat:False
+Ground pos:(-18.0, -7.0);size:(16.0, 24.0);mayPlayerEat:False;isPlayerRespawn:True
+Ground pos:(0.0, -18.0);size:(52.0, 4.0)
+Ground pos:(11.0, -13.0);size:(6.0, 6.0);mayPlayerEat:False
+Lift pos:(4.0, -6.0);size:(2.0, 16.0);strength:0.07
+Lift pos:(-4.0, -2.0);size:(8.0, 2.0);strength:0.08
 PlayerStart pos:(10.2, 10.9)
-Spikes myRect:(x:6.50, y:8.00, width:2.00, height:1.00);rotation:90
-Spikes myRect:(x:10.50, y:6.50, width:7.00, height:1.00);rotation:180
-Spikes myRect:(x:-0.50, y:5.00, width:4.00, height:1.00);rotation:270
-Spikes myRect:(x:0.50, y:6.50, width:5.00, height:1.00);rotation:180
-Spikes myRect:(x:-6.50, y:-7.50, width:13.00, height:1.00);rotation:0
-Spikes myRect:(x:-3.50, y:2.50, width:5.00, height:1.00);rotation:180
-Spikes myRect:(x:4.00, y:-15.50, width:8.00, height:1.00);rotation:0
-Spikes myRect:(x:11.00, y:-9.50, width:6.00, height:1.00);rotation:0
+Spikes pos:(6.5, 8.0);rotation:90;size:(2.0, 1.0)
+Spikes pos:(10.5, 6.5);rotation:180;size:(7.0, 1.0)
+Spikes pos:(-0.5, 5.0);rotation:270;size:(4.0, 1.0)
+Spikes pos:(0.5, 6.5);rotation:180;size:(5.0, 1.0)
+Spikes pos:(-6.5, -7.5);size:(13.0, 1.0)
+Spikes pos:(-3.5, 2.5);rotation:180;size:(5.0, 1.0)
+Spikes pos:(4.0, -15.5);size:(8.0, 1.0)
+Spikes pos:(11.0, -9.5);size:(6.0, 1.0)
+

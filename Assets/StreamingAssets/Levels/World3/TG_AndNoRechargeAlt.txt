@@ -1,16 +1,17 @@
-﻿roomProperties posGlobal:(112.0, -192.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:13.00, y:-8.50, width:16.00, height:13.00)
-Ground myRect:(x:-10.50, y:-5.00, width:5.00, height:6.00)
-Ground myRect:(x:-21.50, y:4.50, width:9.00, height:25.00)
-Ground myRect:(x:0.00, y:-17.50, width:52.00, height:5.00)
-Ground myRect:(x:19.50, y:-5.00, width:13.00, height:24.00)
-Ground myRect:(x:0.00, y:18.00, width:52.00, height:4.00)
-Ground myRect:(x:-10.50, y:-1.00, width:5.00, height:2.00);doRechargePlayer:False
-Ground myRect:(x:-6.00, y:16.50, width:22.00, height:7.00)
-Ground myRect:(x:1.00, y:-5.00, width:8.00, height:6.00)
-Ground myRect:(x:1.00, y:-1.00, width:8.00, height:2.00);doRechargePlayer:False
+roomProperties posGlobal:(112.0, -192.0);designerFlag:4
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(13.0, -8.5);size:(16.0, 13.0)
+Ground pos:(-10.5, -5.0);size:(5.0, 6.0)
+Ground pos:(-21.5, 4.5);size:(9.0, 25.0)
+Ground pos:(0.0, -17.5);size:(52.0, 5.0)
+Ground pos:(19.5, -5.0);size:(13.0, 24.0)
+Ground pos:(0.0, 18.0);size:(52.0, 4.0)
+Ground pos:(-10.5, -1.0);size:(5.0, 2.0);doRechargePlayer:False
+Ground pos:(-6.0, 16.5);size:(22.0, 7.0)
+Ground pos:(1.0, -5.0);size:(8.0, 6.0)
+Ground pos:(1.0, -1.0);size:(8.0, 2.0);doRechargePlayer:False
 PlayerStart pos:(-6.1, -13.9)
-Spikes myRect:(x:13.00, y:-1.50, width:16.00, height:1.00);rotation:0
-ToggleGround myRect:(x:-15.00, y:-1.00, width:4.00, height:2.00);startsOn:True
-ToggleGround myRect:(x:9.00, y:6.00, width:8.00, height:2.00);startsOn:False
+Spikes pos:(13.0, -1.5);size:(16.0, 1.0)
+ToggleGround pos:(-15.0, -1.0);size:(4.0, 2.0);startsOn:True;togFromContact:False;togFromAction:True
+ToggleGround pos:(9.0, 6.0);size:(8.0, 2.0);startsOn:False;togFromContact:False;togFromAction:True
+

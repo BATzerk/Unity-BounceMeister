@@ -1,9 +1,10 @@
 roomProperties posGlobal:(88.0, 1058.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 CharUnlockOrb pos:(-2.5, -10.5);myCharName:Clinga
-Ground myRect:(x:-24.00, y:1.50, width:4.00, height:37.00)
-Ground myRect:(x:22.00, y:6.00, width:8.00, height:28.00)
-Ground myRect:(x:0.00, y:14.50, width:52.00, height:11.00)
-Ground myRect:(x:0.00, y:-17.50, width:52.00, height:5.00)
-Ground myRect:(x:-3.00, y:-15.50, width:16.00, height:7.00)
+Ground pos:(-24.0, 1.5);size:(4.0, 37.0)
+Ground pos:(22.0, 6.0);size:(8.0, 28.0)
+Ground pos:(0.0, 14.5);size:(52.0, 11.0)
+Ground pos:(0.0, -17.5);size:(52.0, 5.0)
+Ground pos:(-3.0, -15.5);size:(16.0, 7.0)
 PlayerStart pos:(-1.0, -1.0)
+

@@ -2,7 +2,7 @@
 using System.Collections;
 
 namespace MapEditorNamespace {
-/** This guy's just so we can have MULTIPLE colliders that serve multiple purposes in a RoomTile. */
+/** This class is just so we can have MULTIPLE colliders that serve multiple purposes in a RoomTile. */
 public class RoomTileBodyCollider : MonoBehaviour {
 	// Components
 	[SerializeField] private BoxCollider2D boxCollider=null;
@@ -16,10 +16,9 @@ public class RoomTileBodyCollider : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Doers
     // ----------------------------------------------------------------
-//	public void UpdatePosAndSize (float x,float y, float w,float h) {
-	public void UpdatePosAndSize(Rect rect) {
-		boxCollider.transform.localPosition = new Vector3 (rect.center.x,rect.center.y, 0);
-		boxCollider.size = rect.size;
+	public void UpdatePosAndSize(Rect boundsBL) {
+		boxCollider.transform.localPosition = new Vector3 (boundsBL.center.x,boundsBL.center.y, 0);
+		boxCollider.size = boundsBL.size;
 	}
     public void SetIsEnabled(bool val) {
         boxCollider.enabled = val;

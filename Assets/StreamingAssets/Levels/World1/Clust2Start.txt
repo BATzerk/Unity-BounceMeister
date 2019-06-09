@@ -1,9 +1,10 @@
 roomProperties posGlobal:(96.0, 784.0);designerFlag:3;isClustStart:True
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:18.50, y:6.50, width:15.00, height:27.00)
-Ground myRect:(x:0.00, y:8.00, width:52.00, height:24.00)
-Ground myRect:(x:-16.00, y:0.00, width:20.00, height:40.00)
-Ground myRect:(x:0.00, y:-17.50, width:52.00, height:5.00)
-Ground myRect:(x:23.00, y:-17.00, width:6.00, height:6.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(18.5, 6.5);size:(15.0, 27.0)
+Ground pos:(0.0, 8.0);size:(52.0, 24.0)
+Ground pos:(-16.0, 0.0);size:(20.0, 40.0)
+Ground pos:(0.0, -17.5);size:(52.0, 5.0)
+Ground pos:(23.0, -17.0);size:(6.0, 6.0)
 PlayerStart pos:(-3.0, -14.0)
-ProgressGate myRect:(x:-4.50, y:-14.50, width:7.00, height:7.00);numSnacksReq:14
+ProgressGate pos:(-4.5, -14.5);size:(7.0, 7.0);numSnacksReq:14
+

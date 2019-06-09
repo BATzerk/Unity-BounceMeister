@@ -3,13 +3,15 @@ using System;
 using System.Collections;
 using System.Globalization;
 
-public class TextUtils {
+public static class TextUtils {
     // Properties
     private static string[] LINE_BREAKS_STRINGS = new string[] { System.Environment.NewLine };
     private static CultureInfo parserCulture = CultureInfo.CreateSpecificCulture ("en"); // We ONLY want to parse (number) strings with English culture!
 
     /** Use THIS function instead of float.Parse!! Because... on PlayStation 4, if the system's language is French, it treats periods as commas. We want ONLY to use English-style punctuation throughout all our backend. */
-    public static float ParseFloat (string _string) { return float.Parse (_string, parserCulture); }
+    public static float ParseFloat (string _string) {
+        return float.Parse (_string, parserCulture);
+    }
     public static int ParseInt (string _string) { return int.Parse (_string, parserCulture); }
     public static bool ParseBool(string str) { return bool.Parse(str); }
 
@@ -104,7 +106,7 @@ public class TextUtils {
 
 
 
-    /// This function parses a string AS FORMATTED by Rect's ToString() function. Example: (x:0.68, y:76.18, width:400.00, height:400.00)
+    /// This function parses a string AS FORMATTED by Rect's ToString() function. Example: (x:0.68, 76.18);size:(400.00, 400.00)
     static public Rect GetRectFromString (string str) {
         int colonIndex, commaIndex;
         string xString, yString, wString, hString;
@@ -138,7 +140,7 @@ public class TextUtils {
             return new Vector2 (x,y);
         }
         catch {
-            Debug.Log ("Error parsing Vector2 string. x: \"" + xString + "\", y: \"" + yString+"\"");
+            Debug.Log ("Error parsing Vector2 string. x: \"" + xString + "\",  \"" + yString+"\"");
             return Vector2Extensions.NaN;
         }
     }

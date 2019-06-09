@@ -1,16 +1,17 @@
 roomProperties posGlobal:(470.0, -318.0);designerFlag:3
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-0.50, y:12.00, width:5.00, height:16.00)
-Ground myRect:(x:0.00, y:-10.50, width:52.00, height:19.00)
-Ground myRect:(x:11.50, y:11.00, width:21.00, height:10.00)
-Ground myRect:(x:-10.50, y:12.00, width:3.00, height:16.00)
-Ground myRect:(x:10.00, y:18.00, width:26.00, height:4.00)
-Ground myRect:(x:-18.00, y:18.00, width:16.00, height:4.00)
-Ground myRect:(x:-22.00, y:-1.00, width:8.00, height:36.00)
-Ground myRect:(x:22.00, y:0.50, width:8.00, height:39.00)
-Platform myRect:(x:-15.00, y:10.50, width:6.00, height:1.00);isPlayerRespawn:True
-Platform myRect:(x:-6.00, y:4.50, width:6.00, height:1.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(-0.5, 12.0);size:(5.0, 16.0)
+Ground pos:(0.0, -10.5);size:(52.0, 19.0)
+Ground pos:(11.5, 11.0);size:(21.0, 10.0)
+Ground pos:(-10.5, 12.0);size:(3.0, 16.0)
+Ground pos:(10.0, 18.0);size:(26.0, 4.0)
+Ground pos:(-18.0, 18.0);size:(16.0, 4.0)
+Ground pos:(-22.0, -1.0);size:(8.0, 36.0)
+Ground pos:(22.0, 0.5);size:(8.0, 39.0)
+Platform pos:(-15.0, 10.5);size:(6.0, 1.0);isPlayerRespawn:True
+Platform pos:(-6.0, 4.5);size:(6.0, 1.0)
 PlayerStart pos:(-14.0, 0.5)
-ProgressGate myRect:(x:9.50, y:2.50, width:7.00, height:7.00);numSnacksReq:14
+ProgressGate pos:(9.5, 2.5);size:(7.0, 7.0);numSnacksReq:14
 RoomDoor pos:(16.5, 0.0);myID:1;worldToIndex:-1;roomToKey:Clust3Start;doorToID:0
 RoomDoor pos:(-16.0, 12.0);myID:0;worldToIndex:-1;roomToKey:Clust1End;doorToID:0
+

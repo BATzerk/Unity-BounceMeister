@@ -23,9 +23,11 @@ public class RoomData {
     public HashSet<RoomData> NeighborRooms { get; private set; } // All RoomDatas I have Openings to.
     
     // Getters
-    public Rect BoundsLocal { get { return cameraBoundsData.myRect; } } // NOTE: The camera bounds and room bounds are one in the same.
- //   public Rect BoundsLocal { get { return new Rect(cameraBoundsData.myRect.center, cameraBoundsData.myRect.size); } } // Currently, the camera bounds and room bounds are one in the same.
-	public Rect BoundsGlobal { get { return new Rect(cameraBoundsData.myRect.center+PosGlobal, cameraBoundsData.myRect.size); } }
+    // { get { return new Rect(cameraBoundsData.pos, cameraBoundsData.size); } } // NOTE: The camera bounds and room bounds are one in the same.
+    //public Rect BoundsLocalCenter { get; private set; } // Rect, with  Based off cameraBoundsData.
+    public Vector2 Size { get; private set; } // Based 100% off cameraBoundsData.
+    public Rect BoundsLocalBL { get; private set; } // Bottom-left aligned. Based 100% off cameraBoundsData.
+	public Rect BoundsGlobalBL { get; private set; } // Bottom-left aligned.
     //public Rect BoundsGlobal { get { return new Rect(BoundsLocal.position+posGlobal, BoundsLocal.size); } }
 	public WorldData MyWorldData { get; private set; }
     public int WorldIndex { get { return MyAddress.world; } }
@@ -73,15 +75,26 @@ public class RoomData {
     public void SetMyCluster(RoomClusterData cluster) {
         MyCluster = cluster;
     }
-	public void SetPosGlobal (Vector2 _posGlobal) {
-		// Round my posGlobal values to even numbers! For snapping rooms together more easily.
-		PosGlobal = _posGlobal;//new Vector2 (Mathf.Round(_posGlobal.x*0.5f)*2f, Mathf.Round (_posGlobal.y*0.5f)*2f);
-	}
     public void SetDesignerFlag (int _designerFlag) {
         DesignerFlag = _designerFlag;
     }
     public void SetIsSecret(bool val) {
         IsSecret = val;
+    }
+    public void SetPosGlobal (Vector2 _posGlobal) {
+        PosGlobal = _posGlobal;
+        UpdateBounds();
+    }
+    private void SetCameraBoundsData(CameraBoundsData cbd) {
+        cameraBoundsData = cbd;
+        UpdateBounds(); // Update my bounds!
+    }
+    private void UpdateBounds() {
+        if (cameraBoundsData != null) { // If we've defined our cameraBoundsData...!
+            Size = cameraBoundsData.size;
+            BoundsLocalBL = new Rect(cameraBoundsData.pos-Size*0.5f, Size); // Convert from cameraBound's centered to Bottom-Left.
+            BoundsGlobalBL = new Rect(BoundsLocalBL.position+PosGlobal, Size);
+        }
     }
 
 
@@ -100,7 +113,7 @@ public class RoomData {
 	}
 	public void ClearAllPropDataLists() {
 		allPropDatas = new List<PropData>();
-        cameraBoundsData = new CameraBoundsData();
+        cameraBoundsData = null;
         groundDatas = new List<GroundData>();
         roomDoorDatas = new List<RoomDoorData>();
         snackDatas = new List<SnackData>();
@@ -121,7 +134,7 @@ public class RoomData {
     public void AddPropData(PropData propData) {
         allPropDatas.Add(propData);
         // Add to sub-lists! (Note: No easy way to use switch statement instead.)
-        if (propData is CameraBoundsData) { cameraBoundsData = propData as CameraBoundsData; }
+        if (propData is CameraBoundsData) { SetCameraBoundsData(propData as CameraBoundsData); }
         else if (propData is GroundData) { groundDatas.Add(propData as GroundData); }
         else if (propData is RoomDoorData) { roomDoorDatas.Add(propData as RoomDoorData); }
         else if (propData is SnackData) { snackDatas.Add(propData as SnackData); }
@@ -136,7 +149,7 @@ public class RoomData {
     private void AddRoomOpeningsAtSide(int side) {
         // CANDO: #optimization. ONLY add Grounds that are on the sides.
         float searchUnit = 1; // how granular our searches are. The smaller this value, the more steps we take along sides of the room.
-        Rect bl = BoundsLocal;
+        Rect bl = BoundsLocalBL; // TODO: Test this!
         // Determine where we start search, and what dir to go.
         float sideLength=0;
         Vector2 cornerPos=Vector2.zero; // default to whatever.

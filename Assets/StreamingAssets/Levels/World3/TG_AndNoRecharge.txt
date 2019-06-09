@@ -1,13 +1,14 @@
 roomProperties posGlobal:(152.0, 956.0);designerFlag:4
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
-Ground myRect:(x:-4.00, y:-1.00, width:8.00, height:2.00);doRechargePlayer:False
-Ground myRect:(x:-4.00, y:-5.00, width:8.00, height:6.00)
-Ground myRect:(x:-1.00, y:16.00, width:2.00, height:8.00)
-Ground myRect:(x:-15.50, y:-1.00, width:5.00, height:2.00);doRechargePlayer:False
-Ground myRect:(x:0.00, y:-17.50, width:52.00, height:5.00)
-Ground myRect:(x:-24.00, y:6.00, width:4.00, height:28.00)
-Ground myRect:(x:-15.50, y:-5.00, width:5.00, height:6.00)
-Ground myRect:(x:4.00, y:-4.50, width:8.00, height:23.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(-4.0, -1.0);size:(8.0, 2.0);doRechargePlayer:False
+Ground pos:(-4.0, -5.0);size:(8.0, 6.0)
+Ground pos:(-1.0, 16.0);size:(2.0, 8.0)
+Ground pos:(-15.5, -1.0);size:(5.0, 2.0);doRechargePlayer:False
+Ground pos:(0.0, -17.5);size:(52.0, 5.0)
+Ground pos:(-24.0, 6.0);size:(4.0, 28.0)
+Ground pos:(-15.5, -5.0);size:(5.0, 6.0)
+Ground pos:(4.0, -4.5);size:(8.0, 23.0)
 PlayerStart pos:(-22.2, -12.7)
-ToggleGround myRect:(x:-20.00, y:-1.00, width:4.00, height:2.00);startsOn:True
-ToggleGround myRect:(x:-1.00, y:6.00, width:2.00, height:12.00);startsOn:True
+ToggleGround pos:(-20.0, -1.0);size:(4.0, 2.0);startsOn:True;togFromContact:False;togFromAction:True
+ToggleGround pos:(-1.0, 6.0);size:(2.0, 12.0);startsOn:True;togFromContact:False;togFromAction:True
+

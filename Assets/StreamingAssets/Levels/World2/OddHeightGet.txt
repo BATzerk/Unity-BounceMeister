@@ -1,15 +1,16 @@
 roomProperties posGlobal:(-298.0, 1550.0);designerFlag:2
-CameraBounds myRect:(x:-26.00, y:-19.00, width:52.00, height:38.00)
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 GateButton pos:(8.5, 5.5);channelID:3
 GateButton pos:(8.5, -0.5);channelID:3
-Ground myRect:(x:-16.00, y:-11.00, width:20.00, height:10.00);isPlayerRespawn:True
-Ground myRect:(x:6.00, y:3.50, width:10.00, height:1.00)
-Ground myRect:(x:0.00, y:-13.50, width:52.00, height:13.00)
-Ground myRect:(x:-22.00, y:6.50, width:8.00, height:15.00)
-Ground myRect:(x:0.00, y:15.50, width:52.00, height:9.00)
-Ground myRect:(x:18.00, y:-0.50, width:16.00, height:37.00)
-Lift myRect:(x:2.00, y:-2.00, width:16.00, height:2.00);rotation:0;strength:0.08
+Ground pos:(-16.0, -11.0);size:(20.0, 10.0);isPlayerRespawn:True
+Ground pos:(6.0, 3.5);size:(10.0, 1.0)
+Ground pos:(0.0, -13.5);size:(52.0, 13.0)
+Ground pos:(-22.0, 6.5);size:(8.0, 15.0)
+Ground pos:(0.0, 15.5);size:(52.0, 9.0)
+Ground pos:(18.0, -0.5);size:(16.0, 37.0)
+Lift pos:(2.0, -2.0);size:(16.0, 2.0);strength:0.08
 PlayerStart pos:(-8.5, -3.5)
-Spikes myRect:(x:2.50, y:-6.50, width:21.00, height:1.00);rotation:0
-Spikes myRect:(x:5.50, y:2.50, width:9.00, height:1.00);rotation:180
-Spikes myRect:(x:0.50, y:3.50, width:1.00, height:1.00);rotation:90
+Spikes pos:(2.5, -6.5);size:(21.0, 1.0)
+Spikes pos:(5.5, 2.5);rotation:180;size:(9.0, 1.0)
+Spikes pos:(0.5, 3.5);rotation:90;size:(1.0, 1.0)
+
