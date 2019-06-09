@@ -31,8 +31,8 @@ public sealed class Ground : BaseGround, ITravelable {
 	}
     private static Rect TrimmedRectToRoomBounds(Rect r, Room room) {
         Rect bounds = room.GetCameraBoundsLocal();
-        bounds.yMin -= 1; // hacky-ish bloat top/bottom bounds.
-        bounds.yMax += 1;
+        bounds.yMin += 0.1f; // shrink bottom bounds slightly.
+        //bounds.yMax += 1;
         return MathUtils.TrimRect(r, bounds);
     }
 
@@ -76,7 +76,6 @@ public sealed class Ground : BaseGround, ITravelable {
             nr.position = nr.center; // offset to CENTER aligned.
             SetSize(nr.size);
             SetPos(nr.position);
-            //SetMyRect(nr);
         }
         // YES TravelMind! Just use base Move.
         else {

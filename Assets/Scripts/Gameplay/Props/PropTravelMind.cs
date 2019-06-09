@@ -9,7 +9,7 @@ public class PropTravelMind : MonoBehaviour {
     [SerializeField] public float Speed = 1;
     [SerializeField] public float LocOffset = 0;
     private float oscLoc;
-    private Vector2 myRoomPos; // global pos of my room. For Gizmos.
+    private Vector2 myRoomPos; // global pos of my Room. For Gizmos.
     // References
     private ITravelable myTravelable; // assigned in Initialize.
     
@@ -36,20 +36,20 @@ public class PropTravelMind : MonoBehaviour {
     // ----------------------------------------------------------------
     //  Initialize
     // ----------------------------------------------------------------
-    private void Awake() {
-        myTravelable = GetComponent<ITravelable>();
-        Prop myProp = GetComponent<Prop>();
-        if (myProp != null) {
-            myRoomPos = myProp.MyRoom.PosGlobal;
-        }
-    }
     public void Initialize(TravelMindData data) {
         PosA = data.posA;
         PosB = data.posB;
         Speed = data.speed;
         LocOffset = data.locOffset;
-        
         oscLoc = LocOffset; // start with my desired offset!
+        
+        // Set refs.
+        myTravelable = GetComponent<ITravelable>();
+        Prop myProp = GetComponent<Prop>();
+        if (myProp != null) {
+            myRoomPos = myProp.MyRoom.PosGlobal;
+            oscLoc += myProp.MyRoom.RoomTime * Speed; // also start us at the right spot, based on the Room's age (in case we're made DURING being in the Room [i.e. in editor]).
+        }
         
         ApplyPos();
         

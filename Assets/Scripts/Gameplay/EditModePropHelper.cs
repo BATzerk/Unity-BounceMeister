@@ -14,7 +14,7 @@ public class EditModePropHelper : MonoBehaviour {
     // References
     private GameController gameController; // set in Awake.
     private List<GroundSideRect> groundSides;
-    private Spikes spikesSel;
+    //private Spikes spikesSel;
     private Prop propSel;
     
     // Getters (Private)
@@ -75,13 +75,19 @@ public class EditModePropHelper : MonoBehaviour {
     //  Events
     // ----------------------------------------------------------------
     private void OnPropSelPosChanged() {
-        // TravelMind?
-        if (propSel.HasTravelMind()) {
-            propSel.Debug_ShiftPosesFromEditorMovement();
+        // Yes auto-rotate Spikes, and only ONE Prop selected?
+        if (doAutoRotateSpikes && Selection.gameObjects.Length==1) {
+            AutoRotateSpikes(propSel as Spikes);
         }
-        // Spikes?
-        if (doAutoRotateSpikes) {
-            AutoRotateSpikesSel();
+        // Loop through ALL Props selected...
+        foreach (GameObject go in Selection.gameObjects) {
+            Prop prop = go.GetComponent<Prop>();
+            if (prop != null) {
+                // TravelMind?
+                if (prop.HasTravelMind()) {
+                    prop.Debug_ShiftPosesFromEditorMovement();
+                }
+            }
         }
         propSelPos = propSel.transform.localPosition;
     }
@@ -92,13 +98,13 @@ public class EditModePropHelper : MonoBehaviour {
     // ----------------------------------------------------------------
     private void NullifyPropSel() {
         propSel = null;
-        spikesSel = null;
+        //spikesSel = null;
     }
     private void SetPropSel(Prop _prop) {
         propSel = _prop;
-        spikesSel = propSel as Spikes;
+        //spikesSel = propSel as Spikes;
         propSelPos = propSel.transform.localPosition;
-        if (spikesSel != null) {
+        if (propSel is Spikes) {
             RefreshGroundSides();
         }
     }
@@ -111,13 +117,13 @@ public class EditModePropHelper : MonoBehaviour {
             }
         }
     }
-    private void AutoRotateSpikesSel() {
-        if (spikesSel == null) { return; } // Not selected? No gazpacho.
+    private void AutoRotateSpikes(Spikes spikes) {
+        if (spikes == null) { return; } // Not spikes? No gazpacho.
         // What rect are we in??
-        GroundSideRect gsrIn = GetGroundSideRectAt(spikesSel.PosLocal);
+        GroundSideRect gsrIn = GetGroundSideRectAt(spikes.PosLocal);
         if (!GroundSideRect.IsUndefined(gsrIn)) { // We're touching one!
             float rotation = -gsrIn.side * 90;
-            spikesSel.Debug_SetRotation(rotation);
+            spikes.Debug_SetRotation(rotation);
         }
     }
     

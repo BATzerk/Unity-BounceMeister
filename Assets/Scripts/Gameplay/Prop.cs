@@ -69,9 +69,6 @@ abstract public class Prop : MonoBehaviour, ITravelable {
 
     public Vector2 GetPos() { return pos; }
     public void SetPos(Vector2 _pos) { pos = _pos; }
-    virtual protected void OnCreatedInEditor() {
-        if (travelMind == null) { travelMind = GetComponent<PropTravelMind>(); } // Safety check for duplicating objects.
-    }
     
     private void EnableSnappingScript() {
         BaseGridSnap script = GetComponent<BaseGridSnap>();
@@ -102,21 +99,27 @@ abstract public class Prop : MonoBehaviour, ITravelable {
         #if UNITY_EDITOR
         // No Room ref?? We've been pulled out from the Editor!
         if (MyRoom == null) {
-            // Set my Room ref!
-            MyRoom = GetComponentInParent<Room>();
-            if (MyRoom == null) { MyRoom = FindObjectOfType<Room>(); } // Also check the whole scene, just in case.
-            this.transform.SetParent(MyRoom.transform);
-            //if (myRoom != null) { // Safety check.
-            //    PropData data = ToData();
-            //    BaseInitialize(myRoom, data);
-            //}
-            // Unpack me as a Prefab!
-            if (UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this.gameObject)) {
-                UnityEditor.PrefabUtility.UnpackPrefabInstance(this.gameObject, UnityEditor.PrefabUnpackMode.Completely, UnityEditor.InteractionMode.AutomatedAction);
-            }
             OnCreatedInEditor();
         }
         #endif
+    }
+    virtual protected void OnCreatedInEditor() {
+        // Set my Room ref!
+        MyRoom = GetComponentInParent<Room>();
+        if (MyRoom == null) { MyRoom = FindObjectOfType<Room>(); } // Also check the whole scene, just in case.
+        // Parent me.
+        this.transform.SetParent(MyRoom.transform);
+        // Unpack me as a Prefab!
+        if (UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this.gameObject)) {
+            UnityEditor.PrefabUtility.UnpackPrefabInstance(this.gameObject, UnityEditor.PrefabUnpackMode.Completely, UnityEditor.InteractionMode.AutomatedAction);
+        }
+        // Set component references!
+        if (travelMind == null) {
+            travelMind = GetComponent<PropTravelMind>();
+            if (travelMind != null) { // I DO have a TravelMind? Initialize it as we would've normally.
+                travelMind.Initialize(new TravelMindData(travelMind));
+            }
+        }
     }
 
 
