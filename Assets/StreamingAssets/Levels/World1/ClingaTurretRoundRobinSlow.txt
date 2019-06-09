@@ -1,4 +1,4 @@
-roomProperties posGlobal:(510.0, 2126.0);designerFlag:3
+roomProperties posGlobal:(742.0, 2038.0);designerFlag:3
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 Ground pos:(11.5, -10.5);size:(7.0, 3.0)
 Ground pos:(-3.0, -2.5);size:(14.0, 25.0)
@@ -20,4 +20,3 @@ Spikes pos:(15.5, 3.0);rotation:270;size:(14.0, 1.0)
 Turret pos:(-16.5, 14.5);rotation:270;interval:1;speed:0.2;startOffset:0.2
 Turret pos:(18.5, 15.5);rotation:180;interval:1;speed:0.2;startOffset:0.6
 Turret pos:(-15.5, -15.5);interval:1;speed:0.2;startOffset:0.2
-

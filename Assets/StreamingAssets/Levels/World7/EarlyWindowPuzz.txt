@@ -16,4 +16,3 @@ Spikes pos:(-7.5, -15.5);size:(23.0, 1.0)
 Spikes pos:(-17.5, -5.5);rotation:270;size:(23.0, 1.0)
 Turret pos:(8.5, 12.5);rotation:180;interval:0.15;speed:0.2;startOffset:1
 Turret pos:(12.5, -15.5);interval:0.15;speed:0.2;startOffset:1
-

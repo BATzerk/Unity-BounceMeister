@@ -418,19 +418,19 @@ static public class RoomSaverLoader {
         rd.AddPropData(cameraBoundsData);
 
 		PlayerStartData playerStartData = new PlayerStartData();
-		playerStartData.pos = new Vector2(-20, -13);
+		playerStartData.pos = new Vector2(0,0);
         rd.AddPropData(playerStartData);
 
 		Rect[] groundRects = {
-			new Rect(0,-17, 52,6),
-			new Rect(-24,0, 4,38),
-			new Rect(24,0, 4,38),
-			new Rect(0,18, 52,4),
+            new Rect(0,17.5f, 52,3), // top
+            new Rect(0,-16.5f, 52,5), // bottom
+            new Rect(-24,0, 4,38), // left
+            new Rect(24,0, 4,38), // right
 		};
 		foreach (Rect rect in groundRects) {
             GroundData newGroundData = new GroundData {
+                pos = rect.position,
                 size = rect.size,
-                pos = rect.center
             };
             rd.AddPropData(newGroundData);
 		}

@@ -1,15 +1,15 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/EditModePropHelper.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/RoomSaverLoader.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/Props/CameraBounds.cs" Line="13" Column="26" />
       <File FileName="Assets/Scripts/MapEditor/MapEditor.cs" Line="705" Column="32" />
-      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="155" Column="48" />
+      <File FileName="Assets/Scripts/Gameplay/WorldData.cs" Line="306" Column="34" />
       <File FileName="Assets/Scripts/Gameplay/Props/Ground.cs" Line="35" Column="28" />
       <File FileName="Assets/Scripts/Gameplay/Room.cs" Line="28" Column="17" />
-      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="119" Column="67" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PropTravelMind.cs" Line="37" Column="19" />
-      <File FileName="Assets/Scripts/Gameplay/EditModePropHelper.cs" Line="109" Column="47" />
+      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="106" Column="49" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PropTravelMind.cs" Line="48" Column="44" />
+      <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="415" Column="47" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

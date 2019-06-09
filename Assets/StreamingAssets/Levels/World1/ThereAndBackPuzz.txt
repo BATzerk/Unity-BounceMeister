@@ -1,0 +1,15 @@
+roomProperties posGlobal:(340.0, 1860.0);designerFlag:4
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(-21.0, 15.0);size:(10.0, 8.0)
+Ground pos:(7.5, 13.5);size:(37.0, 11.0)
+Ground pos:(20.5, -8.0);size:(11.0, 22.0);mayPlayerEat:False
+Ground pos:(-21.0, -7.0);size:(10.0, 24.0)
+Ground pos:(0.0, 8.5);size:(22.0, 11.0)
+Ground pos:(-5.0, -9.5);size:(42.0, 19.0);mayPlayerEat:False
+Ground pos:(23.0, -4.5);size:(6.0, 29.0)
+Platform pos:(-13.5, 4.5);size:(5.0, 1.0)
+PlayerStart pos:(-14.5, 6.0)
+Snack pos:(17.5, 4.5);playerType:Any
+Turret pos:(-16.5, 1.5);rotation:270;interval:2.2;speed:0.3
+Turret pos:(-16.5, 2.5);rotation:270;interval:2.2;speed:0.3
+Turret pos:(-16.5, 0.5);rotation:270;interval:2.2;speed:0.3

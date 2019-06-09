@@ -1,0 +1,18 @@
+roomProperties posGlobal:(406.0, 1870.0);designerFlag:0
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+GateButton pos:(17.0, 8.5);channelID:0
+Gate pos:(-11.5, 2.5);size:(5.0, 3.0);channelID:0
+Ground pos:(-21.0, -5.0);size:(10.0, 28.0)
+Ground pos:(0.0, 12.5);size:(22.0, 11.0)
+Ground pos:(-20.0, -7.5);size:(12.0, 23.0)
+Ground pos:(20.5, -6.0);size:(11.0, 26.0)
+Ground pos:(5.5, -7.5);size:(29.0, 23.0)
+Ground pos:(0.0, 17.0);size:(52.0, 4.0)
+Ground pos:(13.0, 15.0);size:(26.0, 6.0)
+Platform pos:(-11.5, -16.5);size:(5.0, 1.0)
+Platform pos:(-13.5, 8.5);size:(5.0, 1.0)
+PlayerStart pos:(-14.5, 10.0)
+Snack pos:(-11.5, -2.0);playerType:Any
+Turret pos:(-16.5, 4.5);rotation:270;interval:2;speed:0.3
+Turret pos:(-16.5, 6.5);rotation:270;interval:2;speed:0.3
+Turret pos:(-16.5, 5.5);rotation:270;interval:2;speed:0.3

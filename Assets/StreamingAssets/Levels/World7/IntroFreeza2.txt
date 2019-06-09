@@ -1,37 +1,37 @@
 roomProperties posGlobal:(228.0, 850.0);designerFlag:3
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
-Ground pos:(-21.0, -15.5);size:(10.0, 9.0)
-Ground pos:(9.5, 13.0);size:(15.0, 2.0)
-Ground pos:(-17.0, -10.0);size:(2.0, 4.0)
-Ground pos:(0.0, -17.0);size:(52.0, 6.0)
-Ground pos:(21.5, -15.5);size:(9.0, 9.0)
-Ground pos:(24.0, 9.0);size:(4.0, 22.0)
-Ground pos:(-23.0, 8.5);size:(6.0, 23.0)
 Ground pos:(18.0, -10.0);size:(2.0, 4.0)
+Ground pos:(-23.0, 8.5);size:(6.0, 23.0)
 Ground pos:(0.0, 16.5);size:(52.0, 7.0)
-Ground pos:(-8.5, 13.0);size:(15.0, 2.0)
 Ground pos:(0.5, -12.0);size:(3.0, 8.0)
-Platform pos:(-8.5, -8.5);size:(15.0, 1.0)
+Ground pos:(-8.5, 13.0);size:(15.0, 2.0)
+Ground pos:(24.0, 6.5);size:(4.0, 27.0)
+Ground pos:(9.5, 13.0);size:(15.0, 2.0)
+Ground pos:(-21.0, -15.5);size:(10.0, 9.0)
+Ground pos:(-17.0, -10.0);size:(2.0, 4.0)
+Ground pos:(21.5, -16.0);size:(9.0, 8.0)
+Ground pos:(0.0, -17.0);size:(52.0, 6.0)
 Platform pos:(9.5, -8.5);size:(15.0, 1.0)
+Platform pos:(-8.5, -8.5);size:(15.0, 1.0)
 PlayerStart pos:(-20.0, -10.0)
-Turret pos:(7.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
-Turret pos:(15.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
-Turret pos:(5.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
-Turret pos:(3.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
-Turret pos:(5.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
-Turret pos:(-8.5, -14.5);interval:0.4;speed:0.22
 Turret pos:(-12.5, -14.5);interval:0.4;speed:0.22
-Turret pos:(9.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
-Turret pos:(-2.5, -14.5);interval:0.4;speed:0.22
-Turret pos:(-2.5, -14.5);interval:0.4;speed:0.22
+Turret pos:(-6.5, -14.5);interval:0.4;speed:0.22
+Turret pos:(-6.5, -14.5);interval:0.4;speed:0.22
 Turret pos:(-10.5, -14.5);interval:0.4;speed:0.22
 Turret pos:(13.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
-Turret pos:(-6.5, -14.5);interval:0.4;speed:0.22
-Turret pos:(-12.5, -14.5);interval:0.4;speed:0.22
-Turret pos:(-6.5, -14.5);interval:0.4;speed:0.22
-Turret pos:(-4.5, -14.5);interval:0.4;speed:0.22
-Turret pos:(11.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
-Turret pos:(11.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
 Turret pos:(-14.5, -14.5);interval:0.4;speed:0.22
 Turret pos:(15.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(11.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(-4.5, -14.5);interval:0.4;speed:0.22
+Turret pos:(11.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(3.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(5.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(5.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(7.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(15.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(-2.5, -14.5);interval:0.4;speed:0.22
+Turret pos:(-2.5, -14.5);interval:0.4;speed:0.22
+Turret pos:(9.5, -14.5);interval:0.4;speed:0.22;startOffset:0.2
+Turret pos:(-8.5, -14.5);interval:0.4;speed:0.22
+Turret pos:(-12.5, -14.5);interval:0.4;speed:0.22
 

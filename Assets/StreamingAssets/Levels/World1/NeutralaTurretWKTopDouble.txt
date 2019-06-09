@@ -1,10 +1,9 @@
-roomProperties posGlobal:(398.0, 2062.0);designerFlag:4
+roomProperties posGlobal:(260.0, 1858.0);designerFlag:4
 CameraBounds pos:(-12.0, 0.0);size:(28.0, 38.0)
-Ground pos:(-12.0, -17.5);size:(28.0, 5.0)
-Ground pos:(-20.5, 5.5);size:(11.0, 29.0)
-Ground pos:(-12.0, 17.0);size:(28.0, 6.0)
-Ground pos:(-3.5, -4.5);size:(11.0, 25.0)
-PlayerStart pos:(-12.0, -14.0)
-Turret pos:(-9.5, 14.5);rotation:180;interval:1;speed:0.4
-Turret pos:(-14.5, 14.5);rotation:180;interval:1;speed:0.4;startOffset:0.4
-
+Ground pos:(-12.0, 17.0);size:(28.0, 4.0)
+Ground pos:(-3.5, -3.5);size:(11.0, 25.0)
+Ground pos:(-12.0, -16.5);size:(28.0, 5.0)
+Ground pos:(-20.5, 5.0);size:(11.0, 28.0)
+PlayerStart pos:(-12.0, -13.0)
+Turret pos:(-14.5, 15.5);rotation:180;interval:1;speed:0.4;startOffset:0.4
+Turret pos:(-9.5, 15.5);rotation:180;interval:1;speed:0.4

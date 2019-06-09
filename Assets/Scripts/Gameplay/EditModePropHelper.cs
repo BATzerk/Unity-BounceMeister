@@ -14,7 +14,6 @@ public class EditModePropHelper : MonoBehaviour {
     // References
     private GameController gameController; // set in Awake.
     private List<GroundSideRect> groundSides;
-    //private Spikes spikesSel;
     private Prop propSel;
     
     // Getters (Private)
@@ -98,11 +97,9 @@ public class EditModePropHelper : MonoBehaviour {
     // ----------------------------------------------------------------
     private void NullifyPropSel() {
         propSel = null;
-        //spikesSel = null;
     }
     private void SetPropSel(Prop _prop) {
         propSel = _prop;
-        //spikesSel = propSel as Spikes;
         propSelPos = propSel.transform.localPosition;
         if (propSel is Spikes) {
             RefreshGroundSides();

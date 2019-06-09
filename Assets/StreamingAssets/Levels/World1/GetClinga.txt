@@ -1,4 +1,4 @@
-roomProperties posGlobal:(88.0, 1058.0);designerFlag:3
+roomProperties posGlobal:(60.0, 992.0);designerFlag:3
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 CharUnlockOrb pos:(-2.5, -10.5);myCharName:Clinga
 Ground pos:(-24.0, 1.5);size:(4.0, 37.0)
@@ -7,4 +7,3 @@ Ground pos:(0.0, 14.5);size:(52.0, 11.0)
 Ground pos:(0.0, -17.5);size:(52.0, 5.0)
 Ground pos:(-3.0, -15.5);size:(16.0, 7.0)
 PlayerStart pos:(-1.0, -1.0)
-
