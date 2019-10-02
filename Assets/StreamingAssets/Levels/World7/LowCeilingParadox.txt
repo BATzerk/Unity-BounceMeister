@@ -1,19 +1,20 @@
-roomProperties posGlobal:(484.0, 158.0);designerFlag:4
+roomProperties posGlobal:(482.0, 172.0);designerFlag:4
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 DispGround pos:(1.5, -11.0);size:(11.0, 2.0);mayPlayerEat:False;doRegen:True;dieFromPlayerLeave:True
-Ground pos:(12.0, 11.0);size:(22.0, 10.0)
-Ground pos:(-12.5, 13.5);size:(3.0, 13.0)
-Ground pos:(18.0, -9.0);size:(16.0, 14.0);mayPlayerEat:False
-Ground pos:(6.0, -16.5);size:(40.0, 7.0)
-Ground pos:(-16.0, -8.0);size:(20.0, 24.0)
-Ground pos:(-19.5, 16.0);size:(13.0, 8.0)
 Ground pos:(6.0, 16.5);size:(40.0, 7.0)
+Ground pos:(-19.5, 16.0);size:(13.0, 8.0)
+Ground pos:(-16.0, -2.0);size:(20.0, 12.0)
 Ground pos:(24.0, 8.5);size:(4.0, 11.0)
+Ground pos:(-16.5, -8.0);size:(19.0, 24.0)
+Ground pos:(-12.5, 13.5);size:(3.0, 13.0)
+Ground pos:(12.0, 11.0);size:(22.0, 10.0)
+Ground pos:(6.0, -16.5);size:(40.0, 7.0)
+Ground pos:(18.0, -9.0);size:(16.0, 14.0);mayPlayerEat:False
 PlayerStart pos:(-9.5, 5.5)
-Spikes pos:(9.5, -8.0);rotation:90;size:(12.0, 1.0)
-Spikes pos:(5.0, 12.5);rotation:180;size:(34.0, 1.0)
-Spikes pos:(12.0, 5.5);rotation:180;size:(22.0, 1.0)
-Spikes pos:(0.5, 11.0);rotation:90;size:(10.0, 1.0)
 Spikes pos:(-10.5, 12.0);rotation:270;size:(10.0, 1.0)
 Spikes pos:(7.0, -12.5);size:(30.0, 1.0)
-
+Spikes pos:(-6.5, -11.0);rotation:270;size:(10.0, 1.0)
+Spikes pos:(5.0, 12.5);rotation:180;size:(34.0, 1.0)
+Spikes pos:(9.5, -8.0);rotation:90;size:(12.0, 1.0)
+Spikes pos:(0.5, 11.0);rotation:90;size:(10.0, 1.0)
+Spikes pos:(12.0, 5.5);rotation:180;size:(22.0, 1.0)

@@ -8,4 +8,3 @@ Ground pos:(-22.0, 6.5);size:(8.0, 27.0)
 PlayerStart pos:(-17.0, -10.5)
 ProgressGate pos:(9.0, -8.0);size:(6.0, 6.0);numSnacksReq:2
 RoomDoor pos:(2.0, -12.0);myID:0;worldToIndex:-1;roomToKey:;doorToID:
-

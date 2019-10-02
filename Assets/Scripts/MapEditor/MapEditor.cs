@@ -125,7 +125,7 @@ public class MapEditor : MonoBehaviour {
 		UnityEditor.AssetDatabase.Refresh();
 		#endif
         
-        //// QQQ TEST!!!
+        //// TEST!!!
         //for (int wi=1; wi<8; wi++) {
         //    foreach (RoomData rd in dataManager.GetWorldData(wi).roomDatas.Values) {
         //        //rd.cameraBoundsData.pos += rd.cameraBoundsData.size*0.5f;

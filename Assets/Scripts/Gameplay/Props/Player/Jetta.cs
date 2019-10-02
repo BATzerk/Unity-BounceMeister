@@ -28,11 +28,11 @@ public class Jetta : Player {
     override protected float FrictionGround {
         get {
             //if (Mathf.Abs(LeftStick.x) > 0.1f) { return 0.7f; } // Providing input? Less friction!
-            return 0.82f; // No input? Basically halt.
+            return 0.78f;
         }
     }
     override protected float InputScaleX { get { return 0.08f; } }
-    override protected float WallSlideMinYVel { get { return -0.22f; } }
+    override protected float WallSlideMinYVel { get { return -0.14f; } }
     override protected float JumpForce { get { return 0.41f; } }
     override protected Vector2 WallKickVel { get { return new Vector2(0.32f,0.43f); } }
     protected override float MaxVelYDown { get { return -0.5f; } }

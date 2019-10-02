@@ -35,4 +35,3 @@ Spikes pos:(11.0, -1.5);size:(6.0, 1.0)
 Spikes pos:(7.5, -13.5);size:(9.0, 1.0)
 Spikes pos:(6.5, 5.5);rotation:180;size:(3.0, 1.0)
 Spikes pos:(-2.5, -4.0);rotation:90;size:(2.0, 1.0)
-

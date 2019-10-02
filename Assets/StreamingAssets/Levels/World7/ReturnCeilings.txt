@@ -1,4 +1,4 @@
-roomProperties posGlobal:(366.0, 188.0);designerFlag:4
+roomProperties posGlobal:(356.0, 202.0);designerFlag:4
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 GateButton pos:(21.0, 9.5);channelID:0
 Gate pos:(-18.5, -2.0);size:(5.0, 4.0);channelID:0
@@ -25,4 +25,3 @@ Spikes pos:(15.5, 1.0);rotation:90;size:(8.0, 1.0)
 Spikes pos:(-16.5, 11.5);rotation:180;size:(5.0, 1.0)
 Spikes pos:(-8.5, 12.5);rotation:180;size:(17.0, 1.0)
 Spikes pos:(1.0, -1.5);rotation:180;size:(2.0, 1.0)
-

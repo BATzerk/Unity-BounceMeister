@@ -1,24 +1,20 @@
-roomProperties posGlobal:(396.0, 158.0);designerFlag:4
-CameraBounds pos:(26.0, 0.0);size:(74.0, 38.0)
-DispGround pos:(51.0, 1.5);size:(2.0, 17.0);mayPlayerEat:False;doRegen:True;dieFromPlayerLeave:True
-DispGround pos:(20.5, -11.0);size:(39.0, 2.0);mayPlayerEat:False;doRegen:True;dieFromPlayerLeave:True
-Ground pos:(21.0, 8.0);size:(26.0, 24.0)
-Ground pos:(51.5, 16.0);size:(23.0, 8.0)
-Ground pos:(41.5, 15.0);size:(21.0, 10.0)
-Ground pos:(-7.5, 9.5);size:(7.0, 21.0)
-Ground pos:(54.0, -8.5);size:(10.0, 3.0)
-Ground pos:(0.5, 10.5);size:(23.0, 19.0)
-Ground pos:(58.5, -6.5);size:(5.0, 1.0)
-Ground pos:(45.5, -8.5);size:(7.0, 3.0);isPlayerRespawn:True
-Ground pos:(60.5, -7.0);size:(5.0, 22.0);isPlayerRespawn:True
-Ground pos:(-6.5, -12.0);size:(9.0, 8.0);isPlayerRespawn:True
-Ground pos:(51.0, -12.5);size:(16.0, 7.0)
-Ground pos:(26.0, -18.0);size:(74.0, 4.0)
-Ground pos:(-2.5, -9.0);size:(3.0, 2.0);isPlayerRespawn:True
-Platform pos:(56.5, 3.5);size:(3.0, 1.0);isPlayerRespawn:True
-PlayerStart pos:(-9.5, -7.0)
-Spikes pos:(-1.5, -13.0);rotation:270;size:(8.0, 1.0)
-Spikes pos:(57.5, -5.5);size:(3.0, 1.0)
-Spikes pos:(23.0, -15.5);size:(50.0, 1.0)
-Spikes pos:(42.5, -13.5);rotation:90;size:(7.0, 1.0)
-
+roomProperties posGlobal:(342.0, 164.0);designerFlag:4
+CameraBounds pos:(25.5, 0.0);size:(73.0, 38.0)
+DispGround pos:(21.5, -11.0);size:(39.0, 2.0);mayPlayerEat:False;doRegen:True;dieFromPlayerLeave:True
+DispGround pos:(52.0, -0.5);size:(2.0, 13.0);mayPlayerEat:False;doRegen:True;dieFromPlayerLeave:True
+Ground pos:(53.0, -11.5);size:(18.0, 9.0)
+Ground pos:(-6.0, -12.0);size:(10.0, 8.0);isPlayerRespawn:True
+Ground pos:(46.5, -8.5);size:(7.0, 3.0)
+Ground pos:(-1.5, 8.0);size:(1.0, 22.0)
+Ground pos:(-1.5, -9.0);size:(3.0, 2.0);isPlayerRespawn:True
+Ground pos:(25.5, -17.5);size:(73.0, 3.0)
+Ground pos:(42.5, 12.5);size:(21.0, 13.0)
+Ground pos:(57.5, 10.0);size:(9.0, 18.0)
+Ground pos:(23.0, 7.5);size:(28.0, 23.0)
+Ground pos:(5.5, 10.0);size:(15.0, 18.0)
+Ground pos:(-9.0, 5.5);size:(4.0, 27.0)
+Platform pos:(-4.5, 1.5);size:(5.0, 1.0)
+PlayerStart pos:(-3.0, -7.0)
+Spikes pos:(-0.5, -13.0);rotation:270;size:(8.0, 1.0)
+Spikes pos:(24.0, -15.5);size:(50.0, 1.0)
+Spikes pos:(43.5, -13.5);rotation:90;size:(7.0, 1.0)

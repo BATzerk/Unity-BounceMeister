@@ -30,6 +30,8 @@ abstract public class Player : PlatformCharacter {
     override protected float MaxVelYDown { get { return -3; } }
     virtual protected float MaxVelXFromInput { get { return 0.35f; } } // we can travel faster than this, but NOT by just pushing left/right.
 
+    private const float WallPushAwayFallWindow = 0.12f; // how long we hold down pushing away from a wall before we register the push! For easier wall-kicking for folks who push away just before jumping.
+    private const float CoyoteTimeJumpWindow = 0.07f; // in SECONDS. How long after leaving ground where we can STILL jump. Named after Wile E. Coyote!
 	private const float DelayedJumpWindow = 0.12f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
     virtual protected float PostWallKickHorzHaltTime { get { return 99f; } } // how many SECONDS after wall-kick when we auto-halt our xVel.
@@ -52,6 +54,8 @@ abstract public class Player : PlatformCharacter {
     private float timeWhenAteEdible=Mathf.NegativeInfinity;
     private float timeWhenDelayedJump=Mathf.NegativeInfinity; // for jump AND wall-kick. Set when in air and press Jump. If we touch ground/wall before this time, we'll do a delayed jump or wall-kick!
     private float timeLastBounced=Mathf.NegativeInfinity;
+    private float timeLastGrounded=Mathf.NegativeInfinity;
+    private float timePushingAwayFromWall=Mathf.NegativeInfinity;
     public int DirFacing { get; private set; }
 	protected int wallSlideDir { get; private set; } // 0 for not wall-sliding; -1 for wall on left; 1 for wall on right.
     private Vector2 pLeftStick; // previous InputController LeftStick.
@@ -73,7 +77,11 @@ abstract public class Player : PlatformCharacter {
     protected Vector2 LeftStick { get { return inputController.LeftStick; } }
     protected int DirXToSide(int dirX) { return dirX<0 ? Sides.L : Sides.R; }
     protected bool isWallSliding() { return wallSlideDir!=0; }
-	virtual protected bool MayJump() { return IsGrounded(); }
+	virtual protected bool MayJump() {
+        if (IsGrounded()) { return true; } // Grounded? Sure!
+        if (vel.y < 0 && Time.time < timeLastGrounded+CoyoteTimeJumpWindow) { return true; } // Falling, and juuust left ground like a millisecond ago? Ok!
+        return false; // Nah.
+    }
 	virtual protected bool MayWallKick() {
 		if (IsGrounded()) { return false; } // Obviously no.
         if (IsAgainstWall()) { return true; } // Touching a wall? Sure!
@@ -90,7 +98,11 @@ abstract public class Player : PlatformCharacter {
     virtual protected bool MaySetGroundedRespawnPos() { return true; } // Override if you don't wanna set GroundedRespawnPos while plunging, etc.
     override protected float HorzMoveInputVelXDelta() {
 		if (Mathf.Abs(LeftStick.x) < 0.05f) { return 0; } // No input? No input.
-		float dirX = MathUtils.Sign(LeftStick.x);
+        // Wall-sliding? No movement.
+        if (isWallSliding() && timePushingAwayFromWall<WallPushAwayFallWindow) {
+            return 0;
+        }
+        float dirX = MathUtils.Sign(LeftStick.x);
 		// TESTing out controls!
 		float mult = 1;//feetOnGround() ? 1 : 0.65f;
 		if (!MathUtils.IsSameSign(dirX, vel.x)) { // Pushing the other way? Make us go WAY the other way, ok?
@@ -238,6 +250,7 @@ abstract public class Player : PlatformCharacter {
         
         UpdateDirFacing();
 		UpdateTimeLastTouchedWall();
+        UpdateTimePushingAwayFromWall();
 		DetectJumpApex();
 		UpdateMaxYSinceGround();
 		UpdatePostWallKickVelValues();
@@ -286,6 +299,14 @@ abstract public class Player : PlatformCharacter {
         }
     }
 
+    private void UpdateTimePushingAwayFromWall() {
+        if (isWallSliding() && LeftStick.x*wallSlideDir<0) { // wall-sliding, AND pushing away from wall?? Increment value!
+            timePushingAwayFromWall += Time.deltaTime;
+        }
+        else {
+            timePushingAwayFromWall = 0;
+        }
+    }
     private void UpdatePostWallKickVelValues() {
         if (isPostWallKickInputLock) {
             if (Time.time >= timeLastWallKicked+PostWallKickHorzInputLockDur) { // If our lock-input window is over...
@@ -501,6 +522,7 @@ abstract public class Player : PlatformCharacter {
         }
     }
     virtual protected void OnFeetLeaveCollidable(Collidable collidable) {
+        timeLastGrounded = Time.time;
         // Left Ground?
         BaseGround ground = collidable as BaseGround;
         if (ground != null) {
