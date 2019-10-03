@@ -186,7 +186,7 @@ public class GameController : MonoBehaviour {
         // TEMP TEST: If no Room to go to, open ClustSelect scene!
         if (string.IsNullOrEmpty(rd.RoomToKey)) {
             OnPlayerExitRoom(rd.MyRoom);
-            SceneHelper.OpenScene(SceneNames.ClustSelect);
+            SceneHelper.OpenScene(SceneNames.ClustSelList);
         }
         // Otherwise...
         else {
@@ -299,7 +299,7 @@ public class GameController : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.LeftBracket))  { Debug_JumpToRoomAtSide(Sides.L); return; }
             // Scene Changing
             else if (Input.GetKeyDown(KeyCode.Return)) { StartGameAtRoom(CurrRoom.MyRoomData); return; }
-            else if (Input.GetKeyDown(KeyCode.C)) { SceneHelper.OpenScene(SceneNames.ClustSelect); return; }
+            else if (Input.GetKeyDown(KeyCode.C)) { SceneHelper.OpenScene(SceneNames.ClustSelList); return; }
             else if (Input.GetKeyDown(KeyCode.M)) { SceneHelper.OpenScene(SceneNames.MapEditor); return; }
             else if (Input.GetKeyDown(KeyCode.J)) { SceneHelper.OpenScene(SceneNames.RoomJump); return; }
             // F = Start/Stop Fast-mo

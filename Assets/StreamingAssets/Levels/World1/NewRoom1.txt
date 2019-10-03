@@ -1,4 +1,4 @@
-roomProperties posGlobal:(344.0, 1898.0);designerFlag:0
+roomProperties posGlobal:(344.0, 1898.0);designerFlag:2
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 Ground pos:(2.0, 12.5);size:(22.0, 11.0)
 Ground pos:(-23.0, -6.0);size:(6.0, 26.0)
@@ -15,4 +15,3 @@ Snack pos:(19.5, 8.5);playerType:Any
 Turret pos:(17.5, 5.5);rotation:90;interval:2;speed:0.5
 Turret pos:(17.5, 4.5);rotation:90;interval:2;speed:0.5
 Turret pos:(17.5, 6.5);rotation:90;interval:2;speed:0.5
-

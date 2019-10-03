@@ -47,6 +47,12 @@ public class DataManager {
         string roomKey = SaveStorage.GetString(SaveKeys.LastPlayedRoomKey(worldIndex));//, GameProperties.FirstClust(worldIndex));
         return new RoomAddress(worldIndex, -1, roomKey);
     }
+    public int LastPlayedClustIndex(int worldIndex) {
+        RoomAddress address = LastPlayedRoomAddress(worldIndex);
+        RoomData rd = GetRoomData(address, false);
+        if (rd==null) { return 0; }
+        return rd.MyCluster.ClustIndex;
+    }
     public RoomData LastPlayedRoomData(int worldIndex) {
         RoomAddress address = LastPlayedRoomAddress(worldIndex);
         return GetRoomData(address, false);

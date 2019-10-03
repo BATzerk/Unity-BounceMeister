@@ -9,9 +9,13 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject RoomJumpRoomButton;
 	[SerializeField] public GameObject MapEditor_RoomTile;
     
-    [SerializeField] public GameObject ClustSelClustTile;
-    [SerializeField] public GameObject ClustSelRoomView;
-    [SerializeField] public GameObject ClustSelWorldView;
+    [SerializeField] public GameObject ClustSelListClustRow;
+    [SerializeField] public GameObject ClustSelListClustRowSnack;
+    [SerializeField] public GameObject ClustSelListWorldView;
+    
+    [SerializeField] public GameObject ClustSelMapClustTile;
+    [SerializeField] public GameObject ClustSelMapRoomView;
+    [SerializeField] public GameObject ClustSelMapWorldView;
 
 	[SerializeField] public GameObject backgroundTileSprite;
     [SerializeField] public Sprite s_whiteSquare;

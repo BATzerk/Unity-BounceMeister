@@ -1,15 +1,15 @@
 roomProperties posGlobal:(288.0, 1858.0);designerFlag:4
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
-Ground pos:(2.0, 12.5);size:(22.0, 11.0)
-Ground pos:(0.5, -7.5);size:(43.0, 23.0)
-Ground pos:(14.0, 15.5);size:(24.0, 5.0)
-Ground pos:(-23.0, -6.0);size:(6.0, 26.0)
 Ground pos:(0.0, 17.0);size:(52.0, 4.0)
 Ground pos:(-20.0, 6.5);size:(12.0, 5.0)
 Ground pos:(21.5, -6.0);size:(9.0, 26.0)
-Platform pos:(-11.5, 8.5);size:(5.0, 1.0)
+Ground pos:(-23.0, -6.0);size:(6.0, 26.0)
+Ground pos:(1.5, 12.5);size:(23.0, 11.0)
+Ground pos:(0.5, -7.5);size:(43.0, 23.0)
+Ground pos:(14.0, 15.5);size:(24.0, 5.0)
+Platform pos:(-12.0, 8.5);size:(4.0, 1.0)
 PlayerStart pos:(-12.5, 10.0)
-Turret pos:(-14.5, 6.5);rotation:270;interval:1.2;speed:0.5
-Turret pos:(-14.5, 5.5);rotation:270;interval:1.2;speed:0.5
 Turret pos:(-14.5, 4.5);rotation:270;interval:1.2;speed:0.5
+Turret pos:(-14.5, 5.5);rotation:270;interval:1.2;speed:0.5
+Turret pos:(-14.5, 6.5);rotation:270;interval:1.2;speed:0.5
 

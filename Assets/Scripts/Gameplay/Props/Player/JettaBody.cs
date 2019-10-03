@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class JettaBody : PlayerBody {
     // Components
+    [SerializeField] private ParticleSystem ps_jetting=null;
     [SerializeField] private SpriteRenderer sr_jetFill=null;
     // Properties
     private readonly Color c_bodyNoFuel = new Color(0.3f,0.3f,0.3f, 0.4f);
@@ -47,6 +48,7 @@ public class JettaBody : PlayerBody {
 		SetBodyColor(bodyColor_jetting);
         eyes.Set(EyeTypes.Squint);
         UpdateFillSprite();
+        GameUtils.SetParticleSystemEmissionEnabled(ps_jetting, true);
 	}
 	public void OnStopJet() {
         UpdateFillSprite();
@@ -59,6 +61,7 @@ public class JettaBody : PlayerBody {
             SetBodyColor(c_bodyNeutral);
             eyes.Set(EyeTypes.Normal);
         }
+        GameUtils.SetParticleSystemEmissionEnabled(ps_jetting, false);
 	}
 	public void OnRechargeJet() {
         UpdateFillSprite();

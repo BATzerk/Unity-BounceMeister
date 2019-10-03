@@ -6,4 +6,3 @@ Ground pos:(-14.0, -0.5);size:(10.0, 33.0)
 Ground pos:(0.0, 18.5);size:(52.0, 1.0)
 Ground pos:(2.0, 2.0);size:(10.0, 14.0)
 PlayerStart pos:(-6.5, -7.0)
-

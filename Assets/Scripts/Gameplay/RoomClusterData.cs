@@ -41,6 +41,7 @@ public class RoomClusterData {
         this.MyAddress = new RoomAddress(WorldIndex,clustIndex);
         this.IsUnlocked = SaveStorage.GetBool(SaveKeys.ClustIsUnlocked(MyAddress), false);
         if (GameProperties.IsFirstCluster(MyAddress)) { this.IsUnlocked = true; } // First cluster is ALWAYS unlocked.
+        this.IsUnlocked = true; // TEMP!! ALL clusters start unlocked!! Test!
         
         // Set NumSnacksReq
         NumSnacksReq = GameProperties.ClustNumSnacksReq(MyAddress);
