@@ -1,0 +1,21 @@
+roomProperties posGlobal:(272.0, -236.0);designerFlag:2
+CameraBounds pos:(16.0, 0.0);size:(90.0, 38.0)
+Ground pos:(60.5, 0.5);size:(5.0, 37.0)
+Ground pos:(15.5, -18.0);size:(91.0, 4.0)
+Ground pos:(35.0, 8.5);size:(20.0, 23.0)
+Ground pos:(0.0, 20.0);size:(60.0, 3.0)
+Ground pos:(33.0, -13.0);size:(8.0, 6.0)
+Ground pos:(-27.5, 1.0);size:(5.0, 38.0)
+Ground pos:(17.5, -2.5);size:(5.0, 15.0)
+Ground pos:(-24.0, -0.5);size:(2.0, 1.0)
+Ground pos:(52.5, -9.5);size:(2.0, 2.0)
+Ground pos:(48.0, 15.5);size:(21.0, 11.0)
+Ground pos:(-12.0, -0.5);size:(2.0, 1.0)
+Ground pos:(-12.5, -12.0);size:(31.0, 10.0)
+Ground pos:(-4.0, -8.0);size:(14.0, 16.0)
+Platform pos:(14.0, 4.5);size:(2.0, 1.0)
+Platform pos:(4.0, -0.5);size:(2.0, 1.0)
+Platform pos:(-18.0, -0.5);size:(10.0, 1.0)
+RoomDoor pos:(40.0, -15.0);myID:1;worldToIndex:0;roomToKey:;doorToID:
+RoomDoor pos:(-24.0, -6.0);myID:0;worldToIndex:0;roomToKey:;doorToID:1
+Spikes pos:(17.0, -15.5);size:(28.0, 1.0)

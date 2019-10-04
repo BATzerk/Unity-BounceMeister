@@ -1,0 +1,19 @@
+roomProperties posGlobal:(-662.0, 706.0);designerFlag:3
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+GateButton pos:(-19.5, 4.0);channelID:0
+Gate pos:(-5.5, -0.5);size:(5.0, 5.0);channelID:0
+Ground pos:(15.0, 3.5);size:(4.0, 29.0)
+Ground pos:(-15.0, -4.5);size:(14.0, 13.0)
+Ground pos:(5.5, -2.0);size:(17.0, 14.0)
+Ground pos:(10.0, 6.5);size:(10.0, 11.0)
+Ground pos:(21.5, 13.5);size:(9.0, 13.0)
+Ground pos:(20.0, -18.0);size:(12.0, 4.0)
+Ground pos:(-24.0, 2.5);size:(4.0, 27.0)
+Ground pos:(24.0, -8.5);size:(4.0, 19.0)
+Ground pos:(11.5, 15.5);size:(29.0, 9.0)
+Ground pos:(-8.5, -18.0);size:(35.0, 4.0)
+Ground pos:(-16.5, 15.5);size:(19.0, 9.0)
+Platform pos:(11.5, -16.5);size:(5.0, 1.0)
+Platform pos:(-5.0, 11.5);size:(4.0, 1.0)
+PlayerStart pos:(-4.5, -14.5)
+Snack pos:(2.0, 6.5);playerType:Plunga

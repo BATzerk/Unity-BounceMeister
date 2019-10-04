@@ -24,20 +24,24 @@ static public class GameProperties {
         return address.world==FirstWorld && address.clust==0;
     }
     public static int ClustNumSnacksReq(RoomAddress address) {
-        return 0; //DISABLED Snacks req.
-        /*
+        //return 0; //DISABLED Snacks req.
+        ///*
         switch (address.world) {
             // World 1
             case 1:
                 switch(address.clust) {
                     case 0: return 0;
-                    case 1: return 2;
-                    case 2: return 6;
-                    case 3: return 14;
+                    case 1: return 1;
+                    case 2: return 4;
+                    case 3: return 9;
                     case 4: return 16;
                     case 5: return 22;
-                    case 6: return 40;
-                    default: return 30;
+                    case 6: return 28;
+                    case 7: return 36;
+                    case 8: return 42;
+                    case 9: return 50;
+                    case 10: return 56;
+                    default: return 62;
                 }
             // World 2
             case 2:
@@ -61,7 +65,7 @@ static public class GameProperties {
                 }
             default: return 0;
         }
-        */
+        //*/
     }
 
 

@@ -1,0 +1,11 @@
+roomProperties posGlobal:(444.0, -356.0);designerFlag:4
+CameraBounds pos:(45.0, 0.0);size:(142.0, 38.0)
+Ground pos:(45.0, 17.0);size:(142.0, 6.0)
+Ground pos:(-19.5, -11.5);size:(13.0, 17.0)
+Ground pos:(114.5, 12.0);size:(3.0, 16.0)
+Ground pos:(110.5, 15.5);size:(11.0, 9.0)
+Ground pos:(51.5, -11.0);size:(129.0, 18.0)
+Ground pos:(107.5, -2.5);size:(17.0, 3.0)
+Ground pos:(-24.0, 8.0);size:(4.0, 24.0)
+PlayerStart pos:(-20.0, -1.0)
+Spikes pos:(43.5, -1.5);size:(113.0, 1.0);onOffer:(1.6, 0.7, 0)

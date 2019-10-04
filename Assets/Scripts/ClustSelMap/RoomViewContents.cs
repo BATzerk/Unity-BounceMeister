@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ClustSelNamespace {
+namespace ClustSelMapNamespace {
 public class RoomViewContents : MonoBehaviour {
     // Constants
     static private readonly Vector2 BatteryIconSize = new Vector2(5,5);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace ClustSelNamespace {
+namespace ClustSelMapNamespace {
     public class ClustSelController : MonoBehaviour {
         // Components
         [SerializeField] private RectTransform rt_worldViews=null;
@@ -82,25 +82,12 @@ namespace ClustSelNamespace {
             if (!isKey_alt && !isKey_shift && !isKey_control) {
                 // Scene Changing
                 if (Input.GetKeyDown(KeyCode.Return)) { SceneHelper.ReloadScene(); return; }
+                else if (Input.GetKeyDown(KeyCode.G)) { SceneHelper.OpenScene(SceneNames.Gameplay); return; }
                 else if (Input.GetKeyDown(KeyCode.J)) { SceneHelper.OpenScene(SceneNames.RoomJump); return; }
                 else if (Input.GetKeyDown(KeyCode.M)) { SceneHelper.OpenScene(SceneNames.MapEditor); return; }
-                else if (Input.GetKeyDown(KeyCode.G)) { SceneHelper.OpenScene(SceneNames.Gameplay); return; }
             }
         }
         
-        
-
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        // Debug
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    #if UNITY_EDITOR
-        [UnityEditor.Callbacks.DidReloadScripts]
-        private static void OnScriptsReloaded() {
-            if (UnityEditor.EditorApplication.isPlaying) {
-                SceneHelper.ReloadScene();
-            }
-        }
-    #endif
         
     }
 }

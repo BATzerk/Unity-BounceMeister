@@ -13,7 +13,7 @@ public class MainMenuController : MonoBehaviour {
         SceneHelper.OpenScene(SceneNames.Gameplay);
     }
     public void OnClick_ClustSel() {
-        SceneHelper.OpenScene(SceneNames.ClustSelList);
+        SceneHelper.OpenScene(SceneNames.ClustSelMap);
     }
     public void OnClick_Quit() {
         Application.Quit();
@@ -36,7 +36,7 @@ public class MainMenuController : MonoBehaviour {
         // Scene Changing
         if (Input.GetKeyDown(KeyCode.Return)) { SceneHelper.ReloadScene(); return; }
         else if (Input.GetKeyDown(KeyCode.C)) { SceneHelper.OpenScene(SceneNames.Gameplay); return; }
-        else if (Input.GetKeyDown(KeyCode.C)) { SceneHelper.OpenScene(SceneNames.ClustSelList); return; }
+        else if (Input.GetKeyDown(KeyCode.C)) { SceneHelper.OpenScene(SceneNames.ClustSelMap); return; }
         else if (Input.GetKeyDown(KeyCode.M)) { SceneHelper.OpenScene(SceneNames.MapEditor); return; }
         else if (Input.GetKeyDown(KeyCode.J)) { SceneHelper.OpenScene(SceneNames.RoomJump); return; }
 

@@ -666,6 +666,10 @@ public class MapEditor : MonoBehaviour {
         
         // No ALT/CONTROL/SHIFT...!
         if (!InputController.IsKey_alt && !InputController.IsKey_control && !InputController.IsKey_shift) {
+            if (false) {}
+            else if (Input.GetKeyDown(KeyCode.C)) { SceneHelper.OpenScene(SceneNames.ClustSelMap); return; }
+            else if (Input.GetKeyDown(KeyCode.G)) { SceneHelper.OpenScene(SceneNames.Gameplay); return; }
+            else if (Input.GetKeyDown(KeyCode.J)) { SceneHelper.OpenScene(SceneNames.RoomJump); return; }
             // R = Print incomplete room links!
             if (Input.GetKeyDown(KeyCode.R)) { Debug_PrintIncompleteRoomLinks(); }
 		    // Visibility togglin'
@@ -767,14 +771,6 @@ public class MapEditor : MonoBehaviour {
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Debug
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#if UNITY_EDITOR
-    [UnityEditor.Callbacks.DidReloadScripts]
-    private static void OnScriptsReloaded() {
-        if (UnityEditor.EditorApplication.isPlaying) {
-            SceneHelper.ReloadScene();
-        }
-    }
-#endif
     private void Debug_PrintIncompleteRoomLinks() {
         //for (int i=0; i<dataManager.NumWorldDatas; i
         CurrWorldData.Debug_PrintIncompleteRoomLinks();

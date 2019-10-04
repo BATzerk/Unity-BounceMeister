@@ -74,17 +74,4 @@ public class RoomJumpController : MonoBehaviour {
 	}
 
 
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Debug
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#if UNITY_EDITOR
-    [UnityEditor.Callbacks.DidReloadScripts]
-    private static void OnScriptsReloaded() {
-        if (UnityEditor.EditorApplication.isPlaying) {
-            SceneHelper.ReloadScene();
-        }
-    }
-#endif
-
 }

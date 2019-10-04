@@ -1,4 +1,4 @@
-roomProperties posGlobal:(254.0, 556.0);designerFlag:4
+roomProperties posGlobal:(280.0, 556.0);designerFlag:4
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 DispGround pos:(-1.0, -11.0);size:(8.0, 8.0);doRegen:True;regenTime:2.6;dieFromPlayerLeave:True
 Ground pos:(-14.0, -1.5);size:(12.0, 9.0)

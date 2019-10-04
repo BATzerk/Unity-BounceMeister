@@ -1,9 +1,10 @@
-roomProperties posGlobal:(586.0, 182.0);designerFlag:3
+roomProperties posGlobal:(430.0, 164.0);designerFlag:3
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
-Ground pos:(15.5, -3.0);size:(21.0, 34.0)
-Ground pos:(0.0, -15.0);size:(52.0, 10.0)
-Ground pos:(-23.5, 5.0);size:(5.0, 18.0)
-Ground pos:(0.0, 11.0);size:(52.0, 18.0)
-InfoSign pos:(-6.5, -10.0);myText:Congrats! You've unlocked PLUNGA!
-PlayerStart pos:(-11.5, -9.0)
-RoomDoor pos:(3.5, -9.0);myID:0;worldToIndex:1;roomToKey:GetPlunga;doorToID:
+Ground pos:(-23.5, 9.0);size:(5.0, 16.0)
+Ground pos:(0.0, 12.0);size:(52.0, 14.0)
+Ground pos:(15.5, -1.0);size:(21.0, 36.0)
+Ground pos:(0.0, -13.0);size:(52.0, 12.0)
+InfoSign pos:(-6.5, -7.0);myText:Congrats! You've unlocked PLUNGA!
+PlayerStart pos:(-11.5, -6.0)
+RoomDoor pos:(3.5, -6.0);myID:0;worldToIndex:1;roomToKey:GetPlunga;doorToID:
+

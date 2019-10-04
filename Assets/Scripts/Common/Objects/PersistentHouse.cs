@@ -28,4 +28,17 @@ public class PersistentHouse : MonoBehaviour {
 		instance = this;
 		DontDestroyOnLoad(this.gameObject);
 	}
+        
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Debug
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#if UNITY_EDITOR
+    [UnityEditor.Callbacks.DidReloadScripts]
+    private static void OnScriptsReloaded() {
+        if (UnityEditor.EditorApplication.isPlaying) {
+            SceneHelper.ReloadScene();
+        }
+    }
+#endif
 }

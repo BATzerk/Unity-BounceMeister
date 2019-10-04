@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ClustSelNamespace {
+namespace ClustSelMapNamespace {
     public class RoomView : MonoBehaviour {
         // Components
         [SerializeField] private Image i_back=null;
@@ -46,7 +46,7 @@ namespace ClustSelNamespace {
                 i_back.color = roomColorVisited;
             }
             else {
-                float alpha = MyRoomData.MyCluster.IsUnlocked ? 0.4f : 0.05f;
+                float alpha = 0.5f;// MyRoomData.MyCluster.IsUnlocked ? 0.4f : 0.05f;
                 i_back.color = new Color(0,0,0, alpha);
             }
         }

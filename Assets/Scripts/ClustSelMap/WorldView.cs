@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace ClustSelNamespace {
+namespace ClustSelMapNamespace {
     public class WorldView : MonoBehaviour {
         // Components
         [SerializeField] private Image i_youAreHereIcon=null;
@@ -54,7 +54,8 @@ namespace ClustSelNamespace {
             WorldData myWorldData = GameManagers.Instance.DataManager.GetWorldData(WorldIndex);
             int NumClusts = myWorldData.clusters.Count;
             
-            float tempY = -60;
+            float tempY = 0;
+            const float gapY = 6;
             clustTiles = new ClustTile[NumClusts];
             for (int i=0; i<NumClusts; i++) {
                 RoomClusterData clustData = myWorldData.clusters[i];
@@ -62,7 +63,7 @@ namespace ClustSelNamespace {
                 Vector2 tilePos = new Vector2(0, tempY);
                 newObj.Initialize(clustSelController, this, clustData, tilePos);
                 clustTiles[i] = newObj;
-                tempY -= newObj.Size.y + 20;
+                tempY -= newObj.Size.y + gapY;
             }
             // Size meee
             myRectTransform.sizeDelta = new Vector2(myRectTransform.rect.size.x, Mathf.Abs(tempY)+0);

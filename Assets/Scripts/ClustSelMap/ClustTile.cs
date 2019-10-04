@@ -4,19 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace ClustSelNamespace {
+namespace ClustSelMapNamespace {
     public class ClustTile : MonoBehaviour {
         // Components
         [SerializeField] private RectTransform myRectTransform=null;
         [SerializeField] private Button myButton=null;
         [SerializeField] private GameObject go_snacksReq=null;
-        [SerializeField] private GameObject go_snacksLeft=null;
+        //[SerializeField] private GameObject go_snacksLeft=null;
         [SerializeField] private Image i_back=null;
         [SerializeField] private Image i_checkmark=null;
         [SerializeField] private TextMeshProUGUI t_clustName=null;
         [SerializeField] private TextMeshProUGUI t_snacksReq=null;
-        [SerializeField] private TextMeshProUGUI t_snacksLeft=null;
-        [SerializeField] private RectTransform rt_rooms=null;
+        //[SerializeField] private TextMeshProUGUI t_snacksLeft=null;
+        [SerializeField] private RectTransform rt_roomsRect=null; // the outer parent; represents actual bounds for what's rendered.
+        [SerializeField] private RectTransform rt_roomsScaled=null; // this is inside rt_roomsRect; this is scaled; rooms go in THIS.
         // References
         private ClustSelController clustSelController;
         private RoomClusterData myClustData;
@@ -56,29 +57,49 @@ namespace ClustSelNamespace {
             // Make RoomViews!
             AddRoomViews();
             
+            // Add i_snacks!
+            {
+                int numEaten = myClustData.SnackCount.Eaten_All;
+                int numTotal = myClustData.SnackCount.Total_All;
+                GameObject prefabGO = ResourcesHandler.Instance.ClustSelListClustRowSnack;
+                float spacingX = 18;
+                float snackIconsWidth = numTotal*spacingX;
+                for (int i=0; i<numTotal; i++) {
+                    float posX = -2 - snackIconsWidth + (i * spacingX);
+                    Image img = Instantiate(prefabGO).GetComponent<Image>();
+                    img.name = "Snack " + i;
+                    GameUtils.ParentAndReset(img.gameObject, this.transform);
+                    img.rectTransform.anchoredPosition = new Vector2(posX, 0);
+                    // Not eaten? Darker img!
+                    if (i >= numEaten) {
+                        img.color = new Color(0,0,0, 0.8f);
+                    }
+                }
+            }
+            
             RefreshVisuals();
         }
         
         private void AddRoomViews() {
             // Scale rooms to fit!
-            Vector2 availableSize = rt_rooms.rect.size;
+            Vector2 availableSize = rt_roomsRect.rect.size;
             Vector2 clustBoundsSize = myClustData.BoundsGlobal.size;
             float scale = Mathf.Min(
                 availableSize.x/clustBoundsSize.x,
                 availableSize.y/clustBoundsSize.y);
+            scale = Mathf.Min(0.24f, scale); // Keep RoomViews small.
             
-            //scale = Mathf.Min(0.4f, scale); // Keep RoomViews small.
             // Size myRectTransform!
-            Vector2 sizeDiff = myRectTransform.rect.size - rt_rooms.rect.size;
-            myRectTransform.sizeDelta = clustBoundsSize*scale + sizeDiff;
-            rt_rooms.localScale = Vector3.one * scale;
+            //Vector2 sizeDiff = myRectTransform.rect.size - availableSize;
+            //myRectTransform.sizeDelta = clustBoundsSize*scale + sizeDiff;
+            rt_roomsScaled.localScale = Vector3.one * scale;
             
             // Add views!
             int NumRooms = myClustData.rooms.Count;
             roomViews = new RoomView[NumRooms];
             for (int i=0; i<NumRooms; i++) {
                 RoomView newObj = Instantiate(ResourcesHandler.Instance.ClustSelMapRoomView).GetComponent<RoomView>();
-                newObj.Initialize(rt_rooms, myClustData, myClustData.rooms[i], scale);
+                newObj.Initialize(rt_roomsScaled, myClustData, myClustData.rooms[i], scale);
                 roomViews[i] = newObj;
             }
         }
@@ -95,14 +116,16 @@ namespace ClustSelNamespace {
             // Texts and back!
             int numAdditionalSnacksReq = Mathf.Max(0, myClustData.NumSnacksReq - totalSnacksEaten);
             int numSnacksInClust = myClustData.SnackCount.Total_All;
-            //int numSnacksLeft = myClustData.SnackCount.Uneaten(tempPlayerType);
             myButton.interactable = myClustData.IsUnlocked;
             go_snacksReq.SetActive(!myClustData.IsUnlocked);
-            //go_snacksLeft.SetActive(myClustData.IsUnlocked && numSnacksLeft>0);
-            go_snacksLeft.SetActive(myClustData.IsUnlocked && numSnacksInClust>0);
+            //go_snacksLeft.SetActive(myClustData.IsUnlocked && numSnacksInClust>0);
             t_snacksReq.text = numAdditionalSnacksReq.ToString();
-            t_snacksLeft.text = myClustData.SnackCount.Eaten_All + " / " + numSnacksInClust; //numSnacksLeft.ToString();
-            i_back.color = myClustData.IsUnlocked || canUnlockMe ? new ColorHSB(worldHue,0.5f,1f, 0.1f).ToColor() : new Color(0,0,0, 0.08f);
+            //t_snacksLeft.text = myClustData.SnackCount.Eaten_All + " / " + numSnacksInClust; //numSnacksLeft.ToString();
+            Color backColor = new ColorHSB(worldHue,0.5f,0.5f).ToColor();
+            if (!myClustData.IsUnlocked && !canUnlockMe) { // locked? Make darker.
+                backColor = Color.Lerp(backColor, Color.black, 0.5f);
+            }
+            i_back.color = backColor;
             
             // RoomViews!
             Color roomColorVisited = new ColorHSB(worldHue, 0.5f, 0.95f, 0.1f).ToColor();

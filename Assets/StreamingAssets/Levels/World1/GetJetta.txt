@@ -1,4 +1,4 @@
-roomProperties posGlobal:(206.0, 594.0);designerFlag:3
+roomProperties posGlobal:(232.0, 594.0);designerFlag:3
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 CharUnlockOrb pos:(2.5, -6.0);myCharName:Jetta
 Ground pos:(0.0, -15.5);size:(52.0, 7.0)

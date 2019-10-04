@@ -1,0 +1,24 @@
+roomProperties posGlobal:(518.0, -198.0);designerFlag:3
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(-14.0, 18.0);size:(24.0, 4.0)
+Ground pos:(24.0, 6.5);size:(4.0, 27.0)
+Ground pos:(0.0, -17.5);size:(52.0, 5.0)
+Ground pos:(-23.0, -4.0);size:(6.0, 10.0)
+Ground pos:(-3.0, 10.5);size:(4.0, 17.0)
+Ground pos:(-20.5, 1.0);size:(11.0, 2.0)
+Ground pos:(-24.0, 8.5);size:(4.0, 15.0)
+Ground pos:(3.0, 15.0);size:(12.0, 10.0)
+Ground pos:(0.0, -10.0);size:(20.0, 10.0)
+Ground pos:(21.0, 18.0);size:(10.0, 4.0)
+Ground pos:(6.5, 7.5);size:(5.0, 5.0)
+Ground pos:(-7.0, -10.0);size:(18.0, 10.0)
+Ground pos:(18.0, 10.5);size:(8.0, 19.0)
+Ground pos:(18.0, -16.5);size:(16.0, 7.0)
+Ground pos:(19.0, -6.0);size:(6.0, 2.0)
+Ground pos:(15.0, 1.0);size:(2.0, 4.0)
+Platform pos:(13.0, -5.5);size:(6.0, 1.0)
+Platform pos:(-13.5, 1.5);size:(3.0, 1.0)
+PlayerStart pos:(-12.5, -3.5)
+ProgressGate pos:(1.5, 7.5);size:(5.0, 5.0);numSnacksReq:6
+RoomDoor pos:(21.0, -4.0);myID:0;worldToIndex:-1;roomToKey:;doorToID:
+Snack pos:(-7.0, 11.5);playerType:Any

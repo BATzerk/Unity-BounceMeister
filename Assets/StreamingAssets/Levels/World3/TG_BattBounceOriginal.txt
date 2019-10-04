@@ -1,4 +1,4 @@
-roomProperties posGlobal:(204.0, -112.0);designerFlag:3
+roomProperties posGlobal:(298.0, -116.0);designerFlag:3
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 Battery pos:(0.0, 8.5)
 Battery pos:(-8.0, 8.5)

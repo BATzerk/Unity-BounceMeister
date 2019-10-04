@@ -1,0 +1,16 @@
+roomProperties posGlobal:(470.0, -318.0);designerFlag:3
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(-0.5, 12.0);size:(5.0, 16.0)
+Ground pos:(0.0, -10.5);size:(52.0, 19.0)
+Ground pos:(11.5, 11.0);size:(21.0, 10.0)
+Ground pos:(-10.5, 12.0);size:(3.0, 16.0)
+Ground pos:(10.0, 18.0);size:(26.0, 4.0)
+Ground pos:(-18.0, 18.0);size:(16.0, 4.0)
+Ground pos:(-22.0, -1.0);size:(8.0, 36.0)
+Ground pos:(22.0, 0.5);size:(8.0, 39.0)
+Platform pos:(-15.0, 10.5);size:(6.0, 1.0);isPlayerRespawn:True
+Platform pos:(-6.0, 4.5);size:(6.0, 1.0)
+PlayerStart pos:(-14.0, 0.5)
+ProgressGate pos:(9.5, 2.5);size:(7.0, 7.0);numSnacksReq:14
+RoomDoor pos:(16.5, 0.0);myID:1;worldToIndex:-1;roomToKey:Clust3Start;doorToID:0
+RoomDoor pos:(-16.0, 12.0);myID:0;worldToIndex:-1;roomToKey:Clust1End;doorToID:0

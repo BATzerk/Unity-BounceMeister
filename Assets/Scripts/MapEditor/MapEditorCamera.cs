@@ -190,8 +190,8 @@ public class MapEditorCamera : MonoBehaviour {
 	}
     private void RegisterButtonInput() {
         if (!InputController.IsKey_alt && !InputController.IsKey_control && !InputController.IsKey_shift) {
-            // C = Reset to neutral
-		    if (Input.GetKeyDown(KeyCode.C)) { EaseToNeutral(); }
+            // Space = Reset to neutral
+		    if (Input.GetKeyDown(KeyCode.Space)) { EaseToNeutral(); }
 
             // Arrow/WASD/Joystick Panning!
             //else if (Input.GetKey(KeyCode.LeftArrow)) { MoveCamera(-ARROW_KEYS_PAN_SPEED/mapScale*fTS,0); }
