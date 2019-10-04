@@ -152,6 +152,7 @@ public class Jetta : Player {
         groundedSinceJet = false;
         //isPreservingWallKickVel = false; // When we jet, forget about retaining my wall-kick vel!
         myJettaBody.OnStartJet();
+        GameManagers.Instance.EventManager.OnPlayerStartJet(this);
     }
     private void StopJet() {
         if (!IsJetting) { return; } // Not jetting? Do nothing.

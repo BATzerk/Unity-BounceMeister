@@ -44,11 +44,13 @@ public class TogGroundBehavior_Plunge : TogGroundBehavior_Base {
     private void Start() {
         // Add event listeners!
         GameManagers.Instance.EventManager.PlayerStartHoverEvent += OnPlayerAction;
+        GameManagers.Instance.EventManager.PlayerStartJetEvent += OnPlayerAction;
         GameManagers.Instance.EventManager.PlayerStartPlungeEvent += OnPlayerAction;
     }
     private void OnDestroy() {
         // Remove event listeners!
         GameManagers.Instance.EventManager.PlayerStartHoverEvent -= OnPlayerAction;
+        GameManagers.Instance.EventManager.PlayerStartJetEvent -= OnPlayerAction;
         GameManagers.Instance.EventManager.PlayerStartPlungeEvent -= OnPlayerAction;
     }
 

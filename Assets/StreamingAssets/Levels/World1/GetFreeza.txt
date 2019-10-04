@@ -1,4 +1,4 @@
-roomProperties posGlobal:(292.0, 1922.0);designerFlag:3
+roomProperties posGlobal:(304.0, 2248.0);designerFlag:3
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 CharUnlockOrb pos:(-2.5, -10.5);myCharName:Freeza
 Ground pos:(-24.0, 1.5);size:(4.0, 37.0)

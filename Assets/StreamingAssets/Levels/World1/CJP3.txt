@@ -1,4 +1,4 @@
-roomProperties posGlobal:(450.0, 1724.0);designerFlag:3
+roomProperties posGlobal:(450.0, 1832.0);designerFlag:3
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 DispGround pos:(-4.5, -12.5);size:(17.0, 3.0);doRegen:True;dieFromPlayerLeave:True
 DispGround pos:(-3.0, 7.5);size:(16.0, 3.0);doRegen:True;dieFromPlayerLeave:True
@@ -30,4 +30,3 @@ Spikes pos:(-4.0, -14.5);size:(28.0, 1.0)
 Spikes pos:(5.5, -2.0);rotation:90;size:(6.0, 1.0)
 Spikes pos:(10.0, 16.5);rotation:180;size:(8.0, 1.0)
 Spikes pos:(5.5, 7.5);rotation:270;size:(3.0, 1.0)
-

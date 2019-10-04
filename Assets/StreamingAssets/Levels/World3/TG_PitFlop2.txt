@@ -1,4 +1,4 @@
-roomProperties posGlobal:(202.0, 834.0);designerFlag:3
+roomProperties posGlobal:(212.0, 232.0);designerFlag:3
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 Ground pos:(22.5, 1.5);size:(7.0, 37.0)
 Ground pos:(5.0, -18.0);size:(42.0, 4.0)
@@ -17,4 +17,3 @@ ToggleGround pos:(-1.0, -6.5);size:(4.0, 1.0);startsOn:False;togFromContact:Fals
 ToggleGround pos:(-1.0, -13.5);size:(4.0, 1.0);startsOn:True;togFromContact:False;togFromAction:True
 ToggleGround pos:(8.0, -2.5);size:(4.0, 1.0);startsOn:True;togFromContact:False;togFromAction:True
 ToggleGround pos:(8.0, 4.5);size:(4.0, 1.0);startsOn:False;togFromContact:False;togFromAction:True
-

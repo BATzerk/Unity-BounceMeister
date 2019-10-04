@@ -1,0 +1,16 @@
+roomProperties posGlobal:(166.0, 328.0);designerFlag:4
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Buzzsaw travelMind:(-15,10,-15,-10, 1.6, 0);size:(3.0, 3.0)
+Buzzsaw travelMind:(6,-11,6,6, 2, 0);size:(3.0, 3.0)
+Ground pos:(0.0, -18.0);size:(52.0, 4.0);isPlayerRespawn:True
+Ground pos:(1.0, -2.5);size:(10.0, 21.0)
+Ground pos:(21.0, 16.0);size:(10.0, 8.0)
+Ground pos:(18.5, -2.5);size:(15.0, 21.0)
+Ground pos:(-2.5, 16.0);size:(9.0, 8.0)
+Ground pos:(-21.5, -13.0);size:(9.0, 6.0)
+Ground pos:(-5.0, 0.0);size:(14.0, 24.0)
+Ground pos:(-18.5, 0.0);size:(7.0, 24.0)
+Ground pos:(19.0, -4.0);size:(14.0, 24.0)
+Ground pos:(-24.0, 2.0);size:(4.0, 36.0)
+Ground pos:(5.0, 18.5);size:(42.0, 3.0)
+PlayerStart pos:(-20.5, 13.0)

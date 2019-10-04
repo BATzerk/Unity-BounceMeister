@@ -1,4 +1,4 @@
-roomProperties posGlobal:(540.0, 316.0);designerFlag:3
+roomProperties posGlobal:(514.0, 504.0);designerFlag:3
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 Ground pos:(0.0, 11.0);size:(52.0, 16.0)
 Ground pos:(14.5, 0.0);size:(23.0, 38.0)

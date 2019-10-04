@@ -1,0 +1,20 @@
+roomProperties posGlobal:(1058.0, 2348.0);designerFlag:0
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(24.0, 4.5);size:(4.0, 23.0)
+Ground pos:(-13.5, -5.5);size:(5.0, 19.0)
+Ground pos:(5.5, 7.0);size:(5.0, 2.0)
+Ground pos:(5.5, -1.0);size:(5.0, 2.0)
+Ground pos:(13.0, -5.0);size:(2.0, 18.0)
+Ground pos:(-23.5, 3.0);size:(5.0, 26.0)
+Ground pos:(-4.5, -1.0);size:(5.0, 2.0)
+Ground pos:(-3.0, 3.0);size:(2.0, 10.0)
+Ground pos:(7.0, 3.0);size:(2.0, 10.0)
+Ground pos:(-4.5, 7.0);size:(5.0, 2.0)
+Ground pos:(15.5, 3.0);size:(7.0, 2.0)
+Ground pos:(0.0, 17.5);size:(52.0, 3.0)
+Ground pos:(0.0, -16.5);size:(52.0, 5.0)
+Ground pos:(21.5, -6.0);size:(9.0, 2.0)
+Laser travelMind:(-21,16,21,16, 1, 0);rotation:180
+PlayerStart pos:(-22.0, -13.0)
+Spikes pos:(-1.5, -13.5);size:(29.0, 1.0)
+

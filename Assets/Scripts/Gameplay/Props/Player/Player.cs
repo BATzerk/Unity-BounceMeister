@@ -39,6 +39,7 @@ abstract public class Player : PlatformCharacter {
     virtual protected float WallKickExtensionWindow { get { return 0.15f; } } // how long after touching a wall when we'll still allow wall-kicking!
     virtual protected float ExtraBounceDistToRestore() { return 0; }
     virtual protected bool DoesFarFallHop { get { return true; } } // Say FALSE if we don't want to bounce lightly when landing on Ground from a tall height.
+    virtual protected bool DoesFunHop { get { return true; } } // Say FALSE if we don't want to hophophop after eating a Snack.
     
 	// Components
 	[SerializeField] protected PlayerBody myBody=null;
@@ -615,6 +616,7 @@ abstract public class Player : PlatformCharacter {
 	}
     /// Returns TRUE if we can do a far-fall hop or just-ate-happy-hop.
     private bool MayDoAFunHop() {
+        if (!DoesFunHop) { return false; } // No, I don't do that sort of thing.
         //if (!IsGrounded()) { return false; } // Not on ground? Can't hop.
         Collidable collOn = myWhiskers.TEMP_GetFloorCollidable();
         if (collOn!=null) {

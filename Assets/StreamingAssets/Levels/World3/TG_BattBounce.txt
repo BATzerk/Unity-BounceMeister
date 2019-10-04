@@ -1,4 +1,4 @@
-roomProperties posGlobal:(152.0, 888.0);designerFlag:4
+roomProperties posGlobal:(162.0, 286.0);designerFlag:4
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 Battery pos:(-4.0, 4.5)
 Battery pos:(4.0, 4.5)
@@ -14,4 +14,3 @@ Spikes pos:(0.0, -15.5);size:(42.0, 1.0)
 ToggleGround pos:(8.0, -13.5);size:(4.0, 1.0);startsOn:False;togFromContact:False;togFromAction:True
 ToggleGround pos:(-8.0, -13.5);size:(4.0, 1.0);startsOn:False;togFromContact:False;togFromAction:True
 ToggleGround pos:(0.0, -13.5);size:(4.0, 1.0);startsOn:True;togFromContact:False;togFromAction:True
-

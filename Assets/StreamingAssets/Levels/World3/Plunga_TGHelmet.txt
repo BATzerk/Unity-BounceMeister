@@ -1,0 +1,17 @@
+roomProperties posGlobal:(380.0, 316.0);designerFlag:4
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Ground pos:(-7.5, -0.5);size:(5.0, 11.0);isPlayerRespawn:True
+Ground pos:(0.0, 16.0);size:(52.0, 6.0)
+Ground pos:(11.5, -6.5);size:(1.0, 21.0)
+Ground pos:(15.0, 15.5);size:(22.0, 7.0)
+Ground pos:(0.0, -15.0);size:(52.0, 8.0)
+Ground pos:(-22.0, 4.5);size:(14.0, 21.0);isPlayerRespawn:True
+Ground pos:(21.0, 11.5);size:(10.0, 1.0)
+Ground pos:(19.0, -10.5);size:(14.0, 17.0)
+Ground pos:(-6.5, -1.0);size:(7.0, 10.0)
+Platform pos:(-12.5, 4.5);size:(5.0, 1.0)
+PlayerStart pos:(-1.5, -10.0)
+Spikes pos:(10.0, 11.5);rotation:180;size:(12.0, 1.0)
+Spikes pos:(10.5, -5.0);rotation:90;size:(14.0, 1.0)
+Spikes pos:(-4.0, 4.5);size:(2.0, 1.0)
+ToggleGround pos:(11.5, 10.5);size:(7.0, 1.0);startsOn:True;togFromContact:False;togFromAction:True

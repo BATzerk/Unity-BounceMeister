@@ -6,8 +6,9 @@
       <File FileName="Assets/Scripts/ClustSelList/WorldView.cs" Line="49" Column="80" />
       <File FileName="Assets/Scripts/ClustSelList/ClustRow.cs" Line="51" Column="68" />
       <File FileName="Assets/Scripts/Managers/DataManager.cs" Line="39" Column="37" />
-      <File FileName="Assets/Scripts/Gameplay/RoomClusterData.cs" Line="25" Column="38" />
-      <File FileName="Assets/Scripts/Consts/GameProperties.cs" Line="21" Column="37" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="8" Column="65" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="611" Column="14" />
+      <File FileName="Assets/Scripts/Consts/GameProperties.cs" Line="15" Column="59" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -1,14 +1,13 @@
-roomProperties posGlobal:(152.0, 956.0);designerFlag:4
+roomProperties posGlobal:(324.0, 432.0);designerFlag:4
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
-Ground pos:(-4.0, -1.0);size:(8.0, 2.0);doRechargePlayer:False
-Ground pos:(-4.0, -5.0);size:(8.0, 6.0)
-Ground pos:(-1.0, 16.0);size:(2.0, 8.0)
-Ground pos:(-15.5, -1.0);size:(5.0, 2.0);doRechargePlayer:False
-Ground pos:(0.0, -17.5);size:(52.0, 5.0)
-Ground pos:(-24.0, 6.0);size:(4.0, 28.0)
-Ground pos:(-15.5, -5.0);size:(5.0, 6.0)
-Ground pos:(4.0, -4.5);size:(8.0, 23.0)
-PlayerStart pos:(-22.2, -12.7)
-ToggleGround pos:(-20.0, -1.0);size:(4.0, 2.0);startsOn:True;togFromContact:False;togFromAction:True
-ToggleGround pos:(-1.0, 6.0);size:(2.0, 12.0);startsOn:True;togFromContact:False;togFromAction:True
-
+Ground pos:(-23.0, 5.5);size:(6.0, 27.0)
+Ground pos:(0.0, -17.0);size:(52.0, 4.0)
+Ground pos:(6.0, -4.5);size:(8.0, 23.0)
+Ground pos:(-13.5, -5.0);size:(5.0, 6.0)
+Ground pos:(-2.0, -5.0);size:(8.0, 6.0)
+Ground pos:(-2.0, -1.0);size:(8.0, 2.0);doRechargePlayer:False
+Ground pos:(-13.5, -1.0);size:(5.0, 2.0);doRechargePlayer:False
+Ground pos:(1.0, 15.5);size:(2.0, 7.0)
+PlayerStart pos:(-20.0, -12.5)
+ToggleGround pos:(1.0, 6.0);size:(2.0, 12.0);startsOn:True;togFromContact:False;togFromAction:True
+ToggleGround pos:(-18.0, -1.0);size:(4.0, 2.0);startsOn:True;togFromContact:False;togFromAction:True

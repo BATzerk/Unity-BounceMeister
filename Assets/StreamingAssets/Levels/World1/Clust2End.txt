@@ -1,4 +1,4 @@
-roomProperties posGlobal:(538.0, 798.0);designerFlag:3
+roomProperties posGlobal:(552.0, 1012.0);designerFlag:3
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 Ground pos:(0.0, 14.5);size:(52.0, 11.0)
 Ground pos:(14.5, 0.0);size:(23.0, 40.0)
@@ -8,4 +8,3 @@ Ground pos:(-22.0, 13.5);size:(8.0, 13.0)
 PlayerStart pos:(-17.0, 3.0)
 ProgressGate pos:(9.0, 6.0);size:(6.0, 6.0);numSnacksReq:2
 RoomDoor pos:(2.0, 2.0);myID:0;worldToIndex:-1;roomToKey:;doorToID:
-

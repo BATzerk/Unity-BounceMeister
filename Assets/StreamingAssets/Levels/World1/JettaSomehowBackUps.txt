@@ -1,4 +1,4 @@
-roomProperties posGlobal:(288.0, 778.0);designerFlag:4
+roomProperties posGlobal:(302.0, 992.0);designerFlag:4
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 DispGround pos:(-6.5, -8.0);size:(7.0, 2.0);doRegen:True;dieFromPlayerLeave:True
 GateButton pos:(2.5, -8.0);channelID:0
@@ -22,4 +22,3 @@ Spikes pos:(-10.5, -13.5);size:(19.0, 1.0)
 Spikes pos:(-18.5, 4.5);rotation:270;size:(7.0, 1.0)
 Spikes pos:(17.5, 1.5);rotation:90;size:(11.0, 1.0)
 Spikes pos:(9.0, -12.5);size:(20.0, 1.0)
-

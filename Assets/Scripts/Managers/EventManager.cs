@@ -34,6 +34,7 @@ public class EventManager {
     public event PlayerAction SetPlayerType;
     public event PlayerAction PlayerJumpEvent;
     public event PlayerAction PlayerStartHoverEvent;
+    public event PlayerAction PlayerStartJetEvent;
 //	public event PlayerAction PlayerSpendPlungeEvent;
 	public event PlayerAction PlayerStartPlungeEvent;
 	public event PlayerAction PlayerRechargePlungeEvent;
@@ -63,6 +64,7 @@ public class EventManager {
     public void OnPlayerJump(Player player) { if (PlayerJumpEvent!=null) { PlayerJumpEvent(player); } }
     public void OnPlayerUseBattery() { if (PlayerUseBatteryEvent!=null) { PlayerUseBatteryEvent(); } }
     public void OnPlayerStartHover(Player player) { if (PlayerStartHoverEvent!=null) { PlayerStartHoverEvent(player); } }
+    public void OnPlayerStartJet(Player player) { if (PlayerStartJetEvent!=null) { PlayerStartJetEvent(player); } }
 //	public void OnPlayerSpendBounce(Player player) { if (PlayerSpendPlungeEvent!=null) { PlayerSpendPlungeEvent(player); } }
 	public void OnPlayerStartPlunge(Player player) { if (PlayerStartPlungeEvent!=null) { PlayerStartPlungeEvent(player); } }
     public void OnPlayerTouchEnterInfoSign(InfoSign infoSign) { if (PlayerTouchEnterInfoSignEvent!=null) { PlayerTouchEnterInfoSignEvent(infoSign); } }
