@@ -27,6 +27,7 @@ namespace ClustSelMapNamespace {
         private float worldHue; // 0 to 1. The hue we use to color stuff in this WorldView.
         
         // Getters (Public)
+        public Vector2 AnchoredPos { get { return myRectTransform.anchoredPosition; } }
         public Vector2 Size { get { return myRectTransform.rect.size; } }
         public RoomView GetRoomView(RoomData roomData) {
             foreach (RoomView view in roomViews) {
@@ -116,7 +117,7 @@ namespace ClustSelMapNamespace {
             // Texts and back!
             int numAdditionalSnacksReq = Mathf.Max(0, myClustData.NumSnacksReq - totalSnacksEaten);
             int numSnacksInClust = myClustData.SnackCount.Total_All;
-            myButton.interactable = myClustData.IsUnlocked;
+            //myButton.interactable = myClustData.IsUnlocked;
             go_snacksReq.SetActive(!myClustData.IsUnlocked);
             //go_snacksLeft.SetActive(myClustData.IsUnlocked && numSnacksInClust>0);
             t_snacksReq.text = numAdditionalSnacksReq.ToString();

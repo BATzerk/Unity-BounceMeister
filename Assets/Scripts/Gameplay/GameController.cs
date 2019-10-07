@@ -298,7 +298,7 @@ public class GameController : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.Quote))        { Debug_JumpToRoomAtSide(Sides.B); return; }
             else if (Input.GetKeyDown(KeyCode.LeftBracket))  { Debug_JumpToRoomAtSide(Sides.L); return; }
             // Scene Changing
-            else if (Input.GetKeyDown(KeyCode.Return)) { StartGameAtRoom(CurrRoom.MyRoomData); return; }
+            else if (Input.GetKeyDown(KeyCode.R)) { StartGameAtRoom(CurrRoom.MyRoomData); return; }
             else if (Input.GetKeyDown(KeyCode.C)) { SceneHelper.OpenScene(SceneNames.ClustSelMap); return; }
             else if (Input.GetKeyDown(KeyCode.M)) { SceneHelper.OpenScene(SceneNames.MapEditor); return; }
             else if (Input.GetKeyDown(KeyCode.J)) { SceneHelper.OpenScene(SceneNames.RoomJump); return; }

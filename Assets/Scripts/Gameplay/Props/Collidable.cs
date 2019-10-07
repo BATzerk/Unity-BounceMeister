@@ -19,7 +19,7 @@ abstract public class Collidable : Prop {
 
 //	virtual public void OnPlayerTouchMe(Player player, int playerSide) { }
 //	virtual public void OnCollideWithCollidable(Collidable collidable, int otherSideCol) {} //abstract 
-	virtual public void OnPlayerBounceOnMe(Player player) {}
+	virtual public void OnPlayerFeetBounceOnMe(Player player) {}
 
 
 	virtual public void OnCharacterTouchMe(int charSide, PlatformCharacter character) { }

@@ -10,7 +10,7 @@ public class GameUI : MonoBehaviour {
     [SerializeField] private GameObject go_infoSignText=null;
     [SerializeField] private GameObject go_roomFrozenOverlay=null; // for Freeza.
     [SerializeField] private GameObject go_pausedOverlay=null;
-    //[SerializeField] private Text t_coinsCollected=null;
+    [SerializeField] private TextMeshProUGUI t_coinsCollected=null;
     [SerializeField] private TextMeshProUGUI t_infoSignText=null;
     //[SerializeField] private TextMeshProUGUI t_snacksCollected=null;
     // References
@@ -27,7 +27,7 @@ public class GameUI : MonoBehaviour {
     // ----------------------------------------------------------------
     private void Awake () {
         // Add event listeners!
-        //eventManager.CoinsCollectedChangedEvent += OnCoinsCollectedChanged;
+        eventManager.CoinsCollectedChangedEvent += OnCoinsCollectedChanged;
         eventManager.SnackCountGameChangedEvent += OnSnackCountGameChanged;
         eventManager.PlayerTouchEnterInfoSignEvent += OnPlayerTouchEnterInfoSign;
         eventManager.PlayerTouchExitInfoSignEvent += OnPlayerTouchExitInfoSign;
@@ -37,7 +37,7 @@ public class GameUI : MonoBehaviour {
     }
 	private void OnDestroy() {
 		// Remove event listeners!
-		//eventManager.CoinsCollectedChangedEvent -= OnCoinsCollectedChanged;
+		eventManager.CoinsCollectedChangedEvent -= OnCoinsCollectedChanged;
         eventManager.SnackCountGameChangedEvent -= OnSnackCountGameChanged;
         eventManager.PlayerTouchEnterInfoSignEvent -= OnPlayerTouchEnterInfoSign;
         eventManager.PlayerTouchExitInfoSignEvent -= OnPlayerTouchExitInfoSign;
@@ -52,15 +52,15 @@ public class GameUI : MonoBehaviour {
     // ----------------------------------------------------------------
     private void OnStartRoom(Room room) {
         //currRoom = room;
-        //UpdateCoinsCollectedText();
+        UpdateCoinsCollectedText();
         UpdateSnacksTexts();
     }
     private void OnSetPaused(bool val) {
         go_pausedOverlay.SetActive(val);
     }
-    //private void OnCoinsCollectedChanged() {
-    //    UpdateCoinsCollectedText();
-    //}
+    private void OnCoinsCollectedChanged() {
+        UpdateCoinsCollectedText();
+    }
     private void OnSnackCountGameChanged() {
         UpdateSnacksTexts();
     }
@@ -85,9 +85,9 @@ public class GameUI : MonoBehaviour {
     public void OpenClustSelScene() {
         SceneHelper.OpenScene(SceneNames.ClustSelMap);
     }
-    //private void UpdateCoinsCollectedText() {
-    //    t_coinsCollected.text = dm.CoinsCollected.ToString();
-    //}
+    private void UpdateCoinsCollectedText() {
+        t_coinsCollected.text = dm.CoinsCollected.ToString();
+    }
     private void UpdateSnacksTexts() {
         //int numCollected = currRoom.MyWorldData.NumSnacksCollected;
         //int numTotal = currRoom.MyWorldData.NumSnacksTotal;

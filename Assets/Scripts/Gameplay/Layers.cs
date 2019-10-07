@@ -5,6 +5,7 @@ using UnityEngine;
 public static class Layers {
 	public const string Default = "Default";
     
+    public const string Coin = "Coin";
 	public const string Enemy = "Enemy";
 	public const string Ground = "Ground";
     public const string Obstacle = "Obstacle";

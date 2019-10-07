@@ -37,7 +37,7 @@ public class Crate : BaseGround {
 //			}
 //		}
 //	}
-	override public void OnPlayerBounceOnMe(Player player) {
+	override public void OnPlayerFeetBounceOnMe(Player player) {
 		if (hitsUntilBreak < 0) { return; } // Unbreakable? Do nothin'.
 		GetHit();
 	}
@@ -64,12 +64,13 @@ public class Crate : BaseGround {
 
 	private void SpawnCoinInMe() {
 		Coin newCoin = Instantiate(ResourcesHandler.Instance.Coin).GetComponent<Coin>();
-		newCoin.transform.SetParent(this.transform.parent); // make its parent whatever mine is, too.
-		newCoin.transform.localScale = Vector3.one * 0.25f; // Hardcoded.
-		newCoin.transform.localPosition = this.transform.localPosition;
-		newCoin.transform.localPosition += new Vector3( // Put it randomly somewhere inside my box area (instead of putting them all exactly in the center).
-			Random.Range(-myCollider.size.x*0.3f, myCollider.size.x*0.3f) * this.transform.localScale.x,
-			Random.Range(-myCollider.size.y*0.3f, myCollider.size.y*0.3f) * this.transform.localScale.y);
+        newCoin.Initialize(MyRoom, this.transform.localPosition);
+		//newCoin.transform.SetParent(this.transform.parent); // make its parent whatever mine is, too.
+		////newCoin.transform.localScale = Vector3.one * 0.25f; // Hardcoded.
+		//newCoin.transform.localPosition = this.transform.localPosition;
+		//newCoin.transform.localPosition += new Vector3( // Put it randomly somewhere inside my box area (instead of putting them all exactly in the center).
+			//Random.Range(-myCollider.size.x*0.3f, myCollider.size.x*0.3f) * this.transform.localScale.x,
+			//Random.Range(-myCollider.size.y*0.3f, myCollider.size.y*0.3f) * this.transform.localScale.y);
 	}
 
 

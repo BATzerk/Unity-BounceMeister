@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : PlatformCharacter {
 	// Constants
+    const int NumCoinsInMe = 3;
 	override protected int StartingHealth { get { return 1; } }
     //override public Vector2 Size { get { return new Vector2(2f, 1.5f); } }
 
@@ -41,14 +42,16 @@ public class Enemy : PlatformCharacter {
 	// ----------------------------------------------------------------
 	private void FixedUpdate () {
         if (!DoUpdate()) { return; }
-		Vector2 ppos = pos;
+        if (GameTimeController.IsRoomFrozen) { return; } // Time's frozen? Register NOTHING! Raor!
+        
+        Vector2 ppos = pos;
 
         ApplyVelFromSurfaces();
         ApplyFriction();
 		ApplyGravity();
 		AcceptDirectionalMoveInput();
-        ApplyLiftForces();
         ApplyTerminalVel();
+        ApplyLiftForces();
 		myWhiskers.UpdateSurfaces(); // update these dependently now, so we guarantee most up-to-date info.
 		ApplyVel();
 
@@ -97,10 +100,27 @@ public class Enemy : PlatformCharacter {
 //			}
 //		}
 //	}
-	override public void OnPlayerBounceOnMe(Player player) {
+	override public void OnPlayerFeetBounceOnMe(Player player) {
 		if (IsInvincible) { return; } // Invincible? Do nothin'.
 		TakeDamage(1);
 	}
+    override protected void Die() {
+        base.Die();
+        // Spit out COINS!
+        for (int i=0; i<NumCoinsInMe; i++) {
+            SpawnCoinInMe();
+        }
+    }
+
+    private void SpawnCoinInMe() {
+        Coin newCoin = Instantiate(ResourcesHandler.Instance.Coin).GetComponent<Coin>();
+        newCoin.Initialize(MyRoom, this.transform.localPosition);
+        //newCoin.transform.SetParent(this.transform.parent); // make its parent whatever mine is, too.
+        //newCoin.transform.localPosition = this.transform.localPosition;
+        //newCoin.transform.localPosition += new Vector3( // Put it randomly somewhere inside my box area (instead of putting them all exactly in the center).
+            //Random.Range(-myCollider.size.x*0.3f, myCollider.size.x*0.3f) * this.transform.localScale.x,
+            //Random.Range(-myCollider.size.y*0.3f, myCollider.size.y*0.3f) * this.transform.localScale.y);
+    }
 
 
     // ----------------------------------------------------------------

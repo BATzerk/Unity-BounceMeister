@@ -19,7 +19,7 @@ static public class GameProperties {
     // Rooms!
     public const int NUM_WORLDS = 8; // including World 0 for testing.
     public const int FirstWorld = 1;
-    public const int LastWorld = 1;
+    public const int LastWorld = 3;
     public static bool IsFirstCluster(RoomAddress address) {
         return address.world==FirstWorld && address.clust==0;
     }

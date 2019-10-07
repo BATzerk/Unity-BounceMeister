@@ -9,6 +9,9 @@ namespace ClustSelMapNamespace {
         [SerializeField] private RectTransform rt_worldViews=null;
         [SerializeField] private TextMeshProUGUI t_snacksCollected=null;
         private Dictionary<int,WorldView> worldViews;
+        // Properties
+        private int framesAlive=0;
+        private int selectedWorldIndex;
 
 
         // ----------------------------------------------------------------
@@ -24,19 +27,22 @@ namespace ClustSelMapNamespace {
             worldViews = new Dictionary<int, WorldView>();
             
             float maxHeight = 0;
-            float tempX = MainCanvas.Width*0.5f; // start with World 1 centered in screen.
-            tempX += 20; // ok, shift it to the right a bit actually.
+            float tempX = 800; // start with World 1 centered in screen.
             for (int worldIndex=GameProperties.FirstWorld; worldIndex<=GameProperties.LastWorld; worldIndex++) {
                 WorldView newObj = Instantiate(ResourcesHandler.Instance.ClustSelMapWorldView).GetComponent<WorldView>();
                 Vector2 pos = new Vector2(tempX, -20);
                 newObj.Initialize(this, rt_worldViews, worldIndex, pos);
                 worldViews[worldIndex] = newObj;
-                tempX += newObj.Width + 80;
+                tempX += 800;//newObj.Width + 80;
                 maxHeight = Mathf.Max(maxHeight, newObj.Height);
             }
             // Size rt_worldViews.
             rt_worldViews.sizeDelta = new Vector2(tempX+300, maxHeight+100);
             rt_worldViews.anchoredPosition = new Vector2(rt_worldViews.anchoredPosition.x, 0);
+            
+            // Start with last world played!
+            int lastWorldPlayed = GameManagers.Instance.DataManager.LastPlayedRoomAddress().world;
+            SetWorldSelected(lastWorldPlayed);
         }
         
         
@@ -46,6 +52,32 @@ namespace ClustSelMapNamespace {
         public void StartGameAtClust(RoomClusterData clust) {
             SceneHelper.OpenGameplayScene(clust);
         }
+        private void ChangeWorldSelected(int indexDelta) {
+            SetWorldSelected(selectedWorldIndex + indexDelta);
+        }
+        private void SetWorldSelected(int val) {
+            selectedWorldIndex = Mathf.Clamp(val, GameProperties.FirstWorld,GameProperties.LastWorld);
+            // Tell the boys!
+            foreach (WorldView wv in worldViews.Values) {
+                wv.OnSetWorldSelected(selectedWorldIndex);
+            }
+            // Show selected one!
+            Vector2 wvsPos = worldViews[selectedWorldIndex].AnchoredPos;
+            float targetPosX = -wvsPos.x + 400;
+            LeanTween.value(this.gameObject, SetWorldViewsAnchoredPosX, rt_worldViews.anchoredPosition.x,targetPosX, 0.3f).setEaseOutQuint();
+        }
+        private void SetWorldViewsAnchoredPosX(float val) {
+            rt_worldViews.anchoredPosition = new Vector2(val, rt_worldViews.anchoredPosition.y);
+        }
+        
+        
+        public void OnSetSelectedClustTile(ClustTile clustTile) {
+            // Set scroll-layer pos!
+            float currScrollPosY = rt_worldViews.anchoredPosition.y;
+            float scrollPosY = -clustTile.AnchoredPos.y;
+            scrollPosY = Mathf.Clamp(currScrollPosY, scrollPosY-400, scrollPosY);
+            rt_worldViews.anchoredPosition = new Vector2(rt_worldViews.anchoredPosition.x, scrollPosY);
+        }
         
         
         
@@ -54,13 +86,16 @@ namespace ClustSelMapNamespace {
         // ----------------------------------------------------------------
         private void Update () {
             RegisterButtonInput();
+            framesAlive ++;
         }
         
         private void RegisterButtonInput () {
-            // Canvas has a selected element? Ignore ALL button input.
-            if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != null) {
-                return;
-            }
+            if (framesAlive < 2) { return; } // Ignore first few frames.
+            
+            //// Canvas has a selected element? Ignore ALL button input.
+            //if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != null) {
+            //    return;
+            //}
     
             bool isKey_alt = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
             bool isKey_control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
@@ -80,8 +115,11 @@ namespace ClustSelMapNamespace {
             
             // NOTHING + _____
             if (!isKey_alt && !isKey_shift && !isKey_control) {
+                if (false) {}
+                else if (Input.GetKeyDown(KeyCode.LeftArrow)) { ChangeWorldSelected(-1); }
+                else if (Input.GetKeyDown(KeyCode.RightArrow)) { ChangeWorldSelected( 1); }
                 // Scene Changing
-                if (Input.GetKeyDown(KeyCode.Return)) { SceneHelper.ReloadScene(); return; }
+                else if (Input.GetKeyDown(KeyCode.R)) { SceneHelper.ReloadScene(); return; }
                 else if (Input.GetKeyDown(KeyCode.G)) { SceneHelper.OpenScene(SceneNames.Gameplay); return; }
                 else if (Input.GetKeyDown(KeyCode.J)) { SceneHelper.OpenScene(SceneNames.RoomJump); return; }
                 else if (Input.GetKeyDown(KeyCode.M)) { SceneHelper.OpenScene(SceneNames.MapEditor); return; }

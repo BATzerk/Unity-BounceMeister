@@ -161,6 +161,11 @@ abstract public class Player : PlatformCharacter {
 	public void Initialize(Room _myRoom, PlayerData data) {
 		base.BaseInitialize(_myRoom, data);
         
+        // Give huge linear/angular drag to my rigidbody.
+        Rigidbody2D myRB = GetComponent<Rigidbody2D>();
+        myRB.drag = 999999;
+        myRB.angularDrag = 999999;
+        
         DirFacing = data.dirFacing;
         SetVel(data.vel);
         timeStoppedWallSlide = Mathf.NegativeInfinity;
@@ -573,25 +578,25 @@ abstract public class Player : PlatformCharacter {
         timeLastBounced = Time.time;
         // Inform the collidable!!
         if (collidable != null) {
-            collidable.OnPlayerBounceOnMe(this);
+            collidable.OnPlayerFeetBounceOnMe(this);
         }
     }
     virtual protected void BounceOffCollidable_Down(Collidable collidable) {
         timeLastBounced = Time.time;
         SetVel(new Vector2(vel.x, -Mathf.Abs(ppvel.y)));
-        // Inform the collidable!!
-        if (collidable != null) {
-            collidable.OnPlayerBounceOnMe(this);
-        }
+        //// Inform the collidable!!
+        //if (collidable != null) {
+        //    collidable.OnPlayerBounceOnMe(this, Sides.T);
+        //}
     }
 	private void BounceOffCollidable_Side(Collidable collidable) {
         timeLastBounced = Time.time;
         timeLastWallKicked = Time.time;
 		SetVel(new Vector2(-ppvel.x, Mathf.Max(ppvel.y, Mathf.Abs(ppvel.x)+0.1f)));
-		// Inform the collidable!!
-		if (collidable != null) {
-			collidable.OnPlayerBounceOnMe(this);
-		}
+		//// Inform the collidable!!
+		//if (collidable != null) {
+		//	collidable.OnPlayerBounceOnMe(this, side);
+		//}
 	}
     /// Called when our feet WEREN'T touching ground, but now they are (and we're NOT bouncing).
 	virtual protected void LandOnCollidable(Collidable collidable) {

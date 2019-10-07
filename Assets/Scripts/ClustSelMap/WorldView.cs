@@ -7,18 +7,22 @@ using TMPro;
 namespace ClustSelMapNamespace {
     public class WorldView : MonoBehaviour {
         // Components
+        [SerializeField] private CanvasGroup myCanvasGroup=null;
         [SerializeField] private Image i_youAreHereIcon=null;
         [SerializeField] private RectTransform myRectTransform=null;
         [SerializeField] private TextMeshProUGUI t_worldName=null;
         private ClustTile[] clustTiles;
         // Properties
         public int WorldIndex { get; private set; }
+        private bool isCurrWorld; // true if ClustSelController has us selected!
         // References
         private ClustSelController clustSelController;
+        private ClustTile selectedClustTile; // set from save in Start. Updated when we change what's selected.
         
         // Getters (Public)
         public float Width { get { return myRectTransform.rect.width; } }
         public float Height { get { return myRectTransform.rect.height; } }
+        public Vector2 AnchoredPos { get { return myRectTransform.anchoredPosition; } }
         // Getters (Private)
         private ClustTile GetClustTile(int clustIndex) {
             if (clustIndex<0 || clustIndex>=clustTiles.Length) { return null; }
@@ -49,6 +53,9 @@ namespace ClustSelMapNamespace {
             
             MakeClustTiles();
             UpdateYouAreHereIconPos();
+            
+            // Set lastPlayedClustTile from save!
+            SetSelectedClustTile(clustTiles[GameManagers.Instance.DataManager.LastPlayedClustIndex(worldIndex)]);
         }
         private void MakeClustTiles() {
             WorldData myWorldData = GameManagers.Instance.DataManager.GetWorldData(WorldIndex);
@@ -77,14 +84,47 @@ namespace ClustSelMapNamespace {
                 i_youAreHereIcon.transform.position = roomView.transform.position;
             }
         }
+        
+        
+        
+        public void OnSetWorldSelected(int selectedWorldIndex) {
+            isCurrWorld = WorldIndex == selectedWorldIndex;
+            // Enable/disable my elements!
+            myCanvasGroup.interactable = isCurrWorld;
+            // I'm selected? Select my last-played ClustTile!
+            if (isCurrWorld) {
+                //GameObject clustTileGO = lastSelectedClustGO==null ? null : lastSelectedClustGO.gameObject; // safety check.
+                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(selectedClustTile.gameObject);
+            }
+        }
+        
+        private void SetSelectedClustTile(ClustTile clustTile) {
+            selectedClustTile = clustTile;
+            clustSelController.OnSetSelectedClustTile(clustTile);
+        }
 
 
         // ----------------------------------------------------------------
         //  Update
         // ----------------------------------------------------------------
         private void Update() {
+            // YouAreHere icon!
             float alpha = MathUtils.SinRange(0.3f, 1.2f, Time.time*6f);
             GameUtils.SetUIGraphicAlpha(i_youAreHereIcon, alpha);
+            // Update selection.
+            if (isCurrWorld) {
+                GameObject currSelGO = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+                // Nothing selected? Auto-select our last clustTile, yo.
+                if (currSelGO == null) {
+                    UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(selectedClustTile.gameObject);
+                }
+                if (currSelGO!=null && selectedClustTile.gameObject != currSelGO) { // Selection changed!
+                    ClustTile clustTile = currSelGO.GetComponent<ClustTile>();
+                    if (clustTile != null) {
+                        SetSelectedClustTile(clustTile);
+                    }
+                }
+            }
         }
         
         

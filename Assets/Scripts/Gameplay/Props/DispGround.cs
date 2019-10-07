@@ -74,7 +74,7 @@ public class DispGround : BaseGround {
     // ----------------------------------------------------------------
     //  Events
     // ----------------------------------------------------------------
-    override public void OnPlayerBounceOnMe(Player player) {
+    override public void OnPlayerFeetBounceOnMe(Player player) {
 		if (dieFromBounce) {
 			TurnOff();
 		}
