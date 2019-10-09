@@ -93,6 +93,7 @@ public sealed class Ground : BaseGround, ITravelable {
             size = Size(),
             mayPlayerEat = MayPlayerEatHere,
             isPlayerRespawn = IsPlayerRespawn,
+            preventHappyHop = PreventHappyHop,
             isBouncy = isBouncy,
             mayBounce = mayBounce,
             doRechargePlayer = doRechargePlayer,

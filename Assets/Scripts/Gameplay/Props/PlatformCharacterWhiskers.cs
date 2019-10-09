@@ -30,10 +30,17 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	private Vector2[] whiskerDirs;
 
     // Getters
+    //public Collidable TEMP_GetFloorCollidable() {
+    //    for (int i=0; i<NumWhiskersPerSide; i++) {
+    //        Collider2D coll = collsAroundMe[Sides.B,i];
+    //        if (coll == null) { continue; }
+    //        Collidable collidable = coll.GetComponent<Collidable>();
+    //        if (collidable != null) { return collidable; }
+    //    }
+    //    return null;
+    //}
     public Collidable TEMP_GetFloorCollidable() {
-        for (int i=0; i<NumWhiskersPerSide; i++) {
-            Collider2D coll = collsAroundMe[Sides.B,i];
-            if (coll == null) { continue; }
+        foreach (Collider2D coll in collsTouching[Sides.B]) {
             Collidable collidable = coll.GetComponent<Collidable>();
             if (collidable != null) { return collidable; }
         }

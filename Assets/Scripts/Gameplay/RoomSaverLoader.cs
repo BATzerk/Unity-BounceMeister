@@ -133,6 +133,7 @@ static public class RoomSaverLoader {
             BaseGroundData d = propData as BaseGroundData;
             if (!d.mayPlayerEat) { ps.Add("mayPlayerEat"); }
             if (d.isPlayerRespawn) { ps.Add("isPlayerRespawn"); }
+            if (d.preventHappyHop) { ps.Add("preventHappyHop"); }
         }
         
         Type type = propData.GetType();

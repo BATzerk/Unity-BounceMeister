@@ -7,6 +7,7 @@ abstract public class BaseGround : Collidable {
 	// Properties
 	[SerializeField] private bool mayPlayerEat = true; // teechnically, it's "May Player eat Edibles while on me?" If false, Player WON'T collect the Edible they're holding when they land on me!
     [SerializeField] private bool isPlayerRespawn = false; // if TRUE, then Player will set GroundedRespawnPos when they leave me! When Player dies, they'll respawn at that pos.
+    [SerializeField] private bool preventHappyHop=false; // if TRUE, then Player won't do a happy hop on me.
 //	[SerializeField] private bool doDisappearAfterBounces = false;
 //	[SerializeField] private int numBouncesLeft = -1; // exhaustable!
 	// Components
@@ -14,6 +15,7 @@ abstract public class BaseGround : Collidable {
 	[SerializeField] protected BoxCollider2D myCollider=null;
 
     // Getters (Public)
+    public bool PreventHappyHop { get { return preventHappyHop; } }
     public bool MayPlayerEatHere { get { return mayPlayerEat; } }
     public bool IsPlayerRespawn { get { return isPlayerRespawn; } }
     // Getters (Private)
@@ -58,9 +60,10 @@ abstract public class BaseGround : Collidable {
 	//}
 	protected void BaseGroundInitialize(Room _myRoom, BaseGroundData data) {
 		base.BaseInitialize(_myRoom, data);
-
-		mayPlayerEat = data.mayPlayerEat;
+        
         isPlayerRespawn = data.isPlayerRespawn;
+        mayPlayerEat = data.mayPlayerEat;
+        preventHappyHop = data.preventHappyHop;
         SetSize(data.size);
 	}
 

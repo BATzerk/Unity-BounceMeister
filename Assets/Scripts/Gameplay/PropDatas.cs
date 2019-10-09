@@ -163,8 +163,9 @@ public class GemData : PropData {
 
 public class BaseGroundData : PropData {
     public Vector2 size;
-	public bool mayPlayerEat=true;
     public bool isPlayerRespawn=false;
+    public bool mayPlayerEat=true;
+    public bool preventHappyHop=false;
     //public Rect MyRectTLAligned() {
     //    return new Rect(myRect.position-myRect.size*0.5f, myRect.size);
     //}

@@ -1,20 +1,15 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ClustSelMap/ClustSelController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/PropDatas.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="299" Column="84" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="581" Column="51" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Enemy.cs" Line="28" Column="69" />
-      <File FileName="Assets/Scripts/Gameplay/Props/BaseGround.cs" Line="14" Column="59" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerWhiskers.cs" Line="5" Column="58" />
-      <File FileName="Assets/Scripts/Gameplay/Props/EnemyWhiskers.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="202" Column="6" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Crate.cs" Line="63" Column="3" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Coin.cs" Line="35" Column="33" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Collidable.cs" Line="22" Column="22" />
-      <File FileName="Assets/Scripts/Gameplay/Props/DispGround.cs" Line="83" Column="44" />
-      <File FileName="Assets/Scripts/ClustSelMap/ClustSelController.cs" Line="9" Column="57" />
-      <File FileName="Assets/Scripts/ClustSelMap/WorldView.cs" Line="118" Column="41" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="619" Column="14" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="113" Column="49" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" Line="41" Column="8" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Ground.cs" Line="5" Column="36" />
+      <File FileName="Assets/Scripts/Gameplay/Props/BaseGround.cs" Line="18" Column="18" />
+      <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="133" Column="22" />
+      <File FileName="Assets/Scripts/Gameplay/PropDatas.cs" Line="168" Column="24" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
