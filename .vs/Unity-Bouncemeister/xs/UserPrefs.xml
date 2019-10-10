@@ -1,15 +1,19 @@
 ﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/PropDatas.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs">
     <Files>
-      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="299" Column="84" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="619" Column="14" />
+      <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="64" Column="43" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="78" Column="63" />
       <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="113" Column="49" />
       <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacterWhiskers.cs" Line="41" Column="8" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Ground.cs" Line="5" Column="36" />
-      <File FileName="Assets/Scripts/Gameplay/Props/BaseGround.cs" Line="18" Column="18" />
-      <File FileName="Assets/Scripts/Gameplay/RoomSaverLoader.cs" Line="133" Column="22" />
-      <File FileName="Assets/Scripts/Gameplay/PropDatas.cs" Line="168" Column="24" />
+      <File FileName="Assets/Scripts/Gameplay/PropDatas.cs" Line="167" Column="35" />
+      <File FileName="Assets/Scripts/Managers/DataManager.cs" Line="72" Column="23" />
+      <File FileName="Assets/Scripts/ClustSelMap/ClustSelController.cs" Line="116" Column="31" />
+      <File FileName="Assets/Scripts/ClustSelMap/WorldView.cs" Line="69" Column="21" />
+      <File FileName="Assets/Scripts/ClustSelMap/ClustTile.cs" Line="40" Column="9" />
+      <File FileName="Assets/Scripts/Gameplay/UI/InventoryHUD.cs" Line="68" Column="33" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Snack.cs" Line="54" Column="51" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" Line="19" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

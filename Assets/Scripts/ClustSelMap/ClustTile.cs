@@ -49,7 +49,7 @@ namespace ClustSelMapNamespace {
             
             // Parent jazz!
             GameUtils.ParentAndReset(this.gameObject, myWorldView.transform);
-            transform.SetAsFirstSibling(); // put behind other stuff.
+            //transform.SetAsFirstSibling(); // put behind other stuff.
             this.gameObject.name = "ClustTile " + myClustData.ClustIndex;
             myRectTransform.anchoredPosition = pos;
             
@@ -59,6 +59,7 @@ namespace ClustSelMapNamespace {
             AddRoomViews();
             
             // Add i_snacks!
+            if (myClustData.IsUnlocked)
             {
                 int numEaten = myClustData.SnackCount.Eaten_All;
                 int numTotal = myClustData.SnackCount.Total_All;

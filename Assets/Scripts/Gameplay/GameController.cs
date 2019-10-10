@@ -68,7 +68,6 @@ public class GameController : MonoBehaviour {
 
         // Reset things!
         dm.ResetRoomEnterValues();
-        dm.SetCoinsCollected(0);
         
 		// Save what's up!
 		SaveStorage.SetInt(SaveKeys.LastPlayedWorldIndex, rd.WorldIndex);

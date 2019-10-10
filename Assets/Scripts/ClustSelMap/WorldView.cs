@@ -49,7 +49,7 @@ namespace ClustSelMapNamespace {
             myRectTransform.anchoredPosition = myPos;
             
             // Look right!
-            t_worldName.text = "World " + worldIndex;
+            t_worldName.text = worldIndex.ToString();
             
             MakeClustTiles();
             UpdateYouAreHereIconPos();

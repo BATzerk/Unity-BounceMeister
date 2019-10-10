@@ -30,7 +30,7 @@ namespace ClustSelMapNamespace {
             float tempX = 800; // start with World 1 centered in screen.
             for (int worldIndex=GameProperties.FirstWorld; worldIndex<=GameProperties.LastWorld; worldIndex++) {
                 WorldView newObj = Instantiate(ResourcesHandler.Instance.ClustSelMapWorldView).GetComponent<WorldView>();
-                Vector2 pos = new Vector2(tempX, -20);
+                Vector2 pos = new Vector2(tempX, 0);
                 newObj.Initialize(this, rt_worldViews, worldIndex, pos);
                 worldViews[worldIndex] = newObj;
                 tempX += 800;//newObj.Width + 80;

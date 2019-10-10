@@ -50,7 +50,7 @@ public class DataManager {
     public int LastPlayedClustIndex(int worldIndex) {
         RoomAddress address = LastPlayedRoomAddress(worldIndex);
         RoomData rd = GetRoomData(address, false);
-        if (rd==null) { return 0; }
+        if (rd==null || rd.MyCluster==null) { return 0; }
         return rd.MyCluster.ClustIndex;
     }
     public RoomData LastPlayedRoomData(int worldIndex) {
@@ -71,6 +71,7 @@ public class DataManager {
 	}
 	public void SetCoinsCollected(int value) {
 		CoinsCollected = value;
+        SaveStorage.SetInt(SaveKeys.NumCoinsCollected, CoinsCollected);
 		// Dispatch event!
 		GameManagers.Instance.EventManager.OnCoinsCollectedChanged();
 	}
@@ -93,7 +94,7 @@ public class DataManager {
 	}
 
 	private void Reset () {
-		CoinsCollected = 0;
+		CoinsCollected = SaveStorage.GetInt(SaveKeys.NumCoinsCollected);
 //		highestWorldEndEverReached = SaveStorage.GetInt (SaveKeys.HIGHEST_WORLD_END_EVER_REACHED);
         
         ReloadCharLineup();
