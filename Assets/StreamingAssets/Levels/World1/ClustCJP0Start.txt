@@ -1,4 +1,4 @@
-roomProperties posGlobal:(274.0, 800.0);designerFlag:3;isClustStart:True
+roomProperties posGlobal:(268.0, 752.0);designerFlag:3;isClustStart:True
 CameraBounds pos:(6.5, 0.0);size:(39.0, 38.0)
 Ground pos:(8.5, -5.0);size:(15.0, 4.0)
 Ground pos:(7.5, 5.5);size:(17.0, 7.0)
@@ -19,4 +19,3 @@ Platform pos:(11.5, 15.5);size:(5.0, 1.0)
 Platform pos:(-3.5, -14.5);size:(5.0, 1.0)
 PlayerStart pos:(6.0, -2.0)
 RoomDoor pos:(6.0, -2.0);myID:0;worldToIndex:-1;roomToKey:;doorToID:
-

@@ -154,9 +154,7 @@ static public class RoomSaverLoader {
         else if (type == typeof(SnackData)) { ps.Add("playerType"); }
         else if (type == typeof(VeilData)) { ps.Add("size"); }
         // Enemies
-        else if (type == typeof(DweebData)) {
-            
-        }
+        else if (type == typeof(DweebData)) { ps.Add("speed"); }
         // Props with optional params
         else if (type == typeof(TurretData)) {
             TurretData d = propData as TurretData;

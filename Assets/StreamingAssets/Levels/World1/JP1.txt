@@ -1,4 +1,4 @@
-roomProperties posGlobal:(856.0, 982.0);designerFlag:3
+roomProperties posGlobal:(222.0, 1076.0);designerFlag:3
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 DispGround pos:(-1.0, -12.5);size:(6.0, 1.0);mayPlayerEat:False;doRegen:False;dieFromBounce:True
 DispGround pos:(-17.0, -12.5);size:(6.0, 1.0);mayPlayerEat:False;doRegen:False;dieFromBounce:True

@@ -1,0 +1,19 @@
+roomProperties posGlobal:(166.0, 1512.0);designerFlag:4
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Dweeb pos:(16.9, 3.1);speed:-0.06
+Ground pos:(-23.0, 1.0);size:(6.0, 16.0)
+Ground pos:(21.5, -6.5);size:(1.0, 11.0)
+Ground pos:(23.5, 4.5);size:(5.0, 29.0)
+Ground pos:(0.0, 16.5);size:(52.0, 5.0)
+Ground travelMind:(11.5,1,-7.5,1, 2, 0);size:(16.6, 1.7)
+Ground pos:(0.0, -16.5);size:(52.0, 5.0)
+Ground pos:(-21.0, 2.5);size:(4.0, 13.0)
+Ground pos:(20.5, 10.5);size:(1.0, 15.0)
+Ground pos:(-19.0, -14.5);size:(14.0, 3.0)
+Ground pos:(-19.5, 8.5);size:(3.0, 1.0)
+Ground pos:(-24.5, 4.0);size:(3.0, 22.0)
+PlayerStart pos:(17.5, -13.0)
+Snack pos:(-21.0, 10.5);playerType:Any
+Spikes pos:(-19.5, -4.5);rotation:270;size:(5.0, 1.0)
+Spikes pos:(-18.5, 6.5);rotation:270;size:(3.0, 1.0)
+Spikes pos:(20.5, 1.5);rotation:90;size:(3.0, 1.0)

@@ -1,4 +1,4 @@
-roomProperties posGlobal:(210.0, 328.0);designerFlag:4
+roomProperties posGlobal:(816.0, 658.0);designerFlag:4
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 Buzzsaw travelMind:(-15,10,-15,-10, 1.6, 0);size:(3.0, 3.0)
 Buzzsaw travelMind:(6,-11,6,6, 2, 0);size:(3.0, 3.0)

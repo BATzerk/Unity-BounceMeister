@@ -1,11 +1,17 @@
-roomProperties posGlobal:(262.0, 328.0);designerFlag:4
+roomProperties posGlobal:(210.0, 328.0);designerFlag:4
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
 GateButton pos:(-4.0, -1.5);channelID:0
-Gate pos:(6.5, 11.0);size:(3.0, 6.0);channelID:0
 Gate pos:(-4.0, -4.0);size:(6.0, 2.0);channelID:0
-Ground pos:(0.0, -16.0);size:(52.0, 6.0)
-Ground pos:(0.0, 16.5);size:(52.0, 5.0)
-Ground pos:(-16.5, -5.5);size:(19.0, 27.0)
+Gate pos:(6.5, 11.0);size:(3.0, 6.0);channelID:0
 Ground pos:(12.5, -5.5);size:(27.0, 27.0)
-PlayerStart pos:(-14.5, 9.0)
+Ground pos:(-24.5, -1.0);size:(3.0, 36.0)
+Ground pos:(-24.0, 16.5);size:(4.0, 5.0)
+Ground pos:(0.0, -16.0);size:(52.0, 6.0)
+Ground pos:(5.0, 17.0);size:(42.0, 4.0)
+Ground pos:(-16.5, -5.5);size:(19.0, 27.0)
+Ground pos:(15.5, 16.5);size:(21.0, 5.0)
+Ground pos:(-15.0, 16.5);size:(2.0, 5.0)
+Platform pos:(-19.0, 14.5);size:(6.0, 1.0)
+PlayerStart pos:(-11.0, 9.0)
 Spikes pos:(-3.5, -12.5);size:(11.0, 1.0)
+

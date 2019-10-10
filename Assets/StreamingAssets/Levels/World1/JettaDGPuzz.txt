@@ -1,17 +1,17 @@
-roomProperties posGlobal:(246.0, 1490.0);designerFlag:4
+roomProperties posGlobal:(322.0, 1514.0);designerFlag:4
 CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
-DispGround pos:(-3.0, 1.0);size:(2.0, 12.0);doRegen:True;regenTime:1.8;dieFromPlayerLeave:True
-DispGround pos:(-14.0, -5.5);size:(6.0, 5.0);doRegen:True;dieFromPlayerLeave:True
-Ground pos:(0.0, 13.5);size:(52.0, 11.0)
-Ground pos:(8.0, -12.5);size:(36.0, 13.0)
-Ground pos:(25.0, -2.5);size:(2.0, 11.0)
-Ground pos:(-17.5, -14.0);size:(17.0, 10.0)
-Ground pos:(22.0, 11.0);size:(8.0, 16.0)
-Ground pos:(-22.0, 3.0);size:(8.0, 14.0)
-Ground pos:(23.5, -6.5);size:(5.0, 3.0)
-PlayerStart pos:(-19.5, -6.5)
-Snack pos:(22.5, -3.5);playerType:Any
-Spikes pos:(-10.5, -9.0);rotation:90;size:(6.0, 1.0)
-Spikes pos:(7.0, -5.5);size:(34.0, 1.0)
-Spikes pos:(-17.5, 4.0);rotation:270;size:(16.0, 1.0)
-Spikes pos:(-3.0, 7.5);rotation:180;size:(44.0, 1.0)
+DispGround pos:(-14.0, -9.5);size:(6.0, 5.0);doRegen:True;dieFromPlayerLeave:True
+DispGround pos:(-3.0, -3.0);size:(2.0, 12.0);doRegen:True;regenTime:1.8;dieFromPlayerLeave:True
+Ground pos:(22.0, 9.0);size:(8.0, 20.0)
+Ground pos:(-22.0, -1.0);size:(8.0, 14.0)
+Ground pos:(23.5, -10.5);size:(5.0, 3.0)
+Ground pos:(-17.5, -16.0);size:(17.0, 6.0)
+Ground pos:(0.0, 11.5);size:(52.0, 15.0)
+Ground pos:(8.0, -14.5);size:(36.0, 9.0)
+Ground pos:(25.0, -6.5);size:(2.0, 11.0)
+PlayerStart pos:(-19.5, -10.5)
+Snack pos:(22.5, -7.5);playerType:Any
+Spikes pos:(-17.5, 0.0);rotation:270;size:(16.0, 1.0)
+Spikes pos:(-3.0, 3.5);rotation:180;size:(44.0, 1.0)
+Spikes pos:(-10.5, -13.0);rotation:90;size:(6.0, 1.0)
+Spikes pos:(7.0, -9.5);size:(34.0, 1.0)

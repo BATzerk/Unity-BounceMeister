@@ -1,13 +1,15 @@
-roomProperties posGlobal:(344.0, 996.0);designerFlag:3
+roomProperties posGlobal:(302.0, 1082.0);designerFlag:3
 CameraBounds pos:(5.0, -4.0);size:(42.0, 30.0)
-Ground pos:(6.5, -12.5);size:(19.0, 15.0)
-Ground pos:(21.0, -16.5);size:(10.0, 7.0);mayPlayerEat:False
-Ground pos:(24.0, -11.0);size:(4.0, 18.0)
-Ground pos:(-12.0, -9.0);size:(8.0, 22.0)
-Ground pos:(5.0, 10.5);size:(42.0, 3.0)
 Ground pos:(10.5, -0.5);size:(31.0, 3.0)
+Ground pos:(5.0, 9.5);size:(42.0, 5.0)
+Ground pos:(20.5, 9.0);size:(11.0, 6.0)
 Ground pos:(2.0, -14.0);size:(28.0, 12.0)
+Ground pos:(21.0, -16.5);size:(10.0, 7.0);mayPlayerEat:False
+Ground pos:(6.5, -12.5);size:(19.0, 15.0)
+Ground pos:(-12.0, -9.0);size:(8.0, 22.0)
+Ground pos:(24.0, -11.0);size:(4.0, 18.0)
 PlayerStart pos:(-9.0, 3.0)
 Snack pos:(17.0, -11.0);playerType:Any
-Spikes pos:(6.5, -4.5);size:(19.0, 1.0)
 Spikes pos:(21.5, -7.5);rotation:90;size:(13.0, 1.0)
+Spikes pos:(6.5, -4.5);size:(19.0, 1.0)
+

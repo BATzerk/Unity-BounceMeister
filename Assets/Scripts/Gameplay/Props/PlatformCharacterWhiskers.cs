@@ -167,6 +167,13 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
         int sideLastTouchedWall = DirLastTouchedWall<0 ? Sides.L : Sides.R;
         return DistToSurface(sideLastTouchedWall);
     }
+    private bool IsWhiskerTouchingSurface(int side, int index) {
+        return surfaceDists[side,index] < TouchDistThreshold;//onSurfaces[side];
+    }
+    public bool IsFrontFootTouchingSurface() {
+        int frontWhiskerIndex = myCharacter.vel.x<0 ? 0 : NumWhiskersPerSide-1;
+        return IsWhiskerTouchingSurface(Sides.B, frontWhiskerIndex);
+    }
 
 
 	// ----------------------------------------------------------------
@@ -180,7 +187,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 			Vector2 dir = whiskerDirs[side];
 			for (int index=0; index<NumWhiskersPerSide; index++) {
 				Vector2 startPos = WhiskerPos(side, index);
-				bool isTouching = surfaceDists[side,index] < TouchDistThreshold;//onSurfaces[side];
+				bool isTouching = IsWhiskerTouchingSurface(side,index);
 				Gizmos.color = isTouching ? Color.green : Color.red;
 				Gizmos.DrawLine(startPos, startPos + dir * length);
 			}

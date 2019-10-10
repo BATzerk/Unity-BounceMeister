@@ -1,0 +1,18 @@
+roomProperties posGlobal:(332.0, 576.0);designerFlag:3
+CameraBounds pos:(0.0, 0.0);size:(52.0, 38.0)
+Dweeb pos:(14.0, -9.7);speed:-0.06
+Dweeb pos:(-6.0, -9.7);speed:0.06
+Ground pos:(21.0, -11.0);size:(10.0, 16.0)
+Ground pos:(-20.5, -14.0);size:(11.0, 10.0)
+Ground pos:(16.5, -4.0);size:(3.0, 2.0)
+Ground pos:(0.5, -10.5);size:(1.0, 5.0)
+Ground pos:(23.5, 10.5);size:(5.0, 17.0)
+Ground pos:(0.0, -15.0);size:(52.0, 8.0)
+Ground pos:(-23.0, 7.5);size:(6.0, 23.0)
+Ground pos:(0.0, 12.0);size:(52.0, 14.0)
+PlayerStart pos:(-20.0, -8.0)
+Spikes pos:(1.5, -11.0);rotation:270;size:(6.0, 1.0)
+Spikes pos:(15.5, -7.5);rotation:90;size:(9.0, 1.0)
+Spikes pos:(1.0, -10.5);size:(34.0, 1.0)
+Spikes pos:(-0.5, -11.0);rotation:90;size:(6.0, 1.0)
+Spikes pos:(0.5, -7.5);size:(1.0, 1.0)
