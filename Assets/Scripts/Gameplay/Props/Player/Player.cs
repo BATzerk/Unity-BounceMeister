@@ -720,6 +720,8 @@ abstract public class Player : PlatformCharacter {
 		myBody.OnDie();
 		GameManagers.Instance.EventManager.OnPlayerDie(this);
 		base.Die();
+        // TEMP super simple just disable my whole GO.
+        this.gameObject.SetActive(false);
 	}
 
 	virtual public void OnUseBattery() { }

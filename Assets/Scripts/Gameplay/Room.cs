@@ -103,18 +103,20 @@ public class Room : MonoBehaviour {
 
         foreach (PropData propData in rd.allPropDatas) {
             System.Type pt = propData.GetType();
+            if (false) {}
+            // Enemies
+            else if (pt == typeof(DweebData)) {
+                Dweeb newProp = Instantiate(rh.Dweeb).GetComponent<Dweeb>();
+                newProp.Initialize(this, propData as DweebData);
+            }
             // Grounds
-            if (pt == typeof(CrateData)) {
+            else if (pt == typeof(CrateData)) {
                 Crate newProp = Instantiate(rh.Crate).GetComponent<Crate>();
                 newProp.Initialize(this, propData as CrateData);
             }
             else if (pt == typeof(DispGroundData)) {
                 DispGround newProp = Instantiate(rh.DispGround).GetComponent<DispGround>();
                 newProp.Initialize(this, propData as DispGroundData);
-            }
-            else if (pt == typeof(EnemyData)) {
-                Enemy newProp = Instantiate(rh.Enemy).GetComponent<Enemy>();
-                newProp.Initialize(this, propData as EnemyData);
             }
             else if (pt == typeof(GateData)) {
                 Gate newProp = Instantiate(rh.Gate).GetComponent<Gate>();

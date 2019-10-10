@@ -7,6 +7,7 @@ public static class MathUtils {
     //  Bools and Ints
     // ----------------------------------------------------------------
     public static bool RandomBool() { return Random.Range(0,1f) < 0.5f; }
+    public static int RandomDir() { return Sign(Random.Range(-1f,1f)); }
 
     static public bool IsSameSign(float a,float b) { return a*b >= 0; }
     static public bool IsSameSign(double a,double b) { return a*b >= 0; }

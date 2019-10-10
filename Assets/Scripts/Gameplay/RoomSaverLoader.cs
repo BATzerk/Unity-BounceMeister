@@ -18,7 +18,7 @@ static public class RoomSaverLoader {
     const string CHAR_UNLOCK_ORB = "CharUnlockOrb";
 	const string CRATE = "Crate";
 	const string DISP_GROUND = "DispGround";
-    const string ENEMY = "Enemy";
+    const string DWEEB = "Dweeb";
     const string GATE = "Gate";
 	const string GATE_BUTTON = "GateButton";
 	const string GEM = "Gem";
@@ -143,7 +143,6 @@ static public class RoomSaverLoader {
         else if (type == typeof(CharBarrelData)) { ps.Add("otherCharName"); }
         else if (type == typeof(CharUnlockOrbData)) { ps.Add("myCharName"); }
         else if (type == typeof(CrateData)) { ps.Add("hitsUntilBreak"); ps.Add("numCoinsInMe"); }
-        else if (type == typeof(EnemyData)) { }
         else if (type == typeof(GateData)) { ps.Add("channelID"); }
         else if (type == typeof(GateButtonData)) { ps.Add("channelID"); }
         else if (type == typeof(GemData)) { ps.Add("type"); }
@@ -154,6 +153,10 @@ static public class RoomSaverLoader {
         else if (type == typeof(RoomDoorData)) { ps.Add("myID"); ps.Add("worldToIndex"); ps.Add("roomToKey"); ps.Add("doorToID"); }
         else if (type == typeof(SnackData)) { ps.Add("playerType"); }
         else if (type == typeof(VeilData)) { ps.Add("size"); }
+        // Enemies
+        else if (type == typeof(DweebData)) {
+            
+        }
         // Props with optional params
         else if (type == typeof(TurretData)) {
             TurretData d = propData as TurretData;
@@ -384,6 +387,7 @@ static public class RoomSaverLoader {
     }
     static private PropData GetNewPropDataFromAffectName(string affectName) {
         switch (affectName) {
+            case DWEEB: return new DweebData();
             case BATTERY: return new BatteryData();
             case BUZZSAW: return new BuzzsawData();
             case CAMERA_BOUNDS: return new CameraBoundsData();
@@ -391,7 +395,6 @@ static public class RoomSaverLoader {
             case CHAR_UNLOCK_ORB: return new CharUnlockOrbData();
             case CRATE: return new CrateData();
             case DISP_GROUND: return new DispGroundData();
-            case ENEMY: return new EnemyData();
             case GATE: return new GateData();
             case GATE_BUTTON: return new GateButtonData();
             case GEM: return new GemData();

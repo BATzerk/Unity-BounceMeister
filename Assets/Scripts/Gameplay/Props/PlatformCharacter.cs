@@ -202,7 +202,10 @@ public class PlatformCharacter : Collidable {
     }
 	virtual protected void Die() {
 		isDead = true;
-		this.gameObject.SetActive(false); // TEMP super simple for now.
+        // Disable all my colliders.
+        foreach (Collider2D coll in GetComponentsInChildren<Collider2D>()) {
+            coll.enabled = false;
+        }
 	}
     
 

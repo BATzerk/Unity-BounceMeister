@@ -134,6 +134,11 @@ public struct OnOfferData {
 }
 
 
+public class DweebData : PropData {
+    public float speed;
+}
+
+
 public class BatteryData : PropData {
 }
 public class BuzzsawData : PropData {
@@ -147,8 +152,6 @@ public class CharBarrelData : PropData {
 }
 public class CharUnlockOrbData : PropData {
     public string myCharName;
-}
-public class EnemyData : PropData {
 }
 public class GateData : BaseGroundData {
 	public int channelID;

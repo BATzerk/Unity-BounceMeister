@@ -42,6 +42,8 @@ public class ResourcesHandler : MonoBehaviour {
     [SerializeField] private GameObject Slippa=null;
     [SerializeField] private GameObject Testa=null;
     [SerializeField] private GameObject Warpa=null;
+    
+    [SerializeField] public GameObject Dweeb;
 
     [SerializeField] public GameObject Battery;
     [SerializeField] public GameObject Buzzsaw;
@@ -51,7 +53,6 @@ public class ResourcesHandler : MonoBehaviour {
 	[SerializeField] public GameObject Coin;
 	[SerializeField] public GameObject Crate;
 	[SerializeField] public GameObject DispGround;
-    [SerializeField] public GameObject Enemy;
 	[SerializeField] public GameObject Gate;
 	[SerializeField] public GameObject GateButton;
 	[SerializeField] public GameObject Gem;
