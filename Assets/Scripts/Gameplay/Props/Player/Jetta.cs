@@ -5,40 +5,32 @@ using UnityEngine;
 public class Jetta : Player {
     // Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Jetta; }
-//  private Vector2 GravityJettingWhileFalling = new Vector2(0, 0.02f); // gravity will actually work WITH us while we're falling! So we halt super fast.
-//  override protected Vector2 Gravity {
-//      get {
-//          if (isJetting && vel.y<0) { return GravityJettingWhileFalling; }
-//          return GravityNeutral;
-//      }
-//  }
-    override protected Vector2 Gravity {
-        get {
-            if (IsJetting) { return Vector2.zero; }
-            Vector2 baseGravity = new Vector2(0, -0.024f);
-            //if (IsAgainstWall()) { return baseGravity * 0.2f; } // On a wall? Reduce gravity!
-            return baseGravity;
-        }
+    override protected float FrictionAir() {
+        return isPreservingWallKickVel ? 1f : 0.94f; // No air friction while we're preserving our precious wall-kick vel.
     }
-    override protected float FrictionAir {
-        get {
-            return isPreservingWallKickVel ? 1f : 0.94f; // No air friction while we're preserving our precious wall-kick vel.
-        }
+    override protected float FrictionGround() {
+        //if (Mathf.Abs(LeftStick.x) > 0.1f) { return 0.7f; } // Providing input? Less friction!
+        return 0.78f;
     }
-    override protected float FrictionGround {
-        get {
-            //if (Mathf.Abs(LeftStick.x) > 0.1f) { return 0.7f; } // Providing input? Less friction!
-            return 0.78f;
-        }
+    override protected float GravityScale() {
+        if (IsJetting) { return 0; }
+        //if (IsAgainstWall()) { return 0.2f; } // On a wall? Reduce gravity!
+        return base.GravityScale();
     }
-    override protected float InputScaleX { get { return 0.08f; } }
-    override protected float WallSlideMinYVel { get { return -0.14f; } }
-    override protected float JumpForce { get { return 0.41f; } }
-    override protected Vector2 WallKickForce { get { return new Vector2(0.32f,0.43f); } }
-    protected override float MaxVelYDown { get { return -0.5f; } }
     override protected float HorzMoveInputVelXDelta() {
         float val = base.HorzMoveInputVelXDelta();
         return IsGrounded() ? val : val*0.2f; // less (finer!) control in air.
+    }
+    
+    override protected void InitMyPhysicsValues() {
+        base.InitMyPhysicsValues();
+        
+        GravityNeutral = new Vector2(0, -0.024f);
+        InputEffectX = 0.08f;
+        WallSlideMinYVel = -0.14f;
+        MaxVelYDown = -0.5f;
+        JumpForce = 0.41f;
+        WallKickForce = new Vector2(0.32f, 0.43f);
     }
     
     // Constants

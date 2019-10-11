@@ -5,22 +5,20 @@ using UnityEngine;
 public class Plunga : Player {
     // Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Plunga; }
-    private Vector2 PlungeForce = new Vector2(0, -0.032f); // applied in addition to Gravity.
-    //override protected Vector2 Gravity { get { return new Vector2(0, -0.034f); } }
-    //override protected float JumpForce { get { return 0.54f; } }
-    //override protected float WallSlideMinYVel { get { return -0.10f; } }
-    override protected Vector2 WallKickForce { get { return new Vector2(0.4f,0.42f); } }
-    //private Vector2 PlungeForce = new Vector2(0, -0.048f); // applied in addition to Gravity.
-    //override protected Vector2 Gravity { get { return new Vector2(0, -0.048f); } }
-    //override protected float JumpForce { get { return 0.64f; } }
-    //override protected float WallSlideMinYVel { get { return -0.13f; } }
-    //override protected Vector2 WallKickVel { get { return new Vector2(0.5f,0.52f); } }
+    private readonly Vector2 PlungeForce = new Vector2(0, -0.032f); // applied in addition to Gravity.
     // Properties
     private bool isPlunging = false;
     private bool isPlungeRecharged = true;
     private bool groundedSincePlunge=true; // TEST for interactions with Batteries.
     // References
     private PlungaBody myPlungaBody;
+    
+    
+    override protected void InitMyPhysicsValues() {
+        base.InitMyPhysicsValues();
+        
+        WallKickForce = new Vector2(0.4f, 0.42f);
+    }
 
 
     // Getters (Public)

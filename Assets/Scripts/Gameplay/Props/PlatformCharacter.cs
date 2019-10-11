@@ -6,19 +6,20 @@ public class PlatformCharacter : Collidable {
 	// Constants
 	public const int NumSides = 4; // it's hip to be square.
 	// Overrideables
-	virtual protected int StartingHealth { get { return 1; } }
+    virtual protected float FrictionAir() { return 0.6f; }
+    virtual protected float FrictionGround() { return 0.6f; }
+    protected Vector2 GravityNeutral = new Vector2(0, -0.034f); // the default amount of gravity we generally apply to this Character.
+    protected Vector2 Gravity() { return GravityNeutral * GravityScale(); } // the value we apply directly to vel!
+    virtual protected float GravityScale() { return 1; } // override this for characters that might suspend gravity or something (like Jetta or Clinga).
+    
+	protected int StartingHealth = 1;
 
-	virtual protected float FrictionAir { get { return 0.6f; } }
-	virtual protected float FrictionGround { get { return 0.6f; } }
-	virtual protected Vector2 Gravity { get { return new Vector2(0, -0.034f); } }
-
-	virtual protected float MaxVelXAir { get { return 0.35f; } }
-	virtual protected float MaxVelXGround { get { return 0.25f; } }
-	virtual protected float MaxVelYUp { get { return 3; } }
-	virtual protected float MaxVelYDown { get { return -3; } }
-    virtual protected float GetCurrMaxVelX() {
-        return IsGrounded() ? MaxVelXGround : MaxVelXAir;
-    }
+	protected float MaxVelXAir = 0.35f;
+	protected float MaxVelXGround = 0.25f;
+	protected float MaxVelYUp = 3;
+	protected float MaxVelYDown = -3;
+    
+    virtual protected void InitMyPhysicsValues() { }
     
 //  virtual public bool IsAffectedByLift() { return true; }
 
@@ -46,6 +47,9 @@ public class PlatformCharacter : Collidable {
 	virtual protected float HorzMoveInputVelXDelta() {
 		return 0;
 	}
+    virtual protected float GetCurrMaxVelX() {
+        return IsGrounded() ? MaxVelXGround : MaxVelXAir;
+    }
 	///** Returns the relative speed we're traveling in at this side. */
 	//private float GetSideSpeed(int side) {
 	//	switch (side) {
@@ -90,6 +94,7 @@ public class PlatformCharacter : Collidable {
     //  Start
     // ----------------------------------------------------------------
     override protected void Start() {
+        InitMyPhysicsValues();
         base.Start();
         Size = bodyCollider.size + new Vector2(bodyCollider.edgeRadius, bodyCollider.edgeRadius)*2;
         timeSinceDamage = Mathf.NegativeInfinity;
@@ -117,18 +122,18 @@ public class PlatformCharacter : Collidable {
         }
     }
     protected void ApplyGravity() {
-		ChangeVel(Gravity);
+		ChangeVel(Gravity());
 	}
     virtual protected void ApplyInternalForces() {} // For Plunga's plunge-force, Jetta's jetting, etc.
 	virtual protected void ApplyFriction() {
         if (IsInLift) {
-			SetVel(new Vector2(vel.x*FrictionAir, vel.y));
+			SetVel(new Vector2(vel.x*FrictionAir(), vel.y));
         }
 		else if (IsGrounded()) {
-			SetVel(new Vector2(vel.x*FrictionGround, vel.y));
+			SetVel(new Vector2(vel.x*FrictionGround(), vel.y));
 		}
 		else {
-			SetVel(new Vector2(vel.x*FrictionAir, vel.y));
+			SetVel(new Vector2(vel.x*FrictionAir(), vel.y));
 		}
 	}
 	virtual protected void AcceptDirectionalMoveInput() {

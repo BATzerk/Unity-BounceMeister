@@ -24,23 +24,29 @@ public class Clinga : Player {
     // Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Clinga; }
     override protected bool MayWallSlide() { return false; } // I don't slide. I /cling/.
-    override protected Vector2 Gravity { get {
-            return IsClinging ? Vector2.zero : new Vector2(0, -0.024f);
-        }
+    override protected float GravityScale() {
+        return IsClinging ? 0 : base.GravityScale();
     }
-    override protected float FrictionAir { get { return 1f; } }
-    //override protected float FrictionGround { get { return 1f; } } // no friction ground. We already cling to ground.
+    override protected float FrictionAir() { return 1; }
+    //override protected float FrictionGround() { return 1f; } // no friction ground. We already cling to ground.
     private const float MaxVelXClinging = 2f;
-    override protected float MaxVelXGround { get { return 0.26f; } }
-    override protected float MaxVelXAir { get { return MaxVelXClinging; } }
-    override protected float MaxVelXFromInput { get { return 0.26f; } }
-    protected override float MaxVelYDown { get { return -0.6f; } }
     override protected float GetCurrMaxVelX() {
         return IsClinging ? MaxVelXClinging : base.GetCurrMaxVelX();
     }
-    override protected float JumpForce { get { return 0.32f; } }
-    override protected float InputScaleX { get { return 0.08f; } }
-    override protected Vector2 WallKickForce { get { return new Vector2(0.26f,0.42f); } }
+    
+    override protected void InitMyPhysicsValues() {
+        base.InitMyPhysicsValues();
+        
+        GravityNeutral = new Vector2(0, -0.024f);
+        JumpForce = 0.32f;
+        InputEffectX = 0.08f;
+        WallKickForce = new Vector2(0.26f, 0.42f);
+        
+        MaxVelXGround = 0.26f;
+        MaxVelXAir = MaxVelXClinging;
+        MaxVelXFromInput = 0.26f;
+        MaxVelYDown = -0.6f;
+    }
     //protected override float HorzMoveInputVelXDelta() {
     //    return IsClinging ? 0 : base.HorzMoveInputVelXDelta(); // Clinging? Do NOT accept our normal horz input.
     //}

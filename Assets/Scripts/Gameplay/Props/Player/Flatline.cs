@@ -5,52 +5,50 @@ using UnityEngine;
 public class Flatline : Player {
     // Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Flatline; }
-    override protected bool DoesFunHop { get { return false; } }
-    //override public Vector2 Size { get { return new Vector2(1.6f, 1.6f); } }
-    override protected float InputScaleX {
-        get {
-            if (IsHovering) { return 0; }// || IsHoverEmpty
-            //if (HasHoveredWithoutTouchCollider) { return 0; } // No horz input while hovering (until we touch a collider). TEST DISABLED.
-            if (!IsGrounded() && !IsInLift) { return 0.009f; } // In the air and NOT a Lift? Reduced input scale.
-            return 0.018f;
-        }
-    }
-    override protected float FrictionAir {
-        get {
-            //if (IsInLift && Mathf.Abs(inputAxis.x) < 0.1f && !isButtonHeld_Hover) { // In Lift and NOT providing input? Friction!
-            //    return 0.76f;
-            //}
-            return 1;
-        }
-    }
-    override protected float FrictionGround {
-        get {
-            if (Mathf.Abs(LeftStick.x) > 0.1f // Providing input?
-             || Time.time < timeWhenLanded+0.25f // Recently landed?
-            ) {
-                return 0.98f; // Less friction!
-            }
-            return 0.76f; // Normal friction.
-        }
-    }
-    override protected Vector2 Gravity {
-        get {
-            Vector2 gravNeutral = new Vector2(0, -0.042f);
-            if (IsAgainstWall()) { return gravNeutral * 0.2f; } // On a wall? Reduce gravity!
-            if (IsHovering) { return Vector2.zero; } // Hovering? No gravity!
-            return gravNeutral;
-        }
-    }
-    override protected float MaxVelXFromInput { get { return 0.8f; } }
-    override protected float MaxVelXAir { get { return 99f; } }
-    override protected float MaxVelXGround { get { return 2f; } }
 
-    override protected float JumpForce { get { return 0; } }
-    override protected float WallSlideMinYVel { get { return -999f; } }
-    override protected Vector2 WallKickForce { get { return new Vector2(Mathf.Abs(vel.y), 0); } }
-    override protected float PostWallKickHorzInputLockDur { get { return -1; } }
-    override protected float WallKickExtensionWindow { get { return 0.25f; } }
-    override protected bool DoesFarFallHop { get { return false; } }
+    override protected void InitMyPhysicsValues() {
+        base.InitMyPhysicsValues();
+        InputEffectX = 0.018f;
+        GravityNeutral = new Vector2(0, -0.042f);
+        MaxVelXFromInput = 0.8f;
+        MaxVelXAir = 99f;
+        MaxVelXGround = 2f;
+        JumpForce = 0;
+        WallSlideMinYVel = -999f;
+        PostWallKickHorzInputLockDur = -1;
+        WallKickExtensionWindow = 0.25f;
+        DoesFunHop = false;
+        DoesFarFallHop = false;
+    }
+    override protected float InputXScale() {
+        if (IsHovering) { return 0; }// || IsHoverEmpty
+        //if (HasHoveredWithoutTouchCollider) { return 0; } // No horz input while hovering (until we touch a collider). TEST DISABLED.
+        if (!IsGrounded() && !IsInLift) { return 0.5f; } // In the air and NOT a Lift? Reduced input scale.
+        return base.InputXScale();
+    }
+    override protected float FrictionAir() {
+        //if (IsInLift && Mathf.Abs(inputAxis.x) < 0.1f && !isButtonHeld_Hover) { // In Lift and NOT providing input? Friction!
+        //    return 0.76f;
+        //}
+        return 1;
+    }
+    override protected float FrictionGround() {
+        if (Mathf.Abs(LeftStick.x) > 0.1f // Providing input?
+         || Time.time < timeWhenLanded+0.25f // Recently landed?
+        ) {
+            return 0.98f; // Less friction!
+        }
+        return 0.76f; // Normal friction.
+    }
+    override protected float GravityScale() {
+        if (IsAgainstWall()) { return 0.2f; } // On a wall? Reduce gravity!
+        if (IsHovering) { return 0; } // Hovering? No gravity!
+        return base.GravityScale();
+    }
+    override protected Vector2 VelForWallKick() {
+        Vector2 wkForce = new Vector2(Mathf.Abs(vel.y), 0);
+        return new Vector2(-myWhiskers.DirLastTouchedWall*wkForce.x, Mathf.Max(vel.y, wkForce.y));
+    }
     
     private bool MayStartHover() {
         return !IsHovering // I'm not ALREADY hovering?

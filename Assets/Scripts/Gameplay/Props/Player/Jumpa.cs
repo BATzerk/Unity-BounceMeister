@@ -5,7 +5,10 @@ using UnityEngine;
 public class Jumpa : Player {
     // Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Jumpa; }
-    override protected Vector2 Gravity { get { return new Vector2(0, -0.042f); } }
+    protected override void InitMyPhysicsValues() {
+        base.InitMyPhysicsValues();
+        GravityNeutral = new Vector2(0, -0.042f);
+    }
     // Constants
     private int MaxJumps = 2;
 	// Properties
@@ -34,22 +37,6 @@ public class Jumpa : Player {
 		myJumpaBody = myBody as JumpaBody;
 
 		base.Start();
-	}
-
-
-	// ----------------------------------------------------------------
-	//  Input
-	// ----------------------------------------------------------------
-	override protected void OnButtonJump_Press() {
-		if (MayWallKick()) {
-			WallKick();
-		}
-		else if (MayJump()) {
-			Jump();
-		}
-		else {
-			ScheduleDelayedJump();
-		}
 	}
 
 

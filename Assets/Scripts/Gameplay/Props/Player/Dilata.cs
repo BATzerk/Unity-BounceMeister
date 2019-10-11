@@ -5,29 +5,28 @@ using UnityEngine;
 public class Dilata : Player {
     // Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Dilata; }
-    override protected float InputScaleX { get { return 0.05f; } }
-    override protected float FrictionAir { get { return 1; } }
-    override protected float FrictionGround {
-        get {
-            if (Mathf.Abs(LeftStick.x) > 0.1f) { return 0.95f; } // Providing input? Less friction!
-            return 0.76f;
-        }
+    override protected void InitMyPhysicsValues() {
+        base.InitMyPhysicsValues();
+        
+        GravityNeutral = new Vector2(0, -0.042f);
+        InputEffectX = 0.05f;
+        MaxVelXAir = 0.5f;
+        MaxVelXGround = 0.5f;
+        JumpForce = 0.5f;
+        WallSlideMinYVel = -0.25f;
+        WallKickForce = new Vector2(0.4f, 0.6f);
+        PostWallKickHorzInputLockDur = 0.1f;
     }
-    override protected Vector2 Gravity {
-        get {
-            Vector2 gravNeutral = new Vector2(0, -0.042f);
-            if (IsAgainstWall()) { return gravNeutral * 0.2f; } // On a wall? Reduce gravity!
-            if (isReducedJumpGravity) { return gravNeutral * 0.7f; } // We're still holding down the jump button? Reduce gravity!
-            return gravNeutral * 1.6f;
-        }
+    override protected float FrictionAir() { return 1; }
+    override protected float FrictionGround() {
+        if (Mathf.Abs(LeftStick.x) > 0.1f) { return 0.95f; } // Providing input? Less friction!
+        return 0.76f;
     }
-    override protected float MaxVelXAir { get { return 0.5f; } }
-    override protected float MaxVelXGround { get { return 0.5f; } }
-
-    override protected float JumpForce { get { return 0.5f; } }
-    override protected float WallSlideMinYVel { get { return -0.25f; } }
-    override protected Vector2 WallKickForce { get { return new Vector2(0.4f,0.6f); } }
-    override protected float PostWallKickHorzInputLockDur { get { return 0.1f; } }
+    override protected float GravityScale() {
+        if (IsAgainstWall()) { return 0.2f; } // On a wall? Reduce gravity!
+        if (isReducedJumpGravity) { return 0.7f; } // We're still holding down the jump button? Reduce gravity!
+        return 1.6f;
+    }
 
     // Properties
     public bool IsDilatingTime { get; private set; }

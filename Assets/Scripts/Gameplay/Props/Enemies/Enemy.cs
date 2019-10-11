@@ -6,10 +6,14 @@ using UnityEngine;
 abstract public class Enemy : PlatformCharacter {
 	// Constants
     virtual protected int NumCoinsInMe { get { return 3; } }
-    override protected int StartingHealth { get { return 1; } }
-	override protected float FrictionAir { get { return 0.6f; } }
-	override protected float FrictionGround { get { return 0.6f; } }
-	override protected Vector2 Gravity { get { return new Vector2(0, -0.05f); } }
+	override protected float FrictionAir() { return 0.6f; }
+	override protected float FrictionGround() { return 0.6f; }
+    
+    override protected void InitMyPhysicsValues() {
+        base.InitMyPhysicsValues();
+        StartingHealth = 1;
+        GravityNeutral = new Vector2(0, -0.05f);
+    }
     // Components
     [SerializeField] protected SpriteRenderer sr_body=null;
     // Properties

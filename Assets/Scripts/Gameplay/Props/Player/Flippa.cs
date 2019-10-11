@@ -5,19 +5,19 @@ using UnityEngine;
 public class Flippa : Player {
     // Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Flippa; }
-    override protected Vector2 Gravity { get { return base.Gravity * FlipDir; } }
-    override protected float JumpForce { get { return base.JumpForce * FlipDir; } }
-    override public bool IsGrounded() {
-        return myWhiskers.OnSurface(FlipDir<0 ? Sides.T : Sides.B);
-    }
-    override protected float WallSlideMinYVel { get { return FlipDir<0 ? Mathf.NegativeInfinity : -0.11f; } }
-    override protected float WallSlideMaxYVel { get { return FlipDir<0 ? 0.11f : Mathf.Infinity; } }
-    override protected Vector2 WallKickForce { get { return new Vector2(0.35f, 0.46f*FlipDir); } }
-    protected override Vector2 GetVelForWallKick() {
+    //override protected Vector2 Gravity { get { return base.Gravity * FlipDir; } }TODO: Pop all this stuffo into Player.
+    //override protected float JumpForce { get { return base.JumpForce * FlipDir; } }
+    //override public bool IsGrounded() {
+    //    return myWhiskers.OnSurface(FlipDir<0 ? Sides.T : Sides.B);
+    //}
+    //override protected float WallSlideMinYVel { get { return FlipDir<0 ? Mathf.NegativeInfinity : -0.11f; } }
+    //override protected float WallSlideMaxYVel { get { return FlipDir<0 ? 0.11f : Mathf.Infinity; } }
+    //override protected Vector2 WallKickForce { get { return new Vector2(0.35f, 0.46f*FlipDir); } }
+    protected override Vector2 VelForWallKick() {
         if (FlipDir < 0) {
             return new Vector2(-myWhiskers.DirLastTouchedWall*WallKickForce.x, Mathf.Min(vel.y, WallKickForce.y));
         }
-        return base.GetVelForWallKick();
+        return base.VelForWallKick();
     }
     override public bool MayUseBattery() { return !isFlipRecharged; }
     //private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);

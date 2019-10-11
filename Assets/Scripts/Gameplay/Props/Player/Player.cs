@@ -6,41 +6,37 @@ abstract public class Player : PlatformCharacter {
     // Overrides
     override public bool DoSaveInRoomFile() { return false; }
     abstract public PlayerTypes PlayerType();
-	// Constants
-	override protected int StartingHealth { get { return 1; } }
-    //virtual protected float FrictionAir_//TODO: Clean this up! Seriously, it won't be too hard.
-	override protected float FrictionAir { get { return isPreservingWallKickVel ? 1f : FrictionGround; } } // No air friction while we're preserving our precious wall-kick vel.
-	override protected float FrictionGround {
-		get {
-            if (Mathf.Abs(LeftStick.x) > 0.1f) { return 0.7f; } // Providing input? Less friction!
-            return 0.5f; // No input? Basically halt.
-        }
-	}
-	//protected Vector2 GravityNeutral = new Vector2(0, -0.042f);
-	virtual protected float InputScaleX { get { return 0.1f; } }
+    // Physics Values
+    protected float InputEffectX = 0.1f;
+    protected float JumpForce = 0.58f;
+    protected float WallSlideMinYVel = -0.11f;
+    protected float WallSlideMaxYVel = Mathf.Infinity;
+    protected Vector2 WallKickForce = new Vector2(0.35f, 0.46f);
+	private readonly Vector2 HitByEnemyForce = new Vector2(0.5f, 0.5f);
 
-	virtual protected float JumpForce { get { return 0.58f; } }
-    virtual protected float WallSlideMinYVel { get { return -0.11f; } }
-    virtual protected float WallSlideMaxYVel { get { return Mathf.Infinity; } }
-	virtual protected Vector2 WallKickForce { get { return new Vector2(0.35f,0.46f); } }
-	private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);
+    protected float MaxVelXFromInput = 0.35f; // we can travel faster than this, but NOT by just pushing left/right.
 
-	override protected float MaxVelXAir { get { return 0.35f; } }
-	override protected float MaxVelXGround { get { return 0.25f; } }
-	override protected float MaxVelYUp { get { return 3; } }
-    override protected float MaxVelYDown { get { return -3; } }
-    virtual protected float MaxVelXFromInput { get { return 0.35f; } } // we can travel faster than this, but NOT by just pushing left/right.
-
+    protected float PostWallKickHorzHaltTime = 99f; // how many SECONDS after wall-kick when we auto-halt our xVel.
+    protected float PostWallKickHorzInputLockDur = 0.22f; // affects isPreservingWallKickVel. How long until we can provide horz-input after wall-kicking.
+    protected float WallKickExtensionWindow = 0.15f; // how long after touching a wall when we'll still allow wall-kicking!
     private const float WallPushAwayFallWindow = 0.12f; // how long we hold down pushing away from a wall before we register the push! For easier wall-kicking for folks who push away just before jumping.
     private const float CoyoteTimeJumpWindow = 0.07f; // in SECONDS. How long after leaving ground where we can STILL jump. Named after Wile E. Coyote!
 	private const float DelayedJumpWindow = 0.12f; // in SECONDS. The time window where we can press jump just BEFORE landing, and still jump when we land.
 	private const float PostDamageImmunityDuration = 1.2f; // in SECONDS.
-    virtual protected float PostWallKickHorzHaltTime { get { return 99f; } } // how many SECONDS after wall-kick when we auto-halt our xVel.
-    virtual protected float PostWallKickHorzInputLockDur { get { return 0.22f; } } // affects isPreservingWallKickVel. How long until we can provide horz-input after wall-kicking.
-    virtual protected float WallKickExtensionWindow { get { return 0.15f; } } // how long after touching a wall when we'll still allow wall-kicking!
-    virtual protected float ExtraBounceDistToRestore() { return 0; }
-    virtual protected bool DoesFarFallHop { get { return true; } } // Say FALSE if we don't want to bounce lightly when landing on Ground from a tall height.
-    virtual protected bool DoesFunHop { get { return true; } } // Say FALSE if we don't want to hophophop after eating a Snack.
+    protected bool DoesFarFallHop = true; // Say FALSE if we don't want to bounce lightly when landing on Ground from a tall height.
+    protected bool DoesFunHop = true; // Say FALSE if we don't want to hophophop after eating a Snack.
+    
+    override protected void InitMyPhysicsValues() {
+        base.InitMyPhysicsValues();
+        
+        StartingHealth = 1;
+        
+        MaxVelXAir = 0.35f;
+        MaxVelXGround = 0.25f;
+        MaxVelYUp = 3;
+        MaxVelYDown = -3;
+    }
+    
     
 	// Components
 	[SerializeField] protected PlayerBody myBody=null;
@@ -70,6 +66,14 @@ abstract public class Player : PlatformCharacter {
 	// Getters (Public)
 	virtual public bool MayUseBattery() { return false; }
 	public bool IsPostDamageImmunity { get { return isPostDamageImmunity; } }
+    // Getters (Protected, Physics)
+    override protected float FrictionAir() { return isPreservingWallKickVel ? 1f : FrictionGround(); } // No air friction while we're preserving our precious wall-kick vel.
+    override protected float FrictionGround() {
+        if (Mathf.Abs(LeftStick.x) > 0.1f) { return 0.7f; } // Providing input? Less friction!
+        return 0.5f; // No input? Basically halt.
+    }
+    virtual protected float InputXScale() { return 1; } // for conditional scaling of our horz input! Currently only for Flatline.
+    virtual protected float ExtraBounceDistToRestore() { return 0; }
 	// Getters (Protected)
     protected InputController inputController { get { return InputController.Instance; } }
     protected bool IsInput_D() { return LeftStick.y < -0.5f; }
@@ -91,7 +95,7 @@ abstract public class Player : PlatformCharacter {
             && myWhiskers.DistToSideLastTouchedWall() < 0.5f) { return true; }
         return false;
 	}
-    virtual protected Vector2 GetVelForWallKick() {
+    virtual protected Vector2 VelForWallKick() {
         return new Vector2(-myWhiskers.DirLastTouchedWall*WallKickForce.x, Mathf.Max(vel.y, WallKickForce.y));
     }
 	virtual protected bool MayWallSlide() {
@@ -121,7 +125,7 @@ abstract public class Player : PlatformCharacter {
         if (vel.x >  MaxVelXFromInput && LeftStick.x>0) { mult = 0; }
         if (vel.x < -MaxVelXFromInput && LeftStick.x<0) { mult = 0; }
 
-		return dirX*InputScaleX * mult;
+		return dirX*InputEffectX*InputXScale() * mult;
 	}
     protected float timeSinceBounce { get { return Time.time - timeLastBounced; } }
 	// Getters (Private)
@@ -148,6 +152,23 @@ abstract public class Player : PlatformCharacter {
             OnTouchEdible(_edibles[i]);
         }
     }
+    
+    //protected Vector2 GravityForce = 
+    //override protected Vector2 Gravity { get { return base.Gravity * FlipDir; } }
+    //override protected float JumpForce { get { return base.JumpForce * FlipDir; } }
+    //override public bool IsGrounded() {
+    //    return myWhiskers.OnSurface(FlipDir<0 ? Sides.T : Sides.B);
+    //}
+    //override protected float WallSlideMinYVel { get { return FlipDir<0 ? Mathf.NegativeInfinity : -0.11f; } }
+    //override protected float WallSlideMaxYVel { get { return FlipDir<0 ? 0.11f : Mathf.Infinity; } }
+    //override protected Vector2 WallKickForce { get { return new Vector2(0.35f, 0.46f*FlipDir); } }
+    //protected override Vector2 GetVelForWallKick() {
+    //    if (FlipDir < 0) {
+    //        return new Vector2(-myWhiskers.DirLastTouchedWall*WallKickForce.x, Mathf.Min(vel.y, WallKickForce.y));
+    //    }
+    //    return base.GetVelForWallKick();
+    //}
+    //private static int FlipDir=1; // 1 or -1.
 
  //   private void OnDrawGizmos() {
 	//	if (myRoom==null) { return; }
@@ -365,7 +386,7 @@ abstract public class Player : PlatformCharacter {
 	}
 	virtual protected void WallKick() {
         StopWallSlide();
-        SetVel(GetVelForWallKick());
+        SetVel(VelForWallKick());
         timeWhenDelayedJump = -1; // reset this just in case.
         timeLastWallKicked = Time.time;
 		isPreservingWallKickVel = true;
@@ -584,7 +605,7 @@ abstract public class Player : PlatformCharacter {
             // Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
             float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
             distToRestore += ExtraBounceDistToRestore(); // Give us __ more height than we started with.
-            float yVel = Mathf.Sqrt(2*-Gravity.y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
+            float yVel = Mathf.Sqrt(2*-Gravity().y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
             yVel *= 0.982f; // hacky fudge: we're getting too much height back.
             yVel = Mathf.Max(0.2f, yVel); // have at LEAST this much bounce. (i.e. no teeeeny-tiny bouncing.)
             SetVel(new Vector2(vel.x, yVel));
@@ -656,7 +677,7 @@ abstract public class Player : PlatformCharacter {
         // TODO: Ask the ENEMY if that side is dangerous, instead of if my side is vulnerable.
         if (side!=Sides.B && CanTakeDamage()) { // It's NOT my feet, and I CAN take damage...
     		int dirToEnemy = MathUtils.Sign(enemy.PosGlobal.x-PosGlobal.x, false);
-    		SetVel(new Vector2(-dirToEnemy*HitByEnemyVel.x, HitByEnemyVel.y));
+    		SetVel(new Vector2(-dirToEnemy*HitByEnemyForce.x, HitByEnemyForce.y));
     		TakeDamage(1);
         }
 	}
@@ -710,7 +731,7 @@ abstract public class Player : PlatformCharacter {
         }
     }
     private void DoOneJustAteHappyHop() {
-        SetVel(new Vector2(vel.x*0.2f, Mathf.Max(vel.y, -Gravity.y*6f))); // Hop happily if we just ate a Snack!
+        SetVel(new Vector2(vel.x*0.2f, Mathf.Max(vel.y, -Gravity().y*6f))); // Hop happily if we just ate a Snack!
 	}
 
 
