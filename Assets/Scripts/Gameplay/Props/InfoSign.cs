@@ -16,7 +16,7 @@ public class InfoSign : Prop {
     //  Initialize
     // ----------------------------------------------------------------
     public void Initialize(Room _myRoom, InfoSignData data) {
-        base.BaseInitialize(_myRoom, data);
+        base.InitializeAsProp(_myRoom, data);
 
         myText = data.myText;
     }

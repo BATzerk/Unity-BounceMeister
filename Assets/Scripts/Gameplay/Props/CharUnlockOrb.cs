@@ -28,7 +28,7 @@ public class CharUnlockOrb : Prop {
     //  Start
     // ----------------------------------------------------------------
     public void Initialize(Room _myRoom, CharUnlockOrbData data) {
-        base.BaseInitialize(_myRoom, data);
+        base.InitializeAsProp(_myRoom, data);
 
         this.myCharName = data.myCharName;
         MyPlayerType = PlayerTypeHelper.TypeFromString(myCharName);

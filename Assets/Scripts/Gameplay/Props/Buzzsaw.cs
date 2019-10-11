@@ -15,7 +15,7 @@ public class Buzzsaw : Collidable, ITravelable {
     //  Initialize
     // ----------------------------------------------------------------
     public void Initialize(Room _myRoom, BuzzsawData data) {
-        base.BaseInitialize(_myRoom, data);
+        base.InitializeAsProp(_myRoom, data);
         
         if (data.travelMind.IsUsed) { AddTravelMind(data.travelMind); }
 

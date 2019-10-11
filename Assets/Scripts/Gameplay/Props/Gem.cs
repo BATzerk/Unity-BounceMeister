@@ -11,7 +11,7 @@ public class Gem : Edible {
 	//  Initialize
 	// ----------------------------------------------------------------
 	public void Initialize(Room _myRoom, GemData data, int myIndex) {
-		base.BaseInitialize(_myRoom, data);
+		base.InitializeAsProp(_myRoom, data);
         this.myIndex = myIndex;
         this.type = data.type;
 

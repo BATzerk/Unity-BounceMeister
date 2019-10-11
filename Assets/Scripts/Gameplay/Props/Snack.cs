@@ -30,7 +30,7 @@ public class Snack : Edible {
         GameManagers.Instance.EventManager.SetPlayerType -= OnSetPlayerType;
     }
     public void Initialize(Room _myRoom, SnackData data, int myIndex) {
-        base.BaseInitialize(_myRoom, data);
+        base.InitializeAsProp(_myRoom, data);
         this.myIndex = myIndex;
         this.playerType = PlayerTypeHelper.TypeFromString(data.playerType);
 

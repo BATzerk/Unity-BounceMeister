@@ -224,9 +224,12 @@ public class LiftData : PropData {
     public Vector2 size;
 }
 
-public class PlayerData : PropData {
-    public PlayerTypes type = PlayerTypes.Undefined;
+public class PlatformCharacterData : PropData {
     public Vector2 vel = Vector2.zero;
+    public int gravFlipDir = 1;
+}
+public class PlayerData : PlatformCharacterData {
+    public PlayerTypes type = PlayerTypes.Undefined;
     public int dirFacing = 1;
 }
 

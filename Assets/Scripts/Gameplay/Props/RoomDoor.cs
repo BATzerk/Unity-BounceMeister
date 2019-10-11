@@ -39,7 +39,7 @@ public class RoomDoor : Prop {
 	//  Start
 	// ----------------------------------------------------------------
 	public void Initialize(Room _myRoom, RoomDoorData data) {
-		base.BaseInitialize(_myRoom, data);
+		base.InitializeAsProp(_myRoom, data);
 
 		myID = data.myID;
         worldToIndex = data.worldToIndex;

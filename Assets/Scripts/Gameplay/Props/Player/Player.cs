@@ -96,7 +96,9 @@ abstract public class Player : PlatformCharacter {
         return false;
 	}
     virtual protected Vector2 VelForWallKick() {
-        return new Vector2(-myWhiskers.DirLastTouchedWall*WallKickForce.x, Mathf.Max(vel.y, WallKickForce.y));
+        int dir = myWhiskers.DirLastTouchedWall;
+        Vector2 wkForce = WallKickForce;
+        return new Vector2(-dir*wkForce.x, MathMaxConsideringGravFlip(vel.y, wkForce.y*GravFlipDir));
     }
 	virtual protected bool MayWallSlide() {
 		return !IsGrounded() && !IsInLift;
@@ -129,6 +131,16 @@ abstract public class Player : PlatformCharacter {
 	}
     protected float timeSinceBounce { get { return Time.time - timeLastBounced; } }
 	// Getters (Private)
+    /// Will either do Mathf.Max or Mathf.Min, depending if we're grav-flipped.
+    protected float MathMaxConsideringGravFlip(float a, float b) {
+        if (GravFlipDir<0) { return Mathf.Min(a,b); }
+        return Mathf.Max(a,b);
+    }
+    /// Will either do Mathf.Min or Mathf.Max, depending if we're grav-flipped.
+    private float MathMinConsideringGravFlip(float a, float b) {
+        if (GravFlipDir<0) { return Mathf.Max(a,b); }
+        return Mathf.Min(a,b);
+    }
 	private bool CanTakeDamage() {
 		return !isPostDamageImmunity;
 	}
@@ -152,6 +164,8 @@ abstract public class Player : PlatformCharacter {
             OnTouchEdible(_edibles[i]);
         }
     }
+    
+    
     
     //protected Vector2 GravityForce = 
     //override protected Vector2 Gravity { get { return base.Gravity * FlipDir; } }
@@ -184,8 +198,8 @@ abstract public class Player : PlatformCharacter {
 
 	//	SetSize (new Vector2(1.5f, 1.8f));
 	//}
-	public void Initialize(Room _myRoom, PlayerData data) {
-		base.BaseInitialize(_myRoom, data);
+	public void InitializeAsPlayer(Room _myRoom, PlayerData data) {
+		base.InitializeAsPlatformCharacter(_myRoom, data);
         
         // Give huge linear/angular drag to my rigidbody.
         Rigidbody2D myRB = GetComponent<Rigidbody2D>();
@@ -193,7 +207,6 @@ abstract public class Player : PlatformCharacter {
         myRB.angularDrag = 999999;
         
         DirFacing = data.dirFacing;
-        SetVel(data.vel);
         timeStoppedWallSlide = Mathf.NegativeInfinity;
 
 		// Set camBoundsLocal!
@@ -292,9 +305,13 @@ abstract public class Player : PlatformCharacter {
 		UpdateExitedRoom();
 	}
 
+    //override protected float WallSlideMinYVel { get { return FlipDir<0 ? Mathf.NegativeInfinity : -0.11f; } }TODO: Incorporate this.
+    //override protected float WallSlideMaxYVel { get { return FlipDir<0 ? 0.11f : Mathf.Infinity; } }
 	private void UpdateWallSlide() {
 		if (isWallSliding()) {
-            float velY = Mathf.Clamp(vel.y, WallSlideMinYVel,WallSlideMaxYVel);
+            float min = GravFlipDir<0 ? -WallSlideMaxYVel : WallSlideMinYVel;
+            float max = GravFlipDir<0 ? -WallSlideMinYVel : WallSlideMaxYVel;
+            float velY = Mathf.Clamp(vel.y, min,max);
 			SetVel(new Vector2(0, velY)); // Halt x-vel and give us a minimum yVel!
 		}
 		// Note: We want to do this check constantly, as we may want to start wall sliding while we're already against a wall.
@@ -357,7 +374,7 @@ abstract public class Player : PlatformCharacter {
 		}
 	}
 	virtual protected void UpdateMaxYSinceGround() {
-		maxYSinceGround = Mathf.Max(maxYSinceGround, pos.y);
+		maxYSinceGround = MathMaxConsideringGravFlip(maxYSinceGround, pos.y);
 	}
 	private void UpdateExitedRoom() {
 		if (FramesAlive < 10) { return; } // Fudgey safety check: Don't check if we've exited a room for the first few frames.
@@ -380,7 +397,7 @@ abstract public class Player : PlatformCharacter {
 	// ----------------------------------------------------------------
 	virtual protected void Jump() {
         StopWallSlide();
-		SetVel(new Vector2(vel.x, JumpForce));
+		SetVel(new Vector2(vel.x, JumpForce*GravFlipDir));
 		timeWhenDelayedJump = -1; // reset this just in case.
         GameManagers.Instance.EventManager.OnPlayerJump(this);
 	}
@@ -429,9 +446,14 @@ abstract public class Player : PlatformCharacter {
     }
     
     virtual protected void DropThruPlatform() {
-        pos += new Vector2(0, -0.2f);
-        ChangeVel(new Vector2(0, -0.16f));
+        pos += new Vector2(0, -0.2f*GravFlipDir);
+        ChangeVel(new Vector2(0, -0.16f*GravFlipDir));
         myBody.OnDropThruPlatform();
+    }
+    
+    override protected void SetGravFlipDir(int val) {
+        base.SetGravFlipDir(val);
+        myBody.OnSetGravFlipDir();
     }
     
 
@@ -603,11 +625,11 @@ abstract public class Player : PlatformCharacter {
         // We WEREN'T grounded before? Do normal bounce!
         else {
             // Find how fast we have to move upward to restore our previous highest height, and set our vel to that!
-            float distToRestore = Mathf.Max (0, maxYSinceGround-pos.y);
+            float distToRestore = Mathf.Abs(MathMaxConsideringGravFlip(0, maxYSinceGround-pos.y));
             distToRestore += ExtraBounceDistToRestore(); // Give us __ more height than we started with.
-            float yVel = Mathf.Sqrt(2*-Gravity().y*distToRestore); // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
+            float yVel = Mathf.Sqrt(2*-Gravity().y*GravFlipDir*distToRestore)*GravFlipDir; // 0 = y^2 + 2*g*dist  ->  y = sqrt(2*g*dist)
             yVel *= 0.982f; // hacky fudge: we're getting too much height back.
-            yVel = Mathf.Max(0.2f, yVel); // have at LEAST this much bounce. (i.e. no teeeeny-tiny bouncing.)
+            yVel = MathMaxConsideringGravFlip(0.2f, yVel); // have at LEAST this much bounce. (i.e. no teeeeny-tiny bouncing.)
             SetVel(new Vector2(vel.x, yVel));
         }
         timeLastBounced = Time.time;
@@ -623,7 +645,7 @@ abstract public class Player : PlatformCharacter {
 	private void BounceOffCollidable_Side(Collidable collidable) {
         timeLastBounced = Time.time;
         timeLastWallKicked = Time.time;
-		SetVel(new Vector2(-ppvel.x, Mathf.Max(ppvel.y, Mathf.Abs(ppvel.x)+0.1f)));
+		SetVel(new Vector2(-ppvel.x, MathMaxConsideringGravFlip(ppvel.y, Mathf.Abs(ppvel.x)+0.1f)));
 	}
     /// Called when our feet WEREN'T touching ground, but now they are (and we're NOT bouncing).
 	virtual protected void LandOnCollidable(Collidable collidable) {
@@ -731,7 +753,7 @@ abstract public class Player : PlatformCharacter {
         }
     }
     private void DoOneJustAteHappyHop() {
-        SetVel(new Vector2(vel.x*0.2f, Mathf.Max(vel.y, -Gravity().y*6f))); // Hop happily if we just ate a Snack!
+        SetVel(new Vector2(vel.x*0.2f, MathMaxConsideringGravFlip(vel.y, -Gravity().y*6f))); // Hop happily if we just ate a Snack!
 	}
 
 
@@ -763,6 +785,7 @@ abstract public class Player : PlatformCharacter {
             pos = pos,
             vel = vel,
             dirFacing = DirFacing,
+            gravFlipDir = GravFlipDir,
             type = PlayerType(),
         };
     }

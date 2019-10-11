@@ -40,7 +40,7 @@ public class Lift : Prop {
 	//  Initialize
 	// ----------------------------------------------------------------
 	public void Initialize(Room _myRoom, LiftData data) {
-		base.BaseInitialize(_myRoom, data);
+		base.InitializeAsProp(_myRoom, data);
         strength = data.strength;
 		Size = data.size;
 

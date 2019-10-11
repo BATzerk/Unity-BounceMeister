@@ -26,7 +26,7 @@ abstract public class Enemy : PlatformCharacter {
 	//  Initialize
 	// ----------------------------------------------------------------
     virtual public void Initialize(Room _myRoom, PropData data) {
-        base.BaseInitialize(_myRoom, data);
+        base.InitializeAsProp(_myRoom, data);
     }
 
 

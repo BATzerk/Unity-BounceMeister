@@ -24,7 +24,7 @@ public class GateButton : Prop {
 	//  Initialize
 	// ----------------------------------------------------------------
 	public void Initialize(Room _myRoom, GateButtonData data) {
-		base.BaseInitialize(_myRoom, data);
+		base.InitializeAsProp(_myRoom, data);
         
 		channelID = data.channelID;
 		bodyColor = MyChannel.Color;

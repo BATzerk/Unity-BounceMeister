@@ -34,7 +34,7 @@ public class CameraBounds : Prop {
 		bodySprite.enabled = false;
 	}
 	public void Initialize(Room _myRoom, CameraBoundsData data) {
-		base.BaseInitialize(_myRoom, data);
+		base.InitializeAsProp(_myRoom, data);
 		bodySprite.size = data.size;
 	}
 

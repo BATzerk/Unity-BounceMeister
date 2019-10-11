@@ -42,7 +42,7 @@ public class Plunga : Player {
     
     override protected bool DoBounceOffColl(int mySide, Collidable coll) {
         if (!MayBounceOffColl(coll)) { return false; }
-        if (isPlunging && mySide==Sides.B) { return true; } // Non-bouncy, BUT I'm plunging and it's my feet? Yes!
+        if (isPlunging && mySide==myWhiskers.SideFeet) { return true; } // Non-bouncy, BUT I'm plunging and it's my feet? Yes!
         return base.DoBounceOffColl(mySide, coll);
     }
     override protected float ExtraBounceDistToRestore() {
@@ -74,7 +74,7 @@ public class Plunga : Player {
     override protected void ApplyInternalForces() {
         base.ApplyInternalForces();
         if (isPlunging) {
-            ChangeVel(PlungeForce);
+            ChangeVel(PlungeForce.x, PlungeForce.y*GravFlipDir);
         }
     }
     override protected void UpdateMaxYSinceGround() {

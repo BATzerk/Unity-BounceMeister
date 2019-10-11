@@ -93,7 +93,7 @@ public class GameController : MonoBehaviour {
 		if (Player != null) { DestroyPlayer(); } // Just in case.
         // Make 'em!
         Player = Instantiate(ResourcesHandler.Instance.Player(playerData.type)).GetComponent<Player>();
-		Player.Initialize(CurrRoom, playerData);
+		Player.InitializeAsPlayer(CurrRoom, playerData);
         // Save lastPlayedType!
         PlayerTypeHelper.SaveLastPlayedType(Player.PlayerType());
         // Dispatch event!
@@ -308,6 +308,8 @@ public class GameController : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.T)) { gameTimeController.ToggleSlowMo(); }
             // Y = Execute one FixedUpdate step
             else if (Input.GetKeyDown(KeyCode.Y)) { gameTimeController.ExecuteApproximatelyOneFUStep(); }
+            // G = Flip gravity for all PlatformCharacters!
+            else if (Input.GetKeyDown(KeyCode.G)) { Debug_FlipGravityForAllPlatformCharacters(); }
         }
 	}
 
@@ -339,6 +341,11 @@ public class GameController : MonoBehaviour {
         bool val = SaveStorage.GetBool(SaveKeys.Debug_IgnoreColorTheme);
         SaveStorage.SetBool(SaveKeys.Debug_IgnoreColorTheme, !val);
         SceneHelper.ReloadScene();
+    }
+    private void Debug_FlipGravityForAllPlatformCharacters() {
+        foreach (PlatformCharacter pc in CurrRoom.GetComponentsInChildren<PlatformCharacter>()) {
+            pc.FlipGravity();
+        }
     }
 
     //private void OnGUI() {

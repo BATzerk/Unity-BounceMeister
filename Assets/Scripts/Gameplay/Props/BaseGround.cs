@@ -59,7 +59,7 @@ abstract public class BaseGround : Collidable {
 	//	}
 	//}
 	protected void BaseGroundInitialize(Room _myRoom, BaseGroundData data) {
-		base.BaseInitialize(_myRoom, data);
+		base.InitializeAsProp(_myRoom, data);
         
         isPlayerRespawn = data.isPlayerRespawn;
         mayPlayerEat = data.mayPlayerEat;

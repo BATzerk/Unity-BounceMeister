@@ -79,7 +79,7 @@ public class Laser : Prop, IOnOffable {
     //  Initialize
     // ----------------------------------------------------------------
     public void Initialize(Room _myRoom, LaserData data) {
-        base.BaseInitialize(_myRoom, data);
+        base.InitializeAsProp(_myRoom, data);
         
         if (data.onOffer.durOff > 0) { AddOnOffer(data.onOffer); }
         

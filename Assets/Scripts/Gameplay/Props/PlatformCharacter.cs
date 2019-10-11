@@ -9,7 +9,7 @@ public class PlatformCharacter : Collidable {
     virtual protected float FrictionAir() { return 0.6f; }
     virtual protected float FrictionGround() { return 0.6f; }
     protected Vector2 GravityNeutral = new Vector2(0, -0.034f); // the default amount of gravity we generally apply to this Character.
-    protected Vector2 Gravity() { return GravityNeutral * GravityScale(); } // the value we apply directly to vel!
+    protected Vector2 Gravity() { return GravityNeutral * GravFlipDir * GravityScale(); } // the value we apply directly to vel!
     virtual protected float GravityScale() { return 1; } // override this for characters that might suspend gravity or something (like Jetta or Clinga).
     
 	protected int StartingHealth = 1;
@@ -28,6 +28,7 @@ public class PlatformCharacter : Collidable {
 	[SerializeField] protected PlatformCharacterWhiskers myWhiskers=null;
 	// Properties
 	private bool isDead = false;
+    public int GravFlipDir { get; private set; } // 1 or -1.
 	protected int health { get; private set; } // we die when we hit 0.
     protected float timeLastTouchedWall=Mathf.NegativeInfinity;
     protected float timeSinceDamage { get; private set; } // set to Time.time when we take damage.
@@ -38,7 +39,10 @@ public class PlatformCharacter : Collidable {
     // Getters
     protected bool IsInLift { get; private set; }
 	public bool IsDead { get { return isDead; } }
-	virtual public bool IsGrounded() { return myWhiskers.OnSurface(Sides.B) && vel.y<0.001f; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
+    public bool IsGrounded() {
+        return myWhiskers.OnSurface(GravFlipDir<0 ? Sides.T : Sides.B);
+    }
+	//virtual public bool IsGrounded() { return myWhiskers.OnSurface(Sides.B) && vel.y<0.001f; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
     protected bool IsAgainstWall() { return myWhiskers.IsAgainstWall(); }
     protected bool IsInvincible { get { return StartingHealth < 0; } }
     public bool DoUpdate() { // If this is FALSE, I won't do Update nor FixedUpdate.
@@ -91,10 +95,16 @@ public class PlatformCharacter : Collidable {
 
 
     // ----------------------------------------------------------------
-    //  Start
+    //  Initialize / Start
     // ----------------------------------------------------------------
+    public void InitializeAsPlatformCharacter(Room _myRoom, PlatformCharacterData data) {
+        base.InitializeAsProp(_myRoom, data);
+        SetVel(data.vel);
+        SetGravFlipDir(data.gravFlipDir);
+    }
     override protected void Start() {
         InitMyPhysicsValues();
+        SetGravFlipDir(GravFlipDir); // default this officially.
         base.Start();
         Size = bodyCollider.size + new Vector2(bodyCollider.edgeRadius, bodyCollider.edgeRadius)*2;
         timeSinceDamage = Mathf.NegativeInfinity;
@@ -196,6 +206,14 @@ public class PlatformCharacter : Collidable {
     //public void SetVel(Vector2 _vel) { vel = _vel; }
 	protected void ChangeVel(Vector2 delta) { SetVel(vel + delta); }
     protected void ChangeVel(float _x,float _y) { ChangeVel(new Vector2(_x,_y)); }
+    
+    virtual public void FlipGravity() {
+        SetGravFlipDir(GravFlipDir * -1);
+    }
+    virtual protected void SetGravFlipDir(int val) {
+        GravFlipDir = val;
+        myWhiskers.Test_SetTopAndBottomWhiskersFlipped(GravFlipDir<0);
+    }
     
     virtual protected void TakeDamage(int damageAmount) {
         health -= damageAmount;

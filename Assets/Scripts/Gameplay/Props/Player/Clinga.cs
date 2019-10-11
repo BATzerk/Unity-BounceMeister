@@ -193,7 +193,7 @@ public class Clinga : Player {
     public override void OnWhiskersTouchCollider(int side, Collider2D col) {
         base.OnWhiskersTouchCollider(side, col);
         // NON-feet side touch collider, AND may cling to it...!
-        if (side != Sides.B && MayCling(col)) {// && 
+        if (side != myWhiskers.SideFeet && MayCling(col)) {// && 
             if (!IsClingSyde(side)) { // NOT already clinging here?...
                 AddClingSyde(side);
             }

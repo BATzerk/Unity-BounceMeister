@@ -63,7 +63,7 @@ public class Spikes : Collidable, IOnOffable {
 	//  Start
 	// ----------------------------------------------------------------
 	public void Initialize(Room _myRoom, SpikesData data) {
-		base.BaseInitialize(_myRoom, data);
+		base.InitializeAsProp(_myRoom, data);
         Size = data.size;
         bodySprite.color = Colors.Spikes(WorldIndex);
         

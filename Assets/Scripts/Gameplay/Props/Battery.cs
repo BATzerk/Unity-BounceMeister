@@ -22,7 +22,7 @@ public class Battery : Prop {
 		SetIsUsed(false);
 	}
 	public void Initialize(Room _myRoom, BatteryData data) {
-		base.BaseInitialize(_myRoom, data);
+		base.InitializeAsProp(_myRoom, data);
 	}
 
 

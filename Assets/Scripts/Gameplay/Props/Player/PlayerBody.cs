@@ -74,8 +74,8 @@ abstract public class PlayerBody : MonoBehaviour {
 	private void ApplyBodyColor() {
 		sr_body.color = new Color(bodyColor.r,bodyColor.g,bodyColor.b, bodyColor.a*alpha);
 	}
-    virtual protected void ApplyVisualScale() {
-        this.transform.localScale = new Vector3(visualScale.x*myBasePlayer.DirFacing, visualScale.y, 1);
+    private void ApplyVisualScale() {
+        this.transform.localScale = new Vector3(visualScale.x*myBasePlayer.DirFacing, visualScale.y*myBasePlayer.GravFlipDir, 1);
     }
 
 
@@ -94,6 +94,9 @@ abstract public class PlayerBody : MonoBehaviour {
     }
     public void OnEatEdiblesHolding() {
         eyes.OnEatEdiblesHolding();
+    }
+    public void OnSetGravFlipDir() {
+        ApplyVisualScale();
     }
 
 	public void OnDie() {

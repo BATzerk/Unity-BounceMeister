@@ -27,7 +27,7 @@ public class CharBarrel : Prop {
 	//  Start
 	// ----------------------------------------------------------------
 	public void Initialize(Room _myRoom, CharBarrelData data, int myIndex) {
-		base.BaseInitialize(_myRoom, data);
+		base.InitializeAsProp(_myRoom, data);
 
         timeWhenCanSensePlayer = Time.time;
 

@@ -26,7 +26,7 @@ public class Turret : Prop {
     }
 
     public void Initialize(Room _myRoom, TurretData data) {
-        base.BaseInitialize(_myRoom, data);
+        base.InitializeAsProp(_myRoom, data);
 
         this.interval = data.interval;
         this.speed = data.speed;

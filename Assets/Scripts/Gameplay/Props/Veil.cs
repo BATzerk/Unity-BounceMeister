@@ -26,7 +26,7 @@ public class Veil : Prop {
     //  Initialize
     // ----------------------------------------------------------------
     public void Initialize(Room _myRoom, VeilData data, int myIndex) {
-        base.BaseInitialize(_myRoom, data);
+        base.InitializeAsProp(_myRoom, data);
         this.myIndex = myIndex;
         Size = data.size;
         

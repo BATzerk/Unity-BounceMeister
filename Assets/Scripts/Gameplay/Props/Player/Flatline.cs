@@ -46,8 +46,9 @@ public class Flatline : Player {
         return base.GravityScale();
     }
     override protected Vector2 VelForWallKick() {
+        int dir = myWhiskers.DirLastTouchedWall;
         Vector2 wkForce = new Vector2(Mathf.Abs(vel.y), 0);
-        return new Vector2(-myWhiskers.DirLastTouchedWall*wkForce.x, Mathf.Max(vel.y, wkForce.y));
+        return new Vector2(-dir*wkForce.x, MathMaxConsideringGravFlip(vel.y, wkForce.y*GravFlipDir));
     }
     
     private bool MayStartHover() {
@@ -68,7 +69,7 @@ public class Flatline : Player {
         return base.MayUseBattery();
     }
     protected override bool MayWallKick() {
-        if (myWhiskers.DistToSurface(Sides.B) < 2.5f && vel.y<-0.4f) { // About to land on Ground? Don't allow wall-kick! We prob wanna convert our vel instead and pushed away too early.
+        if (myWhiskers.DistToSurface(myWhiskers.SideFeet) < 2.5f && vel.y<-0.4f) { // About to land on Ground? Don't allow wall-kick! We prob wanna convert our vel instead and pushed away too early.
             return false;
         }
         return base.MayWallKick();

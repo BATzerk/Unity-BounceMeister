@@ -13,17 +13,16 @@ public class Flippa : Player {
     //override protected float WallSlideMinYVel { get { return FlipDir<0 ? Mathf.NegativeInfinity : -0.11f; } }
     //override protected float WallSlideMaxYVel { get { return FlipDir<0 ? 0.11f : Mathf.Infinity; } }
     //override protected Vector2 WallKickForce { get { return new Vector2(0.35f, 0.46f*FlipDir); } }
-    protected override Vector2 VelForWallKick() {
-        if (FlipDir < 0) {
-            return new Vector2(-myWhiskers.DirLastTouchedWall*WallKickForce.x, Mathf.Min(vel.y, WallKickForce.y));
-        }
-        return base.VelForWallKick();
-    }
+    //protected override Vector2 VelForWallKick() {
+    //    if (FlipDir < 0) {
+    //        return new Vector2(-myWhiskers.DirLastTouchedWall*WallKickForce.x, Mathf.Min(vel.y, WallKickForce.y));
+    //    }
+    //    return base.VelForWallKick();
+    //}
     override public bool MayUseBattery() { return !isFlipRecharged; }
     //private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);
     // Properties
     private bool isFlipRecharged;
-    private static int FlipDir=1; // 1 or -1.
     // References
     private FlippaBody myFlippaBody;
 
@@ -41,8 +40,6 @@ public class Flippa : Player {
         myFlippaBody = myBody as FlippaBody;
 
         base.Start();
-        
-        SetFlipDir(FlipDir); // default this officially.
     }
 
 
@@ -84,15 +81,10 @@ public class Flippa : Player {
     // ----------------------------------------------------------------
     //  Flipping!
     // ----------------------------------------------------------------
-    private void FlipGravity() {
-        SetFlipDir(FlipDir * -1);
+    override public void FlipGravity() {
+        base.FlipGravity();
         isFlipRecharged = false; // spent!
         myFlippaBody.OnFlipGravity();
-    }
-    private void SetFlipDir(int val) {
-        FlipDir = val;
-        myFlippaBody.OnSetFlipDir(FlipDir);
-        myWhiskers.Test_SetTopAndBottomWhiskersFlipped(FlipDir<0);
     }
     
     private void RechargeFlip() {

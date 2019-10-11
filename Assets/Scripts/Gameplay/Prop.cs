@@ -84,7 +84,7 @@ abstract public class Prop : MonoBehaviour, ITravelable {
     // ----------------------------------------------------------------
     //  Initialize
     // ----------------------------------------------------------------
-	virtual protected void BaseInitialize(Room myRoom, PropData data) {
+	virtual protected void InitializeAsProp(Room myRoom, PropData data) {
 		this.MyRoom = myRoom;
         GameUtils.ParentAndReset(this.gameObject, myRoom.transform);
 
