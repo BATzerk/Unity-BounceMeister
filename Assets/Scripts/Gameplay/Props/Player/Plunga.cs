@@ -9,7 +9,7 @@ public class Plunga : Player {
     //override protected Vector2 Gravity { get { return new Vector2(0, -0.034f); } }
     //override protected float JumpForce { get { return 0.54f; } }
     //override protected float WallSlideMinYVel { get { return -0.10f; } }
-    override protected Vector2 WallKickVel { get { return new Vector2(0.4f,0.42f); } }
+    override protected Vector2 WallKickForce { get { return new Vector2(0.4f,0.42f); } }
     //private Vector2 PlungeForce = new Vector2(0, -0.048f); // applied in addition to Gravity.
     //override protected Vector2 Gravity { get { return new Vector2(0, -0.048f); } }
     //override protected float JumpForce { get { return 0.64f; } }
@@ -88,17 +88,6 @@ public class Plunga : Player {
     // ----------------------------------------------------------------
     //  Input
     // ----------------------------------------------------------------
-    override protected void OnButtonJump_Press() {
-        if (MayWallKick()) {
-            WallKick();
-        }
-        else if (MayJump()) {
-            Jump();
-        }
-        else {
-            ScheduleDelayedJump();
-        }
-    }
     //override protected void OnDown_Down() {
     //  base.OnDown_Down();
     //  if (CanStartPlunge()) {

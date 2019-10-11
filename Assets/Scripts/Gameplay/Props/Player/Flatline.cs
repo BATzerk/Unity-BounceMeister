@@ -47,7 +47,7 @@ public class Flatline : Player {
 
     override protected float JumpForce { get { return 0; } }
     override protected float WallSlideMinYVel { get { return -999f; } }
-    override protected Vector2 WallKickVel { get { return new Vector2(Mathf.Abs(vel.y), 0); } }
+    override protected Vector2 WallKickForce { get { return new Vector2(Mathf.Abs(vel.y), 0); } }
     override protected float PostWallKickHorzInputLockDur { get { return -1; } }
     override protected float WallKickExtensionWindow { get { return 0.25f; } }
     override protected bool DoesFarFallHop { get { return false; } }

@@ -26,7 +26,7 @@ public class Dilata : Player {
 
     override protected float JumpForce { get { return 0.5f; } }
     override protected float WallSlideMinYVel { get { return -0.25f; } }
-    override protected Vector2 WallKickVel { get { return new Vector2(0.4f,0.6f); } }
+    override protected Vector2 WallKickForce { get { return new Vector2(0.4f,0.6f); } }
     override protected float PostWallKickHorzInputLockDur { get { return 0.1f; } }
 
     // Properties
@@ -82,17 +82,6 @@ public class Dilata : Player {
     override protected void OnButtonAction_Press() {
         base.OnButtonAction_Press();
         ToggleIsDilatingTime();
-    }
-    override protected void OnButtonJump_Press() {
-        if (MayWallKick()) {
-            WallKick();
-        }
-        else if (MayJump()) {
-            Jump();
-        }
-        else {
-            ScheduleDelayedJump();
-        }
     }
     override protected void OnButtonJump_Release() {
         isReducedJumpGravity = false; // Not anymore, boss!

@@ -37,7 +37,7 @@ public class PlatformCharacter : Collidable {
     // Getters
     protected bool IsInLift { get; private set; }
 	public bool IsDead { get { return isDead; } }
-	public bool IsGrounded() { return myWhiskers.OnSurface(Sides.B) && vel.y<0.001f; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
+	virtual public bool IsGrounded() { return myWhiskers.OnSurface(Sides.B) && vel.y<0.001f; } // NOTE: We DON'T consider our feet on the ground if we're moving upwards!
     protected bool IsAgainstWall() { return myWhiskers.IsAgainstWall(); }
     protected bool IsInvincible { get { return StartingHealth < 0; } }
     public bool DoUpdate() { // If this is FALSE, I won't do Update nor FixedUpdate.

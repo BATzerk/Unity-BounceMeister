@@ -24,12 +24,12 @@ public sealed class ConditionalGround : BaseGround {
 
 		// Add event listeners!
 		GameManagers.Instance.EventManager.PlayerStartPlungeEvent += OnPlayerStartPlunge;
-		GameManagers.Instance.EventManager.PlayerRechargePlungeEvent += OnPlayerRechargeBounce;
+		GameManagers.Instance.EventManager.PlayerRechargePlungeEvent += OnPlayerRechargePlunge;
 	}
 	private void OnDestroy() {
 		// Remove event listeners!
 		GameManagers.Instance.EventManager.PlayerStartPlungeEvent -= OnPlayerStartPlunge;
-		GameManagers.Instance.EventManager.PlayerRechargePlungeEvent -= OnPlayerRechargeBounce;
+		GameManagers.Instance.EventManager.PlayerRechargePlungeEvent -= OnPlayerRechargePlunge;
 	}
 
 
@@ -57,7 +57,7 @@ public sealed class ConditionalGround : BaseGround {
 			TurnOn();
 		}
 	}
-	private void OnPlayerRechargeBounce(Player player) {
+	private void OnPlayerRechargePlunge(Player player) {
 		if (isOffWhenPlungeSpent) {
 			TurnOn();
 		}

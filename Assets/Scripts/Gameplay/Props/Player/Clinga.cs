@@ -40,7 +40,7 @@ public class Clinga : Player {
     }
     override protected float JumpForce { get { return 0.32f; } }
     override protected float InputScaleX { get { return 0.08f; } }
-    override protected Vector2 WallKickVel { get { return new Vector2(0.26f,0.42f); } }
+    override protected Vector2 WallKickForce { get { return new Vector2(0.26f,0.42f); } }
     //protected override float HorzMoveInputVelXDelta() {
     //    return IsClinging ? 0 : base.HorzMoveInputVelXDelta(); // Clinging? Do NOT accept our normal horz input.
     //}
@@ -146,18 +146,7 @@ public class Clinga : Player {
     // ----------------------------------------------------------------
     //  Input
     // ----------------------------------------------------------------
-    override protected void OnButtonJump_Press() {
-        if (MayWallKick()) {
-            WallKick();
-        }
-        else if (MayJump()) {
-            Jump();
-        }
-        else {
-            ScheduleDelayedJump();
-        }
-    }
-    protected override void WallKick() {
+    override protected void WallKick() {
         // Remove cling from this side.
         int side = DirXToSide(myWhiskers.DirLastTouchedWall);
         RemoveClingSyde(side);

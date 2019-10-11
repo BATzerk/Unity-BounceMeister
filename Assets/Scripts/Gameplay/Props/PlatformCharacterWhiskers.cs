@@ -14,6 +14,10 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     // References
     [SerializeField] private PlatformCharacter myCharacter=null;
     // Properties
+    public int SideFeet { get; private set; }
+    public int SideHead { get; private set; }
+    public readonly int SideLeft  = Sides.L;
+    public readonly int SideRight = Sides.R;
     LayerMask lm_LRTB; // The LMs that care about every side (L, R, T, B). E.g. Ground.
     LayerMask lm_B;    // The LMs that care about the bottom side. E.g. Platforms.
     private LayerMask lm_triggerColls; // triggers I will treat as colliders. Useful for Platforms, which we don't want Rigidbody collisions, but DO want *my* manual whisker collisions.
@@ -40,7 +44,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     //    return null;
     //}
     public Collidable TEMP_GetFloorCollidable() {
-        foreach (Collider2D coll in collsTouching[Sides.B]) {
+        foreach (Collider2D coll in collsTouching[SideFeet]) {
             Collidable collidable = coll.GetComponent<Collidable>();
             if (collidable != null) { return collidable; }
         }
@@ -58,7 +62,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	private Vector2 WhiskerPos(int side, int index) {
 		Vector2 pos = myCharacter.PosGlobal;
 		float sideOffsetLoc = SideOffsetLocs[index];
-		if (side==Sides.L || side==Sides.R) {
+		if (side==SideLeft || side==SideRight) {
 			pos += new Vector2(whiskerDirs[side].x*charSize.x*0.5f, charSize.y*sideOffsetLoc);
 		}
 		else {
@@ -78,7 +82,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 		}
 	}
 	private LayerMask GetLayerMask(int side) {
-		if (side == Sides.B) { return lm_B; } // Bottom side? Return that respective bitmask!
+		if (side == SideFeet) { return lm_B; } // Bottom side? Return that respective bitmask!
 		return lm_LRTB; // All sides? Return THAT respective bitmask!
 //		if (side == Sides.B) { return lm_ground | lm_platform; } // Bottom side? Return ground AND platforms!
 //		return lm_ground; // All other sides only care about ground.
@@ -98,8 +102,8 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     public bool IsAgainstWall() { return DirTouchingWall() != 0; }
     public bool IsTouchingAnySurface() { return onSurfaces[Sides.L] || onSurfaces[Sides.R] || onSurfaces[Sides.B] || onSurfaces[Sides.T]; }
     public int DirTouchingWall() {
-        if (OnSurface(Sides.L)) { return -1; }
-        if (OnSurface(Sides.R)) { return  1; }
+        if (OnSurface(SideLeft))  { return -1; }
+        if (OnSurface(SideRight)) { return  1; }
         return 0;
     }
     /// Returns SMALLEST surfaceDist value on this side.
@@ -141,7 +145,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     }
 
     public bool AreFeetOnEatEdiblesGround() {
-        foreach (Collider2D col in collsTouching[Sides.B]) {
+        foreach (Collider2D col in collsTouching[SideFeet]) {
             BaseGround baseGround = col.GetComponent<BaseGround>();
             if (baseGround != null && baseGround.MayPlayerEatHere) {
                 return true; // This one's good!
@@ -151,7 +155,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     }
     public bool AreFeetOnlyOnCanDropThruPlatform() {
         bool isOnOkPlatform = false; // will say otherwise next.
-        foreach (Collider2D col in collsTouching[Sides.B]) { // For every collider our feet are touching...
+        foreach (Collider2D col in collsTouching[SideFeet]) { // For every collider our feet are touching...
             Platform platform = col.GetComponent<Platform>();
             if (platform!=null && platform.CanDropThru) { // This one works!
                 isOnOkPlatform = true; // Yes, we are!
@@ -164,7 +168,7 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     }
     public float DistToSideLastTouchedWall() {
         if (DirLastTouchedWall == 0) { return Mathf.Infinity; } // Safety check.
-        int sideLastTouchedWall = DirLastTouchedWall<0 ? Sides.L : Sides.R;
+        int sideLastTouchedWall = DirLastTouchedWall<0 ? SideLeft : SideRight;
         return DistToSurface(sideLastTouchedWall);
     }
     private bool IsWhiskerTouchingSurface(int side, int index) {
@@ -172,7 +176,20 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
     }
     public bool IsFrontFootTouchingSurface() {
         int frontWhiskerIndex = myCharacter.vel.x<0 ? 0 : NumWhiskersPerSide-1;
-        return IsWhiskerTouchingSurface(Sides.B, frontWhiskerIndex);
+        return IsWhiskerTouchingSurface(SideFeet, frontWhiskerIndex);
+    }
+    
+    
+    
+    public void Test_SetTopAndBottomWhiskersFlipped(bool isFlipped) {
+        SideFeet = isFlipped ? Sides.T : Sides.B;
+        SideHead = isFlipped ? Sides.B : Sides.T;
+        //whiskerDirs[Sides.T] = Vector2Int.T.ToVector2();
+        //whiskerDirs[Sides.B] = Vector2Int.B.ToVector2();
+        //if (isFlipped) {
+        //    whiskerDirs[Sides.T] *= -1;
+        //    whiskerDirs[Sides.B] *= -1;
+        //}
     }
 
 
@@ -200,6 +217,9 @@ abstract public class PlatformCharacterWhiskers : MonoBehaviour {
 	//  Start
 	// ----------------------------------------------------------------
 	private void Awake() {
+        SideFeet = Sides.B;
+        SideHead = Sides.T;
+        
 		lm_B = LayerMask.GetMask(GetLayerMaskNames_B());
 		lm_LRTB = LayerMask.GetMask(GetLayerMaskNames_LRTB());
         lm_triggerColls = LayerMask.GetMask(Layers.Platform);

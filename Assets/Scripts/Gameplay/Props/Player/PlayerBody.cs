@@ -12,7 +12,7 @@ abstract public class PlayerBody : MonoBehaviour {
 	protected Color c_bodyNeutral = Color.magenta;
 	private Color bodyColor;
 	private float alpha; // we modify this independently of bodyColor.
-    private Vector2 visualScale=Vector2.one;
+    protected Vector2 visualScale { get; private set; }
 	// References
 	protected Player myBasePlayer=null; // set in Awake.
 
@@ -41,6 +41,7 @@ abstract public class PlayerBody : MonoBehaviour {
     //  Start
     // ----------------------------------------------------------------
     virtual protected void Awake() {
+        visualScale = Vector2.one; // default this.
         myBasePlayer = GetComponentInParent<Player>();
         eyes = GetComponentInChildren<PlayerBodyEyes>();
     }
@@ -73,7 +74,7 @@ abstract public class PlayerBody : MonoBehaviour {
 	private void ApplyBodyColor() {
 		sr_body.color = new Color(bodyColor.r,bodyColor.g,bodyColor.b, bodyColor.a*alpha);
 	}
-    private void ApplyVisualScale() {
+    virtual protected void ApplyVisualScale() {
         this.transform.localScale = new Vector3(visualScale.x*myBasePlayer.DirFacing, visualScale.y, 1);
     }
 

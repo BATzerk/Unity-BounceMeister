@@ -5,15 +5,31 @@ using UnityEngine;
 public class Flippa : Player {
     // Overrides
     override public PlayerTypes PlayerType() { return PlayerTypes.Flippa; }
-    //override protected Vector2 Gravity { get { return new Vector2(0, -0.032f); } }
-    //override protected float WallSlideMinYVel { get { return -0.10f; } }
-    //override protected Vector2 WallKickVel { get { return new Vector2(0.4f,0.42f); } }
+    override protected Vector2 Gravity { get { return base.Gravity * FlipDir; } }
+    override protected float JumpForce { get { return base.JumpForce * FlipDir; } }
+    override public bool IsGrounded() {
+        return myWhiskers.OnSurface(FlipDir<0 ? Sides.T : Sides.B);
+    }
+    override protected float WallSlideMinYVel { get { return FlipDir<0 ? Mathf.NegativeInfinity : -0.11f; } }
+    override protected float WallSlideMaxYVel { get { return FlipDir<0 ? 0.11f : Mathf.Infinity; } }
+    override protected Vector2 WallKickForce { get { return new Vector2(0.35f, 0.46f*FlipDir); } }
+    protected override Vector2 GetVelForWallKick() {
+        if (FlipDir < 0) {
+            return new Vector2(-myWhiskers.DirLastTouchedWall*WallKickForce.x, Mathf.Min(vel.y, WallKickForce.y));
+        }
+        return base.GetVelForWallKick();
+    }
+    override public bool MayUseBattery() { return !isFlipRecharged; }
+    //private readonly Vector2 HitByEnemyVel = new Vector2(0.5f, 0.5f);
+    // Properties
+    private bool isFlipRecharged;
+    private static int FlipDir=1; // 1 or -1.
     // References
-    //private FlippaBody myFlippaBody;
+    private FlippaBody myFlippaBody;
 
     // Getters
     private bool MayFlipGravity() {
-        return true;
+        return isFlipRecharged;//IsGrounded() && 
     }
 
 
@@ -22,35 +38,70 @@ public class Flippa : Player {
     //  Start
     // ----------------------------------------------------------------
     override protected void Start() {
-        //myFlippaBody = myBody as FlippaBody;
+        myFlippaBody = myBody as FlippaBody;
 
         base.Start();
+        
+        SetFlipDir(FlipDir); // default this officially.
     }
 
 
     // ----------------------------------------------------------------
     //  Input
     // ----------------------------------------------------------------
-    override protected void OnButtonJump_Press() {
-        if (MayWallKick()) {
-            WallKick();
-        }
-        else if (MayFlipGravity()) {
+    //override protected void OnButtonJump_Press() {
+    //    if (MayWallKick()) {
+    //        WallKick();
+    //    }
+    //    else if (MayFlipGravity()) {
+    //        FlipGravity();
+    //    }
+    //}
+    override protected void OnButtonAction_Press() {
+        if (MayFlipGravity()) {
             FlipGravity();
         }
     }
-    //override protected void OnButtonAction_Press() {
-    //    if (CanStartPlunge()) {
-    //        StartPlunge();
-    //    }
-    //}
+    
+    
+    // ----------------------------------------------------------------
+    //  Events
+    // ----------------------------------------------------------------
+    override protected void LandOnCollidable(Collidable collidable) {
+        // Is this collidable refreshing? Recharge my plunge!
+        if (collidable==null || collidable.DoRechargePlayer) {
+            RechargeFlip();
+        }
+        // Base call.
+        base.LandOnCollidable(collidable);
+    }
+    override public void OnUseBattery() {
+        base.OnUseBattery();
+        RechargeFlip();
+    }
 
 
     // ----------------------------------------------------------------
     //  Flipping!
     // ----------------------------------------------------------------
     private void FlipGravity() {
-        
+        SetFlipDir(FlipDir * -1);
+        isFlipRecharged = false; // spent!
+        myFlippaBody.OnFlipGravity();
     }
+    private void SetFlipDir(int val) {
+        FlipDir = val;
+        myFlippaBody.OnSetFlipDir(FlipDir);
+        myWhiskers.Test_SetTopAndBottomWhiskersFlipped(FlipDir<0);
+    }
+    
+    private void RechargeFlip() {
+        if (isFlipRecharged) { return; } // Already recharged? Do nothing.
+        isFlipRecharged = true;
+        myFlippaBody.OnRechargeFlip();
+        //GameManagers.Instance.EventManager.OnPlayerRechargePlunge(this);
+    }
+    
+    
 
 }

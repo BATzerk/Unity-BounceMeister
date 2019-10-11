@@ -32,17 +32,6 @@ public class Warpa : Player {
     // ----------------------------------------------------------------
     //  Input
     // ----------------------------------------------------------------
-    override protected void OnButtonJump_Press() {
-        if (MayWallKick()) {
-            WallKick();
-        }
-        else if (MayJump()) {
-            Jump();
-        }
-        else {
-            ScheduleDelayedJump();
-        }
-    }
     override protected void OnButtonAction_Press() {
         if (MayWarp()) {
             Warp();
