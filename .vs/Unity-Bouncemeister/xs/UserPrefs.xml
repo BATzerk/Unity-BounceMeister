@@ -1,27 +1,43 @@
-﻿<Properties StartupConfiguration="{46805B8D-4CD2-9A14-939B-EB0180BC0837}|">
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Gameplay/Props/Player/Flatline.cs">
+﻿<Properties StartupConfiguration="{D1131CE3-7A83-6E0C-FBE1-E1C4EBD87C1D}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ClustSelMap/ClustSelController.cs">
     <Files>
       <File FileName="Assets/Scripts/Gameplay/GameController.cs" Line="347" Column="30" />
-      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" Line="102" Column="26" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" Line="554" Column="1" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flippa.cs" Line="88" Column="6" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Plunga.cs" Line="34" Column="52" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="75" Column="45" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Collidable.cs" Line="5" Column="23" />
-      <File FileName="Assets/Scripts/Gameplay/PropDatas.cs" Line="233" Column="28" />
-      <File FileName="Assets/Scripts/Gameplay/Prop.cs" Line="87" Column="71" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/FlippaBody.cs" Line="16" Column="5" />
-      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" Line="96" Column="36" />
+      <File FileName="Assets/Scripts/Gameplay/Props/PlatformCharacter.cs" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Player.cs" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flippa.cs" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Plunga.cs" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/Flatline.cs" Line="75" Column="35" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Collidable.cs" />
+      <File FileName="Assets/Scripts/Gameplay/PropDatas.cs" />
+      <File FileName="Assets/Scripts/Gameplay/Prop.cs" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/FlippaBody.cs" />
+      <File FileName="Assets/Scripts/Gameplay/Props/Player/PlayerBody.cs" />
+      <File FileName="Assets/Scripts/ClustSelMap/ClustSelController.cs" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Unity-BounceMeister" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="ClustSelMap" expanded="True">
+                  <Node name="ClustSelController.cs" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="29aa76fd-77ee-4b1b-b964-b9cafbdece08" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/bretttaylor/Documents/GitHub/Unity-Bouncemeister/Assets/Scripts/Gameplay/Props/Player/Player.cs" relfile="Assets/Scripts/Gameplay/Props/Player/Player.cs" line="554" column="15" />
-      <Breakpoint file="/Users/bretttaylor/Documents/GitHub/Unity-Bouncemeister/Assets/Scripts/Gameplay/Props/Player/Player.cs" relfile="Assets/Scripts/Gameplay/Props/Player/Player.cs" line="549" column="1" />
+      <Breakpoint file="/Users/bretttaylor/Development/GitHub/Unity-BounceMeister/Assets/Scripts/Gameplay/Props/Player/Player.cs" relfile="Assets/Scripts/Gameplay/Props/Player/Player.cs" line="554" column="15" />
+      <Breakpoint file="/Users/bretttaylor/Development/GitHub/Unity-BounceMeister/Assets/Scripts/Gameplay/Props/Player/Player.cs" relfile="Assets/Scripts/Gameplay/Props/Player/Player.cs" line="549" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
 </Properties>
