@@ -203,8 +203,8 @@ abstract public class Player : PlatformCharacter {
         
         // Give huge linear/angular drag to my rigidbody.
         Rigidbody2D myRB = GetComponent<Rigidbody2D>();
-        myRB.drag = 999999;
-        myRB.angularDrag = 999999;
+        myRB.linearDamping = 999999;
+        myRB.angularDamping = 999999;
         
         DirFacing = data.dirFacing;
         timeStoppedWallSlide = Mathf.NegativeInfinity;

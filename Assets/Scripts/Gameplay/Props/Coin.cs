@@ -31,7 +31,7 @@ public class Coin : Collidable {
             
         Rigidbody2D myRB = this.GetComponent<Rigidbody2D>();
         myRB.angularVelocity = Random.Range(-5, 5);
-        myRB.velocity = new Vector2(
+        myRB.linearVelocity = new Vector2(
             Random.Range(-4, 4),
             Random.Range(-2, 8));
     }
