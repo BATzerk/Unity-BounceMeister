@@ -1,0 +1,32 @@
+roomProperties posGlobal:(308.00, 124.00);designerFlag:4
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+DispGround pos:(-3.50, -10.50);size:(9.00, 1.00);mayPlayerEat:False;doRegen:False;dieFromPlayerLeave:True
+Ground pos:(-2.50, 1.50);size:(1.00, 9.00)
+Ground pos:(-14.50, 7.50);size:(5.00, 1.00);isPlayerRespawn:True
+Ground pos:(-15.00, -6.00);size:(4.00, 26.00)
+Ground pos:(-4.50, 1.00);size:(3.00, 8.00);mayPlayerEat:False
+Ground pos:(23.50, 5.00);size:(11.00, 20.00)
+Ground pos:(17.00, -15.50);size:(18.00, 7.00)
+Ground pos:(22.50, 0.00);size:(13.00, 10.00)
+Ground pos:(24.50, -5.00);size:(3.00, 6.00);isPlayerRespawn:True
+Ground pos:(10.00, 0.00);size:(2.00, 10.00)
+Ground pos:(0.50, 18.00);size:(51.00, 2.00)
+Ground pos:(-5.50, -15.50);size:(15.00, 7.00);mayPlayerEat:False
+Ground pos:(5.50, -6.50);size:(7.00, 25.00);isPlayerRespawn:True
+Ground pos:(-24.00, 10.50);size:(4.00, 17.00)
+Ground pos:(11.50, 17.00);size:(29.00, 4.00)
+Ground pos:(-20.50, -11.50);size:(11.00, 15.00)
+Ground pos:(-6.00, -2.50);size:(4.00, 1.00);mayPlayerEat:False
+Platform pos:(-19.50, 7.50);size:(5.00, 1.00)
+Platform pos:(0.00, 5.50);size:(4.00, 1.00);canDropThru:False
+PlayerStart pos:(-15.50, 9.00)
+Snack pos:(-4.00, -8.00);playerType:Any
+Spikes pos:(-4.50, 5.50);size:(3.00, 1.00)
+Spikes pos:(10.00, 5.50);size:(2.00, 1.00)
+Spikes pos:(-7.00, -1.50);size:(2.00, 1.00)
+Spikes pos:(17.50, 10.00);rotation:90;size:(10.00, 1.00)
+Spikes pos:(-4.50, -11.50);size:(17.00, 1.00)
+Spikes pos:(15.50, 0.00);rotation:90;size:(10.00, 1.00)
+Spikes pos:(17.00, 5.50);size:(2.00, 1.00)
+Spikes pos:(11.50, 0.00);rotation:270;size:(10.00, 1.00)
+

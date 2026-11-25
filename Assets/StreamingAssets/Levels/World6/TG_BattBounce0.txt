@@ -1,0 +1,17 @@
+roomProperties posGlobal:(206.00, 842.00);designerFlag:4
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+Battery pos:(-4.00, 4.50)
+Battery pos:(4.00, 4.50)
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+Gem pos:(-21.00, -0.50);type:0
+Ground pos:(23.00, 10.50);size:(6.00, 19.00)
+Ground pos:(-22.50, -10.00);size:(7.00, 14.00);mayPlayerEat:False
+Ground pos:(0.00, -18.00);size:(52.00, 4.00)
+Ground pos:(0.00, 18.50);size:(52.00, 3.00)
+Ground pos:(22.00, -9.50);size:(8.00, 13.00);isPlayerRespawn:True
+Ground pos:(-24.50, -1.00);size:(3.00, 38.00)
+PlayerStart pos:(21.60, -1.10)
+Spikes pos:(0.00, -15.50);size:(42.00, 1.00)
+ToggleGround pos:(8.00, -13.50);size:(4.00, 1.00);startsOn:False;togFromContact:False;togFromAction:True
+ToggleGround pos:(-8.00, -13.50);size:(4.00, 1.00);startsOn:False;togFromContact:False;togFromAction:True
+ToggleGround pos:(0.00, -13.50);size:(4.00, 1.00);startsOn:True;togFromContact:False;togFromAction:True

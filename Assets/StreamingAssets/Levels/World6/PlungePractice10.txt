@@ -1,0 +1,12 @@
+roomProperties posGlobal:(262.00, 240.00);designerFlag:4
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+Ground pos:(23.00, 15.50);size:(6.00, 9.00)
+Ground pos:(0.00, 17.50);size:(52.00, 5.00)
+Ground pos:(21.00, -8.00);size:(10.00, 24.00)
+Ground pos:(-19.50, 6.50);size:(13.00, 27.00)
+Ground pos:(0.00, -17.00);size:(52.00, 6.00);isPlayerRespawn:True
+Platform pos:(12.00, -8.50);size:(8.00, 1.00);isPlayerRespawn:True
+Platform pos:(12.00, 3.50);size:(8.00, 1.00);isPlayerRespawn:True
+Platform pos:(-9.00, -2.50);size:(8.00, 1.00);isPlayerRespawn:True
+PlayerStart pos:(17.50, 5.00)

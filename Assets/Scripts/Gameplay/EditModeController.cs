@@ -53,11 +53,23 @@ public class EditModeController : MonoBehaviour {
         UpdateIsEditMode();
     }
     private void OnStartRoom(Room room) {
+#if UNITY_EDITOR
+        DisableHudPicking();
+#endif
         // Expand the hierarchy for easier Room-editing!
         ExpandRoomHierarchy();
         GameUtils.SetEditorCameraPos(room.PosGlobal); // conveniently move the Unity Editor camera, too!
     }
 
+#if UNITY_EDITOR
+    private void DisableHudPicking() {
+        foreach (Canvas canvas in FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None)) {
+            if (canvas.gameObject.scene == gameObject.scene && canvas.isRootCanvas && canvas.renderMode != RenderMode.WorldSpace) {
+                UnityEditor.SceneVisibilityManager.instance.DisablePicking(canvas.gameObject, true);
+            }
+        }
+    }
+#endif
 
     // ----------------------------------------------------------------
     //  Doers

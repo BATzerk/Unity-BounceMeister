@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.IO;
@@ -61,7 +62,7 @@ static public class RoomSaverLoader {
 
 	private static string GetRoomPropertiesLine(RoomData rd) {
 		string returnString = ROOM_PROPERTIES + " ";
-		returnString += "posGlobal:" + rd.PosGlobal;
+		returnString += "posGlobal:" + FormatVector2(rd.PosGlobal);
 		returnString += ";designerFlag:" + rd.DesignerFlag;
         if (rd.isClustStart) { returnString += ";isClustStart:" + rd.isClustStart; }
         if (rd.IsSecret) { returnString += ";isSecret:" + rd.IsSecret; }
@@ -267,7 +268,30 @@ static public class RoomSaverLoader {
 		return fieldInfo;
 	}
 	static private string GetFieldValueAsString(FieldInfo fieldInfo, PropData data) {
-		return fieldInfo.GetValue (data).ToString ();
+		object value = fieldInfo.GetValue(data);
+		switch (value) {
+			case Vector2 vector:
+				return FormatVector2(vector);
+			case TravelMindData path:
+				return string.Format(CultureInfo.InvariantCulture, "({0},{1},{2},{3}, {4}, {5})",
+					FormatCoordinate(path.posA.x), FormatCoordinate(path.posA.y),
+					FormatCoordinate(path.posB.x), FormatCoordinate(path.posB.y),
+					path.speed, path.locOffset);
+			default:
+				return value.ToString();
+		}
+	}
+	static private string FormatVector2(Vector2 vector) {
+		return $"({FormatCoordinate(vector.x)}, {FormatCoordinate(vector.y)})";
+	}
+	static private string FormatCoordinate(float value) {
+		string text = value.ToString("R", CultureInfo.InvariantCulture);
+		if (text.IndexOf('.') >= 0 || float.IsNaN(value) || float.IsInfinity(value)) {
+			return text;
+		}
+
+		int exponentIndex = text.IndexOf('E');
+		return exponentIndex < 0 ? text + ".0" : text.Insert(exponentIndex, ".0");
 	}
 	// This function is shorthand, because "pos" is such a common value among props.
 	//	static void AddPropPosFieldToFS (Prop prop) {

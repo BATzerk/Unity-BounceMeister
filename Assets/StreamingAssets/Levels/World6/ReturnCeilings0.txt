@@ -1,0 +1,28 @@
+roomProperties posGlobal:(418.00, 284.00);designerFlag:4
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+GateButton pos:(21.00, 9.50);channelID:0
+Gate pos:(-18.50, -2.00);size:(5.00, 4.00);channelID:0
+Ground pos:(-14.50, -10.00);size:(3.00, 20.00)
+Ground pos:(1.00, 1.50);size:(2.00, 5.00);mayPlayerEat:False
+Ground pos:(-6.00, -17.00);size:(4.00, 6.00);mayPlayerEat:False
+Ground pos:(9.00, -17.00);size:(4.00, 6.00);mayPlayerEat:False
+Ground pos:(20.50, 6.00);size:(11.00, 4.00);mayPlayerEat:False
+Ground pos:(-16.00, 16.00);size:(4.00, 8.00)
+Ground pos:(5.50, -18.00);size:(41.00, 4.00)
+Ground pos:(-23.50, -10.00);size:(5.00, 20.00)
+Ground pos:(-8.00, 16.50);size:(16.00, 7.00)
+Ground pos:(6.00, 18.50);size:(40.00, 3.00)
+Ground pos:(24.50, 6.50);size:(3.00, 27.00)
+Ground pos:(21.00, -6.00);size:(10.00, 22.00)
+Ground pos:(-22.00, 13.00);size:(8.00, 14.00)
+Platform pos:(-18.50, -0.50);size:(5.00, 1.00)
+Platform pos:(-18.50, -16.50);size:(5.00, 1.00)
+PlayerStart pos:(-19.50, 1.50)
+Spikes pos:(-8.50, 12.50);rotation:180;size:(17.00, 1.00)
+Spikes pos:(0.50, 15.50);rotation:270;size:(5.00, 1.00)
+Spikes pos:(2.00, -15.50);size:(30.00, 1.00)
+Spikes pos:(11.00, 16.50);rotation:180;size:(26.00, 1.00)
+Spikes pos:(15.50, 1.00);rotation:90;size:(8.00, 1.00)
+Spikes pos:(-16.50, 11.50);rotation:180;size:(5.00, 1.00)
+Spikes pos:(1.00, -1.50);rotation:180;size:(2.00, 1.00)

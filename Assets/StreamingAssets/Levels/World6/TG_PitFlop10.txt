@@ -1,0 +1,20 @@
+roomProperties posGlobal:(256.00, 750.00);designerFlag:3
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+Gem pos:(14.50, 14.50);type:1
+Ground pos:(-22.50, -5.00);size:(9.00, 30.00)
+Ground pos:(6.00, 19.00);size:(42.00, 2.00)
+Ground pos:(-23.50, 15.00);size:(5.00, 10.00)
+Ground pos:(7.00, -18.00);size:(40.00, 4.00)
+Ground pos:(-10.50, -13.00);size:(5.00, 10.00)
+Ground pos:(-14.00, 9.00);size:(14.00, 2.00)
+Ground pos:(-14.00, 17.50);size:(4.00, 5.00)
+Ground pos:(22.00, 0.50);size:(8.00, 37.00)
+Platform pos:(-15.50, -8.50);size:(5.00, 1.00)
+Platform pos:(-15.50, -17.50);size:(5.00, 1.00)
+PlayerStart pos:(-11.00, -4.20)
+Spikes pos:(6.50, -15.50);size:(29.00, 1.00)
+ToggleGround pos:(5.00, -8.50);size:(6.00, 1.00);mayPlayerEat:False;startsOn:True;togFromContact:False;togFromAction:True
+ToggleGround pos:(5.00, -2.50);size:(6.00, 1.00);mayPlayerEat:False;startsOn:False;togFromContact:False;togFromAction:True
+ToggleGround pos:(-2.00, 3.50);size:(6.00, 1.00);mayPlayerEat:False;startsOn:True;togFromContact:False;togFromAction:True
+ToggleGround pos:(-2.00, -8.50);size:(6.00, 1.00);mayPlayerEat:False;startsOn:False;togFromContact:False;togFromAction:True

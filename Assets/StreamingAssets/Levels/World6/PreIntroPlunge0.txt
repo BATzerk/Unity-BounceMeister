@@ -1,0 +1,12 @@
+roomProperties posGlobal:(168.00, 224.00);designerFlag:0
+CameraBounds pos:(-5.00, 0.00);size:(42.00, 38.00)
+CameraBounds pos:(-5.00, 0.00);size:(42.00, 38.00)
+Ground pos:(12.50, -2.50);size:(7.00, 7.00)
+Ground pos:(-16.00, 10.00);size:(20.00, 18.00)
+Ground pos:(9.00, 1.50);size:(14.00, 1.00)
+Ground pos:(-5.00, 14.50);size:(42.00, 9.00)
+Ground pos:(9.00, 14.00);size:(14.00, 10.00)
+Ground pos:(-5.00, -12.50);size:(42.00, 13.00)
+InfoSign pos:(6.00, -6.00);myText:Press SHIFT in air.
+Platform pos:(-2.00, 1.50);size:(8.00, 1.00)
+PlayerStart pos:(-19.50, -5.00)

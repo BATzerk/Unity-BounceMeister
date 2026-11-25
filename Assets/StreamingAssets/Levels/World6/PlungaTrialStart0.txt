@@ -1,0 +1,10 @@
+roomProperties posGlobal:(116.00, 224.00);designerFlag:0;isClustStart:True
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+Ground pos:(0.00, -13.00);size:(52.00, 14.00)
+Ground pos:(-13.00, -9.00);size:(26.00, 12.00)
+Ground pos:(-20.00, 1.00);size:(12.00, 32.00)
+Ground pos:(24.00, 9.00);size:(4.00, 16.00)
+Ground pos:(0.00, 15.00);size:(52.00, 10.00)
+InfoSign pos:(-3.50, -3.00);myText:~ PLUNGA Trials ~
+PlayerStart pos:(-6.50, 0.00)

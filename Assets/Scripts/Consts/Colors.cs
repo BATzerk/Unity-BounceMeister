@@ -20,12 +20,12 @@ static public class Colors {
         // Otherwise, return the theme for this world!
         switch (worldIndex) {
             case 0: return TestingGreen;
-            case 1: return BasicGreen;
+            case 1:
+            case 6: return BasicGreen;
             case 2: return MyYachtBlue;
             case 3: return MrKakhi;
             case 4: return Hungaria;
             case 5: return GrayClicks;
-            case 6: return NoirDark;
             case 7: return NoirLight;
             default: return TestingGreen;
         }

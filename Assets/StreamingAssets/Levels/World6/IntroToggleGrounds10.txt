@@ -1,0 +1,16 @@
+roomProperties posGlobal:(130.00, 690.00);designerFlag:4;isClustStart:True
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+CameraBounds pos:(0.00, 0.00);size:(52.00, 38.00)
+Ground pos:(0.00, -18.00);size:(52.00, 4.00)
+Ground pos:(0.00, 18.50);size:(52.00, 3.00)
+Ground pos:(-10.50, 5.00);size:(11.00, 2.00)
+Ground pos:(8.00, 10.00);size:(10.00, 2.00)
+Ground pos:(-22.00, 0.50);size:(8.00, 37.00)
+Ground pos:(15.00, -3.50);size:(8.00, 29.00)
+Ground pos:(-14.50, -11.00);size:(19.00, 10.00)
+Ground pos:(8.00, -8.00);size:(10.00, 16.00)
+Ground pos:(-18.50, 12.00);size:(9.00, 16.00)
+Ground pos:(18.50, -4.00);size:(15.00, 28.00)
+PlayerStart pos:(-9.80, -4.50)
+Spikes pos:(-2.50, -15.50);size:(13.00, 1.00)
+ToggleGround pos:(-1.00, -6.50);size:(6.00, 1.00);startsOn:True;togFromContact:False;togFromAction:True
